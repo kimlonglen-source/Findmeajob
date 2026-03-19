@@ -1,0 +1,9 @@
+{
+  "name": "findmeajob-nz",
+  "version": "1.0.0",
+  "description": "FindMeAJob.co.nz — AI-powered NZ job finder",
+  "private": true,
+  "engines": {
+    "node": "22.x"
+  }
+}
