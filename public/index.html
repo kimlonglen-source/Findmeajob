@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FindMeAJob.co.nz — AI Job Matching for New Zealand</title>
+<meta name="description" content="Upload your CV or enter your skills. Our AI matches you to the best NZ jobs in seconds. Free forever for job seekers.">
+<meta name="robots" content="index, follow">
+<meta name="google-site-verification" content="LpOzsXtBeVo5v2HBTUhvIVRjwnXGxnBPfv5t4DovNuc">
+<link rel="canonical" href="https://www.findmeajob.co.nz/">
+<link rel="icon" type="image/svg+xml" href="/logo-icon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300;1,9..144,600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<style>
+:root{--bg:#0a0a08;--bg2:#111110;--bg3:#181816;--bg4:#202020;--text:#f2efe8;--text2:#c8c4bc;--text3:#888480;--em:#10b981;--em2:#059669;--em3:#022c22;--gold:#f59e0b;--border:#2a2a28;--border2:#343430;--card:#141412;--inp:#1c1c1a;--hdr:rgba(10,10,8,.97);--r:8px;--rl:14px;}
+body.light{--bg:#f8f7f4;--bg2:#f0ede8;--bg3:#e8e4de;--text:#111110;--text2:#3a3830;--text3:#6a6660;--em:#059669;--em2:#047857;--em3:#d1fae5;--gold:#b45309;--border:#d8d4cc;--border2:#c8c4bc;--card:#fff;--inp:#f0ede8;--hdr:rgba(248,247,244,.97);}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Cabinet Grotesk',sans-serif;min-height:100vh;overflow-x:hidden;line-height:1.6;font-size:15px}
+nav{position:sticky;top:0;z-index:200;padding:0 1.5rem;height:60px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:var(--hdr);backdrop-filter:blur(20px);gap:.5rem}
+.logo{display:flex;align-items:center;gap:.5rem;cursor:pointer;text-decoration:none;flex-shrink:0}
+.logo-mark{width:28px;height:28px;background:var(--em);border-radius:6px;display:flex;align-items:center;justify-content:center}
+.logo-mark svg{width:15px;height:15px;color:#fff}
+.logo-text{font-size:1rem;font-weight:800;color:var(--text);letter-spacing:-.3px}
+.logo-text span{color:var(--em)}
+.navlinks{display:flex;align-items:center;gap:.1rem}
+.nl{background:none;border:none;color:var(--text2);font-size:.8rem;font-weight:600;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;padding:.4rem .65rem;border-radius:var(--r);transition:all .15s}
+.nl:hover{color:var(--text);background:var(--bg3)}
+.nl.cta{background:var(--em);color:#fff;padding:.4rem .9rem;margin-left:.25rem;font-weight:700}
+.nl.cta:hover{background:var(--em2)}
+.nav-r{display:flex;align-items:center;gap:.4rem}
+.icon-btn{background:var(--bg3);border:1px solid var(--border2);color:var(--text2);width:32px;height:32px;border-radius:var(--r);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:all .15s}
+.hmbg{display:none}
+.moverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;backdrop-filter:blur(8px)}
+.moverlay.open{display:flex;align-items:flex-end}
+.msheet{background:var(--bg2);border-radius:20px 20px 0 0;padding:1.5rem;width:100%;border-top:1px solid var(--border)}
+.mhandle{width:40px;height:4px;background:var(--border2);border-radius:999px;margin:0 auto 1.5rem}
+.mnavitem{display:flex;align-items:center;padding:.85rem 0;border-bottom:1px solid var(--border);font-size:.95rem;font-weight:600;color:var(--text);cursor:pointer;background:none;border-left:none;border-right:none;border-top:none;font-family:'Cabinet Grotesk',sans-serif;width:100%}
+.mnavitem:last-child{border-bottom:none}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--text);color:var(--bg);padding:.45rem 1rem;border-radius:999px;font-size:.78rem;font-weight:700;z-index:99999;opacity:0;transition:all .2s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.page{display:none;min-height:calc(100vh - 60px)}
+.page.active{display:block}
+.wrap{max-width:720px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+.wrap-wide{max-width:960px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+.page-eyebrow{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--em);margin-bottom:.4rem}
+.page-title{font-family:'Fraunces',serif;font-size:2rem;font-weight:300;font-style:italic;color:var(--text);line-height:1.15;margin-bottom:.5rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.5rem;margin-bottom:.75rem}
+.form-label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);display:block;margin-bottom:.35rem}
+input,select,textarea{background:var(--inp);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Cabinet Grotesk',sans-serif;font-size:15px;padding:.72rem 1rem;outline:none;width:100%;transition:border-color .15s;font-weight:500;-webkit-appearance:none;appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--em)}
+input::placeholder,textarea::placeholder{color:var(--text3)}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23888480' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .75rem center;padding-right:2.2rem;cursor:pointer}
+select option{background:var(--bg2)}
+textarea{resize:vertical;min-height:90px;line-height:1.6}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-bottom:.65rem}
+.field{margin-bottom:.65rem}
+.field:last-child{margin-bottom:0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;background:var(--em);color:#fff;padding:.85rem 1.8rem;border-radius:var(--r);font-family:'Cabinet Grotesk',sans-serif;font-size:.9rem;font-weight:800;border:none;cursor:pointer;transition:all .15s;width:100%}
+.btn:hover{background:var(--em2)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-sec{background:var(--bg3);border:1px solid var(--border2);color:var(--text2)}
+.btn-sec:hover{border-color:var(--text3);color:var(--text);background:var(--bg3)}
+.btn-sm{display:inline-flex;align-items:center;gap:.3rem;background:none;border:1px solid var(--border2);color:var(--text2);padding:.4rem .85rem;border-radius:var(--r);font-family:'Cabinet Grotesk',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s}
+.btn-sm:hover{border-color:var(--text3);color:var(--text)}
+.alert{padding:.7rem 1rem;border-radius:var(--r);font-size:.82rem;font-weight:600;margin:.75rem 0;display:none}
+.alert.show{display:block}
+.alert-err{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#fca5a5}
+.alert-ok{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);color:var(--em)}
+.skel{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.5rem;margin-bottom:.75rem}
+.skel-line{height:11px;background:linear-gradient(90deg,var(--bg2) 25%,var(--bg3) 50%,var(--bg2) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:4px;margin-bottom:.5rem}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.dots::after{content:'...';animation:dots 1.5s steps(3,end) infinite}
+@keyframes dots{0%,20%{content:'.'}40%{content:'..'}60%,100%{content:'...'}}
+.steps{display:flex;align-items:center;gap:.3rem;justify-content:center;margin-bottom:2rem}
+.step{display:flex;align-items:center;gap:.3rem;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3)}
+.step.active{color:var(--em)}
+.step-dot{width:5px;height:5px;border-radius:50%;background:var(--border2)}
+.step.active .step-dot{background:var(--em);box-shadow:0 0 0 3px rgba(16,185,129,.2)}
+.step.done .step-dot{background:var(--text3)}
+.step-dash{flex:1;height:1px;background:var(--border);max-width:40px}
+.job-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.4rem;display:grid;grid-template-columns:1fr auto;gap:1rem;margin-bottom:.65rem;position:relative;overflow:hidden;transition:border-color .2s}
+.job-card:hover{border-color:var(--border2)}
+.job-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--em);transform:scaleY(0);transform-origin:bottom;transition:transform .25s}
+.job-card:hover::before{transform:scaleY(1)}
+.job-card.featured{border-color:rgba(245,158,11,.25)}
+.job-card.featured::before{background:var(--gold)}
+.feat-pill{position:absolute;top:.75rem;right:.75rem;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold);font-size:.6rem;font-weight:800;padding:.18rem .5rem;border-radius:999px;text-transform:uppercase}
+.job-title{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:300;font-style:italic;color:var(--text);margin-bottom:.2rem;line-height:1.25}
+.job-co{font-size:.78rem;font-weight:700;color:var(--gold);margin-bottom:.25rem}
+.job-loc{font-size:.72rem;color:var(--text3);font-weight:600;margin-bottom:.5rem}
+.job-desc{font-size:.82rem;color:var(--text2);line-height:1.65;font-weight:500}
+.job-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.65rem}
+.tag{padding:.18rem .55rem;border-radius:999px;font-size:.67rem;font-weight:700}
+.tag-cat{background:var(--em3);border:1px solid rgba(16,185,129,.2);color:var(--em)}
+.tag-other{background:var(--bg3);border:1px solid var(--border2);color:var(--text3)}
+.tag-live{background:var(--em3);border:1px solid rgba(16,185,129,.25);color:var(--em);font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.4px}
+.job-links{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.75rem}
+.job-link{display:inline-flex;align-items:center;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:.32rem .7rem;border-radius:var(--r);font-size:.72rem;text-decoration:none;font-weight:700;transition:all .15s}
+.job-link:hover{border-color:var(--em);color:var(--em)}
+.job-link.apply{background:var(--em);border-color:var(--em);color:#fff}
+.job-link.apply:hover{background:var(--em2)}
+.match-col{text-align:right;flex-shrink:0}
+.match-pct{font-family:'Fraunces',serif;font-size:1.6rem;font-style:italic;color:var(--em);line-height:1;font-weight:300}
+.match-lbl{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3)}
+.insights{background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(16,185,129,.02));border:1px solid rgba(16,185,129,.12);border-radius:var(--rl);padding:1.4rem;margin:.75rem 0}
+.insights h4{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin-bottom:.6rem}
+.insights p{font-size:.85rem;color:var(--text2);line-height:1.75;font-weight:500}
+.skill-tag{display:inline-flex;align-items:center;gap:.3rem;background:var(--em3);border:1px solid rgba(16,185,129,.25);color:var(--em);padding:.3rem .7rem;border-radius:999px;font-size:.78rem;font-weight:700;margin:.2rem}
+.skill-tag button{background:none;border:none;color:var(--em);cursor:pointer;font-size:.85rem;line-height:1;padding:0;opacity:.7}
+.chip{background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:.28rem .65rem;border-radius:999px;font-size:.74rem;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;font-weight:600;transition:all .15s;display:inline-flex;align-items:center;margin:.2rem}
+.chip:hover{border-color:var(--em);color:var(--em)}
+.upload-zone{border:2px dashed var(--border2);border-radius:var(--rl);padding:3rem 2rem;text-align:center;cursor:pointer;transition:all .2s}
+.upload-zone:hover,.upload-zone.over{border-color:var(--em);background:rgba(16,185,129,.03)}
+.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:2rem}
+.choice{background:var(--card);border:2px solid var(--border2);border-radius:var(--rl);padding:1.5rem;cursor:pointer;text-align:left;font-family:'Cabinet Grotesk',sans-serif;width:100%;transition:all .2s}
+.choice:hover,.choice.sel{border-color:var(--em);background:var(--em3)}
+.choice-badge{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:.5rem}
+.choice.sel .choice-badge{color:var(--em)}
+.choice-title{font-family:'Fraunces',serif;font-size:1.05rem;font-style:italic;color:var(--text);margin-bottom:.25rem;font-weight:300}
+.choice-desc{font-size:.75rem;color:var(--text2);line-height:1.5;font-weight:500}
+.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.5rem}
+.plan{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.4rem;position:relative;cursor:pointer;text-align:left;font-family:'Cabinet Grotesk',sans-serif;width:100%;transition:all .2s}
+.plan:hover,.plan.sel{border-color:var(--em)}
+.plan.popular{border-color:rgba(16,185,129,.3)}
+.pop-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--em);color:#fff;font-size:.62rem;font-weight:800;padding:.2rem .7rem;border-radius:999px;white-space:nowrap;text-transform:uppercase}
+.plan-tier{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-bottom:.4rem}
+.plan-price{font-family:'Fraunces',serif;font-size:2rem;font-style:italic;color:var(--text);line-height:1;font-weight:300;margin-bottom:.2rem}
+.plan-period{font-size:.72rem;font-weight:600;color:var(--text3);margin-bottom:.8rem}
+.plan-feats{list-style:none;font-size:.78rem;color:var(--text2);font-weight:500}
+.plan-feats li{padding:.2rem 0;padding-left:1.2rem;position:relative}
+.plan-feats li::before{content:'✓';position:absolute;left:0;color:var(--em);font-size:.7rem;font-weight:800}
+.filter-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.filter-row select{flex:1;min-width:110px;padding:.55rem .8rem;font-size:.78rem}
+.hero{padding:4.5rem 2rem 3.5rem;max-width:820px;margin:0 auto;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:var(--em3);border:1px solid rgba(16,185,129,.2);color:var(--em);font-size:.7rem;font-weight:700;padding:.35rem .9rem;border-radius:999px;margin-bottom:1.8rem;text-transform:uppercase;letter-spacing:.6px}
+.dot{width:6px;height:6px;background:var(--em);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(2.8rem,7vw,5rem);line-height:1.05;font-weight:300;letter-spacing:-.5px;margin-bottom:1.3rem}
+.hero h1 em{font-style:italic;color:var(--em)}
+.hero-sub{color:var(--text2);font-size:1rem;line-height:1.7;max-width:480px;margin:0 auto 2rem;font-weight:500}
+.hero-ctas{display:flex;justify-content:center;gap:.75rem;flex-wrap:wrap;margin-bottom:2.5rem}
+.btn-hero{display:inline-flex;align-items:center;gap:.4rem;background:var(--em);color:#fff;padding:.85rem 1.8rem;border-radius:var(--r);font-family:'Cabinet Grotesk',sans-serif;font-size:.9rem;font-weight:800;border:none;cursor:pointer;transition:all .15s}
+.btn-hero:hover{background:var(--em2)}
+.btn-hero-out{background:transparent;color:var(--text2);border:1px solid var(--border2);display:inline-flex;align-items:center;gap:.4rem;padding:.85rem 1.5rem;border-radius:var(--r);font-family:'Cabinet Grotesk',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .15s}
+.btn-hero-out:hover{border-color:var(--text3);color:var(--text)}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-top:2rem}
+.how-step{background:var(--bg2);padding:2rem;transition:background .2s}
+.how-step:hover{background:var(--bg3)}
+.how-num{font-family:'Fraunces',serif;font-size:2.5rem;font-style:italic;color:var(--border2);font-weight:300;line-height:1;margin-bottom:1rem}
+.how-title{font-size:.95rem;font-weight:800;color:var(--text);margin-bottom:.4rem}
+.how-desc{font-size:.82rem;color:var(--text2);line-height:1.7;font-weight:500}
+.strip{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:.75rem 2rem;display:flex;align-items:center;justify-content:center;gap:.5rem;flex-wrap:wrap;background:var(--bg2)}
+.strip-label{font-size:.72rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.6px}
+.strip-item{font-size:.75rem;font-weight:700;color:var(--text2);background:var(--bg3);border:1px solid var(--border2);padding:.22rem .65rem;border-radius:999px}
+footer{border-top:1px solid var(--border);padding:1.5rem 2rem;margin-top:2rem}
+.footer-inner{max-width:960px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+.footer-logo{font-family:'Fraunces',serif;font-size:1rem;font-style:italic;font-weight:300;color:var(--text)}
+.footer-logo em{color:var(--em)}
+.footer-sub{font-size:.7rem;color:var(--text3);font-weight:600;margin-top:.2rem}
+.footer-links{display:flex;gap:.4rem;flex-wrap:wrap}
+.footer-links button,.footer-links a{color:var(--text3);font-size:.75rem;background:none;border:none;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;padding:.2rem 0;text-decoration:none;font-weight:600}
+.footer-links button:hover,.footer-links a:hover{color:var(--em)}
+#db{position:fixed;bottom:0;left:0;right:0;background:rgba(10,10,8,.97);border-top:1px solid var(--border);padding:.6rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:.8rem;z-index:9998;backdrop-filter:blur(16px)}
+.btext{color:var(--text3);font-size:.73rem;font-weight:600;flex:1}
+.bbtn{background:var(--em);border:none;color:#fff;padding:.35rem .85rem;border-radius:var(--r);font-size:.75rem;font-weight:800;cursor:pointer;white-space:nowrap;font-family:'Cabinet Grotesk',sans-serif}
+#lm{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:99999;overflow-y:auto;padding:1.5rem;backdrop-filter:blur(8px)}
+.mbox{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem;position:relative;width:100%;max-width:580px;margin:0 auto}
+.mbox-close{position:absolute;top:.9rem;right:.9rem;background:var(--bg3);border:1px solid var(--border);color:var(--text2);width:28px;height:28px;border-radius:var(--r);cursor:pointer;display:flex;align-items:center;justify-content:center}
+@media(max-width:700px){
+  nav{padding:0 1rem}
+  .navlinks .nl:not(.keep){display:none}
+  .nl.cta{display:none}
+  .hmbg{display:flex}
+  .hero{padding:2.5rem 1.2rem 2.5rem}
+  .hero h1{font-size:2.5rem}
+  .how-grid,.plan-grid,.choice-grid,.g2{grid-template-columns:1fr}
+  .wrap,.wrap-wide{padding-left:1.2rem;padding-right:1.2rem}
+  .footer-inner{flex-direction:column;gap:1rem}
+}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<div class="moverlay" id="moverlay">
+  <div class="msheet">
+    <div class="mhandle"></div>
+    <button class="mnavitem" id="mm-home" type="button">Home</button>
+    <button class="mnavitem" id="mm-find" type="button">Find My Job</button>
+    <button class="mnavitem" id="mm-browse" type="button">Browse Jobs</button>
+    <button class="mnavitem" id="mm-pricing" type="button">Pricing</button>
+    <button class="mnavitem" id="mm-portal" type="button">Employer Login</button><button class="mnavitem" id="mm-employer" type="button">Post a Job</button>
+    <button class="mnavitem" id="mm-about" type="button">About</button>
+    <a class="mnavitem" href="mailto:hello@findmeajob.co.nz">Contact</a>
+  </div>
+</div>
+
+<nav>
+  <a class="logo" id="logo-home" href="#">
+    <div class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="10" cy="10" r="7"/><path d="m21 21-4.35-4.35"/></svg></div>
+    <span class="logo-text">FindMe<span>AJob</span></span>
+  </a>
+  <div class="navlinks">
+    <button class="nl keep" id="h-find" type="button">Find a Job</button>
+    <button class="nl" id="h-browse" type="button">Browse Jobs</button>
+    <button class="nl" id="h-pricing" type="button">Pricing</button>
+    <button class="nl" id="h-about" type="button">About</button>
+    <button class="nl" id="h-portal" type="button">Employer Login</button><button class="nl cta" id="h-employer" type="button">Post a Job</button>
+  </div>
+  <div class="nav-r">
+    <button class="icon-btn" id="tbtn" type="button">&#9790;</button>
+    <button class="icon-btn hmbg" id="hamburger" type="button">&#9776;</button>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="hero-badge"><span class="dot"></span>AI-Powered · New Zealand Only</div>
+    <h1>Find your next NZ job<br><em>in 60 seconds</em></h1>
+    <p class="hero-sub">Upload your CV or tell us your skills. Our AI matches you to real NZ roles instantly — no sign-up, no guesswork.</p>
+    <div class="hero-ctas">
+      <button class="btn-hero" id="hero-try" type="button">Find My Job — Free</button>
+      <button class="btn-hero-out" id="hero-browse" type="button">Browse NZ Jobs &#8594;</button>
+    </div>
+  </section>
+  <div class="strip">
+    <span class="strip-label">Pulls jobs from</span>
+    <span class="strip-item">Seek</span><span class="strip-item">Trade Me Jobs</span><span class="strip-item">LinkedIn</span><span class="strip-item">Adzuna NZ</span>
+  </div>
+  <section style="padding:4rem 2rem;max-width:960px;margin:0 auto">
+    <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--em);margin-bottom:.75rem">How it works</div>
+    <div style="font-family:'Fraunces',serif;font-size:clamp(2rem,5vw,3rem);font-weight:300;line-height:1.1;letter-spacing:-.3px;margin-bottom:0">Three steps to your<br><em style="font-style:italic;color:var(--em)">perfect NZ role</em></div>
+    <div class="how-grid">
+      <div class="how-step"><div class="how-num">01</div><div class="how-title">Upload CV or enter skills</div><div class="how-desc">Drop your PDF or Word CV. AI extracts your skills automatically. Or type skills manually — 30 seconds.</div></div>
+      <div class="how-step"><div class="how-num">02</div><div class="how-title">AI finds your matches</div><div class="how-desc">Our AI compares your background against real NZ roles and generates personalised match scores.</div></div>
+      <div class="how-step"><div class="how-num">03</div><div class="how-title">Apply with confidence</div><div class="how-desc">See live NZ job listings plus AI-matched roles. One click to apply directly.</div></div>
+    </div>
+  </section>
+  <section style="padding:3rem 2rem 5rem;text-align:center;max-width:600px;margin:0 auto">
+    <div style="font-family:'Fraunces',serif;font-size:clamp(2rem,5vw,3rem);font-weight:300;line-height:1.1;margin-bottom:.75rem">Ready to find your<br><em style="color:var(--em)">next NZ job?</em></div>
+    <p style="color:var(--text2);font-size:.9rem;line-height:1.7;margin-bottom:1.5rem;font-weight:500">100% free for job seekers. No account needed.</p>
+    <div style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap">
+      <button class="btn-hero" id="cta-find" type="button">Find My Job — Free</button>
+      <button class="btn-hero-out" id="cta-employer" type="button">Post a Job &#8594;</button>
+    </div>
+  </section>
+</div>
+
+<!-- FIND JOBS -->
+<div id="page-find" class="page">
+  <div class="wrap">
+    <div style="margin-bottom:1.5rem"><div class="page-eyebrow">AI Job Matching</div><div class="page-title">Find your perfect NZ job</div></div>
+    <div class="steps">
+      <div class="step active" id="s1"><div class="step-dot"></div>Start</div><div class="step-dash"></div>
+      <div class="step" id="s2"><div class="step-dot"></div>Skills</div><div class="step-dash"></div>
+      <div class="step" id="s3"><div class="step-dot"></div>Preferences</div><div class="step-dash"></div>
+      <div class="step" id="s4"><div class="step-dot"></div>Results</div>
+    </div>
+    <div id="step-entry">
+      <div class="choice-grid">
+        <button class="choice sel" id="btn-cv" type="button">
+          <div class="choice-badge">Recommended</div>
+          <div class="choice-title">Upload my CV</div>
+          <div class="choice-desc">AI reads your CV and finds matches. PDF or Word.</div>
+        </button>
+        <button class="choice" id="btn-manual" type="button">
+          <div class="choice-badge">No CV needed</div>
+          <div class="choice-title">Enter skills</div>
+          <div class="choice-desc">Type or pick your skills and we'll match you instantly.</div>
+        </button>
+      </div>
+    </div>
+    <div id="step-cv" style="display:none">
+      <div class="card">
+        <label class="form-label">Upload your CV</label>
+        <div class="upload-zone" id="drop-zone">
+          <input type="file" id="cv-file" accept=".pdf,.doc,.docx,.txt" style="display:none">
+          <div style="color:var(--text3);margin-bottom:.75rem"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div style="font-weight:800;color:var(--text);margin-bottom:.3rem">Drop your CV here or click to browse</div>
+          <div style="font-size:.75rem;color:var(--text3)">PDF, Word (.docx), or text file</div>
+        </div>
+        <div id="cv-info" style="display:none;align-items:center;gap:.75rem;background:var(--em3);border:1px solid rgba(16,185,129,.2);border-radius:var(--r);padding:.75rem 1rem;margin-top:.75rem">
+          <span style="color:var(--em)">📄</span>
+          <span id="cv-name" style="font-size:.83rem;font-weight:700;color:var(--em);flex:1"></span>
+          <button id="cv-remove" type="button" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1rem">✕</button>
+        </div>
+        <div style="font-size:.7rem;color:var(--text3);text-align:center;margin-top:.6rem;font-weight:500">Your CV is never stored on our servers.</div>
+      </div>
+      <div class="card">
+        <label class="form-label">Your region</label>
+        <select id="cv-region">
+          <option value="New Zealand">All of New Zealand</option>
+          <option value="Auckland">Auckland</option><option value="Wellington">Wellington</option>
+          <option value="Canterbury / Christchurch">Christchurch</option><option value="Waikato / Hamilton">Hamilton</option>
+          <option value="Bay of Plenty">Bay of Plenty</option><option value="Otago / Dunedin">Dunedin</option>
+          <option value="Manawatu-Whanganui">Manawatu</option><option value="Hawkes Bay">Hawkes Bay</option>
+          <option value="Northland">Northland</option><option value="Southland">Southland</option>
+          <option value="Nelson / Marlborough">Nelson</option>
+        </select>
+      </div>
+      <div class="alert alert-err" id="cv-err">Please upload your CV first.</div>
+      <button class="btn" id="btn-analyze" type="button" style="margin-top:1rem">Analyse CV &amp; Find Matches</button>
+      <div style="text-align:center;margin-top:.75rem"><button style="background:none;border:none;color:var(--text3);font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif" id="btn-go-manual" type="button">No CV? Enter skills manually &#8594;</button></div>
+    </div>
+    <div id="step-manual" style="display:none">
+      <div class="card">
+        <label class="form-label">Your skills</label>
+        <div id="skill-area" style="min-height:32px;margin-bottom:.75rem"></div>
+        <div style="display:flex;gap:.5rem;margin-bottom:.75rem">
+          <input type="text" id="ski" placeholder="Type a skill and press Enter..." maxlength="60" style="flex:1">
+          <button type="button" id="btn-add" style="background:var(--em3);border:1px solid rgba(16,185,129,.2);color:var(--em);padding:.72rem 1rem;border-radius:var(--r);cursor:pointer;font-size:.82rem;font-weight:700;white-space:nowrap;font-family:'Cabinet Grotesk',sans-serif;flex-shrink:0">+ Add</button>
+        </div>
+        <div id="chips">
+          <button class="chip" data-s="Customer service">Customer service</button>
+          <button class="chip" data-s="Communication">Communication</button>
+          <button class="chip" data-s="Microsoft Office">Microsoft Office</button>
+          <button class="chip" data-s="Driving licence">Driving licence</button>
+          <button class="chip" data-s="Leadership">Leadership</button>
+          <button class="chip" data-s="Coding">Coding</button>
+          <button class="chip" data-s="Sales">Sales</button>
+          <button class="chip" data-s="Healthcare">Healthcare</button>
+          <button class="chip" data-s="Teaching">Teaching</button>
+          <button class="chip" data-s="Accounting">Accounting</button>
+          <button class="chip" data-s="Forklift">Forklift</button>
+          <button class="chip" data-s="Cooking">Cooking</button>
+          <button class="chip" data-s="Project management">Project management</button>
+          <button class="chip" data-s="Writing">Writing</button>
+        </div>
+      </div>
+      <div class="card">
+        <label class="form-label" style="margin-bottom:.75rem">Preferences</label>
+        <div class="g2">
+          <div class="field"><label class="form-label">Region</label>
+            <select id="region"><option value="New Zealand">All of NZ</option><option value="Auckland">Auckland</option><option value="Wellington">Wellington</option><option value="Canterbury / Christchurch">Christchurch</option><option value="Waikato / Hamilton">Hamilton</option><option value="Bay of Plenty">Bay of Plenty</option><option value="Otago / Dunedin">Dunedin</option><option value="Manawatu-Whanganui">Manawatu</option><option value="Hawkes Bay">Hawkes Bay</option><option value="Northland">Northland</option><option value="Southland">Southland</option><option value="Nelson / Marlborough">Nelson</option></select>
+          </div>
+          <div class="field"><label class="form-label">Work type</label>
+            <select id="wt"><option value="any">Any</option><option value="full-time">Full-time</option><option value="part-time">Part-time</option><option value="casual">Casual</option><option value="remote">Remote</option><option value="contract">Contract</option></select>
+          </div>
+          <div class="field"><label class="form-label">Experience</label>
+            <select id="exp"><option value="any level">Any level</option><option value="entry-level">Entry level</option><option value="1-3 years">1-3 years</option><option value="3-7 years">3-7 years</option><option value="7+ years">7+ years</option></select>
+          </div>
+          <div class="field"><label class="form-label">Salary (NZD)</label>
+            <select id="sal"><option value="any salary">Any</option><option value="up to $50K">Up to $50K</option><option value="$50K-$70K">$50K-$70K</option><option value="$70K-$90K">$70K-$90K</option><option value="$90K-$120K">$90K-$120K</option><option value="$120K+">$120K+</option></select>
+          </div>
+        </div>
+        <div class="field"><label class="form-label">Anything else? <span style="text-transform:none;letter-spacing:0;font-weight:500;color:var(--text3)">(optional)</span></label>
+          <textarea id="ctx" placeholder="e.g. Returning to work, prefer outdoors, open to retraining..."></textarea>
+        </div>
+      </div>
+      <div class="alert alert-err" id="find-err">Please add at least one skill.</div>
+      <button class="btn" id="btn-search" type="button" style="margin-top:1rem">Find My NZ Jobs</button>
+    </div>
+    <div id="skeleton" style="display:none">
+      <div style="text-align:center;padding:.75rem;font-size:.82rem;color:var(--text3);font-weight:600">Matching you to NZ jobs<span class="dots"></span></div>
+      <div class="skel"><div class="skel-line" style="width:60%;height:14px;margin-bottom:.75rem"></div><div class="skel-line" style="width:40%"></div><div class="skel-line"></div><div class="skel-line" style="width:85%"></div></div>
+      <div class="skel"><div class="skel-line" style="width:55%;height:14px;margin-bottom:.75rem"></div><div class="skel-line" style="width:35%"></div><div class="skel-line"></div><div class="skel-line" style="width:90%"></div></div>
+      <div class="skel"><div class="skel-line" style="width:65%;height:14px;margin-bottom:.75rem"></div><div class="skel-line" style="width:45%"></div><div class="skel-line"></div><div class="skel-line" style="width:80%"></div></div>
+    </div>
+    <div id="results" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:.75rem">
+        <div><div style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-bottom:.2rem">Your matches</div><div style="font-family:'Fraunces',serif;font-size:1.7rem;font-style:italic;font-weight:300;color:var(--text)">Jobs <span style="color:var(--em)">for you</span></div></div>
+        <button class="btn-sm" id="btn-restart" type="button">&#8592; New search</button>
+      </div>
+      <div id="job-list"></div>
+      <div class="insights" id="insights" style="display:none"><h4>Career Insights</h4><p id="insights-text"></p></div>
+      <div style="background:var(--card);border:1px solid rgba(16,185,129,.15);border-radius:var(--rl);padding:1.4rem;margin-top:.75rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+        <div><div style="font-size:.88rem;font-weight:800;color:var(--text);margin-bottom:.2rem">Browse more jobs</div><div style="font-size:.78rem;color:var(--text2);font-weight:500">See live NZ employer listings</div></div>
+        <button class="btn" id="res-browse" type="button" style="width:auto;padding:.6rem 1.2rem;font-size:.82rem">Browse Jobs &#8594;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BROWSE JOBS -->
+<div id="page-browse" class="page">
+  <div class="wrap-wide">
+    <div style="margin-bottom:1.5rem"><div class="page-eyebrow">Live Listings</div><div class="page-title">Browse NZ Jobs</div></div>
+    <div class="filter-row">
+      <select id="f-cat"><option value="">All categories</option><option>Technology</option><option>Healthcare</option><option>Trades</option><option>Hospitality</option><option>Admin</option><option>Education</option><option>Sales</option><option>Transport</option><option>Agriculture</option><option>Creative</option></select>
+      <select id="f-reg"><option value="">All of NZ</option><option>Auckland</option><option>Wellington</option><option>Christchurch</option><option>Hamilton</option><option>Dunedin</option></select>
+      <select id="f-type"><option value="">Any type</option><option>Full-time</option><option>Part-time</option><option>Casual</option><option>Remote</option></select>
+    </div>
+    <div id="employer-jobs"></div>
+    <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin:1.5rem 0 .75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)">Live NZ Jobs from Adzuna</div>
+    <div id="browse-live"></div>
+    <div style="text-align:center;padding:2rem;border:1px dashed var(--border2);border-radius:var(--rl);margin-top:1rem">
+      <p style="color:var(--text2);font-size:.85rem;margin-bottom:1rem;font-weight:500">Are you an employer? Reach thousands of active Kiwi job seekers.</p>
+      <button class="btn" id="browse-post" type="button" style="width:auto;padding:.75rem 1.5rem">Post a Job Free &#8594;</button>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div id="page-pricing" class="page">
+  <div class="wrap-wide">
+    <div style="text-align:center;max-width:520px;margin:0 auto 2.5rem"><div class="page-eyebrow">Pricing</div><div class="page-title">Simple pricing.<br>No surprises.</div><p style="color:var(--text2);font-size:.9rem;font-weight:500;margin-top:.75rem;line-height:1.7">Job seekers are always free. Employers choose the plan that suits them.</p></div>
+    <div style="background:var(--em3);border:1px solid rgba(16,185,129,.25);border-radius:var(--rl);padding:1.25rem 1.5rem;margin-bottom:2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+      <div><div style="font-size:.85rem;font-weight:800;color:var(--em);margin-bottom:.2rem">Job seekers — always free</div><div style="font-size:.78rem;color:var(--text2);font-weight:500">AI matching · CV upload · Career insights · No account needed · Forever free</div></div>
+      <button class="btn" id="pricing-try" type="button" style="width:auto;padding:.6rem 1.2rem;font-size:.82rem">Try Free &#8594;</button>
+    </div>
+    <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:1rem">For Employers</div>
+    <div class="plan-grid">
+      <div style="background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(16,185,129,.02));border:1px solid rgba(16,185,129,.2);border-radius:var(--rl);padding:1.25rem 1.5rem;margin-bottom:1.5rem;text-align:center;grid-column:1/-1"><div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin-bottom:.3rem">&#127881; Launch Offer</div><div style="font-family:Fraunces,serif;font-size:1.3rem;font-style:italic;font-weight:300;color:var(--text);margin-bottom:.3rem">All plans are <em style="color:var(--em)">free</em> while we get started</div><div style="font-size:.78rem;color:var(--text2);font-weight:500">Building something great for NZ. Early adopters get full access at no cost during our launch period.</div></div>
+      <div class="plan"><div class="plan-tier">Starter</div><div class="plan-price">$0</div><div class="plan-period">Free during launch &middot; no card</div><ul class="plan-feats"><li>1 active listing</li><li>30 day visibility</li><li>Email applications</li><li>Standard placement</li></ul><button class="btn btn-sec" id="pp-free" type="button" style="margin-top:1rem">Get started free</button></div>
+      <div class="plan popular"><div class="pop-badge">Most Popular</div><div class="plan-tier">Growth</div><div class="plan-price" style="font-size:1.3rem;text-decoration:line-through;opacity:.4">$29</div><div class="plan-price">$0</div><div class="plan-period">Free during launch &middot; <span style="color:var(--em);font-weight:700">normally $29/mo</span></div><ul class="plan-feats"><li>5 active listings</li><li>60 day visibility</li><li>Priority placement</li><li>Company profile</li><li>Applicant tracking</li></ul><button class="btn" id="pp-basic" type="button" style="margin-top:1rem">Get started free</button></div>
+      <div class="plan"><div class="plan-tier">Pro</div><div class="plan-price" style="font-size:1.3rem;text-decoration:line-through;opacity:.4">$79</div><div class="plan-price">$0</div><div class="plan-period">Free during launch &middot; <span style="color:var(--em);font-weight:700">normally $79/mo</span></div><ul class="plan-feats"><li>Unlimited listings</li><li>90 day visibility</li><li>Featured placement</li><li>Full analytics</li><li>AI candidate matching</li><li>Priority support</li></ul><button class="btn" id="pp-pro" type="button" style="margin-top:1rem">Get started free</button></div>
+    </div>
+    <p style="text-align:center;color:var(--text3);font-size:.75rem;font-weight:500;margin-top:1.5rem">Questions? <a href="mailto:hello@findmeajob.co.nz" style="color:var(--em);text-decoration:none;font-weight:700">hello@findmeajob.co.nz</a></p>
+  </div>
+</div>
+
+<!-- EMPLOYER — REGISTER + POST -->
+<div id="page-employer" class="page">
+  <div class="wrap">
+    <div style="margin-bottom:1.5rem"><div class="page-eyebrow">For Employers</div><div class="page-title">Post a job. Find the right person.</div></div>
+
+    <!-- Step 1: Plan -->
+    <div id="emp-step-plan">
+      <p style="color:var(--text2);font-size:.88rem;font-weight:500;line-height:1.7;margin-bottom:1.5rem">Reach thousands of active NZ job seekers. Register free — no credit card needed to start.</p>
+      <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-bottom:.75rem">1. Choose your plan</div>
+      <div class="plan-grid">
+        <button class="plan" id="ep-free" type="button"><div class="plan-tier">Free</div><div class="plan-price" style="font-size:1.6rem">$0</div><div class="plan-period">30 days · no card</div><ul class="plan-feats" style="margin-top:.6rem"><li>1 listing</li><li>30 day visibility</li><li>Email applications</li></ul></button>
+        <button class="plan popular" id="ep-basic" type="button"><div class="pop-badge">Popular</div><div class="plan-tier">Growth</div><div class="plan-price" style="font-size:1.6rem">$0</div><div class="plan-period">Free during launch &middot; normally $29/mo</div><ul class="plan-feats" style="margin-top:.6rem"><li>5 listings</li><li>60 day visibility</li><li>Priority placement</li><li>Company profile</li></ul></button>
+        <button class="plan" id="ep-pro" type="button"><div class="plan-tier">Pro</div><div class="plan-price" style="font-size:1.6rem">$0</div><div class="plan-period">Free during launch &middot; normally $79/mo</div><ul class="plan-feats" style="margin-top:.6rem"><li>Unlimited listings</li><li>Featured placement</li><li>90 day visibility</li><li>AI matching</li></ul></button>
+      </div>
+      <button class="btn" id="btn-plan-next" type="button" style="margin-top:.5rem">Continue &#8594;</button>
+    </div>
+
+    <!-- Step 2: Register -->
+    <div id="emp-step-register" style="display:none">
+      <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-bottom:.75rem">2. Create your employer account</div>
+      <div class="card">
+        <div class="g2">
+          <div class="field"><label class="form-label">Your name *</label><input type="text" id="r-name" placeholder="Jane Smith"></div>
+          <div class="field"><label class="form-label">Company name *</label><input type="text" id="r-company" placeholder="Acme Ltd"></div>
+          <div class="field"><label class="form-label">Work email *</label><input type="email" id="r-email" placeholder="jane@acme.co.nz"></div>
+          <div class="field"><label class="form-label">Phone (optional)</label><input type="tel" id="r-phone" placeholder="+64 21 000 0000"></div>
+          <div class="field"><label class="form-label">Website (optional)</label><input type="text" id="r-website" placeholder="https://acme.co.nz"></div>
+          <div class="field"><label class="form-label">Password *</label><input type="password" id="r-password" placeholder="Choose a password (min 8 chars)"></div>
+        </div>
+        <div style="font-size:.72rem;color:var(--text3);font-weight:500;margin-top:.5rem;line-height:1.6">By registering you agree to our <button style="background:none;border:none;color:var(--em);font-family:'Cabinet Grotesk',sans-serif;font-size:.72rem;cursor:pointer;font-weight:600;padding:0" id="reg-terms-btn" type="button">Terms of Use</button>.</div>
+      </div>
+      <div class="alert alert-err" id="reg-err">Please fill in all required fields.</div>
+      <div style="display:flex;gap:.75rem;margin-top:.75rem">
+        <button class="btn btn-sec" id="btn-reg-back" type="button" style="width:auto;padding:.75rem 1.2rem">&#8592; Back</button>
+        <button class="btn" id="btn-register" type="button">Create Account &#8594;</button>
+      </div>
+      <div style="text-align:center;margin-top:.75rem;font-size:.78rem;color:var(--text3);font-weight:500">Already have an account? <button style="background:none;border:none;color:var(--em);font-family:'Cabinet Grotesk',sans-serif;font-size:.78rem;cursor:pointer;font-weight:700;padding:0" id="btn-login-instead" type="button">Sign in</button></div>
+    </div>
+
+    <!-- Step 2b: Login -->
+    <div id="emp-step-login" style="display:none">
+      <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-bottom:.75rem">2. Sign in to your account</div>
+      <div class="card">
+        <div class="field"><label class="form-label">Work email</label><input type="email" id="l-email" placeholder="jane@acme.co.nz"></div>
+        <div class="field"><label class="form-label">Password</label><input type="password" id="l-password" placeholder="Your password"></div>
+      </div>
+      <div class="alert alert-err" id="login-err">Incorrect email or password. Please try again.</div>
+      <div style="display:flex;gap:.75rem;margin-top:.75rem">
+        <button class="btn btn-sec" id="btn-login-back" type="button" style="width:auto;padding:.75rem 1.2rem">&#8592; Back</button>
+        <button class="btn" id="btn-login" type="button">Sign In &#8594;</button>
+      </div>
+      <div style="text-align:center;margin-top:.75rem;font-size:.78rem;color:var(--text3);font-weight:500">No account yet? <button style="background:none;border:none;color:var(--em);font-family:'Cabinet Grotesk',sans-serif;font-size:.78rem;cursor:pointer;font-weight:700;padding:0" id="btn-reg-instead" type="button">Register free</button></div>
+      <div style="text-align:center;margin-top:.5rem;font-size:.75rem;color:var(--text3);font-weight:500">Forgot your password? <a href="mailto:hello@findmeajob.co.nz?subject=Password%20Reset%20Request" style="color:var(--em);text-decoration:none;font-weight:700">Email us to reset</a></div>
+    </div>
+
+    <!-- Step 3: Post job -->
+    <div id="emp-step-job" style="display:none">
+      <div style="background:var(--em3);border:1px solid rgba(16,185,129,.2);border-radius:var(--r);padding:.75rem 1rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap">
+        <div style="font-size:.82rem;font-weight:700;color:var(--em)">Signed in as <span id="emp-name-display"></span> &mdash; <span id="emp-plan-display" style="text-transform:uppercase;font-size:.7rem;font-weight:800"></span> plan</div>
+        <button style="background:none;border:none;color:var(--text3);font-size:.72rem;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;font-weight:600;padding:0" id="btn-emp-signout" type="button">Sign out</button>
+      </div>
+      <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-bottom:.75rem">3. Post your job listing</div>
+      <div class="card">
+        <div class="field"><label class="form-label">Job title *</label><input type="text" id="e-title" placeholder="e.g. Senior Software Developer"></div>
+        <div class="g2">
+          <div class="field"><label class="form-label">Location</label><select id="e-loc"><option>Auckland</option><option>Wellington</option><option>Christchurch</option><option>Hamilton</option><option>Tauranga</option><option>Dunedin</option><option>Remote NZ</option><option>Nationwide</option></select></div>
+          <div class="field"><label class="form-label">Category</label><select id="e-cat"><option>Technology</option><option>Healthcare</option><option>Trades</option><option>Hospitality</option><option>Admin</option><option>Education</option><option>Sales</option><option>Transport</option><option>Agriculture</option><option>Creative</option><option>Other</option></select></div>
+          <div class="field"><label class="form-label">Job type</label><select id="e-type"><option>Full-time</option><option>Part-time</option><option>Casual</option><option>Contract</option><option>Remote</option></select></div>
+          <div class="field"><label class="form-label">Salary range</label><select id="e-sal"><option>Up to $50K</option><option>$50K-$70K</option><option>$70K-$90K</option><option>$90K-$120K</option><option>$120K+</option><option>Negotiable</option></select></div>
+        </div>
+        <div class="field"><label class="form-label">Job description *</label><textarea id="e-desc" placeholder="What does this role involve day-to-day?" style="min-height:120px"></textarea></div>
+        <div class="field"><label class="form-label">Requirements</label><textarea id="e-req" placeholder="e.g. 2+ years experience, NZ drivers licence..." style="min-height:80px"></textarea></div>
+        <div class="field"><label class="form-label">Why work here? <span style="text-transform:none;letter-spacing:0;font-weight:500;color:var(--text3)">(optional)</span></label><textarea id="e-why" placeholder="What makes your company great?" style="min-height:70px"></textarea></div>
+      </div>
+      <div class="alert alert-err" id="emp-err">Please fill in the job title and description.</div>
+      <div class="alert alert-ok" id="emp-ok">Your listing has been submitted and will be reviewed within 24 hours. You'll hear from us at your registered email.</div>
+      <button class="btn" id="btn-submit" type="button" style="margin-top:.5rem">Submit Job Listing &#8594;</button>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div id="page-about" class="page">
+  <div class="wrap">
+    <div class="page-eyebrow">About</div>
+    <div class="page-title">Built for Kiwis who<br>don't know yet.</div>
+    <p style="color:var(--text2);font-size:.9rem;font-weight:500;line-height:1.75;margin-bottom:2rem;max-width:500px">Most job sites assume you know what you want. FindMeAJob.co.nz was built for everyone else — people who are stuck, changing careers, or just starting out.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:2rem">
+      <div class="card"><div style="font-size:.85rem;font-weight:800;color:var(--text);margin-bottom:.3rem">AI-Powered Matching</div><div style="font-size:.78rem;color:var(--text2);line-height:1.6;font-weight:500">Claude AI matches your skills to real NZ roles, including ones you haven't considered.</div></div>
+      <div class="card"><div style="font-size:.85rem;font-weight:800;color:var(--text);margin-bottom:.3rem">New Zealand Only</div><div style="font-size:.78rem;color:var(--text2);line-height:1.6;font-weight:500">Every result is tailored to the NZ job market. No overseas listings cluttering your results.</div></div>
+      <div class="card"><div style="font-size:.85rem;font-weight:800;color:var(--text);margin-bottom:.3rem">Free for Job Seekers</div><div style="font-size:.78rem;color:var(--text2);line-height:1.6;font-weight:500">100% free forever. No account, no credit card, no catch.</div></div>
+      <div class="card"><div style="font-size:.85rem;font-weight:800;color:var(--text);margin-bottom:.3rem">Private by Default</div><div style="font-size:.78rem;color:var(--text2);line-height:1.6;font-weight:500">Your CV is never stored. Processed in real time and discarded immediately.</div></div>
+    </div>
+    <div style="border-top:1px solid var(--border);padding-top:1.5rem">
+      <div style="font-size:.85rem;font-weight:800;color:var(--text);margin-bottom:.4rem">Get in touch</div>
+      <a href="mailto:hello@findmeajob.co.nz" style="display:inline-flex;align-items:center;gap:.4rem;background:var(--em3);border:1px solid rgba(16,185,129,.2);color:var(--em);padding:.65rem 1.2rem;border-radius:var(--r);font-size:.82rem;text-decoration:none;font-weight:700">hello@findmeajob.co.nz</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div><div class="footer-logo">Find<em>Me</em>AJob<span style="font-family:'Cabinet Grotesk',sans-serif;font-style:normal;font-size:.58rem;color:var(--text3)">.co.nz</span></div><div class="footer-sub">AI-powered job discovery for Aotearoa New Zealand &copy; 2026</div></div>
+    <div class="footer-links">
+      <button id="fl-find" type="button">Find a Job</button>
+      <button id="fl-browse" type="button">Browse Jobs</button>
+      <button id="fl-pricing" type="button">Pricing</button>
+      <button id="fl-employer" type="button">Post a Job</button><a href="/employer-portal.html" style="color:var(--text3);font-size:.75rem;text-decoration:none;font-weight:600">Employer Login</a>
+      <button id="fl-about" type="button">About</button>
+      <a href="mailto:hello@findmeajob.co.nz">Contact</a>
+      <button id="fl-privacy" type="button">Privacy</button>
+      <button id="fl-terms" type="button">Terms</button>
+    </div>
+  </div>
+</footer>
+
+<div id="db"><p class="btext">AI suggestions only — not career advice. <button style="background:none;border:none;color:var(--em);font-size:.73rem;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;font-weight:600;text-decoration:underline;padding:0" id="db-terms" type="button">Terms</button> &amp; <button style="background:none;border:none;color:var(--em);font-size:.73rem;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;font-weight:600;text-decoration:underline;padding:0" id="db-privacy" type="button">Privacy</button></p><button class="bbtn" id="btn-dismiss" type="button">Got it</button></div>
+<div id="lm"><div class="mbox"><button class="mbox-close" id="modal-close" type="button">&#215;</button><div id="modal-body"></div></div></div>
+
+<script>
+var currentPage='home',skills=[],cvFileData=null,cvFileName='',lightMode=false,empSession=null,selectedPlan='free';
+
+function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},2200);}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+function showPage(id){document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});var pg=document.getElementById('page-'+id);if(pg){pg.classList.add('active');currentPage=id;}window.scrollTo(0,0);}
+function toggleTheme(){lightMode=!lightMode;document.body.classList.toggle('light',lightMode);document.getElementById('tbtn').innerHTML=lightMode?'&#9788;':'&#9790;';localStorage.setItem('theme',lightMode?'light':'dark');}
+function setStep(n){for(var i=1;i<=4;i++){var el=document.getElementById('s'+i);if(!el)continue;if(i<n)el.className='step done';else if(i===n)el.className='step active';else el.className='step';}}
+function goFind(){showPage('find');resetFind();}
+function resetFind(){['step-entry','step-cv','step-manual','skeleton','results'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display=id==='step-entry'?'block':'none';});setStep(1);cvFileData=null;cvFileName='';document.getElementById('cv-info').style.display='none';document.getElementById('drop-zone').style.borderColor='';}
+function showCV(){document.getElementById('step-entry').style.display='none';document.getElementById('step-cv').style.display='block';setStep(2);}
+function showManual(){document.getElementById('step-entry').style.display='none';document.getElementById('step-manual').style.display='block';setStep(2);}
+function renderSkills(){var h='';skills.forEach(function(s,i){h+='<span class="skill-tag">'+cap(s)+'<button data-i="'+i+'" type="button">&#215;</button></span>';});document.getElementById('skill-area').innerHTML=h;document.querySelectorAll('#skill-area button').forEach(function(b){b.addEventListener('click',function(){skills.splice(+this.dataset.i,1);renderSkills();if(!skills.length)setStep(2);});});}
+function addSkill(){var inp=document.getElementById('ski');var v=inp.value.trim();if(!v||skills.includes(v.toLowerCase())){inp.value='';return;}skills.push(v.toLowerCase());renderSkills();inp.value='';setStep(3);toast(cap(v)+' added');}
+
+function handleFile(file){
+  if(!file)return;cvFileName=file.name;
+  var ext=file.name.toLowerCase().split('.').pop();
+  function done(data){cvFileData=data;document.getElementById('cv-info').style.display='flex';document.getElementById('cv-name').textContent=cvFileName;document.getElementById('drop-zone').style.borderColor='rgba(16,185,129,.5)';setStep(3);toast('CV loaded');}
+  if(ext==='pdf'){var r=new FileReader();r.onload=function(e){done(e.target.result);};r.readAsDataURL(file);}
+  else if(ext==='doc'||ext==='docx'){var r2=new FileReader();r2.onload=function(e){if(typeof mammoth!=='undefined'){mammoth.extractRawText({arrayBuffer:e.target.result}).then(function(res){if(res.value.trim().length>50){done(res.value.trim());}else{var r3=new FileReader();r3.onload=function(e2){done(e2.target.result);};r3.readAsDataURL(new Blob([e.target.result]));}}).catch(function(){var r3=new FileReader();r3.onload=function(e2){done(e2.target.result);};r3.readAsDataURL(new Blob([e.target.result]));});}else{var r3=new FileReader();r3.onload=function(e2){done(e2.target.result);};r3.readAsDataURL(new Blob([e.target.result]));}};r2.readAsArrayBuffer(file);}
+  else{var r4=new FileReader();r4.onload=function(e){done(e.target.result);};r4.readAsText(file);}
+}
+
+async function analyzeCV(){
+  var err=document.getElementById('cv-err');
+  if(!cvFileData){err.classList.add('show');return;}
+  err.classList.remove('show');
+  document.getElementById('step-cv').style.display='none';
+  document.getElementById('skeleton').style.display='block';
+  setStep(4);
+  var region=document.getElementById('cv-region').value;
+  var ext=cvFileName.toLowerCase().split('.').pop();
+  var isB64=typeof cvFileData==='string'&&cvFileData.includes('base64,');
+  var jp='Return ONLY a valid JSON array, no other text: [{"title":"","company_type":"","location":"City, NZ","match_percent":85,"description":"2-3 sentences.","tags":["tag"],"category":"Industry","seek_query":"terms"}]';
+  var msgs;
+  if(ext==='pdf'&&isB64){msgs=[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:cvFileData.split('base64,')[1]}},{type:'text',text:'Read this CV. Suggest 5 best NZ jobs in '+region+'. '+jp}]}];}
+  else if(!isB64&&cvFileData.length>50){msgs=[{role:'user',content:'CV text: '+cvFileData.substring(0,3000)+'. Suggest 5 best NZ jobs in '+region+'. '+jp}];}
+  else{msgs=[{role:'user',content:'Suggest 5 realistic NZ jobs in '+region+' for a CV called "'+cvFileName+'". '+jp}];}
+  try{
+    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'NZ career advisor. Return ONLY valid JSON array.',messages:msgs})});
+    var d=await r.json();var raw=d.content.map(function(b){return b.text||'';}).join('').trim();
+    var si=raw.indexOf('['),ei=raw.lastIndexOf(']');if(si===-1||ei===-1)throw new Error('No JSON');
+    var jobs=JSON.parse(raw.substring(si,ei+1));if(!jobs.length)throw new Error('Empty');
+    var titles=jobs.map(function(j){return j.title;}).join(', ');
+    var r2=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:'3-4 sentences warm NZ career advice for someone matched to: '+titles+' in '+region+'. Direct prose, no bullets.'}]})});
+    var d2=await r2.json();var insights=d2.content.map(function(b){return b.text||'';}).join('');
+    document.getElementById('skeleton').style.display='none';renderResults(jobs,insights);
+  }catch(e){
+    document.getElementById('skeleton').style.display='none';showManual();
+    var fe=document.getElementById('find-err');fe.textContent='Could not process CV. Please enter skills manually.';fe.classList.add('show');
+  }
+}
+
+async function findJobs(){
+  var err=document.getElementById('find-err');
+  if(!skills.length){err.textContent='Please add at least one skill.';err.classList.add('show');return;}
+  err.classList.remove('show');
+  document.getElementById('step-manual').style.display='none';document.getElementById('skeleton').style.display='block';setStep(4);
+  var region=document.getElementById('region').value;
+  var prompt='Skills: '+skills.join(', ')+'. Region: '+region+'. Work: '+document.getElementById('wt').value+'. Exp: '+document.getElementById('exp').value+'. Salary: '+document.getElementById('sal').value+'. Context: '+(document.getElementById('ctx').value.trim()||'none')+'. Suggest 5 NZ jobs. Return ONLY valid JSON: [{"title":"","company_type":"","location":"City, NZ","match_percent":85,"description":"2-3 sentences.","tags":["tag"],"category":"Industry","seek_query":"terms"}]';
+  try{
+    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'NZ career advisor. Return ONLY valid JSON array, nothing else.',messages:[{role:'user',content:prompt}]})});
+    var d=await r.json();var raw=d.content.map(function(b){return b.text||'';}).join('').replace(/```json|```/g,'').trim();
+    var si=raw.indexOf('['),ei=raw.lastIndexOf(']');var jobs=JSON.parse(raw.substring(si,ei+1));
+    var r2=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:'3-4 sentences warm NZ career advice for someone with: '+skills.join(', ')+' in '+region+'. Direct prose, no bullets.'}]})});
+    var d2=await r2.json();var insights=d2.content.map(function(b){return b.text||'';}).join('');
+    document.getElementById('skeleton').style.display='none';renderResults(jobs,insights);
+  }catch(e){
+    document.getElementById('skeleton').style.display='none';document.getElementById('step-manual').style.display='block';
+    err.textContent='Something went wrong. Please try again.';err.classList.add('show');
+  }
+}
+
+function renderResults(jobs,insights){
+  window._aiJobs=jobs;
+  var list=document.getElementById('job-list');
+  list.innerHTML='<div style="padding:1rem;text-align:center;color:var(--text3);font-size:.82rem;font-weight:600;border:1px solid var(--border);border-radius:var(--rl)">Finding live listings<span class="dots"></span></div>';
+  if(insights){document.getElementById('insights-text').textContent=insights;document.getElementById('insights').style.display='block';}
+  document.getElementById('results').style.display='block';
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+  fetchLiveJobs(jobs);
+}
+
+async function fetchLiveJobs(matches){
+  var regionEl=document.getElementById('cv-region');var regionEl2=document.getElementById('region');
+  var region=(regionEl&&regionEl.offsetParent?regionEl.value:null)||(regionEl2?regionEl2.value:'New Zealand');
+  var list=document.getElementById('job-list');
+  var top3=(matches||[]).slice(0,3);
+  var fetches=top3.map(function(m){return fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:m.title,region:region})}).then(function(r){return r.json();}).catch(function(){return{jobs:[]};});});
+  var results=await Promise.all(fetches);
+  var live=[];var seen={};
+  results.forEach(function(d){(d.jobs||[]).forEach(function(j){var k=(j.title+j.company).toLowerCase();if(!seen[k]){seen[k]=true;live.push(j);}});});
+  list.innerHTML='';
+  if(live.length){
+    var lh=document.createElement('div');lh.style.cssText='font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)';lh.textContent='Live NZ Job Listings';list.appendChild(lh);
+    live.forEach(function(job){var c=document.createElement('div');c.className='job-card';c.innerHTML='<div><div style="margin-bottom:.4rem"><span class="tag tag-live">Live</span></div><div class="job-title">'+job.title+'</div><div class="job-co">'+job.company+'</div><div class="job-loc">'+job.location+'</div><div class="job-desc">'+job.description+'</div>'+(job.salary?'<div class="job-tags"><span class="tag tag-other">'+job.salary+'</span></div>':'')+'<div class="job-links"><a href="'+job.url+'" target="_blank" class="job-link apply">Apply Now &#8594;</a></div></div><div class="match-col"><div style="color:var(--em);font-size:.65rem;font-weight:800;text-transform:uppercase">Live</div></div>';list.appendChild(c);});
+  }
+  var ah=document.createElement('div');ah.style.cssText='font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin:1.5rem 0 .75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)';ah.textContent=live.length?'AI Suggested Roles':'AI Matched Roles';list.appendChild(ah);
+  (window._aiJobs||[]).forEach(function(j){var su='https://www.seek.co.nz/jobs?keywords='+encodeURIComponent(j.seek_query||j.title)+'&where=New+Zealand';var tu='https://www.trademe.co.nz/a/jobs/search?search_string='+encodeURIComponent(j.title)+'&region=0';var tags='<span class="tag tag-cat">'+(j.category||'General')+'</span>';(j.tags||[]).forEach(function(t){tags+='<span class="tag tag-other">'+t+'</span>';});var c=document.createElement('div');c.className='job-card';c.innerHTML='<div><div class="job-title">'+j.title+'</div><div class="job-co">'+(j.company_type||'')+'</div><div class="job-loc">'+j.location+'</div><div class="job-desc">'+j.description+'</div><div class="job-tags">'+tags+'</div><div class="job-links"><a href="'+su+'" target="_blank" class="job-link">Seek</a><a href="'+tu+'" target="_blank" class="job-link">Trade Me</a><a href="https://www.linkedin.com/jobs/search/?keywords='+encodeURIComponent(j.title)+'&location=New+Zealand" target="_blank" class="job-link">LinkedIn</a></div></div><div class="match-col"><div class="match-pct">'+j.match_percent+'%</div><div class="match-lbl">match</div></div>';list.appendChild(c);});
+}
+
+async function loadBrowse(){
+  var cat=document.getElementById('f-cat').value;var reg=document.getElementById('f-reg').value;
+  var empEl=document.getElementById('employer-jobs');var liveEl=document.getElementById('browse-live');
+  empEl.innerHTML='';liveEl.innerHTML='<div style="padding:1rem;text-align:center;color:var(--text3);font-size:.82rem;font-weight:600;border:1px solid var(--border);border-radius:var(--rl)">Loading<span class="dots"></span></div>';
+  var regMap={'Auckland':'Auckland','Wellington':'Wellington','Christchurch':'Canterbury / Christchurch','Hamilton':'Waikato / Hamilton','Dunedin':'Otago / Dunedin','':'New Zealand'};
+  var region=regMap[reg]||'New Zealand';
+  var approvedP=fetch('/api/approved-jobs').then(function(r){return r.json();}).catch(function(){return{jobs:[]};});
+  var adzunaP=fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:cat||'jobs',region:region})}).then(function(r){return r.json();}).catch(function(){return{jobs:[]};});
+  var res=await Promise.all([approvedP,adzunaP]);
+  var approved=res[0].jobs||[];var adzuna=res[1].jobs||[];
+  if(approved.length){
+    var h='<div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--gold);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)">Employer Listings</div>';empEl.innerHTML=h;
+    approved.forEach(function(j){var c=document.createElement('div');c.className='job-card'+(j.featured?' featured':'');if(j.featured)c.innerHTML='<div class="feat-pill">Featured</div>';c.innerHTML+='<div><div class="job-title">'+j.title+'</div><div class="job-co">'+j.company+'</div><div class="job-loc">'+j.location+'</div><div class="job-desc">'+(j.description||'').substring(0,160)+'...</div><div class="job-tags"><span class="tag tag-cat">'+j.category+'</span><span class="tag tag-other">'+j.type+'</span><span class="tag tag-other">'+j.salary+'</span></div><div class="job-links"><button onclick="applyJob(this)" data-email="'+j.email+'" data-title="'+j.title+'" class="job-link'+(j.featured?' apply':'')+'">Apply Now &#8594;</button></div></div><div class="match-col"><div style="color:'+(j.featured?'var(--gold)':'var(--em)')+';font-size:.65rem;font-weight:800;text-transform:uppercase">'+(j.featured?'Featured':'New')+'</div></div>';empEl.appendChild(c);});
+  }
+  liveEl.innerHTML='';
+  if(!adzuna.length){liveEl.innerHTML='<div style="padding:1rem;color:var(--text3);font-size:.82rem;font-weight:500;text-align:center">No live listings found. Try a different filter.</div>';return;}
+  adzuna.forEach(function(job){var c=document.createElement('div');c.className='job-card';c.innerHTML='<div><div style="margin-bottom:.4rem"><span class="tag tag-live">Live</span></div><div class="job-title">'+job.title+'</div><div class="job-co">'+job.company+'</div><div class="job-loc">'+job.location+'</div><div class="job-desc">'+job.description+'</div>'+(job.salary?'<div class="job-tags"><span class="tag tag-other">'+job.salary+'</span></div>':'')+'<div class="job-links"><a href="'+job.url+'" target="_blank" class="job-link apply">Apply Now &#8594;</a></div></div><div class="match-col"><div style="color:var(--em);font-size:.65rem;font-weight:800;text-transform:uppercase">Live</div></div>';liveEl.appendChild(c);});
+}
+
+function showEmpStep(step){['emp-step-plan','emp-step-register','emp-step-login','emp-step-job'].forEach(function(id){document.getElementById(id).style.display=id===step?'block':'none';});}
+function selectPlan(plan){selectedPlan=plan;['ep-free','ep-basic','ep-pro'].forEach(function(id){document.getElementById(id).classList.remove('sel');});var map={free:'ep-free',basic:'ep-basic',pro:'ep-pro'};if(map[plan])document.getElementById(map[plan]).classList.add('sel');}
+
+async function doRegister(){
+  var name=document.getElementById('r-name').value.trim();var company=document.getElementById('r-company').value.trim();
+  var email=document.getElementById('r-email').value.trim();var phone=document.getElementById('r-phone').value.trim();
+  var website=document.getElementById('r-website').value.trim();var password=document.getElementById('r-password').value;
+  var err=document.getElementById('reg-err');err.classList.remove('show');
+  if(!name||!company||!email||!password){err.textContent='Please fill in all required fields.';err.classList.add('show');return;}
+  if(password.length<6){err.textContent='Password must be at least 6 characters.';err.classList.add('show');return;}
+  var btn=document.getElementById('btn-register');btn.textContent='Creating account...';btn.disabled=true;
+  try{
+    var r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,company,email,phone,website,password})});
+    var d=await r.json();
+    if(d.success){
+      empSession={id:d.id,name:name,company:company,email:email,plan:selectedPlan};
+      sessionStorage.setItem('empSession',JSON.stringify(empSession));
+      document.getElementById('emp-name-display').textContent=name+' ('+company+')';
+      document.getElementById('emp-plan-display').textContent=selectedPlan;
+      showEmpStep('emp-step-job');toast('Account created! Now post your job.');
+    }else{err.textContent=d.error||'Registration failed.';err.classList.add('show');}
+  }catch(e){err.textContent='Could not connect. Please try again.';err.classList.add('show');}
+  btn.textContent='Create Account \u2192';btn.disabled=false;
+}
+
+async function doLogin(){
+  var email=document.getElementById('l-email').value.trim();var password=document.getElementById('l-password').value;
+  var err=document.getElementById('login-err');err.classList.remove('show');
+  if(!email||!password){err.classList.add('show');return;}
+  var btn=document.getElementById('btn-login');btn.textContent='Signing in...';btn.disabled=true;
+  try{
+    var r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:'__login__',company:'__login__',email,phone:'',website:'',password})});
+    var d=await r.json();
+    if(d.error&&d.error.includes('already exists')){
+      empSession={id:'existing',name:email.split('@')[0],company:'Your Company',email,plan:selectedPlan};
+      sessionStorage.setItem('empSession',JSON.stringify(empSession));
+      document.getElementById('emp-name-display').textContent=empSession.name;
+      document.getElementById('emp-plan-display').textContent=selectedPlan;
+      showEmpStep('emp-step-job');toast('Welcome back!');
+    }else if(d.success){
+      empSession={id:d.id,name:d.name||email.split('@')[0],company:d.company||'Your Company',email,plan:selectedPlan};
+      sessionStorage.setItem('empSession',JSON.stringify(empSession));
+      document.getElementById('emp-name-display').textContent=empSession.name;document.getElementById('emp-plan-display').textContent=selectedPlan;
+      showEmpStep('emp-step-job');toast('Welcome back!');
+    }else{err.classList.add('show');}
+  }catch(e){err.classList.add('show');}
+  btn.textContent='Sign In \u2192';btn.disabled=false;
+}
+
+async function submitJob(){
+  if(!empSession){toast('Please register or sign in first.');return;}
+  var title=document.getElementById('e-title').value.trim();var desc=document.getElementById('e-desc').value.trim();
+  var err=document.getElementById('emp-err');err.classList.remove('show');
+  if(!title||!desc){err.classList.add('show');return;}
+  var btn=document.getElementById('btn-submit');btn.textContent='Submitting...';btn.disabled=true;
+  try{
+    var r=await fetch('/api/submit-job',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({employerId:empSession.id,employerEmail:empSession.email,company:empSession.company,title,location:document.getElementById('e-loc').value,category:document.getElementById('e-cat').value,type:document.getElementById('e-type').value,salary:document.getElementById('e-sal').value,description:desc,requirements:document.getElementById('e-req').value.trim(),why:document.getElementById('e-why').value.trim(),plan:empSession.plan})});
+    var d=await r.json();
+    if(d.success){document.getElementById('emp-ok').classList.add('show');btn.style.display='none';document.getElementById('emp-ok').scrollIntoView({behavior:'smooth'});toast('Job submitted for review!');document.getElementById('emp-ok').innerHTML+='<div style='margin-top:.75rem'><a href="/employer-portal.html" style='color:var(--em);font-weight:700;font-size:.82rem'>View your listings in the Employer Portal &#8594;</a></div>';}
+    else{throw new Error(d.error||'Failed');}
+  }catch(e){err.textContent='Submission failed: '+e.message;err.classList.add('show');btn.textContent='Submit Job Listing \u2192';btn.disabled=false;}
+}
+
+var legal={
+  privacy:'<div style="font-family:\'Fraunces\',serif;font-size:1.2rem;font-style:italic;font-weight:300;margin-bottom:.3rem">Privacy Policy</div><p style="color:var(--text3);font-size:.72rem;margin-bottom:1rem">March 2026 &mdash; FindMeAJob.co.nz</p><p style="color:var(--text2);font-size:.85rem;line-height:1.75;font-weight:500">We operate under the NZ Privacy Act 2020. CV data is never stored &mdash; processed in real time and discarded. Employer accounts are stored securely in our database. We do not sell or share your data with third parties. Contact: hello@findmeajob.co.nz</p>',
+  terms:'<div style="font-family:\'Fraunces\',serif;font-size:1.2rem;font-style:italic;font-weight:300;margin-bottom:.3rem">Terms of Use</div><p style="color:var(--text3);font-size:.72rem;margin-bottom:1rem">March 2026 &mdash; FindMeAJob.co.nz</p><p style="color:var(--text2);font-size:.85rem;line-height:1.75;font-weight:500">This is an AI-powered job discovery tool, not a recruitment agency. AI results are for informational purposes only. Employers are responsible for the accuracy of their listings. We reserve the right to remove any listing. Governed by New Zealand law. Contact: hello@findmeajob.co.nz</p>'
+};
+function openModal(k){document.getElementById('modal-body').innerHTML=legal[k];document.getElementById('lm').style.display='block';document.body.style.overflow='hidden';}
+function closeModal(){document.getElementById('lm').style.display='none';document.body.style.overflow='';}
+
+function applyJob(btn) {
+  var email = btn.dataset.email;
+  var title = btn.dataset.title;
+  if (!email) return;
+  // Show apply modal with email
+  var modal = document.getElementById('apply-modal');
+  document.getElementById('apply-email-display').textContent = email;
+  document.getElementById('apply-title-display').textContent = title;
+  document.getElementById('apply-email-val').value = email;
+  modal.style.display = 'flex';
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  if(localStorage.getItem('theme')==='light'){lightMode=false;toggleTheme();}
+  document.getElementById('tbtn').addEventListener('click',toggleTheme);
+  document.getElementById('logo-home').addEventListener('click',function(e){e.preventDefault();showPage('home');});
+  document.getElementById('h-find').addEventListener('click',goFind);
+  document.getElementById('h-browse').addEventListener('click',function(){showPage('browse');loadBrowse();});
+  document.getElementById('h-pricing').addEventListener('click',function(){showPage('pricing');});
+  document.getElementById('h-about').addEventListener('click',function(){showPage('about');});
+  document.getElementById('h-employer').addEventListener('click',function(){showPage('employer');showEmpStep('emp-step-plan');});
+  document.getElementById('h-portal').addEventListener('click',function(){window.location.href='/employer-portal.html';});
+  document.getElementById('hero-try').addEventListener('click',goFind);
+  document.getElementById('hero-browse').addEventListener('click',function(){showPage('browse');loadBrowse();});
+  document.getElementById('cta-find').addEventListener('click',goFind);
+  document.getElementById('cta-employer').addEventListener('click',function(){showPage('employer');showEmpStep('emp-step-plan');});
+  document.getElementById('hamburger').addEventListener('click',function(){document.getElementById('moverlay').classList.add('open');});
+  document.getElementById('moverlay').addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
+  ['mm-home','mm-find','mm-browse','mm-pricing','mm-employer','mm-about'].forEach(function(id){document.getElementById(id).addEventListener('click',function(){document.getElementById('moverlay').classList.remove('open');var map={'mm-home':'home','mm-find':'find','mm-browse':'browse','mm-pricing':'pricing','mm-employer':'employer','mm-about':'about'};var pg=map[id];if(pg==='find')goFind();else if(pg==='browse'){showPage('browse');loadBrowse();}else if(pg==='employer'){showPage('employer');showEmpStep('emp-step-plan');}else showPage(pg);});});
+  document.getElementById('btn-cv').addEventListener('click',showCV);
+  document.getElementById('btn-manual').addEventListener('click',showManual);
+  document.getElementById('btn-go-manual').addEventListener('click',showManual);
+  var dz=document.getElementById('drop-zone');var fi=document.getElementById('cv-file');
+  dz.addEventListener('click',function(){fi.click();});
+  fi.addEventListener('change',function(){if(this.files[0])handleFile(this.files[0]);});
+  dz.addEventListener('dragover',function(e){e.preventDefault();this.classList.add('over');});
+  dz.addEventListener('dragleave',function(){this.classList.remove('over');});
+  dz.addEventListener('drop',function(e){e.preventDefault();this.classList.remove('over');if(e.dataTransfer.files[0])handleFile(e.dataTransfer.files[0]);});
+  document.getElementById('cv-remove').addEventListener('click',function(e){e.stopPropagation();cvFileData=null;cvFileName='';document.getElementById('cv-info').style.display='none';dz.style.borderColor='';fi.value='';setStep(2);});
+  document.getElementById('btn-analyze').addEventListener('click',analyzeCV);
+  document.getElementById('ski').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();addSkill();}});
+  document.getElementById('btn-add').addEventListener('click',addSkill);
+  document.querySelectorAll('#chips .chip').forEach(function(ch){ch.addEventListener('click',function(){var s=this.dataset.s;if(s&&!skills.includes(s.toLowerCase())){skills.push(s.toLowerCase());renderSkills();setStep(3);toast(s+' added');}});});
+  document.getElementById('btn-search').addEventListener('click',findJobs);
+  document.getElementById('btn-restart').addEventListener('click',function(){skills=[];renderSkills();document.getElementById('results').style.display='none';document.getElementById('insights').style.display='none';resetFind();});
+  document.getElementById('res-browse').addEventListener('click',function(){showPage('browse');loadBrowse();});
+  document.getElementById('browse-post').addEventListener('click',function(){showPage('employer');showEmpStep('emp-step-plan');});
+  document.getElementById('f-cat').addEventListener('change',loadBrowse);
+  document.getElementById('f-reg').addEventListener('change',loadBrowse);
+  document.getElementById('f-type').addEventListener('change',loadBrowse);
+  document.getElementById('pricing-try').addEventListener('click',goFind);
+  ['pp-free','pp-basic','pp-pro'].forEach(function(id){document.getElementById(id).addEventListener('click',function(){showPage('employer');showEmpStep('emp-step-plan');});});
+  document.getElementById('fl-find').addEventListener('click',goFind);
+  document.getElementById('fl-browse').addEventListener('click',function(){showPage('browse');loadBrowse();});
+  document.getElementById('fl-pricing').addEventListener('click',function(){showPage('pricing');});
+  document.getElementById('fl-employer').addEventListener('click',function(){showPage('employer');showEmpStep('emp-step-plan');});
+  document.getElementById('fl-about').addEventListener('click',function(){showPage('about');});
+  document.getElementById('fl-privacy').addEventListener('click',function(){openModal('privacy');});
+  document.getElementById('fl-terms').addEventListener('click',function(){openModal('terms');});
+  document.getElementById('db-terms').addEventListener('click',function(){openModal('terms');});
+  document.getElementById('db-privacy').addEventListener('click',function(){openModal('privacy');});
+  document.getElementById('btn-dismiss').addEventListener('click',function(){localStorage.setItem('bok','1');document.getElementById('db').style.display='none';});
+  if(localStorage.getItem('bok'))document.getElementById('db').style.display='none';
+  document.getElementById('modal-close').addEventListener('click',closeModal);
+  document.getElementById('lm').addEventListener('click',function(e){if(e.target===this)closeModal();});
+  document.getElementById('ep-free').addEventListener('click',function(){selectPlan('free');});
+  document.getElementById('ep-basic').addEventListener('click',function(){selectPlan('basic');});
+  document.getElementById('ep-pro').addEventListener('click',function(){selectPlan('pro');});
+  selectPlan('free');
+  document.getElementById('btn-plan-next').addEventListener('click',function(){var saved=sessionStorage.getItem('empSession');if(saved){empSession=JSON.parse(saved);empSession.plan=selectedPlan;document.getElementById('emp-name-display').textContent=empSession.name;document.getElementById('emp-plan-display').textContent=selectedPlan;showEmpStep('emp-step-job');}else showEmpStep('emp-step-register');});
+  document.getElementById('btn-reg-back').addEventListener('click',function(){showEmpStep('emp-step-plan');});
+  document.getElementById('btn-login-back').addEventListener('click',function(){showEmpStep('emp-step-plan');});
+  document.getElementById('btn-login-instead').addEventListener('click',function(){showEmpStep('emp-step-login');});
+  document.getElementById('btn-reg-instead').addEventListener('click',function(){showEmpStep('emp-step-register');});
+  document.getElementById('btn-register').addEventListener('click',doRegister);
+  document.getElementById('btn-login').addEventListener('click',doLogin);
+  document.getElementById('btn-emp-signout').addEventListener('click',function(){empSession=null;sessionStorage.removeItem('empSession');showEmpStep('emp-step-plan');toast('Signed out');});
+  document.getElementById('btn-submit').addEventListener('click',submitJob);
+  document.getElementById('reg-terms-btn').addEventListener('click',function(){openModal('terms');});
+  var saved=sessionStorage.getItem('empSession');
+  if(saved){empSession=JSON.parse(saved);}
+});
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+<!-- Apply modal -->
+<div id="apply-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99999;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(8px)">
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem;width:100%;max-width:420px">
+    <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin-bottom:.3rem">Apply for this role</div>
+    <div style="font-family:Fraunces,serif;font-size:1.2rem;font-style:italic;font-weight:300;color:var(--text);margin-bottom:1rem" id="apply-title-display"></div>
+    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:1rem;margin-bottom:1rem">
+      <div style="font-size:.7rem;font-weight:700;color:var(--text3);margin-bottom:.3rem">Send your CV and cover letter to:</div>
+      <div style="font-size:1rem;font-weight:800;color:var(--em)" id="apply-email-display"></div>
+      <input type="text" id="apply-email-val" readonly style="position:absolute;opacity:0;pointer-events:none">
+    </div>
+    <div style="font-size:.78rem;color:var(--text2);line-height:1.6;margin-bottom:1.25rem;font-weight:500">Copy the email address above and send your application directly. Include your CV and a short cover letter explaining why you're a great fit.</div>
+    <div style="display:flex;gap:.5rem">
+      <button onclick="navigator.clipboard.writeText(document.getElementById('apply-email-val').value).then(function(){var b=document.getElementById('copy-btn');b.textContent='Copied!';setTimeout(function(){b.textContent='Copy Email';},2000);})" id="copy-btn" style="flex:1;background:var(--em);border:none;color:#fff;padding:.75rem;border-radius:var(--r);font-family:Cabinet Grotesk,sans-serif;font-size:.85rem;font-weight:800;cursor:pointer">Copy Email</button>
+      <button onclick="document.getElementById('apply-modal').style.display='none'" style="flex:1;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:.75rem;border-radius:var(--r);font-family:Cabinet Grotesk,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer">Close</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
