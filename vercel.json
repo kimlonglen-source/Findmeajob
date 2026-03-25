@@ -1,17 +1,7 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "api/*.js", "use": "@vercel/node" },
-    { "src": "public/**", "use": "@vercel/static" }
-  ],
-  "routes": [
-    { "src": "/api/chat", "dest": "/api/chat.js" },
-    { "src": "/api/jobs", "dest": "/api/jobs.js" },
-    { "src": "/api/register", "dest": "/api/register.js" },
-    { "src": "/api/submit-job", "dest": "/api/submit-job.js" },
-    { "src": "/api/admin", "dest": "/api/admin.js" },
-    { "src": "/api/approved-jobs", "dest": "/api/approved-jobs.js" },
-    { "src": "/api/debug", "dest": "/api/debug.js" },
-    { "src": "/(.*)", "dest": "/public/$1" }
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "/api/:path*" },
+    { "source": "/(.*)", "destination": "/public/$1" }
   ]
 }
