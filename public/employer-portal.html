@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employer Portal — FindMeAJob.co.nz</title>
+<meta name="robots" content="noindex,nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;600;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a08;--bg2:#111110;--bg3:#181816;--text:#f2efe8;--text2:#c8c4bc;--text3:#888480;--em:#10b981;--em2:#059669;--em3:#022c22;--gold:#f59e0b;--red:#ef4444;--border:#2a2a28;--border2:#343430;--card:#141412;--inp:#1c1c1a;--r:8px;--rl:14px;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:'Cabinet Grotesk',sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
+nav{position:sticky;top:0;z-index:100;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;background:rgba(10,10,8,.97);border-bottom:1px solid var(--border);backdrop-filter:blur(20px)}
+.logo{font-size:.95rem;font-weight:800;color:var(--text);text-decoration:none}.logo span{color:var(--em)}
+.nav-links{display:flex;gap:.5rem;align-items:center}
+.nav-a{color:var(--text3);font-size:.78rem;font-weight:600;text-decoration:none;padding:.35rem .65rem;border-radius:var(--r);transition:all .15s}
+.nav-a:hover{color:var(--text);background:var(--bg3)}
+.nav-a.cta{background:var(--em);color:#fff;font-weight:700}
+.nav-a.cta:hover{background:var(--em2)}
+/* Login */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 56px);padding:1.5rem}
+.login-box{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem;width:100%;max-width:400px}
+.login-eyebrow{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin-bottom:.3rem}
+.login-title{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;font-style:italic;color:var(--text);margin-bottom:1.5rem;line-height:1.2}
+.field{margin-bottom:.75rem}
+.field label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);display:block;margin-bottom:.35rem}
+input,select,textarea{background:var(--inp);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Cabinet Grotesk',sans-serif;font-size:15px;padding:.72rem 1rem;outline:none;width:100%;transition:border-color .15s;font-weight:500;-webkit-appearance:none;appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--em)}
+input::placeholder,textarea::placeholder{color:var(--text3)}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23888480' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .75rem center;padding-right:2.2rem;cursor:pointer}
+textarea{resize:vertical;min-height:80px}
+.btn{display:flex;align-items:center;justify-content:center;gap:.4rem;background:var(--em);color:#fff;padding:.8rem 1.5rem;border-radius:var(--r);font-family:'Cabinet Grotesk',sans-serif;font-size:.9rem;font-weight:800;border:none;cursor:pointer;width:100%;transition:all .15s}
+.btn:hover{background:var(--em2)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-sec{background:var(--bg3);border:1px solid var(--border2);color:var(--text2)}
+.btn-sec:hover{border-color:var(--text3);color:var(--text);background:var(--bg3)}
+.btn-sm{display:inline-flex;align-items:center;gap:.3rem;background:none;border:1px solid var(--border2);color:var(--text2);padding:.38rem .8rem;border-radius:var(--r);font-family:'Cabinet Grotesk',sans-serif;font-size:.75rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
+.btn-sm:hover{border-color:var(--text3);color:var(--text)}
+.btn-sm.green{border-color:rgba(16,185,129,.3);color:var(--em)}
+.btn-sm.green:hover{background:var(--em);border-color:var(--em);color:#fff}
+.btn-sm.red{border-color:rgba(239,68,68,.25);color:#fca5a5}
+.btn-sm.red:hover{background:var(--red);border-color:var(--red);color:#fff}
+.alert-err{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#fca5a5;padding:.6rem .9rem;border-radius:var(--r);font-size:.82rem;font-weight:600;margin-top:.5rem;display:none}
+.alert-ok{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);color:var(--em);padding:.6rem .9rem;border-radius:var(--r);font-size:.82rem;font-weight:600;margin-top:.5rem;display:none}
+/* Portal */
+#portal-screen{display:none;min-height:calc(100vh - 56px)}
+.portal-header{background:var(--bg2);border-bottom:1px solid var(--border);padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.portal-welcome{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:300;font-style:italic;color:var(--text)}
+.portal-welcome em{color:var(--em)}
+.portal-meta{font-size:.75rem;color:var(--text3);font-weight:600;margin-top:.15rem}
+.portal-actions{display:flex;gap:.5rem;align-items:center}
+.portal-body{max-width:900px;margin:0 auto;padding:2rem 1.5rem 5rem}
+/* Stats bar */
+.pstats{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-bottom:2rem}
+.pstat{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:.9rem 1rem}
+.pstat-n{font-size:1.5rem;font-weight:900;line-height:1;margin-bottom:.2rem}
+.pstat-l{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3)}
+/* Job cards */
+.jcard{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem;margin-bottom:.65rem;position:relative;overflow:hidden}
+.jcard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+.jcard.pending::before{background:var(--gold)}
+.jcard.approved::before{background:var(--em)}
+.jcard.rejected::before{background:var(--red)}
+.jcard.expired::before{background:var(--text3)}
+.jcard.closed::before{background:var(--text3)}
+.jcard-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:.75rem}
+.jcard-title{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:300;font-style:italic;color:var(--text);margin-bottom:.2rem}
+.jcard-meta{font-size:.75rem;color:var(--text3);font-weight:600}
+.jcard-actions{display:flex;gap:.35rem;flex-wrap:wrap;flex-shrink:0}
+.pills{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.65rem}
+.pill{display:inline-flex;align-items:center;padding:.2rem .6rem;border-radius:999px;font-size:.64rem;font-weight:800;text-transform:uppercase}
+.pill-pending{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);color:var(--gold)}
+.pill-approved{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);color:var(--em)}
+.pill-rejected{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#fca5a5}
+.pill-expired{background:var(--bg3);border:1px solid var(--border2);color:var(--text3)}
+.pill-closed{background:var(--bg3);border:1px solid var(--border2);color:var(--text3)}
+.pill-featured{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:var(--gold)}
+.dates{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.65rem}
+.date-pill{font-size:.68rem;font-weight:700;padding:.18rem .55rem;border-radius:999px;display:inline-flex;align-items:center;gap:.25rem}
+.date-pill.sub{background:var(--bg3);border:1px solid var(--border2);color:var(--text3)}
+.date-pill.live{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);color:var(--em)}
+.date-pill.soon{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);color:var(--gold)}
+.date-pill.exp{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#fca5a5}
+.jcard-desc{font-size:.82rem;color:var(--text2);line-height:1.65;font-weight:500}
+.rejected-note{background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:var(--r);padding:.65rem .9rem;margin-top:.65rem;font-size:.78rem;color:#fca5a5;font-weight:500;line-height:1.6}
+/* Edit form */
+.edit-form{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rl);padding:1.25rem;margin-top:.75rem;display:none}
+.edit-form.open{display:block}
+.edit-form-title{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin-bottom:1rem}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.6rem}
+.field-sm{margin-bottom:.6rem}
+.field-sm label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.3rem}
+/* Post new job CTA */
+.post-cta{background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(16,185,129,.02));border:1px solid rgba(16,185,129,.15);border-radius:var(--rl);padding:1.5rem;text-align:center;margin-top:1.5rem}
+.post-cta-title{font-family:'Fraunces',serif;font-size:1.1rem;font-style:italic;font-weight:300;color:var(--text);margin-bottom:.4rem}
+.post-cta-sub{font-size:.82rem;color:var(--text2);font-weight:500;margin-bottom:1rem}
+/* Modal */
+#modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9999;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(8px)}
+#modal.show{display:flex}
+.modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:1.75rem;width:100%;max-width:400px;text-align:center}
+.modal-icon{font-size:2rem;margin-bottom:.5rem}
+.modal-title{font-size:1rem;font-weight:800;color:var(--text);margin-bottom:.4rem}
+.modal-sub{font-size:.82rem;color:var(--text3);margin-bottom:1.25rem;line-height:1.6;font-weight:500}
+.modal-btns{display:flex;gap:.5rem}
+.modal-cancel{flex:1;padding:.72rem;border-radius:var(--r);font-family:'Cabinet Grotesk',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;background:var(--bg3);border:1px solid var(--border2);color:var(--text2)}
+.modal-ok{flex:1;padding:.72rem;border-radius:var(--r);font-family:'Cabinet Grotesk',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;border:none}
+.modal-ok.red{background:var(--red);color:#fff}
+.modal-ok.green{background:var(--em);color:#fff}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--text);color:var(--bg);padding:.45rem 1.1rem;border-radius:999px;font-size:.78rem;font-weight:700;z-index:99999;opacity:0;transition:all .2s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.empty-state{text-align:center;padding:3rem 1rem;color:var(--text3)}
+.empty-state-icon{font-size:2.5rem;margin-bottom:.75rem}
+.empty-state-title{font-size:.95rem;font-weight:800;color:var(--text2);margin-bottom:.4rem}
+.empty-state-sub{font-size:.82rem;font-weight:500;line-height:1.6}
+@media(max-width:600px){.pstats{grid-template-columns:1fr 1fr}.g2{grid-template-columns:1fr}.portal-header{flex-direction:column;align-items:flex-start}.jcard-top{flex-direction:column}}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<nav>
+  <a class="logo" href="/">FindMe<span>AJob</span><span style="font-size:.6rem;color:var(--text3);font-weight:600">.co.nz</span></a>
+  <div class="nav-links">
+    <a class="nav-a" href="/">Find a Job</a>
+    <a class="nav-a" href="/#browse">Browse Jobs</a>
+    <a class="nav-a cta" href="/" id="nav-post">Post a Job</a>
+  </div>
+</nav>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-eyebrow">Employer Portal</div>
+    <div class="login-title">Welcome back.<br><em>Manage your listings.</em></div>
+    <div class="field"><label>Work email</label><input type="email" id="l-email" placeholder="jane@company.co.nz" autocomplete="email"></div>
+    <div class="field"><label>Password</label><input type="password" id="l-password" placeholder="Your password" autocomplete="current-password"></div>
+    <div class="alert-err" id="login-err">Incorrect email or password. Please try again.</div>
+    <button class="btn" id="btn-login" type="button" style="margin-top:.75rem">Sign In &#8594;</button>
+    <div style="text-align:center;margin-top:1rem;font-size:.78rem;color:var(--text3);font-weight:500">
+      Don't have an account? <a href="/" style="color:var(--em);font-weight:700;text-decoration:none">Register free &#8594;</a>
+    </div>
+    <div style="text-align:center;margin-top:.4rem;font-size:.75rem;color:var(--text3);font-weight:500">
+      Forgot password? <a href="mailto:hello@findmeajob.co.nz?subject=Password%20Reset" style="color:var(--em);font-weight:700;text-decoration:none">Email us to reset</a>
+    </div>
+  </div>
+</div>
+
+<!-- PORTAL -->
+<div id="portal-screen">
+  <div class="portal-header">
+    <div>
+      <div class="portal-welcome">Welcome back, <em id="emp-name"></em></div>
+      <div class="portal-meta" id="emp-meta"></div>
+    </div>
+    <div class="portal-actions">
+      <button class="btn-sm" id="btn-signout" type="button">Sign out</button>
+      <button class="btn-sm green" id="btn-post-new" type="button">+ Post a new job</button>
+    </div>
+  </div>
+  <div class="portal-body">
+    <div class="pstats">
+      <div class="pstat"><div class="pstat-n" id="ps-total" style="color:var(--text)">0</div><div class="pstat-l">Total listings</div></div>
+      <div class="pstat"><div class="pstat-n" id="ps-live" style="color:var(--em)">0</div><div class="pstat-l">Live now</div></div>
+      <div class="pstat"><div class="pstat-n" id="ps-pending" style="color:var(--gold)">0</div><div class="pstat-l">Pending review</div></div>
+      <div class="pstat"><div class="pstat-n" id="ps-expired" style="color:var(--text3)">0</div><div class="pstat-l">Expired</div></div>
+    </div>
+    <div id="jobs-container"></div>
+    <div class="post-cta" id="post-cta">
+      <div class="post-cta-title">Ready to find your next hire?</div>
+      <div class="post-cta-sub">Post a job listing and reach thousands of active NZ job seekers.</div>
+      <button class="btn" id="btn-post-cta" type="button" style="width:auto;padding:.75rem 1.5rem;margin:0 auto">Post a Job &#8594;</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div id="modal">
+  <div class="modal-box">
+    <div class="modal-icon" id="modal-icon">⚠️</div>
+    <div class="modal-title" id="modal-title">Are you sure?</div>
+    <div class="modal-sub" id="modal-sub">This action cannot be undone.</div>
+    <div class="modal-btns">
+      <button class="modal-cancel" id="modal-cancel" type="button">Cancel</button>
+      <button class="modal-ok" id="modal-ok" type="button">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var session = null;
+var PLAN_DAYS = { free: 30, basic: 60, pro: 90 };
+var pendingAction = null;
+
+function toast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._t); t._t = setTimeout(function() { t.classList.remove('show'); }, 2200);
+}
+
+function fmtDate(d) {
+  return new Date(d).toLocaleDateString('en-NZ', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function getDaysLeft(job) {
+  var start = job.approvedAt || job.submitted;
+  if (!start) return null;
+  var days = PLAN_DAYS[job.plan] || 30;
+  var expiry = new Date(new Date(start).getTime() + days * 24 * 60 * 60 * 1000);
+  return { days: Math.ceil((expiry - new Date()) / (1000 * 60 * 60 * 24)), expiry: expiry };
+}
+
+function isExpired(job) {
+  if (job.status !== 'approved') return false;
+  var i = getDaysLeft(job); return i && i.days <= 0;
+}
+
+function showModal(icon, title, sub, okLabel, okClass, onOk) {
+  document.getElementById('modal-icon').textContent = icon;
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-sub').textContent = sub;
+  var okBtn = document.getElementById('modal-ok');
+  okBtn.textContent = okLabel;
+  okBtn.className = 'modal-ok ' + okClass;
+  pendingAction = onOk;
+  document.getElementById('modal').classList.add('show');
+}
+
+document.getElementById('modal-cancel').addEventListener('click', function() {
+  document.getElementById('modal').classList.remove('show');
+  pendingAction = null;
+});
+document.getElementById('modal-ok').addEventListener('click', function() {
+  document.getElementById('modal').classList.remove('show');
+  if (pendingAction) { pendingAction(); pendingAction = null; }
+});
+
+// Login
+document.getElementById('l-password').addEventListener('keydown', function(e) { if (e.key === 'Enter') doLogin(); });
+document.getElementById('btn-login').addEventListener('click', doLogin);
+
+async function doLogin() {
+  var email = document.getElementById('l-email').value.trim();
+  var password = document.getElementById('l-password').value;
+  var err = document.getElementById('login-err');
+  err.style.display = 'none';
+  if (!email || !password) { err.style.display = 'block'; err.textContent = 'Please enter your email and password.'; return; }
+  var btn = document.getElementById('btn-login');
+  btn.textContent = 'Signing in...'; btn.disabled = true;
+  try {
+    var r = await fetch('/api/employer-jobs?email=' + encodeURIComponent(email) + '&password=' + encodeURIComponent(password));
+    var d = await r.json();
+    if (d.success) {
+      session = { email: email, password: password, employer: d.employer };
+      sessionStorage.setItem('empPortal', JSON.stringify(session));
+      showPortal(d.employer, d.jobs);
+    } else {
+      err.style.display = 'block'; err.textContent = d.error || 'Incorrect email or password.';
+    }
+  } catch (e) {
+    err.style.display = 'block'; err.textContent = 'Connection error. Please try again.';
+  }
+  btn.textContent = 'Sign In →'; btn.disabled = false;
+}
+
+function showPortal(employer, jobs) {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('portal-screen').style.display = 'block';
+  document.getElementById('emp-name').textContent = employer.name;
+  document.getElementById('emp-meta').textContent = employer.company + ' · ' + employer.email + ' · ' + (employer.plan || 'free').toUpperCase() + ' plan';
+  renderJobs(jobs);
+}
+
+function renderJobs(jobs) {
+  var live = jobs.filter(function(j) { return j.status === 'approved' && !isExpired(j); }).length;
+  var pending = jobs.filter(function(j) { return j.status === 'pending'; }).length;
+  var expired = jobs.filter(function(j) { return isExpired(j) || j.status === 'closed'; }).length;
+  document.getElementById('ps-total').textContent = jobs.length;
+  document.getElementById('ps-live').textContent = live;
+  document.getElementById('ps-pending').textContent = pending;
+  document.getElementById('ps-expired').textContent = expired;
+
+  var container = document.getElementById('jobs-container');
+  if (!jobs.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📋</div><div class="empty-state-title">No listings yet</div><div class="empty-state-sub">Post your first job to start finding great Kiwi candidates.</div></div>';
+    return;
+  }
+  container.innerHTML = '';
+
+  jobs.forEach(function(job) {
+    var expired = isExpired(job);
+    var statusKey = expired ? 'expired' : job.status;
+    var card = document.createElement('div');
+    card.className = 'jcard ' + statusKey;
+
+    // Pills
+    var pillsCls = { pending: 'pill-pending', approved: 'pill-approved', rejected: 'pill-rejected', expired: 'pill-expired', closed: 'pill-closed' };
+    var pills = '<div class="pills"><span class="pill ' + (pillsCls[statusKey] || 'pill-expired') + '">' + statusKey + '</span>';
+    if (job.featured && !expired) pills += '<span class="pill pill-featured">⭐ Featured</span>';
+    pills += '</div>';
+
+    // Date pills
+    var dates = '<div class="dates">';
+    if (job.submitted) dates += '<span class="date-pill sub">📅 Submitted ' + fmtDate(job.submitted) + '</span>';
+    if (job.approvedAt && !expired) dates += '<span class="date-pill live">✓ Live since ' + fmtDate(job.approvedAt) + '</span>';
+    if (job.status === 'approved') {
+      var info = getDaysLeft(job);
+      if (info) {
+        if (info.days <= 0) dates += '<span class="date-pill exp">⚠ Expired ' + fmtDate(info.expiry) + '</span>';
+        else if (info.days <= 7) dates += '<span class="date-pill soon">⏰ Expires in ' + info.days + ' days</span>';
+        else dates += '<span class="date-pill live">📆 Expires ' + fmtDate(info.expiry) + ' (' + info.days + 'd left)</span>';
+      }
+    }
+    dates += '</div>';
+
+    // Action buttons
+    var actions = '<div class="jcard-actions">';
+    if (job.status === 'pending') {
+      actions += '<button class="btn-sm" onclick="toggleEdit(\'' + job.id + '\')" type="button">✏ Edit</button>';
+    }
+    if (job.status === 'approved' && !expired) {
+      actions += '<button class="btn-sm red" onclick="confirmClose(\'' + job.id + '\', \'' + (job.title || '').replace(/'/g, '') + '\')" type="button">Mark Filled</button>';
+    }
+    if (expired || job.status === 'closed') {
+      actions += '<button class="btn-sm green" onclick="confirmRelist(\'' + job.id + '\', \'' + (job.title || '').replace(/'/g, '') + '\')" type="button">↺ Request Relist</button>';
+    }
+    actions += '</div>';
+
+    // Rejected note
+    var rejNote = job.status === 'rejected' ? '<div class="rejected-note">⚠ This listing was not approved. Please edit and resubmit, or contact <a href="mailto:hello@findmeajob.co.nz" style="color:#fca5a5">hello@findmeajob.co.nz</a> if you have questions.<br><br><button class="btn-sm" onclick="toggleEdit(\'' + job.id + '\')" type="button" style="margin-top:.25rem">✏ Edit &amp; Resubmit</button></div>' : '';
+
+    // Edit form
+    var editForm = '<div class="edit-form" id="edit-' + job.id + '">' +
+      '<div class="edit-form-title">Edit Listing — changes will go back to pending review</div>' +
+      '<div class="field-sm"><label>Job title</label><input type="text" id="ef-title-' + job.id + '" value="' + (job.title || '').replace(/"/g, '') + '"></div>' +
+      '<div class="g2">' +
+      '<div class="field-sm"><label>Location</label><select id="ef-loc-' + job.id + '">' + locOptions(job.location) + '</select></div>' +
+      '<div class="field-sm"><label>Category</label><select id="ef-cat-' + job.id + '">' + catOptions(job.category) + '</select></div>' +
+      '<div class="field-sm"><label>Job type</label><select id="ef-type-' + job.id + '">' + typeOptions(job.type) + '</select></div>' +
+      '<div class="field-sm"><label>Salary</label><select id="ef-sal-' + job.id + '">' + salOptions(job.salary) + '</select></div>' +
+      '</div>' +
+      '<div class="field-sm"><label>Description</label><textarea id="ef-desc-' + job.id + '" style="min-height:100px">' + (job.description || '') + '</textarea></div>' +
+      '<div class="field-sm"><label>Requirements</label><textarea id="ef-req-' + job.id + '">' + (job.requirements || '') + '</textarea></div>' +
+      '<div class="field-sm"><label>Why work here?</label><textarea id="ef-why-' + job.id + '">' + (job.why || '') + '</textarea></div>' +
+      '<div style="display:flex;gap:.5rem;margin-top:.75rem">' +
+      '<button class="btn btn-sec" onclick="toggleEdit(\'' + job.id + '\')" type="button" style="width:auto;padding:.65rem 1.1rem;font-size:.82rem">Cancel</button>' +
+      '<button class="btn" onclick="saveEdit(\'' + job.id + '\')" type="button" style="font-size:.82rem">Save &amp; Resubmit &#8594;</button>' +
+      '</div>' +
+      '<div class="alert-err" id="edit-err-' + job.id + '"></div>' +
+      '<div class="alert-ok" id="edit-ok-' + job.id + '"></div>' +
+      '</div>';
+
+    card.innerHTML =
+      '<div class="jcard-top">' +
+      '<div><div class="jcard-title">' + (job.title || '') + '</div>' +
+      '<div class="jcard-meta">' + (job.location || '') + ' &middot; ' + (job.category || '') + ' &middot; ' + (job.type || '') + ' &middot; ' + (job.salary || '') + '</div></div>' +
+      actions + '</div>' +
+      dates + pills +
+      '<div class="jcard-desc">' + (job.description || '').substring(0, 200) + (job.description && job.description.length > 200 ? '...' : '') + '</div>' +
+      rejNote + editForm;
+
+    container.appendChild(card);
+  });
+}
+
+function toggleEdit(id) {
+  var form = document.getElementById('edit-' + id);
+  if (form) form.classList.toggle('open');
+}
+
+function locOptions(sel) {
+  var opts = ['Auckland','Wellington','Christchurch','Hamilton','Tauranga','Dunedin','Remote NZ','Nationwide'];
+  return opts.map(function(o) { return '<option' + (o === sel ? ' selected' : '') + '>' + o + '</option>'; }).join('');
+}
+function catOptions(sel) {
+  var opts = ['Technology','Healthcare','Trades','Hospitality','Admin','Education','Sales','Transport','Agriculture','Creative','Other'];
+  return opts.map(function(o) { return '<option' + (o === sel ? ' selected' : '') + '>' + o + '</option>'; }).join('');
+}
+function typeOptions(sel) {
+  var opts = ['Full-time','Part-time','Casual','Contract','Remote'];
+  return opts.map(function(o) { return '<option' + (o === sel ? ' selected' : '') + '>' + o + '</option>'; }).join('');
+}
+function salOptions(sel) {
+  var opts = ['Up to $50K','$50K-$70K','$70K-$90K','$90K-$120K','$120K+','Negotiable'];
+  return opts.map(function(o) { return '<option' + (o === sel ? ' selected' : '') + '>' + o + '</option>'; }).join('');
+}
+
+async function saveEdit(id) {
+  if (!session) return;
+  var title = document.getElementById('ef-title-' + id).value.trim();
+  var desc = document.getElementById('ef-desc-' + id).value.trim();
+  var errEl = document.getElementById('edit-err-' + id);
+  var okEl = document.getElementById('edit-ok-' + id);
+  errEl.style.display = 'none'; okEl.style.display = 'none';
+  if (!title || !desc) { errEl.textContent = 'Title and description are required.'; errEl.style.display = 'block'; return; }
+  try {
+    var r = await fetch('/api/employer-jobs', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'edit', email: session.email, password: session.password, jobId: id,
+        updates: {
+          title: title,
+          location: document.getElementById('ef-loc-' + id).value,
+          category: document.getElementById('ef-cat-' + id).value,
+          type: document.getElementById('ef-type-' + id).value,
+          salary: document.getElementById('ef-sal-' + id).value,
+          description: desc,
+          requirements: document.getElementById('ef-req-' + id).value.trim(),
+          why: document.getElementById('ef-why-' + id).value.trim()
+        }
+      })
+    });
+    var d = await r.json();
+    if (d.success) {
+      okEl.textContent = 'Saved! Your listing has been resubmitted for review.';
+      okEl.style.display = 'block';
+      toast('Resubmitted for review!');
+      setTimeout(function() { loadJobs(); }, 1500);
+    } else {
+      errEl.textContent = d.error || 'Save failed.'; errEl.style.display = 'block';
+    }
+  } catch (e) {
+    errEl.textContent = 'Connection error.'; errEl.style.display = 'block';
+  }
+}
+
+function confirmClose(id, title) {
+  showModal('✅', 'Mark role as filled?', '"' + title + '" will be removed from live listings. This is great news — congrats on the hire!', 'Yes, mark filled', 'green', function() { doAction('close', id); });
+}
+
+function confirmRelist(id, title) {
+  showModal('↺', 'Request to relist?', '"' + title + '" will be resubmitted for review and relisted for another full period once approved.', 'Yes, relist it', 'green', function() { doAction('relist', id); });
+}
+
+async function doAction(action, id) {
+  if (!session) return;
+  try {
+    var r = await fetch('/api/employer-jobs', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: action, email: session.email, password: session.password, jobId: id, updates: {} })
+    });
+    var d = await r.json();
+    if (d.success) { toast(action === 'close' ? 'Role marked as filled!' : 'Relist requested!'); loadJobs(); }
+    else { alert('Error: ' + (d.error || 'Unknown')); }
+  } catch (e) { alert('Connection error.'); }
+}
+
+async function loadJobs() {
+  if (!session) return;
+  try {
+    var r = await fetch('/api/employer-jobs?email=' + encodeURIComponent(session.email) + '&password=' + encodeURIComponent(session.password));
+    var d = await r.json();
+    if (d.success) renderJobs(d.jobs);
+  } catch (e) {}
+}
+
+// Post new job
+function goPostJob() { window.location.href = '/'; }
+document.getElementById('btn-post-new').addEventListener('click', goPostJob);
+document.getElementById('btn-post-cta').addEventListener('click', goPostJob);
+document.getElementById('btn-signout').addEventListener('click', function() {
+  session = null; sessionStorage.removeItem('empPortal');
+  document.getElementById('portal-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  toast('Signed out');
+});
+
+// Auto-login from session
+var saved = sessionStorage.getItem('empPortal');
+if (saved) {
+  try {
+    session = JSON.parse(saved);
+    (async function() {
+      var r = await fetch('/api/employer-jobs?email=' + encodeURIComponent(session.email) + '&password=' + encodeURIComponent(session.password));
+      var d = await r.json();
+      if (d.success) showPortal(d.employer, d.jobs);
+      else { session = null; sessionStorage.removeItem('empPortal'); }
+    })();
+  } catch(e) {}
+}
+</script>
+</body>
+</html>
