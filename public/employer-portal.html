@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employer Portal — FindMeAJob.co.nz</title>
+<meta name="robots" content="noindex,nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;600;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a08;--bg2:#111110;--bg3:#181816;--text:#f2efe8;--text2:#c8c4bc;--text3:#888480;--em:#10b981;--em2:#059669;--em3:#022c22;--gold:#f59e0b;--red:#ef4444;--border:#2a2a28;--border2:#343430;--card:#141412;--inp:#1c1c1a;--r:8px;--rl:14px;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:'Cabinet Grotesk',sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
+nav{position:sticky;top:0;z-index:100;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;background:rgba(10,10,8,.97);border-bottom:1px solid var(--border);backdrop-filter:blur(20px)}
+.logo{font-size:.95rem;font-weight:800;color:var(--text);text-decoration:none}.logo span{color:var(--em)}
+.nav-links{display:flex;gap:.5rem;align-items:center}
+.nav-a{color:var(--text3);font-size:.78rem;font-weight:600;text-decoration:none;padding:.35rem .65rem;border-radius:var(--r);transition:all .15s}
+.nav-a:hover{color:var(--text);background:var(--bg3)}
+.nav-a.cta{background:var(--em);color:#fff;font-weight:700}
+.nav-a.cta:hover{background:var(--em2)}
+input,select,textarea{background:var(--inp);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Cabinet Grotesk',sans-serif;font-size:15px;padding:.72rem 1rem;outline:none;width:100%;transition:border-color .15s;font-weight:500;-webkit-appearance:none;appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--em)}
+input::placeholder,textarea::placeholder{color:var(--text3)}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23888480' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .75rem center;padding-right:2.2rem;cursor:pointer}
+textarea{resize:vertical;min-height:80px}
+label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);display:block;margin-bottom:.35rem}
+.field{margin-bottom:.85rem}
+.btn{display:flex;align-items:center;justify-content:center;background:var(--em);color:#fff;padding:.8rem 1.5rem;border-radius:var(--r);font-family:'Cabinet Grotesk',sans-serif;font-size:.9rem;font-weight:800;border:none;cursor:pointer;width:100%;transition:all .15s}
+.btn:hover{background:var(--em2)}.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-sec{background:var(--bg3);border:1px solid var(--border2);color:var(--text2)}.btn-sec:hover{border-color:var(--text3);color:var(--text)}
+.btn-sm{display:inline-flex;align-items:center;gap:.3rem;background:none;border:1px solid var(--border2);color:var(--text2);padding:.38rem .8rem;border-radius:var(--r);font-family:'Cabinet Grotesk',sans-serif;font-size:.75rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
+.btn-sm:hover{border-color:var(--text3);color:var(--text)}
+.btn-sm.green{border-color:rgba(16,185,129,.3);color:var(--em)}.btn-sm.green:hover{background:var(--em);border-color:var(--em);color:#fff}
+.btn-sm.red{border-color:rgba(239,68,68,.25);color:#fca5a5}.btn-sm.red:hover{background:var(--red);border-color:var(--red);color:#fff}
+.err{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#fca5a5;padding:.6rem .9rem;border-radius:var(--r);font-size:.82rem;font-weight:600;margin-top:.5rem;display:none}
+.ok{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);color:var(--em);padding:.6rem .9rem;border-radius:var(--r);font-size:.82rem;font-weight:600;margin-top:.5rem;display:none}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem 1.5rem;margin-bottom:.75rem}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.wrap{max-width:680px;margin:0 auto;padding:2rem 1.25rem}
+/* Auth screen */
+#auth-screen{display:flex;align-items:flex-start;justify-content:center;min-height:calc(100vh - 56px);padding:2rem 1.25rem}
+.auth-box{width:100%;max-width:440px}
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:1.5rem}
+.auth-tab{padding:.75rem;text-align:center;font-size:.85rem;font-weight:700;cursor:pointer;background:var(--bg3);color:var(--text3);border:none;font-family:'Cabinet Grotesk',sans-serif;transition:all .15s}
+.auth-tab.active{background:var(--em);color:#fff}
+/* Portal screen */
+#portal-screen{display:none}
+.portal-header{background:var(--bg2);border-bottom:1px solid var(--border);padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem}
+.portal-name{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:300;font-style:italic;color:var(--text)}
+.portal-meta{font-size:.72rem;color:var(--text3);font-weight:600;margin-top:.1rem}
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-bottom:1.25rem}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:.75rem;text-align:center}
+.stat-n{font-size:1.5rem;font-weight:800;line-height:1}
+.stat-l{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-top:.2rem}
+/* Plan badge */
+.plan-badge{display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:.75rem 1rem;margin-bottom:1.25rem}
+.plan-name{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px}
+.plan-features{font-size:.75rem;color:var(--text2);font-weight:500;margin-top:.15rem}
+/* Job cards */
+.jcard{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.1rem 1.25rem;margin-bottom:.65rem}
+.jcard.approved{border-left:3px solid var(--em)}
+.jcard.pending{border-left:3px solid var(--gold)}
+.jcard.rejected{border-left:3px solid var(--red)}
+.jcard.expired,.jcard.closed{border-left:3px solid var(--border2);opacity:.7}
+.jcard-title{font-size:1rem;font-weight:800;color:var(--text);margin-bottom:.2rem}
+.jcard-meta{font-size:.75rem;color:var(--text3);font-weight:500;margin-bottom:.6rem}
+.jcard-pills{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.6rem}
+.pill{font-size:.62rem;font-weight:800;text-transform:uppercase;padding:.18rem .55rem;border-radius:999px;letter-spacing:.4px}
+.pill-approved{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);color:var(--em)}
+.pill-pending{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);color:var(--gold)}
+.pill-rejected{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#fca5a5}
+.pill-expired,.pill-closed{background:var(--bg3);border:1px solid var(--border2);color:var(--text3)}
+.pill-featured{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:var(--gold)}
+.jcard-actions{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.75rem}
+.analytics{display:flex;gap:.5rem;margin-top:.5rem}
+.analytics span{font-size:.7rem;font-weight:700;background:var(--bg3);border:1px solid var(--border2);color:var(--text3);padding:.18rem .55rem;border-radius:999px}
+/* Post form */
+#post-screen{display:none;min-height:calc(100vh - 56px)}
+.post-header{background:var(--bg2);border-bottom:1px solid var(--border);padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem}
+/* Modal */
+#modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;align-items:center;justify-content:center;padding:1rem}
+#modal.show{display:flex}
+.modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem;max-width:380px;width:100%;text-align:center}
+.modal-icon{font-size:2rem;margin-bottom:.75rem}
+.modal-title{font-size:1.1rem;font-weight:800;margin-bottom:.4rem}
+.modal-sub{font-size:.82rem;color:var(--text2);font-weight:500;margin-bottom:1.25rem;line-height:1.6}
+.modal-btns{display:flex;gap:.5rem}
+.modal-cancel{flex:1;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:.72rem;border-radius:var(--r);font-family:'Cabinet Grotesk',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer}
+.modal-ok{flex:1;background:var(--em);border:none;color:#fff;padding:.72rem;border-radius:var(--r);font-family:'Cabinet Grotesk',sans-serif;font-size:.85rem;font-weight:800;cursor:pointer}
+.modal-ok.red{background:var(--red)}
+/* Toast */
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--text);color:var(--bg);padding:.6rem 1.25rem;border-radius:999px;font-size:.82rem;font-weight:700;opacity:0;transition:all .25s;z-index:9999;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:600px){.g2{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<nav>
+  <a class="logo" href="/">FindMe<span>AJob</span><span style="font-size:.6rem;color:var(--text3);font-weight:600">.co.nz</span></a>
+  <div class="nav-links">
+    <a class="nav-a" href="/" onclick="sessionStorage.setItem('goFind','1')">Find a Job</a>
+    <a class="nav-a" href="/" onclick="sessionStorage.setItem('goBrowse','1')">Browse Jobs</a>
+  </div>
+</nav>
+
+<!-- AUTH SCREEN -->
+<div id="auth-screen">
+  <div class="auth-box">
+    <div style="text-align:center;margin-bottom:1.5rem">
+      <div style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin-bottom:.3rem">Employer Portal</div>
+      <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;font-style:italic;color:var(--text)">Manage your listings</div>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Sign In</button>
+      <button class="auth-tab" id="tab-register" onclick="switchTab('register')">Register Free</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="pane-login">
+      <div class="field"><label>Work email</label><input type="email" id="l-email" placeholder="jane@company.co.nz" autocomplete="email"></div>
+      <div class="field"><label>Password</label><input type="password" id="l-password" placeholder="Your password" autocomplete="current-password"></div>
+      <div class="err" id="login-err"></div>
+      <button class="btn" id="btn-login" type="button" style="margin-top:.5rem">Sign In &#8594;</button>
+      <div style="text-align:center;margin-top:.75rem">
+        <button onclick="showReset()" style="background:none;border:none;color:var(--em);font-family:'Cabinet Grotesk',sans-serif;font-size:.78rem;cursor:pointer;font-weight:700;padding:0">Forgot password?</button>
+      </div>
+      <div id="reset-box" style="display:none;margin-top:1rem;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--rl);padding:1rem">
+        <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;color:var(--em);margin-bottom:.5rem">Reset Password</div>
+        <input type="email" id="reset-em" placeholder="Your registered email" style="background:var(--inp);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Cabinet Grotesk',sans-serif;font-size:14px;padding:.65rem 1rem;outline:none;width:100%;margin-bottom:.5rem">
+        <div id="reset-msg" style="font-size:.78rem;font-weight:600;margin-bottom:.5rem;min-height:1rem"></div>
+        <div style="display:flex;gap:.4rem">
+          <button id="btn-send-reset" onclick="doReset()" style="flex:1;background:var(--em);border:none;color:#fff;padding:.65rem;border-radius:var(--r);font-family:'Cabinet Grotesk',sans-serif;font-size:.8rem;font-weight:800;cursor:pointer">Send Reset Link</button>
+          <button onclick="hideReset()" style="flex:1;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:.65rem;border-radius:var(--r);font-family:'Cabinet Grotesk',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="pane-register" style="display:none">
+      <!-- Plan selector -->
+      <div style="margin-bottom:1rem">
+        <div style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:.6rem">Choose your plan</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin-bottom:.5rem">
+          <button type="button" id="rp-free" onclick="selectPlan('free')" style="background:var(--bg3);border:2px solid var(--em);border-radius:var(--r);padding:.7rem .5rem;text-align:center;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all .15s">
+            <div style="font-size:.6rem;font-weight:800;text-transform:uppercase;color:var(--text3)">Starter</div>
+            <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:300;font-style:italic;color:var(--text)">$0</div>
+            <div style="font-size:.6rem;color:var(--text3);font-weight:500">Free forever</div>
+          </button>
+          <button type="button" id="rp-basic" onclick="selectPlan('basic')" style="background:var(--bg3);border:2px solid var(--border2);border-radius:var(--r);padding:.7rem .5rem;text-align:center;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all .15s">
+            <div style="font-size:.6rem;font-weight:800;text-transform:uppercase;color:var(--text3)">Growth</div>
+            <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:300;font-style:italic;color:var(--text)">$29<span style="font-size:.65rem">/mo</span></div>
+            <div style="font-size:.6rem;color:var(--em);font-weight:600">1st month free</div>
+          </button>
+          <button type="button" id="rp-pro" onclick="selectPlan('pro')" style="background:var(--bg3);border:2px solid var(--border2);border-radius:var(--r);padding:.7rem .5rem;text-align:center;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all .15s">
+            <div style="font-size:.6rem;font-weight:800;text-transform:uppercase;color:var(--text3)">Pro</div>
+            <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:300;font-style:italic;color:var(--text)">$79<span style="font-size:.65rem">/mo</span></div>
+            <div style="font-size:.6rem;color:var(--gold);font-weight:600">Featured &#11088;</div>
+          </button>
+        </div>
+        <div id="plan-note" style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:.5rem .75rem;font-size:.75rem;color:var(--text2);font-weight:500">Starter: 1 listing - 30 day visibility - Free forever</div>
+      </div>
+      <div class="field"><label>Your name *</label><input type="text" id="r-name" placeholder="Jane Smith" autocomplete="name"></div>
+      <div class="field"><label>Company name *</label><input type="text" id="r-company" placeholder="Acme Ltd" autocomplete="organization"></div>
+      <div class="field"><label>Work email *</label><input type="email" id="r-email" placeholder="jane@acme.co.nz" autocomplete="email"></div>
+      <div class="field"><label>Password *</label><input type="password" id="r-password" placeholder="Minimum 6 characters" autocomplete="new-password"></div>
+      <div class="err" id="reg-err"></div>
+      <button class="btn" id="btn-register" type="button" style="margin-top:.5rem">Create Account &#8594;</button>
+      <div style="text-align:center;margin-top:.65rem;font-size:.72rem;color:var(--text3)">By registering you agree to our <a href="/" style="color:var(--em);font-weight:600;text-decoration:none">Terms of Use</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- PORTAL SCREEN -->
+<div id="portal-screen">
+  <div class="portal-header">
+    <div>
+      <div class="portal-name">Welcome back, <em id="emp-name" style="color:var(--em)"></em></div>
+      <div class="portal-meta" id="emp-meta"></div>
+    </div>
+    <div style="display:flex;gap:.5rem;align-items:center">
+      <button class="btn-sm green" id="btn-post-new" type="button">+ Post a Job</button>
+      <button class="btn-sm" id="btn-signout" type="button">Sign out</button>
+    </div>
+  </div>
+  <div class="wrap">
+    <!-- Plan badge -->
+    <div class="plan-badge" id="plan-badge">
+      <div>
+        <div class="plan-name" id="plan-name-label"></div>
+        <div class="plan-features" id="plan-features-label"></div>
+      </div>
+      <a href="mailto:hello@findmeajob.co.nz?subject=Upgrade my plan" style="font-size:.75rem;font-weight:700;color:var(--em);text-decoration:none;white-space:nowrap">Upgrade &#8594;</a>
+    </div>
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat"><div class="stat-n" id="ps-total" style="color:var(--text)">0</div><div class="stat-l">Total</div></div>
+      <div class="stat"><div class="stat-n" id="ps-live" style="color:var(--em)">0</div><div class="stat-l">Live</div></div>
+      <div class="stat"><div class="stat-n" id="ps-pending" style="color:var(--gold)">0</div><div class="stat-l">Pending</div></div>
+      <div class="stat"><div class="stat-n" id="ps-expired" style="color:var(--text3)">0</div><div class="stat-l">Expired</div></div>
+    </div>
+    <!-- Job listings -->
+    <div id="jobs-container"></div>
+  </div>
+</div>
+
+<!-- POST JOB SCREEN -->
+<div id="post-screen">
+  <div class="post-header">
+    <button class="btn-sm" id="btn-back-portal" type="button">&#8592; Back to Dashboard</button>
+    <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-style:italic;font-weight:300;color:var(--text);margin-left:.5rem">Post a new job</div>
+  </div>
+  <div class="wrap">
+    <div id="pro-note" style="display:none;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:var(--r);padding:.75rem 1rem;margin-bottom:.75rem;font-size:.8rem;color:var(--gold);font-weight:600">&#11088; Pro plan: Your listing will be auto-featured and surface in AI candidate matching.</div>
+    <div class="card">
+      <div class="field"><label>Job title *</label><input type="text" id="e-title" placeholder="e.g. Senior Software Developer"></div>
+      <div class="g2">
+        <div class="field"><label>Location</label><select id="e-loc"><option>Auckland</option><option>Wellington</option><option>Christchurch</option><option>Hamilton</option><option>Tauranga</option><option>Dunedin</option><option>Remote NZ</option><option>Nationwide</option></select></div>
+        <div class="field"><label>Category</label><select id="e-cat"><option>Technology</option><option>Healthcare</option><option>Trades</option><option>Hospitality</option><option>Admin</option><option>Education</option><option>Sales</option><option>Transport</option><option>Agriculture</option><option>Creative</option><option>Other</option></select></div>
+        <div class="field"><label>Job type</label><select id="e-type"><option>Full-time</option><option>Part-time</option><option>Casual</option><option>Contract</option><option>Remote</option></select></div>
+        <div class="field"><label>Salary range</label><select id="e-sal"><option>Up to $50K</option><option>$50K-$70K</option><option>$70K-$90K</option><option>$90K-$120K</option><option>$120K+</option><option>Negotiable</option></select></div>
+      </div>
+      <div class="field"><label>Job description *</label><textarea id="e-desc" placeholder="What does this role involve? What will the successful candidate be doing?" style="min-height:120px"></textarea></div>
+      <div class="field"><label>Requirements <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--text3)">(optional)</span></label><textarea id="e-req" placeholder="e.g. 2+ years experience, NZ drivers licence..." style="min-height:70px"></textarea></div>
+      <div class="field" style="margin-bottom:0"><label>Why work here? <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--text3)">(optional)</span></label><textarea id="e-why" placeholder="What makes your company a great place to work?" style="min-height:60px"></textarea></div>
+    </div>
+    <div class="card" id="company-card" style="display:none">
+      <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:.75rem">Company profile <span style="font-size:.62rem;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);color:var(--em);padding:.15rem .5rem;border-radius:999px;font-weight:700;text-transform:none;letter-spacing:0">Growth &amp; Pro</span></div>
+      <div class="field"><label>About your company</label><textarea id="e-company-profile" placeholder="Tell candidates about your company, culture, team and mission..." style="min-height:70px"></textarea></div>
+      <div class="field" style="margin-bottom:0"><label>Company logo URL <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text3)">(optional)</span></label><input type="text" id="e-logo" placeholder="https://yourcompany.co.nz/logo.png"></div>
+    </div>
+    <div class="err" id="post-err"></div>
+    <div class="ok" id="post-ok"></div>
+    <button class="btn" id="btn-submit" type="button" style="margin-top:.75rem">Submit for Review &#8594;</button>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div id="modal">
+  <div class="modal-box">
+    <div class="modal-icon" id="modal-icon"></div>
+    <div class="modal-title" id="modal-title"></div>
+    <div class="modal-sub" id="modal-sub"></div>
+    <div class="modal-btns">
+      <button class="modal-cancel" id="modal-cancel">Cancel</button>
+      <button class="modal-ok" id="modal-ok">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var session = null;
+var selectedPlan = 'free';
+var pendingAction = null;
+var PLAN_DAYS = {free:30, basic:60, pro:90};
+
+function toast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._t); t._t = setTimeout(function(){t.classList.remove('show');}, 2200);
+}
+
+function fmtDate(d) { return new Date(d).toLocaleDateString('en-NZ',{day:'numeric',month:'short',year:'numeric'}); }
+
+function getDaysLeft(job) {
+  var start = job.approvedAt || job.submitted;
+  if (!start) return null;
+  var days = PLAN_DAYS[job.plan] || 30;
+  var expiry = new Date(new Date(start).getTime() + days*24*60*60*1000);
+  return {days: Math.ceil((expiry - new Date())/(1000*60*60*24)), expiry: expiry};
+}
+
+function isExpired(job) {
+  if (job.status !== 'approved') return false;
+  var i = getDaysLeft(job); return i && i.days <= 0;
+}
+
+// Plan selection
+function selectPlan(plan) {
+  selectedPlan = plan;
+  ['free','basic','pro'].forEach(function(p) {
+    var el = document.getElementById('rp-'+p);
+    if (!el) return;
+    el.style.borderColor = p === plan ? 'var(--em)' : 'var(--border2)';
+    el.style.background = p === plan ? 'rgba(16,185,129,.06)' : 'var(--bg3)';
+  });
+  var notes = {
+    free: 'Starter: 1 listing - 30 day visibility - Free forever',
+    basic: 'Growth: 5 listings - 60 day visibility - Priority placement - Company profile + logo',
+    pro: 'Pro: Unlimited listings - 90 days - Auto-featured - AI matching - Full analytics'
+  };
+  var n = document.getElementById('plan-note');
+  if (n) n.textContent = notes[plan] || '';
+  var cc = document.getElementById('company-card');
+  if (cc) cc.style.display = (plan === 'basic' || plan === 'pro') ? 'block' : 'none';
+  var pn = document.getElementById('pro-note');
+  if (pn) pn.style.display = plan === 'pro' ? 'block' : 'none';
+}
+
+// Auth tabs
+function switchTab(tab) {
+  document.getElementById('pane-login').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('pane-register').style.display = tab === 'register' ? 'block' : 'none';
+  document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+  document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+}
+
+// Login
+document.getElementById('l-password').addEventListener('keydown', function(e){if(e.key==='Enter')doLogin();});
+document.getElementById('btn-login').addEventListener('click', doLogin);
+
+async function doLogin() {
+  var email = document.getElementById('l-email').value.trim();
+  var password = document.getElementById('l-password').value;
+  var err = document.getElementById('login-err');
+  err.style.display = 'none';
+  if (!email || !password) { err.textContent = 'Please enter your email and password.'; err.style.display = 'block'; return; }
+  var btn = document.getElementById('btn-login');
+  btn.textContent = 'Signing in...'; btn.disabled = true;
+  try {
+    var r = await fetch('/api/employer-jobs?email='+encodeURIComponent(email)+'&password='+encodeURIComponent(password));
+    var d = await r.json();
+    if (d.success) {
+      session = {email:email, password:password, employer:d.employer};
+      sessionStorage.setItem('empPortal', JSON.stringify(session));
+      showPortal(d.employer, d.jobs);
+    } else {
+      err.textContent = d.error || 'Incorrect email or password.';
+      err.style.display = 'block';
+    }
+  } catch(e) { err.textContent = 'Connection error. Please try again.'; err.style.display = 'block'; }
+  btn.textContent = 'Sign In \u2192'; btn.disabled = false;
+}
+
+// Register
+document.getElementById('btn-register').addEventListener('click', doRegister);
+
+async function doRegister() {
+  var name = document.getElementById('r-name').value.trim();
+  var company = document.getElementById('r-company').value.trim();
+  var email = document.getElementById('r-email').value.trim();
+  var password = document.getElementById('r-password').value;
+  var err = document.getElementById('reg-err');
+  err.style.display = 'none';
+  if (!name||!company||!email||!password) { err.textContent = 'Please fill in all required fields.'; err.style.display = 'block'; return; }
+  if (password.length < 6) { err.textContent = 'Password must be at least 6 characters.'; err.style.display = 'block'; return; }
+  var btn = document.getElementById('btn-register');
+  btn.textContent = 'Creating account...'; btn.disabled = true;
+  try {
+    var r = await fetch('/api/register', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({name:name, company:company, email:email, password:password, plan:selectedPlan})});
+    var d = await r.json();
+    if (d.success) {
+      session = {email:email, password:password, employer:{name:name, company:company, email:email, plan:selectedPlan}};
+      sessionStorage.setItem('empPortal', JSON.stringify(session));
+      showPortal(session.employer, []);
+      toast('Account created! Post your first job below.');
+      showPostScreen();
+    } else {
+      err.textContent = d.error || 'Registration failed.';
+      err.style.display = 'block';
+    }
+  } catch(e) { err.textContent = 'Connection error.'; err.style.display = 'block'; }
+  btn.textContent = 'Create Account \u2192'; btn.disabled = false;
+}
+
+// Show portal
+function showPortal(employer, jobs) {
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('post-screen').style.display = 'none';
+  document.getElementById('portal-screen').style.display = 'block';
+  document.getElementById('emp-name').textContent = employer.name;
+  document.getElementById('emp-meta').textContent = employer.company + ' \u00b7 ' + employer.email;
+
+  var planInfo = {
+    free: {label:'Starter Plan', color:'var(--text3)', features:'1 listing \u00b7 30 day visibility \u00b7 Standard placement'},
+    basic: {label:'Growth Plan', color:'var(--em)', features:'5 listings \u00b7 60 day visibility \u00b7 Priority placement \u00b7 Company profile \u00b7 Analytics'},
+    pro: {label:'Pro Plan', color:'var(--gold)', features:'Unlimited \u00b7 90 days \u00b7 Auto-featured \u2b50 \u00b7 AI matching \u00b7 Full analytics'}
+  };
+  var pi = planInfo[employer.plan || 'free'] || planInfo.free;
+  document.getElementById('plan-name-label').textContent = pi.label;
+  document.getElementById('plan-name-label').style.color = pi.color;
+  document.getElementById('plan-features-label').textContent = pi.features;
+
+  // Set plan for post form
+  selectedPlan = employer.plan || 'free';
+  var cc = document.getElementById('company-card');
+  if (cc) cc.style.display = (selectedPlan === 'basic' || selectedPlan === 'pro') ? 'block' : 'none';
+  var pn = document.getElementById('pro-note');
+  if (pn) pn.style.display = selectedPlan === 'pro' ? 'block' : 'none';
+
+  renderJobs(jobs);
+}
+
+// Show post screen
+function showPostScreen() {
+  document.getElementById('portal-screen').style.display = 'none';
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('post-screen').style.display = 'block';
+  document.getElementById('post-err').style.display = 'none';
+  document.getElementById('post-ok').style.display = 'none';
+  document.getElementById('btn-submit').style.display = 'flex';
+  window.scrollTo(0,0);
+}
+
+document.getElementById('btn-post-new').addEventListener('click', showPostScreen);
+document.getElementById('btn-back-portal').addEventListener('click', function(){ loadAndShowPortal(); });
+
+// Submit job
+document.getElementById('btn-submit').addEventListener('click', submitJob);
+
+async function submitJob() {
+  if (!session) return;
+  var title = document.getElementById('e-title').value.trim();
+  var desc = document.getElementById('e-desc').value.trim();
+  var err = document.getElementById('post-err');
+  var ok = document.getElementById('post-ok');
+  err.style.display = 'none'; ok.style.display = 'none';
+  if (!title || !desc) { err.textContent = 'Please fill in job title and description.'; err.style.display = 'block'; return; }
+  var btn = document.getElementById('btn-submit');
+  btn.textContent = 'Submitting...'; btn.disabled = true;
+  try {
+    var r = await fetch('/api/submit-job', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        employerId: session.employer.email,
+        employerEmail: session.email,
+        company: session.employer.company,
+        title: title,
+        location: document.getElementById('e-loc').value,
+        category: document.getElementById('e-cat').value,
+        type: document.getElementById('e-type').value,
+        salary: document.getElementById('e-sal').value,
+        description: desc,
+        requirements: document.getElementById('e-req').value.trim(),
+        why: document.getElementById('e-why').value.trim(),
+        companyProfile: document.getElementById('e-company-profile') ? document.getElementById('e-company-profile').value.trim() : '',
+        logoUrl: document.getElementById('e-logo') ? document.getElementById('e-logo').value.trim() : '',
+        plan: selectedPlan
+      })
+    });
+    var d = await r.json();
+    if (d.success) {
+      ok.innerHTML = '&#10003; Listing submitted! We will review it within 24 hours. <button onclick="loadAndShowPortal()" style="background:none;border:none;color:var(--em);font-family:Cabinet Grotesk,sans-serif;font-size:.82rem;cursor:pointer;font-weight:700;padding:0">View dashboard &#8594;</button>';
+      ok.style.display = 'block';
+      btn.style.display = 'none';
+      // Clear form
+      ['e-title','e-desc','e-req','e-why','e-company-profile','e-logo'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+    } else if (d.limitReached) {
+      err.textContent = d.error + ' Contact hello@findmeajob.co.nz to upgrade.';
+      err.style.display = 'block';
+    } else {
+      err.textContent = d.error || 'Submission failed.';
+      err.style.display = 'block';
+    }
+  } catch(e) { err.textContent = 'Connection error.'; err.style.display = 'block'; }
+  btn.textContent = 'Submit for Review \u2192'; btn.disabled = false;
+}
+
+// Render jobs
+function renderJobs(jobs) {
+  var live = jobs.filter(function(j){return j.status==='approved'&&!isExpired(j);}).length;
+  var pending = jobs.filter(function(j){return j.status==='pending';}).length;
+  var expired = jobs.filter(function(j){return isExpired(j)||j.status==='closed';}).length;
+  document.getElementById('ps-total').textContent = jobs.length;
+  document.getElementById('ps-live').textContent = live;
+  document.getElementById('ps-pending').textContent = pending;
+  document.getElementById('ps-expired').textContent = expired;
+
+  var container = document.getElementById('jobs-container');
+  if (!jobs.length) {
+    container.innerHTML = '<div style="text-align:center;padding:3rem 1rem;color:var(--text3)"><div style="font-size:2rem;margin-bottom:.75rem">📋</div><div style="font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.3rem">No listings yet</div><div style="font-size:.85rem;font-weight:500">Post your first job to start finding great Kiwi candidates.</div></div>';
+    return;
+  }
+  container.innerHTML = '';
+  jobs.forEach(function(job) {
+    var exp = isExpired(job);
+    var statusKey = exp ? 'expired' : job.status;
+    var card = document.createElement('div');
+    card.className = 'jcard ' + statusKey;
+
+    var pillMap = {pending:'pill-pending',approved:'pill-approved',rejected:'pill-rejected',expired:'pill-expired',closed:'pill-closed'};
+    var pills = '<div class="jcard-pills"><span class="pill '+(pillMap[statusKey]||'pill-expired')+'">'+statusKey+'</span>';
+    if (job.featured && !exp) pills += '<span class="pill pill-featured">&#11088; Featured</span>';
+    pills += '</div>';
+
+    var meta = job.location + ' &middot; ' + job.category + ' &middot; ' + job.type + ' &middot; ' + job.salary;
+
+    var daysInfo = '';
+    if (job.status === 'approved') {
+      var info = getDaysLeft(job);
+      if (info) {
+        if (info.days <= 0) daysInfo = '<div style="font-size:.72rem;color:var(--text3);margin-top:.35rem">Expired '+fmtDate(info.expiry)+'</div>';
+        else if (info.days <= 7) daysInfo = '<div style="font-size:.72rem;color:var(--gold);margin-top:.35rem">&#9200; Expires in '+info.days+' days</div>';
+        else daysInfo = '<div style="font-size:.72rem;color:var(--text3);margin-top:.35rem">Expires '+fmtDate(info.expiry)+' ('+info.days+'d left)</div>';
+      }
+    }
+
+    var analytics = '';
+    if (session && session.employer && (session.employer.plan === 'basic' || session.employer.plan === 'pro')) {
+      analytics = '<div class="analytics"><span>&#128065; '+(job.views||0)+' views</span><span>&#128233; '+(job.applies||0)+' applies</span></div>';
+    }
+
+    var actions = '<div class="jcard-actions">';
+    if (job.status === 'pending') actions += '<button class="btn-sm" onclick="toggleEdit(\''+job.id+'\')" type="button">&#9998; Edit</button>';
+    if (job.status === 'approved' && !exp) actions += '<button class="btn-sm red" onclick="confirmClose(\''+job.id+'\',\''+((job.title||'').replace(/'/g,''))+'\')" type="button">Mark Filled</button>';
+    if (exp || job.status === 'closed') actions += '<button class="btn-sm green" onclick="confirmRelist(\''+job.id+'\',\''+((job.title||'').replace(/'/g,''))+'\')" type="button">&#8635; Relist</button>';
+    actions += '</div>';
+
+    var rejNote = job.status === 'rejected' ? '<div style="font-size:.78rem;color:#fca5a5;margin-top:.4rem;padding:.5rem .75rem;background:rgba(239,68,68,.05);border-radius:var(--r)">This listing was not approved. Please edit and resubmit.</div>' : '';
+
+    var logoHtml = job.logoUrl ? '<img src="'+job.logoUrl+'" alt="logo" style="width:32px;height:32px;object-fit:contain;border-radius:4px;border:1px solid var(--border2);float:right;margin-left:.5rem" onerror="this.remove()">' : '';
+
+    var editForm = '';
+    if (job.status === 'pending' || job.status === 'rejected') {
+      editForm = '<div id="edit-'+job.id+'" style="display:none;margin-top:.75rem;border-top:1px solid var(--border);padding-top:.75rem">'+
+        '<div class="field"><label>Job title</label><input type="text" id="ef-title-'+job.id+'" value="'+(job.title||'').replace(/"/g,'')+'"></div>'+
+        '<div class="g2">'+
+        '<div class="field"><label>Location</label><select id="ef-loc-'+job.id+'">'+locOptions(job.location)+'</select></div>'+
+        '<div class="field"><label>Category</label><select id="ef-cat-'+job.id+'">'+catOptions(job.category)+'</select></div>'+
+        '<div class="field"><label>Type</label><select id="ef-type-'+job.id+'">'+typeOptions(job.type)+'</select></div>'+
+        '<div class="field"><label>Salary</label><select id="ef-sal-'+job.id+'">'+salOptions(job.salary)+'</select></div>'+
+        '</div>'+
+        '<div class="field"><label>Description</label><textarea id="ef-desc-'+job.id+'" style="min-height:100px">'+(job.description||'')+'</textarea></div>'+
+        '<div class="field"><label>Requirements</label><textarea id="ef-req-'+job.id+'" style="min-height:60px">'+(job.requirements||'')+'</textarea></div>'+
+        '<div class="err" id="edit-err-'+job.id+'"></div>'+
+        '<div class="ok" id="edit-ok-'+job.id+'"></div>'+
+        '<div style="display:flex;gap:.5rem;margin-top:.5rem">'+
+        '<button class="btn-sm green" onclick="saveEdit(\''+job.id+'\')" type="button">Save &amp; Resubmit</button>'+
+        '<button class="btn-sm" onclick="toggleEdit(\''+job.id+'\')" type="button">Cancel</button>'+
+        '</div></div>';
+    }
+
+    card.innerHTML = logoHtml +
+      '<div class="jcard-title">'+job.title+'</div>'+
+      '<div class="jcard-meta">'+meta+'</div>'+
+      pills + daysInfo + analytics + actions + rejNote + editForm;
+    container.appendChild(card);
+  });
+}
+
+function toggleEdit(id) {
+  var el = document.getElementById('edit-'+id);
+  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+function locOptions(sel){return ['Auckland','Wellington','Christchurch','Hamilton','Tauranga','Dunedin','Remote NZ','Nationwide'].map(function(o){return '<option'+(o===sel?' selected':'')+'>'+o+'</option>';}).join('');}
+function catOptions(sel){return ['Technology','Healthcare','Trades','Hospitality','Admin','Education','Sales','Transport','Agriculture','Creative','Other'].map(function(o){return '<option'+(o===sel?' selected':'')+'>'+o+'</option>';}).join('');}
+function typeOptions(sel){return ['Full-time','Part-time','Casual','Contract','Remote'].map(function(o){return '<option'+(o===sel?' selected':'')+'>'+o+'</option>';}).join('');}
+function salOptions(sel){return ['Up to $50K','$50K-$70K','$70K-$90K','$90K-$120K','$120K+','Negotiable'].map(function(o){return '<option'+(o===sel?' selected':'')+'>'+o+'</option>';}).join('');}
+
+async function saveEdit(id) {
+  if (!session) return;
+  var title = document.getElementById('ef-title-'+id).value.trim();
+  var desc = document.getElementById('ef-desc-'+id).value.trim();
+  var errEl = document.getElementById('edit-err-'+id);
+  var okEl = document.getElementById('edit-ok-'+id);
+  errEl.style.display='none'; okEl.style.display='none';
+  if (!title||!desc){errEl.textContent='Title and description required.';errEl.style.display='block';return;}
+  try {
+    var r = await fetch('/api/employer-jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'edit',email:session.email,password:session.password,jobId:id,updates:{title:title,location:document.getElementById('ef-loc-'+id).value,category:document.getElementById('ef-cat-'+id).value,type:document.getElementById('ef-type-'+id).value,salary:document.getElementById('ef-sal-'+id).value,description:desc,requirements:document.getElementById('ef-req-'+id).value.trim()}})});
+    var d = await r.json();
+    if(d.success){okEl.textContent='Saved and resubmitted for review.';okEl.style.display='block';toast('Resubmitted!');setTimeout(loadAndShowPortal,1500);}
+    else{errEl.textContent=d.error||'Save failed.';errEl.style.display='block';}
+  } catch(e){errEl.textContent='Connection error.';errEl.style.display='block';}
+}
+
+function showModal(icon,title,sub,okLabel,okClass,onOk){
+  document.getElementById('modal-icon').textContent=icon;
+  document.getElementById('modal-title').textContent=title;
+  document.getElementById('modal-sub').textContent=sub;
+  var okBtn=document.getElementById('modal-ok');
+  okBtn.textContent=okLabel;okBtn.className='modal-ok '+(okClass||'');
+  pendingAction=onOk;
+  document.getElementById('modal').classList.add('show');
+}
+document.getElementById('modal-cancel').addEventListener('click',function(){document.getElementById('modal').classList.remove('show');pendingAction=null;});
+document.getElementById('modal-ok').addEventListener('click',function(){document.getElementById('modal').classList.remove('show');if(pendingAction){pendingAction();pendingAction=null;}});
+
+function confirmClose(id,title){showModal('&#10003;','Mark role as filled?','"'+title+'" will be removed from live listings.','Yes, mark filled','green',function(){doAction('close',id);});}
+function confirmRelist(id,title){showModal('&#8635;','Relist this job?','"'+title+'" will be resubmitted for review.','Yes, relist','green',function(){doAction('relist',id);});}
+
+async function doAction(action,id){
+  if(!session)return;
+  try{
+    var r=await fetch('/api/employer-jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:action,email:session.email,password:session.password,jobId:id,updates:{}})});
+    var d=await r.json();
+    if(d.success){toast(action==='close'?'Role marked as filled!':'Relist requested!');loadAndShowPortal();}
+    else{alert('Error: '+(d.error||'Unknown'));}
+  }catch(e){alert('Connection error.');}
+}
+
+async function loadAndShowPortal(){
+  if(!session)return;
+  try{
+    var r=await fetch('/api/employer-jobs?email='+encodeURIComponent(session.email)+'&password='+encodeURIComponent(session.password));
+    var d=await r.json();
+    if(d.success){showPortal(d.employer,d.jobs);}
+  }catch(e){}
+}
+
+document.getElementById('btn-signout').addEventListener('click',function(){
+  session=null;sessionStorage.removeItem('empPortal');
+  document.getElementById('portal-screen').style.display='none';
+  document.getElementById('post-screen').style.display='none';
+  document.getElementById('auth-screen').style.display='flex';
+  toast('Signed out');
+});
+
+// Password reset
+function showReset(){document.getElementById('reset-box').style.display='block';}
+function hideReset(){document.getElementById('reset-box').style.display='none';document.getElementById('reset-em').value='';document.getElementById('reset-msg').textContent='';}
+async function doReset(){
+  var email=document.getElementById('reset-em').value.trim();
+  var msg=document.getElementById('reset-msg');
+  if(!email){msg.style.color='#fca5a5';msg.textContent='Please enter your email.';return;}
+  try{
+    var r=await fetch('/api/reset-password',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email})});
+    var d=await r.json();
+    if(d.success){
+      if(d.method==='email'){msg.style.color='var(--em)';msg.textContent='Reset email sent! Check your inbox.';}
+      else{msg.style.color='var(--em)';msg.innerHTML='<a href="/employer-portal.html?reset='+d.token+'&email='+encodeURIComponent(email)+'" style="color:var(--em);font-weight:700">Click here to reset your password</a>';}
+      document.getElementById('btn-send-reset').style.display='none';
+    }else{msg.style.color='#fca5a5';msg.textContent=d.error||'Email not found.';}
+  }catch(e){msg.style.color='#fca5a5';msg.textContent='Connection error.';}
+}
+
+// Handle password reset URL
+var urlP=new URLSearchParams(window.location.search);
+var resetTok=urlP.get('reset');
+var resetEm=urlP.get('email');
+if(resetTok&&resetEm){
+  document.getElementById('auth-screen').innerHTML='<div style="max-width:420px;margin:2rem auto;padding:0 1.25rem"><div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem"><div style="font-size:.68rem;font-weight:800;text-transform:uppercase;color:var(--em);margin-bottom:.3rem">Reset Password</div><div style="font-family:Fraunces,serif;font-size:1.4rem;font-style:italic;font-weight:300;color:var(--text);margin-bottom:1rem">Choose a new password</div><p style="font-size:.82rem;color:var(--text2);font-weight:500;margin-bottom:1rem">For: <strong style="color:var(--em)">'+resetEm+'</strong></p><div class="field"><label>New password</label><input type="password" id="rp-new" placeholder="Minimum 6 characters"></div><div class="field"><label>Confirm password</label><input type="password" id="rp-confirm" placeholder="Repeat password"></div><div id="rp-msg" style="font-size:.82rem;font-weight:600;margin:.5rem 0;min-height:1rem"></div><button class="btn" onclick="doPortalReset()" type="button" style="margin-top:.5rem">Update Password</button></div></div>';
+  window.doPortalReset=async function(){
+    var np=document.getElementById('rp-new').value;
+    var cp=document.getElementById('rp-confirm').value;
+    var msg=document.getElementById('rp-msg');
+    if(np.length<6){msg.style.color='#fca5a5';msg.textContent='Min 6 characters.';return;}
+    if(np!==cp){msg.style.color='#fca5a5';msg.textContent='Passwords do not match.';return;}
+    var r=await fetch('/api/reset-password',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:resetEm,token:resetTok,newPassword:np})});
+    var d=await r.json();
+    if(d.success){msg.style.color='var(--em)';msg.innerHTML='Password updated! <a href="/employer-portal.html" style="color:var(--em);font-weight:700">Sign in now</a>';}
+    else{msg.style.color='#fca5a5';msg.textContent=d.error||'Reset failed.';}
+  };
+}
+
+// Handle ?plan= param from pricing page - open register with plan pre-selected
+var urlParams=new URLSearchParams(window.location.search);
+var planParam=urlParams.get('plan');
+if(planParam&&['free','basic','pro'].includes(planParam)&&!resetTok){
+  switchTab('register');
+  selectPlan(planParam);
+}
+
+// Auto-login from session
+var saved=sessionStorage.getItem('empPortal');
+if(saved&&!resetTok){
+  try{
+    session=JSON.parse(saved);
+    (async function(){
+      var r=await fetch('/api/employer-jobs?email='+encodeURIComponent(session.email)+'&password='+encodeURIComponent(session.password));
+      var d=await r.json();
+      if(d.success)showPortal(d.employer,d.jobs);
+      else{session=null;sessionStorage.removeItem('empPortal');}
+    })();
+  }catch(e){}
+}
+</script>
+</body>
+</html>
