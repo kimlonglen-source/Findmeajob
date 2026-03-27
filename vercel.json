@@ -56,10 +56,6 @@
       "dest": "/api/apply.js"
     },
     {
-      "src": "/api/debug",
-      "dest": "/api/debug.js"
-    },
-    {
       "src": "/admin.html",
       "dest": "/public/admin.html"
     },
