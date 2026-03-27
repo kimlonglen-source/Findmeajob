@@ -766,11 +766,10 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
           <div>&#128100; Your contact details (<span id="app-details-display"></span>)</div>
         </div>
       </div>
-      <div style="margin-bottom:.75rem;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.75rem" onclick="var cb=document.getElementById('app-consent');cb.checked=!cb.checked;" role="button" tabindex="0" style="cursor:pointer">
-        <div style="display:flex;align-items:flex-start;gap:.65rem;cursor:pointer">
-          <input type="checkbox" id="app-consent" onclick="event.stopPropagation()" style="width:18px;height:18px;min-width:18px;margin-top:2px;cursor:pointer;accent-color:var(--em)">
-          <div style="font-size:.78rem;color:var(--text2);font-weight:500;line-height:1.6">I consent to sending my CV and cover letter to <strong id="app-consent-company" style="color:var(--text)"></strong>. My information is sent directly to the employer and is not stored by FindMeAJob.co.nz.</div>
-        </div>
+      <div id="app-consent-box" style="margin-bottom:.75rem;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.75rem;cursor:pointer;display:flex;align-items:flex-start;gap:.65rem">
+        <div id="app-consent-tick" style="width:22px;height:22px;min-width:22px;border:2px solid var(--border2);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .15s;background:transparent;font-size:.8rem;color:#fff"></div>
+        <div style="font-size:.78rem;color:var(--text2);font-weight:500;line-height:1.6">I consent to sending my CV and cover letter to <strong id="app-consent-company" style="color:var(--text)"></strong>. My information is sent directly to the employer and is not stored by FindMeAJob.co.nz.</div>
+        <input type="hidden" id="app-consent" value="0">
       </div>
       <div class="alert alert-err" id="app-err3"></div>
       <button class="btn" id="app-btn-send" type="button">Send Application &#8594;</button>
@@ -1225,13 +1224,27 @@ document.getElementById('app-btn-generate').addEventListener('click', async func
     document.getElementById('app-sent-company').textContent = _applyState.company;
     document.getElementById('apply-step2').style.display = 'none';
     document.getElementById('apply-step3').style.display = 'block';
-    document.getElementById('app-consent').checked = false;
+    document.getElementById('app-consent').value = '0';
+    document.getElementById('app-consent-tick').innerHTML = '';
+    document.getElementById('app-consent-tick').style.background = 'transparent';
+    document.getElementById('app-consent-tick').style.borderColor = 'var(--border2)';
     document.getElementById('app-err3').classList.remove('show');
   } catch(e) {
     document.getElementById('apply-step2').style.display = 'none';
     document.getElementById('apply-step1').style.display = 'block';
     err.textContent = 'Could not generate cover letter. Please try again.';
     err.classList.add('show');
+  }
+});
+
+// Consent toggle
+document.getElementById('app-consent-box').addEventListener('click', function(){
+  var h = document.getElementById('app-consent');
+  var tick = document.getElementById('app-consent-tick');
+  if (h.value === '1') {
+    h.value = '0'; tick.innerHTML = ''; tick.style.background = 'transparent'; tick.style.borderColor = 'var(--border2)';
+  } else {
+    h.value = '1'; tick.innerHTML = '\u2713'; tick.style.background = 'var(--em)'; tick.style.borderColor = 'var(--em)';
   }
 });
 
@@ -1245,7 +1258,7 @@ document.getElementById('app-btn-back').addEventListener('click', function(){
 document.getElementById('app-btn-send').addEventListener('click', async function(){
   var err = document.getElementById('app-err3');
   err.classList.remove('show');
-  if (!document.getElementById('app-consent').checked) { err.textContent = 'Please tick the consent checkbox to send your application.'; err.classList.add('show'); return; }
+  if (document.getElementById('app-consent').value !== '1') { err.textContent = 'Please tick the consent checkbox to send your application.'; err.classList.add('show'); return; }
   var btn = document.getElementById('app-btn-send');
   btn.textContent = 'Sending...'; btn.disabled = true;
   try {
