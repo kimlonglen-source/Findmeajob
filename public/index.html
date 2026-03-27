@@ -901,18 +901,17 @@ async function fetchLiveJobs(matches){
           var pct=calcLiveMatch({title:j.title,description:j.description},matches);
           var c=document.createElement('div');
           c.className='job-card featured';
-          var logoCol2=j.logoUrl?'<div style="flex-shrink:0;display:flex;align-items:center;justify-content:center"><img src="'+j.logoUrl+'" alt="'+j.company+'" style="width:72px;height:72px;object-fit:contain;border-radius:10px" onerror="this.style.display=\'none\'"></div>':'';
-          c.style.gridTemplateColumns='1fr'+(j.logoUrl?' 72px':'')+' auto';c.style.gap='1rem';c.style.alignItems='center';
-          c.innerHTML=
-            '<div><div style="margin-bottom:.35rem"><span class="tag" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold);font-size:.6rem;font-weight:800;text-transform:uppercase">\u2b50 Featured</span></div>'+
+          c.style.position='relative';c.style.gridTemplateColumns='1fr auto';c.style.gap='1rem';
+          var logoAbs2=j.logoUrl?'<img src="'+j.logoUrl+'" alt="'+j.company+'" style="position:absolute;top:1rem;right:1rem;width:56px;height:56px;object-fit:contain;border-radius:8px" onerror="this.style.display=\'none\'">':'';
+          c.innerHTML=logoAbs2+
+            '<div style="padding-right:'+(j.logoUrl?'70px':'0')+'"><div style="margin-bottom:.35rem"><span class="tag" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold);font-size:.6rem;font-weight:800;text-transform:uppercase">\u2b50 Featured</span></div>'+
             '<div class="job-title">'+j.title+'</div>'+
             '<div class="job-co">'+j.company+'</div>'+
-            '<div class="job-loc">'+j.location+'</div>'+
+            '<div class="job-loc">'+j.location+'</div></div>'+
             '<div class="job-desc">'+(j.description||'').substring(0,180)+'...</div>'+
             (j.companyProfile?'<div class="job-desc" style="margin-top:.25rem;opacity:.8;font-style:italic">'+j.companyProfile.substring(0,100)+'</div>':'')+
             '<div class="job-tags"><span class="tag tag-cat">'+j.category+'</span><span class="tag tag-other">'+j.type+'</span><span class="tag tag-other">'+j.salary+'</span></div>'+
             '<div class="job-links"><button onclick="applyJob(this)" data-email="'+j.email+'" data-title="'+j.title+'" data-id="'+j.id+'" class="job-link apply">Apply Now &#8594;</button></div>'+
-            '</div>'+logoCol2+
             '<div class="match-col">'+
             (pct?'<div class="match-pct" style="color:var(--gold)">'+pct+'%</div><div class="match-lbl">match</div>':'<div style="color:var(--gold);font-size:.65rem;font-weight:800;text-transform:uppercase">\u2b50 Featured</div>')+
             '</div>';
@@ -950,9 +949,9 @@ async function loadBrowse(){
   if(approved.length){
     var h='<div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--gold);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)">Employer Listings</div>';empEl.innerHTML=h;
     approved.forEach(function(j){var c=document.createElement('div');c.className='job-card'+(j.featured?' featured':'');
-    var logoCol=j.logoUrl?'<div style="flex-shrink:0;display:flex;align-items:center;justify-content:center"><img src="'+j.logoUrl+'" alt="'+j.company+'" style="width:72px;height:72px;object-fit:contain;border-radius:10px" onerror="this.style.display=\'none\'"></div>':'';
-    c.style.gridTemplateColumns=j.logoUrl?'1fr 72px':'1fr auto';c.style.gap='1rem';c.style.alignItems='center';
-    c.innerHTML='<div>'+(j.featured?'<div style="margin-bottom:.35rem"><span class="tag" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold)">\u2b50 Featured</span></div>':'')+'<div class="job-title">'+j.title+'</div><div class="job-co">'+j.company+'</div><div class="job-loc">'+j.location+'</div><div class="job-desc">'+(j.description||'').substring(0,160)+'...</div>'+(j.companyProfile?'<div class="job-desc" style="margin-top:.25rem;opacity:.75;font-style:italic">'+j.companyProfile.substring(0,100)+'...</div>':'')+'<div class="job-tags"><span class="tag tag-cat">'+j.category+'</span><span class="tag tag-other">'+j.type+'</span><span class="tag tag-other">'+j.salary+'</span>'+(j.priority&&!j.featured?'<span class="tag" style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);color:var(--em)">\u2191 Priority</span>':'')+'</div><div class="job-links"><button onclick="applyJob(this)" data-email="'+j.email+'" data-title="'+j.title+'" data-id="'+j.id+'" class="job-link apply">Apply Now &#8594;</button></div></div>'+logoCol;empEl.appendChild(c);});
+    c.style.position='relative';c.style.gridTemplateColumns='1fr';
+    var logoAbsolute=j.logoUrl?'<img src="'+j.logoUrl+'" alt="'+j.company+'" style="position:absolute;top:1rem;right:1rem;width:56px;height:56px;object-fit:contain;border-radius:8px" onerror="this.style.display=\'none\'">':'';
+    c.innerHTML=logoAbsolute+'<div style="padding-right:'+(j.logoUrl?'70px':'0')+'">'+(j.featured?'<div style="margin-bottom:.35rem"><span class="tag" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold)">\u2b50 Featured</span></div>':'')+'<div class="job-title">'+j.title+'</div><div class="job-co">'+j.company+'</div><div class="job-loc">'+j.location+'</div></div><div class="job-desc">'+(j.description||'').substring(0,160)+'...</div>'+(j.companyProfile?'<div class="job-desc" style="margin-top:.25rem;opacity:.75;font-style:italic">'+j.companyProfile.substring(0,100)+'...</div>':'')+'<div class="job-tags"><span class="tag tag-cat">'+j.category+'</span><span class="tag tag-other">'+j.type+'</span><span class="tag tag-other">'+j.salary+'</span>'+(j.priority&&!j.featured?'<span class="tag" style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);color:var(--em)">\u2191 Priority</span>':'')+'</div><div class="job-links"><button onclick="applyJob(this)" data-email="'+j.email+'" data-title="'+j.title+'" data-id="'+j.id+'" class="job-link apply">Apply Now &#8594;</button></div>';empEl.appendChild(c);});
   }
   liveEl.innerHTML='';
   if(!adzuna.length){liveEl.innerHTML='<div style="padding:1rem;color:var(--text3);font-size:.82rem;font-weight:500;text-align:center">No live listings found. Try a different filter.</div>';return;}
