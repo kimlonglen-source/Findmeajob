@@ -897,7 +897,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 
 <script>
 function esc(s){var d=document.createElement("div");d.textContent=s||"";return d.innerHTML;}
-var currentPage='home',skills=[],cvFileData=null,cvFileName='',lightMode=false,empSession=null,selectedPlan='free';
+var currentPage='home',skills=[],cvFileData=null,cvFileName='',lightMode=false,empSession=null,selectedPlan='free',seekerSession=null;
 
 // Typewriter effect
 (function(){
@@ -1628,7 +1628,7 @@ document.addEventListener('DOMContentLoaded',function(){try{
   if(saved){empSession=JSON.parse(saved);}
 
   // SEEKER ACCOUNT SYSTEM
-  var seekerSession=null;
+  seekerSession=null;
   var savedSeeker=sessionStorage.getItem('seekerSession');
   if(savedSeeker){try{seekerSession=JSON.parse(savedSeeker);updateSeekerUI();}catch(e){}}
 
