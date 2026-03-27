@@ -669,8 +669,10 @@ document.getElementById('btn-close-upgrade').addEventListener('click',function()
       if(d.success){
         session.employer.plan=plan;
         sessionStorage.setItem('empPortal',JSON.stringify(session));
-        msg.style.color='var(--em)';msg.textContent='Switched to '+names[plan]+' plan! Refreshing...';
-        setTimeout(loadAndShowPortal,1000);
+        document.getElementById('upgrade-panel').style.display='none';
+        msg.style.display='none';
+        toast('Switched to '+names[plan]+' plan!');
+        loadAndShowPortal();
       }else{
         msg.style.color='#fca5a5';msg.textContent=d.error||'Failed to switch plan.';
       }
