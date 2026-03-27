@@ -1242,9 +1242,10 @@ document.getElementById('app-btn-generate').addEventListener('click', async func
     document.getElementById('apply-step2').style.display = 'none';
     document.getElementById('apply-step3').style.display = 'block';
     document.getElementById('app-consent').value = '0';
-    document.getElementById('app-consent-tick').innerHTML = '';
+    document.getElementById('app-consent-tick').style.color = 'transparent';
     document.getElementById('app-consent-tick').style.background = 'transparent';
-    document.getElementById('app-consent-tick').style.borderColor = 'var(--border2)';
+    document.getElementById('app-consent-tick').style.borderColor = 'var(--text3)';
+    document.getElementById('app-consent-box').style.borderColor = 'var(--border)';
     document.getElementById('app-err3').classList.remove('show');
   } catch(e) {
     document.getElementById('apply-step2').style.display = 'none';
