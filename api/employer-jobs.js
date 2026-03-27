@@ -28,19 +28,34 @@ module.exports = async function handler(req, res) {
     }
   }
 
-  // POST - edit or relist
+  // POST - edit, relist, close, or upgrade plan
   if (req.method === "POST") {
     var action = req.body.action;
     var postEmail = req.body.email;
     var postPassword = req.body.password;
     var jobId = req.body.jobId;
     var updates = req.body.updates;
-    if (!postEmail || !postPassword || !jobId) return res.status(400).json({ error: "Missing fields" });
+    if (!postEmail || !postPassword) return res.status(400).json({ error: "Missing credentials" });
+
     try {
       var empRaw2 = await hget("employers", postEmail);
       if (!empRaw2) return res.status(401).json({ error: "Account not found" });
       var emp2 = typeof empRaw2 === "string" ? JSON.parse(empRaw2) : empRaw2;
       if (emp2.password !== postPassword) return res.status(401).json({ error: "Incorrect password" });
+
+      // Upgrade plan (no jobId needed)
+      if (action === "upgrade") {
+        var newPlan = req.body.plan;
+        var validPlans = ["free", "basic", "pro"];
+        if (!newPlan || validPlans.indexOf(newPlan) === -1) return res.status(400).json({ error: "Invalid plan" });
+        emp2.plan = newPlan;
+        emp2.planChangedAt = new Date().toISOString();
+        await hset("employers", postEmail, emp2);
+        return res.status(200).json({ success: true, plan: newPlan });
+      }
+
+      // All other actions require jobId
+      if (!jobId) return res.status(400).json({ error: "Missing job ID" });
       var jobRaw = await hget("jobs", jobId);
       if (!jobRaw) return res.status(404).json({ error: "Job not found" });
       var job = typeof jobRaw === "string" ? JSON.parse(jobRaw) : jobRaw;

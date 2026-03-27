@@ -656,14 +656,25 @@ document.getElementById('btn-close-upgrade').addEventListener('click',function()
   document.getElementById('upgrade-panel').style.display='none';
 });
 ['free','basic','pro'].forEach(function(plan){
-  document.getElementById('up-'+plan).addEventListener('click',function(){
+  document.getElementById('up-'+plan).addEventListener('click',async function(){
     var msg=document.getElementById('upgrade-msg');
+    var names={free:'Starter',basic:'Growth',pro:'Pro'};
     if(session && session.employer && session.employer.plan===plan){
-      msg.style.color='var(--text3)';msg.textContent='You are already on this plan.';msg.style.display='block';return;
+      msg.style.color='var(--text3)';msg.textContent='You are already on the '+names[plan]+' plan.';msg.style.display='block';return;
     }
-    msg.style.color='var(--em)';
-    msg.innerHTML='To switch to the <strong>'+{free:'Starter',basic:'Growth',pro:'Pro'}[plan]+'</strong> plan, email <a href="mailto:hello@findmeajob.co.nz?subject=Upgrade to '+plan+' plan" style="color:var(--em);font-weight:700">hello@findmeajob.co.nz</a> and we will update your account within 24 hours.';
-    msg.style.display='block';
+    msg.style.color='var(--text2)';msg.textContent='Switching to '+names[plan]+'...';msg.style.display='block';
+    try{
+      var r=await fetch('/api/employer-jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'upgrade',email:session.email,password:session.password,plan:plan})});
+      var d=await r.json();
+      if(d.success){
+        session.employer.plan=plan;
+        sessionStorage.setItem('empPortal',JSON.stringify(session));
+        msg.style.color='var(--em)';msg.textContent='Switched to '+names[plan]+' plan! Refreshing...';
+        setTimeout(loadAndShowPortal,1000);
+      }else{
+        msg.style.color='#fca5a5';msg.textContent=d.error||'Failed to switch plan.';
+      }
+    }catch(e){msg.style.color='#fca5a5';msg.textContent='Connection error. Please try again.';}
   });
 });
 
