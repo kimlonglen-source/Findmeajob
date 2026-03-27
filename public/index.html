@@ -140,15 +140,15 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
 .choice-title{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:.25rem}
 .choice-desc{font-size:.78rem;color:var(--text2);line-height:1.5;font-weight:500}
 .plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:1.5rem}
-.plan{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.8rem;position:relative;cursor:pointer;text-align:left;font-family:'Inter',sans-serif;width:100%;transition:all .3s}
+.plan{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:2rem 1.8rem 2.2rem;position:relative;cursor:pointer;text-align:left;font-family:'Inter',sans-serif;width:100%;transition:all .3s;display:flex;flex-direction:column}
 .plan:hover,.plan.sel{border-color:var(--em);transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.3)}
-.plan.popular{border-color:rgba(16,185,129,.2);background:linear-gradient(135deg,rgba(16,185,129,.04),rgba(20,184,166,.02))}
-.pop-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;font-size:.65rem;font-weight:800;padding:.3rem 1rem;border-radius:999px;white-space:nowrap;text-transform:uppercase;letter-spacing:.5px}
+.plan.popular{border-color:rgba(16,185,129,.3);background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(20,184,166,.03));box-shadow:0 8px 30px rgba(16,185,129,.1)}
+.pop-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;font-size:.65rem;font-weight:800;padding:.35rem 1.2rem;border-radius:999px;white-space:nowrap;text-transform:uppercase;letter-spacing:.5px;box-shadow:0 4px 12px rgba(16,185,129,.3)}
 .plan-tier{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:.5rem}
 .plan-price{font-size:2.5rem;font-weight:900;color:var(--text);line-height:1;letter-spacing:-1px;margin-bottom:.25rem}
-.plan-period{font-size:.78rem;font-weight:500;color:var(--text3);margin-bottom:1rem}
-.plan-feats{list-style:none;font-size:.85rem;color:var(--text2);font-weight:500}
-.plan-feats li{padding:.3rem 0;padding-left:1.4rem;position:relative}
+.plan-period{font-size:.78rem;font-weight:500;color:var(--text3);margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border)}
+.plan-feats{list-style:none;font-size:.85rem;color:var(--text2);font-weight:500;flex:1}
+.plan-feats li{padding:.4rem 0;padding-left:1.4rem;position:relative}
 .plan-feats li::before{content:'\2713';position:absolute;left:0;color:var(--em);font-weight:700;font-size:.8rem}
 .filter-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem}
 .filter-row select{flex:1;min-width:110px;padding:.55rem .8rem;font-size:.78rem}
@@ -260,7 +260,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
   </div>
   <section style="padding:4rem 2rem;max-width:960px;margin:0 auto">
     <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--em);margin-bottom:.75rem">How it works</div>
-    <div style="font-family:'Fraunces',serif;font-size:clamp(2rem,5vw,3rem);font-weight:300;line-height:1.1;letter-spacing:-.3px;margin-bottom:0">Three steps to your<br><em style="font-style:italic;color:var(--em)">perfect NZ role</em></div>
+    <div style="font-family:'Inter',sans-serif;font-size:clamp(2rem,5vw,3rem);font-weight:800;line-height:1.1;letter-spacing:-.3px;margin-bottom:0">Three steps to your<br><em style="font-style:normal;color:var(--em)">perfect NZ role</em></div>
     <div class="how-grid">
       <div class="how-step"><div class="how-num">01</div><div class="how-title">Upload CV or enter skills</div><div class="how-desc">Drop your PDF or Word CV. AI extracts your skills automatically. Or type skills manually — 30 seconds.</div></div>
       <div class="how-step"><div class="how-num">02</div><div class="how-title">AI finds your matches</div><div class="how-desc">Our AI compares your background against real NZ roles and generates personalised match scores.</div></div>
@@ -268,7 +268,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     </div>
   </section>
   <section style="padding:3rem 2rem 5rem;text-align:center;max-width:600px;margin:0 auto">
-    <div style="font-family:'Fraunces',serif;font-size:clamp(2rem,5vw,3rem);font-weight:300;line-height:1.1;margin-bottom:.75rem">Ready to find your<br><em style="color:var(--em)">next NZ job?</em></div>
+    <div style="font-family:'Inter',sans-serif;font-size:clamp(2rem,5vw,3rem);font-weight:800;line-height:1.1;margin-bottom:.75rem">Ready to find your<br><em style="color:var(--em)">next NZ job?</em></div>
     <p style="color:var(--text2);font-size:.9rem;line-height:1.7;margin-bottom:1.5rem;font-weight:500">100% free for job seekers. No account needed.</p>
     <div style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap">
       <button class="btn-hero" id="cta-find" type="button">Find My Job — Free</button>
@@ -331,7 +331,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       </div>
       <div class="alert alert-err" id="cv-err">Please upload your CV first.</div>
       <button class="btn" id="btn-analyze" type="button" style="margin-top:1rem">Analyse CV &amp; Find Matches</button>
-      <div style="text-align:center;margin-top:.75rem"><button style="background:none;border:none;color:var(--text3);font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif" id="btn-go-manual" type="button">No CV? Enter skills manually &#8594;</button></div>
+      <div style="text-align:center;margin-top:.75rem"><button style="background:none;border:none;color:var(--text3);font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif" id="btn-go-manual" type="button">No CV? Enter skills manually &#8594;</button></div>
     </div>
     <div id="step-manual" style="display:none">
       <div class="card">
@@ -339,7 +339,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <div id="skill-area" style="min-height:32px;margin-bottom:.75rem"></div>
         <div style="display:flex;gap:.5rem;margin-bottom:.75rem">
           <input type="text" id="ski" placeholder="Type a skill and press Enter..." maxlength="60" style="flex:1">
-          <button type="button" id="btn-add" style="background:var(--em3);border:1px solid rgba(16,185,129,.2);color:var(--em);padding:.72rem 1rem;border-radius:var(--r);cursor:pointer;font-size:.82rem;font-weight:700;white-space:nowrap;font-family:'Cabinet Grotesk',sans-serif;flex-shrink:0">+ Add</button>
+          <button type="button" id="btn-add" style="background:var(--em3);border:1px solid rgba(16,185,129,.2);color:var(--em);padding:.72rem 1rem;border-radius:var(--r);cursor:pointer;font-size:.82rem;font-weight:700;white-space:nowrap;font-family:'Inter',sans-serif;flex-shrink:0">+ Add</button>
         </div>
         <div id="chips">
           <button class="chip" data-s="Customer service">Customer service</button>
@@ -389,7 +389,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     </div>
     <div id="results" style="display:none">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:.75rem">
-        <div><div style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-bottom:.2rem">Your matches</div><div style="font-family:'Fraunces',serif;font-size:1.7rem;font-style:italic;font-weight:300;color:var(--text)">Jobs <span style="color:var(--em)">for you</span></div></div>
+        <div><div style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-bottom:.2rem">Your matches</div><div style="font-family:'Inter',sans-serif;font-size:1.7rem;font-weight:800;color:var(--text)">Jobs <span style="color:var(--em)">for you</span></div></div>
         <button class="btn-sm" id="btn-new-search" type="button">&#8592; New search</button>
       </div>
       <div id="job-list"></div>
@@ -439,7 +439,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     </div>
     <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:1rem">For Employers</div>
     <div class="plan-grid">
-      <div style="background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(16,185,129,.02));border:1px solid rgba(16,185,129,.2);border-radius:var(--rl);padding:1.25rem 1.5rem;margin-bottom:1.5rem;text-align:center;grid-column:1/-1"><div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin-bottom:.3rem">&#127881; Launch Offer</div><div style="font-family:Fraunces,serif;font-size:1.3rem;font-style:italic;font-weight:300;color:var(--text);margin-bottom:.3rem">All plans are <em style="color:var(--em)">free for your first month</em></div><div style="font-size:.78rem;color:var(--text2);font-weight:500">Try any plan free for 30 days — no credit card needed. After 30 days, continue at the plan rate or stay on Starter free forever.</div></div>
+      <div style="background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(16,185,129,.02));border:1px solid rgba(16,185,129,.2);border-radius:var(--rl);padding:1.25rem 1.5rem;margin-bottom:1.5rem;text-align:center;grid-column:1/-1"><div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin-bottom:.3rem">&#127881; Launch Offer</div><div style="font-family:'Inter',sans-serif;font-size:1.3rem;font-weight:800;color:var(--text);margin-bottom:.3rem">All plans are <em style="color:var(--em)">free for your first month</em></div><div style="font-size:.78rem;color:var(--text2);font-weight:500">Try any plan free for 30 days — no credit card needed. After 30 days, continue at the plan rate or stay on Starter free forever.</div></div>
       <div class="plan"><div class="plan-tier">Starter</div><div class="plan-price">$0</div><div class="plan-period">Free forever &middot; no card required</div><ul class="plan-feats"><li>1 active listing</li><li>30 day visibility</li><li>Email applications</li><li>Standard placement</li></ul><a class="btn btn-sec" href="/employer-portal.html?plan=free" id="pp-free" style="margin-top:1rem;text-decoration:none">Get started free</a></div>
       <div class="plan popular"><div class="pop-badge">Most Popular</div><div class="plan-tier">Growth</div><div class="plan-price" style="font-size:1.3rem;text-decoration:line-through;opacity:.4">$29</div><div class="plan-price">$0</div><div class="plan-period">First month free &middot; then <span style="color:var(--em);font-weight:700">$29/mo NZD</span></div><ul class="plan-feats"><li>5 active listings</li><li>60 day visibility</li><li>Priority placement</li><li>Company profile</li><li>Company logo on listings</li><li>Applicant tracking</li></ul><a class="btn" href="/employer-portal.html?plan=basic" id="pp-basic" style="margin-top:1rem;text-decoration:none">Get started free</a></div>
       <div class="plan"><div class="plan-tier">Pro</div><div class="plan-price" style="font-size:1.3rem;text-decoration:line-through;opacity:.4">$79</div><div class="plan-price">$0</div><div class="plan-period">First month free &middot; then <span style="color:var(--em);font-weight:700">$79/mo NZD</span></div><ul class="plan-feats"><li>Unlimited listings</li><li>90 day visibility</li><li>Featured placement &#11088;</li><li>Company profile &amp; logo</li><li>Full analytics</li><li>AI candidate matching</li><li>Priority support</li></ul><a class="btn" href="/employer-portal.html?plan=pro" id="pp-pro" style="margin-top:1rem;text-decoration:none">Get started free</a></div>
@@ -511,24 +511,24 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <div id="emp-step-register" style="display:none">
       <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem">
         <button class="btn-sm" id="btn-reg-back" type="button">&#8592; Back</button>
-        <div><div class="page-eyebrow">Create Account</div><div style="font-family:Fraunces,serif;font-size:1.3rem;font-style:italic;font-weight:300;color:var(--text)">Register your company</div></div>
+        <div><div class="page-eyebrow">Create Account</div><div style="font-family:'Inter',sans-serif;font-size:1.3rem;font-weight:800;color:var(--text)">Register your company</div></div>
       </div>
       <div class="card" style="margin-bottom:.75rem">
         <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:.85rem">Select your plan</div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:.75rem">
-          <button type="button" id="rp-free" onclick="selectPlan('free')" style="background:var(--bg3);border:2px solid var(--border2);border-radius:var(--r);padding:.85rem .65rem;text-align:center;cursor:pointer;font-family:Cabinet Grotesk,sans-serif;transition:all .15s">
+          <button type="button" id="rp-free" onclick="selectPlan('free')" style="background:var(--bg3);border:2px solid var(--border2);border-radius:var(--r);padding:.85rem .65rem;text-align:center;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s">
             <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;color:var(--text3);margin-bottom:.25rem">Starter</div>
-            <div style="font-family:Fraunces,serif;font-size:1.2rem;font-weight:300;font-style:italic;color:var(--text)">$0</div>
+            <div style="font-family:'Inter',sans-serif;font-size:1.2rem;font-weight:800;color:var(--text)">$0</div>
             <div style="font-size:.65rem;color:var(--text3);font-weight:500;margin-top:.15rem">Free forever</div>
           </button>
-          <button type="button" id="rp-basic" onclick="selectPlan('basic')" style="background:var(--bg3);border:2px solid var(--border2);border-radius:var(--r);padding:.85rem .65rem;text-align:center;cursor:pointer;font-family:Cabinet Grotesk,sans-serif;transition:all .15s">
+          <button type="button" id="rp-basic" onclick="selectPlan('basic')" style="background:var(--bg3);border:2px solid var(--border2);border-radius:var(--r);padding:.85rem .65rem;text-align:center;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s">
             <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;color:var(--text3);margin-bottom:.25rem">Growth</div>
-            <div style="font-family:Fraunces,serif;font-size:1.2rem;font-weight:300;font-style:italic;color:var(--text)">$29<span style="font-size:.7rem">/mo</span></div>
+            <div style="font-family:'Inter',sans-serif;font-size:1.2rem;font-weight:800;color:var(--text)">$29<span style="font-size:.7rem">/mo</span></div>
             <div style="font-size:.65rem;color:var(--em);font-weight:600;margin-top:.15rem">1st month free</div>
           </button>
-          <button type="button" id="rp-pro" onclick="selectPlan('pro')" style="background:var(--bg3);border:2px solid var(--border2);border-radius:var(--r);padding:.85rem .65rem;text-align:center;cursor:pointer;font-family:Cabinet Grotesk,sans-serif;transition:all .15s">
+          <button type="button" id="rp-pro" onclick="selectPlan('pro')" style="background:var(--bg3);border:2px solid var(--border2);border-radius:var(--r);padding:.85rem .65rem;text-align:center;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s">
             <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;color:var(--text3);margin-bottom:.25rem">Pro</div>
-            <div style="font-family:Fraunces,serif;font-size:1.2rem;font-weight:300;font-style:italic;color:var(--text)">$79<span style="font-size:.7rem">/mo</span></div>
+            <div style="font-family:'Inter',sans-serif;font-size:1.2rem;font-weight:800;color:var(--text)">$79<span style="font-size:.7rem">/mo</span></div>
             <div style="font-size:.65rem;color:var(--gold);font-weight:600;margin-top:.15rem">Featured</div>
           </button>
         </div>
@@ -548,8 +548,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <div class="alert alert-err" id="reg-err">Please fill in all required fields.</div>
       <button class="btn" id="btn-register" type="button" style="margin-top:.75rem">Create Account &amp; Continue &#8594;</button>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.75rem;flex-wrap:wrap;gap:.5rem">
-        <div style="font-size:.75rem;color:var(--text3);font-weight:500">Already have an account? <button style="background:none;border:none;color:var(--em);font-family:Cabinet Grotesk,sans-serif;font-size:.75rem;cursor:pointer;font-weight:700;padding:0" id="btn-login-instead" type="button">Sign in</button></div>
-        <div style="font-size:.72rem;color:var(--text3);font-weight:500">By registering you agree to our <button style="background:none;border:none;color:var(--em);font-family:Cabinet Grotesk,sans-serif;font-size:.72rem;cursor:pointer;font-weight:600;padding:0" id="reg-terms-btn" type="button">Terms</button></div>
+        <div style="font-size:.75rem;color:var(--text3);font-weight:500">Already have an account? <button style="background:none;border:none;color:var(--em);font-family:'Inter',sans-serif;font-size:.75rem;cursor:pointer;font-weight:700;padding:0" id="btn-login-instead" type="button">Sign in</button></div>
+        <div style="font-size:.72rem;color:var(--text3);font-weight:500">By registering you agree to our <button style="background:none;border:none;color:var(--em);font-family:'Inter',sans-serif;font-size:.72rem;cursor:pointer;font-weight:600;padding:0" id="reg-terms-btn" type="button">Terms</button></div>
       </div>
     </div>
 
@@ -557,7 +557,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <div id="emp-step-login" style="display:none">
       <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem">
         <button class="btn-sm" id="btn-login-back" type="button">&#8592; Back</button>
-        <div><div class="page-eyebrow">Employer Login</div><div style="font-family:Fraunces,serif;font-size:1.3rem;font-style:italic;font-weight:300;color:var(--text)">Welcome back</div></div>
+        <div><div class="page-eyebrow">Employer Login</div><div style="font-family:'Inter',sans-serif;font-size:1.3rem;font-weight:800;color:var(--text)">Welcome back</div></div>
       </div>
       <div class="card">
         <div class="field"><label class="form-label">Work email</label><input type="email" id="l-email" placeholder="jane@acme.co.nz" autocomplete="email"></div>
@@ -566,8 +566,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <div class="alert alert-err" id="login-err">Incorrect email or password.</div>
       <button class="btn" id="btn-login" type="button" style="margin-top:.75rem">Sign In &#8594;</button>
       <div style="display:flex;justify-content:space-between;margin-top:.75rem;flex-wrap:wrap;gap:.5rem">
-        <div style="font-size:.78rem;color:var(--text3);font-weight:500">No account? <button style="background:none;border:none;color:var(--em);font-family:Cabinet Grotesk,sans-serif;font-size:.78rem;cursor:pointer;font-weight:700;padding:0" id="btn-reg-instead" type="button">Register free</button></div>
-        <button style="background:none;border:none;color:var(--em);font-family:Cabinet Grotesk,sans-serif;font-size:.78rem;cursor:pointer;font-weight:700;padding:0" id="btn-forgot-pw" type="button">Forgot password?</button>
+        <div style="font-size:.78rem;color:var(--text3);font-weight:500">No account? <button style="background:none;border:none;color:var(--em);font-family:'Inter',sans-serif;font-size:.78rem;cursor:pointer;font-weight:700;padding:0" id="btn-reg-instead" type="button">Register free</button></div>
+        <button style="background:none;border:none;color:var(--em);font-family:'Inter',sans-serif;font-size:.78rem;cursor:pointer;font-weight:700;padding:0" id="btn-forgot-pw" type="button">Forgot password?</button>
       </div>
     </div>
 
@@ -575,7 +575,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <div id="emp-step-forgot" style="display:none">
       <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem">
         <button class="btn-sm" id="btn-forgot-back" type="button">&#8592; Back</button>
-        <div><div class="page-eyebrow">Reset Password</div><div style="font-family:Fraunces,serif;font-size:1.3rem;font-style:italic;font-weight:300;color:var(--text)">Forgotten your password?</div></div>
+        <div><div class="page-eyebrow">Reset Password</div><div style="font-family:'Inter',sans-serif;font-size:1.3rem;font-weight:800;color:var(--text)">Forgotten your password?</div></div>
       </div>
       <div class="card">
         <p style="color:var(--text2);font-size:.85rem;font-weight:500;line-height:1.7;margin-bottom:1rem">Enter your registered email and we will send you a reset link.</p>
@@ -588,13 +588,13 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 
     <!-- RESET (from link) -->
     <div id="emp-step-reset" style="display:none">
-      <div style="margin-bottom:1.5rem"><div class="page-eyebrow">Reset Password</div><div style="font-family:Fraunces,serif;font-size:1.3rem;font-style:italic;font-weight:300;color:var(--text)">Choose a new password</div></div>
+      <div style="margin-bottom:1.5rem"><div class="page-eyebrow">Reset Password</div><div style="font-family:'Inter',sans-serif;font-size:1.3rem;font-weight:800;color:var(--text)">Choose a new password</div></div>
       <div class="card">
         <div class="field"><label class="form-label">New password *</label><input type="password" id="new-password" placeholder="Minimum 6 characters" autocomplete="new-password"></div>
         <div class="field" style="margin-bottom:0"><label class="form-label">Confirm password *</label><input type="password" id="confirm-password" placeholder="Repeat your new password" autocomplete="new-password"></div>
       </div>
       <div class="alert alert-err" id="reset-err"></div>
-      <div class="alert alert-ok" id="reset-ok">Password updated! <button style="background:none;border:none;color:var(--em);font-family:Cabinet Grotesk,sans-serif;font-size:.82rem;cursor:pointer;font-weight:700;padding:0" id="btn-go-login-after-reset" type="button">Sign in now &#8594;</button></div>
+      <div class="alert alert-ok" id="reset-ok">Password updated! <button style="background:none;border:none;color:var(--em);font-family:'Inter',sans-serif;font-size:.82rem;cursor:pointer;font-weight:700;padding:0" id="btn-go-login-after-reset" type="button">Sign in now &#8594;</button></div>
       <button class="btn" id="btn-do-reset" type="button" style="margin-top:.75rem">Update Password &#8594;</button>
     </div>
 
@@ -604,7 +604,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <div style="font-size:.82rem;font-weight:700;color:var(--em)">&#10003; Signed in as <span id="emp-name-display"></span> &mdash; <span id="emp-plan-display" style="text-transform:uppercase;font-size:.7rem;font-weight:800"></span> plan</div>
         <div style="display:flex;gap:.75rem;align-items:center">
           <a href="/employer-portal.html" style="font-size:.72rem;font-weight:700;color:var(--em);text-decoration:none">My Listings &#8594;</a>
-          <button style="background:none;border:none;color:var(--text3);font-size:.72rem;cursor:pointer;font-family:Cabinet Grotesk,sans-serif;font-weight:600;padding:0" id="btn-emp-signout" type="button">Sign out</button>
+          <button style="background:none;border:none;color:var(--text3);font-size:.72rem;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;padding:0" id="btn-emp-signout" type="button">Sign out</button>
         </div>
       </div>
       <div id="pro-ai-note" style="display:none;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:var(--r);padding:.75rem 1rem;margin-bottom:.75rem;font-size:.8rem;color:var(--gold);font-weight:600">&#11088; Pro plan: Your listing will be auto-featured and appear in AI job matching results.</div>
@@ -647,15 +647,15 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <!-- Trust signals -->
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:2rem">
       <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem;text-align:center">
-        <div style="font-family:Fraunces,serif;font-size:2rem;font-weight:300;font-style:italic;color:var(--em);line-height:1">AI</div>
+        <div style="font-family:'Inter',sans-serif;font-size:2rem;font-weight:800;color:var(--em);line-height:1">AI</div>
         <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-top:.3rem">Powered matching</div>
       </div>
       <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem;text-align:center">
-        <div style="font-family:Fraunces,serif;font-size:2rem;font-weight:300;font-style:italic;color:var(--em);line-height:1">$0</div>
+        <div style="font-family:'Inter',sans-serif;font-size:2rem;font-weight:800;color:var(--em);line-height:1">$0</div>
         <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-top:.3rem">For job seekers</div>
       </div>
       <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem;text-align:center">
-        <div style="font-family:Fraunces,serif;font-size:2rem;font-weight:300;font-style:italic;color:var(--em);line-height:1">NZ</div>
+        <div style="font-family:'Inter',sans-serif;font-size:2rem;font-weight:800;color:var(--em);line-height:1">NZ</div>
         <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-top:.3rem">Jobs only</div>
       </div>
     </div>
@@ -704,7 +704,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 
 <footer>
   <div class="footer-inner">
-    <div><div class="footer-logo">Find<em>Me</em>AJob<span style="font-family:'Cabinet Grotesk',sans-serif;font-style:normal;font-size:.58rem;color:var(--text3)">.co.nz</span></div><div class="footer-sub">AI-powered job discovery for Aotearoa New Zealand &copy; 2026</div></div>
+    <div><div class="footer-logo">Find<em>Me</em>AJob<span style="font-family:'Inter',sans-serif;font-style:normal;font-size:.58rem;color:var(--text3)">.co.nz</span></div><div class="footer-sub">AI-powered job discovery for Aotearoa New Zealand &copy; 2026</div></div>
     <div class="footer-links">
       <button id="fl-find" type="button">Find a Job</button>
       <button id="fl-browse" type="button">Browse Jobs</button>
@@ -718,7 +718,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
   </div>
 </footer>
 
-<div id="db"><p class="btext">AI suggestions only — not career advice. <button style="background:none;border:none;color:var(--em);font-size:.73rem;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;font-weight:600;text-decoration:underline;padding:0" id="db-terms" type="button">Terms</button> &amp; <button style="background:none;border:none;color:var(--em);font-size:.73rem;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;font-weight:600;text-decoration:underline;padding:0" id="db-privacy" type="button">Privacy</button></p><button class="bbtn" id="btn-dismiss" type="button">Got it</button></div>
+<div id="db"><p class="btext">AI suggestions only — not career advice. <button style="background:none;border:none;color:var(--em);font-size:.73rem;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;text-decoration:underline;padding:0" id="db-terms" type="button">Terms</button> &amp; <button style="background:none;border:none;color:var(--em);font-size:.73rem;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;text-decoration:underline;padding:0" id="db-privacy" type="button">Privacy</button></p><button class="bbtn" id="btn-dismiss" type="button">Got it</button></div>
 <div id="lm"><div class="mbox"><button class="mbox-close" id="modal-close" type="button">&#215;</button><div id="modal-body"></div></div></div>
 
 <script>
@@ -1061,8 +1061,8 @@ async function submitJob(){
 }
 
 var legal={
-  privacy:'<div style="font-family:\'Fraunces\',serif;font-size:1.2rem;font-style:italic;font-weight:300;margin-bottom:.3rem">Privacy Policy</div><p style="color:var(--text3);font-size:.72rem;margin-bottom:1rem">March 2026 &mdash; FindMeAJob.co.nz</p><p style="color:var(--text2);font-size:.85rem;line-height:1.75;font-weight:500"><strong style="color:var(--text)">CV & Personal Data</strong><br>FindMeAJob.co.nz never stores CV or resume data. When you upload your CV, it is sent directly to Anthropic\'s Claude AI for real-time job matching analysis only, and is immediately discarded after processing. Neither FindMeAJob.co.nz nor Anthropic retains your CV after this process. We collect no personal information from job seekers.<br><br><strong style="color:var(--text)">Employer Accounts</strong><br>Employer registration details (name, company, email, hashed credentials) are stored securely in our database hosted by Upstash. We do not sell, share or disclose this information to third parties. Employers may request deletion of their account at any time by emailing hello@findmeajob.co.nz.<br><br><strong style="color:var(--text)">NZ Privacy Act 2020</strong><br>We operate in accordance with the New Zealand Privacy Act 2020. You have the right to access, correct or request deletion of any personal information we hold about you. Contact our Privacy Officer at hello@findmeajob.co.nz. We will respond within 20 working days.<br><br><strong style="color:var(--text)">Third Party Services</strong><br>We use Anthropic (AI processing), Adzuna (live job listings), Upstash (database), Vercel (hosting) and Resend (transactional email). Each operates under their own privacy policy.</p>',
-  terms:'<div style="font-family:\'Fraunces\',serif;font-size:1.2rem;font-style:italic;font-weight:300;margin-bottom:.3rem">Terms of Use</div><p style="color:var(--text3);font-size:.72rem;margin-bottom:1rem">March 2026 &mdash; FindMeAJob.co.nz</p><p style="color:var(--text2);font-size:.85rem;line-height:1.75;font-weight:500">This is an AI-powered job discovery tool, not a recruitment agency. AI results are for informational purposes only. Employers are responsible for the accuracy of their listings. We reserve the right to remove any listing. Governed by New Zealand law. Contact: hello@findmeajob.co.nz</p>'
+  privacy:'<div style="font-family:Inter,sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:.3rem">Privacy Policy</div><p style="color:var(--text3);font-size:.72rem;margin-bottom:1rem">March 2026 \u2014 FindMeAJob.co.nz</p><p style="color:var(--text2);font-size:.85rem;line-height:1.75;font-weight:500"><strong style="color:var(--text)">CV & Personal Data</strong><br>FindMeAJob.co.nz never stores CV or resume data. When you upload your CV, it is sent directly to Anthropic\u2019s Claude AI for real-time job matching analysis only, and is immediately discarded after processing. Neither FindMeAJob.co.nz nor Anthropic retains your CV after this process. We collect no personal information from job seekers.<br><br><strong style="color:var(--text)">Employer Accounts</strong><br>Employer registration details (name, company, email, hashed credentials) are stored securely in our database hosted by Upstash. We do not sell, share or disclose this information to third parties. Employers may request deletion of their account at any time by emailing hello@findmeajob.co.nz.<br><br><strong style="color:var(--text)">NZ Privacy Act 2020</strong><br>We operate in accordance with the New Zealand Privacy Act 2020. You have the right to access, correct or request deletion of any personal information we hold about you. Contact our Privacy Officer at hello@findmeajob.co.nz. We will respond within 20 working days.<br><br><strong style="color:var(--text)">Third Party Services</strong><br>We use Anthropic (AI processing), Adzuna (live job listings), Upstash (database), Vercel (hosting) and Resend (transactional email). Each operates under their own privacy policy.</p>',
+  terms:'<div style="font-family:Inter,sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:.3rem">Terms of Use</div><p style="color:var(--text3);font-size:.72rem;margin-bottom:1rem">March 2026 \u2014 FindMeAJob.co.nz</p><p style="color:var(--text2);font-size:.85rem;line-height:1.75;font-weight:500">This is an AI-powered job discovery tool, not a recruitment agency. AI results are for informational purposes only. Employers are responsible for the accuracy of their listings. We reserve the right to remove any listing. Governed by New Zealand law. Contact: hello@findmeajob.co.nz</p>'
 };
 function openModal(k){document.getElementById('modal-body').innerHTML=legal[k];document.getElementById('lm').style.display='block';document.body.style.overflow='hidden';}
 function closeModal(){document.getElementById('lm').style.display='none';document.body.style.overflow='';}
@@ -1268,12 +1268,12 @@ document.addEventListener('DOMContentLoaded',function(){try{
 <div id="apply-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99999;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(8px);overflow-y:auto">
   <div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem;width:100%;max-width:480px;margin:auto">
     <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin-bottom:.3rem">How to apply</div>
-    <div style="font-family:Fraunces,serif;font-size:1.2rem;font-style:italic;font-weight:300;color:var(--text);margin-bottom:1.25rem" id="apply-title-display"></div>
+    <div style="font-family:'Inter',sans-serif;font-size:1.2rem;font-weight:800;color:var(--text);margin-bottom:1.25rem" id="apply-title-display"></div>
     <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:1rem;margin-bottom:1rem">
       <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.3rem">Send your application to</div>
       <div style="font-size:1rem;font-weight:800;color:var(--em);margin-bottom:.5rem" id="apply-email-display"></div>
       <input type="text" id="apply-email-val" readonly style="position:absolute;opacity:0;pointer-events:none">
-      <button onclick="navigator.clipboard.writeText(document.getElementById('apply-email-val').value).then(function(){var b=document.getElementById('copy-btn');b.textContent='&#10003; Copied!';b.style.background='var(--em2)';setTimeout(function(){b.textContent='Copy Email Address';b.style.background='';},2500);})" id="copy-btn" style="background:var(--em);border:none;color:#fff;padding:.5rem 1rem;border-radius:var(--r);font-family:Cabinet Grotesk,sans-serif;font-size:.78rem;font-weight:800;cursor:pointer;width:100%">Copy Email Address</button>
+      <button onclick="navigator.clipboard.writeText(document.getElementById('apply-email-val').value).then(function(){var b=document.getElementById('copy-btn');b.textContent='&#10003; Copied!';b.style.background='var(--em2)';setTimeout(function(){b.textContent='Copy Email Address';b.style.background='';},2500);})" id="copy-btn" style="background:var(--em);border:none;color:#fff;padding:.5rem 1rem;border-radius:var(--r);font-family:'Inter',sans-serif;font-size:.78rem;font-weight:800;cursor:pointer;width:100%">Copy Email Address</button>
     </div>
     <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:1rem;margin-bottom:1rem">
       <div style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.65rem">What to include in your email</div>
@@ -1290,7 +1290,7 @@ document.addEventListener('DOMContentLoaded',function(){try{
       </div>
     </div>
     <div style="font-size:.72rem;color:var(--text3);font-weight:500;line-height:1.6;margin-bottom:1rem;padding:.6rem .75rem;background:var(--bg3);border-radius:var(--r);border:1px solid var(--border)">&#128274; Your privacy is protected. Your CV is never stored on FindMeAJob.co.nz. You apply directly to the employer.</div>
-    <button onclick="document.getElementById('apply-modal').style.display='none'" style="width:100%;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:.75rem;border-radius:var(--r);font-family:Cabinet Grotesk,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer">Close</button>
+    <button onclick="document.getElementById('apply-modal').style.display='none'" style="width:100%;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:.75rem;border-radius:var(--r);font-family:'Inter',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer">Close</button>
   </div>
 </div>
 </body>
