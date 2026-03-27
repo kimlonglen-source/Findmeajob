@@ -274,7 +274,17 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
     <div class="card" id="company-card" style="display:none">
       <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:.75rem">Company profile <span style="font-size:.62rem;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);color:var(--em);padding:.15rem .5rem;border-radius:999px;font-weight:700;text-transform:none;letter-spacing:0">Growth &amp; Pro</span></div>
       <div class="field"><label>About your company</label><textarea id="e-company-profile" placeholder="Tell candidates about your company, culture, team and mission..." style="min-height:70px"></textarea></div>
-      <div class="field" style="margin-bottom:0"><label>Company logo URL <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text3)">(optional)</span></label><input type="text" id="e-logo" placeholder="https://yourcompany.co.nz/logo.png"></div>
+      <div class="field" style="margin-bottom:0">
+        <label>Company logo <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text3)">(optional)</span></label>
+        <div id="logo-upload-area" style="border:2px dashed var(--border);border-radius:var(--r);padding:1rem;text-align:center;cursor:pointer;transition:all .2s;position:relative">
+          <input type="file" id="logo-file" accept="image/png,image/jpeg,image/svg+xml,image/webp" style="position:absolute;inset:0;opacity:0;cursor:pointer">
+          <div id="logo-preview" style="display:none;margin-bottom:.5rem"><img id="logo-preview-img" style="max-width:80px;max-height:80px;object-fit:contain;border-radius:6px;border:1px solid var(--border)"></div>
+          <div id="logo-prompt" style="font-size:.78rem;color:var(--text3);font-weight:500">Click to upload logo (PNG, JPG, SVG, max 200KB)</div>
+          <div id="logo-name" style="display:none;font-size:.72rem;color:var(--em);font-weight:600;margin-top:.3rem"></div>
+        </div>
+        <input type="hidden" id="e-logo">
+        <div style="margin-top:.35rem;font-size:.68rem;color:var(--text3)">Or paste a URL: <input type="text" id="e-logo-url" placeholder="https://yourcompany.co.nz/logo.png" style="display:inline;width:auto;padding:.3rem .5rem;font-size:.68rem;border-radius:6px;margin-left:.25rem"></div>
+      </div>
     </div>
     <div class="err" id="post-err"></div>
     <div class="ok" id="post-ok"></div>
@@ -453,6 +463,35 @@ function showPostScreen() {
 document.getElementById('btn-post-new').addEventListener('click', showPostScreen);
 document.getElementById('btn-back-portal').addEventListener('click', function(){ loadAndShowPortal(); });
 
+// Logo upload
+document.getElementById('logo-file').addEventListener('change', function(e){
+  var file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 200000) { toast('Logo must be under 200KB'); e.target.value=''; return; }
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    document.getElementById('e-logo').value = ev.target.result;
+    document.getElementById('logo-preview-img').src = ev.target.result;
+    document.getElementById('logo-preview').style.display = 'block';
+    document.getElementById('logo-name').textContent = file.name;
+    document.getElementById('logo-name').style.display = 'block';
+    document.getElementById('logo-prompt').textContent = 'Change logo';
+    document.getElementById('logo-upload-area').style.borderColor = 'rgba(16,185,129,.3)';
+  };
+  reader.readAsDataURL(file);
+});
+document.getElementById('e-logo-url').addEventListener('change', function(){
+  var url = this.value.trim();
+  if (url) {
+    document.getElementById('e-logo').value = url;
+    document.getElementById('logo-preview-img').src = url;
+    document.getElementById('logo-preview').style.display = 'block';
+    document.getElementById('logo-name').textContent = 'External URL';
+    document.getElementById('logo-name').style.display = 'block';
+    document.getElementById('logo-prompt').textContent = 'Change logo';
+  }
+});
+
 // Submit job
 document.getElementById('btn-submit').addEventListener('click', submitJob);
 
@@ -493,7 +532,8 @@ async function submitJob() {
       ok.style.display = 'block';
       btn.style.display = 'none';
       // Clear form
-      ['e-title','e-desc','e-req','e-why','e-company-profile','e-logo'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+      ['e-title','e-desc','e-req','e-why','e-company-profile','e-logo','e-logo-url'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+      document.getElementById('logo-preview').style.display='none';document.getElementById('logo-name').style.display='none';document.getElementById('logo-prompt').textContent='Click to upload logo (PNG, JPG, SVG, max 200KB)';document.getElementById('logo-upload-area').style.borderColor='';
     } else if (d.limitReached) {
       err.textContent = d.error + ' Contact hello@findmeajob.co.nz to upgrade.';
       err.style.display = 'block';
