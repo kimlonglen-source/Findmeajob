@@ -729,10 +729,14 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <div style="font-size:1.15rem;font-weight:800;color:var(--text);margin-bottom:.2rem" id="apply-title-display"></div>
     <div style="font-size:.8rem;color:var(--text3);font-weight:600;margin-bottom:1.25rem" id="apply-company-display"></div>
     <div id="apply-step1">
-      <div class="field"><label class="form-label">Your name *</label><input type="text" id="app-name" placeholder="Jane Smith" autocomplete="name"></div>
+      <div class="field"><label class="form-label">Your full name *</label><input type="text" id="app-name" placeholder="Jane Smith" autocomplete="name"></div>
       <div class="g2">
         <div class="field"><label class="form-label">Email *</label><input type="email" id="app-email" placeholder="jane@gmail.com" autocomplete="email"></div>
-        <div class="field"><label class="form-label">Phone</label><input type="tel" id="app-phone" placeholder="021 000 0000" autocomplete="tel"></div>
+        <div class="field"><label class="form-label">Phone *</label><input type="tel" id="app-phone" placeholder="021 000 0000" autocomplete="tel"></div>
+      </div>
+      <div class="g2">
+        <div class="field"><label class="form-label">Right to work in NZ *</label><select id="app-rtw"><option value="">Select...</option><option>NZ Citizen</option><option>NZ Permanent Resident</option><option>Work Visa</option><option>Student Visa</option><option>Working Holiday Visa</option><option>Need Sponsorship</option></select></div>
+        <div class="field"><label class="form-label">Notice period</label><select id="app-notice"><option value="">Select...</option><option>Available immediately</option><option>1 week</option><option>2 weeks</option><option>4 weeks</option><option>More than 4 weeks</option></select></div>
       </div>
       <div class="field">
         <label class="form-label">Your CV (PDF or Word) *</label>
@@ -742,7 +746,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
           <div style="font-size:.68rem;color:var(--text3);margin-top:.2rem">PDF or Word document</div>
         </button>
       </div>
-      <div class="field"><label class="form-label">Why do you want this role? <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--text3)">(optional)</span></label><textarea id="app-why" placeholder="e.g. I have 3 years experience in this field and I am passionate about..." style="min-height:70px"></textarea></div>
+      <div class="field"><label class="form-label">Why do you want this role? <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--text3)">(optional — helps AI write a better cover letter)</span></label><textarea id="app-why" placeholder="e.g. I have 3 years experience in this field and I am passionate about..." style="min-height:60px"></textarea></div>
       <div class="alert alert-err" id="app-err1"></div>
       <button class="btn" id="app-btn-generate" type="button" style="margin-top:.5rem">Generate Cover Letter with AI &#8594;</button>
       <div style="font-size:.68rem;color:var(--text3);text-align:center;margin-top:.6rem">Your CV is processed by AI to write a tailored cover letter. It is never stored.</div>
@@ -764,11 +768,15 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
           <div>&#9993; Your cover letter (above)</div>
           <div>&#128206; Your CV attached (<span id="app-cv-name-display"></span>)</div>
           <div>&#128100; Your contact details (<span id="app-details-display"></span>)</div>
+          <div>&#127987; Right to work: <span id="app-rtw-display"></span></div>
+          <div id="app-notice-display-row" style="display:none">&#128197; Notice period: <span id="app-notice-display"></span></div>
         </div>
       </div>
-      <div id="app-consent-box" style="margin-bottom:.75rem;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.75rem;cursor:pointer;display:flex;align-items:flex-start;gap:.65rem">
-        <div id="app-consent-tick" style="width:22px;height:22px;min-width:22px;border:2px solid var(--border2);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .15s;background:transparent;font-size:.8rem;color:#fff"></div>
-        <div style="font-size:.78rem;color:var(--text2);font-weight:500;line-height:1.6">I consent to sending my CV and cover letter to <strong id="app-consent-company" style="color:var(--text)"></strong>. My information is sent directly to the employer and is not stored by FindMeAJob.co.nz.</div>
+      <div id="app-consent-box" style="margin-bottom:.75rem;background:var(--bg3);border:2px solid var(--border);border-radius:var(--r);padding:.85rem;cursor:pointer;user-select:none">
+        <div style="display:flex;align-items:flex-start;gap:.75rem">
+          <div id="app-consent-tick" style="width:24px;height:24px;min-width:24px;border:2px solid var(--text3);border-radius:6px;display:flex;align-items:center;justify-content:center;transition:all .15s;font-size:.85rem;color:transparent;font-weight:900">&#10003;</div>
+          <div style="font-size:.82rem;color:var(--text2);font-weight:500;line-height:1.65">I consent to sending my CV and cover letter to <strong id="app-consent-company" style="color:var(--text)"></strong>. My information is sent directly to the employer and is not stored by FindMeAJob.co.nz.</div>
+        </div>
         <input type="hidden" id="app-consent" value="0">
       </div>
       <div class="alert alert-err" id="app-err3"></div>
@@ -1189,9 +1197,14 @@ document.getElementById('app-cv-file').addEventListener('change', function(e){
 document.getElementById('app-btn-generate').addEventListener('click', async function(){
   var name = document.getElementById('app-name').value.trim();
   var email = document.getElementById('app-email').value.trim();
+  var phone = document.getElementById('app-phone').value.trim();
+  var rtw = document.getElementById('app-rtw').value;
   var err = document.getElementById('app-err1');
   err.classList.remove('show');
-  if (!name || !email) { err.textContent = 'Please enter your name and email.'; err.classList.add('show'); return; }
+  if (!name) { err.textContent = 'Please enter your full name.'; err.classList.add('show'); return; }
+  if (!email) { err.textContent = 'Please enter your email address.'; err.classList.add('show'); return; }
+  if (!phone) { err.textContent = 'Please enter your phone number.'; err.classList.add('show'); return; }
+  if (!rtw) { err.textContent = 'Please select your right to work in NZ.'; err.classList.add('show'); return; }
   if (!_applyState.cvFile) { err.textContent = 'Please upload your CV.'; err.classList.add('show'); return; }
 
   document.getElementById('apply-step1').style.display = 'none';
@@ -1219,7 +1232,11 @@ document.getElementById('app-btn-generate').addEventListener('click', async func
     var letter = d.content.map(function(b){return b.text||'';}).join('').trim();
     document.getElementById('app-cover-letter').value = letter;
     document.getElementById('app-cv-name-display').textContent = _applyState.cvFile.name;
-    document.getElementById('app-details-display').textContent = name + ', ' + email;
+    document.getElementById('app-details-display').textContent = name + ', ' + email + ', ' + phone;
+    document.getElementById('app-rtw-display').textContent = rtw;
+    var noticeVal = document.getElementById('app-notice').value;
+    if (noticeVal) { document.getElementById('app-notice-display').textContent = noticeVal; document.getElementById('app-notice-display-row').style.display = 'block'; }
+    else { document.getElementById('app-notice-display-row').style.display = 'none'; }
     document.getElementById('app-consent-company').textContent = _applyState.company;
     document.getElementById('app-sent-company').textContent = _applyState.company;
     document.getElementById('apply-step2').style.display = 'none';
@@ -1241,10 +1258,11 @@ document.getElementById('app-btn-generate').addEventListener('click', async func
 document.getElementById('app-consent-box').addEventListener('click', function(){
   var h = document.getElementById('app-consent');
   var tick = document.getElementById('app-consent-tick');
+  var box = document.getElementById('app-consent-box');
   if (h.value === '1') {
-    h.value = '0'; tick.innerHTML = ''; tick.style.background = 'transparent'; tick.style.borderColor = 'var(--border2)';
+    h.value = '0'; tick.style.color = 'transparent'; tick.style.background = 'transparent'; tick.style.borderColor = 'var(--text3)'; box.style.borderColor = 'var(--border)';
   } else {
-    h.value = '1'; tick.innerHTML = '\u2713'; tick.style.background = 'var(--em)'; tick.style.borderColor = 'var(--em)';
+    h.value = '1'; tick.style.color = '#fff'; tick.style.background = 'var(--em)'; tick.style.borderColor = 'var(--em)'; box.style.borderColor = 'rgba(16,185,129,.4)';
   }
 });
 
@@ -1270,6 +1288,8 @@ document.getElementById('app-btn-send').addEventListener('click', async function
       name: document.getElementById('app-name').value.trim(),
       email: document.getElementById('app-email').value.trim(),
       phone: document.getElementById('app-phone').value.trim(),
+      rightToWork: document.getElementById('app-rtw').value,
+      noticePeriod: document.getElementById('app-notice').value,
       coverLetter: document.getElementById('app-cover-letter').value,
       cvFileName: _applyState.cvFile ? _applyState.cvFile.name : '',
       cvData: _applyState.cvData || ''

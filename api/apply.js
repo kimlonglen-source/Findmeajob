@@ -14,6 +14,8 @@ module.exports = async function handler(req, res) {
   var applicantName = body.name;
   var applicantEmail = body.email;
   var applicantPhone = body.phone || "";
+  var rightToWork = body.rightToWork || "";
+  var noticePeriod = body.noticePeriod || "";
   var coverLetter = body.coverLetter;
   var cvFileName = body.cvFileName;
   var cvData = body.cvData; // base64 encoded file
@@ -21,6 +23,8 @@ module.exports = async function handler(req, res) {
   if (!employerEmail || !jobTitle || !applicantName || !applicantEmail || !coverLetter) {
     return res.status(400).json({ error: "Missing required fields" });
   }
+
+  var appliedDate = new Date().toLocaleDateString("en-NZ", {day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit"});
 
   // Build email HTML
   var html = '<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#1a1a1a">';
@@ -32,11 +36,15 @@ module.exports = async function handler(req, res) {
 
   // Applicant info
   html += '<div style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:1rem;margin-bottom:1rem">';
-  html += '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#6b7280;margin-bottom:.5rem">Applicant</div>';
-  html += '<div style="font-size:16px;font-weight:700;color:#111">' + esc(applicantName) + '</div>';
-  html += '<div style="font-size:14px;color:#059669;margin-top:2px">' + esc(applicantEmail) + '</div>';
-  if (applicantPhone) html += '<div style="font-size:14px;color:#6b7280;margin-top:2px">' + esc(applicantPhone) + '</div>';
-  html += '</div>';
+  html += '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#6b7280;margin-bottom:.5rem">Applicant Details</div>';
+  html += '<table style="width:100%;font-size:14px;border-collapse:collapse">';
+  html += '<tr><td style="padding:4px 8px 4px 0;color:#6b7280;white-space:nowrap;vertical-align:top">Name</td><td style="padding:4px 0;font-weight:700;color:#111">' + esc(applicantName) + '</td></tr>';
+  html += '<tr><td style="padding:4px 8px 4px 0;color:#6b7280;white-space:nowrap;vertical-align:top">Email</td><td style="padding:4px 0"><a href="mailto:' + esc(applicantEmail) + '" style="color:#059669;text-decoration:none;font-weight:600">' + esc(applicantEmail) + '</a></td></tr>';
+  if (applicantPhone) html += '<tr><td style="padding:4px 8px 4px 0;color:#6b7280;white-space:nowrap;vertical-align:top">Phone</td><td style="padding:4px 0;font-weight:600">' + esc(applicantPhone) + '</td></tr>';
+  if (rightToWork) html += '<tr><td style="padding:4px 8px 4px 0;color:#6b7280;white-space:nowrap;vertical-align:top">Right to work</td><td style="padding:4px 0">' + esc(rightToWork) + '</td></tr>';
+  if (noticePeriod) html += '<tr><td style="padding:4px 8px 4px 0;color:#6b7280;white-space:nowrap;vertical-align:top">Notice period</td><td style="padding:4px 0">' + esc(noticePeriod) + '</td></tr>';
+  html += '<tr><td style="padding:4px 8px 4px 0;color:#6b7280;white-space:nowrap;vertical-align:top">Applied</td><td style="padding:4px 0;color:#6b7280">' + appliedDate + '</td></tr>';
+  html += '</table></div>';
 
   // Cover letter
   html += '<div style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:1rem;margin-bottom:1rem">';
