@@ -4,7 +4,7 @@ function getKV() {
   if (restUrl && restToken) return { url: restUrl, token: restToken };
   const redisUrl = process.env.REDIS_URL || process.env.KV_URL;
   if (redisUrl) {
-    const match = redisUrl.match(/redis:\/\/default:([^@]+)@(.+)/);
+    const match = redisUrl.match(/rediss?:\/\/default:([^@]+)@(.+)/);
     if (match) {
       return { url: `https://${match[2].split(':')[0]}`, token: match[1] };
     }

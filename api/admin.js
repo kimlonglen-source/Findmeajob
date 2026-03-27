@@ -1,64 +1,74 @@
-const { getKV, hget, hgetall, hset, hdel } = require('./_kv');
-const PASS = process.env.ADMIN_PASSWORD || 'findmeajob2026';
-const PLAN_DAYS = { free: 30, basic: 60, pro: 90 };
+var _kv = require("./_kv");
+var getKV = _kv.getKV;
+var hget = _kv.hget;
+var hgetall = _kv.hgetall;
+var hset = _kv.hset;
+var hdel = _kv.hdel;
+
+var PASS = process.env.ADMIN_PASSWORD;
+var PLAN_DAYS = { free: 30, basic: 60, pro: 90 };
 
 module.exports = async function handler(req, res) {
-  const params = req.method === 'GET' ? req.query : req.body;
-  const { action, password, id } = params;
-  if (password !== PASS) return res.status(401).json({ error: 'Unauthorised' });
-  if (!getKV()) return res.status(500).json({ error: 'Database not configured.' });
+  if (!PASS) return res.status(500).json({ error: "ADMIN_PASSWORD environment variable is not set" });
+  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed. Use POST." });
+  var params = req.body;
+  var action = params.action;
+  var password = params.password;
+  var id = params.id;
+  if (password !== PASS) return res.status(401).json({ error: "Unauthorised" });
+  if (!getKV()) return res.status(500).json({ error: "Database not configured." });
   try {
-    if (action === 'list') {
-      const raw = await hgetall('jobs');
-      const jobs = Object.values(raw).map(j => typeof j === 'string' ? JSON.parse(j) : j);
-      jobs.sort((a, b) => new Date(b.submitted) - new Date(a.submitted));
-      return res.status(200).json({ jobs });
+    if (action === "list") {
+      var raw = await hgetall("jobs");
+      var jobs = Object.values(raw).map(function(j) { return typeof j === "string" ? JSON.parse(j) : j; });
+      jobs.sort(function(a, b) { return new Date(b.submitted) - new Date(a.submitted); });
+      return res.status(200).json({ jobs: jobs });
     }
-    if (action === 'approve') {
-      const raw = await hget('jobs', id);
-      if (!raw) return res.status(404).json({ error: 'Not found' });
-      const job = typeof raw === 'string' ? JSON.parse(raw) : raw;
-      job.status = 'approved';
+    if (action === "approve") {
+      var raw2 = await hget("jobs", id);
+      if (!raw2) return res.status(404).json({ error: "Not found" });
+      var job = typeof raw2 === "string" ? JSON.parse(raw2) : raw2;
+      job.status = "approved";
       job.approvedAt = new Date().toISOString();
       // Auto-feature Pro listings
-      if (job.autoFeature || job.plan === 'pro') job.featured = true;
+      if (job.autoFeature || job.plan === "pro") job.featured = true;
       // Set plan days
       job.planDays = PLAN_DAYS[job.plan] || 30;
-      await hset('jobs', id, job);
+      await hset("jobs", id, job);
       return res.status(200).json({ success: true });
     }
-    if (action === 'reject') {
-      const raw = await hget('jobs', id);
-      if (!raw) return res.status(404).json({ error: 'Not found' });
-      const job = typeof raw === 'string' ? JSON.parse(raw) : raw;
-      job.status = 'rejected';
-      await hset('jobs', id, job);
+    if (action === "reject") {
+      var raw3 = await hget("jobs", id);
+      if (!raw3) return res.status(404).json({ error: "Not found" });
+      var job2 = typeof raw3 === "string" ? JSON.parse(raw3) : raw3;
+      job2.status = "rejected";
+      await hset("jobs", id, job2);
       return res.status(200).json({ success: true });
     }
-    if (action === 'feature') {
-      const raw = await hget('jobs', id);
-      if (!raw) return res.status(404).json({ error: 'Not found' });
-      const job = typeof raw === 'string' ? JSON.parse(raw) : raw;
-      job.featured = !job.featured;
-      await hset('jobs', id, job);
-      return res.status(200).json({ success: true, featured: job.featured });
+    if (action === "feature") {
+      var raw4 = await hget("jobs", id);
+      if (!raw4) return res.status(404).json({ error: "Not found" });
+      var job3 = typeof raw4 === "string" ? JSON.parse(raw4) : raw4;
+      job3.featured = !job3.featured;
+      await hset("jobs", id, job3);
+      return res.status(200).json({ success: true, featured: job3.featured });
     }
-    if (action === 'relist') {
-      const raw = await hget('jobs', id);
-      if (!raw) return res.status(404).json({ error: 'Not found' });
-      const job = typeof raw === 'string' ? JSON.parse(raw) : raw;
-      job.status = 'approved';
-      job.approvedAt = new Date().toISOString();
-      job.planDays = PLAN_DAYS[job.plan] || 30;
-      if (job.plan === 'pro') job.featured = true;
-      await hset('jobs', id, job);
+    if (action === "relist") {
+      var raw5 = await hget("jobs", id);
+      if (!raw5) return res.status(404).json({ error: "Not found" });
+      var job4 = typeof raw5 === "string" ? JSON.parse(raw5) : raw5;
+      job4.status = "approved";
+      job4.approvedAt = new Date().toISOString();
+      job4.planDays = PLAN_DAYS[job4.plan] || 30;
+      if (job4.plan === "pro") job4.featured = true;
+      await hset("jobs", id, job4);
       return res.status(200).json({ success: true });
     }
-    if (action === 'delete') {
-      await hdel('jobs', id);
+    if (action === "delete") {
+      await hdel("jobs", id);
       return res.status(200).json({ success: true });
     }
-    return res.status(400).json({ error: 'Unknown action' });
+    return res.status(400).json({ error: "Unknown action" });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FindMeAJob — Design Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#09090b;--bg2:#0f172a;--card:rgba(255,255,255,.03);--card-border:rgba(255,255,255,.06);
+  --text:#f8fafc;--text2:#94a3b8;--text3:#64748b;
+  --em:#10b981;--em2:#14b8a6;--purple:#8b5cf6;
+  --gold:#f59e0b;--glow:rgba(16,185,129,.15);
+}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+
+/* Nav */
+nav{position:sticky;top:0;z-index:200;padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;
+  background:rgba(9,9,11,.8);backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--card-border)}
+.logo{font-size:1.1rem;font-weight:800;color:var(--text);letter-spacing:-.3px}
+.logo span{background:linear-gradient(135deg,var(--em),var(--em2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-pills{display:flex;gap:.25rem;background:rgba(255,255,255,.04);border:1px solid var(--card-border);border-radius:999px;padding:4px}
+.nav-pill{background:none;border:none;color:var(--text3);font-size:.82rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;padding:.45rem 1rem;border-radius:999px;transition:all .2s}
+.nav-pill:hover{color:var(--text2)}
+.nav-pill.active{background:rgba(16,185,129,.12);color:var(--em)}
+.btn-nav{background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;border:none;padding:.5rem 1.2rem;border-radius:999px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;box-shadow:0 0 20px rgba(16,185,129,.2)}
+.btn-nav:hover{box-shadow:0 0 30px rgba(16,185,129,.35);transform:translateY(-1px)}
+
+/* Hero */
+.hero{text-align:center;padding:6rem 2rem 4rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:radial-gradient(circle at 50% 50%,rgba(16,185,129,.06) 0%,transparent 50%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.15);
+  color:var(--em);font-size:.72rem;font-weight:700;padding:.4rem 1rem;border-radius:999px;margin-bottom:2rem;letter-spacing:.3px}
+.hero-badge .dot{width:6px;height:6px;background:var(--em);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+.hero h1{font-size:clamp(3rem,7vw,5.5rem);font-weight:800;line-height:1.05;letter-spacing:-2px;margin-bottom:1.5rem}
+.hero h1 .gradient{background:linear-gradient(135deg,var(--em),var(--em2),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{color:var(--text2);font-size:1.1rem;line-height:1.7;max-width:500px;margin:0 auto 2.5rem;font-weight:500}
+.hero-ctas{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
+.btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,var(--em),var(--em2));
+  color:#fff;padding:.9rem 2rem;border-radius:999px;font-size:.95rem;font-weight:700;border:none;cursor:pointer;
+  transition:all .25s;box-shadow:0 4px 25px rgba(16,185,129,.25);font-family:'Inter',sans-serif}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 35px rgba(16,185,129,.35)}
+.btn-outline{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--text2);
+  border:1px solid var(--card-border);padding:.9rem 2rem;border-radius:999px;font-size:.95rem;font-weight:600;
+  cursor:pointer;transition:all .25s;font-family:'Inter',sans-serif}
+.btn-outline:hover{border-color:var(--text3);color:var(--text);background:rgba(255,255,255,.03)}
+.trust-row{display:flex;gap:2rem;justify-content:center;margin-top:2.5rem;flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:.4rem;font-size:.82rem;color:var(--text3);font-weight:600}
+.trust-item .check{color:var(--em);font-size:1rem}
+
+/* How it works */
+.section{max-width:1000px;margin:0 auto;padding:4rem 2rem}
+.section-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;
+  background:linear-gradient(135deg,var(--em),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.75rem}
+.section-title{font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-1px;margin-bottom:2.5rem;line-height:1.1}
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.step-card{background:var(--card);border:1px solid var(--card-border);border-radius:20px;padding:2rem;position:relative;transition:all .3s}
+.step-card:hover{border-color:rgba(16,185,129,.15);transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.3)}
+.step-num{font-size:3rem;font-weight:900;background:linear-gradient(135deg,rgba(16,185,129,.2),rgba(139,92,246,.1));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:1rem}
+.step-title{font-size:1.05rem;font-weight:700;margin-bottom:.5rem}
+.step-desc{font-size:.88rem;color:var(--text2);line-height:1.7;font-weight:500}
+
+/* Job cards */
+.jobs-section{max-width:800px;margin:0 auto;padding:3rem 2rem}
+.job-card{background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:1.5rem;margin-bottom:1rem;
+  display:grid;grid-template-columns:1fr auto;gap:1rem;transition:all .3s;position:relative;overflow:hidden}
+.job-card:hover{border-color:rgba(16,185,129,.15);transform:translateY(-2px);box-shadow:0 15px 30px rgba(0,0,0,.2)}
+.job-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--em),var(--em2));transform:scaleY(0);transition:transform .3s}
+.job-card:hover::before{transform:scaleY(1)}
+.job-card.featured{border-color:rgba(245,158,11,.15)}
+.job-card.featured::before{background:linear-gradient(180deg,var(--gold),#f97316);transform:scaleY(1)}
+.job-title{font-size:1.05rem;font-weight:700;margin-bottom:.25rem}
+.job-company{font-size:.82rem;font-weight:600;color:var(--em);margin-bottom:.2rem}
+.job-location{font-size:.78rem;color:var(--text3);font-weight:500;margin-bottom:.5rem}
+.job-desc{font-size:.85rem;color:var(--text2);line-height:1.6;font-weight:500}
+.job-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.75rem}
+.tag{padding:.22rem .7rem;border-radius:999px;font-size:.7rem;font-weight:600}
+.tag-cat{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.15);color:var(--em)}
+.tag-other{background:rgba(255,255,255,.04);border:1px solid var(--card-border);color:var(--text3)}
+.tag-live{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);color:var(--em);font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.tag-featured{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);color:var(--gold);font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.match-col{text-align:right;flex-shrink:0}
+.match-pct{font-size:2rem;font-weight:800;background:linear-gradient(135deg,var(--em),var(--em2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.match-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text3)}
+.btn-apply{display:inline-flex;align-items:center;gap:.3rem;background:linear-gradient(135deg,var(--em),var(--em2));
+  color:#fff;padding:.4rem 1rem;border-radius:999px;font-size:.78rem;font-weight:700;border:none;cursor:pointer;
+  transition:all .2s;margin-top:.75rem;box-shadow:0 2px 10px rgba(16,185,129,.2)}
+.btn-apply:hover{box-shadow:0 4px 15px rgba(16,185,129,.3);transform:translateY(-1px)}
+
+/* Pricing */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;max-width:1000px;margin:0 auto}
+.plan-card{background:var(--card);border:1px solid var(--card-border);border-radius:20px;padding:2rem;position:relative;transition:all .3s}
+.plan-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.3)}
+.plan-card.popular{border-color:rgba(16,185,129,.2);
+  background:linear-gradient(135deg,rgba(16,185,129,.04),rgba(20,184,166,.02))}
+.plan-card.popular::before{content:'Most Popular';position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;font-size:.65rem;font-weight:800;
+  padding:.3rem 1rem;border-radius:999px;white-space:nowrap;text-transform:uppercase;letter-spacing:.5px}
+.plan-tier{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:.5rem}
+.plan-price{font-size:2.5rem;font-weight:900;letter-spacing:-1px;line-height:1;margin-bottom:.25rem}
+.plan-period{font-size:.78rem;color:var(--text3);font-weight:500;margin-bottom:1.25rem}
+.plan-features{list-style:none;margin-bottom:1.5rem}
+.plan-features li{padding:.35rem 0;padding-left:1.4rem;position:relative;font-size:.85rem;color:var(--text2);font-weight:500}
+.plan-features li::before{content:'\2713';position:absolute;left:0;color:var(--em);font-weight:700;font-size:.8rem}
+.btn-plan{width:100%;padding:.8rem;border-radius:999px;font-size:.88rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
+.btn-plan.primary{background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;border:none;box-shadow:0 4px 20px rgba(16,185,129,.2)}
+.btn-plan.secondary{background:transparent;color:var(--text2);border:1px solid var(--card-border)}
+.btn-plan:hover{transform:translateY(-2px)}
+
+/* Footer */
+footer{border-top:1px solid var(--card-border);padding:2rem;margin-top:4rem}
+.footer-inner{max-width:1000px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.footer-brand{font-size:.95rem;font-weight:700}.footer-brand span{color:var(--em)}
+.footer-sub{font-size:.75rem;color:var(--text3);font-weight:500;margin-top:.2rem}
+.footer-links{display:flex;gap:1.5rem}
+.footer-links a{color:var(--text3);font-size:.78rem;text-decoration:none;font-weight:500;transition:color .15s}
+.footer-links a:hover{color:var(--em)}
+
+@media(max-width:700px){
+  .steps-grid,.pricing-grid{grid-template-columns:1fr}
+  .hero h1{font-size:2.5rem}
+  nav{padding:0 1rem}
+  .nav-pills{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">FindMe<span>AJob</span><span style="font-size:.65rem;color:var(--text3);font-weight:500">.co.nz</span></div>
+  <div class="nav-pills">
+    <button class="nav-pill active">Find a Job</button>
+    <button class="nav-pill">Browse Jobs</button>
+    <button class="nav-pill">Pricing</button>
+    <button class="nav-pill">About</button>
+  </div>
+  <button class="btn-nav">Post a Job</button>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge"><span class="dot"></span> AI-Powered &middot; New Zealand Only &middot; 100% Free</div>
+  <h1>Find your next NZ job<br><span class="gradient">in 60 seconds</span></h1>
+  <p class="hero-sub">Upload your CV or tell us your skills. Our AI matches you to real NZ roles instantly. No sign-up, no overseas spam.</p>
+  <div class="hero-ctas">
+    <button class="btn-primary">Find My Job &mdash; Free &rarr;</button>
+    <button class="btn-outline">Browse NZ Jobs</button>
+  </div>
+  <div class="trust-row">
+    <div class="trust-item"><span class="check">&#10003;</span> No sign-up required</div>
+    <div class="trust-item"><span class="check">&#10003;</span> CV never stored</div>
+    <div class="trust-item"><span class="check">&#10003;</span> NZ jobs only</div>
+  </div>
+</section>
+
+<div class="section">
+  <div class="section-label">How It Works</div>
+  <div class="section-title">Three steps to your perfect NZ role</div>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <div class="step-title">Upload CV or enter skills</div>
+      <div class="step-desc">Drop your PDF or Word CV. AI extracts your skills automatically. Or type skills manually.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <div class="step-title">AI finds your matches</div>
+      <div class="step-desc">Our AI compares your background against real NZ roles and generates personalised match scores.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <div class="step-title">Apply with confidence</div>
+      <div class="step-desc">See live NZ job listings plus AI-matched roles. One click to apply directly.</div>
+    </div>
+  </div>
+</div>
+
+<div class="jobs-section">
+  <div class="section-label">Sample Results</div>
+  <div class="section-title" style="margin-bottom:1.5rem">Jobs matched for you</div>
+
+  <div class="job-card featured">
+    <div>
+      <div class="job-tags" style="margin-top:0;margin-bottom:.5rem"><span class="tag tag-featured">&#11088; Featured</span></div>
+      <div class="job-title">Senior Full-Stack Developer</div>
+      <div class="job-company">Xero NZ</div>
+      <div class="job-location">Wellington, New Zealand</div>
+      <div class="job-desc">Join our engineering team to build next-generation accounting software used by millions of small businesses across NZ and Australia.</div>
+      <div class="job-tags">
+        <span class="tag tag-cat">Technology</span>
+        <span class="tag tag-other">Full-time</span>
+        <span class="tag tag-other">$120K+</span>
+      </div>
+      <button class="btn-apply">Apply Now &rarr;</button>
+    </div>
+    <div class="match-col">
+      <div class="match-pct">92%</div>
+      <div class="match-label">AI match</div>
+    </div>
+  </div>
+
+  <div class="job-card">
+    <div>
+      <div class="job-tags" style="margin-top:0;margin-bottom:.5rem"><span class="tag tag-live">Live</span></div>
+      <div class="job-title">Product Manager</div>
+      <div class="job-company">Trade Me</div>
+      <div class="job-location">Auckland, New Zealand</div>
+      <div class="job-desc">Lead product strategy for one of NZ's most-loved marketplaces. Work with cross-functional teams to deliver features that matter.</div>
+      <div class="job-tags">
+        <span class="tag tag-cat">Technology</span>
+        <span class="tag tag-other">Full-time</span>
+        <span class="tag tag-other">$90K-$120K</span>
+      </div>
+      <button class="btn-apply">Apply Now &rarr;</button>
+    </div>
+    <div class="match-col">
+      <div class="match-pct">85%</div>
+      <div class="match-label">AI match</div>
+    </div>
+  </div>
+
+  <div class="job-card">
+    <div>
+      <div class="job-tags" style="margin-top:0;margin-bottom:.5rem"><span class="tag tag-live">Live</span></div>
+      <div class="job-title">UX Designer</div>
+      <div class="job-company">Datacom</div>
+      <div class="job-location">Christchurch, New Zealand</div>
+      <div class="job-desc">Design user experiences for enterprise clients across the Asia-Pacific region. Flexible hybrid working arrangements available.</div>
+      <div class="job-tags">
+        <span class="tag tag-cat">Creative</span>
+        <span class="tag tag-other">Full-time</span>
+        <span class="tag tag-other">$70K-$90K</span>
+      </div>
+      <button class="btn-apply">Apply Now &rarr;</button>
+    </div>
+    <div class="match-col">
+      <div class="match-pct">78%</div>
+      <div class="match-label">AI match</div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="text-align:center">
+  <div class="section-label">Pricing</div>
+  <div class="section-title" style="margin-bottom:.5rem">Simple pricing. No surprises.</div>
+  <p style="color:var(--text2);font-size:.95rem;margin-bottom:2.5rem">Job seekers are always free. Employers choose their plan.</p>
+  <div class="pricing-grid">
+    <div class="plan-card">
+      <div class="plan-tier">Starter</div>
+      <div class="plan-price">$0</div>
+      <div class="plan-period">Free forever</div>
+      <ul class="plan-features">
+        <li>1 active listing</li>
+        <li>30 day visibility</li>
+        <li>Email applications</li>
+        <li>Standard placement</li>
+      </ul>
+      <button class="btn-plan secondary">Get started free</button>
+    </div>
+    <div class="plan-card popular">
+      <div class="plan-tier">Growth</div>
+      <div class="plan-price">$29<span style="font-size:1rem;font-weight:500;color:var(--text3)">/mo</span></div>
+      <div class="plan-period">First month free</div>
+      <ul class="plan-features">
+        <li>5 active listings</li>
+        <li>60 day visibility</li>
+        <li>Priority placement</li>
+        <li>Company profile + logo</li>
+        <li>Applicant tracking</li>
+      </ul>
+      <button class="btn-plan primary">Get started free</button>
+    </div>
+    <div class="plan-card">
+      <div class="plan-tier">Pro</div>
+      <div class="plan-price">$79<span style="font-size:1rem;font-weight:500;color:var(--text3)">/mo</span></div>
+      <div class="plan-period">First month free</div>
+      <ul class="plan-features">
+        <li>Unlimited listings</li>
+        <li>90 day visibility</li>
+        <li>Featured placement</li>
+        <li>AI candidate matching</li>
+        <li>Full analytics</li>
+        <li>Priority support</li>
+      </ul>
+      <button class="btn-plan secondary">Get started free</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">FindMe<span>AJob</span><span style="font-size:.6rem;color:var(--text3);font-weight:500">.co.nz</span></div>
+      <div class="footer-sub">AI-powered job discovery for Aotearoa New Zealand &copy; 2026</div>
+    </div>
+    <div class="footer-links">
+      <a href="#">Find a Job</a>
+      <a href="#">Browse Jobs</a>
+      <a href="#">Pricing</a>
+      <a href="#">About</a>
+      <a href="#">Privacy</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

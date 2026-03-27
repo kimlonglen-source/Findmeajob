@@ -3,104 +3,147 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin — FindMeAJob.co.nz</title>
+<title>Admin \u2014 FindMeAJob.co.nz</title>
 <meta name="robots" content="noindex,nofollow">
-<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0a08;--bg2:#111110;--bg3:#181816;--text:#f2efe8;--text2:#c8c4bc;--text3:#888480;--em:#10b981;--em2:#059669;--gold:#f59e0b;--red:#ef4444;--border:#2a2a28;--border2:#343430;--card:#141412;--r:8px;--rl:12px;}
+:root{--bg:#09090b;--bg2:rgba(255,255,255,.03);--bg3:rgba(255,255,255,.06);--text:#f4f4f5;--text2:#a1a1aa;--text3:#71717a;--em:#10b981;--em2:#059669;--gold:#f59e0b;--purple:#8b5cf6;--red:#ef4444;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.08);--card:rgba(255,255,255,.03);--r:12px;--rl:16px;}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:'Cabinet Grotesk',sans-serif;min-height:100vh;font-size:14px}
-#login{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1rem}
-.login-box{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:2rem;width:100%;max-width:360px}
-.login-logo{font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:.25rem}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
+
+/* Toast */
+#toast-container{position:fixed;top:1.5rem;right:1.5rem;z-index:99999;display:flex;flex-direction:column;gap:.5rem}
+.toast{background:rgba(24,24,27,.95);border:1px solid var(--border2);backdrop-filter:blur(12px);border-radius:var(--r);padding:.85rem 1.25rem;font-size:.85rem;font-weight:600;color:var(--text);box-shadow:0 8px 32px rgba(0,0,0,.4);animation:toastIn .3s ease;display:flex;align-items:center;gap:.6rem;max-width:360px}
+.toast.success{border-color:rgba(16,185,129,.3);color:var(--em)}
+.toast.error{border-color:rgba(239,68,68,.3);color:#fca5a5}
+.toast.out{animation:toastOut .3s ease forwards}
+@keyframes toastIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+@keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(30px)}}
+
+/* Login */
+#login{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1.5rem}
+.login-box{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2.5rem;width:100%;max-width:400px;backdrop-filter:blur(20px)}
+.login-logo{font-size:1.3rem;font-weight:800;color:var(--text);margin-bottom:.35rem}
 .login-logo span{color:var(--em)}
-.login-sub{font-size:.78rem;color:var(--text3);font-weight:600;margin-bottom:1.5rem}
-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);display:block;margin-bottom:.35rem}
-input{background:#1c1c1a;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Cabinet Grotesk',sans-serif;font-size:14px;padding:.7rem 1rem;outline:none;width:100%;margin-bottom:.75rem}
-input:focus{border-color:var(--em)}
-.btn{display:flex;align-items:center;justify-content:center;background:var(--em);color:#fff;padding:.75rem;border-radius:var(--r);font-family:'Cabinet Grotesk',sans-serif;font-size:.85rem;font-weight:800;border:none;cursor:pointer;width:100%;transition:background .15s}
-.btn:hover{background:var(--em2)}
-.err{color:#fca5a5;font-size:.78rem;font-weight:600;margin-top:.5rem;display:none}
+.login-sub{font-size:.85rem;color:var(--text3);font-weight:600;margin-bottom:2rem}
+label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);display:block;margin-bottom:.5rem}
+input{background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;padding:.85rem 1.15rem;outline:none;width:100%;margin-bottom:1rem;transition:border-color .2s}
+input:focus{border-color:var(--em);box-shadow:0 0 0 3px rgba(16,185,129,.1)}
+.btn{display:flex;align-items:center;justify-content:center;background:var(--em);color:#fff;padding:.85rem;border-radius:999px;font-family:'Inter',system-ui,sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer;width:100%;transition:all .2s}
+.btn:hover{background:var(--em2);transform:translateY(-1px);box-shadow:0 4px 20px rgba(16,185,129,.3)}
+.err{color:#fca5a5;font-size:.82rem;font-weight:600;margin-top:.65rem;display:none}
+
+/* App */
 #app{display:none;min-height:100vh}
-header{background:var(--bg2);border-bottom:1px solid var(--border);padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
-.hlogo{font-size:.95rem;font-weight:800}.hlogo span{color:var(--em)}
-.hright{display:flex;align-items:center;gap:.75rem}
-.badge{background:#022c22;border:1px solid rgba(16,185,129,.2);color:var(--em);font-size:.65rem;font-weight:800;padding:.2rem .55rem;border-radius:999px}
-.signout{background:none;border:1px solid var(--border2);color:var(--text3);padding:.35rem .75rem;border-radius:var(--r);cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;font-size:.75rem;font-weight:600}
-.signout:hover{color:var(--text)}
-main{padding:1.5rem;max-width:1100px;margin:0 auto}
-.tabs{display:flex;gap:.25rem;margin-bottom:1.25rem;flex-wrap:wrap}
-.tab{background:none;border:1px solid var(--border2);color:var(--text3);padding:.4rem .9rem;border-radius:var(--r);cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;font-size:.78rem;font-weight:700;transition:all .15s}
+header{background:rgba(9,9,11,.8);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.hlogo{font-size:1.05rem;font-weight:800}.hlogo span{color:var(--em)}
+.hright{display:flex;align-items:center;gap:1rem}
+.badge{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);color:var(--em);font-size:.72rem;font-weight:700;padding:.3rem .75rem;border-radius:999px}
+.signout{background:none;border:1px solid var(--border2);color:var(--text3);padding:.45rem 1rem;border-radius:999px;cursor:pointer;font-family:'Inter',system-ui,sans-serif;font-size:.78rem;font-weight:600;transition:all .2s}
+.signout:hover{color:var(--text);border-color:var(--text3)}
+
+main{padding:2rem;max-width:1200px;margin:0 auto}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:.85rem;margin-bottom:1.75rem}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem 1.5rem;transition:all .25s}
+.stat:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.stat-n{font-size:2rem;font-weight:900;color:var(--text);line-height:1}
+.stat-l{font-size:.72rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-top:.4rem}
+
+/* Tabs */
+.tabs{display:flex;gap:.35rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.tab{background:none;border:1px solid var(--border2);color:var(--text3);padding:.5rem 1.15rem;border-radius:999px;cursor:pointer;font-family:'Inter',system-ui,sans-serif;font-size:.82rem;font-weight:600;transition:all .2s}
 .tab.active{background:var(--em);color:#fff;border-color:var(--em)}
 .tab:hover:not(.active){border-color:var(--text3);color:var(--text)}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.65rem;margin-bottom:1.25rem}
-.stat{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1rem}
-.stat-n{font-size:1.8rem;font-weight:900;color:var(--text);line-height:1}
-.stat-l{font-size:.68rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:.25rem}
-#job-list{display:grid;gap:.5rem}
-.job-row{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1rem;display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:start}
+
+/* Refresh */
+.refresh-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.75rem}
+.refresh-txt{font-size:.78rem;color:var(--text3);font-weight:500}
+.rbtn{background:var(--bg2);border:1px solid var(--border2);color:var(--text2);padding:.45rem 1rem;border-radius:999px;cursor:pointer;font-family:'Inter',system-ui,sans-serif;font-size:.78rem;font-weight:600;transition:all .2s}
+.rbtn:hover{border-color:var(--em);color:var(--em)}
+
+/* Job list */
+#job-list{display:grid;gap:.75rem}
+.job-row{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.5rem;display:grid;grid-template-columns:1fr auto;gap:1.25rem;align-items:start;transition:all .25s}
+.job-row:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.25);border-color:var(--border2)}
 .job-row.pending{border-left:3px solid var(--gold)}
 .job-row.approved{border-left:3px solid var(--em)}
-.job-row.rejected{border-left:3px solid var(--red);opacity:.7}
+.job-row.rejected{border-left:3px solid var(--red);opacity:.75}
 .job-row.expired{border-left:3px solid var(--text3);opacity:.75}
-.jr-title{font-weight:800;font-size:.9rem;color:var(--text);margin-bottom:.2rem}
-.jr-co{font-size:.75rem;font-weight:700;color:var(--gold);margin-bottom:.25rem}
-.jr-meta{font-size:.72rem;color:var(--text3);font-weight:600;margin-bottom:.4rem;line-height:1.7}
-.jr-dates{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.5rem}
-.jr-date{font-size:.7rem;font-weight:700;padding:.18rem .55rem;border-radius:999px;display:inline-flex;align-items:center;gap:.25rem}
+.jr-title{font-weight:800;font-size:1rem;color:var(--text);margin-bottom:.3rem}
+.jr-co{font-size:.85rem;font-weight:700;color:var(--gold);margin-bottom:.35rem}
+.jr-meta{font-size:.78rem;color:var(--text3);font-weight:500;margin-bottom:.5rem;line-height:1.8}
+.jr-meta a{color:var(--em);text-decoration:none}
+.jr-meta a:hover{text-decoration:underline}
+.jr-dates{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.6rem}
+.jr-date{font-size:.72rem;font-weight:600;padding:.25rem .7rem;border-radius:999px;display:inline-flex;align-items:center;gap:.3rem}
 .jr-date.submitted{background:var(--bg3);border:1px solid var(--border2);color:var(--text3)}
 .jr-date.approved-date{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);color:var(--em)}
 .jr-date.expires-ok{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);color:var(--em)}
 .jr-date.expires-soon{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);color:var(--gold)}
 .jr-date.expires-now{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#fca5a5}
-.pills{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.5rem}
-.status-pill{display:inline-flex;align-items:center;padding:.18rem .55rem;border-radius:999px;font-size:.62rem;font-weight:800;text-transform:uppercase}
+.pills{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.6rem}
+.status-pill{display:inline-flex;align-items:center;padding:.22rem .65rem;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
 .sp-pending{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);color:var(--gold)}
 .sp-approved{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);color:var(--em)}
 .sp-rejected{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#fca5a5}
 .sp-featured{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:var(--gold)}
 .sp-expired{background:var(--bg3);border:1px solid var(--border2);color:var(--text3)}
-.actions{display:flex;flex-direction:column;gap:.35rem;flex-shrink:0;align-items:flex-end}
-.action-row{display:flex;gap:.35rem;flex-wrap:wrap;justify-content:flex-end}
-.abtn{border:none;padding:.35rem .7rem;border-radius:var(--r);font-family:'Cabinet Grotesk',sans-serif;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
+.actions{display:flex;flex-direction:column;gap:.4rem;flex-shrink:0;align-items:flex-end}
+.action-row{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:flex-end}
+.abtn{border:none;padding:.4rem .85rem;border-radius:999px;font-family:'Inter',system-ui,sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
+.abtn:hover{transform:translateY(-1px)}
 .abtn-ok{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);color:var(--em)}
-.abtn-ok:hover{background:var(--em);color:#fff}
+.abtn-ok:hover{background:var(--em);color:#fff;box-shadow:0 4px 16px rgba(16,185,129,.3)}
 .abtn-rej{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#fca5a5}
-.abtn-rej:hover{background:var(--red);color:#fff}
+.abtn-rej:hover{background:var(--red);color:#fff;box-shadow:0 4px 16px rgba(239,68,68,.3)}
 .abtn-feat{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);color:var(--gold)}
-.abtn-feat:hover{background:var(--gold);color:#000}
-.abtn-relist{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);color:var(--em)}
-.abtn-relist:hover{background:var(--em);color:#fff}
+.abtn-feat:hover{background:var(--gold);color:#000;box-shadow:0 4px 16px rgba(245,158,11,.3)}
+.abtn-relist{background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);color:var(--purple)}
+.abtn-relist:hover{background:var(--purple);color:#fff;box-shadow:0 4px 16px rgba(139,92,246,.3)}
 .abtn-del{background:var(--bg3);border:1px solid var(--border2);color:var(--text3)}
 .abtn-del:hover{background:rgba(239,68,68,.1);border-color:var(--red);color:#fca5a5}
-.jr-desc{font-size:.78rem;color:var(--text2);line-height:1.6;margin-bottom:.5rem}
-.empty{text-align:center;padding:3rem;color:var(--text3);font-size:.85rem;font-weight:600}
-.refresh-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;flex-wrap:wrap;gap:.5rem}
-.refresh-txt{font-size:.72rem;color:var(--text3);font-weight:600}
-.rbtn{background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:.35rem .75rem;border-radius:var(--r);cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;font-size:.75rem;font-weight:700}
-.rbtn:hover{border-color:var(--em);color:var(--em)}
-#confirm-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(6px)}
+.jr-desc{font-size:.82rem;color:var(--text2);line-height:1.7;margin-bottom:.6rem;white-space:pre-line}
+.jr-desc.collapsed{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.desc-toggle{background:none;border:none;color:var(--purple);font-family:'Inter',system-ui,sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;padding:0;margin-bottom:.5rem;transition:color .2s}
+.desc-toggle:hover{color:var(--em)}
+.jr-extra{font-size:.78rem;color:var(--text3);margin-bottom:.35rem;margin-top:.35rem;line-height:1.7}
+.jr-extra strong{color:var(--text2)}
+.empty{text-align:center;padding:4rem;color:var(--text3);font-size:.9rem;font-weight:600}
+
+/* Modal */
+#confirm-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(8px)}
 #confirm-modal.show{display:flex}
-.confirm-box{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:1.75rem;width:100%;max-width:380px;text-align:center}
-.confirm-icon{font-size:2rem;margin-bottom:.75rem}
-.confirm-title{font-size:1rem;font-weight:800;color:var(--text);margin-bottom:.5rem}
-.confirm-sub{font-size:.82rem;color:var(--text3);margin-bottom:1.5rem;line-height:1.65;font-weight:500}
-.confirm-btns{display:flex;gap:.5rem}
-.confirm-cancel{flex:1;padding:.75rem;border-radius:var(--r);font-family:'Cabinet Grotesk',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;background:var(--bg3);border:1px solid var(--border2);color:var(--text2)}
-.confirm-ok{flex:1;padding:.75rem;border-radius:var(--r);font-family:'Cabinet Grotesk',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;background:var(--red);border:none;color:#fff}
+.confirm-box{background:rgba(24,24,27,.98);border:1px solid var(--border);border-radius:20px;padding:2rem;width:100%;max-width:420px;text-align:center;backdrop-filter:blur(20px)}
+.confirm-icon{font-size:2.5rem;margin-bottom:1rem}
+.confirm-title{font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:.6rem}
+.confirm-sub{font-size:.85rem;color:var(--text3);margin-bottom:1.75rem;line-height:1.7;font-weight:500}
+.confirm-btns{display:flex;gap:.6rem}
+.confirm-cancel{flex:1;padding:.85rem;border-radius:999px;font-family:'Inter',system-ui,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);transition:all .2s}
+.confirm-ok{flex:1;padding:.85rem;border-radius:999px;font-family:'Inter',system-ui,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;border:none;color:#fff;transition:all .2s}
+.confirm-ok.action-delete{background:var(--red)}
+.confirm-ok.action-delete:hover{background:#dc2626}
+.confirm-ok.action-approve{background:var(--em)}
+.confirm-ok.action-approve:hover{background:var(--em2)}
+.confirm-ok.action-reject{background:var(--red)}
+.confirm-ok.action-reject:hover{background:#dc2626}
 .confirm-cancel:hover{border-color:var(--text3);color:var(--text)}
-.confirm-ok:hover{background:#dc2626}
-@media(max-width:600px){.stats{grid-template-columns:1fr 1fr}.job-row{grid-template-columns:1fr}.actions{flex-direction:row;flex-wrap:wrap;align-items:flex-start}}
+
+@media(max-width:768px){.stats{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.stats{grid-template-columns:1fr 1fr}.job-row{grid-template-columns:1fr}.actions{flex-direction:row;flex-wrap:wrap;align-items:flex-start}header{padding:.85rem 1.25rem}main{padding:1.25rem}}
 </style>
 </head>
 <body>
+
+<div id="toast-container"></div>
 
 <div id="login">
   <div class="login-box">
     <div class="login-logo">FindMe<span>AJob</span>.co.nz</div>
     <div class="login-sub">Admin Panel</div>
     <label>Password</label>
-    <input type="password" id="pw" placeholder="Admin password" autocomplete="current-password">
+    <input type="password" id="pw" placeholder="Enter admin password" autocomplete="current-password">
     <button class="btn" id="btn-login" type="button">Sign In</button>
     <div class="err" id="login-err">Incorrect password.</div>
   </div>
@@ -108,7 +151,7 @@ main{padding:1.5rem;max-width:1100px;margin:0 auto}
 
 <div id="app">
   <header>
-    <div class="hlogo">FindMe<span>AJob</span> <span style="font-size:.7rem;color:var(--text3);font-weight:600">Admin</span></div>
+    <div class="hlogo">FindMe<span>AJob</span> <span style="font-size:.72rem;color:var(--text3);font-weight:600">Admin</span></div>
     <div class="hright">
       <span class="badge" id="pending-badge">0 pending</span>
       <button class="signout" id="btn-signout" type="button">Sign out</button>
@@ -119,6 +162,7 @@ main{padding:1.5rem;max-width:1100px;margin:0 auto}
       <div class="stat"><div class="stat-n" id="st-total">0</div><div class="stat-l">Total listings</div></div>
       <div class="stat"><div class="stat-n" id="st-pending" style="color:var(--gold)">0</div><div class="stat-l">Pending review</div></div>
       <div class="stat"><div class="stat-n" id="st-approved" style="color:var(--em)">0</div><div class="stat-l">Live now</div></div>
+      <div class="stat"><div class="stat-n" id="st-rejected" style="color:var(--red)">0</div><div class="stat-l">Rejected</div></div>
       <div class="stat"><div class="stat-n" id="st-expired" style="color:var(--text3)">0</div><div class="stat-l">Expired</div></div>
     </div>
     <div class="refresh-bar">
@@ -129,9 +173,9 @@ main{padding:1.5rem;max-width:1100px;margin:0 auto}
         <button class="tab" data-tab="expired" type="button">Expired</button>
         <button class="tab" data-tab="all" type="button">All</button>
       </div>
-      <div style="display:flex;align-items:center;gap:.5rem">
+      <div style="display:flex;align-items:center;gap:.65rem">
         <span class="refresh-txt" id="last-refresh">Never refreshed</span>
-        <button class="rbtn" id="btn-refresh" type="button">&#8635; Refresh</button>
+        <button class="rbtn" id="btn-refresh" type="button">\u21bb Refresh</button>
       </div>
     </div>
     <div id="job-list"></div>
@@ -140,19 +184,32 @@ main{padding:1.5rem;max-width:1100px;margin:0 auto}
 
 <div id="confirm-modal">
   <div class="confirm-box">
-    <div class="confirm-icon">🗑</div>
-    <div class="confirm-title">Delete this listing?</div>
+    <div class="confirm-icon" id="confirm-icon">\ud83d\uddd1</div>
+    <div class="confirm-title" id="confirm-title">Delete this listing?</div>
     <div class="confirm-sub" id="confirm-sub">This will permanently remove the listing and cannot be undone.</div>
     <div class="confirm-btns">
       <button class="confirm-cancel" id="confirm-cancel" type="button">Cancel</button>
-      <button class="confirm-ok" id="confirm-ok" type="button">Yes, delete permanently</button>
+      <button class="confirm-ok action-delete" id="confirm-ok" type="button">Yes, delete permanently</button>
     </div>
   </div>
 </div>
 
 <script>
-var pw='', allJobs=[], currentTab='pending', refreshTimer=null, pendingDeleteId=null;
+var pw="", allJobs=[], currentTab="pending", refreshTimer=null;
+var pendingAction=null, pendingActionId=null;
 var PLAN_DAYS = { free:30, basic:60, pro:90 };
+
+function esc(s){var d=document.createElement("div");d.textContent=s||"";return d.innerHTML;}
+
+function showToast(msg, type) {
+  var container = document.getElementById("toast-container");
+  var el = document.createElement("div");
+  el.className = "toast " + (type || "");
+  el.textContent = msg;
+  container.appendChild(el);
+  setTimeout(function(){ el.classList.add("out"); }, 2800);
+  setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); }, 3200);
+}
 
 function getDaysLeft(job) {
   var start = job.approvedAt || job.submitted;
@@ -161,116 +218,178 @@ function getDaysLeft(job) {
   var expiry = new Date(new Date(start).getTime() + days*24*60*60*1000);
   return { days: Math.ceil((expiry - new Date()) / (1000*60*60*24)), expiry: expiry };
 }
-function fmtDate(d) { return new Date(d).toLocaleDateString('en-NZ',{day:'numeric',month:'short',year:'numeric'}); }
-function isExpired(j) { if(j.status!=='approved')return false; var i=getDaysLeft(j); return i&&i.days<=0; }
+function fmtDate(d) { return new Date(d).toLocaleDateString("en-NZ",{day:"numeric",month:"short",year:"numeric"}); }
+function isExpired(j) { if(j.status!=="approved")return false; var i=getDaysLeft(j); return i&&i.days<=0; }
 
-document.getElementById('pw').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
-document.getElementById('btn-login').addEventListener('click',doLogin);
-document.getElementById('btn-signout').addEventListener('click',function(){pw='';document.getElementById('login').style.display='flex';document.getElementById('app').style.display='none';clearInterval(refreshTimer);});
-document.getElementById('btn-refresh').addEventListener('click',loadJobs);
-document.querySelectorAll('.tab').forEach(function(t){t.addEventListener('click',function(){document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active');});this.classList.add('active');currentTab=this.dataset.tab;renderJobs();});});
-document.getElementById('confirm-cancel').addEventListener('click',function(){document.getElementById('confirm-modal').classList.remove('show');pendingDeleteId=null;});
-document.getElementById('confirm-ok').addEventListener('click',function(){document.getElementById('confirm-modal').classList.remove('show');if(pendingDeleteId){execAction('delete',pendingDeleteId);pendingDeleteId=null;}});
+document.getElementById("pw").addEventListener("keydown",function(e){if(e.key==="Enter")doLogin();});
+document.getElementById("btn-login").addEventListener("click",doLogin);
+document.getElementById("btn-signout").addEventListener("click",function(){pw="";document.getElementById("login").style.display="flex";document.getElementById("app").style.display="none";clearInterval(refreshTimer);});
+document.getElementById("btn-refresh").addEventListener("click",loadJobs);
+document.querySelectorAll(".tab").forEach(function(t){t.addEventListener("click",function(){document.querySelectorAll(".tab").forEach(function(x){x.classList.remove("active");});this.classList.add("active");currentTab=this.dataset.tab;renderJobs();});});
+document.getElementById("confirm-cancel").addEventListener("click",function(){document.getElementById("confirm-modal").classList.remove("show");pendingAction=null;pendingActionId=null;});
+document.getElementById("confirm-ok").addEventListener("click",function(){document.getElementById("confirm-modal").classList.remove("show");if(pendingAction&&pendingActionId){execAction(pendingAction,pendingActionId);pendingAction=null;pendingActionId=null;}});
+
+function showConfirm(action, id, title) {
+  var modal = document.getElementById("confirm-modal");
+  var iconEl = document.getElementById("confirm-icon");
+  var titleEl = document.getElementById("confirm-title");
+  var subEl = document.getElementById("confirm-sub");
+  var okBtn = document.getElementById("confirm-ok");
+  okBtn.className = "confirm-ok action-" + action;
+  pendingAction = action;
+  pendingActionId = id;
+  if (action === "delete") {
+    iconEl.textContent = "\ud83d\uddd1";
+    titleEl.textContent = "Delete this listing?";
+    subEl.textContent = "You are about to permanently delete \"" + title + "\". This cannot be undone.";
+    okBtn.textContent = "Yes, delete permanently";
+  } else if (action === "approve") {
+    iconEl.textContent = "\u2713";
+    titleEl.textContent = "Approve this listing?";
+    subEl.textContent = "\"" + title + "\" will go live and be visible to job seekers.";
+    okBtn.textContent = "Yes, approve it";
+  } else if (action === "reject") {
+    iconEl.textContent = "\u2717";
+    titleEl.textContent = "Reject this listing?";
+    subEl.textContent = "\"" + title + "\" will be rejected and hidden from job seekers.";
+    okBtn.textContent = "Yes, reject it";
+  }
+  modal.classList.add("show");
+}
 
 async function doLogin(){
-  var p=document.getElementById('pw').value; if(!p)return;
-  var r=await fetch('/api/admin?action=list&password='+encodeURIComponent(p));
-  if(r.status===401){document.getElementById('login-err').style.display='block';return;}
-  var d=await r.json();
-  if(d.jobs!==undefined){pw=p;document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';document.getElementById('login-err').style.display='none';allJobs=d.jobs;updateStats();renderJobs();refreshTimer=setInterval(loadJobs,30000);document.getElementById('last-refresh').textContent='Refreshed just now';}
-  else{document.getElementById('login-err').style.display='block';}
+  var p=document.getElementById("pw").value; if(!p)return;
+  try {
+    var r=await fetch("/api/admin",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"list",password:p})});
+    if(r.status===401){document.getElementById("login-err").style.display="block";return;}
+    var d=await r.json();
+    if(d.jobs!==undefined){pw=p;document.getElementById("login").style.display="none";document.getElementById("app").style.display="block";document.getElementById("login-err").style.display="none";allJobs=d.jobs;updateStats();renderJobs();refreshTimer=setInterval(loadJobs,30000);document.getElementById("last-refresh").textContent="Refreshed just now";}
+    else{document.getElementById("login-err").style.display="block";}
+  } catch(e) {
+    showToast("Connection error. Please try again.", "error");
+  }
 }
 
 async function loadJobs(){
-  var r=await fetch('/api/admin?action=list&password='+encodeURIComponent(pw));
-  if(!r.ok)return; var d=await r.json(); allJobs=d.jobs||[]; updateStats(); renderJobs();
-  document.getElementById('last-refresh').textContent='Refreshed '+new Date().toLocaleTimeString('en-NZ');
+  try {
+    var r=await fetch("/api/admin",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"list",password:pw})});
+    if(!r.ok)return; var d=await r.json(); allJobs=d.jobs||[]; updateStats(); renderJobs();
+    document.getElementById("last-refresh").textContent="Refreshed "+new Date().toLocaleTimeString("en-NZ");
+  } catch(e) {
+    showToast("Failed to refresh jobs.", "error");
+  }
 }
 
 function updateStats(){
-  var p=allJobs.filter(function(j){return j.status==='pending';}).length;
-  var a=allJobs.filter(function(j){return j.status==='approved'&&!isExpired(j);}).length;
+  var p=allJobs.filter(function(j){return j.status==="pending";}).length;
+  var a=allJobs.filter(function(j){return j.status==="approved"&&!isExpired(j);}).length;
+  var rej=allJobs.filter(function(j){return j.status==="rejected";}).length;
   var e=allJobs.filter(function(j){return isExpired(j);}).length;
-  document.getElementById('st-total').textContent=allJobs.length;
-  document.getElementById('st-pending').textContent=p;
-  document.getElementById('st-approved').textContent=a;
-  document.getElementById('st-expired').textContent=e;
-  document.getElementById('pending-badge').textContent=p+' pending';
+  document.getElementById("st-total").textContent=allJobs.length;
+  document.getElementById("st-pending").textContent=p;
+  document.getElementById("st-approved").textContent=a;
+  document.getElementById("st-rejected").textContent=rej;
+  document.getElementById("st-expired").textContent=e;
+  document.getElementById("pending-badge").textContent=p+" pending";
 }
 
 function renderJobs(){
   var filtered=allJobs.filter(function(j){
-    if(currentTab==='all')return true;
-    if(currentTab==='expired')return isExpired(j);
-    if(currentTab==='approved')return j.status==='approved'&&!isExpired(j);
+    if(currentTab==="all")return true;
+    if(currentTab==="expired")return isExpired(j);
+    if(currentTab==="approved")return j.status==="approved"&&!isExpired(j);
     return j.status===currentTab;
   });
-  var list=document.getElementById('job-list');
-  if(!filtered.length){list.innerHTML='<div class="empty">No listings in this category.</div>';return;}
-  list.innerHTML='';
+  var list=document.getElementById("job-list");
+  if(!filtered.length){list.innerHTML="<div class=\"empty\">No listings in this category.</div>";return;}
+  list.innerHTML="";
   filtered.forEach(function(j){
     var expired=isExpired(j);
-    var row=document.createElement('div');
-    row.className='job-row '+(expired?'expired':(j.status||''));
+    var row=document.createElement("div");
+    row.className="job-row "+(expired?"expired":(j.status||""));
 
-    // Pills - status and featured are separate, never overlap
-    var statusLabel=expired?'expired':j.status;
-    var statusCls=expired?'sp-expired':'sp-'+j.status;
-    var pills='<div class="pills"><span class="status-pill '+statusCls+'">'+statusLabel+'</span>';
-    if(j.featured&&!expired)pills+='<span class="status-pill sp-featured">⭐ Featured</span>';
-    pills+='</div>';
+    var statusLabel=expired?"expired":j.status;
+    var statusCls=expired?"sp-expired":"sp-"+j.status;
+    var pills="<div class=\"pills\"><span class=\"status-pill "+esc(statusCls)+"\">"+esc(statusLabel)+"</span>";
+    if(j.featured&&!expired)pills+="<span class=\"status-pill sp-featured\">\u2b50 Featured</span>";
+    pills+="</div>";
 
-    // Date pills
-    var dates='<div class="jr-dates">';
-    if(j.submitted)dates+='<span class="jr-date submitted">📅 '+fmtDate(j.submitted)+'</span>';
-    if(j.approvedAt)dates+='<span class="jr-date approved-date">✓ Live from '+fmtDate(j.approvedAt)+'</span>';
-    if(j.status==='approved'){
+    var dates="<div class=\"jr-dates\">";
+    if(j.submitted)dates+="<span class=\"jr-date submitted\">\ud83d\udcc5 "+esc(fmtDate(j.submitted))+"</span>";
+    if(j.approvedAt)dates+="<span class=\"jr-date approved-date\">\u2713 Live from "+esc(fmtDate(j.approvedAt))+"</span>";
+    if(j.status==="approved"){
       var info=getDaysLeft(j);
       if(info){
-        var cls=info.days<=0?'expires-now':info.days<=7?'expires-soon':'expires-ok';
-        var label=info.days<=0?'Expired '+fmtDate(info.expiry):info.days<=7?'⏰ Expires in '+info.days+'d':'📆 Expires '+fmtDate(info.expiry)+' ('+info.days+'d left)';
-        dates+='<span class="jr-date '+cls+'">'+label+'</span>';
+        var cls=info.days<=0?"expires-now":info.days<=7?"expires-soon":"expires-ok";
+        var label=info.days<=0?"Expired "+esc(fmtDate(info.expiry)):info.days<=7?"\u23f0 Expires in "+info.days+"d":"\ud83d\udcc6 Expires "+esc(fmtDate(info.expiry))+" ("+info.days+"d left)";
+        dates+="<span class=\"jr-date "+cls+"\">"+label+"</span>";
       }
     }
-    dates+='</div>';
+    dates+="</div>";
 
-    // Action buttons
-    var act='<div class="actions"><div class="action-row">';
-    if(j.status==='pending'){act+='<button class="abtn abtn-ok" data-id="'+j.id+'" data-action="approve" type="button">✓ Approve</button><button class="abtn abtn-rej" data-id="'+j.id+'" data-action="reject" type="button">✕ Reject</button>';}
-    if(j.status==='approved'&&!expired){act+='<button class="abtn abtn-feat" data-id="'+j.id+'" data-action="feature" type="button">'+(j.featured?'★ Unfeature':'☆ Feature')+'</button>';}
-    if(j.status==='rejected'){act+='<button class="abtn abtn-ok" data-id="'+j.id+'" data-action="approve" type="button">✓ Approve</button>';}
-    if(expired){act+='<button class="abtn abtn-relist" data-id="'+j.id+'" data-action="relist" type="button">↺ Re-list</button>';}
-    act+='</div><div class="action-row"><button class="abtn abtn-del" data-id="'+j.id+'" data-title="'+(j.title||'').replace(/"/g,'')+'" data-action="delete" type="button">🗑 Delete</button></div></div>';
+    var descId = "desc-" + j.id;
+    var descHtml = "<div class=\"jr-desc collapsed\" id=\""+esc(descId)+"\">"+esc(j.description)+"</div>";
+    descHtml += "<button class=\"desc-toggle\" data-target=\""+esc(descId)+"\" type=\"button\">Show more</button>";
+
+    var extras = "";
+    if(j.requirements) extras += "<div class=\"jr-extra\"><strong>Requirements:</strong> "+esc(j.requirements)+"</div>";
+    if(j.why) extras += "<div class=\"jr-extra\"><strong>Why work here:</strong> "+esc(j.why)+"</div>";
+
+    var act="<div class=\"actions\"><div class=\"action-row\">";
+    if(j.status==="pending"){act+="<button class=\"abtn abtn-ok\" data-id=\""+esc(j.id)+"\" data-title=\""+esc(j.title)+"\" data-action=\"approve\" type=\"button\">\u2713 Approve</button><button class=\"abtn abtn-rej\" data-id=\""+esc(j.id)+"\" data-title=\""+esc(j.title)+"\" data-action=\"reject\" type=\"button\">\u2717 Reject</button>";}
+    if(j.status==="approved"&&!expired){act+="<button class=\"abtn abtn-feat\" data-id=\""+esc(j.id)+"\" data-action=\"feature\" type=\"button\">"+(j.featured?"\u2605 Unfeature":"\u2606 Feature")+"</button>";}
+    if(j.status==="rejected"){act+="<button class=\"abtn abtn-ok\" data-id=\""+esc(j.id)+"\" data-title=\""+esc(j.title)+"\" data-action=\"approve\" type=\"button\">\u2713 Approve</button>";}
+    if(expired){act+="<button class=\"abtn abtn-relist\" data-id=\""+esc(j.id)+"\" data-action=\"relist\" type=\"button\">\u21ba Re-list</button>";}
+    act+="</div><div class=\"action-row\"><button class=\"abtn abtn-del\" data-id=\""+esc(j.id)+"\" data-title=\""+esc(j.title)+"\" data-action=\"delete\" type=\"button\">\ud83d\uddd1 Delete</button></div></div>";
 
     row.innerHTML=
-      '<div>'+
-      '<div class="jr-title">'+(j.title||'')+'</div>'+
-      '<div class="jr-co">'+(j.company||'')+'</div>'+
-      '<div class="jr-meta">'+(j.location||'')+' &middot; '+(j.category||'')+' &middot; '+(j.type||'')+' &middot; '+(j.salary||'')+' &middot; <a href="mailto:'+j.email+'" style="color:var(--em);text-decoration:none">'+j.email+'</a> &middot; Plan: <strong style="color:var(--text)">'+(j.plan||'free')+'</strong></div>'+
+      "<div>"+
+      "<div class=\"jr-title\">"+esc(j.title)+"</div>"+
+      "<div class=\"jr-co\">"+esc(j.company)+"</div>"+
+      "<div class=\"jr-meta\">"+esc(j.location)+" \u00b7 "+esc(j.category)+" \u00b7 "+esc(j.type)+" \u00b7 "+esc(j.salary)+" \u00b7 <a href=\"mailto:"+esc(j.email)+"\">"+esc(j.email)+"</a> \u00b7 Plan: <strong style=\"color:var(--text)\">"+esc(j.plan||"free")+"</strong></div>"+
       dates+pills+
-      '<div class="jr-desc">'+(j.description||'').substring(0,200)+'...</div>'+
-      (j.requirements?'<div style="font-size:.72rem;color:var(--text3);margin-bottom:.3rem;margin-top:.3rem"><strong style="color:var(--text2)">Requirements:</strong> '+j.requirements+'</div>':'')+
-      (j.why?'<div style="font-size:.72rem;color:var(--text3);margin-top:.2rem"><strong style="color:var(--text2)">Why work here:</strong> '+j.why+'</div>':'')+
-      '</div>'+act;
+      descHtml+
+      extras+
+      "</div>"+act;
     list.appendChild(row);
   });
 
-  document.querySelectorAll('.abtn[data-action]').forEach(function(b){
-    b.addEventListener('click',function(){
-      var action=this.dataset.action, id=this.dataset.id;
-      if(action==='delete'){
-        pendingDeleteId=id;
-        document.getElementById('confirm-sub').textContent='You are about to permanently delete "'+this.dataset.title+'". This cannot be undone.';
-        document.getElementById('confirm-modal').classList.add('show');
+  document.querySelectorAll(".desc-toggle").forEach(function(btn){
+    btn.addEventListener("click",function(){
+      var target = document.getElementById(this.dataset.target);
+      if(target.classList.contains("collapsed")){
+        target.classList.remove("collapsed");
+        this.textContent = "Show less";
+      } else {
+        target.classList.add("collapsed");
+        this.textContent = "Show more";
+      }
+    });
+  });
+
+  document.querySelectorAll(".abtn[data-action]").forEach(function(b){
+    b.addEventListener("click",function(){
+      var action=this.dataset.action, id=this.dataset.id, title=this.dataset.title||"";
+      if(action==="delete"||action==="approve"||action==="reject"){
+        showConfirm(action, id, title);
       } else { execAction(action,id); }
     });
   });
 }
 
 async function execAction(action,id){
-  var r=await fetch('/api/admin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,password:pw,id})});
-  var d=await r.json();
-  if(d.success){loadJobs();}else{alert('Error: '+(d.error||'Unknown'));}
+  try {
+    var r=await fetch("/api/admin",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:action,password:pw,id:id})});
+    var d=await r.json();
+    if(d.success){
+      showToast("Action completed successfully.", "success");
+      loadJobs();
+    }else{
+      showToast("Error: "+(d.error||"Unknown error"), "error");
+    }
+  } catch(e) {
+    showToast("Network error. Please try again.", "error");
+  }
 }
 </script>
 </body>

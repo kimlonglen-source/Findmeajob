@@ -1,22 +1,23 @@
-const { hgetall } = require('./_kv');
+var _kv = require("./_kv");
+var hgetall = _kv.hgetall;
 
-const PLAN_DAYS = { free: 30, basic: 60, pro: 90 };
+var PLAN_DAYS = { free: 30, basic: 60, pro: 90 };
 
 module.exports = async function handler(req, res) {
   try {
-    const raw = await hgetall('jobs');
-    const now = new Date();
-    const jobs = Object.values(raw)
-      .map(j => typeof j === 'string' ? JSON.parse(j) : j)
-      .filter(j => {
-        if (j.status !== 'approved') return false;
+    var raw = await hgetall("jobs");
+    var now = new Date();
+    var jobs = Object.values(raw)
+      .map(function(j) { return typeof j === "string" ? JSON.parse(j) : j; })
+      .filter(function(j) {
+        if (j.status !== "approved") return false;
         // Check expiry
-        const start = j.approvedAt || j.submitted;
-        const days = j.planDays || PLAN_DAYS[j.plan] || 30;
-        const expiry = new Date(new Date(start).getTime() + days * 24 * 60 * 60 * 1000);
+        var start = j.approvedAt || j.submitted;
+        var days = j.planDays || PLAN_DAYS[j.plan] || 30;
+        var expiry = new Date(new Date(start).getTime() + days * 24 * 60 * 60 * 1000);
         return now < expiry;
       })
-      .sort((a, b) => {
+      .sort(function(a, b) {
         // Featured first (Pro auto-featured)
         if (b.featured && !a.featured) return 1;
         if (a.featured && !b.featured) return -1;
@@ -26,8 +27,9 @@ module.exports = async function handler(req, res) {
         // Then newest
         return new Date(b.approvedAt || b.submitted) - new Date(a.approvedAt || a.submitted);
       });
-    return res.status(200).json({ jobs });
+    return res.status(200).json({ jobs: jobs });
   } catch (err) {
+    console.error("approved-jobs error:", err);
     return res.status(200).json({ jobs: [] });
   }
 };
