@@ -216,6 +216,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <a class="mnavitem" href="/employer-portal.html">Post a Job</a>
     <button class="mnavitem" id="mm-about" type="button">About</button>
     <button class="mnavitem" id="mm-account" type="button" style="display:none">My Account</button>
+    <button class="mnavitem" id="mm-signin" type="button">Sign In</button>
     <a class="mnavitem" href="mailto:hello@findmeajob.co.nz">Contact</a>
   </div>
 </div>
@@ -233,6 +234,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <a class="nl" href="/employer-portal.html" id="h-portal">Employer Login</a>
     <a class="nl cta" href="/employer-portal.html" id="h-employer">Post a Job</a>
     <button class="nl" id="h-account" type="button" style="display:none">My Account</button>
+    <button class="nl" id="h-signin" type="button">Sign In</button>
   </div>
   <div class="nav-r">
     <button class="icon-btn" id="tbtn" type="button">&#9790;</button>
@@ -1605,7 +1607,9 @@ document.addEventListener('DOMContentLoaded',function(){try{
   function updateSeekerUI(){
     var loggedIn=!!seekerSession;
     var hAcct=document.getElementById('h-account');if(hAcct)hAcct.style.display=loggedIn?'inline-flex':'none';
+    var hSign=document.getElementById('h-signin');if(hSign)hSign.style.display=loggedIn?'none':'inline-flex';
     var mmAcct=document.getElementById('mm-account');if(mmAcct)mmAcct.style.display=loggedIn?'flex':'none';
+    var mmSign=document.getElementById('mm-signin');if(mmSign)mmSign.style.display=loggedIn?'none':'flex';
     if(loggedIn){
       document.getElementById('acct-auth').style.display='none';
       document.getElementById('acct-dashboard').style.display='block';
@@ -1773,7 +1777,9 @@ document.addEventListener('DOMContentLoaded',function(){try{
 
   // Nav links for account
   document.getElementById('h-account').addEventListener('click',function(){showPage('account');});
+  document.getElementById('h-signin').addEventListener('click',function(){showPage('account');});
   document.getElementById('mm-account').addEventListener('click',function(){showPage('account');document.getElementById('moverlay').classList.remove('open');});
+  document.getElementById('mm-signin').addEventListener('click',function(){showPage('account');document.getElementById('moverlay').classList.remove('open');});
 
   }catch(e){console.error('Init error:',e);}
 });
