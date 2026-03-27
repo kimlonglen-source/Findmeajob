@@ -1096,15 +1096,15 @@ async function doLogin(){
   if(!email||!password){err.classList.add('show');return;}
   var btn=document.getElementById('btn-login');btn.textContent='Signing in...';btn.disabled=true;
   try{
-    var r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:'__login__',company:'__login__',email,phone:'',website:'',password})});
+    var r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'login',email:email,password:password})});
     var d=await r.json();
-    if(d.error&&d.error.includes('already exists')){
-      empSession={id:'existing',name:email.split('@')[0],company:'Your Company',email,plan:selectedPlan};
+    if(d.success){
+      empSession={id:d.id,name:d.name,company:d.company,email:d.email,plan:d.plan||'free'};
       sessionStorage.setItem('empSession',JSON.stringify(empSession));
       document.getElementById('emp-name-display').textContent=empSession.name;
-      document.getElementById('emp-plan-display').textContent=selectedPlan;
+      document.getElementById('emp-plan-display').textContent=empSession.plan;
       showEmpStep('emp-step-job');toast('Welcome back!');
-    }else if(d.success){
+    }else if(false){
       empSession={id:d.id,name:d.name||email.split('@')[0],company:d.company||'Your Company',email,plan:selectedPlan};
       sessionStorage.setItem('empSession',JSON.stringify(empSession));
       document.getElementById('emp-name-display').textContent=empSession.name;document.getElementById('emp-plan-display').textContent=selectedPlan;

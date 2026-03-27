@@ -25,7 +25,7 @@
     },
     {
       "src": "/api/login",
-      "dest": "/api/login.js"
+      "dest": "/api/register.js"
     },
     {
       "src": "/api/submit-job",
@@ -49,11 +49,19 @@
     },
     {
       "src": "/api/track",
-      "dest": "/api/track.js"
+      "dest": "/api/approved-jobs.js"
     },
     {
       "src": "/api/apply",
       "dest": "/api/apply.js"
+    },
+    {
+      "src": "/api/seeker",
+      "dest": "/api/seeker.js"
+    },
+    {
+      "src": "/api/seeker-apps",
+      "dest": "/api/seeker-apps.js"
     },
     {
       "src": "/admin.html",

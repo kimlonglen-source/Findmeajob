@@ -1,30 +1,50 @@
 var _kv = require("./_kv");
+var getKV = _kv.getKV;
+var hget = _kv.hget;
+var hset = _kv.hset;
 var hgetall = _kv.hgetall;
 
 var PLAN_DAYS = { free: 30, basic: 60, pro: 90 };
 
 module.exports = async function handler(req, res) {
+  // POST = track event
+  if (req.method === "POST") {
+    if (!getKV()) return res.status(200).json({ ok: true });
+    try {
+      var jobId = req.body.jobId;
+      var type = req.body.type;
+      if (!jobId || !type) return res.status(200).json({ ok: true });
+      if (type !== "view" && type !== "apply") return res.status(200).json({ ok: true });
+      var raw = await hget("jobs", jobId);
+      if (!raw) return res.status(200).json({ ok: true });
+      var job = typeof raw === "string" ? JSON.parse(raw) : raw;
+      if (type === "view") job.views = (job.views || 0) + 1;
+      if (type === "apply") job.applies = (job.applies || 0) + 1;
+      await hset("jobs", jobId, job);
+      return res.status(200).json({ ok: true });
+    } catch (err) {
+      return res.status(200).json({ ok: true });
+    }
+  }
+
+  // GET = list approved jobs
   try {
-    var raw = await hgetall("jobs");
+    var allRaw = await hgetall("jobs");
     var now = new Date();
-    var jobs = Object.values(raw)
+    var jobs = Object.values(allRaw)
       .map(function(j) { return typeof j === "string" ? JSON.parse(j) : j; })
       .filter(function(j) {
         if (j.status !== "approved") return false;
-        // Check expiry
         var start = j.approvedAt || j.submitted;
         var days = j.planDays || PLAN_DAYS[j.plan] || 30;
         var expiry = new Date(new Date(start).getTime() + days * 24 * 60 * 60 * 1000);
         return now < expiry;
       })
       .sort(function(a, b) {
-        // Featured first (Pro auto-featured)
         if (b.featured && !a.featured) return 1;
         if (a.featured && !b.featured) return -1;
-        // Then priority (Growth+)
         if (b.priority && !a.priority) return 1;
         if (a.priority && !b.priority) return -1;
-        // Then newest
         return new Date(b.approvedAt || b.submitted) - new Date(a.approvedAt || a.submitted);
       });
     return res.status(200).json({ jobs: jobs });
