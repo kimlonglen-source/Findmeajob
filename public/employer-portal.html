@@ -457,6 +457,12 @@ function showPostScreen() {
   document.getElementById('post-err').style.display = 'none';
   document.getElementById('post-ok').style.display = 'none';
   document.getElementById('btn-submit').style.display = 'flex';
+  // Refresh plan-dependent fields
+  var plan = (session && session.employer) ? session.employer.plan || 'free' : 'free';
+  var cc = document.getElementById('company-card');
+  if (cc) cc.style.display = (plan === 'basic' || plan === 'pro') ? 'block' : 'none';
+  var pn = document.getElementById('pro-note');
+  if (pn) pn.style.display = plan === 'pro' ? 'block' : 'none';
   window.scrollTo(0,0);
 }
 
