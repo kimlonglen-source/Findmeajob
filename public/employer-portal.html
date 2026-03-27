@@ -280,7 +280,7 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
         <button type="button" id="logo-upload-area" style="border:2px dashed var(--border);border-radius:var(--r);padding:1.25rem;text-align:center;cursor:pointer;transition:all .2s;width:100%;background:var(--bg3);display:block;font-family:'Inter',sans-serif">
           <div id="logo-preview" style="display:none;margin-bottom:.5rem"><img id="logo-preview-img" style="max-width:80px;max-height:80px;object-fit:contain;border-radius:6px;border:1px solid var(--border)"></div>
           <div id="logo-prompt" style="font-size:.82rem;color:var(--em);font-weight:600">Click here to upload your logo</div>
-          <div style="font-size:.68rem;color:var(--text3);font-weight:500;margin-top:.25rem">PNG with transparent background recommended (max 200KB)</div>
+          <div style="font-size:.68rem;color:var(--text3);font-weight:500;margin-top:.25rem">PNG, JPG, SVG or WebP (max 200KB). Transparent background recommended.</div>
           <div id="logo-name" style="display:none;font-size:.72rem;color:var(--em);font-weight:600;margin-top:.3rem"></div>
         </button>
         <input type="hidden" id="e-logo">
@@ -627,7 +627,7 @@ function renderJobs(jobs) {
         '<div class="field"><label>Company logo</label>'+
         '<input type="file" id="ef-logo-file-'+job.id+'" accept="image/png,image/jpeg,image/svg+xml,image/webp" style="display:none">'+
         '<button type="button" onclick="document.getElementById(\'ef-logo-file-'+job.id+'\').click()" style="border:2px dashed var(--border);border-radius:var(--r);padding:.85rem;text-align:center;cursor:pointer;width:100%;background:var(--bg3);display:block;font-family:Inter,sans-serif">'+
-        (job.logoUrl?'<img src="'+esc(job.logoUrl)+'" style="max-width:60px;max-height:60px;object-fit:contain;border-radius:4px;border:1px solid var(--border);margin-bottom:.35rem"><br>':'')+'<span style="font-size:.78rem;color:var(--em);font-weight:600">'+(job.logoUrl?'Change logo':'Click to upload logo')+'</span><div style="font-size:.65rem;color:var(--text3);margin-top:.15rem">PNG, JPG, SVG, max 200KB</div></button>'+
+        (job.logoUrl?'<img src="'+esc(job.logoUrl)+'" style="max-width:60px;max-height:60px;object-fit:contain;border-radius:4px;border:1px solid var(--border);margin-bottom:.35rem"><br>':'')+'<span style="font-size:.78rem;color:var(--em);font-weight:600">'+(job.logoUrl?'Change logo':'Click to upload logo')+'</span><div style="font-size:.65rem;color:var(--text3);margin-top:.15rem">PNG, JPG, SVG, max 200KB. Transparent background recommended.</div></button>'+
         '<input type="hidden" id="ef-logo-'+job.id+'" value="'+esc(job.logoUrl||'')+'">'+
         '<div style="margin-top:.3rem;font-size:.65rem;color:var(--text3)">Or paste URL: <input type="text" id="ef-logo-url-'+job.id+'" value="'+esc(job.logoUrl||'')+'" placeholder="https://..." style="display:inline;width:auto;padding:.2rem .4rem;font-size:.65rem;border-radius:4px"></div>'+
         '</div>':'')+
