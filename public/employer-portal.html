@@ -470,23 +470,43 @@ function showPostScreen() {
 document.getElementById('btn-post-new').addEventListener('click', showPostScreen);
 document.getElementById('btn-back-portal').addEventListener('click', function(){ loadAndShowPortal(); });
 
-// Logo upload
+// Logo upload with resize
+function resizeLogo(dataUrl, maxSize, callback) {
+  var img = new Image();
+  img.onload = function() {
+    var w = img.width, h = img.height;
+    if (w <= maxSize && h <= maxSize) { callback(dataUrl); return; }
+    var scale = Math.min(maxSize / w, maxSize / h);
+    var canvas = document.createElement('canvas');
+    canvas.width = Math.round(w * scale);
+    canvas.height = Math.round(h * scale);
+    var ctx = canvas.getContext('2d');
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    callback(canvas.toDataURL('image/png'));
+  };
+  img.onerror = function() { callback(dataUrl); };
+  img.src = dataUrl;
+}
+
 document.getElementById('logo-upload-area').addEventListener('click', function(){
   document.getElementById('logo-file').click();
 });
 document.getElementById('logo-file').addEventListener('change', function(e){
   var file = e.target.files[0];
   if (!file) return;
-  if (file.size > 200000) { toast('Logo must be under 200KB'); e.target.value=''; return; }
+  if (file.size > 500000) { toast('Logo must be under 500KB'); e.target.value=''; return; }
   var reader = new FileReader();
   reader.onload = function(ev) {
-    document.getElementById('e-logo').value = ev.target.result;
-    document.getElementById('logo-preview-img').src = ev.target.result;
-    document.getElementById('logo-preview').style.display = 'block';
-    document.getElementById('logo-name').textContent = file.name;
-    document.getElementById('logo-name').style.display = 'block';
-    document.getElementById('logo-prompt').textContent = 'Change logo';
-    document.getElementById('logo-upload-area').style.borderColor = 'rgba(16,185,129,.3)';
+    resizeLogo(ev.target.result, 128, function(resized) {
+      document.getElementById('e-logo').value = resized;
+      document.getElementById('logo-preview-img').src = resized;
+      document.getElementById('logo-preview').style.display = 'block';
+      document.getElementById('logo-name').textContent = file.name;
+      document.getElementById('logo-name').style.display = 'block';
+      document.getElementById('logo-prompt').textContent = 'Change logo';
+      document.getElementById('logo-upload-area').style.borderColor = 'rgba(16,185,129,.3)';
+    });
   };
   reader.readAsDataURL(file);
 });
@@ -651,12 +671,14 @@ function renderJobs(jobs) {
         var jid = job.id;
         var file = e.target.files[0];
         if (!file) return;
-        if (file.size > 200000) { toast('Logo must be under 200KB'); e.target.value=''; return; }
+        if (file.size > 500000) { toast('Logo must be under 500KB'); e.target.value=''; return; }
         var reader = new FileReader();
         reader.onload = function(ev){
-          document.getElementById('ef-logo-'+jid).value = ev.target.result;
-          var urlEl = document.getElementById('ef-logo-url-'+jid);
-          if (urlEl) urlEl.value = '';
+          resizeLogo(ev.target.result, 128, function(resized) {
+            document.getElementById('ef-logo-'+jid).value = resized;
+            var urlEl = document.getElementById('ef-logo-url-'+jid);
+            if (urlEl) urlEl.value = '';
+          });
         };
         reader.readAsDataURL(file);
       });
