@@ -159,6 +159,8 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
 .hero h1{font-size:clamp(3rem,7vw,5.5rem);line-height:1.05;font-weight:800;letter-spacing:-2px;margin-bottom:1.5rem}
 .hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--em),var(--em2),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.typewriter{display:inline-block;border-right:2px solid var(--em);animation:blink .7s step-end infinite}
+@keyframes blink{50%{border-color:transparent}}
 .hero-sub{color:var(--text2);font-size:1.1rem;line-height:1.7;max-width:500px;margin:0 auto 2.5rem;font-weight:500}
 .hero-ctas{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem}
 .btn-hero{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;padding:.95rem 2rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.95rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 25px rgba(16,185,129,.25)}
@@ -246,7 +248,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 <div id="page-home" class="page active">
   <section class="hero">
     <div class="hero-badge"><span class="dot"></span>AI-Powered · New Zealand Only · 100% Free</div>
-    <h1>Find your next NZ job<br><em>in 60 seconds</em></h1>
+    <h1>Find your next NZ job<br><em><span class="typewriter" id="hero-typed"></span></em></h1>
     <p class="hero-sub">Upload your CV or tell us your skills. Our AI matches you to real NZ roles instantly — no sign-up, no guesswork, no overseas results.</p>
     <div class="hero-ctas">
       <button class="btn-hero" id="hero-try" type="button">Find My Job — Free &#8594;</button>
@@ -896,6 +898,32 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 <script>
 function esc(s){var d=document.createElement("div");d.textContent=s||"";return d.innerHTML;}
 var currentPage='home',skills=[],cvFileData=null,cvFileName='',lightMode=false,empSession=null,selectedPlan='free';
+
+// Typewriter effect
+(function(){
+  var phrases=['in 60 seconds','with AI matching','no sign-up needed','100% free','NZ jobs only','matched to your skills','powered by AI'];
+  var el=document.getElementById('hero-typed');
+  if(!el)return;
+  var phraseIdx=0,charIdx=0,isDeleting=false,pauseEnd=0;
+  function tick(){
+    var now=Date.now();
+    if(now<pauseEnd){requestAnimationFrame(tick);return;}
+    var phrase=phrases[phraseIdx];
+    if(!isDeleting){
+      charIdx++;
+      el.textContent=phrase.substring(0,charIdx);
+      if(charIdx===phrase.length){isDeleting=true;pauseEnd=now+2000;}
+      else{pauseEnd=now+60+Math.random()*40;}
+    }else{
+      charIdx--;
+      el.textContent=phrase.substring(0,charIdx);
+      if(charIdx===0){isDeleting=false;phraseIdx=(phraseIdx+1)%phrases.length;pauseEnd=now+400;}
+      else{pauseEnd=now+30;}
+    }
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
 
 function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},2200);}
 function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
