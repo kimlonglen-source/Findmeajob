@@ -721,6 +721,65 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 <div id="db"><p class="btext">AI suggestions only — not career advice. <button style="background:none;border:none;color:var(--em);font-size:.73rem;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;text-decoration:underline;padding:0" id="db-terms" type="button">Terms</button> &amp; <button style="background:none;border:none;color:var(--em);font-size:.73rem;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;text-decoration:underline;padding:0" id="db-privacy" type="button">Privacy</button></p><button class="bbtn" id="btn-dismiss" type="button">Got it</button></div>
 <div id="lm"><div class="mbox"><button class="mbox-close" id="modal-close" type="button">&#215;</button><div id="modal-body"></div></div></div>
 
+<!-- AI Apply Modal -->
+<div id="apply-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99999;padding:1rem;backdrop-filter:blur(8px);overflow-y:auto">
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem;width:100%;max-width:540px;margin:2rem auto;position:relative">
+    <button onclick="document.getElementById('apply-modal').style.display='none'" style="position:absolute;top:1rem;right:1rem;background:var(--bg3);border:1px solid var(--border);color:var(--text3);width:28px;height:28px;border-radius:999px;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center">&times;</button>
+    <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin-bottom:.3rem">Apply with AI</div>
+    <div style="font-size:1.15rem;font-weight:800;color:var(--text);margin-bottom:.2rem" id="apply-title-display"></div>
+    <div style="font-size:.8rem;color:var(--text3);font-weight:600;margin-bottom:1.25rem" id="apply-company-display"></div>
+    <div id="apply-step1">
+      <div class="field"><label class="form-label">Your name *</label><input type="text" id="app-name" placeholder="Jane Smith" autocomplete="name"></div>
+      <div class="g2">
+        <div class="field"><label class="form-label">Email *</label><input type="email" id="app-email" placeholder="jane@gmail.com" autocomplete="email"></div>
+        <div class="field"><label class="form-label">Phone</label><input type="tel" id="app-phone" placeholder="021 000 0000" autocomplete="tel"></div>
+      </div>
+      <div class="field">
+        <label class="form-label">Your CV (PDF or Word) *</label>
+        <input type="file" id="app-cv-file" accept=".pdf,.doc,.docx" style="display:none">
+        <button type="button" id="app-cv-btn" style="border:2px dashed var(--border);border-radius:var(--r);padding:1rem;text-align:center;cursor:pointer;width:100%;background:var(--bg3);display:block;font-family:'Inter',sans-serif">
+          <div id="app-cv-prompt" style="font-size:.82rem;color:var(--em);font-weight:600">Click to upload your CV</div>
+          <div style="font-size:.68rem;color:var(--text3);margin-top:.2rem">PDF or Word document</div>
+        </button>
+      </div>
+      <div class="field"><label class="form-label">Why do you want this role? <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--text3)">(optional)</span></label><textarea id="app-why" placeholder="e.g. I have 3 years experience in this field and I am passionate about..." style="min-height:70px"></textarea></div>
+      <div class="alert alert-err" id="app-err1"></div>
+      <button class="btn" id="app-btn-generate" type="button" style="margin-top:.5rem">Generate Cover Letter with AI &#8594;</button>
+      <div style="font-size:.68rem;color:var(--text3);text-align:center;margin-top:.6rem">Your CV is processed by AI to write a tailored cover letter. It is never stored.</div>
+    </div>
+    <div id="apply-step2" style="display:none;text-align:center;padding:2rem 0">
+      <div style="font-size:1.5rem;margin-bottom:.75rem">&#9997;</div>
+      <div style="font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:.3rem">Writing your cover letter<span class="dots"></span></div>
+      <div style="font-size:.78rem;color:var(--text3)">AI is tailoring it to this specific role</div>
+    </div>
+    <div id="apply-step3" style="display:none">
+      <div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);border-radius:var(--r);padding:.65rem .85rem;margin-bottom:1rem;font-size:.78rem;color:var(--em);font-weight:600">&#10003; AI cover letter generated! Review and edit below before sending.</div>
+      <div class="field">
+        <label class="form-label">Cover Letter <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--text3)">(edit as you like)</span></label>
+        <textarea id="app-cover-letter" style="min-height:220px;line-height:1.7"></textarea>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.75rem;margin-bottom:.75rem">
+        <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;color:var(--text3);margin-bottom:.35rem">The employer will receive</div>
+        <div style="font-size:.78rem;color:var(--text2);line-height:1.7">
+          <div>&#9993; Your cover letter (above)</div>
+          <div>&#128206; Your CV attached (<span id="app-cv-name-display"></span>)</div>
+          <div>&#128100; Your contact details (<span id="app-details-display"></span>)</div>
+        </div>
+      </div>
+      <div style="margin-bottom:.75rem"><label style="display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;font-size:.78rem;color:var(--text2);font-weight:500;line-height:1.5"><input type="checkbox" id="app-consent" style="width:auto;margin-top:3px;flex-shrink:0"> I consent to sending my CV and cover letter to <strong id="app-consent-company" style="color:var(--text)"></strong>. My information is sent directly to the employer and is not stored by FindMeAJob.co.nz.</label></div>
+      <div class="alert alert-err" id="app-err3"></div>
+      <button class="btn" id="app-btn-send" type="button">Send Application &#8594;</button>
+      <button class="btn btn-sec" id="app-btn-back" type="button" style="margin-top:.5rem">&#8592; Back to edit details</button>
+    </div>
+    <div id="apply-step4" style="display:none;text-align:center;padding:2rem 0">
+      <div style="font-size:2rem;margin-bottom:.75rem">&#10003;</div>
+      <div style="font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:.5rem">Application sent!</div>
+      <div style="font-size:.85rem;color:var(--text2);font-weight:500;line-height:1.7;margin-bottom:1.5rem">Your cover letter and CV have been emailed to <strong id="app-sent-company" style="color:var(--em)"></strong>. They will contact you directly if interested.</div>
+      <button class="btn btn-sec" onclick="document.getElementById('apply-modal').style.display='none'" type="button">Close</button>
+    </div>
+  </div>
+</div>
+
 <script>
 function esc(s){var d=document.createElement("div");d.textContent=s||"";return d.innerHTML;}
 var currentPage='home',skills=[],cvFileData=null,cvFileName='',lightMode=false,empSession=null,selectedPlan='free';
@@ -1386,73 +1445,5 @@ document.addEventListener('DOMContentLoaded',function(){try{
 });
 </script>
 <script defer src="/_vercel/insights/script.js"></script>
-<!-- Reset handled in employer portal -->
-
-<!-- AI Apply Modal -->
-<div id="apply-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99999;padding:1rem;backdrop-filter:blur(8px);overflow-y:auto">
-  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem;width:100%;max-width:540px;margin:2rem auto;position:relative">
-    <button onclick="document.getElementById('apply-modal').style.display='none'" style="position:absolute;top:1rem;right:1rem;background:var(--bg3);border:1px solid var(--border);color:var(--text3);width:28px;height:28px;border-radius:999px;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center">&times;</button>
-    <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin-bottom:.3rem">Apply with AI</div>
-    <div style="font-size:1.15rem;font-weight:800;color:var(--text);margin-bottom:.2rem" id="apply-title-display"></div>
-    <div style="font-size:.8rem;color:var(--text3);font-weight:600;margin-bottom:1.25rem" id="apply-company-display"></div>
-
-    <!-- Step 1: Your details -->
-    <div id="apply-step1">
-      <div class="field"><label class="form-label">Your name *</label><input type="text" id="app-name" placeholder="Jane Smith" autocomplete="name"></div>
-      <div class="g2">
-        <div class="field"><label class="form-label">Email *</label><input type="email" id="app-email" placeholder="jane@gmail.com" autocomplete="email"></div>
-        <div class="field"><label class="form-label">Phone</label><input type="tel" id="app-phone" placeholder="021 000 0000" autocomplete="tel"></div>
-      </div>
-      <div class="field">
-        <label class="form-label">Your CV (PDF or Word) *</label>
-        <input type="file" id="app-cv-file" accept=".pdf,.doc,.docx" style="display:none">
-        <button type="button" id="app-cv-btn" style="border:2px dashed var(--border);border-radius:var(--r);padding:1rem;text-align:center;cursor:pointer;width:100%;background:var(--bg3);display:block;font-family:'Inter',sans-serif">
-          <div id="app-cv-prompt" style="font-size:.82rem;color:var(--em);font-weight:600">Click to upload your CV</div>
-          <div style="font-size:.68rem;color:var(--text3);margin-top:.2rem">PDF or Word document</div>
-        </button>
-      </div>
-      <div class="field"><label class="form-label">Why do you want this role? <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--text3)">(optional — helps AI write a better cover letter)</span></label><textarea id="app-why" placeholder="e.g. I have 3 years experience in this field and I am passionate about..." style="min-height:70px"></textarea></div>
-      <div class="alert alert-err" id="app-err1"></div>
-      <button class="btn" id="app-btn-generate" type="button" style="margin-top:.5rem">Generate Cover Letter with AI &#8594;</button>
-      <div style="font-size:.68rem;color:var(--text3);text-align:center;margin-top:.6rem">Your CV is processed by AI to write a tailored cover letter. It is never stored.</div>
-    </div>
-
-    <!-- Step 2: AI generating -->
-    <div id="apply-step2" style="display:none;text-align:center;padding:2rem 0">
-      <div style="font-size:1.5rem;margin-bottom:.75rem">&#9997;</div>
-      <div style="font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:.3rem">Writing your cover letter<span class="dots"></span></div>
-      <div style="font-size:.78rem;color:var(--text3)">AI is tailoring it to this specific role</div>
-    </div>
-
-    <!-- Step 3: Review & edit -->
-    <div id="apply-step3" style="display:none">
-      <div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);border-radius:var(--r);padding:.65rem .85rem;margin-bottom:1rem;font-size:.78rem;color:var(--em);font-weight:600">&#10003; AI cover letter generated! Review and edit below before sending.</div>
-      <div class="field">
-        <label class="form-label">Cover Letter <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--text3)">(edit as you like)</span></label>
-        <textarea id="app-cover-letter" style="min-height:220px;line-height:1.7"></textarea>
-      </div>
-      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.75rem;margin-bottom:.75rem">
-        <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;color:var(--text3);margin-bottom:.35rem">The employer will receive</div>
-        <div style="font-size:.78rem;color:var(--text2);line-height:1.7">
-          <div>&#9993; Your cover letter (above)</div>
-          <div id="app-cv-attach-note">&#128206; Your CV attached (<span id="app-cv-name-display"></span>)</div>
-          <div>&#128100; Your contact details (<span id="app-details-display"></span>)</div>
-        </div>
-      </div>
-      <div style="margin-bottom:.75rem"><label style="display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;font-size:.78rem;color:var(--text2);font-weight:500;line-height:1.5"><input type="checkbox" id="app-consent" style="width:auto;margin-top:3px;flex-shrink:0"> I consent to sending my CV and cover letter to <strong id="app-consent-company" style="color:var(--text)"></strong>. My information is sent directly to the employer and is not stored by FindMeAJob.co.nz.</label></div>
-      <div class="alert alert-err" id="app-err3"></div>
-      <button class="btn" id="app-btn-send" type="button">Send Application &#8594;</button>
-      <button class="btn btn-sec" id="app-btn-back" type="button" style="margin-top:.5rem">&#8592; Back to edit details</button>
-    </div>
-
-    <!-- Step 4: Sent -->
-    <div id="apply-step4" style="display:none;text-align:center;padding:2rem 0">
-      <div style="font-size:2rem;margin-bottom:.75rem">&#10003;</div>
-      <div style="font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:.5rem">Application sent!</div>
-      <div style="font-size:.85rem;color:var(--text2);font-weight:500;line-height:1.7;margin-bottom:1.5rem">Your cover letter and CV have been emailed to <strong id="app-sent-company" style="color:var(--em)"></strong>. They will contact you directly if interested.</div>
-      <button class="btn btn-sec" onclick="document.getElementById('apply-modal').style.display='none'" type="button">Close</button>
-    </div>
-  </div>
-</div>
 </body>
 </html>
