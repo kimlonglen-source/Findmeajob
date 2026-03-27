@@ -215,6 +215,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <a class="mnavitem" href="/employer-portal.html">Employer Login</a>
     <a class="mnavitem" href="/employer-portal.html">Post a Job</a>
     <button class="mnavitem" id="mm-about" type="button">About</button>
+    <button class="mnavitem" id="mm-account" type="button" style="display:none">My Account</button>
     <a class="mnavitem" href="mailto:hello@findmeajob.co.nz">Contact</a>
   </div>
 </div>
@@ -231,6 +232,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <button class="nl" id="h-about" type="button">About</button>
     <a class="nl" href="/employer-portal.html" id="h-portal">Employer Login</a>
     <a class="nl cta" href="/employer-portal.html" id="h-employer">Post a Job</a>
+    <button class="nl" id="h-account" type="button" style="display:none">My Account</button>
   </div>
   <div class="nav-r">
     <button class="icon-btn" id="tbtn" type="button">&#9790;</button>
@@ -702,6 +704,98 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
   </div>
 </div>
 
+<!-- MY ACCOUNT -->
+<div id="page-account" class="page">
+  <div class="wrap">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:.75rem">
+      <div><div class="page-eyebrow">My Account</div><div class="page-title" id="acct-welcome">Welcome back</div></div>
+      <button class="btn-sm" id="acct-signout" type="button">Sign out</button>
+    </div>
+
+    <!-- Not logged in: show login/register -->
+    <div id="acct-auth">
+      <div class="card" style="max-width:440px;margin:0 auto">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:999px;overflow:hidden;margin-bottom:1.25rem;padding:3px;background:var(--bg3)">
+          <button type="button" id="acct-tab-login" style="padding:.65rem;text-align:center;font-size:.82rem;font-weight:700;cursor:pointer;background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;border:none;font-family:'Inter',sans-serif;border-radius:999px">Sign In</button>
+          <button type="button" id="acct-tab-reg" style="padding:.65rem;text-align:center;font-size:.82rem;font-weight:700;cursor:pointer;background:transparent;color:var(--text3);border:none;font-family:'Inter',sans-serif;border-radius:999px">Create Account</button>
+        </div>
+        <div id="acct-login-pane">
+          <div class="field"><label class="form-label">Email</label><input type="email" id="acct-l-email" placeholder="jane@gmail.com" autocomplete="email"></div>
+          <div class="field"><label class="form-label">Password</label><input type="password" id="acct-l-pass" placeholder="Your password" autocomplete="current-password"></div>
+          <div class="alert alert-err" id="acct-l-err"></div>
+          <button class="btn" id="acct-btn-login" type="button" style="margin-top:.5rem">Sign In</button>
+        </div>
+        <div id="acct-reg-pane" style="display:none">
+          <div class="field"><label class="form-label">Full name *</label><input type="text" id="acct-r-name" placeholder="Jane Smith" autocomplete="name"></div>
+          <div class="field"><label class="form-label">Email *</label><input type="email" id="acct-r-email" placeholder="jane@gmail.com" autocomplete="email"></div>
+          <div class="field"><label class="form-label">Password *</label><input type="password" id="acct-r-pass" placeholder="Minimum 6 characters" autocomplete="new-password"></div>
+          <div class="g2">
+            <div class="field"><label class="form-label">Phone</label><input type="tel" id="acct-r-phone" placeholder="021 000 0000" autocomplete="tel"></div>
+            <div class="field"><label class="form-label">Right to work in NZ</label><select id="acct-r-rtw"><option value="">Select...</option><option>NZ Citizen</option><option>NZ Permanent Resident</option><option>Work Visa</option><option>Student Visa</option><option>Working Holiday Visa</option><option>Need Sponsorship</option></select></div>
+          </div>
+          <div class="alert alert-err" id="acct-r-err"></div>
+          <button class="btn" id="acct-btn-register" type="button" style="margin-top:.5rem">Create Free Account</button>
+          <div style="font-size:.68rem;color:var(--text3);text-align:center;margin-top:.5rem">Free forever. Your data is never shared.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logged in: dashboard -->
+    <div id="acct-dashboard" style="display:none">
+      <!-- My Details -->
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem">
+          <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3)">My Details</div>
+          <button class="btn-sm" id="acct-edit-toggle" type="button">Edit</button>
+        </div>
+        <div id="acct-details-view">
+          <div style="font-size:.85rem;color:var(--text);line-height:2">
+            <div><strong>Name:</strong> <span id="acct-d-name"></span></div>
+            <div><strong>Email:</strong> <span id="acct-d-email"></span></div>
+            <div><strong>Phone:</strong> <span id="acct-d-phone"></span></div>
+            <div><strong>Right to work:</strong> <span id="acct-d-rtw"></span></div>
+          </div>
+        </div>
+        <div id="acct-details-edit" style="display:none">
+          <div class="field"><label class="form-label">Name</label><input type="text" id="acct-e-name"></div>
+          <div class="g2">
+            <div class="field"><label class="form-label">Phone</label><input type="tel" id="acct-e-phone"></div>
+            <div class="field"><label class="form-label">Right to work</label><select id="acct-e-rtw"><option value="">Select...</option><option>NZ Citizen</option><option>NZ Permanent Resident</option><option>Work Visa</option><option>Student Visa</option><option>Working Holiday Visa</option><option>Need Sponsorship</option></select></div>
+          </div>
+          <div style="display:flex;gap:.5rem;margin-top:.5rem">
+            <button class="btn-sm green" id="acct-save-details" type="button">Save</button>
+            <button class="btn-sm" id="acct-cancel-edit" type="button">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Saved CV -->
+      <div class="card">
+        <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:.75rem">Saved CV</div>
+        <div id="acct-cv-status"></div>
+      </div>
+
+      <!-- My Applications -->
+      <div class="card">
+        <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:.75rem">My Applications</div>
+        <div id="acct-apps-list"></div>
+      </div>
+
+      <!-- Delete Account -->
+      <div style="border-top:1px solid var(--border);padding-top:1.25rem;margin-top:1.5rem">
+        <button class="btn-sm" id="acct-delete" type="button" style="border-color:rgba(239,68,68,.2);color:#fca5a5">Delete my account and all data</button>
+        <div id="acct-delete-confirm" style="display:none;margin-top:.75rem;background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:var(--r);padding:.75rem">
+          <div style="font-size:.82rem;color:#fca5a5;font-weight:600;margin-bottom:.5rem">Are you sure? This will permanently delete your account, saved CV, and application history.</div>
+          <div style="display:flex;gap:.5rem">
+            <button class="btn-sm" id="acct-delete-yes" type="button" style="background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:#fca5a5">Yes, delete everything</button>
+            <button class="btn-sm" id="acct-delete-no" type="button">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <footer>
   <div class="footer-inner">
     <div><div class="footer-logo">Find<em>Me</em>AJob<span style="font-family:'Inter',sans-serif;font-style:normal;font-size:.58rem;color:var(--text3)">.co.nz</span></div><div class="footer-sub">AI-powered job discovery for Aotearoa New Zealand &copy; 2026</div></div>
@@ -787,9 +881,10 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <div style="width:48px;height:48px;background:rgba(16,185,129,.1);border-radius:999px;display:flex;align-items:center;justify-content:center;margin:0 auto .75rem;font-size:1.5rem">&#10003;</div>
       <div style="font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:.5rem">Application sent!</div>
       <div style="font-size:.85rem;color:var(--text2);font-weight:500;line-height:1.7;margin-bottom:1.5rem">Your cover letter and CV have been emailed to <strong id="app-sent-company" style="color:var(--em)"></strong>. They will contact you directly if interested.</div>
-      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:1rem;margin-bottom:1.25rem;text-align:left">
-        <div style="font-size:.75rem;font-weight:700;color:var(--em);margin-bottom:.35rem">Coming soon: Job Seeker Accounts</div>
-        <div style="font-size:.78rem;color:var(--text2);line-height:1.6;font-weight:500">Track your applications, save your CV for one-click apply, and get alerts when new matching jobs appear. Free forever.</div>
+      <div id="acct-after-apply" style="display:none;background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(16,185,129,.02));border:1px solid rgba(16,185,129,.15);border-radius:var(--r);padding:1rem;margin-bottom:1.25rem;text-align:left">
+        <div style="font-size:.78rem;font-weight:700;color:var(--em);margin-bottom:.4rem">Want to track this application?</div>
+        <div style="font-size:.78rem;color:var(--text2);line-height:1.6;font-weight:500;margin-bottom:.65rem">Create a free account to track your applications, save your CV for one-click apply, and get alerts for similar jobs.</div>
+        <button class="btn" id="acct-create-after-apply" type="button" style="padding:.6rem 1rem;font-size:.78rem;width:auto">Create Free Account &#8594;</button>
       </div>
       <button class="btn btn-sec" onclick="document.getElementById('apply-modal').style.display='none'" type="button">Close</button>
     </div>
@@ -1161,6 +1256,15 @@ function applyJob(btn) {
   document.getElementById('app-err1').classList.remove('show');
   document.getElementById('app-cv-prompt').textContent = 'Click to upload your CV';
   document.getElementById('app-cv-btn').style.borderColor = '';
+  // Auto-fill from seeker account if logged in
+  var ss = seekerSession || (sessionStorage.getItem('seekerSession') ? JSON.parse(sessionStorage.getItem('seekerSession')) : null);
+  if (ss) {
+    if (ss.name) document.getElementById('app-name').value = ss.name;
+    if (ss.email) document.getElementById('app-email').value = ss.email;
+    if (ss.phone) document.getElementById('app-phone').value = ss.phone;
+    if (ss.rtw) document.getElementById('app-rtw').value = ss.rtw;
+    if (ss.notice) document.getElementById('app-notice').value = ss.notice;
+  }
   document.getElementById('apply-modal').style.display = 'block';
 }
 
@@ -1300,6 +1404,14 @@ document.getElementById('app-btn-send').addEventListener('click', async function
       document.getElementById('apply-step3').style.display = 'none';
       document.getElementById('apply-step4').style.display = 'block';
       toast('Application sent!');
+      // Save to application history if logged in
+      var ss2 = seekerSession || (sessionStorage.getItem('seekerSession') ? JSON.parse(sessionStorage.getItem('seekerSession')) : null);
+      if (ss2) {
+        fetch('/api/seeker-apps',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'save',email:ss2.email,password:ss2.password,jobId:_applyState.jobId,jobTitle:_applyState.jobTitle,company:_applyState.company})}).catch(function(){});
+        document.getElementById('acct-after-apply').style.display='none';
+      } else {
+        document.getElementById('acct-after-apply').style.display='block';
+      }
     } else {
       err.textContent = d.error || 'Failed to send. Please try again.';
       err.classList.add('show');
@@ -1484,6 +1596,185 @@ document.addEventListener('DOMContentLoaded',function(){try{
   document.getElementById('reg-terms-btn').addEventListener('click',function(){openModal('terms');});
   var saved=sessionStorage.getItem('empSession');
   if(saved){empSession=JSON.parse(saved);}
+
+  // SEEKER ACCOUNT SYSTEM
+  var seekerSession=null;
+  var savedSeeker=sessionStorage.getItem('seekerSession');
+  if(savedSeeker){try{seekerSession=JSON.parse(savedSeeker);updateSeekerUI();}catch(e){}}
+
+  function updateSeekerUI(){
+    var loggedIn=!!seekerSession;
+    var hAcct=document.getElementById('h-account');if(hAcct)hAcct.style.display=loggedIn?'inline-flex':'none';
+    var mmAcct=document.getElementById('mm-account');if(mmAcct)mmAcct.style.display=loggedIn?'flex':'none';
+    if(loggedIn){
+      document.getElementById('acct-auth').style.display='none';
+      document.getElementById('acct-dashboard').style.display='block';
+      document.getElementById('acct-signout').style.display='inline-flex';
+      document.getElementById('acct-welcome').textContent='Hi, '+seekerSession.name;
+      document.getElementById('acct-d-name').textContent=seekerSession.name;
+      document.getElementById('acct-d-email').textContent=seekerSession.email;
+      document.getElementById('acct-d-phone').textContent=seekerSession.phone||'Not set';
+      document.getElementById('acct-d-rtw').textContent=seekerSession.rtw||'Not set';
+      loadSeekerApps();loadSeekerCv();
+    }else{
+      document.getElementById('acct-auth').style.display='block';
+      document.getElementById('acct-dashboard').style.display='none';
+      document.getElementById('acct-signout').style.display='none';
+      document.getElementById('acct-welcome').textContent='My Account';
+    }
+  }
+
+  function saveSeekerSession(s){seekerSession=s;sessionStorage.setItem('seekerSession',JSON.stringify(s));updateSeekerUI();}
+
+  // Account tabs
+  document.getElementById('acct-tab-login').addEventListener('click',function(){
+    document.getElementById('acct-login-pane').style.display='block';
+    document.getElementById('acct-reg-pane').style.display='none';
+    this.style.background='linear-gradient(135deg,var(--em),var(--em2))';this.style.color='#fff';
+    document.getElementById('acct-tab-reg').style.background='transparent';document.getElementById('acct-tab-reg').style.color='var(--text3)';
+  });
+  document.getElementById('acct-tab-reg').addEventListener('click',function(){
+    document.getElementById('acct-login-pane').style.display='none';
+    document.getElementById('acct-reg-pane').style.display='block';
+    this.style.background='linear-gradient(135deg,var(--em),var(--em2))';this.style.color='#fff';
+    document.getElementById('acct-tab-login').style.background='transparent';document.getElementById('acct-tab-login').style.color='var(--text3)';
+  });
+
+  // Login
+  document.getElementById('acct-btn-login').addEventListener('click',async function(){
+    var email=document.getElementById('acct-l-email').value.trim();
+    var pass=document.getElementById('acct-l-pass').value;
+    var err=document.getElementById('acct-l-err');err.classList.remove('show');
+    if(!email||!pass){err.textContent='Please enter email and password.';err.classList.add('show');return;}
+    this.textContent='Signing in...';this.disabled=true;
+    try{
+      var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'login',email:email,password:pass})});
+      var d=await r.json();
+      if(d.success){saveSeekerSession({name:d.seeker.name,email:d.seeker.email,password:pass,phone:d.seeker.phone,rtw:d.seeker.rtw,notice:d.seeker.notice,hasCv:d.seeker.hasCv});toast('Welcome back, '+d.seeker.name+'!');}
+      else{err.textContent=d.error||'Login failed.';err.classList.add('show');}
+    }catch(e){err.textContent='Connection error.';err.classList.add('show');}
+    this.textContent='Sign In';this.disabled=false;
+  });
+
+  // Register
+  document.getElementById('acct-btn-register').addEventListener('click',async function(){
+    var name=document.getElementById('acct-r-name').value.trim();
+    var email=document.getElementById('acct-r-email').value.trim();
+    var pass=document.getElementById('acct-r-pass').value;
+    var phone=document.getElementById('acct-r-phone').value.trim();
+    var rtw=document.getElementById('acct-r-rtw').value;
+    var err=document.getElementById('acct-r-err');err.classList.remove('show');
+    if(!name||!email||!pass){err.textContent='Please fill in name, email and password.';err.classList.add('show');return;}
+    if(pass.length<6){err.textContent='Password must be at least 6 characters.';err.classList.add('show');return;}
+    this.textContent='Creating account...';this.disabled=true;
+    try{
+      var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',name:name,email:email,password:pass,phone:phone,rtw:rtw})});
+      var d=await r.json();
+      if(d.success){saveSeekerSession({name:d.seeker.name,email:d.seeker.email,password:pass,phone:d.seeker.phone||'',rtw:d.seeker.rtw||'',notice:'',hasCv:false});toast('Account created! Welcome, '+name+'!');}
+      else{err.textContent=d.error||'Registration failed.';err.classList.add('show');}
+    }catch(e){err.textContent='Connection error.';err.classList.add('show');}
+    this.textContent='Create Free Account';this.disabled=false;
+  });
+
+  // Sign out
+  document.getElementById('acct-signout').addEventListener('click',function(){
+    seekerSession=null;sessionStorage.removeItem('seekerSession');updateSeekerUI();toast('Signed out');
+  });
+
+  // Edit details
+  document.getElementById('acct-edit-toggle').addEventListener('click',function(){
+    document.getElementById('acct-details-view').style.display='none';
+    document.getElementById('acct-details-edit').style.display='block';
+    document.getElementById('acct-e-name').value=seekerSession.name||'';
+    document.getElementById('acct-e-phone').value=seekerSession.phone||'';
+    document.getElementById('acct-e-rtw').value=seekerSession.rtw||'';
+  });
+  document.getElementById('acct-cancel-edit').addEventListener('click',function(){
+    document.getElementById('acct-details-view').style.display='block';
+    document.getElementById('acct-details-edit').style.display='none';
+  });
+  document.getElementById('acct-save-details').addEventListener('click',async function(){
+    if(!seekerSession)return;
+    var name=document.getElementById('acct-e-name').value.trim();
+    var phone=document.getElementById('acct-e-phone').value.trim();
+    var rtw=document.getElementById('acct-e-rtw').value;
+    try{
+      var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'update',email:seekerSession.email,password:seekerSession.password,name:name,phone:phone,rtw:rtw})});
+      var d=await r.json();
+      if(d.success){seekerSession.name=name;seekerSession.phone=phone;seekerSession.rtw=rtw;saveSeekerSession(seekerSession);document.getElementById('acct-details-view').style.display='block';document.getElementById('acct-details-edit').style.display='none';toast('Details saved!');}
+    }catch(e){toast('Save failed');}
+  });
+
+  // Load applications
+  async function loadSeekerApps(){
+    if(!seekerSession)return;
+    var el=document.getElementById('acct-apps-list');
+    try{
+      var r=await fetch('/api/seeker-apps',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'list',email:seekerSession.email,password:seekerSession.password})});
+      var d=await r.json();
+      if(d.success&&d.applications&&d.applications.length){
+        var h='';d.applications.forEach(function(a){
+          h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;border-bottom:1px solid var(--border)">';
+          h+='<div><div style="font-size:.88rem;font-weight:700;color:var(--text)">'+esc(a.jobTitle)+'</div>';
+          h+='<div style="font-size:.75rem;color:var(--text3)">'+esc(a.company)+' &middot; Applied '+new Date(a.appliedAt).toLocaleDateString('en-NZ',{day:'numeric',month:'short',year:'numeric'})+'</div></div>';
+          h+='<span style="font-size:.65rem;font-weight:700;text-transform:uppercase;padding:.2rem .5rem;border-radius:999px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.15);color:var(--em)">'+esc(a.status||'sent')+'</span>';
+          h+='</div>';
+        });
+        el.innerHTML=h;
+      }else{
+        el.innerHTML='<div style="font-size:.85rem;color:var(--text3);padding:.5rem 0">No applications yet. Apply for a job and it will appear here.</div>';
+      }
+    }catch(e){el.innerHTML='<div style="font-size:.85rem;color:var(--text3)">Could not load applications.</div>';}
+  }
+
+  // Load CV status
+  function loadSeekerCv(){
+    var el=document.getElementById('acct-cv-status');
+    if(!seekerSession)return;
+    if(seekerSession.hasCv){
+      el.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:.85rem;color:var(--em);font-weight:600">&#10003; CV saved'+(seekerSession.cvFileName?' ('+esc(seekerSession.cvFileName)+')':'')+'</div><button class="btn-sm" id="acct-delete-cv" type="button" style="border-color:rgba(239,68,68,.2);color:#fca5a5">Delete CV</button></div>';
+      document.getElementById('acct-delete-cv').addEventListener('click',async function(){
+        var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete-cv',email:seekerSession.email,password:seekerSession.password})});
+        var d=await r.json();if(d.success){seekerSession.hasCv=false;saveSeekerSession(seekerSession);toast('CV deleted');}
+      });
+    }else{
+      el.innerHTML='<div style="font-size:.85rem;color:var(--text3)">No CV saved. When you apply for a job, you can choose to save your CV for faster applications.</div>';
+    }
+  }
+
+  // Delete account
+  document.getElementById('acct-delete').addEventListener('click',function(){document.getElementById('acct-delete-confirm').style.display='block';});
+  document.getElementById('acct-delete-no').addEventListener('click',function(){document.getElementById('acct-delete-confirm').style.display='none';});
+  document.getElementById('acct-delete-yes').addEventListener('click',async function(){
+    if(!seekerSession)return;
+    try{
+      var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete-account',email:seekerSession.email,password:seekerSession.password})});
+      var d=await r.json();
+      if(d.success){seekerSession=null;sessionStorage.removeItem('seekerSession');updateSeekerUI();showPage('home');toast('Account deleted. All your data has been removed.');}
+    }catch(e){toast('Delete failed');}
+  });
+
+  // Create account after apply
+  document.getElementById('acct-create-after-apply').addEventListener('click',function(){
+    document.getElementById('apply-modal').style.display='none';
+    showPage('account');
+    // Pre-fill with apply form data
+    var n=document.getElementById('app-name').value.trim();
+    var e=document.getElementById('app-email').value.trim();
+    var p=document.getElementById('app-phone').value.trim();
+    var r=document.getElementById('app-rtw').value;
+    if(n)document.getElementById('acct-r-name').value=n;
+    if(e)document.getElementById('acct-r-email').value=e;
+    if(p)document.getElementById('acct-r-phone').value=p;
+    if(r)document.getElementById('acct-r-rtw').value=r;
+    // Switch to register tab
+    document.getElementById('acct-tab-reg').click();
+  });
+
+  // Nav links for account
+  document.getElementById('h-account').addEventListener('click',function(){showPage('account');});
+  document.getElementById('mm-account').addEventListener('click',function(){showPage('account');document.getElementById('moverlay').classList.remove('open');});
+
   }catch(e){console.error('Init error:',e);}
 });
 </script>
