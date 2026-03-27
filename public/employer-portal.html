@@ -611,6 +611,10 @@ function renderJobs(jobs) {
         '</div>'+
         '<div class="field"><label>Description</label><textarea id="ef-desc-'+job.id+'" style="min-height:100px">'+esc(job.description)+'</textarea></div>'+
         '<div class="field"><label>Requirements</label><textarea id="ef-req-'+job.id+'" style="min-height:60px">'+esc(job.requirements)+'</textarea></div>'+
+        '<div class="field"><label>Why work here?</label><textarea id="ef-why-'+job.id+'" style="min-height:60px">'+esc(job.why||'')+'</textarea></div>'+
+        ((session&&session.employer&&(session.employer.plan==='basic'||session.employer.plan==='pro'))?
+        '<div class="field"><label>Company profile</label><textarea id="ef-profile-'+job.id+'" style="min-height:60px">'+esc(job.companyProfile||'')+'</textarea></div>'+
+        '<div class="field"><label>Company logo URL</label><input type="text" id="ef-logo-'+job.id+'" value="'+esc(job.logoUrl||'')+'"></div>':'')+
         '<div class="err" id="edit-err-'+job.id+'"></div>'+
         '<div class="ok" id="edit-ok-'+job.id+'"></div>'+
         '<div style="display:flex;gap:.5rem;margin-top:.5rem">'+
@@ -646,7 +650,11 @@ async function saveEdit(id) {
   errEl.style.display='none'; okEl.style.display='none';
   if (!title||!desc){errEl.textContent='Title and description required.';errEl.style.display='block';return;}
   try {
-    var r = await fetch('/api/employer-jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'edit',email:session.email,password:session.password,jobId:id,updates:{title:title,location:document.getElementById('ef-loc-'+id).value,category:document.getElementById('ef-cat-'+id).value,type:document.getElementById('ef-type-'+id).value,salary:document.getElementById('ef-sal-'+id).value,description:desc,requirements:document.getElementById('ef-req-'+id).value.trim()}})});
+    var updates={title:title,location:document.getElementById('ef-loc-'+id).value,category:document.getElementById('ef-cat-'+id).value,type:document.getElementById('ef-type-'+id).value,salary:document.getElementById('ef-sal-'+id).value,description:desc,requirements:document.getElementById('ef-req-'+id).value.trim()};
+    var whyEl=document.getElementById('ef-why-'+id);if(whyEl)updates.why=whyEl.value.trim();
+    var profEl=document.getElementById('ef-profile-'+id);if(profEl)updates.companyProfile=profEl.value.trim();
+    var logoEl=document.getElementById('ef-logo-'+id);if(logoEl)updates.logoUrl=logoEl.value.trim();
+    var r = await fetch('/api/employer-jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'edit',email:session.email,password:session.password,jobId:id,updates:updates})});
     var d = await r.json();
     if(d.success){okEl.textContent='Changes saved!';okEl.style.display='block';toast('Saved!');setTimeout(loadAndShowPortal,1500);}
     else{errEl.textContent=d.error||'Save failed.';errEl.style.display='block';}

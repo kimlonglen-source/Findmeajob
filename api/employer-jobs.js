@@ -63,7 +63,7 @@ module.exports = async function handler(req, res) {
 
       if (action === "edit") {
         if (!updates || typeof updates !== "object") return res.status(400).json({ error: "Missing or invalid updates" });
-        var allowed = ["title", "location", "category", "type", "salary", "description", "requirements", "why"];
+        var allowed = ["title", "location", "category", "type", "salary", "description", "requirements", "why", "companyProfile", "logoUrl"];
         allowed.forEach(function(k) { if (updates[k] !== undefined) job[k] = updates[k]; });
         job.editedAt = new Date().toISOString();
         if (job.status !== "approved") {
