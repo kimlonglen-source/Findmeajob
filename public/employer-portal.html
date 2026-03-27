@@ -276,12 +276,13 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
       <div class="field"><label>About your company</label><textarea id="e-company-profile" placeholder="Tell candidates about your company, culture, team and mission..." style="min-height:70px"></textarea></div>
       <div class="field" style="margin-bottom:0">
         <label>Company logo <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text3)">(optional)</span></label>
-        <div id="logo-upload-area" style="border:2px dashed var(--border);border-radius:var(--r);padding:1rem;text-align:center;cursor:pointer;transition:all .2s;position:relative">
-          <input type="file" id="logo-file" accept="image/png,image/jpeg,image/svg+xml,image/webp" style="position:absolute;inset:0;opacity:0;cursor:pointer">
+        <input type="file" id="logo-file" accept="image/png,image/jpeg,image/svg+xml,image/webp" style="display:none">
+        <button type="button" id="logo-upload-area" style="border:2px dashed var(--border);border-radius:var(--r);padding:1.25rem;text-align:center;cursor:pointer;transition:all .2s;width:100%;background:var(--bg3);display:block;font-family:'Inter',sans-serif">
           <div id="logo-preview" style="display:none;margin-bottom:.5rem"><img id="logo-preview-img" style="max-width:80px;max-height:80px;object-fit:contain;border-radius:6px;border:1px solid var(--border)"></div>
-          <div id="logo-prompt" style="font-size:.78rem;color:var(--text3);font-weight:500">Click to upload logo (PNG, JPG, SVG, max 200KB)</div>
+          <div id="logo-prompt" style="font-size:.82rem;color:var(--em);font-weight:600">Click here to upload your logo</div>
+          <div style="font-size:.68rem;color:var(--text3);font-weight:500;margin-top:.25rem">PNG, JPG, SVG or WebP (max 200KB)</div>
           <div id="logo-name" style="display:none;font-size:.72rem;color:var(--em);font-weight:600;margin-top:.3rem"></div>
-        </div>
+        </button>
         <input type="hidden" id="e-logo">
         <div style="margin-top:.35rem;font-size:.68rem;color:var(--text3)">Or paste a URL: <input type="text" id="e-logo-url" placeholder="https://yourcompany.co.nz/logo.png" style="display:inline;width:auto;padding:.3rem .5rem;font-size:.68rem;border-radius:6px;margin-left:.25rem"></div>
       </div>
@@ -470,6 +471,9 @@ document.getElementById('btn-post-new').addEventListener('click', showPostScreen
 document.getElementById('btn-back-portal').addEventListener('click', function(){ loadAndShowPortal(); });
 
 // Logo upload
+document.getElementById('logo-upload-area').addEventListener('click', function(){
+  document.getElementById('logo-file').click();
+});
 document.getElementById('logo-file').addEventListener('change', function(e){
   var file = e.target.files[0];
   if (!file) return;
@@ -539,7 +543,7 @@ async function submitJob() {
       btn.style.display = 'none';
       // Clear form
       ['e-title','e-desc','e-req','e-why','e-company-profile','e-logo','e-logo-url'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
-      document.getElementById('logo-preview').style.display='none';document.getElementById('logo-name').style.display='none';document.getElementById('logo-prompt').textContent='Click to upload logo (PNG, JPG, SVG, max 200KB)';document.getElementById('logo-upload-area').style.borderColor='';
+      document.getElementById('logo-preview').style.display='none';document.getElementById('logo-name').style.display='none';document.getElementById('logo-prompt').textContent='Click here to upload your logo';document.getElementById('logo-upload-area').style.borderColor='';
     } else if (d.limitReached) {
       err.textContent = d.error + ' Contact hello@findmeajob.co.nz to upgrade.';
       err.style.display = 'block';
