@@ -208,7 +208,36 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
         <div class="plan-name" id="plan-name-label"></div>
         <div class="plan-features" id="plan-features-label"></div>
       </div>
-      <a href="mailto:hello@findmeajob.co.nz?subject=Upgrade my plan" style="font-size:.75rem;font-weight:700;color:var(--em);text-decoration:none;white-space:nowrap">Upgrade &#8594;</a>
+      <button id="btn-upgrade" type="button" style="background:none;border:none;font-size:.75rem;font-weight:700;color:var(--em);cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;padding:0">Upgrade &#8594;</button>
+    </div>
+    <!-- Upgrade panel (hidden by default) -->
+    <div id="upgrade-panel" style="display:none;background:var(--card);border:1px solid rgba(16,185,129,.15);border-radius:var(--rl);padding:1.5rem;margin-bottom:1.25rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+        <div style="font-size:.85rem;font-weight:800;color:var(--text)">Upgrade your plan</div>
+        <button id="btn-close-upgrade" type="button" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.1rem;padding:0">&times;</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem">
+        <div id="up-free" style="background:var(--bg3);border:2px solid var(--border);border-radius:var(--r);padding:1rem;text-align:center;cursor:pointer;transition:all .2s">
+          <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:var(--text3)">Starter</div>
+          <div style="font-size:1.5rem;font-weight:900;color:var(--text);margin:.25rem 0">$0</div>
+          <div style="font-size:.65rem;color:var(--text3)">Free forever</div>
+          <div style="font-size:.68rem;color:var(--text2);margin-top:.5rem;line-height:1.5">1 listing<br>30 days</div>
+        </div>
+        <div id="up-basic" style="background:rgba(16,185,129,.03);border:2px solid rgba(16,185,129,.2);border-radius:var(--r);padding:1rem;text-align:center;cursor:pointer;transition:all .2s;position:relative">
+          <div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:var(--em);color:#fff;font-size:.55rem;font-weight:800;padding:.15rem .5rem;border-radius:999px;text-transform:uppercase;white-space:nowrap">Popular</div>
+          <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:var(--em)">Growth</div>
+          <div style="font-size:1.5rem;font-weight:900;color:var(--text);margin:.25rem 0">$29<span style="font-size:.7rem;color:var(--text3)">/mo</span></div>
+          <div style="font-size:.65rem;color:var(--em)">1st month free</div>
+          <div style="font-size:.68rem;color:var(--text2);margin-top:.5rem;line-height:1.5">5 listings<br>60 days<br>Priority</div>
+        </div>
+        <div id="up-pro" style="background:rgba(245,158,11,.03);border:2px solid rgba(245,158,11,.15);border-radius:var(--r);padding:1rem;text-align:center;cursor:pointer;transition:all .2s">
+          <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:var(--gold)">Pro</div>
+          <div style="font-size:1.5rem;font-weight:900;color:var(--text);margin:.25rem 0">$79<span style="font-size:.7rem;color:var(--text3)">/mo</span></div>
+          <div style="font-size:.65rem;color:var(--gold)">1st month free</div>
+          <div style="font-size:.68rem;color:var(--text2);margin-top:.5rem;line-height:1.5">Unlimited<br>90 days<br>Featured</div>
+        </div>
+      </div>
+      <div id="upgrade-msg" style="margin-top:.75rem;font-size:.78rem;color:var(--text2);text-align:center;display:none"></div>
     </div>
     <!-- Stats -->
     <div class="stats">
@@ -617,6 +646,26 @@ async function loadAndShowPortal(){
     if(d.success){showPortal(d.employer,d.jobs);}
   }catch(e){}
 }
+
+// Upgrade panel
+document.getElementById('btn-upgrade').addEventListener('click',function(){
+  var panel=document.getElementById('upgrade-panel');
+  panel.style.display=panel.style.display==='none'?'block':'none';
+});
+document.getElementById('btn-close-upgrade').addEventListener('click',function(){
+  document.getElementById('upgrade-panel').style.display='none';
+});
+['free','basic','pro'].forEach(function(plan){
+  document.getElementById('up-'+plan).addEventListener('click',function(){
+    var msg=document.getElementById('upgrade-msg');
+    if(session && session.employer && session.employer.plan===plan){
+      msg.style.color='var(--text3)';msg.textContent='You are already on this plan.';msg.style.display='block';return;
+    }
+    msg.style.color='var(--em)';
+    msg.innerHTML='To switch to the <strong>'+{free:'Starter',basic:'Growth',pro:'Pro'}[plan]+'</strong> plan, email <a href="mailto:hello@findmeajob.co.nz?subject=Upgrade to '+plan+' plan" style="color:var(--em);font-weight:700">hello@findmeajob.co.nz</a> and we will update your account within 24 hours.';
+    msg.style.display='block';
+  });
+});
 
 document.getElementById('btn-signout').addEventListener('click',function(){
   session=null;sessionStorage.removeItem('empPortal');

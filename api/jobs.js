@@ -21,11 +21,41 @@ module.exports = async function handler(req, res) {
   function isNZJob(job) {
     var area = (job.location && job.location.area) ? job.location.area : [];
     var url = (job.redirect_url || "").toLowerCase();
+    var title = (job.title || "").toLowerCase();
+    var company = (job.company && job.company.display_name) ? job.company.display_name.toLowerCase() : "";
+    var desc = (job.description || "").toLowerCase();
 
     // REQUIRE area[0] === "New Zealand" - reject if area is empty or area[0] is anything else
     if (!area.length || area[0] !== "New Zealand") return false;
 
-    // Adzuna own redirect URLs are fine - they correctly tag NZ jobs
+    // Block by suspicious title patterns (US-style remote spam)
+    var spamTitles = [
+      "no experience needed", "no experience required", "entry level remote",
+      "work from home", "work from anywhere", "remote usa", "remote us ",
+      "hiring immediately", "urgently hiring", "immediate start remote"
+    ];
+    for (var st = 0; st < spamTitles.length; st++) {
+      if (title.includes(spamTitles[st])) return false;
+    }
+
+    // Block by suspicious company patterns (overseas staffing agencies)
+    var spamCompanies = [
+      "staffing.com", "staffing.co", "centergroupstaffing", "newparadigmstaffing",
+      "medixpressrx", "paradigmstaffing", "centergroup", "remote.co",
+      "remoteworker", "hiringdepot", "talentburst", "insightstaffing",
+      "flexjobs", "remoteok", "weworkremotely"
+    ];
+    for (var sc = 0; sc < spamCompanies.length; sc++) {
+      if (company.includes(spamCompanies[sc])) return false;
+    }
+
+    // Block descriptions mentioning US-specific terms
+    var usTerms = ["united states", "us citizen", "us-based", "w-2", "401k", "401(k)", "hipaa"];
+    for (var ut = 0; ut < usTerms.length; ut++) {
+      if (desc.includes(usTerms[ut])) return false;
+    }
+
+    // Adzuna own redirect URLs are fine
     if (url.includes("adzuna.co.nz") || url.includes("adzuna.com.au/land") || url.includes("adzuna.com/land")) return true;
 
     // Allow .co.nz and .nz domains
@@ -33,18 +63,23 @@ module.exports = async function handler(req, res) {
 
     // Block known overseas recruitment spam domains
     var blocked = [
-      "newparadigmstaffing", "staffing.com", "ziprecruiter", "simplyhired",
+      "staffing", "ziprecruiter", "simplyhired",
       "careerbuilder", "monster.com", "workday.com", "greenhouse.io",
       "lever.co", "smartrecruiters", "bamboohr", "icims.com", "taleo",
       "successfactors", "jobvite", "paylocity", "myworkday", "ultipro",
-      "indeed.com", "glassdoor", "jora.com", "neuvoo", "talent.com", "jobrapido"
+      "indeed.com", "glassdoor", "jora.com", "neuvoo", "talent.com", "jobrapido",
+      "recruit.net", "snagajob", "lensa.com", "salary.com", "ladders.com",
+      "dice.com", "mediabistro", "flexjobs.com", "remote.co", "remoteok"
     ];
     for (var i = 0; i < blocked.length; i++) {
       if (url.includes(blocked[i])) return false;
     }
 
-    // For .com domains that are not blocked, allow them through
-    // (some legit NZ employers use .com domains)
+    // For remaining .com domains, check if area has NZ-specific location (area[1] or deeper)
+    if (url.includes(".com") && !url.includes(".com.au")) {
+      if (area.length < 2) return false;
+    }
+
     return true;
   }
 
