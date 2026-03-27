@@ -62,13 +62,14 @@ module.exports = async function handler(req, res) {
       if (job.email !== postEmail) return res.status(403).json({ error: "Not your listing" });
 
       if (action === "edit") {
-        if (job.status === "approved") return res.status(400).json({ error: "Cannot edit a live listing. Contact hello@findmeajob.co.nz" });
         if (!updates || typeof updates !== "object") return res.status(400).json({ error: "Missing or invalid updates" });
         var allowed = ["title", "location", "category", "type", "salary", "description", "requirements", "why"];
         allowed.forEach(function(k) { if (updates[k] !== undefined) job[k] = updates[k]; });
-        job.status = "pending";
         job.editedAt = new Date().toISOString();
-        job.editNote = "Resubmitted by employer after edit";
+        if (job.status !== "approved") {
+          job.status = "pending";
+          job.editNote = "Resubmitted by employer after edit";
+        }
         await hset("jobs", jobId, job);
         return res.status(200).json({ success: true });
       }

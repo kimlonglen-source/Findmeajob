@@ -590,7 +590,7 @@ function renderJobs(jobs) {
     }
 
     var actions = '<div class="jcard-actions">';
-    if (job.status === 'pending') actions += '<button class="btn-sm" onclick="toggleEdit(\''+job.id+'\')" type="button">&#9998; Edit</button>';
+    if (job.status === 'pending' || job.status === 'rejected' || (job.status === 'approved' && !exp)) actions += '<button class="btn-sm" onclick="toggleEdit(\''+job.id+'\')" type="button">&#9998; Edit</button>';
     if (job.status === 'approved' && !exp) actions += '<button class="btn-sm red" onclick="confirmClose(\''+job.id+'\',\''+((job.title||'').replace(/'/g,''))+'\')" type="button">Mark Filled</button>';
     if (exp || job.status === 'closed') actions += '<button class="btn-sm green" onclick="confirmRelist(\''+job.id+'\',\''+((job.title||'').replace(/'/g,''))+'\')" type="button">&#8635; Relist</button>';
     actions += '</div>';
@@ -600,7 +600,7 @@ function renderJobs(jobs) {
     var logoHtml = job.logoUrl ? '<img src="'+esc(job.logoUrl)+'" alt="logo" style="width:32px;height:32px;object-fit:contain;border-radius:4px;border:1px solid var(--border2);float:right;margin-left:.5rem" onerror="this.remove()">' : '';
 
     var editForm = '';
-    if (job.status === 'pending' || job.status === 'rejected') {
+    if (job.status === 'pending' || job.status === 'rejected' || (job.status === 'approved' && !exp)) {
       editForm = '<div id="edit-'+job.id+'" style="display:none;margin-top:.75rem;border-top:1px solid var(--border);padding-top:.75rem">'+
         '<div class="field"><label>Job title</label><input type="text" id="ef-title-'+job.id+'" value="'+esc(job.title)+'"></div>'+
         '<div class="g2">'+
@@ -614,7 +614,7 @@ function renderJobs(jobs) {
         '<div class="err" id="edit-err-'+job.id+'"></div>'+
         '<div class="ok" id="edit-ok-'+job.id+'"></div>'+
         '<div style="display:flex;gap:.5rem;margin-top:.5rem">'+
-        '<button class="btn-sm green" onclick="saveEdit(\''+job.id+'\')" type="button">Save &amp; Resubmit</button>'+
+        '<button class="btn-sm green" onclick="saveEdit(\''+job.id+'\')" type="button">'+(job.status==='approved'?'Save Changes':'Save &amp; Resubmit')+'</button>'+
         '<button class="btn-sm" onclick="toggleEdit(\''+job.id+'\')" type="button">Cancel</button>'+
         '</div></div>';
     }
@@ -648,7 +648,7 @@ async function saveEdit(id) {
   try {
     var r = await fetch('/api/employer-jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'edit',email:session.email,password:session.password,jobId:id,updates:{title:title,location:document.getElementById('ef-loc-'+id).value,category:document.getElementById('ef-cat-'+id).value,type:document.getElementById('ef-type-'+id).value,salary:document.getElementById('ef-sal-'+id).value,description:desc,requirements:document.getElementById('ef-req-'+id).value.trim()}})});
     var d = await r.json();
-    if(d.success){okEl.textContent='Saved and resubmitted for review.';okEl.style.display='block';toast('Resubmitted!');setTimeout(loadAndShowPortal,1500);}
+    if(d.success){okEl.textContent='Changes saved!';okEl.style.display='block';toast('Saved!');setTimeout(loadAndShowPortal,1500);}
     else{errEl.textContent=d.error||'Save failed.';errEl.style.display='block';}
   } catch(e){errEl.textContent='Connection error.';errEl.style.display='block';}
 }
