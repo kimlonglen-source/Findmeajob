@@ -74,13 +74,16 @@ module.exports = async function handler(req, res) {
       }
 
       if (action === "relist") {
-        if (job.status !== "approved") return res.status(400).json({ error: "Only live listings can be relisted" });
+        if (job.status !== "approved" && job.status !== "closed") return res.status(400).json({ error: "Only expired or closed listings can be relisted" });
+        var currentPlan = emp2.plan || "free";
+        var planDaysMap = { free: 30, basic: 60, pro: 90 };
+        job.plan = currentPlan;
+        job.planDays = planDaysMap[currentPlan] || 30;
         job.approvedAt = new Date().toISOString();
-        if (job.plan === "pro") {
-          job.featured = true;
-        } else {
-          job.featured = false;
-        }
+        job.featured = currentPlan === "pro";
+        job.priority = currentPlan === "basic" || currentPlan === "pro";
+        job.status = "pending";
+        job.relistedAt = new Date().toISOString();
         await hset("jobs", jobId, job);
         return res.status(200).json({ success: true });
       }
