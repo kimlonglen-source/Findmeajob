@@ -52,6 +52,10 @@
       "dest": "/api/track.js"
     },
     {
+      "src": "/api/apply",
+      "dest": "/api/apply.js"
+    },
+    {
       "src": "/api/debug",
       "dest": "/api/debug.js"
     },

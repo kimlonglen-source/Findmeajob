@@ -911,7 +911,7 @@ async function fetchLiveJobs(matches){
             '<div class="job-desc">'+(j.description||'').substring(0,180)+'...</div>'+
             (j.companyProfile?'<div class="job-desc" style="margin-top:.25rem;opacity:.8;font-style:italic">'+j.companyProfile.substring(0,100)+'</div>':'')+
             '<div class="job-tags"><span class="tag tag-cat">'+j.category+'</span><span class="tag tag-other">'+j.type+'</span><span class="tag tag-other">'+j.salary+'</span></div>'+
-            '<div class="job-links"><button onclick="applyJob(this)" data-email="'+j.email+'" data-title="'+j.title+'" data-id="'+j.id+'" class="job-link apply">Apply Now &#8594;</button></div>'+
+            '<div class="job-links"><button onclick="applyJob(this)" data-email="'+j.email+'" data-title="'+(j.title||'').replace(/"/g,'')+'" data-id="'+j.id+'" data-company="'+(j.company||'').replace(/"/g,'')+'" data-desc="'+(j.description||'').replace(/"/g,'').substring(0,500)+'" data-reqs="'+(j.requirements||'').replace(/"/g,'').substring(0,300)+'" class="job-link apply">Apply Now &#8594;</button></div>'+
             '<div class="match-col">'+
             (pct?'<div class="match-pct" style="color:var(--gold)">'+pct+'%</div><div class="match-lbl">match</div>':'<div style="color:var(--gold);font-size:.65rem;font-weight:800;text-transform:uppercase">\u2b50 Featured</div>')+
             '</div>';
@@ -951,7 +951,7 @@ async function loadBrowse(){
     approved.forEach(function(j){var c=document.createElement('div');c.className='job-card'+(j.featured?' featured':'');
     c.style.position='relative';c.style.gridTemplateColumns='1fr';
     var logoAbsolute=j.logoUrl?'<img src="'+j.logoUrl+'" alt="'+j.company+'" style="position:absolute;top:1rem;right:1rem;width:56px;height:56px;object-fit:contain;border-radius:8px" onerror="this.style.display=\'none\'">':'';
-    c.innerHTML=logoAbsolute+'<div style="padding-right:'+(j.logoUrl?'70px':'0')+'">'+(j.featured?'<div style="margin-bottom:.35rem"><span class="tag" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold)">\u2b50 Featured</span></div>':'')+'<div class="job-title">'+j.title+'</div><div class="job-co">'+j.company+'</div><div class="job-loc">'+j.location+'</div></div><div class="job-desc">'+(j.description||'').substring(0,160)+'...</div>'+(j.companyProfile?'<div class="job-desc" style="margin-top:.25rem;opacity:.75;font-style:italic">'+j.companyProfile.substring(0,100)+'...</div>':'')+'<div class="job-tags"><span class="tag tag-cat">'+j.category+'</span><span class="tag tag-other">'+j.type+'</span><span class="tag tag-other">'+j.salary+'</span>'+(j.priority&&!j.featured?'<span class="tag" style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);color:var(--em)">\u2191 Priority</span>':'')+'</div><div class="job-links"><button onclick="applyJob(this)" data-email="'+j.email+'" data-title="'+j.title+'" data-id="'+j.id+'" class="job-link apply">Apply Now &#8594;</button></div>';empEl.appendChild(c);});
+    c.innerHTML=logoAbsolute+'<div style="padding-right:'+(j.logoUrl?'70px':'0')+'">'+(j.featured?'<div style="margin-bottom:.35rem"><span class="tag" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold)">\u2b50 Featured</span></div>':'')+'<div class="job-title">'+j.title+'</div><div class="job-co">'+j.company+'</div><div class="job-loc">'+j.location+'</div></div><div class="job-desc">'+(j.description||'').substring(0,160)+'...</div>'+(j.companyProfile?'<div class="job-desc" style="margin-top:.25rem;opacity:.75;font-style:italic">'+j.companyProfile.substring(0,100)+'...</div>':'')+'<div class="job-tags"><span class="tag tag-cat">'+j.category+'</span><span class="tag tag-other">'+j.type+'</span><span class="tag tag-other">'+j.salary+'</span>'+(j.priority&&!j.featured?'<span class="tag" style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);color:var(--em)">\u2191 Priority</span>':'')+'</div><div class="job-links"><button onclick="applyJob(this)" data-email="'+j.email+'" data-title="'+(j.title||'').replace(/"/g,'')+'" data-id="'+j.id+'" data-company="'+(j.company||'').replace(/"/g,'')+'" data-desc="'+(j.description||'').replace(/"/g,'').substring(0,500)+'" data-reqs="'+(j.requirements||'').replace(/"/g,'').substring(0,300)+'" class="job-link apply">Apply Now &#8594;</button></div>';empEl.appendChild(c);});
   }
   liveEl.innerHTML='';
   if(!adzuna.length){liveEl.innerHTML='<div style="padding:1rem;color:var(--text3);font-size:.82rem;font-weight:500;text-align:center">No live listings found. Try a different filter.</div>';return;}
@@ -1069,23 +1069,145 @@ var legal={
 function openModal(k){document.getElementById('modal-body').innerHTML=legal[k];document.getElementById('lm').style.display='block';document.body.style.overflow='hidden';}
 function closeModal(){document.getElementById('lm').style.display='none';document.body.style.overflow='';}
 
+var _applyState = {};
+
 function applyJob(btn) {
   var email = btn.dataset.email;
   var title = btn.dataset.title;
   var jobId = btn.dataset.id;
+  var company = btn.dataset.company || '';
+  var desc = btn.dataset.desc || '';
+  var reqs = btn.dataset.reqs || '';
   if (!email) return;
-  // Track apply click
-  if (jobId) {
-    fetch('/api/track', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({jobId:jobId,type:'apply'})}).catch(function(){});
-  }
-  var modal = document.getElementById('apply-modal');
-  document.getElementById('apply-email-display').textContent = email;
+  _applyState = {employerEmail:email, jobTitle:title, jobId:jobId, company:company, desc:desc, reqs:reqs, cvFile:null, cvData:null, cvText:null};
   document.getElementById('apply-title-display').textContent = title;
-  document.getElementById('apply-email-val').value = email;
-  var subjectEl = document.getElementById('apply-subject-display');
-  if(subjectEl) subjectEl.textContent = 'Application for ' + title;
-  modal.style.display = 'flex';
+  document.getElementById('apply-company-display').textContent = company;
+  ['apply-step1','apply-step2','apply-step3','apply-step4'].forEach(function(id){document.getElementById(id).style.display=id==='apply-step1'?'block':'none';});
+  document.getElementById('app-err1').classList.remove('show');
+  document.getElementById('app-cv-prompt').textContent = 'Click to upload your CV';
+  document.getElementById('app-cv-btn').style.borderColor = '';
+  document.getElementById('apply-modal').style.display = 'block';
 }
+
+// CV upload in apply form
+document.getElementById('app-cv-btn').addEventListener('click', function(){document.getElementById('app-cv-file').click();});
+document.getElementById('app-cv-file').addEventListener('change', function(e){
+  var file = e.target.files[0];
+  if (!file) return;
+  _applyState.cvFile = file;
+  document.getElementById('app-cv-prompt').textContent = '\u2713 ' + file.name;
+  document.getElementById('app-cv-btn').style.borderColor = 'rgba(16,185,129,.4)';
+  // Extract text for AI
+  var ext = file.name.toLowerCase().split('.').pop();
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    _applyState.cvData = ev.target.result;
+    if (ext === 'txt') { _applyState.cvText = ev.target.result; }
+  };
+  if (ext === 'txt') reader.readAsText(file);
+  else reader.readAsDataURL(file);
+  // Also try mammoth for docx
+  if ((ext === 'doc' || ext === 'docx') && typeof mammoth !== 'undefined') {
+    var r2 = new FileReader();
+    r2.onload = function(ev2) {
+      mammoth.extractRawText({arrayBuffer:ev2.target.result}).then(function(res){
+        if (res.value && res.value.trim().length > 50) _applyState.cvText = res.value.trim();
+      }).catch(function(){});
+    };
+    r2.readAsArrayBuffer(file);
+  }
+});
+
+// Generate cover letter
+document.getElementById('app-btn-generate').addEventListener('click', async function(){
+  var name = document.getElementById('app-name').value.trim();
+  var email = document.getElementById('app-email').value.trim();
+  var err = document.getElementById('app-err1');
+  err.classList.remove('show');
+  if (!name || !email) { err.textContent = 'Please enter your name and email.'; err.classList.add('show'); return; }
+  if (!_applyState.cvFile) { err.textContent = 'Please upload your CV.'; err.classList.add('show'); return; }
+
+  document.getElementById('apply-step1').style.display = 'none';
+  document.getElementById('apply-step2').style.display = 'block';
+
+  var why = document.getElementById('app-why').value.trim();
+  var cvInfo = _applyState.cvText ? _applyState.cvText.substring(0, 2000) : 'CV file: ' + _applyState.cvFile.name;
+  var jobDesc = _applyState.desc ? _applyState.desc.substring(0, 1000) : _applyState.jobTitle;
+  var jobReqs = _applyState.reqs ? ' Requirements: ' + _applyState.reqs.substring(0, 500) : '';
+
+  var prompt = 'Write a professional cover letter for a job application in New Zealand. '
+    + 'Job: ' + _applyState.jobTitle + ' at ' + _applyState.company + '. '
+    + 'Job description: ' + jobDesc + '.' + jobReqs + ' '
+    + 'Applicant: ' + name + '. '
+    + 'CV info: ' + cvInfo + '. '
+    + (why ? 'They said: ' + why + '. ' : '')
+    + 'Write 3-4 paragraphs. Be warm and professional. Tailor it specifically to this role. '
+    + 'Do not use placeholder brackets like [Company]. Use the actual names. '
+    + 'Start with "Dear Hiring Manager" and end with "Kind regards, ' + name + '". '
+    + 'Return ONLY the cover letter text, nothing else.';
+
+  try {
+    var r = await fetch('/api/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({system:'NZ job application cover letter writer. Return only the letter text.', messages:[{role:'user',content:prompt}]})});
+    var d = await r.json();
+    var letter = d.content.map(function(b){return b.text||'';}).join('').trim();
+    document.getElementById('app-cover-letter').value = letter;
+    document.getElementById('app-cv-name-display').textContent = _applyState.cvFile.name;
+    document.getElementById('app-details-display').textContent = name + ', ' + email;
+    document.getElementById('app-consent-company').textContent = _applyState.company;
+    document.getElementById('app-sent-company').textContent = _applyState.company;
+    document.getElementById('apply-step2').style.display = 'none';
+    document.getElementById('apply-step3').style.display = 'block';
+    document.getElementById('app-consent').checked = false;
+    document.getElementById('app-err3').classList.remove('show');
+  } catch(e) {
+    document.getElementById('apply-step2').style.display = 'none';
+    document.getElementById('apply-step1').style.display = 'block';
+    err.textContent = 'Could not generate cover letter. Please try again.';
+    err.classList.add('show');
+  }
+});
+
+// Back button
+document.getElementById('app-btn-back').addEventListener('click', function(){
+  document.getElementById('apply-step3').style.display = 'none';
+  document.getElementById('apply-step1').style.display = 'block';
+});
+
+// Send application
+document.getElementById('app-btn-send').addEventListener('click', async function(){
+  var err = document.getElementById('app-err3');
+  err.classList.remove('show');
+  if (!document.getElementById('app-consent').checked) { err.textContent = 'Please tick the consent checkbox to send your application.'; err.classList.add('show'); return; }
+  var btn = document.getElementById('app-btn-send');
+  btn.textContent = 'Sending...'; btn.disabled = true;
+  try {
+    var r = await fetch('/api/apply', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({
+      employerEmail: _applyState.employerEmail,
+      jobTitle: _applyState.jobTitle,
+      company: _applyState.company,
+      jobId: _applyState.jobId,
+      name: document.getElementById('app-name').value.trim(),
+      email: document.getElementById('app-email').value.trim(),
+      phone: document.getElementById('app-phone').value.trim(),
+      coverLetter: document.getElementById('app-cover-letter').value,
+      cvFileName: _applyState.cvFile ? _applyState.cvFile.name : '',
+      cvData: _applyState.cvData || ''
+    })});
+    var d = await r.json();
+    if (d.success) {
+      document.getElementById('apply-step3').style.display = 'none';
+      document.getElementById('apply-step4').style.display = 'block';
+      toast('Application sent!');
+    } else {
+      err.textContent = d.error || 'Failed to send. Please try again.';
+      err.classList.add('show');
+    }
+  } catch(e) {
+    err.textContent = 'Connection error. Please try again.';
+    err.classList.add('show');
+  }
+  btn.textContent = 'Send Application \u2192'; btn.disabled = false;
+});
 
 async function doForgotPassword(){
   var email=document.getElementById('forgot-email').value.trim();
@@ -1266,33 +1388,70 @@ document.addEventListener('DOMContentLoaded',function(){try{
 <script defer src="/_vercel/insights/script.js"></script>
 <!-- Reset handled in employer portal -->
 
-<!-- Apply modal -->
-<div id="apply-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99999;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(8px);overflow-y:auto">
-  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem;width:100%;max-width:480px;margin:auto">
-    <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin-bottom:.3rem">How to apply</div>
-    <div style="font-family:'Inter',sans-serif;font-size:1.2rem;font-weight:800;color:var(--text);margin-bottom:1.25rem" id="apply-title-display"></div>
-    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:1rem;margin-bottom:1rem">
-      <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.3rem">Send your application to</div>
-      <div style="font-size:1rem;font-weight:800;color:var(--em);margin-bottom:.5rem" id="apply-email-display"></div>
-      <input type="text" id="apply-email-val" readonly style="position:absolute;opacity:0;pointer-events:none">
-      <button onclick="navigator.clipboard.writeText(document.getElementById('apply-email-val').value).then(function(){var b=document.getElementById('copy-btn');b.textContent='&#10003; Copied!';b.style.background='var(--em2)';setTimeout(function(){b.textContent='Copy Email Address';b.style.background='';},2500);})" id="copy-btn" style="background:var(--em);border:none;color:#fff;padding:.5rem 1rem;border-radius:var(--r);font-family:'Inter',sans-serif;font-size:.78rem;font-weight:800;cursor:pointer;width:100%">Copy Email Address</button>
-    </div>
-    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:1rem;margin-bottom:1rem">
-      <div style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.65rem">What to include in your email</div>
-      <div style="font-size:.82rem;color:var(--text2);font-weight:500;line-height:1.8">
-        <div style="margin-bottom:.35rem">&#128229; <strong style="color:var(--text)">Subject line:</strong> <span id="apply-subject-display" style="color:var(--em)"></span></div>
-        <div style="margin-bottom:.35rem">&#128196; <strong style="color:var(--text)">Your CV</strong> — attach as PDF or Word document</div>
-        <div style="margin-bottom:.35rem">&#9997; <strong style="color:var(--text)">Cover letter</strong> — 2-3 paragraphs in the email body:</div>
-        <div style="background:var(--bg2);border-radius:var(--r);padding:.75rem;margin-top:.35rem;font-size:.78rem;color:var(--text3);line-height:1.75;border:1px solid var(--border)">
-          <strong style="color:var(--text2)">Paragraph 1:</strong> Why you want this specific role<br>
-          <strong style="color:var(--text2)">Paragraph 2:</strong> Your most relevant skills and experience<br>
-          <strong style="color:var(--text2)">Paragraph 3:</strong> Why you're a great fit for their company
-        </div>
-        <div style="margin-top:.5rem">&#128222; <strong style="color:var(--text)">Your phone number</strong> — so they can call you quickly</div>
+<!-- AI Apply Modal -->
+<div id="apply-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99999;padding:1rem;backdrop-filter:blur(8px);overflow-y:auto">
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem;width:100%;max-width:540px;margin:2rem auto;position:relative">
+    <button onclick="document.getElementById('apply-modal').style.display='none'" style="position:absolute;top:1rem;right:1rem;background:var(--bg3);border:1px solid var(--border);color:var(--text3);width:28px;height:28px;border-radius:999px;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center">&times;</button>
+    <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin-bottom:.3rem">Apply with AI</div>
+    <div style="font-size:1.15rem;font-weight:800;color:var(--text);margin-bottom:.2rem" id="apply-title-display"></div>
+    <div style="font-size:.8rem;color:var(--text3);font-weight:600;margin-bottom:1.25rem" id="apply-company-display"></div>
+
+    <!-- Step 1: Your details -->
+    <div id="apply-step1">
+      <div class="field"><label class="form-label">Your name *</label><input type="text" id="app-name" placeholder="Jane Smith" autocomplete="name"></div>
+      <div class="g2">
+        <div class="field"><label class="form-label">Email *</label><input type="email" id="app-email" placeholder="jane@gmail.com" autocomplete="email"></div>
+        <div class="field"><label class="form-label">Phone</label><input type="tel" id="app-phone" placeholder="021 000 0000" autocomplete="tel"></div>
       </div>
+      <div class="field">
+        <label class="form-label">Your CV (PDF or Word) *</label>
+        <input type="file" id="app-cv-file" accept=".pdf,.doc,.docx" style="display:none">
+        <button type="button" id="app-cv-btn" style="border:2px dashed var(--border);border-radius:var(--r);padding:1rem;text-align:center;cursor:pointer;width:100%;background:var(--bg3);display:block;font-family:'Inter',sans-serif">
+          <div id="app-cv-prompt" style="font-size:.82rem;color:var(--em);font-weight:600">Click to upload your CV</div>
+          <div style="font-size:.68rem;color:var(--text3);margin-top:.2rem">PDF or Word document</div>
+        </button>
+      </div>
+      <div class="field"><label class="form-label">Why do you want this role? <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--text3)">(optional — helps AI write a better cover letter)</span></label><textarea id="app-why" placeholder="e.g. I have 3 years experience in this field and I am passionate about..." style="min-height:70px"></textarea></div>
+      <div class="alert alert-err" id="app-err1"></div>
+      <button class="btn" id="app-btn-generate" type="button" style="margin-top:.5rem">Generate Cover Letter with AI &#8594;</button>
+      <div style="font-size:.68rem;color:var(--text3);text-align:center;margin-top:.6rem">Your CV is processed by AI to write a tailored cover letter. It is never stored.</div>
     </div>
-    <div style="font-size:.72rem;color:var(--text3);font-weight:500;line-height:1.6;margin-bottom:1rem;padding:.6rem .75rem;background:var(--bg3);border-radius:var(--r);border:1px solid var(--border)">&#128274; Your privacy is protected. Your CV is never stored on FindMeAJob.co.nz. You apply directly to the employer.</div>
-    <button onclick="document.getElementById('apply-modal').style.display='none'" style="width:100%;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:.75rem;border-radius:var(--r);font-family:'Inter',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer">Close</button>
+
+    <!-- Step 2: AI generating -->
+    <div id="apply-step2" style="display:none;text-align:center;padding:2rem 0">
+      <div style="font-size:1.5rem;margin-bottom:.75rem">&#9997;</div>
+      <div style="font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:.3rem">Writing your cover letter<span class="dots"></span></div>
+      <div style="font-size:.78rem;color:var(--text3)">AI is tailoring it to this specific role</div>
+    </div>
+
+    <!-- Step 3: Review & edit -->
+    <div id="apply-step3" style="display:none">
+      <div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);border-radius:var(--r);padding:.65rem .85rem;margin-bottom:1rem;font-size:.78rem;color:var(--em);font-weight:600">&#10003; AI cover letter generated! Review and edit below before sending.</div>
+      <div class="field">
+        <label class="form-label">Cover Letter <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--text3)">(edit as you like)</span></label>
+        <textarea id="app-cover-letter" style="min-height:220px;line-height:1.7"></textarea>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.75rem;margin-bottom:.75rem">
+        <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;color:var(--text3);margin-bottom:.35rem">The employer will receive</div>
+        <div style="font-size:.78rem;color:var(--text2);line-height:1.7">
+          <div>&#9993; Your cover letter (above)</div>
+          <div id="app-cv-attach-note">&#128206; Your CV attached (<span id="app-cv-name-display"></span>)</div>
+          <div>&#128100; Your contact details (<span id="app-details-display"></span>)</div>
+        </div>
+      </div>
+      <div style="margin-bottom:.75rem"><label style="display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;font-size:.78rem;color:var(--text2);font-weight:500;line-height:1.5"><input type="checkbox" id="app-consent" style="width:auto;margin-top:3px;flex-shrink:0"> I consent to sending my CV and cover letter to <strong id="app-consent-company" style="color:var(--text)"></strong>. My information is sent directly to the employer and is not stored by FindMeAJob.co.nz.</label></div>
+      <div class="alert alert-err" id="app-err3"></div>
+      <button class="btn" id="app-btn-send" type="button">Send Application &#8594;</button>
+      <button class="btn btn-sec" id="app-btn-back" type="button" style="margin-top:.5rem">&#8592; Back to edit details</button>
+    </div>
+
+    <!-- Step 4: Sent -->
+    <div id="apply-step4" style="display:none;text-align:center;padding:2rem 0">
+      <div style="font-size:2rem;margin-bottom:.75rem">&#10003;</div>
+      <div style="font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:.5rem">Application sent!</div>
+      <div style="font-size:.85rem;color:var(--text2);font-weight:500;line-height:1.7;margin-bottom:1.5rem">Your cover letter and CV have been emailed to <strong id="app-sent-company" style="color:var(--em)"></strong>. They will contact you directly if interested.</div>
+      <button class="btn btn-sec" onclick="document.getElementById('apply-modal').style.display='none'" type="button">Close</button>
+    </div>
   </div>
 </div>
 </body>
