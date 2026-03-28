@@ -53,7 +53,7 @@ nav{position:sticky;top:0;z-index:200;padding:0 2rem;height:64px;display:flex;al
 .moverlay.open{display:flex;align-items:flex-end}
 .msheet{background:var(--bg2);border-radius:24px 24px 0 0;padding:1.5rem;width:100%;border-top:1px solid var(--border)}
 .mhandle{width:40px;height:4px;background:var(--border2);border-radius:999px;margin:0 auto 1.5rem}
-.mnavitem{display:flex;align-items:center;padding:.85rem 0;border-bottom:1px solid var(--border);font-size:.95rem;font-weight:600;color:var(--text);cursor:pointer;background:none;border-left:none;border-right:none;border-top:none;font-family:'Inter',sans-serif;width:100%}
+.mnavitem{display:flex;align-items:center;padding:.85rem 0;border-bottom:1px solid var(--border);font-size:.95rem;font-weight:600;color:var(--text);cursor:pointer;background:none;border-left:none;border-right:none;border-top:none;font-family:'Inter',sans-serif;width:100%;text-decoration:none}
 .mnavitem:last-child{border-bottom:none}
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--text);color:var(--bg);padding:.5rem 1.2rem;border-radius:999px;font-size:.8rem;font-weight:700;z-index:99999;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,.3)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -215,14 +215,13 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
   <div class="msheet">
     <div class="mhandle"></div>
     <button class="mnavitem" id="mm-home" type="button">Home</button>
-    <button class="mnavitem" id="mm-find" type="button">Find My Job</button>
+    <button class="mnavitem" id="mm-find" type="button">Find a Job</button>
     <button class="mnavitem" id="mm-browse" type="button">Browse Jobs</button>
     <button class="mnavitem" id="mm-pricing" type="button">Pricing</button>
-    <a class="mnavitem" href="/employer-portal.html">Employer Login</a>
-    <a class="mnavitem" href="/employer-portal.html">Post a Job</a>
     <button class="mnavitem" id="mm-about" type="button">About</button>
     <button class="mnavitem" id="mm-account" type="button" style="display:none">My Account</button>
     <button class="mnavitem" id="mm-signin" type="button">My Jobs</button>
+    <a class="mnavitem" href="/employer-portal.html">Employer Login</a>
     <a class="mnavitem" href="mailto:hello@findmeajob.co.nz">Contact</a>
   </div>
 </div>
@@ -238,12 +237,11 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <button class="nl" id="h-pricing" type="button">Pricing</button>
     <button class="nl" id="h-about" type="button">About</button>
     <a class="nl" href="/employer-portal.html" id="h-portal">Employer Login</a>
-    <a class="nl cta" href="/employer-portal.html" id="h-employer">Post a Job</a>
   </div>
   <div class="nav-r">
     <button class="nl" id="h-account" type="button" style="display:none">My Account</button>
     <button class="nl" id="h-signin" type="button">My Jobs</button>
-    <a class="nl cta" href="/employer-portal.html" id="h-employer-r" style="text-decoration:none">Post a Job</a>
+    <a class="nl cta" href="/employer-portal.html" style="text-decoration:none">Post a Job</a>
     <button class="icon-btn" id="tbtn" type="button">&#9790;</button>
     <button class="icon-btn hmbg" id="hamburger" type="button">&#9776;</button>
   </div>
