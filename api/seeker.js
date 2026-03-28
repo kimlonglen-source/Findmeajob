@@ -1,3 +1,4 @@
+var crypto = require("crypto");
 var _kv = require("./_kv");
 var getKV = _kv.getKV;
 var hget = _kv.hget;
@@ -143,6 +144,57 @@ module.exports = async function handler(req, res) {
       if (authResult6.error) return res.status(authResult6.status).json({ error: authResult6.error });
       var sk6 = authResult6.seeker;
       return res.status(200).json({ success: true, cvText: sk6.cvText || "", cvFileName: sk6.cvFileName || "" });
+    }
+
+    // PASSWORD RESET REQUEST (no auth needed)
+    if (action === "reset-request") {
+      var resetEmail = (req.body.email || "").toLowerCase().trim();
+      if (!resetEmail) return res.status(400).json({ error: "Email required." });
+      var rawReset = await hget("seekers", resetEmail);
+      if (!rawReset) return res.status(404).json({ error: "No account found with that email." });
+      var skReset = typeof rawReset === "string" ? JSON.parse(rawReset) : rawReset;
+      var resetToken = crypto.randomBytes(32).toString("hex");
+      skReset.resetToken = resetToken;
+      skReset.resetExpiry = new Date(Date.now() + 3600000).toISOString();
+      await hset("seekers", resetEmail, skReset);
+      var resetUrl = "https://www.findmeajob.co.nz/?seeker-reset=" + resetToken + "&email=" + encodeURIComponent(resetEmail);
+      var resendKey = process.env.RESEND_API_KEY;
+      if (resendKey) {
+        try {
+          await fetch("https://api.resend.com/emails", {
+            method: "POST",
+            headers: { "Authorization": "Bearer " + resendKey, "Content-Type": "application/json" },
+            body: JSON.stringify({
+              from: "FindMeAJob <noreply@findmeajob.co.nz>",
+              to: [resetEmail],
+              subject: "Reset your FindMeAJob password",
+              html: '<div style="font-family:Arial,sans-serif;max-width:500px;margin:0 auto"><div style="background:#10b981;color:#fff;padding:1.25rem;border-radius:12px 12px 0 0;text-align:center"><div style="font-size:18px;font-weight:800">Password Reset</div></div><div style="background:#f8f9fa;border:1px solid #e5e7eb;border-top:none;padding:1.5rem;border-radius:0 0 12px 12px"><p style="font-size:14px;color:#374151;line-height:1.7">You requested a password reset for your FindMeAJob.co.nz account.</p><div style="text-align:center;margin:1.5rem 0"><a href="' + resetUrl + '" style="display:inline-block;background:#10b981;color:#fff;padding:12px 28px;border-radius:25px;font-size:14px;font-weight:700;text-decoration:none">Reset My Password</a></div><p style="font-size:12px;color:#9ca3af">This link expires in 1 hour. If you did not request this, you can ignore this email.</p></div></div>'
+            })
+          });
+          return res.status(200).json({ success: true, method: "email" });
+        } catch (e) { return res.status(200).json({ success: true, method: "email" }); }
+      }
+      return res.status(200).json({ success: true, method: "email" });
+    }
+
+    // COMPLETE PASSWORD RESET (no auth, uses token)
+    if (action === "reset-complete") {
+      var rcEmail = (req.body.email || "").toLowerCase().trim();
+      var rcToken = req.body.token;
+      var rcNewPass = req.body.newPassword;
+      if (!rcEmail || !rcToken || !rcNewPass) return res.status(400).json({ error: "Missing fields." });
+      var pwErr = validatePassword(rcNewPass);
+      if (pwErr) return res.status(400).json({ error: pwErr });
+      var rawRc = await hget("seekers", rcEmail);
+      if (!rawRc) return res.status(404).json({ error: "Account not found." });
+      var skRc = typeof rawRc === "string" ? JSON.parse(rawRc) : rawRc;
+      if (skRc.resetToken !== rcToken) return res.status(400).json({ error: "Invalid or expired reset link." });
+      if (new Date(skRc.resetExpiry) < new Date()) return res.status(400).json({ error: "Reset link has expired. Please request a new one." });
+      skRc.password = hashPassword(rcNewPass);
+      delete skRc.resetToken;
+      delete skRc.resetExpiry;
+      await hset("seekers", rcEmail, skRc);
+      return res.status(200).json({ success: true });
     }
 
     // ONE-CLICK UNSUBSCRIBE (no auth needed, uses email + token)

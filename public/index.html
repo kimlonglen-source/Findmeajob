@@ -728,6 +728,18 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
           <div class="field"><label class="form-label">Password</label><input type="password" id="acct-l-pass" placeholder="Your password" autocomplete="current-password"></div>
           <div class="alert alert-err" id="acct-l-err"></div>
           <button class="btn" id="acct-btn-login" type="button" style="margin-top:.5rem">Sign In</button>
+          <div style="text-align:center;margin-top:.65rem">
+            <button type="button" id="acct-forgot-btn" style="background:none;border:none;color:var(--em);font-family:'Inter',sans-serif;font-size:.78rem;cursor:pointer;font-weight:700;padding:0">Forgot password?</button>
+          </div>
+          <div id="acct-forgot-box" style="display:none;margin-top:.75rem;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:1rem">
+            <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;color:var(--em);margin-bottom:.5rem">Reset Password</div>
+            <div class="field"><label class="form-label">Your registered email</label><input type="email" id="acct-forgot-email" placeholder="jane@gmail.com"></div>
+            <div id="acct-forgot-msg" style="font-size:.78rem;font-weight:600;margin-bottom:.5rem;min-height:1rem"></div>
+            <div style="display:flex;gap:.4rem">
+              <button class="btn" id="acct-forgot-send" type="button" style="flex:1;padding:.6rem;font-size:.8rem">Send Reset Link</button>
+              <button class="btn btn-sec" id="acct-forgot-cancel" type="button" style="flex:1;padding:.6rem;font-size:.8rem">Cancel</button>
+            </div>
+          </div>
         </div>
         <div id="acct-reg-pane" style="display:none">
           <div class="field"><label class="form-label">Full name *</label><input type="text" id="acct-r-name" placeholder="Jane Smith" autocomplete="name"></div>
@@ -1677,6 +1689,31 @@ document.addEventListener('DOMContentLoaded',function(){try{
   var urlSearch = new URLSearchParams(window.location.search);
   if (urlSearch.get('terms')) { setTimeout(function(){ openModal('terms'); }, 300); }
   if (urlSearch.get('privacy')) { setTimeout(function(){ openModal('privacy'); }, 300); }
+
+  // Seeker password reset from email link
+  var seekerResetToken = urlSearch.get('seeker-reset');
+  var seekerResetEmail = urlSearch.get('email');
+  if (seekerResetToken && seekerResetEmail) {
+    showPage('account');
+    var authEl = document.getElementById('acct-auth');
+    authEl.innerHTML = '<div style="max-width:440px;margin:0 auto"><div class="card"><div style="font-size:.7rem;font-weight:800;text-transform:uppercase;color:var(--em);margin-bottom:.3rem">Reset Password</div><div style="font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:.75rem">Choose a new password</div><p style="font-size:.82rem;color:var(--text2);margin-bottom:1rem">For: <strong style="color:var(--em)">'+esc(seekerResetEmail)+'</strong></p><div class="field"><label class="form-label">New password</label><input type="password" id="sk-reset-new" placeholder="Min 8 chars, upper, lower, number, symbol"></div><div class="field"><label class="form-label">Confirm password</label><input type="password" id="sk-reset-confirm" placeholder="Repeat password"></div><div id="sk-reset-msg" style="font-size:.82rem;font-weight:600;margin:.5rem 0;min-height:1rem"></div><button class="btn" id="sk-reset-btn" type="button">Update Password</button></div></div>';
+    document.getElementById('sk-reset-btn').addEventListener('click',async function(){
+      var np=document.getElementById('sk-reset-new').value;
+      var cp=document.getElementById('sk-reset-confirm').value;
+      var msg=document.getElementById('sk-reset-msg');
+      if(np.length<8||!/[A-Z]/.test(np)||!/[a-z]/.test(np)||!/[0-9]/.test(np)||!/[^A-Za-z0-9]/.test(np)){msg.style.color='#fca5a5';msg.textContent='Password must be at least 8 characters with uppercase, lowercase, number and special character.';return;}
+      if(np!==cp){msg.style.color='#fca5a5';msg.textContent='Passwords do not match.';return;}
+      this.textContent='Updating...';this.disabled=true;
+      try{
+        var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'reset-complete',email:seekerResetEmail,token:seekerResetToken,newPassword:np})});
+        var d=await r.json();
+        if(d.success){msg.style.color='var(--em)';msg.textContent='Password updated! You can now sign in.';this.style.display='none';setTimeout(function(){window.location.href='/';},2000);}
+        else{msg.style.color='#fca5a5';msg.textContent=d.error||'Reset failed.';}
+      }catch(e){msg.style.color='#fca5a5';msg.textContent='Connection error.';}
+      this.textContent='Update Password';this.disabled=false;
+    });
+  }
+
   var jobParam = urlSearch.get('job');
   if (jobParam) {
     showPage('browse'); loadBrowse();
@@ -1879,6 +1916,29 @@ document.addEventListener('DOMContentLoaded',function(){try{
       else{err.textContent=d.error||'Login failed.';err.classList.add('show');}
     }catch(e){err.textContent='Connection error.';err.classList.add('show');}
     this.textContent='Sign In';this.disabled=false;
+  });
+
+  // Forgot password (seeker)
+  document.getElementById('acct-forgot-btn').addEventListener('click',function(){
+    document.getElementById('acct-forgot-box').style.display='block';
+  });
+  document.getElementById('acct-forgot-cancel').addEventListener('click',function(){
+    document.getElementById('acct-forgot-box').style.display='none';
+    document.getElementById('acct-forgot-email').value='';
+    document.getElementById('acct-forgot-msg').textContent='';
+  });
+  document.getElementById('acct-forgot-send').addEventListener('click',async function(){
+    var email=document.getElementById('acct-forgot-email').value.trim();
+    var msg=document.getElementById('acct-forgot-msg');
+    if(!email){msg.style.color='#fca5a5';msg.textContent='Please enter your email.';return;}
+    this.textContent='Sending...';this.disabled=true;
+    try{
+      var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'reset-request',email:email})});
+      var d=await r.json();
+      if(d.success){msg.style.color='var(--em)';msg.textContent='Reset email sent! Check your inbox.';}
+      else{msg.style.color='#fca5a5';msg.textContent=d.error||'Email not found.';}
+    }catch(e){msg.style.color='#fca5a5';msg.textContent='Connection error.';}
+    this.textContent='Send Reset Link';this.disabled=false;
   });
 
   // Register
