@@ -1656,7 +1656,36 @@ document.addEventListener('DOMContentLoaded',function(){try{
     sessionStorage.removeItem('goPricing');
     showPage('pricing');
   }
-  // Redirect any employer page navigations to portal
+  // Handle ?job=ID deep link
+  var jobParam = new URLSearchParams(window.location.search).get('job');
+  if (jobParam) {
+    showPage('browse'); loadBrowse();
+    fetch('/api/approved-jobs').then(function(r){return r.json();}).then(function(d){
+      var jobs = d.jobs || [];
+      var match = jobs.filter(function(j){return j.id === jobParam;})[0];
+      if (match) {
+        var m = document.getElementById('lm');
+        var mb = document.getElementById('modal-body');
+        var logoHtml = match.logoUrl ? '<img src="'+match.logoUrl+'" style="width:64px;height:64px;object-fit:contain;border-radius:10px;margin-bottom:.75rem">' : '';
+        mb.innerHTML = '<div style="max-width:540px">'
+          + logoHtml
+          + (match.featured ? '<div style="margin-bottom:.5rem"><span style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold);padding:.22rem .7rem;border-radius:999px;font-size:.65rem;font-weight:700;text-transform:uppercase">\u2b50 Featured</span></div>' : '')
+          + '<div style="font-size:1.3rem;font-weight:800;color:var(--text);margin-bottom:.25rem">'+esc(match.title)+'</div>'
+          + '<div style="font-size:.9rem;font-weight:600;color:var(--em);margin-bottom:.15rem">'+esc(match.company)+'</div>'
+          + '<div style="font-size:.82rem;color:var(--text3);margin-bottom:1rem">'+esc(match.location)+' \u00b7 '+esc(match.type||'Full-time')+' \u00b7 '+esc(match.salary||'Negotiable')+'</div>'
+          + '<div style="font-size:.88rem;color:var(--text2);line-height:1.8;margin-bottom:1rem;white-space:pre-wrap">'+esc(match.description)+'</div>'
+          + (match.requirements ? '<div style="margin-bottom:.75rem"><div style="font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--text3);margin-bottom:.3rem">Requirements</div><div style="font-size:.85rem;color:var(--text2);line-height:1.75;white-space:pre-wrap">'+esc(match.requirements)+'</div></div>' : '')
+          + (match.why ? '<div style="margin-bottom:.75rem"><div style="font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--text3);margin-bottom:.3rem">Why work here</div><div style="font-size:.85rem;color:var(--text2);line-height:1.75;font-style:italic;white-space:pre-wrap">'+esc(match.why)+'</div></div>' : '')
+          + (match.companyProfile ? '<div style="margin-bottom:.75rem"><div style="font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--text3);margin-bottom:.3rem">About '+esc(match.company)+'</div><div style="font-size:.85rem;color:var(--text2);line-height:1.75;white-space:pre-wrap">'+esc(match.companyProfile)+'</div></div>' : '')
+          + '<div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1rem"><span style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.15);color:var(--em);padding:.22rem .7rem;border-radius:999px;font-size:.72rem;font-weight:600">'+esc(match.category)+'</span><span style="background:var(--bg3);border:1px solid var(--border);color:var(--text3);padding:.22rem .7rem;border-radius:999px;font-size:.72rem;font-weight:600">'+esc(match.type)+'</span><span style="background:var(--bg3);border:1px solid var(--border);color:var(--text3);padding:.22rem .7rem;border-radius:999px;font-size:.72rem;font-weight:600">'+esc(match.salary)+'</span></div>'
+          + '<button onclick="applyJob(this)" data-email="'+esc(match.email)+'" data-title="'+esc(match.title)+'" data-id="'+esc(match.id)+'" data-company="'+esc(match.company)+'" data-desc="'+esc((match.description||'').substring(0,500))+'" data-reqs="'+esc((match.requirements||'').substring(0,300))+'" style="display:inline-flex;align-items:center;gap:.4rem;background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;padding:.75rem 1.5rem;border-radius:999px;font-family:Inter,sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(16,185,129,.25)">Apply Now \u2192</button>'
+          + '</div>';
+        m.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+      }
+    }).catch(function(){});
+  }
+
   // Handle URL hash navigation
   var hash = window.location.hash.replace('#','');
   if(hash === 'employer' || hash === 'post-a-job'){ window.location.href='/employer-portal.html'; }

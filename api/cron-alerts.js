@@ -103,7 +103,7 @@ module.exports = async function handler(req, res) {
         html += '<div style="font-size:13px;color:#059669;font-weight:600;margin-top:2px">' + esc(job.company) + '</div>';
         html += '<div style="font-size:13px;color:#6b7280;margin-top:2px">' + esc(job.location) + ' \u00b7 ' + esc(job.type || "Full-time") + ' \u00b7 ' + esc(job.salary || "Negotiable") + '</div>';
         html += '<div style="font-size:13px;color:#374151;margin-top:8px;line-height:1.6">' + esc((job.description || "").substring(0, 150)) + '...</div>';
-        html += '<div style="margin-top:10px"><a href="https://www.findmeajob.co.nz/#browse" style="display:inline-block;background:#10b981;color:#fff;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:700;text-decoration:none">View &amp; Apply</a></div>';
+        html += '<div style="margin-top:10px"><a href="https://www.findmeajob.co.nz/?job=' + encodeURIComponent(job.id) + '" style="display:inline-block;background:#10b981;color:#fff;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:700;text-decoration:none">View &amp; Apply</a></div>';
         html += '</div>';
       });
 
