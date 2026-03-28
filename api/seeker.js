@@ -29,6 +29,7 @@ module.exports = async function handler(req, res) {
       var seeker = {
         id: id, name: name, email: email, password: hashPassword(password),
         phone: req.body.phone || "", rtw: req.body.rtw || "", notice: req.body.notice || "",
+        emailAlerts: !!req.body.emailAlerts, emailUpdates: !!req.body.emailUpdates,
         cvText: null, cvFileName: null,
         createdAt: new Date().toISOString()
       };
@@ -57,6 +58,8 @@ module.exports = async function handler(req, res) {
       if (req.body.phone !== undefined) sk2.phone = req.body.phone;
       if (req.body.rtw !== undefined) sk2.rtw = req.body.rtw;
       if (req.body.notice !== undefined) sk2.notice = req.body.notice;
+      if (req.body.emailAlerts !== undefined) sk2.emailAlerts = !!req.body.emailAlerts;
+      if (req.body.emailUpdates !== undefined) sk2.emailUpdates = !!req.body.emailUpdates;
       sk2.updatedAt = new Date().toISOString();
       await hset("seekers", sk2.email, sk2);
       return res.status(200).json({ success: true });
@@ -102,7 +105,7 @@ module.exports = async function handler(req, res) {
       var authResult5 = await authSeeker(req.body.email, req.body.password);
       if (authResult5.error) return res.status(authResult5.status).json({ error: authResult5.error });
       var sk5 = authResult5.seeker;
-      return res.status(200).json({ success: true, seeker: { id: sk5.id, name: sk5.name, email: sk5.email, phone: sk5.phone || "", rtw: sk5.rtw || "", notice: sk5.notice || "", hasCv: !!(sk5.cvText || sk5.cvFileName), cvFileName: sk5.cvFileName || null } });
+      return res.status(200).json({ success: true, seeker: { id: sk5.id, name: sk5.name, email: sk5.email, phone: sk5.phone || "", rtw: sk5.rtw || "", notice: sk5.notice || "", hasCv: !!(sk5.cvText || sk5.cvFileName), cvFileName: sk5.cvFileName || null, emailAlerts: !!sk5.emailAlerts, emailUpdates: !!sk5.emailUpdates } });
     }
 
     // GET CV TEXT (for auto-fill in apply form)

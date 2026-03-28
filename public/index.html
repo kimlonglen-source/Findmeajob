@@ -737,6 +737,11 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
             <div class="field"><label class="form-label">Phone</label><input type="tel" id="acct-r-phone" placeholder="021 000 0000" autocomplete="tel"></div>
             <div class="field"><label class="form-label">Right to work in NZ</label><select id="acct-r-rtw"><option value="">Select...</option><option>NZ Citizen</option><option>NZ Permanent Resident</option><option>Work Visa</option><option>Student Visa</option><option>Working Holiday Visa</option><option>Need Sponsorship</option></select></div>
           </div>
+          <div style="margin-top:.65rem;margin-bottom:.65rem">
+            <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.45rem">Email preferences</div>
+            <label style="display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;font-size:.78rem;color:var(--text2);font-weight:500;line-height:1.5;margin-bottom:.4rem"><input type="checkbox" id="acct-r-alerts" style="width:16px;height:16px;min-width:16px;margin-top:2px;accent-color:var(--em)"> Email me when new jobs match my profile (weekly)</label>
+            <label style="display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;font-size:.78rem;color:var(--text2);font-weight:500;line-height:1.5"><input type="checkbox" id="acct-r-updates" style="width:16px;height:16px;min-width:16px;margin-top:2px;accent-color:var(--em)"> Email me with FindMeAJob updates and tips</label>
+          </div>
           <div class="alert alert-err" id="acct-r-err"></div>
           <button class="btn" id="acct-btn-register" type="button" style="margin-top:.5rem">Create Free Account</button>
           <div style="font-size:.68rem;color:var(--text3);text-align:center;margin-top:.5rem">Free forever. Your data is never shared.</div>
@@ -790,6 +795,15 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
             <div style="font-size:.72rem;color:var(--text3);line-height:1.65">Your CV text is stored securely so we can pre-fill your details when you apply for jobs. The original file is not stored — only the extracted text. You can delete your saved CV at any time from this page. We comply with the NZ Privacy Act 2020.</div>
           </div>
         </div>
+      </div>
+
+      <!-- Email Preferences -->
+      <div class="card">
+        <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:.75rem">Email Preferences</div>
+        <label style="display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;font-size:.82rem;color:var(--text2);font-weight:500;line-height:1.5;margin-bottom:.5rem"><input type="checkbox" id="acct-pref-alerts" style="width:16px;height:16px;min-width:16px;margin-top:2px;accent-color:var(--em)"> Weekly job alerts matching my profile</label>
+        <label style="display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;font-size:.82rem;color:var(--text2);font-weight:500;line-height:1.5;margin-bottom:.5rem"><input type="checkbox" id="acct-pref-updates" style="width:16px;height:16px;min-width:16px;margin-top:2px;accent-color:var(--em)"> FindMeAJob updates and tips</label>
+        <button class="btn-sm green" id="acct-save-prefs" type="button" style="margin-top:.35rem">Save preferences</button>
+        <div style="font-size:.65rem;color:var(--text3);margin-top:.35rem">You can change these at any time. We never share your email.</div>
       </div>
 
       <!-- My Applications -->
@@ -1771,7 +1785,7 @@ document.addEventListener('DOMContentLoaded',function(){try{
       document.getElementById('acct-d-email').textContent=seekerSession.email;
       document.getElementById('acct-d-phone').textContent=seekerSession.phone||'Not set';
       document.getElementById('acct-d-rtw').textContent=seekerSession.rtw||'Not set';
-      loadSeekerApps();loadSeekerCv();
+      loadSeekerApps();loadSeekerCv();loadSeekerPrefs();
     }else{
       document.getElementById('acct-auth').style.display='block';
       document.getElementById('acct-dashboard').style.display='none';
@@ -1824,7 +1838,7 @@ document.addEventListener('DOMContentLoaded',function(){try{
     if(pass.length<8||!/[A-Z]/.test(pass)||!/[a-z]/.test(pass)||!/[0-9]/.test(pass)||!/[^A-Za-z0-9]/.test(pass)){err.textContent='Password must be at least 8 characters with uppercase, lowercase, number and special character.';err.classList.add('show');return;}
     this.textContent='Creating account...';this.disabled=true;
     try{
-      var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',name:name,email:email,password:pass,phone:phone,rtw:rtw})});
+      var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',name:name,email:email,password:pass,phone:phone,rtw:rtw,emailAlerts:document.getElementById('acct-r-alerts').checked,emailUpdates:document.getElementById('acct-r-updates').checked})});
       var d=await r.json();
       if(d.success){saveSeekerSession({name:d.seeker.name,email:d.seeker.email,password:pass,phone:d.seeker.phone||'',rtw:d.seeker.rtw||'',notice:'',hasCv:false});toast('Account created! Welcome, '+name+'!');}
       else{err.textContent=d.error||'Registration failed.';err.classList.add('show');}
@@ -1909,6 +1923,29 @@ document.addEventListener('DOMContentLoaded',function(){try{
       document.getElementById('acct-cv-upload').style.display='block';
     }
   }
+
+  // Email preferences
+  async function loadSeekerPrefs(){
+    if(!seekerSession)return;
+    try{
+      var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'profile',email:seekerSession.email,password:seekerSession.password})});
+      var d=await r.json();
+      if(d.success&&d.seeker){
+        document.getElementById('acct-pref-alerts').checked=!!d.seeker.emailAlerts;
+        document.getElementById('acct-pref-updates').checked=!!d.seeker.emailUpdates;
+      }
+    }catch(e){}
+  }
+  document.getElementById('acct-save-prefs').addEventListener('click',async function(){
+    if(!seekerSession)return;
+    var alerts=document.getElementById('acct-pref-alerts').checked;
+    var updates=document.getElementById('acct-pref-updates').checked;
+    try{
+      var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'update',email:seekerSession.email,password:seekerSession.password,emailAlerts:alerts,emailUpdates:updates})});
+      var d=await r.json();
+      if(d.success){toast('Email preferences saved!');}
+    }catch(e){toast('Failed to save preferences');}
+  });
 
   // Delete account
   document.getElementById('acct-delete').addEventListener('click',function(){document.getElementById('acct-delete-confirm').style.display='block';});
