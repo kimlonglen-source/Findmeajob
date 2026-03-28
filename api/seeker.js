@@ -6,6 +6,7 @@ var hdel = _kv.hdel;
 var hashPassword = _kv.hashPassword;
 var verifyPassword = _kv.verifyPassword;
 var isHashed = _kv.isHashed;
+var validatePassword = _kv.validatePassword;
 
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
@@ -20,7 +21,8 @@ module.exports = async function handler(req, res) {
       var email = (req.body.email || "").toLowerCase().trim();
       var password = req.body.password;
       if (!name || !email || !password) return res.status(400).json({ error: "Name, email and password are required." });
-      if (password.length < 6) return res.status(400).json({ error: "Password must be at least 6 characters." });
+      var pwErr = validatePassword(password);
+      if (pwErr) return res.status(400).json({ error: pwErr });
       var existing = await hget("seekers", email);
       if (existing) return res.status(400).json({ error: "An account with this email already exists. Please sign in." });
       var id = "sk_" + Date.now() + "_" + Math.random().toString(36).substring(2, 8);

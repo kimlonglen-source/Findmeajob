@@ -5,6 +5,7 @@ var hset = _kv.hset;
 var hashPassword = _kv.hashPassword;
 var verifyPassword = _kv.verifyPassword;
 var isHashed = _kv.isHashed;
+var validatePassword = _kv.validatePassword;
 
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
@@ -37,6 +38,8 @@ module.exports = async function handler(req, res) {
       var website = req.body.website;
       var plan = req.body.plan;
       if (!name || !company || !regEmail || !regPassword) return res.status(400).json({ error: "Missing required fields" });
+      var pwErr = validatePassword(regPassword);
+      if (pwErr) return res.status(400).json({ error: pwErr });
       var existing = await hget("employers", regEmail);
       if (existing) return res.status(400).json({ error: "An account with this email already exists. Please sign in instead." });
       var id = "emp_" + Date.now() + "_" + Math.random().toString(36).substring(2, 8);

@@ -65,6 +65,8 @@ module.exports = async function handler(req, res) {
 
     // Step 2: Complete reset with token
     if (token && newPassword && email) {
+      var pwErr = _kv.validatePassword(newPassword);
+      if (pwErr) return res.status(400).json({ error: pwErr });
       var raw2 = await hget("employers", email);
       if (!raw2) return res.status(404).json({ error: "Invalid reset link." });
       var emp2 = typeof raw2 === "string" ? JSON.parse(raw2) : raw2;

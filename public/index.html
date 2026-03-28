@@ -545,7 +545,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <div class="field"><label class="form-label">Your name *</label><input type="text" id="r-name" placeholder="Jane Smith" autocomplete="name"></div>
         <div class="field"><label class="form-label">Company name *</label><input type="text" id="r-company" placeholder="Acme Ltd" autocomplete="organization"></div>
         <div class="field"><label class="form-label">Work email *</label><input type="email" id="r-email" placeholder="jane@acme.co.nz" autocomplete="email"></div>
-        <div class="field"><label class="form-label">Password *</label><input type="password" id="r-password" placeholder="Minimum 6 characters" autocomplete="new-password"></div>
+        <div class="field"><label class="form-label">Password *</label><input type="password" id="r-password" placeholder="Min 8 chars, upper, lower, number, symbol" autocomplete="new-password"></div>
         <div class="g2" style="margin-bottom:0">
           <div class="field" style="margin-bottom:0"><label class="form-label">Phone <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--text3)">(optional)</span></label><input type="tel" id="r-phone" placeholder="+64 21 000 0000"></div>
           <div class="field" style="margin-bottom:0"><label class="form-label">Website <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--text3)">(optional)</span></label><input type="text" id="r-website" placeholder="https://acme.co.nz"></div>
@@ -596,7 +596,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <div id="emp-step-reset" style="display:none">
       <div style="margin-bottom:1.5rem"><div class="page-eyebrow">Reset Password</div><div style="font-family:'Inter',sans-serif;font-size:1.3rem;font-weight:800;color:var(--text)">Choose a new password</div></div>
       <div class="card">
-        <div class="field"><label class="form-label">New password *</label><input type="password" id="new-password" placeholder="Minimum 6 characters" autocomplete="new-password"></div>
+        <div class="field"><label class="form-label">New password *</label><input type="password" id="new-password" placeholder="Min 8 chars, upper, lower, number, symbol" autocomplete="new-password"></div>
         <div class="field" style="margin-bottom:0"><label class="form-label">Confirm password *</label><input type="password" id="confirm-password" placeholder="Repeat your new password" autocomplete="new-password"></div>
       </div>
       <div class="alert alert-err" id="reset-err"></div>
@@ -732,7 +732,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <div id="acct-reg-pane" style="display:none">
           <div class="field"><label class="form-label">Full name *</label><input type="text" id="acct-r-name" placeholder="Jane Smith" autocomplete="name"></div>
           <div class="field"><label class="form-label">Email *</label><input type="email" id="acct-r-email" placeholder="jane@gmail.com" autocomplete="email"></div>
-          <div class="field"><label class="form-label">Password *</label><input type="password" id="acct-r-pass" placeholder="Minimum 6 characters" autocomplete="new-password"></div>
+          <div class="field"><label class="form-label">Password *</label><input type="password" id="acct-r-pass" placeholder="Min 8 chars, upper, lower, number, symbol" autocomplete="new-password"></div>
           <div class="g2">
             <div class="field"><label class="form-label">Phone</label><input type="tel" id="acct-r-phone" placeholder="021 000 0000" autocomplete="tel"></div>
             <div class="field"><label class="form-label">Right to work in NZ</label><select id="acct-r-rtw"><option value="">Select...</option><option>NZ Citizen</option><option>NZ Permanent Resident</option><option>Work Visa</option><option>Student Visa</option><option>Working Holiday Visa</option><option>Need Sponsorship</option></select></div>
@@ -1221,7 +1221,7 @@ async function doRegister(){
   var website=document.getElementById('r-website').value.trim();var password=document.getElementById('r-password').value;
   var err=document.getElementById('reg-err');err.classList.remove('show');
   if(!name||!company||!email||!password){err.textContent='Please fill in all required fields.';err.classList.add('show');return;}
-  if(password.length<6){err.textContent='Password must be at least 6 characters.';err.classList.add('show');return;}
+  if(password.length<8||!/[A-Z]/.test(password)||!/[a-z]/.test(password)||!/[0-9]/.test(password)||!/[^A-Za-z0-9]/.test(password)){err.textContent='Password must be at least 8 characters with uppercase, lowercase, number and special character.';err.classList.add('show');return;}
   var btn=document.getElementById('btn-register');btn.textContent='Creating account...';btn.disabled=true;
   try{
     var r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,company,email,phone,website,password})});
@@ -1529,7 +1529,7 @@ async function doResetWithToken(){
   var token=new URLSearchParams(window.location.search).get('reset')||window._resetToken||'';
   var errEl=document.getElementById('reset-err');var okEl=document.getElementById('reset-ok');
   errEl.classList.remove('show');okEl.classList.remove('show');
-  if(!np||np.length<6){errEl.textContent='Password must be at least 6 characters.';errEl.classList.add('show');return;}
+  if(!np||np.length<6){errEl.textContent='Password must be at least 8 characters with uppercase, lowercase, number and special character.';errEl.classList.add('show');return;}
   if(np!==cp){errEl.textContent='Passwords do not match.';errEl.classList.add('show');return;}
   try{
     var r=await fetch('/api/reset-password',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,token:token,newPassword:np})});
@@ -1742,7 +1742,7 @@ document.addEventListener('DOMContentLoaded',function(){try{
     var rtw=document.getElementById('acct-r-rtw').value;
     var err=document.getElementById('acct-r-err');err.classList.remove('show');
     if(!name||!email||!pass){err.textContent='Please fill in name, email and password.';err.classList.add('show');return;}
-    if(pass.length<6){err.textContent='Password must be at least 6 characters.';err.classList.add('show');return;}
+    if(pass.length<8||!/[A-Z]/.test(pass)||!/[a-z]/.test(pass)||!/[0-9]/.test(pass)||!/[^A-Za-z0-9]/.test(pass)){err.textContent='Password must be at least 8 characters with uppercase, lowercase, number and special character.';err.classList.add('show');return;}
     this.textContent='Creating account...';this.disabled=true;
     try{
       var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',name:name,email:email,password:pass,phone:phone,rtw:rtw})});
