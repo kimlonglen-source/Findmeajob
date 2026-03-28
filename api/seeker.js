@@ -101,6 +101,14 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ success: true, seeker: { id: sk5.id, name: sk5.name, email: sk5.email, phone: sk5.phone || "", rtw: sk5.rtw || "", notice: sk5.notice || "", hasCv: !!(sk5.cvText || sk5.cvFileName), cvFileName: sk5.cvFileName || null } });
     }
 
+    // GET CV TEXT (for auto-fill in apply form)
+    if (action === "get-cv") {
+      var authResult6 = await authSeeker(req.body.email, req.body.password);
+      if (authResult6.error) return res.status(authResult6.status).json({ error: authResult6.error });
+      var sk6 = authResult6.seeker;
+      return res.status(200).json({ success: true, cvText: sk6.cvText || "", cvFileName: sk6.cvFileName || "" });
+    }
+
     return res.status(400).json({ error: "Unknown action" });
   } catch (err) {
     return res.status(500).json({ error: err.message });

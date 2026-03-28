@@ -1316,6 +1316,22 @@ function applyJob(btn) {
     if (ss.phone) document.getElementById('app-phone').value = ss.phone;
     if (ss.rtw) document.getElementById('app-rtw').value = ss.rtw;
     if (ss.notice) document.getElementById('app-notice').value = ss.notice;
+    // Auto-load saved CV
+    if (ss.hasCv) {
+      document.getElementById('app-cv-prompt').textContent = '\u2713 Using saved CV' + (ss.cvFileName ? ' (' + ss.cvFileName + ')' : '');
+      document.getElementById('app-cv-btn').style.borderColor = 'rgba(16,185,129,.4)';
+      _applyState.cvFileName = ss.cvFileName || 'saved-cv.pdf';
+      _applyState.cvFile = { name: ss.cvFileName || 'saved-cv.pdf' };
+      // Fetch CV text from server
+      fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'profile',email:ss.email,password:ss.password})}).then(function(r){return r.json();}).then(function(d){
+        if(d.success && d.seeker){
+          // Get full CV data from seeker record
+          fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'get-cv',email:ss.email,password:ss.password})}).then(function(r2){return r2.json();}).then(function(d2){
+            if(d2.success){_applyState.cvText=d2.cvText||'';_applyState.cvData=d2.cvText||'';}
+          }).catch(function(){});
+        }
+      }).catch(function(){});
+    }
   }
   document.getElementById('apply-modal').style.display = 'block';
 }
