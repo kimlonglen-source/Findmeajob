@@ -195,6 +195,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
   nav{padding:0 1rem}
   .navlinks{display:none}
   .hmbg{display:flex}
+  .desktop-only{display:none}
   .hero{padding:3rem 1.2rem 2.5rem}
   .hero h1{font-size:2.5rem;letter-spacing:-1px}
   .how-grid,.plan-grid,.choice-grid,.g2{grid-template-columns:1fr}
@@ -221,6 +222,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <button class="mnavitem" id="mm-signin" type="button">My Jobs</button>
     <a class="mnavitem" href="/employer-portal.html">Employer Login</a>
     <a class="mnavitem" href="mailto:hello@findmeajob.co.nz">Contact</a>
+    <button class="mnavitem" id="mm-theme" type="button">Toggle Theme</button>
   </div>
 </div>
 
@@ -240,7 +242,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <a class="nl cta" href="/employer-portal.html" style="text-decoration:none">Post a Job</a>
   </div>
   <div class="nav-r">
-    <button class="icon-btn" id="tbtn" type="button">&#9790;</button>
+    <button class="icon-btn desktop-only" id="tbtn" type="button">&#9790;</button>
     <button class="icon-btn hmbg" id="hamburger" type="button">&#9776;</button>
   </div>
 </nav>
@@ -1810,6 +1812,7 @@ document.addEventListener('DOMContentLoaded',function(){try{
   else if(hash === 'account'){ showPage('account'); }
   if(localStorage.getItem('theme')==='light'){lightMode=false;toggleTheme();}
   document.getElementById('tbtn').addEventListener('click',toggleTheme);
+  document.getElementById('mm-theme').addEventListener('click',function(){toggleTheme();document.getElementById('moverlay').classList.remove('open');});
   document.getElementById('logo-home').addEventListener('click',function(e){e.preventDefault();showPage('home');});
   document.getElementById('h-find').addEventListener('click',goFind);
   document.getElementById('h-browse').addEventListener('click',function(){showPage('browse');loadBrowse();});
