@@ -8,9 +8,28 @@ var hdel = _kv.hdel;
 var PASS = process.env.ADMIN_PASSWORD;
 var PLAN_DAYS = { free: 30, basic: 60, pro: 90 };
 
+var rateLimitMap = {};
+
+function checkRateLimit(ip) {
+  var now = Date.now();
+  if (!rateLimitMap[ip] || rateLimitMap[ip].resetAt < now) {
+    rateLimitMap[ip] = { count: 1, resetAt: now + 60000 };
+    return true;
+  }
+  rateLimitMap[ip].count++;
+  if (rateLimitMap[ip].count > 5) return false;
+  return true;
+}
+
 module.exports = async function handler(req, res) {
   if (!PASS) return res.status(500).json({ error: "ADMIN_PASSWORD environment variable is not set" });
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed. Use POST." });
+
+  var ip = req.headers["x-forwarded-for"] || req.headers["x-real-ip"] || (req.socket && req.socket.remoteAddress) || "unknown";
+  if (!checkRateLimit(ip)) {
+    return res.status(429).json({ error: "Too many requests. Please wait a minute and try again." });
+  }
+
   var params = req.body;
   var action = params.action;
   var password = params.password;

@@ -7,6 +7,19 @@ var verifyPassword = _kv.verifyPassword;
 var isHashed = _kv.isHashed;
 var validatePassword = _kv.validatePassword;
 
+var loginRateLimitMap = {};
+
+function checkLoginRateLimit(ip) {
+  var now = Date.now();
+  if (!loginRateLimitMap[ip] || loginRateLimitMap[ip].resetAt < now) {
+    loginRateLimitMap[ip] = { count: 1, resetAt: now + 60000 };
+    return true;
+  }
+  loginRateLimitMap[ip].count++;
+  if (loginRateLimitMap[ip].count > 10) return false;
+  return true;
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
   if (!getKV()) return res.status(500).json({ error: "Database not configured." });
@@ -16,6 +29,10 @@ module.exports = async function handler(req, res) {
   try {
     // LOGIN
     if (action === "login") {
+      var loginIp = req.headers["x-forwarded-for"] || req.headers["x-real-ip"] || (req.socket && req.socket.remoteAddress) || "unknown";
+      if (!checkLoginRateLimit(loginIp)) {
+        return res.status(429).json({ error: "Too many login attempts. Please wait a minute and try again." });
+      }
       var email = req.body.email;
       var password = req.body.password;
       if (!email || !password) return res.status(400).json({ error: "Missing email or password." });
