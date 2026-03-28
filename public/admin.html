@@ -172,6 +172,8 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
         <button class="tab" data-tab="rejected" type="button">Rejected</button>
         <button class="tab" data-tab="expired" type="button">Expired</button>
         <button class="tab" data-tab="all" type="button">All</button>
+        <button class="tab" data-tab="seekers" type="button" style="margin-left:.5rem;border-color:rgba(139,92,246,.2);color:var(--purple)">Job Seekers</button>
+        <button class="tab" data-tab="employers" type="button" style="border-color:rgba(245,158,11,.2);color:var(--gold)">Employers</button>
       </div>
       <div style="display:flex;align-items:center;gap:.65rem">
         <span class="refresh-txt" id="last-refresh">Never refreshed</span>
@@ -179,6 +181,7 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
       </div>
     </div>
     <div id="job-list"></div>
+    <div id="people-list" style="display:none"></div>
   </main>
 </div>
 
@@ -225,7 +228,7 @@ document.getElementById("pw").addEventListener("keydown",function(e){if(e.key===
 document.getElementById("btn-login").addEventListener("click",doLogin);
 document.getElementById("btn-signout").addEventListener("click",function(){pw="";document.getElementById("login").style.display="flex";document.getElementById("app").style.display="none";clearInterval(refreshTimer);});
 document.getElementById("btn-refresh").addEventListener("click",loadJobs);
-document.querySelectorAll(".tab").forEach(function(t){t.addEventListener("click",function(){document.querySelectorAll(".tab").forEach(function(x){x.classList.remove("active");});this.classList.add("active");currentTab=this.dataset.tab;renderJobs();});});
+document.querySelectorAll(".tab").forEach(function(t){t.addEventListener("click",function(){document.querySelectorAll(".tab").forEach(function(x){x.classList.remove("active");});this.classList.add("active");currentTab=this.dataset.tab;if(currentTab==="seekers"){loadPeople("seekers");}else if(currentTab==="employers"){loadPeople("employers");}else{document.getElementById("job-list").style.display="grid";document.getElementById("people-list").style.display="none";renderJobs();}});});
 document.getElementById("confirm-cancel").addEventListener("click",function(){document.getElementById("confirm-modal").classList.remove("show");pendingAction=null;pendingActionId=null;});
 document.getElementById("confirm-ok").addEventListener("click",function(){document.getElementById("confirm-modal").classList.remove("show");if(pendingAction&&pendingActionId){execAction(pendingAction,pendingActionId);pendingAction=null;pendingActionId=null;}});
 
@@ -389,6 +392,55 @@ async function execAction(action,id){
     }
   } catch(e) {
     showToast("Network error. Please try again.", "error");
+  }
+}
+
+async function loadPeople(type) {
+  document.getElementById("job-list").style.display = "none";
+  var el = document.getElementById("people-list");
+  el.style.display = "block";
+  el.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3)">Loading...</div>';
+  try {
+    var r = await fetch("/api/admin", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"list-"+type,password:pw})});
+    var d = await r.json();
+    if (type === "seekers") {
+      var seekers = d.seekers || [];
+      if (!seekers.length) { el.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3)">No registered job seekers yet.</div>'; return; }
+      var h = '<div style="font-size:.72rem;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.75rem">'+seekers.length+' Registered Job Seeker'+(seekers.length===1?'':'s')+'</div>';
+      seekers.forEach(function(s) {
+        h += '<div class="job-row" style="border-left:3px solid var(--purple);grid-template-columns:1fr">';
+        h += '<div><div class="jr-title">'+esc(s.name)+'</div>';
+        h += '<div class="jr-meta"><a href="mailto:'+esc(s.email)+'">'+esc(s.email)+'</a>';
+        if (s.phone) h += ' \u00b7 '+esc(s.phone);
+        if (s.rtw) h += ' \u00b7 '+esc(s.rtw);
+        h += '</div>';
+        h += '<div class="pills">';
+        if (s.hasCv) h += '<span class="status-pill sp-approved">CV Saved</span>';
+        if (s.createdAt) h += '<span class="status-pill sp-expired">Joined '+new Date(s.createdAt).toLocaleDateString("en-NZ",{day:"numeric",month:"short",year:"numeric"})+'</span>';
+        h += '</div></div></div>';
+      });
+      el.innerHTML = h;
+    } else {
+      var employers = d.employers || [];
+      if (!employers.length) { el.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3)">No registered employers yet.</div>'; return; }
+      var h2 = '<div style="font-size:.72rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.75rem">'+employers.length+' Registered Employer'+(employers.length===1?'':'s')+'</div>';
+      employers.forEach(function(e) {
+        var planColor = e.plan==='pro'?'var(--gold)':e.plan==='basic'?'var(--em)':'var(--text3)';
+        h2 += '<div class="job-row" style="border-left:3px solid var(--gold);grid-template-columns:1fr">';
+        h2 += '<div><div class="jr-title">'+esc(e.company)+'</div>';
+        h2 += '<div class="jr-co" style="font-size:.82rem">'+esc(e.name)+'</div>';
+        h2 += '<div class="jr-meta"><a href="mailto:'+esc(e.email)+'">'+esc(e.email)+'</a>';
+        if (e.phone) h2 += ' \u00b7 '+esc(e.phone);
+        h2 += '</div>';
+        h2 += '<div class="pills">';
+        h2 += '<span class="status-pill" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);color:'+planColor+'">'+esc((e.plan||'free').toUpperCase())+' plan</span>';
+        if (e.registered) h2 += '<span class="status-pill sp-expired">Joined '+new Date(e.registered).toLocaleDateString("en-NZ",{day:"numeric",month:"short",year:"numeric"})+'</span>';
+        h2 += '</div></div></div>';
+      });
+      el.innerHTML = h2;
+    }
+  } catch(e) {
+    el.innerHTML = '<div style="text-align:center;padding:2rem;color:#fca5a5">Failed to load. Please try again.</div>';
   }
 }
 </script>

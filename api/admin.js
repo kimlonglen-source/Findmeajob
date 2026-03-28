@@ -68,6 +68,18 @@ module.exports = async function handler(req, res) {
       await hdel("jobs", id);
       return res.status(200).json({ success: true });
     }
+    if (action === "list-seekers") {
+      var seekerRaw = await hgetall("seekers");
+      var seekers = Object.values(seekerRaw).map(function(s) { var sk = typeof s === "string" ? JSON.parse(s) : s; return { id: sk.id, name: sk.name, email: sk.email, phone: sk.phone || "", rtw: sk.rtw || "", hasCv: !!(sk.cvText || sk.cvFileName), createdAt: sk.createdAt }; });
+      seekers.sort(function(a, b) { return new Date(b.createdAt) - new Date(a.createdAt); });
+      return res.status(200).json({ seekers: seekers });
+    }
+    if (action === "list-employers") {
+      var empRaw = await hgetall("employers");
+      var employers = Object.values(empRaw).map(function(e) { var em = typeof e === "string" ? JSON.parse(e) : e; return { id: em.id, name: em.name, company: em.company, email: em.email, phone: em.phone || "", plan: em.plan || "free", registered: em.registered }; });
+      employers.sort(function(a, b) { return new Date(b.registered) - new Date(a.registered); });
+      return res.status(200).json({ employers: employers });
+    }
     return res.status(400).json({ error: "Unknown action" });
   } catch (err) {
     return res.status(500).json({ error: err.message });
