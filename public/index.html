@@ -1657,9 +1657,14 @@ document.addEventListener('DOMContentLoaded',function(){try{
     showPage('pricing');
   }
   // Redirect any employer page navigations to portal
-  if(window.location.hash === '#employer' || window.location.hash === '#post-a-job'){
-    window.location.href='/employer-portal.html';
-  }
+  // Handle URL hash navigation
+  var hash = window.location.hash.replace('#','');
+  if(hash === 'employer' || hash === 'post-a-job'){ window.location.href='/employer-portal.html'; }
+  else if(hash === 'browse'){ showPage('browse'); loadBrowse(); }
+  else if(hash === 'find'){ goFind(); }
+  else if(hash === 'pricing'){ showPage('pricing'); }
+  else if(hash === 'about'){ showPage('about'); }
+  else if(hash === 'account'){ showPage('account'); }
   if(localStorage.getItem('theme')==='light'){lightMode=false;toggleTheme();}
   document.getElementById('tbtn').addEventListener('click',toggleTheme);
   document.getElementById('logo-home').addEventListener('click',function(e){e.preventDefault();showPage('home');});
