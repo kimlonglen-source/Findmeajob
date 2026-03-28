@@ -1776,14 +1776,24 @@ document.addEventListener('DOMContentLoaded',function(){try{
   }
 
   // Load CV status
-  function loadSeekerCv(){
+  async function loadSeekerCv(){
     var el=document.getElementById('acct-cv-status');
     if(!seekerSession)return;
+    // Fetch fresh profile from server
+    try{
+      var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'profile',email:seekerSession.email,password:seekerSession.password})});
+      var d=await r.json();
+      if(d.success){
+        seekerSession.hasCv=d.seeker.hasCv;
+        seekerSession.cvFileName=d.seeker.cvFileName;
+        sessionStorage.setItem('seekerSession',JSON.stringify(seekerSession));
+      }
+    }catch(e){}
     if(seekerSession.hasCv){
-      el.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:.85rem;color:var(--em);font-weight:600">&#10003; CV saved'+(seekerSession.cvFileName?' ('+esc(seekerSession.cvFileName)+')':'')+'</div><button class="btn-sm" id="acct-delete-cv" type="button" style="border-color:rgba(239,68,68,.2);color:#fca5a5">Delete CV</button></div>';
+      el.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem"><div style="font-size:.85rem;color:var(--em);font-weight:600">&#10003; CV saved'+(seekerSession.cvFileName?' ('+esc(seekerSession.cvFileName)+')':'')+'</div><button class="btn-sm" id="acct-delete-cv" type="button" style="border-color:rgba(239,68,68,.2);color:#fca5a5">Delete CV</button></div>';
       document.getElementById('acct-delete-cv').addEventListener('click',async function(){
-        var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete-cv',email:seekerSession.email,password:seekerSession.password})});
-        var d=await r.json();if(d.success){seekerSession.hasCv=false;saveSeekerSession(seekerSession);toast('CV deleted');}
+        var r2=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete-cv',email:seekerSession.email,password:seekerSession.password})});
+        var d2=await r2.json();if(d2.success){seekerSession.hasCv=false;seekerSession.cvFileName=null;saveSeekerSession(seekerSession);toast('CV deleted');}
       });
     }else{
       el.innerHTML='<div style="font-size:.85rem;color:var(--text3)">No CV saved. When you apply for a job, you can choose to save your CV for faster applications.</div>';
