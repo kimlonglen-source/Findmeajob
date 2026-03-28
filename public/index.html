@@ -777,6 +777,19 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <div class="card">
         <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:.75rem">Saved CV</div>
         <div id="acct-cv-status"></div>
+        <div id="acct-cv-upload" style="display:none;margin-top:.75rem;border-top:1px solid var(--border);padding-top:.75rem">
+          <input type="file" id="acct-cv-file" accept=".pdf,.doc,.docx" style="display:none">
+          <button type="button" id="acct-cv-upload-btn" style="border:2px dashed var(--border);border-radius:var(--r);padding:1rem;text-align:center;cursor:pointer;width:100%;background:var(--bg3);display:block;font-family:'Inter',sans-serif">
+            <div id="acct-cv-upload-prompt" style="font-size:.82rem;color:var(--em);font-weight:600">Click to upload your CV</div>
+            <div style="font-size:.68rem;color:var(--text3);margin-top:.2rem">PDF or Word document</div>
+          </button>
+          <div id="acct-cv-upload-msg" style="display:none;font-size:.78rem;font-weight:600;margin-top:.5rem"></div>
+          <button class="btn" id="acct-cv-save-btn" type="button" style="margin-top:.5rem;display:none">Save CV to My Account</button>
+          <div style="margin-top:.65rem;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.65rem .85rem">
+            <div style="font-size:.7rem;font-weight:700;color:var(--text3);margin-bottom:.25rem">Privacy Notice</div>
+            <div style="font-size:.72rem;color:var(--text3);line-height:1.65">Your CV text is stored securely so we can pre-fill your details when you apply for jobs. The original file is not stored — only the extracted text. You can delete your saved CV at any time from this page. We comply with the NZ Privacy Act 2020.</div>
+          </div>
+        </div>
       </div>
 
       <!-- My Applications -->
@@ -1795,8 +1808,10 @@ document.addEventListener('DOMContentLoaded',function(){try{
         var r2=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete-cv',email:seekerSession.email,password:seekerSession.password})});
         var d2=await r2.json();if(d2.success){seekerSession.hasCv=false;seekerSession.cvFileName=null;saveSeekerSession(seekerSession);toast('CV deleted');}
       });
+      document.getElementById('acct-cv-upload').style.display='none';
     }else{
-      el.innerHTML='<div style="font-size:.85rem;color:var(--text3)">No CV saved. When you apply for a job, you can choose to save your CV for faster applications.</div>';
+      el.innerHTML='<div style="font-size:.85rem;color:var(--text3)">No CV saved yet. Upload your CV below for faster applications.</div>';
+      document.getElementById('acct-cv-upload').style.display='block';
     }
   }
 
@@ -1810,6 +1825,41 @@ document.addEventListener('DOMContentLoaded',function(){try{
       var d=await r.json();
       if(d.success){seekerSession=null;sessionStorage.removeItem('seekerSession');updateSeekerUI();showPage('home');toast('Account deleted. All your data has been removed.');}
     }catch(e){toast('Delete failed');}
+  });
+
+  // CV upload in My Account
+  var _acctCvData = null;
+  var _acctCvName = null;
+  document.getElementById('acct-cv-upload-btn').addEventListener('click',function(){document.getElementById('acct-cv-file').click();});
+  document.getElementById('acct-cv-file').addEventListener('change',function(e){
+    var file=e.target.files[0];
+    if(!file)return;
+    _acctCvName=file.name;
+    document.getElementById('acct-cv-upload-prompt').textContent='\u2713 '+file.name;
+    document.getElementById('acct-cv-upload-btn').style.borderColor='rgba(16,185,129,.4)';
+    document.getElementById('acct-cv-save-btn').style.display='flex';
+    // Extract text
+    var ext=file.name.toLowerCase().split('.').pop();
+    if(ext==='txt'){var r=new FileReader();r.onload=function(ev){_acctCvData=ev.target.result;};r.readAsText(file);}
+    else if((ext==='doc'||ext==='docx')&&typeof mammoth!=='undefined'){
+      var r2=new FileReader();r2.onload=function(ev){mammoth.extractRawText({arrayBuffer:ev.target.result}).then(function(res){_acctCvData=res.value&&res.value.trim().length>50?res.value.trim():'CV file: '+file.name;}).catch(function(){_acctCvData='CV file: '+file.name;});};r2.readAsArrayBuffer(file);
+    }else{_acctCvData='CV file: '+file.name;}
+  });
+  document.getElementById('acct-cv-save-btn').addEventListener('click',async function(){
+    if(!seekerSession||!_acctCvData)return;
+    var msg=document.getElementById('acct-cv-upload-msg');
+    this.textContent='Saving...';this.disabled=true;
+    try{
+      var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'save-cv',email:seekerSession.email,password:seekerSession.password,cvText:_acctCvData,cvFileName:_acctCvName})});
+      var d=await r.json();
+      if(d.success){
+        seekerSession.hasCv=true;seekerSession.cvFileName=_acctCvName;saveSeekerSession(seekerSession);
+        msg.style.color='var(--em)';msg.textContent='\u2713 CV saved successfully!';msg.style.display='block';
+        toast('CV saved!');
+        loadSeekerCv();
+      }else{msg.style.color='#fca5a5';msg.textContent=d.error||'Failed to save.';msg.style.display='block';}
+    }catch(e){msg.style.color='#fca5a5';msg.textContent='Connection error.';msg.style.display='block';}
+    this.textContent='Save CV to My Account';this.disabled=false;
   });
 
   // Save CV after apply
