@@ -1810,7 +1810,7 @@ document.addEventListener('DOMContentLoaded',function(){try{
   else if(hash === 'account'){ showPage('account'); }
   if(localStorage.getItem('theme')==='light'){lightMode=false;toggleTheme();}
   document.getElementById('tbtn').addEventListener('click',toggleTheme);
-  document.getElementById('mm-theme').addEventListener('click',function(){toggleTheme();document.getElementById('moverlay').classList.remove('open');});
+
   document.getElementById('logo-home').addEventListener('click',function(e){e.preventDefault();showPage('home');});
   document.getElementById('h-find').addEventListener('click',goFind);
   document.getElementById('h-browse').addEventListener('click',function(){showPage('browse');loadBrowse();});
