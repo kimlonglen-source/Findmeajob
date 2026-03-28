@@ -2,6 +2,7 @@ var _kv = require("./_kv");
 var getKV = _kv.getKV;
 var hget = _kv.hget;
 var hset = _kv.hset;
+var verifyPassword = _kv.verifyPassword;
 
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
@@ -17,7 +18,7 @@ module.exports = async function handler(req, res) {
     var raw = await hget("seekers", email);
     if (!raw) return res.status(401).json({ error: "Account not found." });
     var sk = typeof raw === "string" ? JSON.parse(raw) : raw;
-    if (sk.password !== password) return res.status(401).json({ error: "Incorrect password." });
+    if (!verifyPassword(password, sk.password)) return res.status(401).json({ error: "Incorrect password." });
 
     // SAVE APPLICATION
     if (action === "save") {

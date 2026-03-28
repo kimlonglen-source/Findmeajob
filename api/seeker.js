@@ -3,7 +3,9 @@ var getKV = _kv.getKV;
 var hget = _kv.hget;
 var hset = _kv.hset;
 var hdel = _kv.hdel;
-var crypto = require("crypto");
+var hashPassword = _kv.hashPassword;
+var verifyPassword = _kv.verifyPassword;
+var isHashed = _kv.isHashed;
 
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
@@ -23,7 +25,7 @@ module.exports = async function handler(req, res) {
       if (existing) return res.status(400).json({ error: "An account with this email already exists. Please sign in." });
       var id = "sk_" + Date.now() + "_" + Math.random().toString(36).substring(2, 8);
       var seeker = {
-        id: id, name: name, email: email, password: password,
+        id: id, name: name, email: email, password: hashPassword(password),
         phone: req.body.phone || "", rtw: req.body.rtw || "", notice: req.body.notice || "",
         cvText: null, cvFileName: null,
         createdAt: new Date().toISOString()
@@ -120,6 +122,11 @@ async function authSeeker(email, password) {
   var raw = await hget("seekers", (email || "").toLowerCase().trim());
   if (!raw) return { status: 401, error: "Account not found." };
   var sk = typeof raw === "string" ? JSON.parse(raw) : raw;
-  if (sk.password !== password) return { status: 401, error: "Incorrect password." };
+  if (!verifyPassword(password, sk.password)) return { status: 401, error: "Incorrect password." };
+  // Auto-upgrade plaintext password to hashed
+  if (!isHashed(sk.password)) {
+    sk.password = hashPassword(password);
+    await hset("seekers", sk.email, sk);
+  }
   return { seeker: sk };
 }

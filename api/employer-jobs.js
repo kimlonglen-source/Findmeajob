@@ -3,6 +3,9 @@ var getKV = _kv.getKV;
 var hget = _kv.hget;
 var hgetall = _kv.hgetall;
 var hset = _kv.hset;
+var verifyPassword = _kv.verifyPassword;
+var isHashed = _kv.isHashed;
+var hashPassword = _kv.hashPassword;
 
 module.exports = async function handler(req, res) {
   if (!getKV()) return res.status(500).json({ error: "Database not configured." });
@@ -16,7 +19,8 @@ module.exports = async function handler(req, res) {
       var empRaw = await hget("employers", email);
       if (!empRaw) return res.status(401).json({ error: "Account not found" });
       var emp = typeof empRaw === "string" ? JSON.parse(empRaw) : empRaw;
-      if (emp.password !== password) return res.status(401).json({ error: "Incorrect password" });
+      if (!verifyPassword(password, emp.password)) return res.status(401).json({ error: "Incorrect password" });
+      if (!isHashed(emp.password)) { emp.password = hashPassword(password); await hset("employers", email, emp); }
       var raw = await hgetall("jobs");
       var jobs = Object.values(raw)
         .map(function(j) { return typeof j === "string" ? JSON.parse(j) : j; })
@@ -41,7 +45,8 @@ module.exports = async function handler(req, res) {
       var empRaw2 = await hget("employers", postEmail);
       if (!empRaw2) return res.status(401).json({ error: "Account not found" });
       var emp2 = typeof empRaw2 === "string" ? JSON.parse(empRaw2) : empRaw2;
-      if (emp2.password !== postPassword) return res.status(401).json({ error: "Incorrect password" });
+      if (!verifyPassword(postPassword, emp2.password)) return res.status(401).json({ error: "Incorrect password" });
+      if (!isHashed(emp2.password)) { emp2.password = hashPassword(postPassword); await hset("employers", postEmail, emp2); }
 
       // Upgrade plan (no jobId needed)
       if (action === "upgrade") {

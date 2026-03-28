@@ -51,4 +51,30 @@ async function hdel(hash, key) {
   await command(['HDEL', hash, key]);
 }
 
-module.exports = { getKV, hget, hgetall, hset, hdel };
+// Password hashing using Node.js built-in crypto
+const crypto = require('crypto');
+
+function hashPassword(password) {
+  const salt = crypto.randomBytes(16).toString('hex');
+  const hash = crypto.scryptSync(password, salt, 64).toString('hex');
+  return salt + ':' + hash;
+}
+
+function verifyPassword(password, stored) {
+  // Handle plaintext passwords (migration from old system)
+  if (!stored.includes(':') || stored.length < 50) {
+    return password === stored;
+  }
+  const parts = stored.split(':');
+  if (parts.length !== 2) return password === stored;
+  var salt = parts[0];
+  var hash = parts[1];
+  var check = crypto.scryptSync(password, salt, 64).toString('hex');
+  return check === hash;
+}
+
+function isHashed(stored) {
+  return stored && stored.includes(':') && stored.length > 50;
+}
+
+module.exports = { getKV, hget, hgetall, hset, hdel, hashPassword, verifyPassword, isHashed };

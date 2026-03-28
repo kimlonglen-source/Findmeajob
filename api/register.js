@@ -2,6 +2,9 @@ var _kv = require("./_kv");
 var getKV = _kv.getKV;
 var hget = _kv.hget;
 var hset = _kv.hset;
+var hashPassword = _kv.hashPassword;
+var verifyPassword = _kv.verifyPassword;
+var isHashed = _kv.isHashed;
 
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
@@ -18,7 +21,9 @@ module.exports = async function handler(req, res) {
       var raw = await hget("employers", email);
       if (!raw) return res.status(401).json({ error: "No account found with that email address." });
       var emp = typeof raw === "string" ? JSON.parse(raw) : raw;
-      if (emp.password !== password) return res.status(401).json({ error: "Incorrect password. Please try again." });
+      if (!verifyPassword(password, emp.password)) return res.status(401).json({ error: "Incorrect password. Please try again." });
+      // Auto-upgrade plaintext password to hashed
+      if (!isHashed(emp.password)) { emp.password = hashPassword(password); await hset("employers", email, emp); }
       return res.status(200).json({ success: true, id: emp.id, name: emp.name, company: emp.company, email: emp.email, plan: emp.plan || "free" });
     }
 
@@ -35,7 +40,7 @@ module.exports = async function handler(req, res) {
       var existing = await hget("employers", regEmail);
       if (existing) return res.status(400).json({ error: "An account with this email already exists. Please sign in instead." });
       var id = "emp_" + Date.now() + "_" + Math.random().toString(36).substring(2, 8);
-      var employer = { id: id, name: name, company: company, email: regEmail, phone: phone || "", website: website || "", password: regPassword, plan: plan || "free", status: "active", registered: new Date().toISOString() };
+      var employer = { id: id, name: name, company: company, email: regEmail, phone: phone || "", website: website || "", password: hashPassword(regPassword), plan: plan || "free", status: "active", registered: new Date().toISOString() };
       await hset("employers", regEmail, employer);
       return res.status(200).json({ success: true, id: id, name: name, company: company, email: regEmail });
     }

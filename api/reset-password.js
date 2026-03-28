@@ -70,7 +70,7 @@ module.exports = async function handler(req, res) {
       var emp2 = typeof raw2 === "string" ? JSON.parse(raw2) : raw2;
       if (emp2.resetToken !== token) return res.status(400).json({ error: "Invalid or expired reset link. Please request a new one." });
       if (new Date(emp2.resetExpiry) < new Date()) return res.status(400).json({ error: "This reset link has expired. Please request a new one." });
-      emp2.password = newPassword;
+      emp2.password = _kv.hashPassword(newPassword);
       delete emp2.resetToken;
       delete emp2.resetExpiry;
       emp2.passwordChanged = new Date().toISOString();
