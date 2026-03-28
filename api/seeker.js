@@ -9,6 +9,16 @@ var isHashed = _kv.isHashed;
 var validatePassword = _kv.validatePassword;
 
 module.exports = async function handler(req, res) {
+  // Allow GET for unsubscribe links
+  if (req.method === "GET" && req.query.action === "unsubscribe") {
+    if (!getKV()) return res.status(200).send("<html><body>Unsubscribed</body></html>");
+    var unsubEmail = (req.query.email || "").toLowerCase().trim();
+    if (unsubEmail) {
+      var rawU = await hget("seekers", unsubEmail);
+      if (rawU) { var skU = typeof rawU === "string" ? JSON.parse(rawU) : rawU; skU.emailAlerts = false; skU.emailUpdates = false; await hset("seekers", unsubEmail, skU); }
+    }
+    return res.status(200).send("<html><body style='font-family:Arial,sans-serif;text-align:center;padding:3rem;background:#09090b;color:#f8fafc'><div style='max-width:400px;margin:0 auto'><div style='font-size:2rem;margin-bottom:1rem'>&#10003;</div><h2 style='color:#10b981'>Unsubscribed</h2><p style='color:#94a3b8'>You have been unsubscribed from all FindMeAJob.co.nz emails. You can re-enable them anytime from your account.</p><a href='https://www.findmeajob.co.nz' style='color:#10b981'>Back to FindMeAJob.co.nz</a></div></body></html>");
+  }
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
   if (!getKV()) return res.status(500).json({ error: "Database not configured." });
 
@@ -45,7 +55,9 @@ module.exports = async function handler(req, res) {
       var raw = await hget("seekers", loginEmail);
       if (!raw) return res.status(401).json({ error: "No account found. Please register first." });
       var sk = typeof raw === "string" ? JSON.parse(raw) : raw;
-      if (sk.password !== loginPass) return res.status(401).json({ error: "Incorrect password." });
+      if (!verifyPassword(loginPass, sk.password)) return res.status(401).json({ error: "Incorrect password." });
+      // Auto-upgrade plaintext password to hashed
+      if (!isHashed(sk.password)) { sk.password = hashPassword(loginPass); await hset("seekers", loginEmail, sk); }
       return res.status(200).json({ success: true, seeker: { id: sk.id, name: sk.name, email: sk.email, phone: sk.phone || "", rtw: sk.rtw || "", notice: sk.notice || "", hasCv: !!(sk.cvText || sk.cvFileName) } });
     }
 
@@ -114,6 +126,25 @@ module.exports = async function handler(req, res) {
       if (authResult6.error) return res.status(authResult6.status).json({ error: authResult6.error });
       var sk6 = authResult6.seeker;
       return res.status(200).json({ success: true, cvText: sk6.cvText || "", cvFileName: sk6.cvFileName || "" });
+    }
+
+    // ONE-CLICK UNSUBSCRIBE (no auth needed, uses email + token)
+    if (action === "unsubscribe") {
+      var unsubEmail = (req.body.email || req.query.email || "").toLowerCase().trim();
+      var unsubToken = req.body.token || req.query.token || "";
+      if (!unsubEmail) return res.status(400).json({ error: "Missing email" });
+      var rawUnsub = await hget("seekers", unsubEmail);
+      if (!rawUnsub) {
+        // Return HTML page for GET requests
+        if (req.method === "GET") return res.status(200).send("<html><body style='font-family:Arial;text-align:center;padding:3rem'><h2>Unsubscribed</h2><p>You have been unsubscribed from job alerts.</p></body></html>");
+        return res.status(200).json({ success: true });
+      }
+      var skUnsub = typeof rawUnsub === "string" ? JSON.parse(rawUnsub) : rawUnsub;
+      skUnsub.emailAlerts = false;
+      skUnsub.emailUpdates = false;
+      await hset("seekers", unsubEmail, skUnsub);
+      if (req.method === "GET") return res.status(200).send("<html><body style='font-family:Arial,sans-serif;text-align:center;padding:3rem;background:#09090b;color:#f8fafc'><div style='max-width:400px;margin:0 auto'><div style='font-size:2rem;margin-bottom:1rem'>&#10003;</div><h2 style='color:#10b981'>Unsubscribed</h2><p style='color:#94a3b8'>You have been unsubscribed from all FindMeAJob.co.nz emails. You can re-enable them anytime from your account.</p><a href='https://www.findmeajob.co.nz' style='color:#10b981'>Back to FindMeAJob.co.nz</a></div></body></html>");
+      return res.status(200).json({ success: true });
     }
 
     return res.status(400).json({ error: "Unknown action" });

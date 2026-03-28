@@ -133,6 +133,18 @@ module.exports = async function handler(req, res) {
         return res.status(200).json({ success: true });
       }
 
+      // DELETE EMPLOYER ACCOUNT
+      if (action === "delete-account") {
+        var hdel = _kv.hdel;
+        // Delete all their jobs
+        var allJobsDel = await hgetall("jobs");
+        var empJobs = Object.entries(allJobsDel).filter(function(e) { var j = typeof e[1] === "string" ? JSON.parse(e[1]) : e[1]; return j.email === postEmail; });
+        for (var d = 0; d < empJobs.length; d++) { await hdel("jobs", empJobs[d][0]); }
+        // Delete employer record
+        await hdel("employers", postEmail);
+        return res.status(200).json({ success: true });
+      }
+
       return res.status(400).json({ error: "Unknown action" });
     } catch (err) {
       return res.status(500).json({ error: err.message });

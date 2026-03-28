@@ -189,7 +189,7 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
       <div class="field"><label>Password *</label><input type="password" id="r-password" placeholder="Min 8 chars, upper, lower, number, symbol" autocomplete="new-password"></div>
       <div class="err" id="reg-err"></div>
       <button class="btn" id="btn-register" type="button" style="margin-top:.5rem">Create Account &#8594;</button>
-      <div style="text-align:center;margin-top:.65rem;font-size:.72rem;color:var(--text3)">By registering you agree to our <a href="/" style="color:var(--em);font-weight:600;text-decoration:none">Terms of Use</a></div>
+      <div style="text-align:center;margin-top:.65rem;font-size:.72rem;color:var(--text3)">By registering you agree to our <a href="/?terms=1" style="color:var(--em);font-weight:600;text-decoration:none" target="_blank">Terms of Use</a> and <a href="/?privacy=1" style="color:var(--em);font-weight:600;text-decoration:none" target="_blank">Privacy Policy</a></div>
     </div>
   </div>
 </div>
@@ -253,6 +253,17 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
     </div>
     <!-- Job listings -->
     <div id="jobs-container"></div>
+    <!-- Delete account -->
+    <div style="border-top:1px solid var(--border);padding-top:1.25rem;margin-top:1.5rem">
+      <button class="btn-sm" id="emp-delete-acct" type="button" style="border-color:rgba(239,68,68,.2);color:#fca5a5">Delete my account and all listings</button>
+      <div id="emp-delete-confirm" style="display:none;margin-top:.75rem;background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:var(--r);padding:.75rem">
+        <div style="font-size:.82rem;color:#fca5a5;font-weight:600;margin-bottom:.5rem">Are you sure? This will permanently delete your account and all job listings.</div>
+        <div style="display:flex;gap:.5rem">
+          <button class="btn-sm" id="emp-delete-yes" type="button" style="background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:#fca5a5">Yes, delete everything</button>
+          <button class="btn-sm" id="emp-delete-no" type="button">Cancel</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -922,6 +933,19 @@ document.getElementById('btn-close-upgrade').addEventListener('click',function()
       }
     }catch(e){msg.style.color='#fca5a5';msg.textContent='Connection error. Please try again.';}
   });
+});
+
+// Delete employer account
+document.getElementById('emp-delete-acct').addEventListener('click',function(){document.getElementById('emp-delete-confirm').style.display='block';});
+document.getElementById('emp-delete-no').addEventListener('click',function(){document.getElementById('emp-delete-confirm').style.display='none';});
+document.getElementById('emp-delete-yes').addEventListener('click',async function(){
+  if(!session)return;
+  try{
+    var r=await fetch('/api/employer-jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete-account',email:session.email,password:session.password})});
+    var d=await r.json();
+    if(d.success){session=null;sessionStorage.removeItem('empPortal');document.getElementById('portal-screen').style.display='none';document.getElementById('auth-screen').style.display='flex';toast('Account deleted. All your data has been removed.');}
+    else{toast('Failed to delete account.');}
+  }catch(e){toast('Connection error.');}
 });
 
 document.getElementById('btn-signout').addEventListener('click',function(){

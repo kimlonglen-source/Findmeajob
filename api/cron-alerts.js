@@ -108,9 +108,11 @@ module.exports = async function handler(req, res) {
       });
 
       html += '<div style="text-align:center;margin-top:1rem"><a href="https://www.findmeajob.co.nz/#browse" style="color:#059669;font-size:13px;font-weight:600;text-decoration:none">Browse all NZ jobs \u2192</a></div>';
+      var unsubUrl = 'https://www.findmeajob.co.nz/api/seeker?action=unsubscribe&email=' + encodeURIComponent(seeker.email);
       html += '<div style="text-align:center;margin-top:1.5rem;padding-top:1rem;border-top:1px solid #e5e7eb">';
       html += '<div style="font-size:11px;color:#9ca3af">You received this because you opted in to weekly job alerts on <a href="https://www.findmeajob.co.nz" style="color:#059669;text-decoration:none">FindMeAJob.co.nz</a>.</div>';
-      html += '<div style="font-size:11px;color:#9ca3af;margin-top:4px">To unsubscribe, visit <a href="https://www.findmeajob.co.nz/#account" style="color:#059669;text-decoration:none">My Account</a> and update your email preferences.</div>';
+      html += '<div style="font-size:11px;color:#9ca3af;margin-top:4px"><a href="' + unsubUrl + '" style="color:#9ca3af;text-decoration:underline">Unsubscribe from job alerts</a> | <a href="https://www.findmeajob.co.nz/#account" style="color:#9ca3af;text-decoration:underline">Manage preferences</a></div>';
+      html += '<div style="font-size:10px;color:#d1d5db;margin-top:6px">FindMeAJob.co.nz \u2014 New Zealand</div>';
       html += '</div></div></div>';
 
       try {
