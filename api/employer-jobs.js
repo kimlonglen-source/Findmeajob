@@ -48,6 +48,16 @@ module.exports = async function handler(req, res) {
       if (!verifyPassword(postPassword, emp2.password)) return res.status(401).json({ error: "Incorrect password" });
       if (!isHashed(emp2.password)) { emp2.password = hashPassword(postPassword); await hset("employers", postEmail, emp2); }
 
+      // List employer jobs (same as GET but via POST)
+      if (action === "list") {
+        var allRaw = await hgetall("jobs");
+        var allJobs2 = Object.values(allRaw)
+          .map(function(j) { return typeof j === "string" ? JSON.parse(j) : j; })
+          .filter(function(j) { return j.email === postEmail; })
+          .sort(function(a, b) { return new Date(b.submitted) - new Date(a.submitted); });
+        return res.status(200).json({ success: true, employer: { name: emp2.name, company: emp2.company, email: emp2.email, plan: emp2.plan || "free" }, jobs: allJobs2 });
+      }
+
       // Upgrade plan (no jobId needed)
       if (action === "upgrade") {
         var newPlan = req.body.plan;

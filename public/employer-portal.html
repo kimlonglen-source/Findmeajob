@@ -450,7 +450,7 @@ async function doLogin() {
   var btn = document.getElementById('btn-login');
   btn.textContent = 'Signing in...'; btn.disabled = true;
   try {
-    var r = await fetch('/api/employer-jobs?email='+encodeURIComponent(email)+'&password='+encodeURIComponent(password));
+    var r = await fetch('/api/employer-jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'list',email:email,password:password})});
     var d = await r.json();
     if (d.success) {
       session = {email:email, password:password, employer:d.employer};
@@ -896,7 +896,7 @@ async function doAction(action,id){
 async function loadAndShowPortal(){
   if(!session)return;
   try{
-    var r=await fetch('/api/employer-jobs?email='+encodeURIComponent(session.email)+'&password='+encodeURIComponent(session.password));
+    var r=await fetch('/api/employer-jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'list',email:session.email,password:session.password})});
     var d=await r.json();
     if(d.success){showPortal(d.employer,d.jobs);}
   }catch(e){}
@@ -1006,7 +1006,7 @@ if(saved&&!resetTok){
   try{
     session=JSON.parse(saved);
     (async function(){
-      var r=await fetch('/api/employer-jobs?email='+encodeURIComponent(session.email)+'&password='+encodeURIComponent(session.password));
+      var r=await fetch('/api/employer-jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'list',email:session.email,password:session.password})});
       var d=await r.json();
       if(d.success)showPortal(d.employer,d.jobs);
       else{session=null;sessionStorage.removeItem('empPortal');}

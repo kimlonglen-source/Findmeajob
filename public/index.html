@@ -28,7 +28,6 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/svg+xml" href="/logo-icon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <style>
 :root{--bg:#09090b;--bg2:#0f172a;--bg3:rgba(255,255,255,.04);--bg4:rgba(255,255,255,.06);--text:#f8fafc;--text2:#94a3b8;--text3:#64748b;--em:#10b981;--em2:#14b8a6;--em3:rgba(16,185,129,.08);--gold:#f59e0b;--purple:#8b5cf6;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--card:rgba(255,255,255,.03);--inp:rgba(255,255,255,.05);--hdr:rgba(9,9,11,.8);--r:12px;--rl:20px;--glow:0 4px 25px rgba(16,185,129,.15)}
 body.light{--bg:#f8fafc;--bg2:#f1f5f9;--bg3:rgba(0,0,0,.03);--text:#0f172a;--text2:#475569;--text3:#94a3b8;--em:#059669;--em2:#0d9488;--em3:rgba(5,150,105,.08);--gold:#b45309;--border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.12);--card:rgba(255,255,255,.8);--inp:rgba(0,0,0,.04);--hdr:rgba(248,250,252,.85)}
@@ -936,6 +935,15 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 function esc(s){var d=document.createElement("div");d.textContent=s||"";return d.innerHTML;}
 var currentPage='home',skills=[],cvFileData=null,cvFileName='',lightMode=false,empSession=null,selectedPlan='free',seekerSession=null;
 
+function loadMammoth(cb){
+  if(typeof mammoth!=="undefined")return cb();
+  var s=document.createElement("script");
+  s.src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js";
+  s.onload=cb;
+  s.onerror=cb;
+  document.head.appendChild(s);
+}
+
 // Typewriter effect
 (function(){
   var phrases=['in 60 seconds','with AI matching','no sign-up needed','100% free','NZ jobs only','powered by AI'];
@@ -979,7 +987,7 @@ function handleFile(file){
   var ext=file.name.toLowerCase().split('.').pop();
   function done(data){cvFileData=data;document.getElementById('cv-info').style.display='flex';document.getElementById('cv-name').textContent=cvFileName;document.getElementById('drop-zone').style.borderColor='rgba(16,185,129,.5)';setStep(3);toast('CV loaded');}
   if(ext==='pdf'){var r=new FileReader();r.onload=function(e){done(e.target.result);};r.readAsDataURL(file);}
-  else if(ext==='doc'||ext==='docx'){var r2=new FileReader();r2.onload=function(e){if(typeof mammoth!=='undefined'){mammoth.extractRawText({arrayBuffer:e.target.result}).then(function(res){if(res.value.trim().length>50){done(res.value.trim());}else{var r3=new FileReader();r3.onload=function(e2){done(e2.target.result);};r3.readAsDataURL(new Blob([e.target.result]));}}).catch(function(){var r3=new FileReader();r3.onload=function(e2){done(e2.target.result);};r3.readAsDataURL(new Blob([e.target.result]));});}else{var r3=new FileReader();r3.onload=function(e2){done(e2.target.result);};r3.readAsDataURL(new Blob([e.target.result]));}};r2.readAsArrayBuffer(file);}
+  else if(ext==='doc'||ext==='docx'){var r2=new FileReader();r2.onload=function(e){var buf=e.target.result;loadMammoth(function(){if(typeof mammoth!=='undefined'){mammoth.extractRawText({arrayBuffer:buf}).then(function(res){if(res.value.trim().length>50){done(res.value.trim());}else{var r3=new FileReader();r3.onload=function(e2){done(e2.target.result);};r3.readAsDataURL(new Blob([buf]));}}).catch(function(){var r3=new FileReader();r3.onload=function(e2){done(e2.target.result);};r3.readAsDataURL(new Blob([buf]));});}else{var r3=new FileReader();r3.onload=function(e2){done(e2.target.result);};r3.readAsDataURL(new Blob([buf]));}});};r2.readAsArrayBuffer(file);}
   else{var r4=new FileReader();r4.onload=function(e){done(e.target.result);};r4.readAsText(file);}
 }
 
@@ -1189,6 +1197,15 @@ async function loadBrowse(){
     c.style.position='relative';c.style.gridTemplateColumns='1fr';
     var logoAbsolute=j.logoUrl?'<img src="'+j.logoUrl+'" alt="'+j.company+'" style="position:absolute;top:1rem;right:1rem;width:80px;height:80px;object-fit:contain;border-radius:10px" onerror="this.style.display=\'none\'">':'';
     c.innerHTML=logoAbsolute+'<div style="padding-right:'+(j.logoUrl?'95px':'0')+'">'+(j.featured?'<div style="margin-bottom:.35rem"><span class="tag" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold)">\u2b50 Featured</span></div>':'')+'<div class="job-title">'+j.title+'</div><div class="job-co">'+j.company+'</div><div class="job-loc">'+j.location+'</div></div><div class="job-desc">'+(j.description||'').substring(0,160)+'...</div>'+(j.companyProfile?'<div class="job-desc" style="margin-top:.25rem;opacity:.75;font-style:italic">'+j.companyProfile.substring(0,100)+'...</div>':'')+'<div class="job-tags"><span class="tag tag-cat">'+j.category+'</span><span class="tag tag-other">'+j.type+'</span><span class="tag tag-other">'+j.salary+'</span>'+(j.priority&&!j.featured?'<span class="tag" style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);color:var(--em)">\u2191 Priority</span>':'')+'</div><div class="job-links"><button onclick="applyJob(this)" data-email="'+j.email+'" data-title="'+(j.title||'').replace(/"/g,'')+'" data-id="'+j.id+'" data-company="'+(j.company||'').replace(/"/g,'')+'" data-desc="'+(j.description||'').replace(/"/g,'').substring(0,500)+'" data-reqs="'+(j.requirements||'').replace(/"/g,'').substring(0,300)+'" class="job-link apply">Apply Now &#8594;</button></div>';empEl.appendChild(c);});
+    // Inject JobPosting structured data
+    var oldLd=document.querySelectorAll('script[data-job-ld]');oldLd.forEach(function(el){el.remove();});
+    var typeMap={"Full-time":"FULL_TIME","Part-time":"PART_TIME","Contract":"CONTRACTOR","Casual":"TEMPORARY","Internship":"INTERN"};
+    approved.forEach(function(j){
+      var ld={"@context":"https://schema.org","@type":"JobPosting","title":j.title,"description":j.description||"","datePosted":j.approvedAt||j.submitted||"","employmentType":typeMap[j.type]||"OTHER","jobLocation":{"@type":"Place","address":{"@type":"PostalAddress","addressLocality":j.location||"New Zealand","addressCountry":"NZ"}},"hiringOrganization":{"@type":"Organization","name":j.company||""}};
+      if(j.salary&&j.salary!=="Negotiable"){ld.baseSalary={"@type":"MonetaryAmount","currency":"NZD","value":{"@type":"QuantitativeValue","value":j.salary}};}
+      if(j.logoUrl){ld.hiringOrganization.logo=j.logoUrl;}
+      var sc=document.createElement("script");sc.type="application/ld+json";sc.setAttribute("data-job-ld","true");sc.textContent=JSON.stringify(ld);document.head.appendChild(sc);
+    });
   }
   liveEl.innerHTML='';
   if(!adzuna.length){liveEl.innerHTML='<div style="padding:1rem;color:var(--text3);font-size:.82rem;font-weight:500;text-align:center">No live listings found. Try a different filter.</div>';return;}
@@ -1443,12 +1460,17 @@ document.getElementById('app-cv-file').addEventListener('change', function(e){
   if (ext === 'txt') reader.readAsText(file);
   else reader.readAsDataURL(file);
   // Also try mammoth for docx
-  if ((ext === 'doc' || ext === 'docx') && typeof mammoth !== 'undefined') {
+  if (ext === 'doc' || ext === 'docx') {
     var r2 = new FileReader();
     r2.onload = function(ev2) {
-      mammoth.extractRawText({arrayBuffer:ev2.target.result}).then(function(res){
-        if (res.value && res.value.trim().length > 50) _applyState.cvText = res.value.trim();
-      }).catch(function(){});
+      var buf2 = ev2.target.result;
+      loadMammoth(function(){
+        if(typeof mammoth !== 'undefined'){
+          mammoth.extractRawText({arrayBuffer:buf2}).then(function(res){
+            if (res.value && res.value.trim().length > 50) _applyState.cvText = res.value.trim();
+          }).catch(function(){});
+        }
+      });
     };
     r2.readAsArrayBuffer(file);
   }
@@ -2006,8 +2028,9 @@ document.addEventListener('DOMContentLoaded',function(){try{
     // Extract text
     var ext=file.name.toLowerCase().split('.').pop();
     if(ext==='txt'){var r=new FileReader();r.onload=function(ev){_acctCvData=ev.target.result;};r.readAsText(file);}
-    else if((ext==='doc'||ext==='docx')&&typeof mammoth!=='undefined'){
-      var r2=new FileReader();r2.onload=function(ev){mammoth.extractRawText({arrayBuffer:ev.target.result}).then(function(res){_acctCvData=res.value&&res.value.trim().length>50?res.value.trim():'CV file: '+file.name;}).catch(function(){_acctCvData='CV file: '+file.name;});};r2.readAsArrayBuffer(file);
+    else if(ext==='pdf'){var rp=new FileReader();rp.onload=function(ev){_acctCvData=ev.target.result;};rp.readAsDataURL(file);}
+    else if(ext==='doc'||ext==='docx'){
+      var r2=new FileReader();r2.onload=function(ev){var buf=ev.target.result;loadMammoth(function(){if(typeof mammoth!=='undefined'){mammoth.extractRawText({arrayBuffer:buf}).then(function(res){_acctCvData=res.value&&res.value.trim().length>50?res.value.trim():'CV file: '+file.name;}).catch(function(){_acctCvData='CV file: '+file.name;});}else{_acctCvData='CV file: '+file.name;}});};r2.readAsArrayBuffer(file);
     }else{_acctCvData='CV file: '+file.name;}
   });
   document.getElementById('acct-cv-save-btn').addEventListener('click',async function(){
