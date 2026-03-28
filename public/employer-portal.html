@@ -660,12 +660,14 @@ async function submitJob() {
   var btn = document.getElementById('btn-submit');
   btn.textContent = 'Submitting...'; btn.disabled = true;
   try {
-    var r = await fetch('/api/submit-job', {
+    var r = await fetch('/api/employer-jobs', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({
+        action: 'submit',
+        email: session.email,
+        password: session.password,
         employerId: session.employer.email,
-        employerEmail: session.email,
         company: session.employer.company,
         title: title,
         location: document.getElementById('e-loc').value,
@@ -676,8 +678,7 @@ async function submitJob() {
         requirements: document.getElementById('e-req').value.trim(),
         why: document.getElementById('e-why').value.trim(),
         companyProfile: document.getElementById('e-company-profile') ? document.getElementById('e-company-profile').value.trim() : '',
-        logoUrl: document.getElementById('e-logo') ? document.getElementById('e-logo').value.trim() : '',
-        plan: selectedPlan
+        logoUrl: document.getElementById('e-logo') ? document.getElementById('e-logo').value.trim() : ''
       })
     });
     var d = await r.json();

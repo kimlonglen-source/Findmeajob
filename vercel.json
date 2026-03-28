@@ -1,5 +1,11 @@
 {
   "version": 2,
+  "crons": [
+    {
+      "path": "/api/cron-alerts?secret=${CRON_SECRET}",
+      "schedule": "0 20 * * *"
+    }
+  ],
   "builds": [
     {
       "src": "api/*.js",
@@ -29,7 +35,7 @@
     },
     {
       "src": "/api/submit-job",
-      "dest": "/api/submit-job.js"
+      "dest": "/api/employer-jobs.js"
     },
     {
       "src": "/api/admin",
@@ -62,6 +68,10 @@
     {
       "src": "/api/seeker-apps",
       "dest": "/api/seeker-apps.js"
+    },
+    {
+      "src": "/api/cron-alerts",
+      "dest": "/api/cron-alerts.js"
     },
     {
       "src": "/admin.html",
