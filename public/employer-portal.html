@@ -633,7 +633,7 @@ document.getElementById('logo-file').addEventListener('change', function(e){
   if (file.size > 500000) { toast('Logo must be under 500KB'); e.target.value=''; return; }
   var reader = new FileReader();
   reader.onload = function(ev) {
-    resizeLogo(ev.target.result, 200, function(resized) {
+    resizeLogo(ev.target.result, 300, function(resized) {
       document.getElementById('e-logo').value = resized;
       document.getElementById('logo-preview-img').src = resized;
       document.getElementById('logo-preview').style.display = 'block';
@@ -733,7 +733,7 @@ function renderJobs(jobs) {
     var card = document.createElement('div');
     card.className = 'jcard ' + statusKey;
     card.style.position = 'relative';
-    if (job.logoUrl) card.style.paddingRight = '6rem';
+    if (job.logoUrl) card.style.paddingRight = '8rem';
 
     var pillMap = {pending:'pill-pending',approved:'pill-approved',rejected:'pill-rejected',expired:'pill-expired',closed:'pill-closed'};
     var pills = '<div class="jcard-pills"><span class="pill '+(pillMap[statusKey]||'pill-expired')+'">'+statusKey+'</span>';
@@ -765,7 +765,7 @@ function renderJobs(jobs) {
 
     var rejNote = job.status === 'rejected' ? '<div style="font-size:.78rem;color:#fca5a5;margin-top:.4rem;padding:.5rem .75rem;background:rgba(239,68,68,.05);border-radius:var(--r)">This listing was not approved. Please edit and resubmit.</div>' : '';
 
-    var logoHtml = job.logoUrl ? '<img src="'+esc(job.logoUrl)+'" alt="logo" style="position:absolute;top:1.25rem;right:1.5rem;width:72px;height:72px;object-fit:contain;border-radius:10px" onerror="this.style.display=\'none\'">' : '';
+    var logoHtml = job.logoUrl ? '<img src="'+esc(job.logoUrl)+'" alt="logo" style="position:absolute;top:1.25rem;right:1.5rem;width:100px;height:100px;object-fit:contain;border-radius:12px" onerror="this.style.display=\'none\'">' : '';
 
     var editForm = '';
     if (job.status === 'pending' || job.status === 'rejected' || (job.status === 'approved' && !exp)) {
@@ -812,7 +812,7 @@ function renderJobs(jobs) {
         if (file.size > 500000) { toast('Logo must be under 500KB'); e.target.value=''; return; }
         var reader = new FileReader();
         reader.onload = function(ev){
-          resizeLogo(ev.target.result, 200, function(resized) {
+          resizeLogo(ev.target.result, 300, function(resized) {
             document.getElementById('ef-logo-'+jid).value = resized;
             var urlEl = document.getElementById('ef-logo-url-'+jid);
             if (urlEl) urlEl.value = '';
