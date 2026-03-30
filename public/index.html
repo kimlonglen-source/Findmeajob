@@ -1070,10 +1070,10 @@ async function analyzeCV(){
   var region=document.getElementById('cv-region').value;
   var ext=cvFileName.toLowerCase().split('.').pop();
   var isB64=typeof cvFileData==='string'&&cvFileData.includes('base64,');
-  var jp='Return ONLY a valid JSON array, no other text: [{"title":"","company_type":"","location":"City, NZ","match_percent":85,"description":"2-3 sentences.","tags":["tag"],"category":"Industry","seek_query":"terms"}]';
+  var jp='Return ONLY a valid JSON array, no other text. For each job, explain WHY this person is a good match based on their specific CV skills and experience. Format: [{"title":"Specific Job Title","company_type":"Type of company","location":"City, NZ","match_percent":85,"reason":"1-2 sentences explaining why their CV matches this role specifically","description":"2-3 sentences about the role.","tags":["skill1","skill2"],"category":"Industry","seek_query":"search terms"}]. match_percent must reflect how well their actual CV skills match (60-95 range). Be specific to their CV, not generic.';
   var msgs;
-  if(ext==='pdf'&&isB64){msgs=[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:cvFileData.split('base64,')[1]}},{type:'text',text:'Read this CV. Suggest 5 best NZ jobs in '+region+'. '+jp}]}];}
-  else if(!isB64&&cvFileData.length>50){msgs=[{role:'user',content:'CV text: '+cvFileData.substring(0,3000)+'. Suggest 5 best NZ jobs in '+region+'. '+jp}];}
+  if(ext==='pdf'&&isB64){msgs=[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:cvFileData.split('base64,')[1]}},{type:'text',text:'Read this CV carefully. Identify the specific skills, qualifications, and experience. Then suggest 5 NZ jobs in '+region+' that genuinely match what this person can do. Do not suggest generic roles. Match to their actual experience. '+jp}]}];}
+  else if(!isB64&&cvFileData.length>50){msgs=[{role:'user',content:'Read this CV carefully and identify the specific skills, qualifications, and experience: '+cvFileData.substring(0,3000)+'. Then suggest 5 NZ jobs in '+region+' that genuinely match what this person can do. Do not suggest generic roles. Match to their actual experience. '+jp}];}
   else{msgs=[{role:'user',content:'Suggest 5 realistic NZ jobs in '+region+' for a CV called "'+cvFileName+'". '+jp}];}
   try{
     var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'NZ career advisor. Return ONLY valid JSON array.',messages:msgs})});
@@ -1096,7 +1096,7 @@ async function findJobs(){
   err.classList.remove('show');
   document.getElementById('step-manual').style.display='none';document.getElementById('skeleton').style.display='block';setStep(4);
   var region=document.getElementById('region').value;
-  var prompt='Skills: '+skills.join(', ')+'. Region: '+region+'. Work: '+document.getElementById('wt').value+'. Exp: '+document.getElementById('exp').value+'. Salary: '+document.getElementById('sal').value+'. Context: '+(document.getElementById('ctx').value.trim()||'none')+'. Suggest 5 NZ jobs. Return ONLY valid JSON: [{"title":"","company_type":"","location":"City, NZ","match_percent":85,"description":"2-3 sentences.","tags":["tag"],"category":"Industry","seek_query":"terms"}]';
+  var prompt='Skills: '+skills.join(', ')+'. Region: '+region+'. Work: '+document.getElementById('wt').value+'. Exp: '+document.getElementById('exp').value+'. Salary: '+document.getElementById('sal').value+'. Context: '+(document.getElementById('ctx').value.trim()||'none')+'. Suggest 5 NZ jobs that specifically match these skills. For each job, explain WHY these skills make them a good fit. Return ONLY valid JSON: [{"title":"Specific Job Title","company_type":"Type of company","location":"City, NZ","match_percent":85,"reason":"1-2 sentences explaining why their skills match this role","description":"2-3 sentences about the role.","tags":["skill1"],"category":"Industry","seek_query":"search terms"}]';
   try{
     var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'NZ career advisor. Return ONLY valid JSON array, nothing else.',messages:[{role:'user',content:prompt}]})});
     var d=await r.json();var raw=d.content.map(function(b){return b.text||'';}).join('').replace(/```json|```/g,'').trim();
@@ -1246,7 +1246,7 @@ async function fetchLiveJobs(matches){
     var tags='<span class="tag tag-cat">'+(j.category||'General')+'</span>';
     (j.tags||[]).forEach(function(t){tags+='<span class="tag tag-other">'+t+'</span>';});
     var c=document.createElement('div');c.className='job-card';
-    c.innerHTML='<div><div class="job-title">'+j.title+'</div><div class="job-co">'+(j.company_type||'')+'</div><div class="job-loc">'+j.location+'</div><div class="job-desc">'+j.description+'</div><div class="job-tags">'+tags+'</div><div class="job-links"><a href="'+su+'" target="_blank" class="job-link">Seek</a><a href="'+tu+'" target="_blank" class="job-link">Trade Me</a><a href="https://www.linkedin.com/jobs/search/?keywords='+encodeURIComponent(j.title)+'&location=New+Zealand" target="_blank" class="job-link">LinkedIn</a></div></div><div class="match-col"><div class="match-pct">'+j.match_percent+'%</div><div class="match-lbl">match</div></div>';
+    c.innerHTML='<div><div class="job-title">'+esc(j.title)+'</div><div class="job-co">'+esc(j.company_type||'')+'</div><div class="job-loc">'+esc(j.location)+'</div>'+(j.reason?'<div style="font-size:.78rem;color:var(--em);font-weight:600;margin:.35rem 0;padding:.4rem .65rem;background:var(--em3);border:1px solid rgba(16,185,129,.15);border-radius:6px;line-height:1.5">'+esc(j.reason)+'</div>':'')+'<div class="job-desc">'+esc(j.description)+'</div><div class="job-tags">'+tags+'</div><div class="job-links"><a href="'+su+'" target="_blank" rel="noopener" class="job-link">Seek</a><a href="'+tu+'" target="_blank" rel="noopener" class="job-link">Trade Me</a><a href="https://www.linkedin.com/jobs/search/?keywords='+encodeURIComponent(j.title)+'&location=New+Zealand" target="_blank" rel="noopener" class="job-link">LinkedIn</a></div></div><div class="match-col"><div class="match-pct">'+j.match_percent+'%</div><div class="match-lbl">match</div></div>';
     list.appendChild(c);
   });
 }
