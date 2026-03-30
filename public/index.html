@@ -1259,7 +1259,7 @@ async function fetchLiveJobs(matches){
         '<div class="job-title">'+esc(job.title)+'</div>'+
         '<div class="job-co">'+esc(job.company)+'</div>'+
         '<div class="job-loc">'+esc(job.location)+'</div>'+
-        (reason?'<div style="font-size:.75rem;color:var(--em);font-weight:600;margin:.3rem 0">'+esc(reason)+'</div>':'')+
+        (reason?'<div style="font-size:.75rem;color:var(--em);font-weight:600;margin:.35rem 0;padding:.4rem .65rem;background:var(--em3);border:1px solid rgba(16,185,129,.15);border-radius:6px;line-height:1.5">'+esc(reason)+'</div>':'')+
         '<div class="job-desc">'+esc(job.description)+'</div>'+
         (job.salary?'<div class="job-tags"><span class="tag tag-other">'+esc(job.salary)+'</span></div>':'')+
         '<div class="job-links"><a href="'+esc(job.url)+'" target="_blank" rel="noopener" class="job-link apply">Apply Now &#8594;</a></div>'+
