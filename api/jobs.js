@@ -46,6 +46,8 @@ module.exports = async function handler(req, res) {
     if (filterByRegion) {
       var regionMatch = false;
       var allLocationText = locationDisplay + " " + area.join(" ").toLowerCase();
+      // Reject if location is just "New Zealand" with no specific region
+      if (locationDisplay === "new zealand" || locationDisplay === "") return false;
       for (var r = 0; r < regionKeywords.length; r++) {
         if (allLocationText.indexOf(regionKeywords[r]) !== -1) { regionMatch = true; break; }
       }

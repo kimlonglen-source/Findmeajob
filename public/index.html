@@ -1128,28 +1128,27 @@ function calcLiveMatch(liveJob, aiMatches) {
   var bestScore = 0;
   aiMatches.forEach(function(m) {
     var aiTitle = (m.title||'').toLowerCase();
-    var aiCat = (m.category||'').toLowerCase();
     var score = 0;
-    // Title word overlap
-    var aiWords = aiTitle.split(/\s+/).filter(function(w){return w.length>3;});
-    var liveWords = liveTitle.split(/\s+/).filter(function(w){return w.length>3;});
+    // Title word overlap (strict — only count meaningful words)
+    var stopWords = ['senior','junior','lead','manager','assistant','part','time','full','new','the','and','for','with'];
+    var aiWords = aiTitle.split(/\s+/).filter(function(w){return w.length>3 && stopWords.indexOf(w)===-1;});
+    var liveWords = liveTitle.split(/\s+/).filter(function(w){return w.length>3 && stopWords.indexOf(w)===-1;});
     var matches = 0;
     aiWords.forEach(function(w){if(liveTitle.includes(w))matches++;});
-    liveWords.forEach(function(w){if(aiTitle.includes(w))matches++;});
-    var totalWords = Math.max(aiWords.length + liveWords.length, 1);
-    score += (matches / totalWords) * 60;
-    // Category match
-    if(liveTitle.includes(aiCat)||liveDesc.includes(aiCat)) score += 15;
-    // Description keyword overlap
+    var totalWords = Math.max(aiWords.length, 1);
+    score += (matches / totalWords) * 80;
+    // Tag overlap (specific skills only)
     var aiTags = (m.tags||[]).map(function(t){return t.toLowerCase();});
-    aiTags.forEach(function(t){if(liveDesc.includes(t)||liveTitle.includes(t))score+=5;});
+    aiTags.forEach(function(t){if(t.length>3 && (liveDesc.includes(t)||liveTitle.includes(t)))score+=3;});
     // Weight by AI match percent
     score = score * (m.match_percent / 100);
     if(score > bestScore) bestScore = score;
   });
-  // Scale to 60-95 range (live jobs are pre-filtered by title so already relevant)
-  var scaled = Math.round(60 + (bestScore / 100) * 35);
-  return Math.min(95, Math.max(60, scaled));
+  // Only show percentage if there is a real match (score > 20)
+  if (bestScore < 15) return null;
+  // Scale to 60-92 range
+  var scaled = Math.round(60 + (Math.min(bestScore, 100) / 100) * 32);
+  return Math.min(92, Math.max(60, scaled));
 }
 
 async function fetchLiveJobs(matches){
@@ -1164,6 +1163,8 @@ async function fetchLiveJobs(matches){
   // Calculate match % for each live job
   live.forEach(function(j){j.matchPct=calcLiveMatch(j,matches);});
   // Sort by match %
+  // Remove jobs with no real match and sort by match %
+  live = live.filter(function(j){return j.matchPct !== null;});
   live.sort(function(a,b){return (b.matchPct||0)-(a.matchPct||0);});
   list.innerHTML='';
   if(live.length){
