@@ -1239,7 +1239,8 @@ async function fetchLiveJobs(matches){
   ah.style.cssText='font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin:1.5rem 0 .75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)';
   ah.textContent=live.length?'AI Suggested Roles':'AI Matched Roles';
   list.appendChild(ah);
-  (window._aiJobs||[]).forEach(function(j){
+  var sortedAiJobs = (window._aiJobs||[]).slice().sort(function(a,b){return (b.match_percent||0)-(a.match_percent||0);});
+  sortedAiJobs.forEach(function(j){
     var su='https://www.seek.co.nz/jobs?keywords='+encodeURIComponent(j.seek_query||j.title)+'&where=New+Zealand';
     var tu='https://www.trademe.co.nz/a/jobs/search?search_string='+encodeURIComponent(j.title)+'&region=0';
     var tags='<span class="tag tag-cat">'+(j.category||'General')+'</span>';
