@@ -1085,8 +1085,11 @@ async function analyzeCV(){
     var d2=await r2.json();var insights=d2.content.map(function(b){return b.text||'';}).join('');
     document.getElementById('skeleton').style.display='none';renderResults(jobs,insights);
   }catch(e){
+    console.error('CV analysis error:', e.message || e);
     document.getElementById('skeleton').style.display='none';showManual();
-    var fe=document.getElementById('find-err');fe.textContent='Could not process CV. Please enter skills manually.';fe.classList.add('show');
+    var fe=document.getElementById('find-err');
+    fe.textContent='Could not process CV: '+(e.message||'Unknown error')+'. Please enter skills manually or try again.';
+    fe.classList.add('show');
   }
 }
 
