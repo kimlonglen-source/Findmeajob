@@ -1152,33 +1152,49 @@ function calcLiveMatch(liveJob, aiMatches) {
 }
 
 async function fetchLiveJobs(matches){
-  var regionEl=document.getElementById('cv-region');var regionEl2=document.getElementById('region');
-  var region=(regionEl&&regionEl.offsetParent?regionEl.value:null)||(regionEl2?regionEl2.value:'New Zealand');
+  var regionEl=document.getElementById('cv-region');
+  var regionEl2=document.getElementById('region');
+  // Use whichever region selector has a non-default value, prefer cv-region
+  var region='New Zealand';
+  if(regionEl&&regionEl.value&&regionEl.value!=='New Zealand') region=regionEl.value;
+  else if(regionEl2&&regionEl2.value&&regionEl2.value!=='New Zealand') region=regionEl2.value;
   var list=document.getElementById('job-list');
   var top3=(matches||[]).slice(0,3);
   var fetches=top3.map(function(m){return fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:m.title,region:region,limit:20})}).then(function(r){return r.json();}).catch(function(){return{jobs:[]};});});
   var results=await Promise.all(fetches);
   var live=[];var seen={};
   results.forEach(function(d){(d.jobs||[]).forEach(function(j){var k=(j.title+j.company).toLowerCase();if(!seen[k]){seen[k]=true;live.push(j);}});});
-  // Client-side region filter as safety net
+  // Client-side region filter — STRICT
   if (region && region !== 'New Zealand') {
-    var regionLower = region.toLowerCase();
     var regionAliases = {
-      'canterbury / christchurch':['christchurch','canterbury','rangiora','rolleston'],
-      'auckland':['auckland'],
-      'wellington':['wellington','lower hutt','upper hutt','porirua','hutt'],
-      'waikato / hamilton':['hamilton','waikato','cambridge'],
-      'bay of plenty':['tauranga','bay of plenty','rotorua','mount maunganui'],
-      'otago / dunedin':['dunedin','otago','queenstown','wanaka'],
-      'manawatu-whanganui':['palmerston north','manawatu','whanganui'],
-      'hawkes bay':['napier','hastings','hawke','havelock'],
-      'northland':['whangarei','northland','kerikeri'],
-      'southland':['invercargill','southland','gore'],
-      'nelson / marlborough':['nelson','marlborough','blenheim','tasman']
+      'canterbury / christchurch':['christchurch','canterbury','rangiora','rolleston','kaiapoi','lincoln','selwyn'],
+      'auckland':['auckland','manukau','north shore','waitakere','papakura','howick','takapuna','albany','botany'],
+      'wellington':['wellington','lower hutt','upper hutt','porirua','hutt','petone','johnsonville','miramar','kilbirnie'],
+      'waikato / hamilton':['hamilton','waikato','cambridge','te awamutu','huntly','morrinsville'],
+      'bay of plenty':['tauranga','bay of plenty','rotorua','whakatane','mount maunganui','papamoa','te puke'],
+      'otago / dunedin':['dunedin','otago','queenstown','wanaka','alexandra','cromwell','oamaru'],
+      'manawatu-whanganui':['palmerston north','manawatu','whanganui','wanganui','feilding','levin'],
+      'hawkes bay':['napier','hastings','hawke','havelock north'],
+      'northland':['whangarei','northland','kerikeri','kaitaia','dargaville'],
+      'southland':['invercargill','southland','gore','te anau'],
+      'nelson / marlborough':['nelson','marlborough','blenheim','richmond','tasman','motueka']
     };
-    var keywords = regionAliases[regionLower] || [regionLower.split(' / ')[0], regionLower.split(' / ')[1] || ''];
+    var regionKey = region.toLowerCase();
+    var keywords = regionAliases[regionKey];
+    if (!keywords) {
+      // Try matching by partial key
+      var keys = Object.keys(regionAliases);
+      for (var ki = 0; ki < keys.length; ki++) {
+        if (keys[ki].indexOf(regionKey) !== -1 || regionKey.indexOf(keys[ki]) !== -1) { keywords = regionAliases[keys[ki]]; break; }
+      }
+    }
+    if (!keywords) {
+      // Fallback: use the region name itself
+      keywords = regionKey.split(' / ').filter(function(w){return w.length > 2;});
+    }
     live = live.filter(function(j) {
       var loc = (j.location || '').toLowerCase();
+      if (loc === 'new zealand' || loc === '') return false;
       for (var i = 0; i < keywords.length; i++) {
         if (keywords[i] && loc.indexOf(keywords[i]) !== -1) return true;
       }
