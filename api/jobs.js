@@ -18,15 +18,51 @@ module.exports = async function handler(req, res) {
   };
   var loc = locationMap[region] || "";
 
+  var requestedRegion = region || "";
+
   function isNZJob(job) {
     var area = (job.location && job.location.area) ? job.location.area : [];
     var url = (job.redirect_url || "").toLowerCase();
     var title = (job.title || "").toLowerCase();
     var company = (job.company && job.company.display_name) ? job.company.display_name.toLowerCase() : "";
     var desc = (job.description || "").toLowerCase();
+    var locationDisplay = (job.location && job.location.display_name) ? job.location.display_name.toLowerCase() : "";
 
     // REQUIRE area[0] === "New Zealand" - reject if area is empty or area[0] is anything else
     if (!area.length || area[0] !== "New Zealand") return false;
+
+    // If a specific region was requested, check the location matches
+    if (requestedRegion && requestedRegion !== "New Zealand" && loc) {
+      var regionLower = loc.toLowerCase();
+      var regionMatch = false;
+      // Check area array for region
+      for (var a = 0; a < area.length; a++) {
+        if (area[a].toLowerCase().indexOf(regionLower) !== -1) regionMatch = true;
+      }
+      // Check display name
+      if (locationDisplay.indexOf(regionLower) !== -1) regionMatch = true;
+      // Also check common aliases
+      var aliases = {
+        "christchurch": ["canterbury","christchurch"],
+        "hamilton": ["waikato","hamilton"],
+        "tauranga": ["bay of plenty","tauranga"],
+        "dunedin": ["otago","dunedin"],
+        "palmerston north": ["manawatu","palmerston"],
+        "napier": ["hawke","napier","hastings"],
+        "whangarei": ["northland","whangarei"],
+        "invercargill": ["southland","invercargill"],
+        "nelson": ["nelson","marlborough","tasman"]
+      };
+      if (aliases[regionLower]) {
+        for (var al = 0; al < aliases[regionLower].length; al++) {
+          if (locationDisplay.indexOf(aliases[regionLower][al]) !== -1) regionMatch = true;
+          for (var ar = 0; ar < area.length; ar++) {
+            if (area[ar].toLowerCase().indexOf(aliases[regionLower][al]) !== -1) regionMatch = true;
+          }
+        }
+      }
+      if (!regionMatch) return false;
+    }
 
     // Block by suspicious title patterns (US-style remote spam)
     var spamTitles = [
@@ -49,8 +85,11 @@ module.exports = async function handler(req, res) {
       if (company.includes(spamCompanies[sc])) return false;
     }
 
-    // Block descriptions mentioning US-specific terms
-    var usTerms = ["united states", "us citizen", "us-based", "w-2", "401k", "401(k)", "hipaa"];
+    // Block descriptions mentioning international/US-specific terms
+    var usTerms = ["united states", "us citizen", "us-based", "w-2", "401k", "401(k)", "hipaa",
+      "usa only", "us only", "based in the us", "based in us", "remote - us", "remote us",
+      "usd per", "$ usd", "dollar per hour", "est/pst", "eastern time", "pacific time",
+      "australian", "sydney", "melbourne", "brisbane", "uk based", "london", "manchester"];
     for (var ut = 0; ut < usTerms.length; ut++) {
       if (desc.includes(usTerms[ut])) return false;
     }
