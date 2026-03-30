@@ -1798,7 +1798,7 @@ async function doResetWithToken(){
   }catch(e){errEl.textContent='Connection error.';errEl.classList.add('show');}
 }
 
-document.addEventListener('DOMContentLoaded',function(){try{
+function initApp(){try{
   // Check for password reset token in URL
   var urlParams=new URLSearchParams(window.location.search);
   var resetToken=urlParams.get('reset');
@@ -2294,7 +2294,8 @@ document.addEventListener('DOMContentLoaded',function(){try{
   document.getElementById('mm-signin').addEventListener('click',function(){showPage('account');document.getElementById('moverlay').classList.remove('open');});
 
   }catch(e){console.error('Init error:',e);}
-});
+}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',initApp);}else{initApp();}
 </script>
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
