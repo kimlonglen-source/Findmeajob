@@ -1200,6 +1200,30 @@ async function fetchLiveJobs(matches){
   var results=await Promise.all(fetches);
   var live=[];var seen={};
   results.forEach(function(d){(d.jobs||[]).forEach(function(j){var k=(j.title+j.company).toLowerCase();if(!seen[k]){seen[k]=true;live.push(j);}});});
+  // Filter live jobs to only show results relevant to the AI-matched profession
+  if (top5.length > 0) {
+    var professionWords = [];
+    top5.forEach(function(m) {
+      var words = (m.title || '').toLowerCase().split(/\s+/);
+      words.forEach(function(w) {
+        if (w.length > 3 && professionWords.indexOf(w) === -1) professionWords.push(w);
+      });
+      (m.tags || []).forEach(function(t) {
+        var tw = t.toLowerCase();
+        if (tw.length > 3 && professionWords.indexOf(tw) === -1) professionWords.push(tw);
+      });
+    });
+    var genericWords = ['senior','junior','lead','manager','assistant','part','time','full','team','chief','head','general','staff','worker','officer','coordinator','specialist','consultant','advisor','executive','director','national','regional','area','new','the','and','for','with'];
+    professionWords = professionWords.filter(function(w) { return genericWords.indexOf(w) === -1; });
+    live = live.filter(function(j) {
+      var title = (j.title || '').toLowerCase();
+      var desc = (j.description || '').toLowerCase();
+      for (var p = 0; p < professionWords.length; p++) {
+        if (title.indexOf(professionWords[p]) !== -1 || desc.indexOf(professionWords[p]) !== -1) return true;
+      }
+      return false;
+    });
+  }
   // Client-side region filter — STRICT
   if (region && region !== 'New Zealand') {
     var regionAliases = {
