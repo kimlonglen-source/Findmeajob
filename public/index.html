@@ -1050,6 +1050,7 @@ function showPage(id){document.querySelectorAll('.page').forEach(function(p){p.c
 function toggleTheme(){lightMode=!lightMode;document.body.classList.toggle('light',lightMode);document.getElementById('tbtn').innerHTML=lightMode?'&#9788;':'&#9790;';localStorage.setItem('theme',lightMode?'light':'dark');}
 function setStep(n){for(var i=1;i<=4;i++){var el=document.getElementById('s'+i);if(!el)continue;if(i<n)el.className='step done';else if(i===n)el.className='step active';else el.className='step';}}
 var _skelTimer=null;
+var _selectedRegion='New Zealand';
 function startSkelMessages(){
   var msgs=[
     {title:'Reading your CV',detail:'Extracting your skills and experience'},
@@ -1097,15 +1098,17 @@ async function analyzeCV(){
   startSkelMessages();
   setStep(4);
   var region=document.getElementById('cv-region').value;
+  _selectedRegion=region;
   var ext=cvFileName.toLowerCase().split('.').pop();
   var isB64=typeof cvFileData==='string'&&cvFileData.includes('base64,');
-  var jp='Return ONLY valid JSON array: [{"title":"Job Title","company_type":"","location":"City, NZ","match_percent":85,"reason":"Why their CV fits this role","description":"2 sentences.","tags":["skill"],"category":"Industry","seek_query":"terms"}]';
+  var jp='Return ONLY a JSON array. Each object: {"title":"Exact NZ Job Title","company_type":"e.g. Hospital, Pharmacy, Tech Company","location":"'+region+'","match_percent":number 60-95,"reason":"One sentence: Based on your [specific skill/qualification from CV], you would be suited for this role because [specific reason].","description":"2 sentences about the role.","tags":["specific skill from CV"],"category":"Industry","seek_query":"2-3 search words"}';
+  var sysPrompt='You are a NZ career advisor. Read the CV thoroughly. Only suggest jobs the person is actually qualified for based on their specific qualifications, skills and work history. A pharmacist should get pharmacy jobs, not psychology jobs. Be specific to their CV. All jobs must be in '+region+'. Return ONLY valid JSON array.';
   var msgs;
-  if(ext==='pdf'&&isB64){msgs=[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:cvFileData.split('base64,')[1]}},{type:'text',text:'Read this CV. Suggest 5 NZ jobs in '+region+' matching their skills. Include a reason field explaining why their CV fits each role. '+jp}]}];}
-  else if(!isB64&&cvFileData.length>50){msgs=[{role:'user',content:'CV: '+cvFileData.substring(0,2500)+'. Suggest 5 NZ jobs in '+region+' matching their skills. Include a reason field. '+jp}];}
-  else{msgs=[{role:'user',content:'Suggest 5 NZ jobs in '+region+' for someone with CV "'+cvFileName+'". '+jp}];}
+  if(ext==='pdf'&&isB64){msgs=[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:cvFileData.split('base64,')[1]}},{type:'text',text:'Read every detail of this CV. What are their qualifications, skills and experience? Suggest exactly 5 NZ jobs in '+region+' they are genuinely qualified for. '+jp}]}];}
+  else if(!isB64&&cvFileData.length>50){msgs=[{role:'user',content:'Here is a CV. Read it carefully:\n\n'+cvFileData.substring(0,2500)+'\n\nWhat are their qualifications, skills and experience? Suggest exactly 5 NZ jobs in '+region+' they are genuinely qualified for. '+jp}];}
+  else{msgs=[{role:'user',content:'Suggest 5 realistic NZ jobs in '+region+' for someone with CV file named "'+cvFileName+'". '+jp}];}
   try{
-    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'NZ career advisor. Return ONLY valid JSON array.',messages:msgs})});
+    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sysPrompt,messages:msgs})});
     var d=await r.json();var raw=d.content.map(function(b){return b.text||'';}).join('').trim();
     var si=raw.indexOf('['),ei=raw.lastIndexOf(']');if(si===-1||ei===-1)throw new Error('No JSON');
     var jobs=JSON.parse(raw.substring(si,ei+1));if(!jobs.length)throw new Error('Empty');
@@ -1128,6 +1131,7 @@ async function findJobs(){
   err.classList.remove('show');
   document.getElementById('step-manual').style.display='none';document.getElementById('skeleton').style.display='block';startSkelMessages();setStep(4);
   var region=document.getElementById('region').value;
+  _selectedRegion=region;
   var prompt='Skills: '+skills.join(', ')+'. Region: '+region+'. Work: '+document.getElementById('wt').value+'. Exp: '+document.getElementById('exp').value+'. Salary: '+document.getElementById('sal').value+'. Context: '+(document.getElementById('ctx').value.trim()||'none')+'. Suggest 5 NZ jobs matching these skills. Include a reason field. Return ONLY valid JSON: [{"title":"Job Title","company_type":"","location":"City, NZ","match_percent":85,"reason":"Why these skills fit","description":"2 sentences.","tags":["skill"],"category":"Industry","seek_query":"terms"}]';
   try{
     var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'NZ career advisor. Return ONLY valid JSON array, nothing else.',messages:[{role:'user',content:prompt}]})});
@@ -1187,12 +1191,7 @@ function calcLiveMatch(liveJob, aiMatches) {
 }
 
 async function fetchLiveJobs(matches){
-  var regionEl=document.getElementById('cv-region');
-  var regionEl2=document.getElementById('region');
-  // Use whichever region selector has a non-default value, prefer cv-region
-  var region='New Zealand';
-  if(regionEl&&regionEl.value&&regionEl.value!=='New Zealand') region=regionEl.value;
-  else if(regionEl2&&regionEl2.value&&regionEl2.value!=='New Zealand') region=regionEl2.value;
+  var region=_selectedRegion||'New Zealand';
   var list=document.getElementById('job-list');
   var top3=(matches||[]).slice(0,3);
   var fetches=top3.map(function(m){return fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:m.title,region:region,limit:20})}).then(function(r){return r.json();}).catch(function(){return{jobs:[]};});});
