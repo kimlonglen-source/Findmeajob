@@ -1070,11 +1070,11 @@ async function analyzeCV(){
   var region=document.getElementById('cv-region').value;
   var ext=cvFileName.toLowerCase().split('.').pop();
   var isB64=typeof cvFileData==='string'&&cvFileData.includes('base64,');
-  var jp='Return ONLY a valid JSON array, no other text. For each job, explain WHY this person is a good match based on their specific CV skills and experience. Format: [{"title":"Specific Job Title","company_type":"Type of company","location":"City, NZ","match_percent":85,"reason":"1-2 sentences explaining why their CV matches this role specifically","description":"2-3 sentences about the role.","tags":["skill1","skill2"],"category":"Industry","seek_query":"search terms"}]. match_percent must reflect how well their actual CV skills match (60-95 range). Be specific to their CV, not generic.';
+  var jp='Return ONLY valid JSON array: [{"title":"Job Title","company_type":"","location":"City, NZ","match_percent":85,"reason":"Why their CV fits this role","description":"2 sentences.","tags":["skill"],"category":"Industry","seek_query":"terms"}]';
   var msgs;
-  if(ext==='pdf'&&isB64){msgs=[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:cvFileData.split('base64,')[1]}},{type:'text',text:'Read this CV carefully. Identify the specific skills, qualifications, and experience. Then suggest 5 NZ jobs in '+region+' that genuinely match what this person can do. Do not suggest generic roles. Match to their actual experience. '+jp}]}];}
-  else if(!isB64&&cvFileData.length>50){msgs=[{role:'user',content:'Read this CV carefully and identify the specific skills, qualifications, and experience: '+cvFileData.substring(0,3000)+'. Then suggest 5 NZ jobs in '+region+' that genuinely match what this person can do. Do not suggest generic roles. Match to their actual experience. '+jp}];}
-  else{msgs=[{role:'user',content:'Suggest 5 realistic NZ jobs in '+region+' for a CV called "'+cvFileName+'". '+jp}];}
+  if(ext==='pdf'&&isB64){msgs=[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:cvFileData.split('base64,')[1]}},{type:'text',text:'Read this CV. Suggest 5 NZ jobs in '+region+' matching their skills. Include a reason field explaining why their CV fits each role. '+jp}]}];}
+  else if(!isB64&&cvFileData.length>50){msgs=[{role:'user',content:'CV: '+cvFileData.substring(0,2500)+'. Suggest 5 NZ jobs in '+region+' matching their skills. Include a reason field. '+jp}];}
+  else{msgs=[{role:'user',content:'Suggest 5 NZ jobs in '+region+' for someone with CV "'+cvFileName+'". '+jp}];}
   try{
     var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'NZ career advisor. Return ONLY valid JSON array.',messages:msgs})});
     var d=await r.json();var raw=d.content.map(function(b){return b.text||'';}).join('').trim();
@@ -1099,7 +1099,7 @@ async function findJobs(){
   err.classList.remove('show');
   document.getElementById('step-manual').style.display='none';document.getElementById('skeleton').style.display='block';setStep(4);
   var region=document.getElementById('region').value;
-  var prompt='Skills: '+skills.join(', ')+'. Region: '+region+'. Work: '+document.getElementById('wt').value+'. Exp: '+document.getElementById('exp').value+'. Salary: '+document.getElementById('sal').value+'. Context: '+(document.getElementById('ctx').value.trim()||'none')+'. Suggest 5 NZ jobs that specifically match these skills. For each job, explain WHY these skills make them a good fit. Return ONLY valid JSON: [{"title":"Specific Job Title","company_type":"Type of company","location":"City, NZ","match_percent":85,"reason":"1-2 sentences explaining why their skills match this role","description":"2-3 sentences about the role.","tags":["skill1"],"category":"Industry","seek_query":"search terms"}]';
+  var prompt='Skills: '+skills.join(', ')+'. Region: '+region+'. Work: '+document.getElementById('wt').value+'. Exp: '+document.getElementById('exp').value+'. Salary: '+document.getElementById('sal').value+'. Context: '+(document.getElementById('ctx').value.trim()||'none')+'. Suggest 5 NZ jobs matching these skills. Include a reason field. Return ONLY valid JSON: [{"title":"Job Title","company_type":"","location":"City, NZ","match_percent":85,"reason":"Why these skills fit","description":"2 sentences.","tags":["skill"],"category":"Industry","seek_query":"terms"}]';
   try{
     var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'NZ career advisor. Return ONLY valid JSON array, nothing else.',messages:[{role:'user',content:prompt}]})});
     var d=await r.json();var raw=d.content.map(function(b){return b.text||'';}).join('').replace(/```json|```/g,'').trim();

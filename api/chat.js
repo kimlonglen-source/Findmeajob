@@ -39,7 +39,7 @@ module.exports = async function handler(req, res) {
     var response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-api-key": apiKey, "anthropic-version": "2023-06-01", "anthropic-beta": "pdfs-2024-09-25" },
-      body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 2048, system: system || "", messages: messages })
+      body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 1500, system: system || "", messages: messages })
     });
     var data = await response.json();
     return res.status(200).json(data);
