@@ -90,6 +90,7 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
 .skel{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.5rem;margin-bottom:.75rem}
 .skel-line{height:11px;background:linear-gradient(90deg,var(--bg2) 25%,var(--bg3) 50%,var(--bg2) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:4px;margin-bottom:.5rem}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
 .dots::after{content:'...';animation:dots 1.5s steps(3,end) infinite}
 @keyframes dots{0%,20%{content:'.'}40%{content:'..'}60%,100%{content:'...'}}
 .steps{display:flex;align-items:center;gap:.3rem;justify-content:center;margin-bottom:2rem}
@@ -426,7 +427,11 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <button class="btn" id="btn-search" type="button" style="margin-top:1rem">Find My NZ Jobs</button>
     </div>
     <div id="skeleton" style="display:none">
-      <div style="text-align:center;padding:.75rem;font-size:.82rem;color:var(--text3);font-weight:600">Matching you to NZ jobs<span class="dots"></span></div>
+      <div style="text-align:center;padding:1.5rem 1rem">
+        <div style="width:56px;height:56px;border:3px solid var(--border);border-top-color:var(--em);border-radius:50%;margin:0 auto 1rem;animation:spin 1s linear infinite"></div>
+        <div id="skel-status" style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:.35rem">Reading your CV</div>
+        <div id="skel-detail" style="font-size:.78rem;color:var(--text3);font-weight:500">Extracting your skills and experience</div>
+      </div>
       <div class="skel"><div class="skel-line" style="width:60%;height:14px;margin-bottom:.75rem"></div><div class="skel-line" style="width:40%"></div><div class="skel-line"></div><div class="skel-line" style="width:85%"></div></div>
       <div class="skel"><div class="skel-line" style="width:55%;height:14px;margin-bottom:.75rem"></div><div class="skel-line" style="width:35%"></div><div class="skel-line"></div><div class="skel-line" style="width:90%"></div></div>
       <div class="skel"><div class="skel-line" style="width:65%;height:14px;margin-bottom:.75rem"></div><div class="skel-line" style="width:45%"></div><div class="skel-line"></div><div class="skel-line" style="width:80%"></div></div>
@@ -1044,6 +1049,29 @@ function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
 function showPage(id){document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});var pg=document.getElementById('page-'+id);if(pg){pg.classList.add('active');currentPage=id;}window.scrollTo(0,0);}
 function toggleTheme(){lightMode=!lightMode;document.body.classList.toggle('light',lightMode);document.getElementById('tbtn').innerHTML=lightMode?'&#9788;':'&#9790;';localStorage.setItem('theme',lightMode?'light':'dark');}
 function setStep(n){for(var i=1;i<=4;i++){var el=document.getElementById('s'+i);if(!el)continue;if(i<n)el.className='step done';else if(i===n)el.className='step active';else el.className='step';}}
+var _skelTimer=null;
+function startSkelMessages(){
+  var msgs=[
+    {title:'Reading your CV',detail:'Extracting your skills and experience'},
+    {title:'Analysing your background',detail:'Identifying your key strengths'},
+    {title:'Scanning NZ job market',detail:'Comparing against thousands of roles'},
+    {title:'Matching your skills',detail:'Finding the best fit for you'},
+    {title:'Ranking your matches',detail:'Calculating match percentages'},
+    {title:'Almost there',detail:'Preparing your personalised results'}
+  ];
+  var idx=0;
+  var statusEl=document.getElementById('skel-status');
+  var detailEl=document.getElementById('skel-detail');
+  if(statusEl)statusEl.textContent=msgs[0].title;
+  if(detailEl)detailEl.textContent=msgs[0].detail;
+  clearInterval(_skelTimer);
+  _skelTimer=setInterval(function(){
+    idx++;if(idx>=msgs.length)idx=msgs.length-1;
+    if(statusEl)statusEl.textContent=msgs[idx].title;
+    if(detailEl)detailEl.textContent=msgs[idx].detail;
+  },3000);
+}
+function stopSkelMessages(){clearInterval(_skelTimer);}
 function goFind(){showPage('find');resetFind();}
 function resetFind(){['step-entry','step-cv','step-manual','skeleton','results'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display=id==='step-entry'?'block':'none';});setStep(1);cvFileData=null;cvFileName='';document.getElementById('cv-info').style.display='none';document.getElementById('drop-zone').style.borderColor='';}
 function showCV(){document.getElementById('step-entry').style.display='none';document.getElementById('step-cv').style.display='block';setStep(2);}
@@ -1066,6 +1094,7 @@ async function analyzeCV(){
   err.classList.remove('show');
   document.getElementById('step-cv').style.display='none';
   document.getElementById('skeleton').style.display='block';
+  startSkelMessages();
   setStep(4);
   var region=document.getElementById('cv-region').value;
   var ext=cvFileName.toLowerCase().split('.').pop();
@@ -1083,10 +1112,10 @@ async function analyzeCV(){
     var titles=jobs.map(function(j){return j.title;}).join(', ');
     var r2=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:'3-4 sentences warm NZ career advice for someone matched to: '+titles+' in '+region+'. Direct prose, no bullets.'}]})});
     var d2=await r2.json();var insights=d2.content.map(function(b){return b.text||'';}).join('');
-    document.getElementById('skeleton').style.display='none';renderResults(jobs,insights);
+    document.getElementById('skeleton').style.display='none';stopSkelMessages();renderResults(jobs,insights);
   }catch(e){
     console.error('CV analysis error:', e.message || e);
-    document.getElementById('skeleton').style.display='none';showManual();
+    document.getElementById('skeleton').style.display='none';stopSkelMessages();showManual();
     var fe=document.getElementById('find-err');
     fe.textContent='Could not process CV: '+(e.message||'Unknown error')+'. Please enter skills manually or try again.';
     fe.classList.add('show');
@@ -1097,7 +1126,7 @@ async function findJobs(){
   var err=document.getElementById('find-err');
   if(!skills.length){err.textContent='Please add at least one skill.';err.classList.add('show');return;}
   err.classList.remove('show');
-  document.getElementById('step-manual').style.display='none';document.getElementById('skeleton').style.display='block';setStep(4);
+  document.getElementById('step-manual').style.display='none';document.getElementById('skeleton').style.display='block';startSkelMessages();setStep(4);
   var region=document.getElementById('region').value;
   var prompt='Skills: '+skills.join(', ')+'. Region: '+region+'. Work: '+document.getElementById('wt').value+'. Exp: '+document.getElementById('exp').value+'. Salary: '+document.getElementById('sal').value+'. Context: '+(document.getElementById('ctx').value.trim()||'none')+'. Suggest 5 NZ jobs matching these skills. Include a reason field. Return ONLY valid JSON: [{"title":"Job Title","company_type":"","location":"City, NZ","match_percent":85,"reason":"Why these skills fit","description":"2 sentences.","tags":["skill"],"category":"Industry","seek_query":"terms"}]';
   try{
@@ -1106,7 +1135,7 @@ async function findJobs(){
     var si=raw.indexOf('['),ei=raw.lastIndexOf(']');var jobs=JSON.parse(raw.substring(si,ei+1));
     var r2=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:'3-4 sentences warm NZ career advice for someone with: '+skills.join(', ')+' in '+region+'. Direct prose, no bullets.'}]})});
     var d2=await r2.json();var insights=d2.content.map(function(b){return b.text||'';}).join('');
-    document.getElementById('skeleton').style.display='none';renderResults(jobs,insights);
+    document.getElementById('skeleton').style.display='none';stopSkelMessages();renderResults(jobs,insights);
   }catch(e){
     document.getElementById('skeleton').style.display='none';document.getElementById('step-manual').style.display='block';
     err.textContent='Something went wrong. Please try again.';err.classList.add('show');
@@ -1125,33 +1154,36 @@ function renderResults(jobs,insights){
 
 // Calculate AI match % for a live job against user's AI matches
 function calcLiveMatch(liveJob, aiMatches) {
-  if(!aiMatches||!aiMatches.length) return null;
+  if(!aiMatches||!aiMatches.length) return {pct:null,reason:''};
   var liveTitle = (liveJob.title||'').toLowerCase();
   var liveDesc = (liveJob.description||'').toLowerCase();
   var bestScore = 0;
+  var bestMatch = null;
+  var matchedWords = [];
   aiMatches.forEach(function(m) {
     var aiTitle = (m.title||'').toLowerCase();
     var score = 0;
-    // Title word overlap (strict — only count meaningful words)
+    var words = [];
     var stopWords = ['senior','junior','lead','manager','assistant','part','time','full','new','the','and','for','with'];
     var aiWords = aiTitle.split(/\s+/).filter(function(w){return w.length>3 && stopWords.indexOf(w)===-1;});
-    var liveWords = liveTitle.split(/\s+/).filter(function(w){return w.length>3 && stopWords.indexOf(w)===-1;});
-    var matches = 0;
-    aiWords.forEach(function(w){if(liveTitle.includes(w))matches++;});
-    var totalWords = Math.max(aiWords.length, 1);
-    score += (matches / totalWords) * 80;
-    // Tag overlap (specific skills only)
+    aiWords.forEach(function(w){if(liveTitle.includes(w)){score+=20;words.push(w);}});
     var aiTags = (m.tags||[]).map(function(t){return t.toLowerCase();});
-    aiTags.forEach(function(t){if(t.length>3 && (liveDesc.includes(t)||liveTitle.includes(t)))score+=3;});
-    // Weight by AI match percent
+    aiTags.forEach(function(t){if(t.length>3 && (liveDesc.includes(t)||liveTitle.includes(t))){score+=3;words.push(t);}});
     score = score * (m.match_percent / 100);
-    if(score > bestScore) bestScore = score;
+    if(score > bestScore){bestScore=score;bestMatch=m;matchedWords=words;}
   });
-  // Only show percentage if there is a real match (score > 20)
-  if (bestScore < 15) return null;
-  // Scale to 60-92 range
+  if (bestScore < 15) return {pct:null,reason:''};
   var scaled = Math.round(60 + (Math.min(bestScore, 100) / 100) * 32);
-  return Math.min(92, Math.max(60, scaled));
+  var pct = Math.min(92, Math.max(60, scaled));
+  // Build reason
+  var reason = '';
+  if (bestMatch) {
+    var unique = [];
+    matchedWords.forEach(function(w){if(unique.indexOf(w)===-1)unique.push(w);});
+    if (unique.length) reason = 'Matches your '+unique.slice(0,3).join(', ')+' experience';
+    else if (bestMatch.reason) reason = bestMatch.reason;
+  }
+  return {pct:pct,reason:reason};
 }
 
 async function fetchLiveJobs(matches){
@@ -1205,10 +1237,10 @@ async function fetchLiveJobs(matches){
     });
   }
   // Calculate match % for each live job
-  live.forEach(function(j){j.matchPct=calcLiveMatch(j,matches);});
+  live.forEach(function(j){var m=calcLiveMatch(j,matches);j.matchPct=m.pct;j.matchReason=m.reason;});
   // Sort by match %
   // Remove jobs with no real match and sort by match %
-  live = live.filter(function(j){return j.matchPct !== null;});
+  live = live.filter(function(j){return j.matchPct!==null;});
   live.sort(function(a,b){return (b.matchPct||0)-(a.matchPct||0);});
   list.innerHTML='';
   if(live.length){
@@ -1218,6 +1250,7 @@ async function fetchLiveJobs(matches){
     list.appendChild(lh);
     live.forEach(function(job){
       var pct=job.matchPct;
+      var reason=job.matchReason||'';
       var pctColor=pct>=85?'var(--em)':pct>=75?'#34d399':'#6ee7b7';
       var c=document.createElement('div');
       c.className='job-card';
@@ -1226,6 +1259,7 @@ async function fetchLiveJobs(matches){
         '<div class="job-title">'+esc(job.title)+'</div>'+
         '<div class="job-co">'+esc(job.company)+'</div>'+
         '<div class="job-loc">'+esc(job.location)+'</div>'+
+        (reason?'<div style="font-size:.75rem;color:var(--em);font-weight:600;margin:.3rem 0">'+esc(reason)+'</div>':'')+
         '<div class="job-desc">'+esc(job.description)+'</div>'+
         (job.salary?'<div class="job-tags"><span class="tag tag-other">'+esc(job.salary)+'</span></div>':'')+
         '<div class="job-links"><a href="'+esc(job.url)+'" target="_blank" rel="noopener" class="job-link apply">Apply Now &#8594;</a></div>'+
@@ -1257,7 +1291,7 @@ async function fetchLiveJobs(matches){
         ph.innerHTML='&#11088; Featured NZ Employer Listings';
         list.appendChild(ph);
         matchedPro.forEach(function(j){
-          var pct=calcLiveMatch({title:j.title,description:j.description},matches);
+          var matchResult=calcLiveMatch({title:j.title,description:j.description},matches);var pct=matchResult.pct;
           var c=document.createElement('div');
           c.className='job-card featured';
           c.style.position='relative';c.style.gridTemplateColumns='1fr auto';c.style.gap='1rem';
