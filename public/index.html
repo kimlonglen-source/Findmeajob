@@ -1176,7 +1176,7 @@ function calcLiveMatch(liveJob, aiMatches) {
     score = score * (m.match_percent / 100);
     if(score > bestScore){bestScore=score;bestMatch=m;matchedWords=words;}
   });
-  if (bestScore < 15) return {pct:null,reason:''};
+  if (bestScore < 5) return {pct:null,reason:''};
   var scaled = Math.round(60 + (Math.min(bestScore, 100) / 100) * 32);
   var pct = Math.min(92, Math.max(60, scaled));
   // Build reason
@@ -1193,8 +1193,10 @@ function calcLiveMatch(liveJob, aiMatches) {
 async function fetchLiveJobs(matches){
   var region=_selectedRegion||'New Zealand';
   var list=document.getElementById('job-list');
-  var top3=(matches||[]).slice(0,3);
-  var fetches=top3.map(function(m){return fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:m.title,region:region,limit:20})}).then(function(r){return r.json();}).catch(function(){return{jobs:[]};});});
+  var top5=(matches||[]).slice(0,5);
+  var fetches=top5.map(function(m){return fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:m.seek_query||m.title,region:region,limit:15})}).then(function(r){return r.json();}).catch(function(){return{jobs:[]};});});
+  // Also do a broad category search
+  if(top5.length>0&&top5[0].category){fetches.push(fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:top5[0].category,region:region,limit:15})}).then(function(r){return r.json();}).catch(function(){return{jobs:[]};}));}
   var results=await Promise.all(fetches);
   var live=[];var seen={};
   results.forEach(function(d){(d.jobs||[]).forEach(function(j){var k=(j.title+j.company).toLowerCase();if(!seen[k]){seen[k]=true;live.push(j);}});});
@@ -1226,21 +1228,38 @@ async function fetchLiveJobs(matches){
       // Fallback: use the region name itself
       keywords = regionKey.split(' / ').filter(function(w){return w.length > 2;});
     }
-    live = live.filter(function(j) {
+    var regionFiltered = live.filter(function(j) {
       var loc = (j.location || '').toLowerCase();
-      if (loc === 'new zealand' || loc === '') return false;
+      if (loc === '' ) return false;
       for (var i = 0; i < keywords.length; i++) {
         if (keywords[i] && loc.indexOf(keywords[i]) !== -1) return true;
       }
       return false;
     });
+    // If strict filter leaves too few results, include "New Zealand" located jobs
+    if (regionFiltered.length >= 3) {
+      live = regionFiltered;
+    } else {
+      live = live.filter(function(j) {
+        var loc = (j.location || '').toLowerCase();
+        if (loc === '') return false;
+        // Include region matches + generic NZ jobs
+        for (var i = 0; i < keywords.length; i++) {
+          if (keywords[i] && loc.indexOf(keywords[i]) !== -1) return true;
+        }
+        if (loc.indexOf('new zealand') !== -1) return true;
+        return false;
+      });
+    }
   }
   // Calculate match % for each live job
   live.forEach(function(j){var m=calcLiveMatch(j,matches);j.matchPct=m.pct;j.matchReason=m.reason;});
-  // Sort by match %
-  // Remove jobs with no real match and sort by match %
-  live = live.filter(function(j){return j.matchPct!==null;});
-  live.sort(function(a,b){return (b.matchPct||0)-(a.matchPct||0);});
+  // Sort: matched jobs first (by %), then unmatched jobs
+  live.sort(function(a,b){
+    if(a.matchPct && !b.matchPct) return -1;
+    if(!a.matchPct && b.matchPct) return 1;
+    return (b.matchPct||0)-(a.matchPct||0);
+  });
   list.innerHTML='';
   if(live.length){
     var lh=document.createElement('div');
