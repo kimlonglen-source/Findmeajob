@@ -132,8 +132,27 @@ module.exports = async function handler(req, res) {
 
   try {
     var jobs = await fetchAndFilter(clean, loc, 50);
+    // If regional search returns few results, try without location filter
+    if (jobs.length < 5 && loc) {
+      var broadJobs = await fetchAndFilter(clean, "", 50);
+      // Add broad results that aren't duplicates
+      var existingIds = {};
+      jobs.forEach(function(j) { existingIds[(j.title||'')+(j.company&&j.company.display_name||'')] = true; });
+      broadJobs.forEach(function(j) {
+        var key = (j.title||'')+(j.company&&j.company.display_name||'');
+        if (!existingIds[key]) { jobs.push(j); existingIds[key] = true; }
+      });
+    }
+    // If still few results and multi-word query, try first word only
     if (jobs.length < 5 && clean.includes(" ")) {
-      jobs = await fetchAndFilter(clean.split(" ")[0], loc, 50);
+      var firstWord = clean.split(" ")[0];
+      var moreJobs = await fetchAndFilter(firstWord, loc || "", 50);
+      var existingIds2 = {};
+      jobs.forEach(function(j) { existingIds2[(j.title||'')+(j.company&&j.company.display_name||'')] = true; });
+      moreJobs.forEach(function(j) {
+        var key = (j.title||'')+(j.company&&j.company.display_name||'');
+        if (!existingIds2[key]) { jobs.push(j); existingIds2[key] = true; }
+      });
     }
     return res.status(200).json({ jobs: shape(jobs.slice(0, perPage)) });
   } catch (e) {
