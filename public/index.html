@@ -1192,14 +1192,16 @@ function calcLiveMatch(liveJob, aiMatches) {
 
 async function fetchLiveJobs(matches){
   var region=_selectedRegion||'New Zealand';
+  console.log('fetchLiveJobs region:', region, 'matches:', (matches||[]).length);
   var list=document.getElementById('job-list');
   var top5=(matches||[]).slice(0,5);
-  var fetches=top5.map(function(m){return fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:m.seek_query||m.title,region:region,limit:15})}).then(function(r){return r.json();}).catch(function(){return{jobs:[]};});});
+  var fetches=top5.map(function(m){console.log('Searching Adzuna for:', m.seek_query||m.title, 'in', region);return fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:m.seek_query||m.title,region:region,limit:15})}).then(function(r){return r.json();}).catch(function(){return{jobs:[]};});});
   // Also do a broad category search
   if(top5.length>0&&top5[0].category){fetches.push(fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:top5[0].category,region:region,limit:15})}).then(function(r){return r.json();}).catch(function(){return{jobs:[]};}));}
   var results=await Promise.all(fetches);
   var live=[];var seen={};
-  results.forEach(function(d){(d.jobs||[]).forEach(function(j){var k=(j.title+j.company).toLowerCase();if(!seen[k]){seen[k]=true;live.push(j);}});});
+  results.forEach(function(d){console.log('Adzuna batch:', (d.jobs||[]).length, 'jobs');(d.jobs||[]).forEach(function(j){var k=(j.title+j.company).toLowerCase();if(!seen[k]){seen[k]=true;live.push(j);}});});
+  console.log('Total before filter:', live.length);
   // Combined profession + region filter
   var professionWords = [];
   if (top5.length > 0) {
@@ -1290,8 +1292,11 @@ async function fetchLiveJobs(matches){
       }
     }
 
+    if (!profMatch) console.log('Filtered out (profession):', title);
+    if (!regMatch) console.log('Filtered out (region):', loc);
     return profMatch && regMatch;
   });
+  console.log('After filter:', live.length, 'professionWords:', expandedProfWords.join(','), 'regionKeywords:', regionKeywords.slice(0,5).join(','));
   // Calculate match % for each live job
   live.forEach(function(j){var m=calcLiveMatch(j,matches);j.matchPct=m.pct;j.matchReason=m.reason;});
   // Sort: matched jobs first (by %), then unmatched jobs
@@ -1857,7 +1862,7 @@ async function doResetWithToken(){
   }catch(e){errEl.textContent='Connection error.';errEl.classList.add('show');}
 }
 
-function initApp(){try{
+function initApp(){console.log('initApp called, readyState:', document.readyState);try{
   // Check for password reset token in URL
   var urlParams=new URLSearchParams(window.location.search);
   var resetToken=urlParams.get('reset');
