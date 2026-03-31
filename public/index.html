@@ -1195,9 +1195,22 @@ async function fetchLiveJobs(matches){
   console.log('fetchLiveJobs region:', region, 'matches:', (matches||[]).length);
   var list=document.getElementById('job-list');
   var top5=(matches||[]).slice(0,5);
-  var fetches=top5.map(function(m){console.log('Searching Adzuna for:', m.seek_query||m.title, 'in', region);return fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:m.seek_query||m.title,region:region,limit:15})}).then(function(r){return r.json();}).catch(function(){return{jobs:[]};});});
-  // Also do a broad category search
-  if(top5.length>0&&top5[0].category){fetches.push(fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:top5[0].category,region:region,limit:15})}).then(function(r){return r.json();}).catch(function(){return{jobs:[]};}));}
+  // Build search queries - use simple profession words, not full titles
+  var searchTerms = [];
+  top5.forEach(function(m) {
+    // Use seek_query if available, otherwise extract core profession word
+    var sq = m.seek_query || m.title;
+    if (searchTerms.indexOf(sq) === -1) searchTerms.push(sq);
+    // Also add just the first meaningful word from the title
+    var words = (m.title || '').split(/\s+/).filter(function(w) {
+      return w.length > 3 && ['senior','junior','lead','community','clinical','hospital','registered','chief','head'].indexOf(w.toLowerCase()) === -1;
+    });
+    if (words.length > 0 && searchTerms.indexOf(words[0]) === -1) searchTerms.push(words[0]);
+  });
+  // Deduplicate and limit to 5 searches
+  searchTerms = searchTerms.slice(0, 5);
+  console.log('Search terms:', searchTerms);
+  var fetches = searchTerms.map(function(q) { console.log('Searching Adzuna for:', q, 'in', region); return fetch('/api/jobs', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({query:q, region:region, limit:15})}).then(function(r){return r.json();}).catch(function(){return {jobs:[]};});});
   var results=await Promise.all(fetches);
   var live=[];var seen={};
   results.forEach(function(d){console.log('Adzuna batch:', (d.jobs||[]).length, 'jobs');(d.jobs||[]).forEach(function(j){var k=(j.title+j.company).toLowerCase();if(!seen[k]){seen[k]=true;live.push(j);}});});
