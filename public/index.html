@@ -463,6 +463,12 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 <div id="page-browse" class="page">
   <div class="wrap-wide">
     <div style="margin-bottom:1.5rem"><div class="page-eyebrow">Live Listings</div><div class="page-title">Browse NZ Jobs</div></div>
+    <div style="margin-bottom:.75rem">
+      <div style="display:flex;gap:.5rem">
+        <input type="text" id="f-keyword" placeholder="Search by keyword, job title or profession..." style="flex:1">
+        <button class="btn" id="f-search-btn" type="button" style="width:auto;padding:.75rem 1.25rem;font-size:.85rem;white-space:nowrap">Search</button>
+      </div>
+    </div>
     <div class="filter-row">
       <select id="f-cat"><option value="">All categories</option><option>Technology</option><option>Healthcare</option><option>Trades</option><option>Hospitality</option><option>Admin</option><option>Education</option><option>Sales</option><option>Transport</option><option>Agriculture</option><option>Creative</option></select>
       <select id="f-reg"><option value="">All of NZ</option><option>Auckland</option><option>Wellington</option><option>Christchurch</option><option>Hamilton</option><option>Dunedin</option></select>
@@ -1096,6 +1102,7 @@ async function analyzeCV(){
   document.getElementById('step-cv').style.display='none';
   document.getElementById('skeleton').style.display='block';
   startSkelMessages();
+  window.scrollTo({top:0,behavior:'smooth'});
   setStep(4);
   var region=document.getElementById('cv-region').value;
   _selectedRegion=region;
@@ -1129,7 +1136,7 @@ async function findJobs(){
   var err=document.getElementById('find-err');
   if(!skills.length){err.textContent='Please add at least one skill.';err.classList.add('show');return;}
   err.classList.remove('show');
-  document.getElementById('step-manual').style.display='none';document.getElementById('skeleton').style.display='block';startSkelMessages();setStep(4);
+  document.getElementById('step-manual').style.display='none';document.getElementById('skeleton').style.display='block';startSkelMessages();setStep(4);window.scrollTo({top:0,behavior:'smooth'});
   var region=document.getElementById('region').value;
   _selectedRegion=region;
   var prompt='This person has these skills: '+skills.join(', ')+'. Region: '+region+'. Work type: '+document.getElementById('wt').value+'. Experience: '+document.getElementById('exp').value+'. Salary: '+document.getElementById('sal').value+'. Context: '+(document.getElementById('ctx').value.trim()||'none')+'. ONLY suggest jobs that directly use these specific skills. If they have pharmacy skills, suggest pharmacy jobs. If they have coding skills, suggest tech jobs. The reason field must explain which of their listed skills applies to each role. Return ONLY valid JSON: [{"title":"Specific Job","company_type":"","location":"City in '+region+'","match_percent":85,"reason":"Your [specific skill] qualifies you for this","description":"2 sentences.","tags":["skill"],"category":"Industry","seek_query":"2 words"}]';
@@ -1149,7 +1156,7 @@ async function findJobs(){
 function renderResults(jobs,insights){
   window._aiJobs=jobs;
   var list=document.getElementById('job-list');
-  list.innerHTML='<div style="padding:1rem;text-align:center;color:var(--text3);font-size:.82rem;font-weight:600;border:1px solid var(--border);border-radius:var(--rl)">Finding live listings<span class="dots"></span></div>';
+  list.innerHTML='';
   if(insights){document.getElementById('insights-text').textContent=insights;document.getElementById('insights').style.display='block';}
   document.getElementById('results').style.display='block';
   document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
@@ -1407,15 +1414,22 @@ async function fetchLiveJobs(matches){
 }
 
 async function loadBrowse(){
+  var keyword=document.getElementById('f-keyword').value.trim();
   var cat=document.getElementById('f-cat').value;var reg=document.getElementById('f-reg').value;
   var empEl=document.getElementById('employer-jobs');var liveEl=document.getElementById('browse-live');
   empEl.innerHTML='';liveEl.innerHTML='<div style="padding:1rem;text-align:center;color:var(--text3);font-size:.82rem;font-weight:600;border:1px solid var(--border);border-radius:var(--rl)">Loading<span class="dots"></span></div>';
   var regMap={'Auckland':'Auckland','Wellington':'Wellington','Christchurch':'Canterbury / Christchurch','Hamilton':'Waikato / Hamilton','Dunedin':'Otago / Dunedin','':'New Zealand'};
   var region=regMap[reg]||'New Zealand';
+  var searchQuery = keyword || cat || 'jobs';
   var approvedP=fetch('/api/approved-jobs').then(function(r){return r.json();}).catch(function(){return{jobs:[]};});
-  var adzunaP=fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:cat||'jobs',region:region})}).then(function(r){return r.json();}).catch(function(){return{jobs:[]};});
+  var adzunaP=fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:searchQuery,region:region})}).then(function(r){return r.json();}).catch(function(){return{jobs:[]};});
   var res=await Promise.all([approvedP,adzunaP]);
   var approved=res[0].jobs||[];var adzuna=res[1].jobs||[];
+  // Filter employer listings by keyword if searched
+  if(keyword){
+    var kw=keyword.toLowerCase();
+    approved=approved.filter(function(j){return (j.title||'').toLowerCase().indexOf(kw)!==-1||(j.description||'').toLowerCase().indexOf(kw)!==-1||(j.company||'').toLowerCase().indexOf(kw)!==-1||(j.category||'').toLowerCase().indexOf(kw)!==-1;});
+  }
   if(approved.length){
     var h='<div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--gold);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)">Employer Listings</div>';empEl.innerHTML=h;
     approved.forEach(function(j){var c=document.createElement('div');c.className='job-card'+(j.featured?' featured':'');
@@ -2014,6 +2028,8 @@ function initApp(){console.log('initApp called, readyState:', document.readyStat
   document.getElementById('f-cat').addEventListener('change',loadBrowse);
   document.getElementById('f-reg').addEventListener('change',loadBrowse);
   document.getElementById('f-type').addEventListener('change',loadBrowse);
+  document.getElementById('f-search-btn').addEventListener('click',loadBrowse);
+  document.getElementById('f-keyword').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();loadBrowse();}});
   document.getElementById('pricing-try').addEventListener('click',goFind);
   // plan buttons are now direct links to portal
   document.getElementById('fl-find').addEventListener('click',goFind);

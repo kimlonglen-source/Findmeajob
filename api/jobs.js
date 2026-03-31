@@ -10,26 +10,13 @@ module.exports = async function handler(req, res) {
   var perPage = limit || 20;
   var clean = (query || "").replace(/[^a-zA-Z0-9 ]/g, " ").trim().split(/\s+/).slice(0, 3).join(" ");
 
-  // Map frontend region names to Adzuna search terms AND acceptable location keywords
-  var regionConfig = {
-    "Auckland": { where: "Auckland", match: ["auckland"] },
-    "Wellington": { where: "Wellington", match: ["wellington", "lower hutt", "upper hutt", "porirua", "hutt"] },
-    "Canterbury / Christchurch": { where: "Christchurch", match: ["christchurch", "canterbury", "rangiora", "rolleston"] },
-    "Waikato / Hamilton": { where: "Hamilton", match: ["hamilton", "waikato", "cambridge", "te awamutu"] },
-    "Bay of Plenty": { where: "Tauranga", match: ["tauranga", "bay of plenty", "rotorua", "whakatane", "mount maunganui"] },
-    "Otago / Dunedin": { where: "Dunedin", match: ["dunedin", "otago", "queenstown", "wanaka"] },
-    "Manawatu-Whanganui": { where: "Palmerston North", match: ["palmerston north", "manawatu", "whanganui", "wanganui"] },
-    "Hawkes Bay": { where: "Napier", match: ["napier", "hastings", "hawke", "havelock north"] },
-    "Northland": { where: "Whangarei", match: ["whangarei", "northland", "kerikeri", "kaitaia"] },
-    "Southland": { where: "Invercargill", match: ["invercargill", "southland", "gore"] },
-    "Nelson / Marlborough": { where: "Nelson", match: ["nelson", "marlborough", "blenheim", "richmond", "tasman"] },
-    "New Zealand": { where: "", match: [] }
+  var locationMap = {
+    "Auckland": "Auckland", "Wellington": "Wellington", "Canterbury / Christchurch": "Christchurch",
+    "Waikato / Hamilton": "Hamilton", "Bay of Plenty": "Tauranga", "Otago / Dunedin": "Dunedin",
+    "Manawatu-Whanganui": "Palmerston North", "Hawkes Bay": "Napier", "Northland": "Whangarei",
+    "Southland": "Invercargill", "Nelson / Marlborough": "Nelson", "New Zealand": ""
   };
-
-  var config = regionConfig[region] || regionConfig["New Zealand"];
-  var loc = config.where;
-  var regionKeywords = config.match;
-  var filterByRegion = regionKeywords.length > 0;
+  var loc = locationMap[region] || "";
 
   function isNZJob(job) {
     var area = (job.location && job.location.area) ? job.location.area : [];
@@ -41,18 +28,6 @@ module.exports = async function handler(req, res) {
 
     // REQUIRE area[0] === "New Zealand"
     if (!area.length || area[0] !== "New Zealand") return false;
-
-    // Filter by selected region
-    if (filterByRegion) {
-      var regionMatch = false;
-      var allLocationText = locationDisplay + " " + area.join(" ").toLowerCase();
-      // Reject if location is just "New Zealand" with no specific region
-      if (locationDisplay === "new zealand" || locationDisplay === "") return false;
-      for (var r = 0; r < regionKeywords.length; r++) {
-        if (allLocationText.indexOf(regionKeywords[r]) !== -1) { regionMatch = true; break; }
-      }
-      if (!regionMatch) return false;
-    }
 
     // Block suspicious titles
     var spamTitles = [
