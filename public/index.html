@@ -1245,18 +1245,43 @@ async function fetchLiveJobs(matches){
     }
   }
 
-  // Apply filters
+  // Apply filters — profession check is relaxed, region check is strict
+  // Add common profession abbreviations
+  var extraWords = {};
+  extraWords['physiotherapist'] = ['physio','physiotherapy','physical therapy','rehabilitation','rehab'];
+  extraWords['pharmacist'] = ['pharmacy','pharmaceutical','dispensary','dispenser','dispensing'];
+  extraWords['nurse'] = ['nursing','registered nurse'];
+  extraWords['doctor'] = ['physician','medical officer','registrar','gp ','general practitioner'];
+  extraWords['teacher'] = ['teaching','educator','tutor','lecturer','instruction'];
+  extraWords['accountant'] = ['accounting','bookkeeper','bookkeeping','finance'];
+  extraWords['engineer'] = ['engineering'];
+  extraWords['developer'] = ['development','programmer','programming','software','coding'];
+  extraWords['plumber'] = ['plumbing','gasfitter','drainlayer'];
+  extraWords['electrician'] = ['electrical'];
+  extraWords['chef'] = ['cook','cooking','kitchen','culinary'];
+  extraWords['builder'] = ['building','construction','carpentry','carpenter'];
+
+  var expandedProfWords = professionWords.slice();
+  professionWords.forEach(function(w) {
+    if (extraWords[w]) {
+      extraWords[w].forEach(function(ew) {
+        if (expandedProfWords.indexOf(ew) === -1) expandedProfWords.push(ew);
+      });
+    }
+  });
+
   live = live.filter(function(j) {
     var title = (j.title || '').toLowerCase();
+    var desc = (j.description || '').toLowerCase();
     var loc = (j.location || '').toLowerCase();
 
-    // Profession check: job title must contain a profession keyword
-    var profMatch = professionWords.length === 0;
-    for (var p = 0; p < professionWords.length; p++) {
-      if (title.indexOf(professionWords[p]) !== -1) { profMatch = true; break; }
+    // Profession check: title or description must contain a profession keyword
+    var profMatch = expandedProfWords.length === 0;
+    for (var p = 0; p < expandedProfWords.length; p++) {
+      if (title.indexOf(expandedProfWords[p]) !== -1 || desc.indexOf(expandedProfWords[p]) !== -1) { profMatch = true; break; }
     }
 
-    // Region check: job location must contain a region keyword
+    // Region check
     var regMatch = regionKeywords.length === 0;
     if (regionKeywords.length > 0) {
       if (loc.indexOf('new zealand') !== -1) regMatch = true;
