@@ -1200,9 +1200,9 @@ async function fetchLiveJobs(matches){
   var results=await Promise.all(fetches);
   var live=[];var seen={};
   results.forEach(function(d){(d.jobs||[]).forEach(function(j){var k=(j.title+j.company).toLowerCase();if(!seen[k]){seen[k]=true;live.push(j);}});});
-  // Filter live jobs to only show results relevant to the AI-matched profession
+  // Combined profession + region filter
+  var professionWords = [];
   if (top5.length > 0) {
-    var professionWords = [];
     top5.forEach(function(m) {
       var words = (m.title || '').toLowerCase().split(/\s+/);
       words.forEach(function(w) {
@@ -1215,66 +1215,58 @@ async function fetchLiveJobs(matches){
     });
     var genericWords = ['senior','junior','lead','manager','assistant','part','time','full','team','chief','head','general','staff','worker','officer','coordinator','specialist','consultant','advisor','executive','director','national','regional','area','new','the','and','for','with','community','clinical','hospital','medical','health','care','centre','center','service','services','practice','based','remote','home','mobile','local','primary','public','private'];
     professionWords = professionWords.filter(function(w) { return genericWords.indexOf(w) === -1; });
-    live = live.filter(function(j) {
-      var title = (j.title || '').toLowerCase();
-      for (var p = 0; p < professionWords.length; p++) {
-        if (title.indexOf(professionWords[p]) !== -1) return true;
-      }
-      return false;
-    });
   }
-  // Client-side region filter — STRICT
+
+  var regionKeywords = [];
   if (region && region !== 'New Zealand') {
     var regionAliases = {
       'canterbury / christchurch':['christchurch','canterbury','rangiora','rolleston','kaiapoi','lincoln','selwyn'],
-      'auckland':['auckland','manukau','north shore','waitakere','papakura','howick','takapuna','albany','botany'],
-      'wellington':['wellington','lower hutt','upper hutt','porirua','hutt','petone','johnsonville','miramar','kilbirnie'],
-      'waikato / hamilton':['hamilton','waikato','cambridge','te awamutu','huntly','morrinsville'],
-      'bay of plenty':['tauranga','bay of plenty','rotorua','whakatane','mount maunganui','papamoa','te puke'],
-      'otago / dunedin':['dunedin','otago','queenstown','wanaka','alexandra','cromwell','oamaru'],
-      'manawatu-whanganui':['palmerston north','manawatu','whanganui','wanganui','feilding','levin'],
-      'hawkes bay':['napier','hastings','hawke','havelock north'],
-      'northland':['whangarei','northland','kerikeri','kaitaia','dargaville'],
-      'southland':['invercargill','southland','gore','te anau'],
-      'nelson / marlborough':['nelson','marlborough','blenheim','richmond','tasman','motueka']
+      'auckland':['auckland','manukau','north shore','waitakere','papakura','howick','takapuna','albany','botany','east tamaki','mount albert','mount eden','ponsonby','newmarket','parnell','remuera','ellerslie','penrose','onehunga','mangere','otahuhu','papatoetoe','otara','flat bush','glen eden','te atatu','henderson','new lynn','avondale','mount roskill','epsom','grafton','grey lynn','freemans bay','devonport','birkenhead','northcote','browns bay','orewa','milford','glenfield','kumeu','helensville','pukekohe','waiuku'],
+      'wellington':['wellington','lower hutt','upper hutt','porirua','hutt','petone','johnsonville','miramar','kilbirnie','karori','newtown','island bay','brooklyn','thorndon','lambton','courtenay','te aro','kelburn','wadestown','hataitai','seatoun','titahi bay','tawa','paraparaumu','kapiti'],
+      'waikato / hamilton':['hamilton','waikato','cambridge','te awamutu','huntly','morrinsville','matamata','tokoroa','thames','paeroa'],
+      'bay of plenty':['tauranga','bay of plenty','rotorua','whakatane','mount maunganui','papamoa','te puke','katikati','opotiki'],
+      'otago / dunedin':['dunedin','otago','queenstown','wanaka','alexandra','cromwell','oamaru','mosgiel','balclutha'],
+      'manawatu-whanganui':['palmerston north','manawatu','whanganui','wanganui','feilding','levin','marton','bulls'],
+      'hawkes bay':['napier','hastings','hawke','havelock north','waipukurau'],
+      'northland':['whangarei','northland','kerikeri','kaitaia','dargaville','paihia','kaikohe'],
+      'southland':['invercargill','southland','gore','te anau','winton','riverton'],
+      'nelson / marlborough':['nelson','marlborough','blenheim','richmond','tasman','motueka','picton']
     };
     var regionKey = region.toLowerCase();
-    var keywords = regionAliases[regionKey];
-    if (!keywords) {
-      // Try matching by partial key
+    regionKeywords = regionAliases[regionKey] || [];
+    if (!regionKeywords.length) {
       var keys = Object.keys(regionAliases);
       for (var ki = 0; ki < keys.length; ki++) {
-        if (keys[ki].indexOf(regionKey) !== -1 || regionKey.indexOf(keys[ki]) !== -1) { keywords = regionAliases[keys[ki]]; break; }
+        if (keys[ki].indexOf(regionKey) !== -1 || regionKey.indexOf(keys[ki]) !== -1) { regionKeywords = regionAliases[keys[ki]]; break; }
       }
     }
-    if (!keywords) {
-      // Fallback: use the region name itself
-      keywords = regionKey.split(' / ').filter(function(w){return w.length > 2;});
-    }
-    var regionFiltered = live.filter(function(j) {
-      var loc = (j.location || '').toLowerCase();
-      if (loc === '' ) return false;
-      for (var i = 0; i < keywords.length; i++) {
-        if (keywords[i] && loc.indexOf(keywords[i]) !== -1) return true;
-      }
-      return false;
-    });
-    // If strict filter leaves too few results, include "New Zealand" located jobs
-    if (regionFiltered.length >= 3) {
-      live = regionFiltered;
-    } else {
-      live = live.filter(function(j) {
-        var loc = (j.location || '').toLowerCase();
-        if (loc === '') return false;
-        // Include region matches + generic NZ jobs
-        for (var i = 0; i < keywords.length; i++) {
-          if (keywords[i] && loc.indexOf(keywords[i]) !== -1) return true;
-        }
-        if (loc.indexOf('new zealand') !== -1) return true;
-        return false;
-      });
+    if (!regionKeywords.length) {
+      regionKeywords = regionKey.split(' / ').filter(function(w){return w.length > 2;});
     }
   }
+
+  // Apply filters
+  live = live.filter(function(j) {
+    var title = (j.title || '').toLowerCase();
+    var loc = (j.location || '').toLowerCase();
+
+    // Profession check: job title must contain a profession keyword
+    var profMatch = professionWords.length === 0;
+    for (var p = 0; p < professionWords.length; p++) {
+      if (title.indexOf(professionWords[p]) !== -1) { profMatch = true; break; }
+    }
+
+    // Region check: job location must contain a region keyword
+    var regMatch = regionKeywords.length === 0;
+    if (regionKeywords.length > 0) {
+      if (loc.indexOf('new zealand') !== -1) regMatch = true;
+      for (var r = 0; r < regionKeywords.length; r++) {
+        if (regionKeywords[r] && loc.indexOf(regionKeywords[r]) !== -1) { regMatch = true; break; }
+      }
+    }
+
+    return profMatch && regMatch;
+  });
   // Calculate match % for each live job
   live.forEach(function(j){var m=calcLiveMatch(j,matches);j.matchPct=m.pct;j.matchReason=m.reason;});
   // Sort: matched jobs first (by %), then unmatched jobs
