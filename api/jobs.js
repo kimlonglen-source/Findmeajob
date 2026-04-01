@@ -109,10 +109,11 @@ module.exports = async function handler(req, res) {
       fetch("https://jooble.org/api/" + joobleKey, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ keywords: clean, location: locationLabel, page: 1 })
+        body: JSON.stringify({ keywords: clean, location: "New Zealand", page: 1 })
       })
-        .then(function(r) { return r.ok ? r.json() : { jobs: [] }; })
+        .then(function(r) { console.log("Jooble status:", r.status); return r.ok ? r.json() : { jobs: [] }; })
         .then(function(data) {
+          console.log("Jooble returned:", (data.jobs || []).length, "jobs");
           (data.jobs || []).forEach(function(j) {
             var title = j.title ? j.title.replace(/<[^>]+>/g, "") : "";
             var company = j.company || "Company not listed";
@@ -131,6 +132,7 @@ module.exports = async function handler(req, res) {
 
   // 3. CAREERJET
   var careerjetKey = process.env.CAREERJET_API_KEY;
+  console.log("API keys present - Adzuna:", !!(adzunaId && adzunaKey), "Jooble:", !!joobleKey, "CareerJet:", !!careerjetKey);
   if (careerjetKey) {
     var cjUrl = "https://public.api.careerjet.net/search"
       + "?locale_code=en_NZ"
@@ -143,8 +145,9 @@ module.exports = async function handler(req, res) {
 
     promises.push(
       fetch(cjUrl, { headers: { "Accept": "application/json" } })
-        .then(function(r) { return r.ok ? r.json() : { jobs: [] }; })
+        .then(function(r) { console.log("CareerJet status:", r.status); return r.ok ? r.json() : { jobs: [] }; })
         .then(function(data) {
+          console.log("CareerJet returned:", (data.jobs || []).length, "jobs");
           (data.jobs || []).forEach(function(j) {
             var title = j.title || "";
             var company = j.company || "Company not listed";
@@ -160,6 +163,7 @@ module.exports = async function handler(req, res) {
 
   try {
     await Promise.all(promises);
+    console.log("Total jobs from all sources:", allJobs.length);
     return res.status(200).json({ jobs: allJobs.slice(0, perPage) });
   } catch (e) {
     return res.status(200).json({ jobs: allJobs.slice(0, perPage) });
