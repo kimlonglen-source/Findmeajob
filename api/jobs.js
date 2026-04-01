@@ -119,9 +119,13 @@ module.exports = async function handler(req, res) {
             var company = j.company || "Company not listed";
             var desc = j.snippet ? j.snippet.replace(/<[^>]+>/g, "").substring(0, 200) + "..." : "";
             var location = j.location || "New Zealand";
-            // Only include NZ jobs
+            // Jooble is queried with location "New Zealand" so results should be NZ
+            // Only reject if location explicitly mentions another country
             var locLower = location.toLowerCase();
-            if (locLower.indexOf("new zealand") === -1 && locLower.indexOf("auckland") === -1 && locLower.indexOf("wellington") === -1 && locLower.indexOf("christchurch") === -1 && locLower.indexOf("hamilton") === -1 && locLower.indexOf("dunedin") === -1 && locLower.indexOf("tauranga") === -1 && locLower.indexOf("queenstown") === -1 && locLower.indexOf("nelson") === -1 && locLower.indexOf("napier") === -1 && locLower.indexOf("palmerston") === -1 && locLower.indexOf("invercargill") === -1 && locLower.indexOf("rotorua") === -1 && locLower.indexOf("whangarei") === -1 && locLower.indexOf("hastings") === -1) return;
+            var foreignCountries = ["australia","united kingdom","united states","canada","india","philippines","singapore","malaysia","ireland","south africa"];
+            var isForeign = false;
+            for (var fc = 0; fc < foreignCountries.length; fc++) { if (locLower.indexOf(foreignCountries[fc]) !== -1) { isForeign = true; break; } }
+            if (isForeign) return;
             if (!isCleanJob(title, desc, company)) return;
             addJob({ title: title, company: company, location: location, salary: j.salary || null, description: desc, url: j.link || "#", source: "Jooble" });
           });
@@ -138,23 +142,26 @@ module.exports = async function handler(req, res) {
       + "?locale_code=en_NZ"
       + "&keywords=" + encodeURIComponent(clean)
       + "&location=" + encodeURIComponent(locationLabel)
-      + "&affid=" + careerjetKey
+      + "&affid=" + encodeURIComponent(careerjetKey)
       + "&pagesize=30"
       + "&page=1"
-      + "&sort=relevance";
+      + "&sort=relevance"
+      + "&contracttype=&contractperiod=";
 
     promises.push(
       fetch(cjUrl, { headers: { "Accept": "application/json" } })
         .then(function(r) { console.log("CareerJet status:", r.status); return r.ok ? r.json() : { jobs: [] }; })
         .then(function(data) {
-          console.log("CareerJet returned:", (data.jobs || []).length, "jobs");
-          (data.jobs || []).forEach(function(j) {
-            var title = j.title || "";
+          var cjJobs = data.jobs || data.hits || [];
+          console.log("CareerJet returned:", cjJobs.length, "jobs, raw keys:", Object.keys(data).join(","));
+          cjJobs.forEach(function(j) {
+            var title = (j.title || "").replace(/<[^>]+>/g, "");
             var company = j.company || "Company not listed";
-            var desc = j.description ? j.description.replace(/<[^>]+>/g, "").substring(0, 200) + "..." : "";
-            var location = j.locations || "New Zealand";
+            var desc = (j.description || j.snippet || "").replace(/<[^>]+>/g, "").substring(0, 200) + "...";
+            var location = j.locations || j.location || "New Zealand";
+            var salary = j.salary || j.salary_min ? j.salary || (j.salary_min + "-" + j.salary_max) : null;
             if (!isCleanJob(title, desc, company)) return;
-            addJob({ title: title, company: company, location: location, salary: j.salary || null, description: desc, url: j.url || "#", source: "CareerJet" });
+            addJob({ title: title, company: company, location: location, salary: salary, description: desc, url: j.url || j.link || "#", source: "CareerJet" });
           });
         })
         .catch(function() {})
