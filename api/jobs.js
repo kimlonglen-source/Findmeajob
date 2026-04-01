@@ -119,13 +119,12 @@ module.exports = async function handler(req, res) {
             var company = j.company || "Company not listed";
             var desc = j.snippet ? j.snippet.replace(/<[^>]+>/g, "").substring(0, 200) + "..." : "";
             var location = j.location || "New Zealand";
-            // Jooble is queried with location "New Zealand" so results should be NZ
-            // Only reject if location explicitly mentions another country
+            // Only allow NZ jobs — check location contains a NZ place
             var locLower = location.toLowerCase();
-            var foreignCountries = ["australia","united kingdom","united states","canada","india","philippines","singapore","malaysia","ireland","south africa"];
-            var isForeign = false;
-            for (var fc = 0; fc < foreignCountries.length; fc++) { if (locLower.indexOf(foreignCountries[fc]) !== -1) { isForeign = true; break; } }
-            if (isForeign) return;
+            var nzPlaces = ["new zealand","nz","auckland","wellington","christchurch","hamilton","tauranga","dunedin","queenstown","nelson","napier","hastings","palmerston","invercargill","rotorua","whangarei","whanganui","wanaka","manukau","north shore","waitakere","papakura","howick","takapuna","albany","botany","lower hutt","upper hutt","porirua","canterbury","waikato","otago","bay of plenty","hawke","northland","southland","marlborough","taranaki","new plymouth","gisborne","blenheim","timaru","ashburton","masterton","levin","kapiti","pukekohe","orewa","kumeu","rangiora","rolleston","mosgiel","gore","thames","cambridge","te awamutu","mount maunganui","papamoa","whakatane","kerikeri","kaikohe","dargaville","oamaru","alexandra","cromwell","feilding","marton","waipukurau","tokoroa","matamata","putaruru","kawerau","opotiki","westport","greymouth","hokitika","kaikoura","picton","motueka","richmond"];
+            var isNZ = false;
+            for (var np = 0; np < nzPlaces.length; np++) { if (locLower.indexOf(nzPlaces[np]) !== -1) { isNZ = true; break; } }
+            if (!isNZ) return;
             if (!isCleanJob(title, desc, company)) return;
             addJob({ title: title, company: company, location: location, salary: j.salary || null, description: desc, url: j.link || "#", source: "Jooble" });
           });
