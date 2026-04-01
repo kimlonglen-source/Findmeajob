@@ -1,14 +1,12 @@
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
-  var appId = process.env.ADZUNA_APP_ID;
-  var appKey = process.env.ADZUNA_APP_KEY;
-  if (!appId || !appKey) return res.status(200).json({ jobs: [] });
 
   var query = req.body.query;
   var region = req.body.region;
   var limit = req.body.limit;
-  var perPage = limit || 20;
+  var perPage = limit || 25;
   var clean = (query || "").replace(/[^a-zA-Z0-9 ]/g, " ").trim().split(/\s+/).slice(0, 3).join(" ");
+  if (!clean) clean = "jobs";
 
   var locationMap = {
     "Auckland": "Auckland", "Wellington": "Wellington", "Canterbury / Christchurch": "Christchurch",
@@ -17,133 +15,153 @@ module.exports = async function handler(req, res) {
     "Southland": "Invercargill", "Nelson / Marlborough": "Nelson", "New Zealand": ""
   };
   var loc = locationMap[region] || "";
+  var locationLabel = loc || "New Zealand";
 
-  function isNZJob(job) {
-    var area = (job.location && job.location.area) ? job.location.area : [];
-    var url = (job.redirect_url || "").toLowerCase();
-    var title = (job.title || "").toLowerCase();
-    var company = (job.company && job.company.display_name) ? job.company.display_name.toLowerCase() : "";
-    var desc = (job.description || "").toLowerCase();
-    var locationDisplay = (job.location && job.location.display_name) ? job.location.display_name.toLowerCase() : "";
+  // Spam filters
+  var spamTitles = ["no experience needed","no experience required","entry level remote","work from home","work from anywhere","remote usa","hiring immediately","urgently hiring"];
+  var spamDesc = ["united states","us citizen","us-based","w-2","401k","401(k)","hipaa","usa only","us only","usd per","eastern time","pacific time","sydney","melbourne","brisbane","uk based","london","manchester"];
 
-    // REQUIRE area[0] === "New Zealand"
-    if (!area.length || area[0] !== "New Zealand") return false;
-
-    // Block suspicious titles
-    var spamTitles = [
-      "no experience needed", "no experience required", "entry level remote",
-      "work from home", "work from anywhere", "remote usa", "remote us ",
-      "hiring immediately", "urgently hiring", "immediate start remote"
-    ];
-    for (var st = 0; st < spamTitles.length; st++) {
-      if (title.includes(spamTitles[st])) return false;
-    }
-
-    // Block suspicious companies
-    var spamCompanies = [
-      "staffing.com", "staffing.co", "centergroupstaffing", "newparadigmstaffing",
-      "medixpressrx", "paradigmstaffing", "centergroup", "remote.co",
-      "remoteworker", "hiringdepot", "talentburst", "insightstaffing",
-      "flexjobs", "remoteok", "weworkremotely"
-    ];
-    for (var sc = 0; sc < spamCompanies.length; sc++) {
-      if (company.includes(spamCompanies[sc])) return false;
-    }
-
-    // Block international terms in description
-    var blocked = ["united states", "us citizen", "us-based", "w-2", "401k", "401(k)", "hipaa",
-      "usa only", "us only", "based in the us", "based in us", "remote - us", "remote us",
-      "usd per", "$ usd", "dollar per hour", "est/pst", "eastern time", "pacific time",
-      "australian", "sydney", "melbourne", "brisbane", "uk based", "london", "manchester"];
-    for (var b = 0; b < blocked.length; b++) {
-      if (desc.includes(blocked[b])) return false;
-    }
-
-    // Adzuna own URLs are fine
-    if (url.includes("adzuna.co.nz") || url.includes("adzuna.com.au/land") || url.includes("adzuna.com/land")) return true;
-
-    // Allow NZ domains
-    if (url.includes(".co.nz") || url.includes(".nz/")) return true;
-
-    // Block known overseas domains
-    var blockedDomains = [
-      "staffing", "ziprecruiter", "simplyhired", "careerbuilder", "monster.com",
-      "workday.com", "greenhouse.io", "lever.co", "smartrecruiters", "bamboohr",
-      "icims.com", "taleo", "successfactors", "jobvite", "paylocity", "myworkday",
-      "ultipro", "indeed.com", "glassdoor", "jora.com", "neuvoo", "talent.com",
-      "jobrapido", "recruit.net", "snagajob", "lensa.com", "salary.com", "ladders.com",
-      "dice.com", "mediabistro", "flexjobs.com", "remote.co", "remoteok"
-    ];
-    for (var d = 0; d < blockedDomains.length; d++) {
-      if (url.includes(blockedDomains[d])) return false;
-    }
-
-    // Generic .com without NZ sub-region
-    if (url.includes(".com") && !url.includes(".com.au")) {
-      if (area.length < 2) return false;
-    }
-
+  function isCleanJob(title, desc, company) {
+    var t = (title || "").toLowerCase();
+    var d = (desc || "").toLowerCase();
+    var c = (company || "").toLowerCase();
+    for (var i = 0; i < spamTitles.length; i++) { if (t.indexOf(spamTitles[i]) !== -1) return false; }
+    for (var j = 0; j < spamDesc.length; j++) { if (d.indexOf(spamDesc[j]) !== -1) return false; }
+    if (c.indexOf("staffing") !== -1 || c.indexOf("remoteok") !== -1 || c.indexOf("flexjobs") !== -1) return false;
     return true;
   }
 
-  function buildUrl(q, where, n) {
-    var u = "https://api.adzuna.com/v1/api/jobs/nz/search/1"
-      + "?app_id=" + appId + "&app_key=" + appKey
-      + "&results_per_page=" + n
-      + "&what=" + encodeURIComponent(q)
+  var allJobs = [];
+  var seen = {};
+
+  function addJob(job) {
+    var key = (job.title + job.company).toLowerCase().replace(/\s+/g, "");
+    if (seen[key]) return;
+    seen[key] = true;
+    allJobs.push(job);
+  }
+
+  // Fetch from all sources in parallel
+  var promises = [];
+
+  // 1. ADZUNA
+  var adzunaId = process.env.ADZUNA_APP_ID;
+  var adzunaKey = process.env.ADZUNA_APP_KEY;
+  if (adzunaId && adzunaKey) {
+    var adzunaUrl = "https://api.adzuna.com/v1/api/jobs/nz/search/1"
+      + "?app_id=" + adzunaId + "&app_key=" + adzunaKey
+      + "&results_per_page=30"
+      + "&what=" + encodeURIComponent(clean)
       + "&location0=New+Zealand"
       + "&sort_by=relevance"
       + "&content-type=application/json";
-    if (where) u += "&where=" + encodeURIComponent(where);
-    return u;
+    if (loc) adzunaUrl += "&where=" + encodeURIComponent(loc);
+
+    promises.push(
+      fetch(adzunaUrl, { headers: { "Accept": "application/json" } })
+        .then(function(r) { return r.ok ? r.json() : { results: [] }; })
+        .then(function(data) {
+          (data.results || []).forEach(function(j) {
+            var area = (j.location && j.location.area) ? j.location.area : [];
+            if (!area.length || area[0] !== "New Zealand") return;
+            var title = j.title || "";
+            var company = j.company && j.company.display_name ? j.company.display_name : "Company not listed";
+            var desc = j.description ? j.description.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim().substring(0, 200) + "..." : "";
+            var location = j.location && j.location.display_name ? j.location.display_name : "New Zealand";
+            if (!isCleanJob(title, desc, company)) return;
+            addJob({
+              title: title, company: company, location: location,
+              salary: j.salary_min ? "$" + Math.round(j.salary_min / 1000) + "K" + (j.salary_max ? "-$" + Math.round(j.salary_max / 1000) + "K" : "+") + " NZD" : null,
+              description: desc, url: j.redirect_url || "#", source: "Adzuna"
+            });
+          });
+        })
+        .catch(function() {})
+    );
+
+    // Also try without location if regional
+    if (loc) {
+      var adzunaBroad = adzunaUrl.replace("&where=" + encodeURIComponent(loc), "");
+      promises.push(
+        fetch(adzunaBroad, { headers: { "Accept": "application/json" } })
+          .then(function(r) { return r.ok ? r.json() : { results: [] }; })
+          .then(function(data) {
+            (data.results || []).forEach(function(j) {
+              var area = (j.location && j.location.area) ? j.location.area : [];
+              if (!area.length || area[0] !== "New Zealand") return;
+              var title = j.title || "";
+              var company = j.company && j.company.display_name ? j.company.display_name : "Company not listed";
+              var desc = j.description ? j.description.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim().substring(0, 200) + "..." : "";
+              var location = j.location && j.location.display_name ? j.location.display_name : "New Zealand";
+              if (!isCleanJob(title, desc, company)) return;
+              addJob({ title: title, company: company, location: location, salary: j.salary_min ? "$" + Math.round(j.salary_min / 1000) + "K" + (j.salary_max ? "-$" + Math.round(j.salary_max / 1000) + "K" : "+") + " NZD" : null, description: desc, url: j.redirect_url || "#", source: "Adzuna" });
+            });
+          })
+          .catch(function() {})
+      );
+    }
   }
 
-  async function fetchAndFilter(q, where, n) {
-    var r = await fetch(buildUrl(q, where, n), { headers: { "Accept": "application/json" } });
-    if (!r.ok) return [];
-    var data = await r.json();
-    return (data.results || []).filter(isNZJob);
+  // 2. JOOBLE
+  var joobleKey = process.env.JOOBLE_API_KEY;
+  if (joobleKey) {
+    promises.push(
+      fetch("https://jooble.org/api/" + joobleKey, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ keywords: clean, location: locationLabel, page: 1 })
+      })
+        .then(function(r) { return r.ok ? r.json() : { jobs: [] }; })
+        .then(function(data) {
+          (data.jobs || []).forEach(function(j) {
+            var title = j.title ? j.title.replace(/<[^>]+>/g, "") : "";
+            var company = j.company || "Company not listed";
+            var desc = j.snippet ? j.snippet.replace(/<[^>]+>/g, "").substring(0, 200) + "..." : "";
+            var location = j.location || "New Zealand";
+            // Only include NZ jobs
+            var locLower = location.toLowerCase();
+            if (locLower.indexOf("new zealand") === -1 && locLower.indexOf("auckland") === -1 && locLower.indexOf("wellington") === -1 && locLower.indexOf("christchurch") === -1 && locLower.indexOf("hamilton") === -1 && locLower.indexOf("dunedin") === -1 && locLower.indexOf("tauranga") === -1 && locLower.indexOf("queenstown") === -1 && locLower.indexOf("nelson") === -1 && locLower.indexOf("napier") === -1 && locLower.indexOf("palmerston") === -1 && locLower.indexOf("invercargill") === -1 && locLower.indexOf("rotorua") === -1 && locLower.indexOf("whangarei") === -1 && locLower.indexOf("hastings") === -1) return;
+            if (!isCleanJob(title, desc, company)) return;
+            addJob({ title: title, company: company, location: location, salary: j.salary || null, description: desc, url: j.link || "#", source: "Jooble" });
+          });
+        })
+        .catch(function() {})
+    );
+  }
+
+  // 3. CAREERJET
+  var careerjetKey = process.env.CAREERJET_API_KEY;
+  if (careerjetKey) {
+    var cjUrl = "https://public.api.careerjet.net/search"
+      + "?locale_code=en_NZ"
+      + "&keywords=" + encodeURIComponent(clean)
+      + "&location=" + encodeURIComponent(locationLabel)
+      + "&affid=" + careerjetKey
+      + "&pagesize=30"
+      + "&page=1"
+      + "&sort=relevance";
+
+    promises.push(
+      fetch(cjUrl, { headers: { "Accept": "application/json" } })
+        .then(function(r) { return r.ok ? r.json() : { jobs: [] }; })
+        .then(function(data) {
+          (data.jobs || []).forEach(function(j) {
+            var title = j.title || "";
+            var company = j.company || "Company not listed";
+            var desc = j.description ? j.description.replace(/<[^>]+>/g, "").substring(0, 200) + "..." : "";
+            var location = j.locations || "New Zealand";
+            if (!isCleanJob(title, desc, company)) return;
+            addJob({ title: title, company: company, location: location, salary: j.salary || null, description: desc, url: j.url || "#", source: "CareerJet" });
+          });
+        })
+        .catch(function() {})
+    );
   }
 
   try {
-    var jobs = await fetchAndFilter(clean, loc, 50);
-    // If regional search returns few results, try without location filter
-    if (jobs.length < 5 && loc) {
-      var broadJobs = await fetchAndFilter(clean, "", 50);
-      // Add broad results that aren't duplicates
-      var existingIds = {};
-      jobs.forEach(function(j) { existingIds[(j.title||'')+(j.company&&j.company.display_name||'')] = true; });
-      broadJobs.forEach(function(j) {
-        var key = (j.title||'')+(j.company&&j.company.display_name||'');
-        if (!existingIds[key]) { jobs.push(j); existingIds[key] = true; }
-      });
-    }
-    // If still few results and multi-word query, try first word only
-    if (jobs.length < 5 && clean.includes(" ")) {
-      var firstWord = clean.split(" ")[0];
-      var moreJobs = await fetchAndFilter(firstWord, loc || "", 50);
-      var existingIds2 = {};
-      jobs.forEach(function(j) { existingIds2[(j.title||'')+(j.company&&j.company.display_name||'')] = true; });
-      moreJobs.forEach(function(j) {
-        var key = (j.title||'')+(j.company&&j.company.display_name||'');
-        if (!existingIds2[key]) { jobs.push(j); existingIds2[key] = true; }
-      });
-    }
-    return res.status(200).json({ jobs: shape(jobs.slice(0, perPage)) });
+    await Promise.all(promises);
+    return res.status(200).json({ jobs: allJobs.slice(0, perPage) });
   } catch (e) {
-    return res.status(200).json({ jobs: [] });
+    return res.status(200).json({ jobs: allJobs.slice(0, perPage) });
   }
 };
-
-function shape(results) {
-  return results.map(function(j) {
-    return {
-      title: j.title || "",
-      company: j.company && j.company.display_name ? j.company.display_name : "Company not listed",
-      location: j.location && j.location.display_name ? j.location.display_name : "New Zealand",
-      salary: j.salary_min ? "$" + Math.round(j.salary_min / 1000) + "K" + (j.salary_max ? "-$" + Math.round(j.salary_max / 1000) + "K" : "+") + " NZD" : null,
-      description: j.description ? j.description.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim().substring(0, 200) + "..." : "",
-      url: j.redirect_url || "#"
-    };
-  });
-}
