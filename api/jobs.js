@@ -119,11 +119,20 @@ module.exports = async function handler(req, res) {
             var title = j.title ? j.title.replace(/<[^>]+>/g, "") : "";
             var company = j.company || "Company not listed";
             var desc = j.snippet ? j.snippet.replace(/<[^>]+>/g, "").substring(0, 200) + "..." : "";
-            var location = j.location || "New Zealand";
-            // We sent location "New Zealand" so results should be NZ
-            // Just reject obviously foreign locations
+            var location = j.location || "";
+            // STRICT NZ filter — must contain a NZ place or "NZ"/"New Zealand"
             var locLower = location.toLowerCase();
-            if (locLower.indexOf("australia") !== -1 || locLower.indexOf("united states") !== -1 || locLower.indexOf("united kingdom") !== -1 || locLower.indexOf("canada") !== -1 || locLower.indexOf("india") !== -1 || locLower.indexOf("philippines") !== -1 || locLower.indexOf("singapore") !== -1 || locLower.indexOf("london") !== -1 || locLower.indexOf("sydney") !== -1 || locLower.indexOf("melbourne") !== -1) return;
+            if (!locLower) return;
+            // Quick check for obvious NZ markers
+            if (locLower.indexOf("new zealand") !== -1 || locLower.indexOf(", nz") !== -1 || locLower.indexOf("(nz)") !== -1) {
+              // passes
+            } else {
+              // Check against NZ cities/regions
+              var nzCheck = ["auckland","wellington","christchurch","hamilton","tauranga","dunedin","queenstown","nelson","napier","hastings","palmerston","invercargill","rotorua","whangarei","whanganui","wanaka","manukau","porirua","canterbury","waikato","otago","taranaki","gisborne","blenheim","timaru","masterton","kapiti","pukekohe","rangiora","rolleston","greymouth","hokitika","kaikoura","picton","motueka","northland","southland","marlborough","hawke","bay of plenty","lower hutt","upper hutt","north island","south island"];
+              var foundNZ = false;
+              for (var nc = 0; nc < nzCheck.length; nc++) { if (locLower.indexOf(nzCheck[nc]) !== -1) { foundNZ = true; break; } }
+              if (!foundNZ) return;
+            }
             if (!isCleanJob(title, desc, company)) return;
             addJob({ title: title, company: company, location: location, salary: j.salary || null, description: desc, url: j.link || "#", source: "Jooble" });
           });
