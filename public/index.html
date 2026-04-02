@@ -475,7 +475,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <select id="f-type"><option value="">Any type</option><option>Full-time</option><option>Part-time</option><option>Casual</option><option>Remote</option></select>
     </div>
     <div id="employer-jobs"></div>
-    <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin:1.5rem 0 .75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)">Live NZ Jobs from Adzuna</div>
+    <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin:1.5rem 0 .75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)">Live NZ Jobs</div>
     <div id="browse-live"></div>
     <div style="text-align:center;padding:2rem;border:1px dashed var(--border2);border-radius:var(--rl);margin-top:1rem">
       <p style="color:var(--text2);font-size:.85rem;margin-bottom:1rem;font-weight:500">Are you an employer? Reach thousands of active Kiwi job seekers.</p>
@@ -1484,7 +1484,6 @@ async function loadBrowse(){
   }
   if(!adzuna.length && otherNZ && otherNZ.length){
     adzuna = otherNZ;
-    liveEl.innerHTML='<div style="padding:.5rem;color:var(--text3);font-size:.78rem;font-weight:500;margin-bottom:.75rem">No jobs found in '+esc(reg)+'. Showing jobs from across NZ:</div>';
   }
   // Filter by job type
   if (type) {
