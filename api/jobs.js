@@ -53,13 +53,15 @@ module.exports = async function handler(req, res) {
       + "&results_per_page=30"
       + "&what=" + encodeURIComponent(clean)
       + "&location0=New+Zealand"
-      + "&sort_by=relevance"
-      + "&content-type=application/json";
+      + "&sort_by=relevance";
     if (loc) adzunaUrl += "&where=" + encodeURIComponent(loc);
 
     promises.push(
-      fetch(adzunaUrl, { headers: { "Accept": "application/json" } })
-        .then(function(r) { return r.ok ? r.json() : { results: [] }; })
+      fetch(adzunaUrl, { headers: { "Accept": "application/json", "Content-Type": "application/json" } })
+        .then(function(r) {
+          if (!r.ok) { console.log("Adzuna error:", r.status); return { results: [] }; }
+          return r.json();
+        })
         .then(function(data) {
           (data.results || []).forEach(function(j) {
             var area = (j.location && j.location.area) ? j.location.area : [];
@@ -83,7 +85,7 @@ module.exports = async function handler(req, res) {
     if (loc) {
       var adzunaBroad = adzunaUrl.replace("&where=" + encodeURIComponent(loc), "");
       promises.push(
-        fetch(adzunaBroad, { headers: { "Accept": "application/json" } })
+        fetch(adzunaBroad, { headers: { "Accept": "application/json", "Content-Type": "application/json" } })
           .then(function(r) { return r.ok ? r.json() : { results: [] }; })
           .then(function(data) {
             (data.results || []).forEach(function(j) {
