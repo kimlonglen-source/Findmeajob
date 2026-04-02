@@ -59,7 +59,7 @@ module.exports = async function handler(req, res) {
     promises.push(
       fetch(adzunaUrl, { headers: { "Accept": "application/json", "Content-Type": "application/json" } })
         .then(function(r) {
-          if (!r.ok) { console.log("Adzuna error:", r.status); return { results: [] }; }
+          if (!r.ok) return { results: [] };
           return r.json();
         })
         .then(function(data) {
@@ -113,20 +113,17 @@ module.exports = async function handler(req, res) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ keywords: clean, location: "New Zealand", page: 1 })
       })
-        .then(function(r) { console.log("Jooble status:", r.status); return r.ok ? r.json() : { jobs: [] }; })
+        .then(function(r) { return r.ok ? r.json() : { jobs: [] }; })
         .then(function(data) {
-          console.log("Jooble returned:", (data.jobs || []).length, "jobs");
           (data.jobs || []).forEach(function(j) {
             var title = j.title ? j.title.replace(/<[^>]+>/g, "") : "";
             var company = j.company || "Company not listed";
             var desc = j.snippet ? j.snippet.replace(/<[^>]+>/g, "").substring(0, 200) + "..." : "";
             var location = j.location || "New Zealand";
-            // Only allow NZ jobs — check location contains a NZ place
+            // We sent location "New Zealand" so results should be NZ
+            // Just reject obviously foreign locations
             var locLower = location.toLowerCase();
-            var nzPlaces = ["new zealand","nz","auckland","wellington","christchurch","hamilton","tauranga","dunedin","queenstown","nelson","napier","hastings","palmerston","invercargill","rotorua","whangarei","whanganui","wanaka","manukau","north shore","waitakere","papakura","howick","takapuna","albany","botany","lower hutt","upper hutt","porirua","canterbury","waikato","otago","bay of plenty","hawke","northland","southland","marlborough","taranaki","new plymouth","gisborne","blenheim","timaru","ashburton","masterton","levin","kapiti","pukekohe","orewa","kumeu","rangiora","rolleston","mosgiel","gore","thames","cambridge","te awamutu","mount maunganui","papamoa","whakatane","kerikeri","kaikohe","dargaville","oamaru","alexandra","cromwell","feilding","marton","waipukurau","tokoroa","matamata","putaruru","kawerau","opotiki","westport","greymouth","hokitika","kaikoura","picton","motueka","richmond"];
-            var isNZ = false;
-            for (var np = 0; np < nzPlaces.length; np++) { if (locLower.indexOf(nzPlaces[np]) !== -1) { isNZ = true; break; } }
-            if (!isNZ) return;
+            if (locLower.indexOf("australia") !== -1 || locLower.indexOf("united states") !== -1 || locLower.indexOf("united kingdom") !== -1 || locLower.indexOf("canada") !== -1 || locLower.indexOf("india") !== -1 || locLower.indexOf("philippines") !== -1 || locLower.indexOf("singapore") !== -1 || locLower.indexOf("london") !== -1 || locLower.indexOf("sydney") !== -1 || locLower.indexOf("melbourne") !== -1) return;
             if (!isCleanJob(title, desc, company)) return;
             addJob({ title: title, company: company, location: location, salary: j.salary || null, description: desc, url: j.link || "#", source: "Jooble" });
           });
@@ -137,30 +134,27 @@ module.exports = async function handler(req, res) {
 
   // 3. CAREERJET
   var careerjetKey = process.env.CAREERJET_API_KEY;
-  console.log("API keys present - Adzuna:", !!(adzunaId && adzunaKey), "Jooble:", !!joobleKey, "CareerJet:", !!careerjetKey);
   if (careerjetKey) {
     var cjUrl = "https://public.api.careerjet.net/search"
       + "?locale_code=en_NZ"
       + "&keywords=" + encodeURIComponent(clean)
       + "&location=" + encodeURIComponent(locationLabel)
-      + "&affid=" + encodeURIComponent(careerjetKey)
       + "&pagesize=30"
       + "&page=1"
-      + "&sort=relevance"
-      + "&contracttype=&contractperiod=";
+      + "&sort=relevance";
 
+    var cjAuth = "Basic " + Buffer.from(careerjetKey + ":").toString("base64");
     promises.push(
-      fetch(cjUrl, { headers: { "Accept": "application/json" } })
-        .then(function(r) { console.log("CareerJet status:", r.status); return r.ok ? r.json() : { jobs: [] }; })
+      fetch(cjUrl, { headers: { "Accept": "application/json", "Authorization": cjAuth } })
+        .then(function(r) { return r.ok ? r.json() : { jobs: [] }; })
         .then(function(data) {
           var cjJobs = data.jobs || data.hits || [];
-          console.log("CareerJet returned:", cjJobs.length, "jobs, raw keys:", Object.keys(data).join(","));
           cjJobs.forEach(function(j) {
             var title = (j.title || "").replace(/<[^>]+>/g, "");
             var company = j.company || "Company not listed";
             var desc = (j.description || j.snippet || "").replace(/<[^>]+>/g, "").substring(0, 200) + "...";
             var location = j.locations || j.location || "New Zealand";
-            var salary = j.salary || j.salary_min ? j.salary || (j.salary_min + "-" + j.salary_max) : null;
+            var salary = (j.salary || j.salary_min) ? (j.salary || (j.salary_min + "-" + j.salary_max)) : null;
             if (!isCleanJob(title, desc, company)) return;
             addJob({ title: title, company: company, location: location, salary: salary, description: desc, url: j.url || j.link || "#", source: "CareerJet" });
           });
@@ -171,7 +165,6 @@ module.exports = async function handler(req, res) {
 
   try {
     await Promise.all(promises);
-    console.log("Total jobs from all sources:", allJobs.length);
     return res.status(200).json({ jobs: allJobs.slice(0, perPage) });
   } catch (e) {
     return res.status(200).json({ jobs: allJobs.slice(0, perPage) });
