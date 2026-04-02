@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#09090b;--bg2:rgba(255,255,255,.03);--bg3:rgba(255,255,255,.06);--text:#f4f4f5;--text2:#a1a1aa;--text3:#71717a;--em:#10b981;--em2:#059669;--gold:#f59e0b;--purple:#8b5cf6;--red:#ef4444;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.08);--card:rgba(255,255,255,.03);--r:12px;--rl:16px;}
+body.light{--bg:#f8fafc;--bg2:#f1f5f9;--bg3:rgba(0,0,0,.03);--text:#0f172a;--text2:#475569;--text3:#94a3b8;--em:#059669;--em2:#0d9488;--gold:#b45309;--purple:#7c3aed;--red:#dc2626;--border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.12);--card:rgba(255,255,255,.8)}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
 
@@ -139,6 +140,7 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
 <div id="toast-container"></div>
 
 <div id="login">
+  <div style="position:absolute;top:1.5rem;right:1.5rem"><button id="tbtn-login" onclick="toggleTheme()" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text3);width:34px;height:34px;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem">&#9790;</button></div>
   <div class="login-box">
     <div class="login-logo">FindMe<span>AJob</span>.co.nz</div>
     <div class="login-sub">Admin Panel</div>
@@ -154,6 +156,7 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
     <div class="hlogo">FindMe<span>AJob</span> <span style="font-size:.72rem;color:var(--text3);font-weight:600">Admin</span></div>
     <div class="hright">
       <span class="badge" id="pending-badge">0 pending</span>
+      <button id="tbtn" onclick="toggleTheme()" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text3);width:34px;height:34px;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem">&#9790;</button>
       <button class="signout" id="btn-signout" type="button">Sign out</button>
     </div>
   </header>
@@ -198,6 +201,8 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
 </div>
 
 <script>
+function toggleTheme(){document.body.classList.toggle('light');var l=document.body.classList.contains('light');localStorage.setItem('theme',l?'light':'dark');var icon=l?'&#9788;':'&#9790;';var t1=document.getElementById('tbtn');var t2=document.getElementById('tbtn-login');if(t1)t1.innerHTML=icon;if(t2)t2.innerHTML=icon;}
+if(localStorage.getItem('theme')==='light'){document.body.classList.add('light');var icon2='&#9788;';var t1b=document.getElementById('tbtn');var t2b=document.getElementById('tbtn-login');if(t1b)t1b.innerHTML=icon2;if(t2b)t2b.innerHTML=icon2;}
 var pw="", allJobs=[], currentTab="pending", refreshTimer=null;
 var pendingAction=null, pendingActionId=null;
 var PLAN_DAYS = { free:30, basic:60, pro:90 };
