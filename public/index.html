@@ -1457,15 +1457,33 @@ async function loadBrowse(){
       'Dunedin':['dunedin','otago','queenstown','wanaka','alexandra','cromwell','oamaru','mosgiel']
     };
     var regKeywords = browseRegionAliases[reg] || [reg.toLowerCase()];
-    adzuna = adzuna.filter(function(j) {
+    var regional = adzuna.filter(function(j) {
       var jl = (j.location || '').toLowerCase();
       for (var rk = 0; rk < regKeywords.length; rk++) {
         if (jl.indexOf(regKeywords[rk]) !== -1) return true;
       }
       return false;
     });
+    var otherNZ = adzuna.filter(function(j) {
+      var jl = (j.location || '').toLowerCase();
+      for (var rk = 0; rk < regKeywords.length; rk++) {
+        if (jl.indexOf(regKeywords[rk]) !== -1) return false;
+      }
+      return true;
+    });
+    adzuna = regional;
+    if (!adzuna.length && !otherNZ.length) {
+      liveEl.innerHTML='<div style="padding:1rem;color:var(--text3);font-size:.82rem;font-weight:500;text-align:center">No live listings found. Try a different search or region.</div>';
+      return;
+    }
+  } else {
+    var otherNZ = [];
   }
-  if(!adzuna.length){liveEl.innerHTML='<div style="padding:1rem;color:var(--text3);font-size:.82rem;font-weight:500;text-align:center">No live listings found for this region. Try "All of NZ".</div>';return;}
+  if(!adzuna.length && otherNZ && otherNZ.length){
+    // No regional results but have NZ-wide — show those
+    adzuna = otherNZ;
+    liveEl.innerHTML='<div style="padding:.5rem;color:var(--text3);font-size:.78rem;font-weight:500;margin-bottom:.75rem">No jobs found in '+esc(reg)+'. Showing jobs from across NZ:</div>';
+  }
   adzuna.forEach(function(job){var c=document.createElement('div');c.className='job-card';c.innerHTML='<div><div style="margin-bottom:.4rem"><span class="tag tag-live">Live</span></div><div class="job-title">'+esc(job.title)+'</div><div class="job-co">'+esc(job.company)+'</div><div class="job-loc">'+esc(job.location)+'</div><div class="job-desc">'+esc(job.description)+'</div>'+(job.salary?'<div class="job-tags"><span class="tag tag-other">'+esc(job.salary)+'</span></div>':'')+'<div class="job-links"><a href="'+esc(job.url)+'" target="_blank" rel="noopener" class="job-link apply">Apply Now &#8594;</a></div></div><div class="match-col"><div style="color:var(--em);font-size:.65rem;font-weight:800;text-transform:uppercase">Live</div></div>';liveEl.appendChild(c);});
 }
 

@@ -36,42 +36,31 @@ module.exports = async function handler(req, res) {
     return true;
   }
 
-  function buildUrl(q, where, n) {
-    var u = "https://api.adzuna.com/v1/api/jobs/nz/search/1"
+  function buildUrl(q, n) {
+    return "https://api.adzuna.com/v1/api/jobs/nz/search/1"
       + "?app_id=" + appId + "&app_key=" + appKey
       + "&results_per_page=" + n
       + "&what=" + encodeURIComponent(q)
       + "&location0=New+Zealand"
       + "&sort_by=relevance";
-    if (where) u += "&where=" + encodeURIComponent(where);
-    return u;
   }
 
-  async function fetchAndFilter(q, where, n) {
-    var r = await fetch(buildUrl(q, where, n), { headers: { "Accept": "application/json" } });
+  async function fetchAndFilter(q, n) {
+    var r = await fetch(buildUrl(q, n), { headers: { "Accept": "application/json" } });
     if (!r.ok) return [];
     var data = await r.json();
     return (data.results || []).filter(isNZJob);
   }
 
   try {
-    var jobs = await fetchAndFilter(clean, loc, 50);
-    if (jobs.length < 5 && loc) {
-      var broadJobs = await fetchAndFilter(clean, "", 50);
+    var jobs = await fetchAndFilter(clean, 50);
+    if (jobs.length < 5 && clean.includes(" ")) {
+      var moreJobs = await fetchAndFilter(clean.split(" ")[0], 50);
       var ids = {};
       jobs.forEach(function(j) { ids[(j.title || "") + (j.company && j.company.display_name || "")] = true; });
-      broadJobs.forEach(function(j) {
-        var k = (j.title || "") + (j.company && j.company.display_name || "");
-        if (!ids[k]) { jobs.push(j); ids[k] = true; }
-      });
-    }
-    if (jobs.length < 5 && clean.includes(" ")) {
-      var moreJobs = await fetchAndFilter(clean.split(" ")[0], "", 50);
-      var ids2 = {};
-      jobs.forEach(function(j) { ids2[(j.title || "") + (j.company && j.company.display_name || "")] = true; });
       moreJobs.forEach(function(j) {
         var k = (j.title || "") + (j.company && j.company.display_name || "");
-        if (!ids2[k]) { jobs.push(j); ids2[k] = true; }
+        if (!ids[k]) { jobs.push(j); ids[k] = true; }
       });
     }
     return res.status(200).json({ jobs: shape(jobs.slice(0, perPage)) });
