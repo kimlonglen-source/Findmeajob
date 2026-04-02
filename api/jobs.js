@@ -15,7 +15,25 @@ module.exports = async function handler(req, res) {
     "Southland": "Invercargill", "Nelson / Marlborough": "Nelson", "New Zealand": ""
   };
   var loc = locationMap[region] || "";
-  var locationLabel = loc || "New Zealand";
+
+  // Region keywords for filtering results
+  var regionAliases = {
+    "Auckland": ["auckland","manukau","north shore","waitakere","papakura","howick","takapuna","albany","botany","east tamaki","ponsonby","newmarket","parnell","remuera","ellerslie","onehunga","mangere","otahuhu","henderson","new lynn","mount eden","epsom","devonport","browns bay","orewa","milford","glenfield","pukekohe"],
+    "Wellington": ["wellington","lower hutt","upper hutt","porirua","hutt","petone","johnsonville","miramar","kilbirnie","karori","tawa","paraparaumu","kapiti"],
+    "Christchurch": ["christchurch","canterbury","rangiora","rolleston","kaiapoi","lincoln","selwyn","ashburton"],
+    "Hamilton": ["hamilton","waikato","cambridge","te awamutu","tokoroa","matamata","thames"],
+    "Tauranga": ["tauranga","bay of plenty","rotorua","whakatane","mount maunganui","papamoa","te puke"],
+    "Dunedin": ["dunedin","otago","queenstown","wanaka","alexandra","cromwell","oamaru","mosgiel"],
+    "Palmerston North": ["palmerston north","manawatu","whanganui","wanganui","feilding","levin"],
+    "Napier": ["napier","hastings","hawke","havelock north"],
+    "Whangarei": ["whangarei","northland","kerikeri","kaitaia","dargaville"],
+    "Invercargill": ["invercargill","southland","gore","te anau"],
+    "Nelson": ["nelson","marlborough","blenheim","richmond","tasman","motueka","picton"]
+  };
+  var regionKeys = loc ? (regionAliases[loc] || [loc.toLowerCase()]) : [];
+
+  // NZ cities for Jooble filtering
+  var nzCities = ["new zealand","nz","auckland","wellington","christchurch","hamilton","tauranga","dunedin","queenstown","nelson","napier","hastings","palmerston","invercargill","rotorua","whangarei","whanganui","wanaka","manukau","porirua","canterbury","waikato","otago","taranaki","gisborne","blenheim","timaru","masterton","kapiti","pukekohe","rangiora","rolleston","greymouth","hokitika","kaikoura","picton","motueka","northland","southland","marlborough","hawke","bay of plenty","lower hutt","upper hutt","north island","south island","new plymouth","ashburton","oamaru","gore","cambridge","te awamutu","whakatane","mount maunganui","papamoa","kerikeri","dargaville"];
 
   // Spam filters
   var spamTitles = ["no experience needed","no experience required","entry level remote","work from home","work from anywhere","remote usa","hiring immediately","urgently hiring"];
@@ -31,9 +49,27 @@ module.exports = async function handler(req, res) {
     return true;
   }
 
+  function isInRegion(locationStr) {
+    if (!regionKeys.length) return true;
+    var l = (locationStr || "").toLowerCase();
+    if (l.indexOf("new zealand") !== -1 && l.length < 15) return true;
+    for (var i = 0; i < regionKeys.length; i++) {
+      if (l.indexOf(regionKeys[i]) !== -1) return true;
+    }
+    return false;
+  }
+
+  function isNZLocation(locationStr) {
+    var l = (locationStr || "").toLowerCase();
+    if (!l) return false;
+    for (var i = 0; i < nzCities.length; i++) {
+      if (l.indexOf(nzCities[i]) !== -1) return true;
+    }
+    return false;
+  }
+
   var allJobs = [];
   var seen = {};
-
   function addJob(job) {
     var key = (job.title + job.company).toLowerCase().replace(/\s+/g, "");
     if (seen[key]) return;
@@ -41,7 +77,6 @@ module.exports = async function handler(req, res) {
     allJobs.push(job);
   }
 
-  // Fetch from all sources in parallel
   var promises = [];
 
   // 1. ADZUNA
@@ -50,18 +85,13 @@ module.exports = async function handler(req, res) {
   if (adzunaId && adzunaKey) {
     var adzunaUrl = "https://api.adzuna.com/v1/api/jobs/nz/search/1"
       + "?app_id=" + adzunaId + "&app_key=" + adzunaKey
-      + "&results_per_page=30"
-      + "&what=" + encodeURIComponent(clean)
-      + "&location0=New+Zealand"
-      + "&sort_by=relevance";
+      + "&results_per_page=40&what=" + encodeURIComponent(clean)
+      + "&location0=New+Zealand&sort_by=relevance";
     if (loc) adzunaUrl += "&where=" + encodeURIComponent(loc);
 
     promises.push(
-      fetch(adzunaUrl, { headers: { "Accept": "application/json", "Content-Type": "application/json" } })
-        .then(function(r) {
-          if (!r.ok) return { results: [] };
-          return r.json();
-        })
+      fetch(adzunaUrl, { headers: { "Accept": "application/json" } })
+        .then(function(r) { return r.ok ? r.json() : { results: [] }; })
         .then(function(data) {
           (data.results || []).forEach(function(j) {
             var area = (j.location && j.location.area) ? j.location.area : [];
@@ -71,6 +101,7 @@ module.exports = async function handler(req, res) {
             var desc = j.description ? j.description.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim().substring(0, 200) + "..." : "";
             var location = j.location && j.location.display_name ? j.location.display_name : "New Zealand";
             if (!isCleanJob(title, desc, company)) return;
+            if (!isInRegion(location)) return;
             addJob({
               title: title, company: company, location: location,
               salary: j.salary_min ? "$" + Math.round(j.salary_min / 1000) + "K" + (j.salary_max ? "-$" + Math.round(j.salary_max / 1000) + "K" : "+") + " NZD" : null,
@@ -80,28 +111,6 @@ module.exports = async function handler(req, res) {
         })
         .catch(function() {})
     );
-
-    // Also try without location if regional
-    if (loc) {
-      var adzunaBroad = adzunaUrl.replace("&where=" + encodeURIComponent(loc), "");
-      promises.push(
-        fetch(adzunaBroad, { headers: { "Accept": "application/json", "Content-Type": "application/json" } })
-          .then(function(r) { return r.ok ? r.json() : { results: [] }; })
-          .then(function(data) {
-            (data.results || []).forEach(function(j) {
-              var area = (j.location && j.location.area) ? j.location.area : [];
-              if (!area.length || area[0] !== "New Zealand") return;
-              var title = j.title || "";
-              var company = j.company && j.company.display_name ? j.company.display_name : "Company not listed";
-              var desc = j.description ? j.description.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim().substring(0, 200) + "..." : "";
-              var location = j.location && j.location.display_name ? j.location.display_name : "New Zealand";
-              if (!isCleanJob(title, desc, company)) return;
-              addJob({ title: title, company: company, location: location, salary: j.salary_min ? "$" + Math.round(j.salary_min / 1000) + "K" + (j.salary_max ? "-$" + Math.round(j.salary_max / 1000) + "K" : "+") + " NZD" : null, description: desc, url: j.redirect_url || "#", source: "Adzuna" });
-            });
-          })
-          .catch(function() {})
-      );
-    }
   }
 
   // 2. JOOBLE
@@ -120,20 +129,9 @@ module.exports = async function handler(req, res) {
             var company = j.company || "Company not listed";
             var desc = j.snippet ? j.snippet.replace(/<[^>]+>/g, "").substring(0, 200) + "..." : "";
             var location = j.location || "";
-            // STRICT NZ filter — must contain a NZ place or "NZ"/"New Zealand"
-            var locLower = location.toLowerCase();
-            if (!locLower) return;
-            // Quick check for obvious NZ markers
-            if (locLower.indexOf("new zealand") !== -1 || locLower.indexOf(", nz") !== -1 || locLower.indexOf("(nz)") !== -1) {
-              // passes
-            } else {
-              // Check against NZ cities/regions
-              var nzCheck = ["auckland","wellington","christchurch","hamilton","tauranga","dunedin","queenstown","nelson","napier","hastings","palmerston","invercargill","rotorua","whangarei","whanganui","wanaka","manukau","porirua","canterbury","waikato","otago","taranaki","gisborne","blenheim","timaru","masterton","kapiti","pukekohe","rangiora","rolleston","greymouth","hokitika","kaikoura","picton","motueka","northland","southland","marlborough","hawke","bay of plenty","lower hutt","upper hutt","north island","south island"];
-              var foundNZ = false;
-              for (var nc = 0; nc < nzCheck.length; nc++) { if (locLower.indexOf(nzCheck[nc]) !== -1) { foundNZ = true; break; } }
-              if (!foundNZ) return;
-            }
+            if (!isNZLocation(location)) return;
             if (!isCleanJob(title, desc, company)) return;
+            if (!isInRegion(location)) return;
             addJob({ title: title, company: company, location: location, salary: j.salary || null, description: desc, url: j.link || "#", source: "Jooble" });
           });
         })
@@ -145,26 +143,22 @@ module.exports = async function handler(req, res) {
   var careerjetKey = process.env.CAREERJET_API_KEY;
   if (careerjetKey) {
     var cjUrl = "https://public.api.careerjet.net/search"
-      + "?locale_code=en_NZ"
-      + "&keywords=" + encodeURIComponent(clean)
-      + "&location=" + encodeURIComponent(locationLabel)
-      + "&pagesize=30"
-      + "&page=1"
-      + "&sort=relevance";
-
+      + "?locale_code=en_NZ&keywords=" + encodeURIComponent(clean)
+      + "&location=" + encodeURIComponent(loc || "New Zealand")
+      + "&pagesize=30&page=1&sort=relevance";
     var cjAuth = "Basic " + Buffer.from(careerjetKey + ":").toString("base64");
     promises.push(
       fetch(cjUrl, { headers: { "Accept": "application/json", "Authorization": cjAuth } })
         .then(function(r) { return r.ok ? r.json() : { jobs: [] }; })
         .then(function(data) {
-          var cjJobs = data.jobs || data.hits || [];
-          cjJobs.forEach(function(j) {
+          (data.jobs || data.hits || []).forEach(function(j) {
             var title = (j.title || "").replace(/<[^>]+>/g, "");
             var company = j.company || "Company not listed";
             var desc = (j.description || j.snippet || "").replace(/<[^>]+>/g, "").substring(0, 200) + "...";
             var location = j.locations || j.location || "New Zealand";
             var salary = (j.salary || j.salary_min) ? (j.salary || (j.salary_min + "-" + j.salary_max)) : null;
             if (!isCleanJob(title, desc, company)) return;
+            if (!isInRegion(location)) return;
             addJob({ title: title, company: company, location: location, salary: salary, description: desc, url: j.url || j.link || "#", source: "CareerJet" });
           });
         })
@@ -174,6 +168,29 @@ module.exports = async function handler(req, res) {
 
   try {
     await Promise.all(promises);
+    // If region filter left too few results, try again without region
+    if (allJobs.length < 3 && loc && adzunaId && adzunaKey) {
+      var broadUrl = "https://api.adzuna.com/v1/api/jobs/nz/search/1"
+        + "?app_id=" + adzunaId + "&app_key=" + adzunaKey
+        + "&results_per_page=40&what=" + encodeURIComponent(clean)
+        + "&location0=New+Zealand&sort_by=relevance";
+      try {
+        var br = await fetch(broadUrl, { headers: { "Accept": "application/json" } });
+        if (br.ok) {
+          var bd = await br.json();
+          (bd.results || []).forEach(function(j) {
+            var area = (j.location && j.location.area) ? j.location.area : [];
+            if (!area.length || area[0] !== "New Zealand") return;
+            var title = j.title || "";
+            var company = j.company && j.company.display_name ? j.company.display_name : "Company not listed";
+            var desc = j.description ? j.description.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim().substring(0, 200) + "..." : "";
+            var location = j.location && j.location.display_name ? j.location.display_name : "New Zealand";
+            if (!isCleanJob(title, desc, company)) return;
+            addJob({ title: title, company: company, location: location, salary: j.salary_min ? "$" + Math.round(j.salary_min / 1000) + "K" + (j.salary_max ? "-$" + Math.round(j.salary_max / 1000) + "K" : "+") + " NZD" : null, description: desc, url: j.redirect_url || "#", source: "Adzuna" });
+          });
+        }
+      } catch(e) {}
+    }
     return res.status(200).json({ jobs: allJobs.slice(0, perPage) });
   } catch (e) {
     return res.status(200).json({ jobs: allJobs.slice(0, perPage) });
