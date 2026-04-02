@@ -7,7 +7,7 @@ module.exports = async function handler(req, res) {
   var query = req.body.query;
   var region = req.body.region;
   var limit = req.body.limit;
-  var perPage = limit || 20;
+  var perPage = limit || 50;
   var clean = (query || "").replace(/[^a-zA-Z0-9 ]/g, " ").trim().split(/\s+/).slice(0, 3).join(" ");
   if (!clean) clean = "jobs";
 
