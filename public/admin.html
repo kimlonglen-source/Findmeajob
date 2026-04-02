@@ -8,7 +8,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#09090b;--bg2:rgba(255,255,255,.03);--bg3:rgba(255,255,255,.06);--text:#f4f4f5;--text2:#a1a1aa;--text3:#71717a;--em:#10b981;--em2:#059669;--gold:#f59e0b;--purple:#8b5cf6;--red:#ef4444;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.08);--card:rgba(255,255,255,.03);--r:12px;--rl:16px;}
-body.light{--bg:#f8fafc;--bg2:#f1f5f9;--bg3:rgba(0,0,0,.03);--text:#0f172a;--text2:#475569;--text3:#94a3b8;--em:#059669;--em2:#0d9488;--gold:#b45309;--purple:#7c3aed;--red:#dc2626;--border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.12);--card:rgba(255,255,255,.8)}
+body.light{--bg:#f8fafc;--bg2:#ffffff;--bg3:rgba(0,0,0,.03);--text:#0f172a;--text2:#475569;--text3:#64748b;--em:#059669;--em2:#0d9488;--gold:#b45309;--purple:#7c3aed;--red:#dc2626;--border:rgba(0,0,0,.1);--border2:rgba(0,0,0,.15);--card:rgba(255,255,255,.9);--hdr:rgba(248,250,252,.9)}
+body.light .login-box{background:#fff}
+body.light input{background:#fff;border-color:rgba(0,0,0,.15)}
+body.light .toast{background:rgba(255,255,255,.95);color:var(--text);box-shadow:0 8px 32px rgba(0,0,0,.1)}
+body.light .confirm-box{background:#fff}
+body.light .job-row{background:var(--card)}
+body.light .hlogo span{color:var(--em)}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
 
@@ -36,7 +42,7 @@ input:focus{border-color:var(--em);box-shadow:0 0 0 3px rgba(16,185,129,.1)}
 
 /* App */
 #app{display:none;min-height:100vh}
-header{background:rgba(9,9,11,.8);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+header{background:var(--hdr,rgba(9,9,11,.8));border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
 .hlogo{font-size:1.05rem;font-weight:800}.hlogo span{color:var(--em)}
 .hright{display:flex;align-items:center;gap:1rem}
 .badge{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);color:var(--em);font-size:.72rem;font-weight:700;padding:.3rem .75rem;border-radius:999px}
