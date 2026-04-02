@@ -1232,7 +1232,7 @@ async function fetchLiveJobs(matches){
         if (tw.length > 3 && professionWords.indexOf(tw) === -1) professionWords.push(tw);
       });
     });
-    var genericWords = ['senior','junior','lead','manager','assistant','part','time','full','team','chief','head','general','staff','worker','officer','coordinator','specialist','consultant','advisor','executive','director','national','regional','area','new','the','and','for','with','community','clinical','hospital','medical','health','care','centre','center','service','services','practice','based','remote','home','mobile','local','primary','public','private'];
+    var genericWords = ['senior','junior','lead','manager','assistant','part','time','full','team','chief','head','general','staff','worker','officer','coordinator','specialist','consultant','advisor','executive','director','national','regional','area','new','the','and','for','with','community','clinical','hospital','medical','health','care','centre','center','service','services','practice','based','remote','home','mobile','local','primary','public','private','line','shift','plant','ground','site','field','main','first','second','third','night','front','back','shop','store','food','crew','train','hand','work','support','level','entry','city','town','road','house','upper','lower','west','east','north','south','central','cross','associate','applied','registered','certified','licensed','qualified','experienced','professional'];
     professionWords = professionWords.filter(function(w) { return genericWords.indexOf(w) === -1; });
   }
 
@@ -1278,6 +1278,7 @@ async function fetchLiveJobs(matches){
   extraWords['plumber'] = ['plumbing','gasfitter','drainlayer'];
   extraWords['electrician'] = ['electrical'];
   extraWords['chef'] = ['cook','cooking','kitchen','culinary'];
+  extraWords['cook'] = ['chef','cooking','kitchen','culinary','hospitality','bakery','baker','pastry'];
   extraWords['builder'] = ['building','construction','carpentry','carpenter'];
 
   var expandedProfWords = professionWords.slice();
