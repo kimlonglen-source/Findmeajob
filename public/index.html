@@ -1420,7 +1420,7 @@ async function loadBrowse(){
   // Add job type to search query for better Adzuna results
   if (type) searchQuery = searchQuery + ' ' + type;
   var approvedP=fetch('/api/approved-jobs').then(function(r){return r.json();}).catch(function(){return{jobs:[]};});
-  var adzunaP=fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:searchQuery,region:region,city:reg,limit:50})}).then(function(r){return r.json();}).catch(function(){return{jobs:[]};});
+  var adzunaP=fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:searchQuery,region:region,limit:50})}).then(function(r){return r.json();}).catch(function(){return{jobs:[]};});
   var res=await Promise.all([approvedP,adzunaP]);
   var approved=res[0].jobs||[];var adzuna=res[1].jobs||[];
   // Filter employer listings by keyword if searched
