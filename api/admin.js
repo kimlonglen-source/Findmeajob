@@ -6,6 +6,7 @@ var hset = _kv.hset;
 var hdel = _kv.hdel;
 
 var PASS = process.env.ADMIN_PASSWORD;
+var LAUNCH_END = new Date("2026-10-01T00:00:00Z");
 var PLAN_DAYS = { free: 30, basic: 60, pro: 90 };
 
 var rateLimitMap = {};
@@ -51,8 +52,8 @@ module.exports = async function handler(req, res) {
       job.approvedAt = new Date().toISOString();
       // Auto-feature Pro listings
       if (job.autoFeature || job.plan === "pro") job.featured = true;
-      // Set plan days
-      job.planDays = PLAN_DAYS[job.plan] || 30;
+      // During launch period, all plans get 90 days
+      job.planDays = (new Date() < LAUNCH_END) ? 90 : (PLAN_DAYS[job.plan] || 30);
       await hset("jobs", id, job);
       return res.status(200).json({ success: true });
     }
@@ -78,7 +79,7 @@ module.exports = async function handler(req, res) {
       var job4 = typeof raw5 === "string" ? JSON.parse(raw5) : raw5;
       job4.status = "approved";
       job4.approvedAt = new Date().toISOString();
-      job4.planDays = PLAN_DAYS[job4.plan] || 30;
+      job4.planDays = (new Date() < LAUNCH_END) ? 90 : (PLAN_DAYS[job4.plan] || 30);
       if (job4.plan === "pro") job4.featured = true;
       await hset("jobs", id, job4);
       return res.status(200).json({ success: true });

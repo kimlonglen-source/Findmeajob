@@ -115,7 +115,11 @@ module.exports = async function handler(req, res) {
 
       if (action === "edit") {
         if (!updates || typeof updates !== "object") return res.status(400).json({ error: "Missing or invalid updates" });
-        var allowed = ["title", "location", "category", "type", "salary", "description", "requirements", "why", "companyProfile", "logoUrl"];
+        var allowed = ["title", "location", "category", "type", "salary", "description", "requirements", "why"];
+        var empPlan = emp2.plan || "free";
+        if (empPlan === "basic" || empPlan === "pro") {
+          allowed.push("companyProfile", "logoUrl");
+        }
         allowed.forEach(function(k) { if (updates[k] !== undefined) job[k] = updates[k]; });
         job.editedAt = new Date().toISOString();
         if (job.status !== "approved") {
@@ -129,9 +133,10 @@ module.exports = async function handler(req, res) {
       if (action === "relist") {
         if (job.status !== "approved" && job.status !== "closed") return res.status(400).json({ error: "Only expired or closed listings can be relisted" });
         var currentPlan = emp2.plan || "free";
+        var LAUNCH_END_R = new Date("2026-10-01T00:00:00Z");
         var planDaysMap = { free: 30, basic: 60, pro: 90 };
         job.plan = currentPlan;
-        job.planDays = planDaysMap[currentPlan] || 30;
+        job.planDays = (new Date() < LAUNCH_END_R) ? 90 : (planDaysMap[currentPlan] || 30);
         job.approvedAt = new Date().toISOString();
         job.featured = currentPlan === "pro";
         job.priority = currentPlan === "basic" || currentPlan === "pro";
