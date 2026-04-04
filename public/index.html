@@ -1308,10 +1308,10 @@ async function fetchLiveJobs(matches){
     var desc = (j.description || '').toLowerCase();
     var loc = (j.location || '').toLowerCase();
 
-    // Profession check: title or description must contain a profession keyword
+    // Profession check: job title must contain a profession keyword
     var profMatch = expandedProfWords.length === 0;
     for (var p = 0; p < expandedProfWords.length; p++) {
-      if (title.indexOf(expandedProfWords[p]) !== -1 || desc.indexOf(expandedProfWords[p]) !== -1) { profMatch = true; break; }
+      if (title.indexOf(expandedProfWords[p]) !== -1) { profMatch = true; break; }
     }
 
     // Region check
@@ -1330,6 +1330,10 @@ async function fetchLiveJobs(matches){
   live.sort(function(a,b){
     if(a.matchPct && !b.matchPct) return -1;
     if(!a.matchPct && b.matchPct) return 1;
+    var aIntern=/\b(intern|internship|trainee|graduate)\b/i.test(a.title);
+    var bIntern=/\b(intern|internship|trainee|graduate)\b/i.test(b.title);
+    if(!aIntern && bIntern) return -1;
+    if(aIntern && !bIntern) return 1;
     return (b.matchPct||0)-(a.matchPct||0);
   });
   list.innerHTML='';
