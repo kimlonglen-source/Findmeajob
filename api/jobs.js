@@ -36,17 +36,19 @@ module.exports = async function handler(req, res) {
     return true;
   }
 
-  function buildUrl(q, n) {
-    return "https://api.adzuna.com/v1/api/jobs/nz/search/1"
+  function buildUrl(q, n, cityFilter) {
+    var url = "https://api.adzuna.com/v1/api/jobs/nz/search/1"
       + "?app_id=" + appId + "&app_key=" + appKey
       + "&results_per_page=" + n
       + "&what=" + encodeURIComponent(q)
       + "&location0=New+Zealand"
       + "&sort_by=relevance";
+    if (cityFilter) url += "&where=" + encodeURIComponent(cityFilter);
+    return url;
   }
 
   async function fetchAndFilter(q, n) {
-    var r = await fetch(buildUrl(q, n), { headers: { "Accept": "application/json" } });
+    var r = await fetch(buildUrl(q, n, loc), { headers: { "Accept": "application/json" } });
     if (!r.ok) return [];
     var data = await r.json();
     return (data.results || []).filter(isNZJob);

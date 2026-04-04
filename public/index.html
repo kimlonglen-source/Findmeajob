@@ -30,8 +30,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <style>
-:root{--bg:#09090b;--bg2:#0f172a;--bg3:rgba(255,255,255,.04);--bg4:rgba(255,255,255,.06);--text:#f8fafc;--text2:#94a3b8;--text3:#64748b;--em:#10b981;--em2:#14b8a6;--em3:rgba(16,185,129,.08);--gold:#f59e0b;--purple:#8b5cf6;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--card:rgba(255,255,255,.03);--inp:rgba(255,255,255,.05);--hdr:rgba(9,9,11,.8);--r:12px;--rl:20px;--glow:0 4px 25px rgba(16,185,129,.15)}
-body.light{--bg:#f8fafc;--bg2:#f1f5f9;--bg3:rgba(0,0,0,.03);--text:#0f172a;--text2:#475569;--text3:#94a3b8;--em:#059669;--em2:#0d9488;--em3:rgba(5,150,105,.08);--gold:#b45309;--border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.12);--card:rgba(255,255,255,.8);--inp:rgba(0,0,0,.04);--hdr:rgba(248,250,252,.85)}
+:root{--bg:#09090b;--bg2:#0f172a;--bg3:rgba(255,255,255,.04);--bg4:rgba(255,255,255,.06);--text:#f8fafc;--text2:#b0b8c4;--text3:#8891a0;--em:#10b981;--em2:#14b8a6;--em3:rgba(16,185,129,.08);--gold:#f59e0b;--purple:#8b5cf6;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--card:rgba(255,255,255,.03);--inp:rgba(255,255,255,.05);--hdr:rgba(9,9,11,.8);--r:12px;--rl:20px;--glow:0 4px 25px rgba(16,185,129,.15)}
+body.light{--bg:#f8fafc;--bg2:#f1f5f9;--bg3:rgba(0,0,0,.03);--text:#0f172a;--text2:#475569;--text3:#64748b;--em:#059669;--em2:#0d9488;--em3:rgba(5,150,105,.08);--gold:#b45309;--border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.12);--card:rgba(255,255,255,.8);--inp:rgba(0,0,0,.04);--hdr:rgba(248,250,252,.85)}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;line-height:1.6;font-size:15px}
@@ -412,16 +412,17 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
   <div class="wrap-wide">
     <div style="margin-bottom:1.5rem"><div class="page-eyebrow">Live Listings</div><div class="page-title">Browse NZ Jobs</div></div>
     <div style="display:flex;gap:.5rem;margin-bottom:.75rem">
-      <input type="text" id="f-keyword" placeholder="Search by keyword, job title, or skill..." style="flex:1">
-      <button class="btn" id="f-search-btn" type="button" style="width:auto;padding:.75rem 1.25rem;font-size:.85rem;white-space:nowrap">Search</button>
+      <input type="text" id="f-keyword" placeholder="Job title, keyword, or company" style="flex:2;padding:.85rem 1rem;font-size:.95rem;border-radius:var(--r)">
+      <input type="text" id="f-reg" list="dl-regions" placeholder="Location (e.g. Auckland)" style="flex:1;padding:.85rem 1rem;font-size:.95rem;border-radius:var(--r)">
+      <datalist id="dl-regions"><option value="Auckland"><option value="Wellington"><option value="Christchurch"><option value="Hamilton"><option value="Tauranga"><option value="Dunedin"><option value="Whangarei"><option value="Rotorua"><option value="New Plymouth"><option value="Napier"><option value="Palmerston North"><option value="Whanganui"><option value="Nelson"><option value="Invercargill"><option value="Queenstown"><option value="Gisborne"></datalist>
+      <button class="btn" id="f-search-btn" type="button" style="width:auto;padding:.85rem 1.5rem;font-size:.95rem;white-space:nowrap">Search</button>
     </div>
     <div class="filter-row">
       <input type="text" id="f-cat" list="dl-categories" placeholder="All categories" style="flex:1;min-width:110px;padding:.55rem .8rem;font-size:.78rem">
       <datalist id="dl-categories"><option value="Accounting & Finance"><option value="Admin & Office"><option value="Agriculture & Farming"><option value="Automotive"><option value="Construction & Roading"><option value="Creative & Design"><option value="Customer Service"><option value="Education & Training"><option value="Engineering"><option value="Government & Council"><option value="Healthcare & Medical"><option value="Hospitality & Tourism"><option value="HR & Recruitment"><option value="IT & Technology"><option value="Legal"><option value="Manufacturing & Production"><option value="Marketing & Communications"><option value="Property & Real Estate"><option value="Retail"><option value="Sales & Business Dev"><option value="Science & Research"><option value="Social Work & Community"><option value="Sports & Recreation"><option value="Trades & Services"><option value="Transport & Logistics"><option value="Warehousing"><option value="Other"></datalist>
-      <input type="text" id="f-reg" list="dl-regions" placeholder="All of NZ" style="flex:1;min-width:110px;padding:.55rem .8rem;font-size:.78rem">
-      <datalist id="dl-regions"><option value="Auckland"><option value="Wellington"><option value="Christchurch"><option value="Hamilton"><option value="Tauranga"><option value="Dunedin"><option value="Whangarei"><option value="Rotorua"><option value="New Plymouth"><option value="Napier"><option value="Palmerston North"><option value="Whanganui"><option value="Nelson"><option value="Invercargill"><option value="Queenstown"><option value="Gisborne"></datalist>
       <select id="f-type"><option value="">Any type</option><option>Full-time</option><option>Part-time</option><option>Casual</option><option>Contract</option><option>Fixed-term</option><option>Internship</option><option>Volunteer</option><option>Remote</option></select>
     </div>
+    <div id="results-count" style="font-size:.78rem;font-weight:700;color:var(--text3);margin-bottom:.75rem"></div>
     <div id="employer-jobs"></div>
     <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin:1.5rem 0 .75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)">Live NZ Jobs from Adzuna</div>
     <div id="browse-live"></div>
@@ -927,7 +928,7 @@ async function fetchLiveJobs(matches){
         '<div class="job-title">'+job.title+'</div>'+
         '<div class="job-co">'+job.company+'</div>'+
         '<div class="job-loc">'+job.location+'</div>'+
-        '<div class="job-desc">'+job.description+'</div>'+
+        '<div class="job-desc">'+(job.description||'').substring(0,160)+'...'+'</div>'+
         (job.salary?'<div class="job-tags"><span class="tag tag-other">'+job.salary+'</span></div>':'')+
         '<div class="job-links"><a href="'+job.url+'" target="_blank" class="job-link apply">Apply Now &#8594;</a></div>'+
         '</div>'+
@@ -1004,7 +1005,7 @@ async function loadBrowse(){
   empEl.innerHTML='';liveEl.innerHTML='<div style="padding:1rem;text-align:center;color:var(--text3);font-size:.82rem;font-weight:600;border:1px solid var(--border);border-radius:var(--rl)">Loading<span class="dots"></span></div>';
   var regMap={'Auckland':'Auckland','Wellington':'Wellington','Christchurch':'Canterbury / Christchurch','Hamilton':'Waikato / Hamilton','Tauranga':'Bay of Plenty','Dunedin':'Otago / Dunedin','Whangarei':'Northland','Rotorua':'Bay of Plenty','New Plymouth':'Taranaki','Napier':'Hawkes Bay','Palmerston North':'Manawatu-Whanganui','Whanganui':'Manawatu-Whanganui','Nelson':'Nelson / Marlborough','Invercargill':'Southland','Queenstown':'Otago / Queenstown','Gisborne':'Gisborne','':'New Zealand'};
   var region=regMap[reg]||'New Zealand';
-  var adzQuery=kw||cat||'jobs';
+  var adzQuery=[kw,cat].filter(Boolean).join(' ').trim()||'jobs';
   var approvedP=fetch('/api/approved-jobs').then(function(r){return r.json();}).catch(function(){return{jobs:[]};});
   var adzunaP=fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:adzQuery,region:region})}).then(function(r){return r.json();}).catch(function(){return{jobs:[]};});
   var res=await Promise.all([approvedP,adzunaP]);
@@ -1012,11 +1013,12 @@ async function loadBrowse(){
   // Filter employer jobs by keyword, region, category, and type
   var filtered=approved.filter(function(j){
     if(kw){var text=(j.title+' '+j.description+' '+j.category+' '+j.company+' '+(j.requirements||'')).toLowerCase();if(text.indexOf(kw)===-1)return false;}
-    if(reg&&j.location!==reg&&j.location!=='Remote NZ'&&j.location!=='Nationwide')return false;
+    if(reg){var regL=reg.toLowerCase();if(j.location.toLowerCase().indexOf(regL)===-1&&j.location!=='Remote NZ'&&j.location!=='Nationwide')return false;}
     if(cat&&j.category!==cat)return false;
     if(ftype&&j.type!==ftype)return false;
     return true;
   });
+  document.getElementById('results-count').textContent='Showing '+(filtered.length+adzuna.length)+' jobs'+(kw?' for "'+kw+'"':'')+(reg?' in '+reg:'');
   if(filtered.length){
     var h='<div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--gold);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)">Employer Listings</div>';empEl.innerHTML=h;
     filtered.forEach(function(j){var c=document.createElement('div');c.className='job-card'+(j.featured?' featured':'');var logoImg=j.logoUrl?'<img src="'+j.logoUrl+'" alt="logo" style="width:28px;height:28px;object-fit:contain;border-radius:4px;border:1px solid var(--border2);float:right;margin-left:.5rem" onerror="this.remove()">':'';
@@ -1025,7 +1027,7 @@ async function loadBrowse(){
   liveEl.innerHTML='';
   if(!adzuna.length&&!filtered.length){liveEl.innerHTML='<div style="padding:1.5rem;color:var(--text3);font-size:.85rem;font-weight:500;text-align:center;border:1px dashed var(--border2);border-radius:var(--rl)">No jobs found'+(kw?' for "'+kw+'"':'')+'. Try broadening your filters or searching a different region.</div>';return;}
   if(!adzuna.length){liveEl.innerHTML='<div style="padding:1rem;color:var(--text3);font-size:.82rem;font-weight:500;text-align:center">No live listings found'+(kw?' for "'+kw+'"':'')+'. Try a different keyword or filter.</div>';return;}
-  adzuna.forEach(function(job){var c=document.createElement('div');c.className='job-card';c.innerHTML='<div><div style="margin-bottom:.4rem"><span class="tag tag-live">Live</span></div><div class="job-title">'+job.title+'</div><div class="job-co">'+job.company+'</div><div class="job-loc">'+job.location+'</div><div class="job-desc">'+job.description+'</div>'+(job.salary?'<div class="job-tags"><span class="tag tag-other">'+job.salary+'</span></div>':'')+'<div class="job-links"><a href="'+job.url+'" target="_blank" class="job-link apply">Apply Now &#8594;</a></div></div><div class="match-col"><div style="color:var(--em);font-size:.65rem;font-weight:800;text-transform:uppercase">Live</div></div>';liveEl.appendChild(c);});
+  adzuna.forEach(function(job){var c=document.createElement('div');c.className='job-card';c.innerHTML='<div><div style="margin-bottom:.4rem"><span class="tag tag-live">Live</span></div><div class="job-title">'+job.title+'</div><div class="job-co">'+job.company+'</div><div class="job-loc">'+job.location+'</div><div class="job-desc">'+(job.description||'').substring(0,160)+'...</div>'+(job.salary?'<div class="job-tags"><span class="tag tag-other">'+job.salary+'</span></div>':'')+'<div class="job-links"><a href="'+job.url+'" target="_blank" class="job-link apply">Apply Now &#8594;</a></div></div><div class="match-col"><div style="color:var(--em);font-size:.65rem;font-weight:800;text-transform:uppercase">Live</div></div>';liveEl.appendChild(c);});
 }
 
 function showEmpStep(step){
