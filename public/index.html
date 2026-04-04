@@ -1423,10 +1423,11 @@ async function loadBrowse(){
   var adzunaP=fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:searchQuery,region:region,limit:50})}).then(function(r){return r.json();}).catch(function(){return{jobs:[]};});
   var res=await Promise.all([approvedP,adzunaP]);
   var approved=res[0].jobs||[];var adzuna=res[1].jobs||[];
-  // Filter employer listings by keyword if searched
+  // Filter by keyword
   if(keyword){
     var kw=keyword.toLowerCase();
     approved=approved.filter(function(j){return (j.title||'').toLowerCase().indexOf(kw)!==-1||(j.description||'').toLowerCase().indexOf(kw)!==-1||(j.company||'').toLowerCase().indexOf(kw)!==-1||(j.category||'').toLowerCase().indexOf(kw)!==-1;});
+    adzuna=adzuna.filter(function(j){return (j.title||'').toLowerCase().indexOf(kw)!==-1||(j.description||'').toLowerCase().indexOf(kw)!==-1;});
   }
   if(approved.length){
     var h='<div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--gold);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)">Employer Listings</div>';empEl.innerHTML=h;
