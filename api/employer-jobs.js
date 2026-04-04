@@ -71,19 +71,24 @@ module.exports = async function handler(req, res) {
 
       // Submit new job listing
       if (action === "submit") {
+        var LAUNCH_END = new Date("2026-10-01T00:00:00Z");
+        var isLaunchPeriod = new Date() < LAUNCH_END;
         var PLAN_LIMITS = { free: 1, basic: 5, pro: 999 };
-        var PLAN_DAYS = { free: 30, basic: 60, pro: 90 };
+        var PLAN_DAYS = { free: 90, basic: 90, pro: 90 }; // All plans get 90 days during launch
         var planKey = emp2.plan || "free";
         var sTitle = req.body.title;
         var sDesc = req.body.description;
         if (!sTitle || !sDesc) return res.status(400).json({ error: "Missing job title or description" });
-        var limit = PLAN_LIMITS[planKey] || 1;
-        if (limit < 999) {
-          var allJobs = await hgetall("jobs");
-          var active = Object.values(allJobs).map(function(j){return typeof j==="string"?JSON.parse(j):j;}).filter(function(j){return j.email===postEmail&&(j.status==="approved"||j.status==="pending");});
-          if (active.length >= limit) {
-            var planNames = {free:"Starter",basic:"Growth",pro:"Pro"};
-            return res.status(400).json({error:"Your "+(planNames[planKey]||planKey)+" plan allows "+limit+" active listing"+(limit>1?"s":"")+". You have "+active.length+" active. Upgrade your plan to post more.",limitReached:true});
+        // During launch: unlimited for all plans
+        if (!isLaunchPeriod) {
+          var limit = PLAN_LIMITS[planKey] || 1;
+          if (limit < 999) {
+            var allJobs = await hgetall("jobs");
+            var active = Object.values(allJobs).map(function(j){return typeof j==="string"?JSON.parse(j):j;}).filter(function(j){return j.email===postEmail&&(j.status==="approved"||j.status==="pending");});
+            if (active.length >= limit) {
+              var planNames = {free:"Starter",basic:"Growth",pro:"Pro"};
+              return res.status(400).json({error:"Your "+(planNames[planKey]||planKey)+" plan allows "+limit+" active listing"+(limit>1?"s":"")+". You have "+active.length+" active. Upgrade your plan to post more.",limitReached:true});
+            }
           }
         }
         var jid = "job_" + Date.now() + "_" + Math.random().toString(36).substring(2, 8);
