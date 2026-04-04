@@ -1303,6 +1303,11 @@ async function fetchLiveJobs(matches){
     }
   });
 
+  // Check if CV indicates a qualified professional (AI didn't suggest intern/trainee roles)
+  var isQualified = top5.length > 0 && !top5.some(function(m) {
+    return /\b(intern|internship|trainee|student|apprentice|technician)\b/i.test(m.title || '');
+  });
+
   live = live.filter(function(j) {
     var title = (j.title || '').toLowerCase();
     var desc = (j.description || '').toLowerCase();
@@ -1312,6 +1317,10 @@ async function fetchLiveJobs(matches){
     var profMatch = expandedProfWords.length === 0;
     for (var p = 0; p < expandedProfWords.length; p++) {
       if (title.indexOf(expandedProfWords[p]) !== -1) { profMatch = true; break; }
+    }
+    // Filter out sub-qualified roles if CV indicates a qualified professional
+    if (profMatch && isQualified) {
+      if (/\b(intern|internship|trainee|training|graduate|student|apprentice|technician|assistant|aide|helper|support worker)\b/i.test(title)) profMatch = false;
     }
 
     // Region check
