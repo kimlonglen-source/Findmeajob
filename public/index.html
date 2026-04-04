@@ -204,6 +204,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
   .filter-row{flex-direction:column}
   .filter-row select{width:100%}
   .strip{padding:.65rem 1rem}
+  #career-pivots .pivot-grid{grid-template-columns:1fr!important}
 }
 </style>
 </head>
@@ -1422,6 +1423,74 @@ async function fetchLiveJobs(matches){
     noLive.style.cssText='padding:1rem;color:var(--text3);font-size:.82rem;font-weight:500;text-align:center;border:1px solid var(--border);border-radius:var(--r);margin-top:.75rem';
     noLive.textContent='No live job listings found matching your profile. Try browsing all NZ jobs instead.';
     list.appendChild(noLive);
+  }
+
+  // Career Pivot section — suggest alternative paths
+  fetchCareerPivots(matches, list);
+}
+
+async function fetchCareerPivots(matches, list) {
+  if (!matches || !matches.length) return;
+  var titles = matches.map(function(m){return m.title;}).join(', ');
+  var tags = [];
+  matches.forEach(function(m){(m.tags||[]).forEach(function(t){if(tags.indexOf(t)===-1)tags.push(t);});});
+
+  // Add placeholder
+  var pivotSection = document.createElement('div');
+  pivotSection.id = 'career-pivots';
+  pivotSection.style.cssText = 'margin-top:2rem;position:relative;overflow:hidden';
+  pivotSection.innerHTML = '<div style="text-align:center;padding:2rem 1rem"><div class="dots" style="font-size:1.2rem;color:var(--purple)"></div><div style="font-size:.78rem;color:var(--text3);margin-top:.5rem">Discovering alternative career paths...</div></div>';
+  list.appendChild(pivotSection);
+
+  try {
+    var r = await fetch('/api/chat', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        messages:[{role:'user',content:'Based on someone with experience as: '+titles+' with skills in: '+tags.join(', ')+'\n\nSuggest exactly 4 surprising but realistic alternative career paths they could pivot to in New Zealand. These should NOT be in their current field — think laterally about how their transferable skills open unexpected doors.\n\nFor each path return JSON: [{"role":"Job Title","field":"Industry","why":"1 sentence: which specific transferable skills make this achievable","earning":"NZ salary range","excitement":"1 inspiring sentence about this path","icon":"single emoji"}]\n\nBe creative but realistic. Think: pharmacist → regulatory affairs, teacher → UX researcher, chef → food safety auditor. Return ONLY valid JSON array.'}]
+      })
+    });
+    var d = await r.json();
+    var raw = d.content.map(function(b){return b.text||'';}).join('').trim();
+    var si = raw.indexOf('['), ei = raw.lastIndexOf(']');
+    if (si === -1 || ei === -1) throw new Error('No JSON');
+    var pivots = JSON.parse(raw.substring(si, ei+1));
+    if (!pivots.length) throw new Error('Empty');
+
+    var colors = [
+      {bg:'rgba(139,92,246,.08)',border:'rgba(139,92,246,.2)',accent:'#8b5cf6'},
+      {bg:'rgba(59,130,246,.08)',border:'rgba(59,130,246,.2)',accent:'#3b82f6'},
+      {bg:'rgba(245,158,11,.08)',border:'rgba(245,158,11,.2)',accent:'#f59e0b'},
+      {bg:'rgba(236,72,153,.08)',border:'rgba(236,72,153,.2)',accent:'#ec4899'}
+    ];
+
+    var html = '<div style="position:relative;padding:2rem 0">';
+    html += '<div style="text-align:center;margin-bottom:1.75rem">';
+    html += '<div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:2px;background:linear-gradient(135deg,var(--purple),#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.5rem">Beyond your horizon</div>';
+    html += '<div style="font-size:1.4rem;font-weight:800;color:var(--text);line-height:1.2">Your skills unlock<br><span style="background:linear-gradient(135deg,var(--purple),#ec4899,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent">unexpected doors</span></div>';
+    html += '<div style="font-size:.78rem;color:var(--text3);margin-top:.5rem;font-weight:500;max-width:400px;margin-left:auto;margin-right:auto">AI-discovered career pivots based on your transferable skills</div>';
+    html += '</div>';
+    html += '<div class="pivot-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">';
+
+    pivots.slice(0,4).forEach(function(p, i) {
+      var c = colors[i % colors.length];
+      html += '<div style="background:'+c.bg+';border:1px solid '+c.border+';border-radius:var(--rl);padding:1.25rem;position:relative;transition:all .3s;cursor:default" onmouseenter="this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'0 8px 30px '+c.border+'\'" onmouseleave="this.style.transform=\'none\';this.style.boxShadow=\'none\'">';
+      html += '<div style="font-size:1.5rem;margin-bottom:.5rem">'+(p.icon||'')+'</div>';
+      html += '<div style="font-size:.95rem;font-weight:800;color:var(--text);margin-bottom:.15rem">'+esc(p.role)+'</div>';
+      html += '<div style="font-size:.7rem;font-weight:700;color:'+c.accent+';text-transform:uppercase;letter-spacing:.5px;margin-bottom:.6rem">'+esc(p.field)+'</div>';
+      html += '<div style="font-size:.78rem;color:var(--text2);line-height:1.6;margin-bottom:.6rem">'+esc(p.why)+'</div>';
+      html += '<div style="font-size:.75rem;color:var(--text3);font-weight:600;margin-bottom:.5rem">'+esc(p.earning)+'</div>';
+      html += '<div style="font-size:.72rem;color:'+c.accent+';font-weight:600;font-style:italic;line-height:1.5">'+esc(p.excitement)+'</div>';
+      html += '</div>';
+    });
+
+    html += '</div>';
+    html += '<div style="text-align:center;margin-top:1.25rem;font-size:.68rem;color:var(--text3);font-weight:500">Powered by AI career analysis &mdash; explore what\'s possible</div>';
+    html += '</div>';
+
+    pivotSection.innerHTML = html;
+  } catch(e) {
+    pivotSection.remove();
   }
 }
 
