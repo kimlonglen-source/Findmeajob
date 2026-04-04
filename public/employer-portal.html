@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Employer Portal — FindMeAJob.co.nz</title>
 <meta name="robots" content="noindex,nofollow">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#09090b;--bg2:#0f172a;--bg3:rgba(255,255,255,.04);--text:#f8fafc;--text2:#94a3b8;--text3:#64748b;--em:#10b981;--em2:#14b8a6;--em3:rgba(16,185,129,.08);--gold:#f59e0b;--red:#ef4444;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--card:rgba(255,255,255,.03);--inp:rgba(255,255,255,.05);--r:12px;--rl:20px;--glow:0 4px 25px rgba(16,185,129,.15)}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -128,15 +128,15 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
       <div class="err" id="login-err"></div>
       <button class="btn" id="btn-login" type="button" style="margin-top:.5rem">Sign In &#8594;</button>
       <div style="text-align:center;margin-top:.75rem">
-        <button onclick="showReset()" style="background:none;border:none;color:var(--em);font-family:'Cabinet Grotesk',sans-serif;font-size:.78rem;cursor:pointer;font-weight:700;padding:0">Forgot password?</button>
+        <button onclick="showReset()" style="background:none;border:none;color:var(--em);font-family:'Inter',sans-serif;font-size:.78rem;cursor:pointer;font-weight:700;padding:0">Forgot password?</button>
       </div>
       <div id="reset-box" style="display:none;margin-top:1rem;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--rl);padding:1rem">
         <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;color:var(--em);margin-bottom:.5rem">Reset Password</div>
-        <input type="email" id="reset-em" placeholder="Your registered email" style="background:var(--inp);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Cabinet Grotesk',sans-serif;font-size:14px;padding:.65rem 1rem;outline:none;width:100%;margin-bottom:.5rem">
+        <input type="email" id="reset-em" placeholder="Your registered email" style="background:var(--inp);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;padding:.65rem 1rem;outline:none;width:100%;margin-bottom:.5rem">
         <div id="reset-msg" style="font-size:.78rem;font-weight:600;margin-bottom:.5rem;min-height:1rem"></div>
         <div style="display:flex;gap:.4rem">
-          <button id="btn-send-reset" onclick="doReset()" style="flex:1;background:var(--em);border:none;color:#fff;padding:.65rem;border-radius:var(--r);font-family:'Cabinet Grotesk',sans-serif;font-size:.8rem;font-weight:800;cursor:pointer">Send Reset Link</button>
-          <button onclick="hideReset()" style="flex:1;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:.65rem;border-radius:var(--r);font-family:'Cabinet Grotesk',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer">Cancel</button>
+          <button id="btn-send-reset" onclick="doReset()" style="flex:1;background:var(--em);border:none;color:#fff;padding:.65rem;border-radius:var(--r);font-family:'Inter',sans-serif;font-size:.8rem;font-weight:800;cursor:pointer">Send Reset Link</button>
+          <button onclick="hideReset()" style="flex:1;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:.65rem;border-radius:var(--r);font-family:'Inter',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer">Cancel</button>
         </div>
       </div>
     </div>
@@ -147,17 +147,17 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
       <div style="margin-bottom:1rem">
         <div style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:.6rem">Choose your plan</div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin-bottom:.5rem">
-          <button type="button" id="rp-free" onclick="selectPlan('free')" style="background:var(--bg3);border:2px solid var(--em);border-radius:var(--r);padding:.7rem .5rem;text-align:center;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all .15s">
+          <button type="button" id="rp-free" onclick="selectPlan('free')" style="background:var(--bg3);border:2px solid var(--em);border-radius:var(--r);padding:.7rem .5rem;text-align:center;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s">
             <div style="font-size:.6rem;font-weight:800;text-transform:uppercase;color:var(--text3)">Starter</div>
             <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:300;font-style:italic;color:var(--text)">$0</div>
             <div style="font-size:.6rem;color:var(--text3);font-weight:500">Free forever</div>
           </button>
-          <button type="button" id="rp-basic" onclick="selectPlan('basic')" style="background:var(--bg3);border:2px solid var(--border2);border-radius:var(--r);padding:.7rem .5rem;text-align:center;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all .15s">
+          <button type="button" id="rp-basic" onclick="selectPlan('basic')" style="background:var(--bg3);border:2px solid var(--border2);border-radius:var(--r);padding:.7rem .5rem;text-align:center;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s">
             <div style="font-size:.6rem;font-weight:800;text-transform:uppercase;color:var(--text3)">Growth</div>
             <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:300;font-style:italic;color:var(--text)">$29<span style="font-size:.65rem">/mo</span></div>
             <div style="font-size:.6rem;color:var(--em);font-weight:600">1st month free</div>
           </button>
-          <button type="button" id="rp-pro" onclick="selectPlan('pro')" style="background:var(--bg3);border:2px solid var(--border2);border-radius:var(--r);padding:.7rem .5rem;text-align:center;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all .15s">
+          <button type="button" id="rp-pro" onclick="selectPlan('pro')" style="background:var(--bg3);border:2px solid var(--border2);border-radius:var(--r);padding:.7rem .5rem;text-align:center;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s">
             <div style="font-size:.6rem;font-weight:800;text-transform:uppercase;color:var(--text3)">Pro</div>
             <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:300;font-style:italic;color:var(--text)">$79<span style="font-size:.65rem">/mo</span></div>
             <div style="font-size:.6rem;color:var(--gold);font-weight:600">Featured &#11088;</div>
@@ -225,8 +225,8 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
     <div class="card">
       <div class="field"><label>Job title *</label><input type="text" id="e-title" placeholder="e.g. Senior Software Developer"></div>
       <div class="g2">
-        <div class="field"><label>Location</label><select id="e-loc"><option>Auckland</option><option>Wellington</option><option>Christchurch</option><option>Hamilton</option><option>Tauranga</option><option>Dunedin</option><option>Whangarei</option><option>Rotorua</option><option>New Plymouth</option><option>Napier</option><option>Palmerston North</option><option>Whanganui</option><option>Nelson</option><option>Invercargill</option><option>Queenstown</option><option>Gisborne</option><option>Remote NZ</option><option>Nationwide</option></select></div>
-        <div class="field"><label>Category</label><select id="e-cat"><option>Accounting &amp; Finance</option><option>Admin &amp; Office</option><option>Agriculture &amp; Farming</option><option>Automotive</option><option>Construction &amp; Roading</option><option>Creative &amp; Design</option><option>Customer Service</option><option>Education &amp; Training</option><option>Engineering</option><option>Government &amp; Council</option><option>Healthcare &amp; Medical</option><option>Hospitality &amp; Tourism</option><option>HR &amp; Recruitment</option><option>IT &amp; Technology</option><option>Legal</option><option>Manufacturing &amp; Production</option><option>Marketing &amp; Communications</option><option>Property &amp; Real Estate</option><option>Retail</option><option>Sales &amp; Business Dev</option><option>Science &amp; Research</option><option>Social Work &amp; Community</option><option>Sports &amp; Recreation</option><option>Trades &amp; Services</option><option>Transport &amp; Logistics</option><option>Warehousing</option><option>Other</option></select></div>
+        <div class="field"><label>Location</label><input type="text" id="e-loc" list="dl-portal-loc" placeholder="e.g. Auckland" value="Auckland"><datalist id="dl-portal-loc"><option value="Auckland"><option value="Wellington"><option value="Christchurch"><option value="Hamilton"><option value="Tauranga"><option value="Dunedin"><option value="Whangarei"><option value="Rotorua"><option value="New Plymouth"><option value="Napier"><option value="Palmerston North"><option value="Whanganui"><option value="Nelson"><option value="Invercargill"><option value="Queenstown"><option value="Gisborne"><option value="Remote NZ"><option value="Nationwide"></datalist></div>
+        <div class="field"><label>Category</label><input type="text" id="e-cat" list="dl-portal-cat" placeholder="e.g. IT & Technology"><datalist id="dl-portal-cat"><option value="Accounting & Finance"><option value="Admin & Office"><option value="Agriculture & Farming"><option value="Automotive"><option value="Construction & Roading"><option value="Creative & Design"><option value="Customer Service"><option value="Education & Training"><option value="Engineering"><option value="Government & Council"><option value="Healthcare & Medical"><option value="Hospitality & Tourism"><option value="HR & Recruitment"><option value="IT & Technology"><option value="Legal"><option value="Manufacturing & Production"><option value="Marketing & Communications"><option value="Property & Real Estate"><option value="Retail"><option value="Sales & Business Dev"><option value="Science & Research"><option value="Social Work & Community"><option value="Sports & Recreation"><option value="Trades & Services"><option value="Transport & Logistics"><option value="Warehousing"><option value="Other"></datalist></div>
         <div class="field"><label>Job type</label><select id="e-type"><option>Full-time</option><option>Part-time</option><option>Casual</option><option>Contract</option><option>Fixed-term</option><option>Internship</option><option>Volunteer</option><option>Remote</option></select></div>
         <div class="field"><label>Salary range</label><select id="e-sal"><option>Up to $50K</option><option>$50K-$70K</option><option>$70K-$90K</option><option>$90K-$120K</option><option>$120K+</option><option>Negotiable</option></select></div>
       </div>
@@ -466,7 +466,7 @@ async function submitJob() {
     });
     var d = await r.json();
     if (d.success) {
-      ok.innerHTML = '&#10003; Listing submitted! We will review it within 24 hours. <button onclick="loadAndShowPortal()" style="background:none;border:none;color:var(--em);font-family:Cabinet Grotesk,sans-serif;font-size:.82rem;cursor:pointer;font-weight:700;padding:0">View dashboard &#8594;</button>';
+      ok.innerHTML = '&#10003; Listing submitted! We will review it within 24 hours. <button onclick="loadAndShowPortal()" style="background:none;border:none;color:var(--em);font-family:Inter,sans-serif;font-size:.82rem;cursor:pointer;font-weight:700;padding:0">View dashboard &#8594;</button>';
       ok.style.display = 'block';
       btn.style.display = 'none';
       // Clear form and auto-redirect to dashboard

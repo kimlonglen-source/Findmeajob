@@ -27,7 +27,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/svg+xml" href="/logo-icon.svg">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <style>
 :root{--bg:#09090b;--bg2:#0f172a;--bg3:rgba(255,255,255,.04);--bg4:rgba(255,255,255,.06);--text:#f8fafc;--text2:#94a3b8;--text3:#64748b;--em:#10b981;--em2:#14b8a6;--em3:rgba(16,185,129,.08);--gold:#f59e0b;--purple:#8b5cf6;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--card:rgba(255,255,255,.03);--inp:rgba(255,255,255,.05);--hdr:rgba(9,9,11,.8);--r:12px;--rl:20px;--glow:0 4px 25px rgba(16,185,129,.15)}
@@ -214,6 +214,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <button class="mnavitem" id="mm-pricing" type="button">Pricing</button>
     <a class="mnavitem" href="/employer-portal.html">Employer Login</a>
     <a class="mnavitem" href="/employer-portal.html">Post a Job</a>
+    <button class="mnavitem" id="mm-account" type="button">My Jobs</button>
     <button class="mnavitem" id="mm-about" type="button">About</button>
     <a class="mnavitem" href="mailto:hello@findmeajob.co.nz">Contact</a>
   </div>
@@ -228,6 +229,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <button class="nl keep" id="h-find" type="button">Find a Job</button>
     <button class="nl" id="h-browse" type="button">Browse Jobs</button>
     <button class="nl" id="h-pricing" type="button">Pricing</button>
+    <button class="nl" id="h-account" type="button">My Jobs</button>
     <button class="nl" id="h-about" type="button">About</button>
     <a class="nl" href="/employer-portal.html" id="h-portal">Employer Login</a>
     <a class="nl cta" href="/employer-portal.html" id="h-employer">Post a Job</a>
@@ -319,22 +321,12 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       </div>
       <div class="card">
         <label class="form-label">Your region</label>
-        <select id="cv-region">
-          <option value="New Zealand">All of New Zealand</option>
-          <option value="Auckland">Auckland</option><option value="Wellington">Wellington</option>
-          <option value="Canterbury / Christchurch">Christchurch</option><option value="Waikato / Hamilton">Hamilton</option>
-          <option value="Bay of Plenty">Tauranga / Bay of Plenty</option><option value="Otago / Dunedin">Dunedin / Otago</option>
-          <option value="Northland">Whangarei / Northland</option><option value="Bay of Plenty">Rotorua</option>
-          <option value="Taranaki">New Plymouth / Taranaki</option><option value="Hawkes Bay">Napier / Hastings</option>
-          <option value="Manawatu-Whanganui">Palmerston North</option><option value="Manawatu-Whanganui">Whanganui</option>
-          <option value="Nelson / Marlborough">Nelson / Marlborough</option><option value="Southland">Invercargill / Southland</option>
-          <option value="Otago / Queenstown">Queenstown</option><option value="Gisborne">Gisborne</option>
-          <option value="Tasman">Tasman</option><option value="West Coast">West Coast</option>
-        </select>
+        <input type="text" id="cv-region" list="dl-cv-regions" placeholder="All of New Zealand" value="New Zealand">
+        <datalist id="dl-cv-regions"><option value="New Zealand"><option value="Auckland"><option value="Wellington"><option value="Canterbury / Christchurch"><option value="Waikato / Hamilton"><option value="Bay of Plenty"><option value="Otago / Dunedin"><option value="Northland"><option value="Taranaki"><option value="Hawkes Bay"><option value="Manawatu-Whanganui"><option value="Nelson / Marlborough"><option value="Southland"><option value="Otago / Queenstown"><option value="Gisborne"><option value="Tasman"><option value="West Coast"></datalist>
       </div>
       <div class="alert alert-err" id="cv-err">Please upload your CV first.</div>
       <button class="btn" id="btn-analyze" type="button" style="margin-top:1rem">Analyse CV &amp; Find Matches</button>
-      <div style="text-align:center;margin-top:.75rem"><button style="background:none;border:none;color:var(--text3);font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif" id="btn-go-manual" type="button">No CV? Enter skills manually &#8594;</button></div>
+      <div style="text-align:center;margin-top:.75rem"><button style="background:none;border:none;color:var(--text3);font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif" id="btn-go-manual" type="button">No CV? Enter skills manually &#8594;</button></div>
     </div>
     <div id="step-manual" style="display:none">
       <div class="card">
@@ -342,7 +334,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <div id="skill-area" style="min-height:32px;margin-bottom:.75rem"></div>
         <div style="display:flex;gap:.5rem;margin-bottom:.75rem">
           <input type="text" id="ski" placeholder="Type a skill and press Enter..." maxlength="60" style="flex:1">
-          <button type="button" id="btn-add" style="background:var(--em3);border:1px solid rgba(16,185,129,.2);color:var(--em);padding:.72rem 1rem;border-radius:var(--r);cursor:pointer;font-size:.82rem;font-weight:700;white-space:nowrap;font-family:'Cabinet Grotesk',sans-serif;flex-shrink:0">+ Add</button>
+          <button type="button" id="btn-add" style="background:var(--em3);border:1px solid rgba(16,185,129,.2);color:var(--em);padding:.72rem 1rem;border-radius:var(--r);cursor:pointer;font-size:.82rem;font-weight:700;white-space:nowrap;font-family:'Inter',sans-serif;flex-shrink:0">+ Add</button>
         </div>
         <div id="chips">
           <button class="chip" data-s="Customer service">Customer service</button>
@@ -365,7 +357,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <label class="form-label" style="margin-bottom:.75rem">Preferences</label>
         <div class="g2">
           <div class="field"><label class="form-label">Region</label>
-            <select id="region"><option value="New Zealand">All of NZ</option><option value="Auckland">Auckland</option><option value="Wellington">Wellington</option><option value="Canterbury / Christchurch">Christchurch</option><option value="Waikato / Hamilton">Hamilton</option><option value="Bay of Plenty">Tauranga / Bay of Plenty</option><option value="Otago / Dunedin">Dunedin / Otago</option><option value="Northland">Whangarei / Northland</option><option value="Bay of Plenty">Rotorua</option><option value="Taranaki">New Plymouth / Taranaki</option><option value="Hawkes Bay">Napier / Hastings</option><option value="Manawatu-Whanganui">Palmerston North</option><option value="Manawatu-Whanganui">Whanganui</option><option value="Nelson / Marlborough">Nelson / Marlborough</option><option value="Southland">Invercargill / Southland</option><option value="Otago / Queenstown">Queenstown</option><option value="Gisborne">Gisborne</option><option value="Tasman">Tasman</option><option value="West Coast">West Coast</option></select>
+            <input type="text" id="region" list="dl-skills-regions" placeholder="All of NZ" value="New Zealand">
+            <datalist id="dl-skills-regions"><option value="New Zealand"><option value="Auckland"><option value="Wellington"><option value="Canterbury / Christchurch"><option value="Waikato / Hamilton"><option value="Bay of Plenty"><option value="Otago / Dunedin"><option value="Northland"><option value="Taranaki"><option value="Hawkes Bay"><option value="Manawatu-Whanganui"><option value="Nelson / Marlborough"><option value="Southland"><option value="Otago / Queenstown"><option value="Gisborne"><option value="Tasman"><option value="West Coast"></datalist>
           </div>
           <div class="field"><label class="form-label">Work type</label>
             <select id="wt"><option value="any">Any</option><option value="full-time">Full-time</option><option value="part-time">Part-time</option><option value="casual">Casual</option><option value="contract">Contract</option><option value="fixed-term">Fixed-term</option><option value="internship">Internship</option><option value="volunteer">Volunteer</option><option value="remote">Remote</option></select>
@@ -418,9 +411,15 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 <div id="page-browse" class="page">
   <div class="wrap-wide">
     <div style="margin-bottom:1.5rem"><div class="page-eyebrow">Live Listings</div><div class="page-title">Browse NZ Jobs</div></div>
+    <div style="display:flex;gap:.5rem;margin-bottom:.75rem">
+      <input type="text" id="f-keyword" placeholder="Search by keyword, job title, or skill..." style="flex:1">
+      <button class="btn" id="f-search-btn" type="button" style="width:auto;padding:.75rem 1.25rem;font-size:.85rem;white-space:nowrap">Search</button>
+    </div>
     <div class="filter-row">
-      <select id="f-cat"><option value="">All categories</option><option>Accounting &amp; Finance</option><option>Admin &amp; Office</option><option>Agriculture &amp; Farming</option><option>Automotive</option><option>Construction &amp; Roading</option><option>Creative &amp; Design</option><option>Customer Service</option><option>Education &amp; Training</option><option>Engineering</option><option>Government &amp; Council</option><option>Healthcare &amp; Medical</option><option>Hospitality &amp; Tourism</option><option>HR &amp; Recruitment</option><option>IT &amp; Technology</option><option>Legal</option><option>Manufacturing &amp; Production</option><option>Marketing &amp; Communications</option><option>Property &amp; Real Estate</option><option>Retail</option><option>Sales &amp; Business Dev</option><option>Science &amp; Research</option><option>Social Work &amp; Community</option><option>Sports &amp; Recreation</option><option>Trades &amp; Services</option><option>Transport &amp; Logistics</option><option>Warehousing</option><option>Other</option></select>
-      <select id="f-reg"><option value="">All of NZ</option><option>Auckland</option><option>Wellington</option><option>Christchurch</option><option>Hamilton</option><option>Tauranga</option><option>Dunedin</option><option>Whangarei</option><option>Rotorua</option><option>New Plymouth</option><option>Napier</option><option>Palmerston North</option><option>Whanganui</option><option>Nelson</option><option>Invercargill</option><option>Queenstown</option><option>Gisborne</option></select>
+      <input type="text" id="f-cat" list="dl-categories" placeholder="All categories" style="flex:1;min-width:110px;padding:.55rem .8rem;font-size:.78rem">
+      <datalist id="dl-categories"><option value="Accounting & Finance"><option value="Admin & Office"><option value="Agriculture & Farming"><option value="Automotive"><option value="Construction & Roading"><option value="Creative & Design"><option value="Customer Service"><option value="Education & Training"><option value="Engineering"><option value="Government & Council"><option value="Healthcare & Medical"><option value="Hospitality & Tourism"><option value="HR & Recruitment"><option value="IT & Technology"><option value="Legal"><option value="Manufacturing & Production"><option value="Marketing & Communications"><option value="Property & Real Estate"><option value="Retail"><option value="Sales & Business Dev"><option value="Science & Research"><option value="Social Work & Community"><option value="Sports & Recreation"><option value="Trades & Services"><option value="Transport & Logistics"><option value="Warehousing"><option value="Other"></datalist>
+      <input type="text" id="f-reg" list="dl-regions" placeholder="All of NZ" style="flex:1;min-width:110px;padding:.55rem .8rem;font-size:.78rem">
+      <datalist id="dl-regions"><option value="Auckland"><option value="Wellington"><option value="Christchurch"><option value="Hamilton"><option value="Tauranga"><option value="Dunedin"><option value="Whangarei"><option value="Rotorua"><option value="New Plymouth"><option value="Napier"><option value="Palmerston North"><option value="Whanganui"><option value="Nelson"><option value="Invercargill"><option value="Queenstown"><option value="Gisborne"></datalist>
       <select id="f-type"><option value="">Any type</option><option>Full-time</option><option>Part-time</option><option>Casual</option><option>Contract</option><option>Fixed-term</option><option>Internship</option><option>Volunteer</option><option>Remote</option></select>
     </div>
     <div id="employer-jobs"></div>
@@ -520,17 +519,17 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <div class="card" style="margin-bottom:.75rem">
         <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:.85rem">Select your plan</div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:.75rem">
-          <button type="button" id="rp-free" onclick="selectPlan('free')" style="background:var(--bg3);border:2px solid var(--border2);border-radius:var(--r);padding:.85rem .65rem;text-align:center;cursor:pointer;font-family:Cabinet Grotesk,sans-serif;transition:all .15s">
+          <button type="button" id="rp-free" onclick="selectPlan('free')" style="background:var(--bg3);border:2px solid var(--border2);border-radius:var(--r);padding:.85rem .65rem;text-align:center;cursor:pointer;font-family:Inter,sans-serif;transition:all .15s">
             <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;color:var(--text3);margin-bottom:.25rem">Starter</div>
             <div style="font-family:Fraunces,serif;font-size:1.2rem;font-weight:300;font-style:italic;color:var(--text)">$0</div>
             <div style="font-size:.65rem;color:var(--text3);font-weight:500;margin-top:.15rem">Free forever</div>
           </button>
-          <button type="button" id="rp-basic" onclick="selectPlan('basic')" style="background:var(--bg3);border:2px solid var(--border2);border-radius:var(--r);padding:.85rem .65rem;text-align:center;cursor:pointer;font-family:Cabinet Grotesk,sans-serif;transition:all .15s">
+          <button type="button" id="rp-basic" onclick="selectPlan('basic')" style="background:var(--bg3);border:2px solid var(--border2);border-radius:var(--r);padding:.85rem .65rem;text-align:center;cursor:pointer;font-family:Inter,sans-serif;transition:all .15s">
             <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;color:var(--text3);margin-bottom:.25rem">Growth</div>
             <div style="font-family:Fraunces,serif;font-size:1.2rem;font-weight:300;font-style:italic;color:var(--text)">$29<span style="font-size:.7rem">/mo</span></div>
             <div style="font-size:.65rem;color:var(--em);font-weight:600;margin-top:.15rem">1st month free</div>
           </button>
-          <button type="button" id="rp-pro" onclick="selectPlan('pro')" style="background:var(--bg3);border:2px solid var(--border2);border-radius:var(--r);padding:.85rem .65rem;text-align:center;cursor:pointer;font-family:Cabinet Grotesk,sans-serif;transition:all .15s">
+          <button type="button" id="rp-pro" onclick="selectPlan('pro')" style="background:var(--bg3);border:2px solid var(--border2);border-radius:var(--r);padding:.85rem .65rem;text-align:center;cursor:pointer;font-family:Inter,sans-serif;transition:all .15s">
             <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;color:var(--text3);margin-bottom:.25rem">Pro</div>
             <div style="font-family:Fraunces,serif;font-size:1.2rem;font-weight:300;font-style:italic;color:var(--text)">$79<span style="font-size:.7rem">/mo</span></div>
             <div style="font-size:.65rem;color:var(--gold);font-weight:600;margin-top:.15rem">Featured</div>
@@ -552,8 +551,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <div class="alert alert-err" id="reg-err">Please fill in all required fields.</div>
       <button class="btn" id="btn-register" type="button" style="margin-top:.75rem">Create Account &amp; Continue &#8594;</button>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.75rem;flex-wrap:wrap;gap:.5rem">
-        <div style="font-size:.75rem;color:var(--text3);font-weight:500">Already have an account? <button style="background:none;border:none;color:var(--em);font-family:Cabinet Grotesk,sans-serif;font-size:.75rem;cursor:pointer;font-weight:700;padding:0" id="btn-login-instead" type="button">Sign in</button></div>
-        <div style="font-size:.72rem;color:var(--text3);font-weight:500">By registering you agree to our <button style="background:none;border:none;color:var(--em);font-family:Cabinet Grotesk,sans-serif;font-size:.72rem;cursor:pointer;font-weight:600;padding:0" id="reg-terms-btn" type="button">Terms</button></div>
+        <div style="font-size:.75rem;color:var(--text3);font-weight:500">Already have an account? <button style="background:none;border:none;color:var(--em);font-family:Inter,sans-serif;font-size:.75rem;cursor:pointer;font-weight:700;padding:0" id="btn-login-instead" type="button">Sign in</button></div>
+        <div style="font-size:.72rem;color:var(--text3);font-weight:500">By registering you agree to our <button style="background:none;border:none;color:var(--em);font-family:Inter,sans-serif;font-size:.72rem;cursor:pointer;font-weight:600;padding:0" id="reg-terms-btn" type="button">Terms</button></div>
       </div>
     </div>
 
@@ -570,8 +569,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <div class="alert alert-err" id="login-err">Incorrect email or password.</div>
       <button class="btn" id="btn-login" type="button" style="margin-top:.75rem">Sign In &#8594;</button>
       <div style="display:flex;justify-content:space-between;margin-top:.75rem;flex-wrap:wrap;gap:.5rem">
-        <div style="font-size:.78rem;color:var(--text3);font-weight:500">No account? <button style="background:none;border:none;color:var(--em);font-family:Cabinet Grotesk,sans-serif;font-size:.78rem;cursor:pointer;font-weight:700;padding:0" id="btn-reg-instead" type="button">Register free</button></div>
-        <button style="background:none;border:none;color:var(--em);font-family:Cabinet Grotesk,sans-serif;font-size:.78rem;cursor:pointer;font-weight:700;padding:0" id="btn-forgot-pw" type="button">Forgot password?</button>
+        <div style="font-size:.78rem;color:var(--text3);font-weight:500">No account? <button style="background:none;border:none;color:var(--em);font-family:Inter,sans-serif;font-size:.78rem;cursor:pointer;font-weight:700;padding:0" id="btn-reg-instead" type="button">Register free</button></div>
+        <button style="background:none;border:none;color:var(--em);font-family:Inter,sans-serif;font-size:.78rem;cursor:pointer;font-weight:700;padding:0" id="btn-forgot-pw" type="button">Forgot password?</button>
       </div>
     </div>
 
@@ -598,7 +597,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <div class="field" style="margin-bottom:0"><label class="form-label">Confirm password *</label><input type="password" id="confirm-password" placeholder="Repeat your new password" autocomplete="new-password"></div>
       </div>
       <div class="alert alert-err" id="reset-err"></div>
-      <div class="alert alert-ok" id="reset-ok">Password updated! <button style="background:none;border:none;color:var(--em);font-family:Cabinet Grotesk,sans-serif;font-size:.82rem;cursor:pointer;font-weight:700;padding:0" id="btn-go-login-after-reset" type="button">Sign in now &#8594;</button></div>
+      <div class="alert alert-ok" id="reset-ok">Password updated! <button style="background:none;border:none;color:var(--em);font-family:Inter,sans-serif;font-size:.82rem;cursor:pointer;font-weight:700;padding:0" id="btn-go-login-after-reset" type="button">Sign in now &#8594;</button></div>
       <button class="btn" id="btn-do-reset" type="button" style="margin-top:.75rem">Update Password &#8594;</button>
     </div>
 
@@ -608,7 +607,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <div style="font-size:.82rem;font-weight:700;color:var(--em)">&#10003; Signed in as <span id="emp-name-display"></span> &mdash; <span id="emp-plan-display" style="text-transform:uppercase;font-size:.7rem;font-weight:800"></span> plan</div>
         <div style="display:flex;gap:.75rem;align-items:center">
           <a href="/employer-portal.html" style="font-size:.72rem;font-weight:700;color:var(--em);text-decoration:none">My Listings &#8594;</a>
-          <button style="background:none;border:none;color:var(--text3);font-size:.72rem;cursor:pointer;font-family:Cabinet Grotesk,sans-serif;font-weight:600;padding:0" id="btn-emp-signout" type="button">Sign out</button>
+          <button style="background:none;border:none;color:var(--text3);font-size:.72rem;cursor:pointer;font-family:Inter,sans-serif;font-weight:600;padding:0" id="btn-emp-signout" type="button">Sign out</button>
         </div>
       </div>
       <div id="pro-ai-note" style="display:none;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:var(--r);padding:.75rem 1rem;margin-bottom:.75rem;font-size:.8rem;color:var(--gold);font-weight:600">&#11088; Pro plan: Your listing will be auto-featured and appear in AI job matching results.</div>
@@ -616,8 +615,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:.85rem">Job details</div>
         <div class="field"><label class="form-label">Job title *</label><input type="text" id="e-title" placeholder="e.g. Senior Software Developer"></div>
         <div class="g2">
-          <div class="field"><label class="form-label">Location</label><select id="e-loc"><option>Auckland</option><option>Wellington</option><option>Christchurch</option><option>Hamilton</option><option>Tauranga</option><option>Dunedin</option><option>Whangarei</option><option>Rotorua</option><option>New Plymouth</option><option>Napier</option><option>Palmerston North</option><option>Whanganui</option><option>Nelson</option><option>Invercargill</option><option>Queenstown</option><option>Gisborne</option><option>Remote NZ</option><option>Nationwide</option></select></div>
-          <div class="field"><label class="form-label">Category</label><select id="e-cat"><option>Accounting &amp; Finance</option><option>Admin &amp; Office</option><option>Agriculture &amp; Farming</option><option>Automotive</option><option>Construction &amp; Roading</option><option>Creative &amp; Design</option><option>Customer Service</option><option>Education &amp; Training</option><option>Engineering</option><option>Government &amp; Council</option><option>Healthcare &amp; Medical</option><option>Hospitality &amp; Tourism</option><option>HR &amp; Recruitment</option><option>IT &amp; Technology</option><option>Legal</option><option>Manufacturing &amp; Production</option><option>Marketing &amp; Communications</option><option>Property &amp; Real Estate</option><option>Retail</option><option>Sales &amp; Business Dev</option><option>Science &amp; Research</option><option>Social Work &amp; Community</option><option>Sports &amp; Recreation</option><option>Trades &amp; Services</option><option>Transport &amp; Logistics</option><option>Warehousing</option><option>Other</option></select></div>
+          <div class="field"><label class="form-label">Location</label><input type="text" id="e-loc" list="dl-emp-loc" placeholder="e.g. Auckland" value="Auckland"><datalist id="dl-emp-loc"><option value="Auckland"><option value="Wellington"><option value="Christchurch"><option value="Hamilton"><option value="Tauranga"><option value="Dunedin"><option value="Whangarei"><option value="Rotorua"><option value="New Plymouth"><option value="Napier"><option value="Palmerston North"><option value="Whanganui"><option value="Nelson"><option value="Invercargill"><option value="Queenstown"><option value="Gisborne"><option value="Remote NZ"><option value="Nationwide"></datalist></div>
+          <div class="field"><label class="form-label">Category</label><input type="text" id="e-cat" list="dl-emp-cat" placeholder="e.g. IT & Technology"><datalist id="dl-emp-cat"><option value="Accounting & Finance"><option value="Admin & Office"><option value="Agriculture & Farming"><option value="Automotive"><option value="Construction & Roading"><option value="Creative & Design"><option value="Customer Service"><option value="Education & Training"><option value="Engineering"><option value="Government & Council"><option value="Healthcare & Medical"><option value="Hospitality & Tourism"><option value="HR & Recruitment"><option value="IT & Technology"><option value="Legal"><option value="Manufacturing & Production"><option value="Marketing & Communications"><option value="Property & Real Estate"><option value="Retail"><option value="Sales & Business Dev"><option value="Science & Research"><option value="Social Work & Community"><option value="Sports & Recreation"><option value="Trades & Services"><option value="Transport & Logistics"><option value="Warehousing"><option value="Other"></datalist></div>
           <div class="field"><label class="form-label">Job type</label><select id="e-type"><option>Full-time</option><option>Part-time</option><option>Casual</option><option>Contract</option><option>Fixed-term</option><option>Internship</option><option>Volunteer</option><option>Remote</option></select></div>
           <div class="field"><label class="form-label">Salary range</label><select id="e-sal"><option>Up to $50K</option><option>$50K-$70K</option><option>$70K-$90K</option><option>$90K-$120K</option><option>$120K+</option><option>Negotiable</option></select></div>
         </div>
@@ -638,6 +637,63 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <button class="btn" id="btn-submit" type="button" style="margin-top:.75rem">Submit Listing for Review &#8594;</button>
     </div>
 
+  </div>
+</div>
+
+<!-- MY ACCOUNT -->
+<div id="page-account" class="page">
+  <div class="wrap">
+    <!-- Not logged in: login/register -->
+    <div id="acct-auth">
+      <div style="text-align:center;margin-bottom:1.5rem"><div class="page-eyebrow">My Jobs</div><div class="page-title">Track your applications</div><p style="color:var(--text2);font-size:.88rem;font-weight:500;margin-top:.5rem">Create a free account to save applications and your CV.</p></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--border);border-radius:999px;overflow:hidden;margin-bottom:1.5rem;padding:3px;background:var(--bg3);max-width:400px;margin-left:auto;margin-right:auto">
+        <button class="nl" id="acct-tab-login" type="button" style="text-align:center;border-radius:999px;padding:.6rem;font-size:.82rem;background:var(--em3);color:var(--em)">Sign In</button>
+        <button class="nl" id="acct-tab-register" type="button" style="text-align:center;border-radius:999px;padding:.6rem;font-size:.82rem">Register</button>
+      </div>
+      <!-- Login form -->
+      <div id="acct-login" class="card" style="max-width:400px;margin:0 auto">
+        <div class="field"><label class="form-label">Email</label><input type="email" id="sk-l-email" placeholder="your@email.co.nz" autocomplete="email"></div>
+        <div class="field"><label class="form-label">Password</label><input type="password" id="sk-l-pass" placeholder="Your password" autocomplete="current-password"></div>
+        <div class="alert alert-err" id="sk-l-err"></div>
+        <button class="btn" id="sk-btn-login" type="button" style="margin-top:.5rem">Sign In</button>
+      </div>
+      <!-- Register form -->
+      <div id="acct-register" class="card" style="max-width:400px;margin:0 auto;display:none">
+        <div class="field"><label class="form-label">Your name</label><input type="text" id="sk-r-name" placeholder="Jane Smith" autocomplete="name"></div>
+        <div class="field"><label class="form-label">Email</label><input type="email" id="sk-r-email" placeholder="your@email.co.nz" autocomplete="email"></div>
+        <div class="field"><label class="form-label">Password</label><input type="password" id="sk-r-pass" placeholder="Min 8 chars, upper, lower, number, symbol" autocomplete="new-password"></div>
+        <div class="alert alert-err" id="sk-r-err"></div>
+        <button class="btn" id="sk-btn-register" type="button" style="margin-top:.5rem">Create Free Account</button>
+      </div>
+    </div>
+    <!-- Logged in: dashboard -->
+    <div id="acct-dash" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:.75rem">
+        <div><div class="page-eyebrow">My Jobs</div><div class="page-title">Welcome, <span id="sk-dash-name" style="color:var(--em)"></span></div></div>
+        <button class="btn-sm" id="sk-btn-signout" type="button">Sign out</button>
+      </div>
+      <!-- Applications -->
+      <div class="card">
+        <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:.75rem">My Applications</div>
+        <div id="sk-apps-list"></div>
+      </div>
+      <!-- Quick actions -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.75rem">
+        <button class="btn" id="sk-go-find" type="button" style="padding:.75rem;font-size:.82rem">Find More Jobs</button>
+        <button class="btn btn-sec" id="sk-go-browse" type="button" style="padding:.75rem;font-size:.82rem">Browse Jobs</button>
+      </div>
+      <!-- Delete account -->
+      <div style="border-top:1px solid var(--border);padding-top:1rem;margin-top:2rem;text-align:center">
+        <button id="sk-btn-delete" type="button" style="background:none;border:none;color:var(--text3);font-size:.72rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Delete my account</button>
+        <div id="sk-delete-confirm" style="display:none;margin-top:.75rem;background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:var(--r);padding:.75rem;max-width:400px;margin-left:auto;margin-right:auto">
+          <div style="font-size:.82rem;color:#fca5a5;font-weight:600;margin-bottom:.5rem">Are you sure? This will permanently delete your account and all saved applications.</div>
+          <div style="display:flex;gap:.5rem;justify-content:center">
+            <button class="btn-sm" id="sk-delete-yes" type="button" style="border-color:rgba(239,68,68,.3);color:#fca5a5">Yes, delete</button>
+            <button class="btn-sm" id="sk-delete-no" type="button">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -708,7 +764,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 
 <footer>
   <div class="footer-inner">
-    <div><div class="footer-logo">Find<em>Me</em>AJob<span style="font-family:'Cabinet Grotesk',sans-serif;font-style:normal;font-size:.58rem;color:var(--text3)">.co.nz</span></div><div class="footer-sub">AI-powered job discovery for Aotearoa New Zealand &copy; 2026</div></div>
+    <div><div class="footer-logo">Find<em>Me</em>AJob<span style="font-family:'Inter',sans-serif;font-style:normal;font-size:.58rem;color:var(--text3)">.co.nz</span></div><div class="footer-sub">AI-powered job discovery for Aotearoa New Zealand &copy; 2026</div></div>
     <div class="footer-links">
       <button id="fl-find" type="button">Find a Job</button>
       <button id="fl-browse" type="button">Browse Jobs</button>
@@ -722,7 +778,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
   </div>
 </footer>
 
-<div id="db"><p class="btext">AI suggestions only — not career advice. <button style="background:none;border:none;color:var(--em);font-size:.73rem;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;font-weight:600;text-decoration:underline;padding:0" id="db-terms" type="button">Terms</button> &amp; <button style="background:none;border:none;color:var(--em);font-size:.73rem;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;font-weight:600;text-decoration:underline;padding:0" id="db-privacy" type="button">Privacy</button></p><button class="bbtn" id="btn-dismiss" type="button">Got it</button></div>
+<div id="db"><p class="btext">AI suggestions only — not career advice. <button style="background:none;border:none;color:var(--em);font-size:.73rem;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;text-decoration:underline;padding:0" id="db-terms" type="button">Terms</button> &amp; <button style="background:none;border:none;color:var(--em);font-size:.73rem;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;text-decoration:underline;padding:0" id="db-privacy" type="button">Privacy</button></p><button class="bbtn" id="btn-dismiss" type="button">Got it</button></div>
 <div id="lm"><div class="mbox"><button class="mbox-close" id="modal-close" type="button">&#215;</button><div id="modal-body"></div></div></div>
 
 <script>
@@ -941,23 +997,34 @@ async function fetchLiveJobs(matches){
 }
 
 async function loadBrowse(){
+  var kw=(document.getElementById('f-keyword').value||'').trim().toLowerCase();
   var cat=document.getElementById('f-cat').value;var reg=document.getElementById('f-reg').value;
+  var ftype=document.getElementById('f-type').value;
   var empEl=document.getElementById('employer-jobs');var liveEl=document.getElementById('browse-live');
   empEl.innerHTML='';liveEl.innerHTML='<div style="padding:1rem;text-align:center;color:var(--text3);font-size:.82rem;font-weight:600;border:1px solid var(--border);border-radius:var(--rl)">Loading<span class="dots"></span></div>';
   var regMap={'Auckland':'Auckland','Wellington':'Wellington','Christchurch':'Canterbury / Christchurch','Hamilton':'Waikato / Hamilton','Tauranga':'Bay of Plenty','Dunedin':'Otago / Dunedin','Whangarei':'Northland','Rotorua':'Bay of Plenty','New Plymouth':'Taranaki','Napier':'Hawkes Bay','Palmerston North':'Manawatu-Whanganui','Whanganui':'Manawatu-Whanganui','Nelson':'Nelson / Marlborough','Invercargill':'Southland','Queenstown':'Otago / Queenstown','Gisborne':'Gisborne','':'New Zealand'};
   var region=regMap[reg]||'New Zealand';
+  var adzQuery=kw||cat||'jobs';
   var approvedP=fetch('/api/approved-jobs').then(function(r){return r.json();}).catch(function(){return{jobs:[]};});
-  var adzunaP=fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:cat||'jobs',region:region})}).then(function(r){return r.json();}).catch(function(){return{jobs:[]};});
+  var adzunaP=fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:adzQuery,region:region})}).then(function(r){return r.json();}).catch(function(){return{jobs:[]};});
   var res=await Promise.all([approvedP,adzunaP]);
   var approved=res[0].jobs||[];var adzuna=res[1].jobs||[];
-  if(approved.length){
+  // Filter employer jobs by keyword, region, category, and type
+  var filtered=approved.filter(function(j){
+    if(kw){var text=(j.title+' '+j.description+' '+j.category+' '+j.company+' '+(j.requirements||'')).toLowerCase();if(text.indexOf(kw)===-1)return false;}
+    if(reg&&j.location!==reg&&j.location!=='Remote NZ'&&j.location!=='Nationwide')return false;
+    if(cat&&j.category!==cat)return false;
+    if(ftype&&j.type!==ftype)return false;
+    return true;
+  });
+  if(filtered.length){
     var h='<div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--gold);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)">Employer Listings</div>';empEl.innerHTML=h;
-    approved.forEach(function(j){var c=document.createElement('div');c.className='job-card'+(j.featured?' featured':'');var logoImg=j.logoUrl?'<img src="'+j.logoUrl+'" alt="logo" style="width:28px;height:28px;object-fit:contain;border-radius:4px;border:1px solid var(--border2);float:right;margin-left:.5rem" onerror="this.remove()">':'';
+    filtered.forEach(function(j){var c=document.createElement('div');c.className='job-card'+(j.featured?' featured':'');var logoImg=j.logoUrl?'<img src="'+j.logoUrl+'" alt="logo" style="width:28px;height:28px;object-fit:contain;border-radius:4px;border:1px solid var(--border2);float:right;margin-left:.5rem" onerror="this.remove()">':'';
     c.innerHTML='<div>'+logoImg+'<div class="job-title">'+j.title+'</div><div class="job-co">'+j.company+'</div><div class="job-loc">'+j.location+'</div><div class="job-desc">'+(j.description||'').substring(0,160)+'...</div>'+(j.companyProfile?'<div class="job-desc" style="margin-top:.25rem;opacity:.75;font-style:italic">'+j.companyProfile.substring(0,100)+'...</div>':'')+'<div class="job-tags"><span class="tag tag-cat">'+j.category+'</span><span class="tag tag-other">'+j.type+'</span><span class="tag tag-other">'+j.salary+'</span>'+(j.featured?'<span class="tag" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold)">⭐ Featured</span>':j.priority?'<span class="tag" style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);color:var(--em)">↑ Priority</span>':'')+'</div><div class="job-links"><button onclick="applyJob(this)" data-email="'+j.email+'" data-title="'+j.title+'" data-id="'+j.id+'" class="job-link apply">Apply Now &#8594;</button></div></div><div class="match-col"><div style="color:'+(j.featured?'var(--gold)':'var(--em)')+';font-size:.65rem;font-weight:800;text-transform:uppercase">'+(j.featured?'Pro':'New')+'</div></div>';empEl.appendChild(c);});
   }
   liveEl.innerHTML='';
-  if(!adzuna.length&&!approved.length){liveEl.innerHTML='<div style="padding:1.5rem;color:var(--text3);font-size:.85rem;font-weight:500;text-align:center;border:1px dashed var(--border2);border-radius:var(--rl)">No jobs found for this search. Try broadening your filters or searching a different region.</div>';return;}
-  if(!adzuna.length){liveEl.innerHTML='<div style="padding:1rem;color:var(--text3);font-size:.82rem;font-weight:500;text-align:center">No live listings found. Try a different filter.</div>';return;}
+  if(!adzuna.length&&!filtered.length){liveEl.innerHTML='<div style="padding:1.5rem;color:var(--text3);font-size:.85rem;font-weight:500;text-align:center;border:1px dashed var(--border2);border-radius:var(--rl)">No jobs found'+(kw?' for "'+kw+'"':'')+'. Try broadening your filters or searching a different region.</div>';return;}
+  if(!adzuna.length){liveEl.innerHTML='<div style="padding:1rem;color:var(--text3);font-size:.82rem;font-weight:500;text-align:center">No live listings found'+(kw?' for "'+kw+'"':'')+'. Try a different keyword or filter.</div>';return;}
   adzuna.forEach(function(job){var c=document.createElement('div');c.className='job-card';c.innerHTML='<div><div style="margin-bottom:.4rem"><span class="tag tag-live">Live</span></div><div class="job-title">'+job.title+'</div><div class="job-co">'+job.company+'</div><div class="job-loc">'+job.location+'</div><div class="job-desc">'+job.description+'</div>'+(job.salary?'<div class="job-tags"><span class="tag tag-other">'+job.salary+'</span></div>':'')+'<div class="job-links"><a href="'+job.url+'" target="_blank" class="job-link apply">Apply Now &#8594;</a></div></div><div class="match-col"><div style="color:var(--em);font-size:.65rem;font-weight:800;text-transform:uppercase">Live</div></div>';liveEl.appendChild(c);});
 }
 
@@ -1165,6 +1232,7 @@ document.addEventListener('DOMContentLoaded',function(){try{
   document.getElementById('h-browse').addEventListener('click',function(){showPage('browse');loadBrowse();});
   document.getElementById('h-pricing').addEventListener('click',function(){showPage('pricing');});
   document.getElementById('h-about').addEventListener('click',function(){showPage('about');});
+  document.getElementById('h-account').addEventListener('click',function(){showPage('account');if(seekerSession)showAcctDash();});
   // h-employer is now a direct link to employer portal
   // h-portal is now a direct link
   document.getElementById('hero-try').addEventListener('click',goFind);
@@ -1173,15 +1241,16 @@ document.addEventListener('DOMContentLoaded',function(){try{
   // cta-employer is now a direct link
   document.getElementById('hamburger').addEventListener('click',function(){document.getElementById('moverlay').classList.add('open');});
   document.getElementById('moverlay').addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
-  ['mm-home','mm-find','mm-browse','mm-pricing','mm-about'].forEach(function(id){
+  ['mm-home','mm-find','mm-browse','mm-pricing','mm-account','mm-about'].forEach(function(id){
     var el=document.getElementById(id);
     if(!el)return;
     el.addEventListener('click',function(){
       document.getElementById('moverlay').classList.remove('open');
-      var map={'mm-home':'home','mm-find':'find','mm-browse':'browse','mm-pricing':'pricing','mm-about':'about'};
+      var map={'mm-home':'home','mm-find':'find','mm-browse':'browse','mm-pricing':'pricing','mm-account':'account','mm-about':'about'};
       var pg=map[id];
       if(pg==='find')goFind();
       else if(pg==='browse'){showPage('browse');loadBrowse();}
+      else if(pg==='account'){showPage('account');if(seekerSession)showAcctDash();}
       else if(pg)showPage(pg);
     });
   });
@@ -1205,12 +1274,99 @@ document.addEventListener('DOMContentLoaded',function(){try{
   var bns=document.getElementById('btn-new-search');if(bns)bns.addEventListener('click',function(){skills=[];renderSkills();document.getElementById('results').style.display='none';document.getElementById('insights').style.display='none';resetFind();});
   document.getElementById('res-browse').addEventListener('click',function(){showPage('browse');loadBrowse();});
   // browse-post is now a direct link
-  document.getElementById('f-cat').addEventListener('change',loadBrowse);
-  document.getElementById('f-reg').addEventListener('change',loadBrowse);
+  document.getElementById('f-cat').addEventListener('input',loadBrowse);
+  document.getElementById('f-reg').addEventListener('input',loadBrowse);
   document.getElementById('f-type').addEventListener('change',loadBrowse);
+  document.getElementById('f-search-btn').addEventListener('click',loadBrowse);
+  document.getElementById('f-keyword').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();loadBrowse();}});
   document.getElementById('pricing-try').addEventListener('click',goFind);
   // plan buttons are now direct links to portal
   document.getElementById('fl-find').addEventListener('click',goFind);
+  // === SEEKER ACCOUNT ===
+var seekerSession=null;
+function switchAcctTab(tab){
+  document.getElementById('acct-login').style.display=tab==='login'?'block':'none';
+  document.getElementById('acct-register').style.display=tab==='register'?'block':'none';
+  document.getElementById('acct-tab-login').style.background=tab==='login'?'var(--em3)':'none';
+  document.getElementById('acct-tab-login').style.color=tab==='login'?'var(--em)':'var(--text3)';
+  document.getElementById('acct-tab-register').style.background=tab==='register'?'var(--em3)':'none';
+  document.getElementById('acct-tab-register').style.color=tab==='register'?'var(--em)':'var(--text3)';
+}
+function showAcctDash(){
+  document.getElementById('acct-auth').style.display='none';
+  document.getElementById('acct-dash').style.display='block';
+  document.getElementById('sk-dash-name').textContent=seekerSession.name;
+  loadSeekerApps();
+}
+function showAcctAuth(){
+  document.getElementById('acct-auth').style.display='block';
+  document.getElementById('acct-dash').style.display='none';
+}
+async function loadSeekerApps(){
+  var list=document.getElementById('sk-apps-list');
+  list.innerHTML='<div style="color:var(--text3);font-size:.82rem;font-weight:500">Loading...</div>';
+  try{
+    var r=await fetch('/api/seeker-apps',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'list',email:seekerSession.email,password:seekerSession.password})});
+    var d=await r.json();
+    if(d.success&&d.applications&&d.applications.length){
+      list.innerHTML='';
+      d.applications.forEach(function(app){
+        var div=document.createElement('div');
+        div.style.cssText='padding:.65rem 0;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:.5rem';
+        div.innerHTML='<div><div style="font-size:.88rem;font-weight:700;color:var(--text)">'+app.jobTitle+'</div><div style="font-size:.75rem;color:var(--text3);font-weight:500">'+(app.company||'')+(app.appliedAt?' · Applied '+new Date(app.appliedAt).toLocaleDateString('en-NZ',{day:'numeric',month:'short'}):'')+'</div></div><span style="font-size:.65rem;font-weight:700;text-transform:uppercase;padding:.2rem .5rem;border-radius:999px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.15);color:var(--em)">'+( app.status||'sent')+'</span>';
+        list.appendChild(div);
+      });
+    }else{
+      list.innerHTML='<div style="text-align:center;padding:1.5rem;color:var(--text3)"><div style="font-size:1.5rem;margin-bottom:.5rem">📋</div><div style="font-size:.88rem;font-weight:600;color:var(--text);margin-bottom:.25rem">No applications yet</div><div style="font-size:.78rem;font-weight:500">When you apply to jobs, they\'ll appear here.</div></div>';
+    }
+  }catch(e){list.innerHTML='<div style="color:var(--text3);font-size:.82rem">Could not load applications.</div>';}
+}
+document.getElementById('acct-tab-login').addEventListener('click',function(){switchAcctTab('login');});
+document.getElementById('acct-tab-register').addEventListener('click',function(){switchAcctTab('register');});
+document.getElementById('sk-btn-login').addEventListener('click',async function(){
+  var email=document.getElementById('sk-l-email').value.trim().toLowerCase();
+  var pass=document.getElementById('sk-l-pass').value;
+  var err=document.getElementById('sk-l-err');err.classList.remove('show');
+  if(!email||!pass){err.textContent='Please enter your email and password.';err.classList.add('show');return;}
+  this.textContent='Signing in...';this.disabled=true;
+  try{
+    var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'login',email:email,password:pass})});
+    var d=await r.json();
+    if(d.success){seekerSession={email:email,password:pass,name:d.seeker.name};sessionStorage.setItem('seekerSession',JSON.stringify(seekerSession));showAcctDash();toast('Welcome back!');}
+    else{err.textContent=d.error||'Login failed.';err.classList.add('show');}
+  }catch(e){err.textContent='Connection error.';err.classList.add('show');}
+  this.textContent='Sign In';this.disabled=false;
+});
+document.getElementById('sk-l-pass').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('sk-btn-login').click();});
+document.getElementById('sk-btn-register').addEventListener('click',async function(){
+  var name=document.getElementById('sk-r-name').value.trim();
+  var email=document.getElementById('sk-r-email').value.trim().toLowerCase();
+  var pass=document.getElementById('sk-r-pass').value;
+  var err=document.getElementById('sk-r-err');err.classList.remove('show');
+  if(!name||!email||!pass){err.textContent='Please fill in all fields.';err.classList.add('show');return;}
+  this.textContent='Creating...';this.disabled=true;
+  try{
+    var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',name:name,email:email,password:pass})});
+    var d=await r.json();
+    if(d.success){seekerSession={email:email,password:pass,name:name};sessionStorage.setItem('seekerSession',JSON.stringify(seekerSession));showAcctDash();toast('Account created!');}
+    else{err.textContent=d.error||'Registration failed.';err.classList.add('show');}
+  }catch(e){err.textContent='Connection error.';err.classList.add('show');}
+  this.textContent='Create Free Account';this.disabled=false;
+});
+document.getElementById('sk-r-pass').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('sk-btn-register').click();});
+document.getElementById('sk-btn-signout').addEventListener('click',function(){seekerSession=null;sessionStorage.removeItem('seekerSession');showAcctAuth();toast('Signed out');});
+document.getElementById('sk-go-find').addEventListener('click',function(){goFind();});
+document.getElementById('sk-go-browse').addEventListener('click',function(){showPage('browse');loadBrowse();});
+document.getElementById('sk-btn-delete').addEventListener('click',function(){document.getElementById('sk-delete-confirm').style.display='block';});
+document.getElementById('sk-delete-no').addEventListener('click',function(){document.getElementById('sk-delete-confirm').style.display='none';});
+document.getElementById('sk-delete-yes').addEventListener('click',async function(){
+  if(!seekerSession)return;
+  try{var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete-account',email:seekerSession.email,password:seekerSession.password})});
+  var d=await r.json();if(d.success){seekerSession=null;sessionStorage.removeItem('seekerSession');showAcctAuth();toast('Account deleted.');}
+  }catch(e){toast('Error deleting account.');}
+});
+// Auto-login seeker
+(function(){var s=sessionStorage.getItem('seekerSession');if(s){try{seekerSession=JSON.parse(s);}catch(e){}}})();
   document.getElementById('fl-browse').addEventListener('click',function(){showPage('browse');loadBrowse();});
   document.getElementById('fl-pricing').addEventListener('click',function(){showPage('pricing');});
   // fl-employer is now a direct link
@@ -1279,7 +1435,7 @@ document.addEventListener('DOMContentLoaded',function(){try{
       <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.3rem">Send your application to</div>
       <div style="font-size:1rem;font-weight:800;color:var(--em);margin-bottom:.5rem" id="apply-email-display"></div>
       <input type="text" id="apply-email-val" readonly style="position:absolute;opacity:0;pointer-events:none">
-      <button onclick="navigator.clipboard.writeText(document.getElementById('apply-email-val').value).then(function(){var b=document.getElementById('copy-btn');b.textContent='&#10003; Copied!';b.style.background='var(--em2)';setTimeout(function(){b.textContent='Copy Email Address';b.style.background='';},2500);})" id="copy-btn" style="background:var(--em);border:none;color:#fff;padding:.5rem 1rem;border-radius:var(--r);font-family:Cabinet Grotesk,sans-serif;font-size:.78rem;font-weight:800;cursor:pointer;width:100%">Copy Email Address</button>
+      <button onclick="navigator.clipboard.writeText(document.getElementById('apply-email-val').value).then(function(){var b=document.getElementById('copy-btn');b.textContent='&#10003; Copied!';b.style.background='var(--em2)';setTimeout(function(){b.textContent='Copy Email Address';b.style.background='';},2500);})" id="copy-btn" style="background:var(--em);border:none;color:#fff;padding:.5rem 1rem;border-radius:var(--r);font-family:Inter,sans-serif;font-size:.78rem;font-weight:800;cursor:pointer;width:100%">Copy Email Address</button>
     </div>
     <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:1rem;margin-bottom:1rem">
       <div style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.65rem">What to include in your email</div>
@@ -1297,8 +1453,8 @@ document.addEventListener('DOMContentLoaded',function(){try{
     </div>
     <div style="font-size:.72rem;color:var(--text3);font-weight:500;line-height:1.6;margin-bottom:1rem;padding:.6rem .75rem;background:var(--bg3);border-radius:var(--r);border:1px solid var(--border)">&#128274; Your privacy is protected. Your CV is never stored on FindMeAJob.co.nz. You apply directly to the employer.</div>
     <div style="display:flex;gap:.5rem">
-      <button onclick="document.getElementById('apply-modal').style.display='none';goPage('browse')" style="flex:1;background:linear-gradient(135deg,var(--em),var(--em2));border:none;color:#fff;padding:.75rem;border-radius:var(--r);font-family:Cabinet Grotesk,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer">Browse More Jobs</button>
-      <button onclick="document.getElementById('apply-modal').style.display='none'" style="flex:1;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:.75rem;border-radius:var(--r);font-family:Cabinet Grotesk,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer">Close</button>
+      <button onclick="document.getElementById('apply-modal').style.display='none';goPage('browse')" style="flex:1;background:linear-gradient(135deg,var(--em),var(--em2));border:none;color:#fff;padding:.75rem;border-radius:var(--r);font-family:Inter,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer">Browse More Jobs</button>
+      <button onclick="document.getElementById('apply-modal').style.display='none'" style="flex:1;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:.75rem;border-radius:var(--r);font-family:Inter,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer">Close</button>
     </div>
   </div>
 </div>
