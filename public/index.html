@@ -1457,30 +1457,56 @@ async function fetchCareerPivots(matches, list) {
     var pivots = JSON.parse(raw.substring(si, ei+1));
     if (!pivots.length) throw new Error('Empty');
 
+    // Fetch live Adzuna jobs for each pivot role
+    var pivotFetches = pivots.slice(0,4).map(function(p) {
+      return fetch('/api/jobs', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({query:p.role, limit:3})
+      }).then(function(r){return r.json();}).catch(function(){return {jobs:[]};});
+    });
+    var pivotResults = await Promise.all(pivotFetches);
+
     var colors = [
-      {bg:'rgba(139,92,246,.08)',border:'rgba(139,92,246,.2)',accent:'#8b5cf6'},
-      {bg:'rgba(59,130,246,.08)',border:'rgba(59,130,246,.2)',accent:'#3b82f6'},
-      {bg:'rgba(245,158,11,.08)',border:'rgba(245,158,11,.2)',accent:'#f59e0b'},
-      {bg:'rgba(236,72,153,.08)',border:'rgba(236,72,153,.2)',accent:'#ec4899'}
+      {bg:'rgba(139,92,246,.08)',border:'rgba(139,92,246,.2)',accent:'#8b5cf6',glow:'rgba(139,92,246,.15)'},
+      {bg:'rgba(59,130,246,.08)',border:'rgba(59,130,246,.2)',accent:'#3b82f6',glow:'rgba(59,130,246,.15)'},
+      {bg:'rgba(245,158,11,.08)',border:'rgba(245,158,11,.2)',accent:'#f59e0b',glow:'rgba(245,158,11,.15)'},
+      {bg:'rgba(236,72,153,.08)',border:'rgba(236,72,153,.2)',accent:'#ec4899',glow:'rgba(236,72,153,.15)'}
     ];
 
     var html = '<div style="position:relative;padding:2rem 0">';
     html += '<div style="text-align:center;margin-bottom:1.75rem">';
     html += '<div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:2px;background:linear-gradient(135deg,var(--purple),#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.5rem">Beyond your horizon</div>';
     html += '<div style="font-size:1.4rem;font-weight:800;color:var(--text);line-height:1.2">Your skills unlock<br><span style="background:linear-gradient(135deg,var(--purple),#ec4899,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent">unexpected doors</span></div>';
-    html += '<div style="font-size:.78rem;color:var(--text3);margin-top:.5rem;font-weight:500;max-width:400px;margin-left:auto;margin-right:auto">AI-discovered career pivots based on your transferable skills</div>';
+    html += '<div style="font-size:.78rem;color:var(--text3);margin-top:.5rem;font-weight:500;max-width:400px;margin-left:auto;margin-right:auto">AI-discovered career pivots with live NZ job listings</div>';
     html += '</div>';
     html += '<div class="pivot-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">';
 
     pivots.slice(0,4).forEach(function(p, i) {
       var c = colors[i % colors.length];
-      html += '<div style="background:'+c.bg+';border:1px solid '+c.border+';border-radius:var(--rl);padding:1.25rem;position:relative;transition:all .3s;cursor:default" onmouseenter="this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'0 8px 30px '+c.border+'\'" onmouseleave="this.style.transform=\'none\';this.style.boxShadow=\'none\'">';
+      var liveJobs = (pivotResults[i] && pivotResults[i].jobs) || [];
+
+      html += '<div style="background:'+c.bg+';border:1px solid '+c.border+';border-radius:var(--rl);padding:1.25rem;position:relative;transition:all .3s;cursor:default" onmouseenter="this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'0 8px 30px '+c.glow+'\'" onmouseleave="this.style.transform=\'none\';this.style.boxShadow=\'none\'">';
       html += '<div style="font-size:1.5rem;margin-bottom:.5rem">'+(p.icon||'')+'</div>';
       html += '<div style="font-size:.95rem;font-weight:800;color:var(--text);margin-bottom:.15rem">'+esc(p.role)+'</div>';
       html += '<div style="font-size:.7rem;font-weight:700;color:'+c.accent+';text-transform:uppercase;letter-spacing:.5px;margin-bottom:.6rem">'+esc(p.field)+'</div>';
       html += '<div style="font-size:.78rem;color:var(--text2);line-height:1.6;margin-bottom:.6rem">'+esc(p.why)+'</div>';
       html += '<div style="font-size:.75rem;color:var(--text3);font-weight:600;margin-bottom:.5rem">'+esc(p.earning)+'</div>';
-      html += '<div style="font-size:.72rem;color:'+c.accent+';font-weight:600;font-style:italic;line-height:1.5">'+esc(p.excitement)+'</div>';
+      html += '<div style="font-size:.72rem;color:'+c.accent+';font-weight:600;font-style:italic;line-height:1.5;margin-bottom:.75rem">'+esc(p.excitement)+'</div>';
+
+      // Live jobs for this pivot
+      if (liveJobs.length) {
+        html += '<div style="border-top:1px solid '+c.border+';padding-top:.65rem;margin-top:.25rem">';
+        html += '<div style="font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:'+c.accent+';margin-bottom:.5rem">'+liveJobs.length+' Live NZ listing'+(liveJobs.length>1?'s':'')+'</div>';
+        liveJobs.forEach(function(lj) {
+          html += '<a href="'+esc(lj.url)+'" target="_blank" rel="noopener" style="display:block;text-decoration:none;padding:.4rem .6rem;margin-bottom:.35rem;background:rgba(255,255,255,.03);border:1px solid '+c.border+';border-radius:8px;transition:all .2s" onmouseenter="this.style.background=\'rgba(255,255,255,.08)\'" onmouseleave="this.style.background=\'rgba(255,255,255,.03)\'">';
+          html += '<div style="font-size:.78rem;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:.1rem">'+esc(lj.title)+'</div>';
+          html += '<div style="font-size:.68rem;color:var(--text3);display:flex;justify-content:space-between;align-items:center"><span>'+esc(lj.company)+'</span><span>'+esc(lj.location)+'</span></div>';
+          html += '</a>';
+        });
+        html += '</div>';
+      }
+
       html += '</div>';
     });
 
