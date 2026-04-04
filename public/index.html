@@ -1481,15 +1481,17 @@ async function loadBrowse(){
       return true;
     });
     adzuna = regional;
-    if (!adzuna.length && !otherNZ.length) {
-      liveEl.innerHTML='<div style="padding:1rem;color:var(--text3);font-size:.82rem;font-weight:500;text-align:center">No live listings found. Try a different search or region.</div>';
-      return;
+    if (!adzuna.length) {
+      var noMsg = 'No live listings found in ' + reg + '.';
+      if (otherNZ.length) {
+        noMsg += ' Showing ' + otherNZ.length + ' result' + (otherNZ.length > 1 ? 's' : '') + ' from other NZ locations.';
+        adzuna = otherNZ;
+      } else {
+        noMsg += ' Try a broader search or "All of NZ".';
+      }
+      liveEl.innerHTML='<div style="padding:.75rem 1rem;color:var(--text2);font-size:.82rem;font-weight:600;text-align:center;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);margin-bottom:1rem">' + noMsg + '</div>';
+      if (!adzuna.length) return;
     }
-  } else {
-    var otherNZ = [];
-  }
-  if(!adzuna.length && otherNZ && otherNZ.length){
-    adzuna = otherNZ;
   }
   // Filter by job type
   if (type) {
