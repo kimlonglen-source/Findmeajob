@@ -1417,20 +1417,12 @@ async function fetchLiveJobs(matches){
     }
   } catch(e) {}
 
-  var ah=document.createElement('div');
-  ah.style.cssText='font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin:1.5rem 0 .75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)';
-  ah.textContent=live.length?'AI Suggested Roles':'AI Matched Roles';
-  list.appendChild(ah);
-  var sortedAiJobs = (window._aiJobs||[]).slice().sort(function(a,b){return (b.match_percent||0)-(a.match_percent||0);});
-  sortedAiJobs.forEach(function(j){
-    var su='https://www.seek.co.nz/jobs?keywords='+encodeURIComponent(j.seek_query||j.title)+'&where=New+Zealand';
-    var tu='https://www.trademe.co.nz/a/jobs/search?search_string='+encodeURIComponent(j.title)+'&region=0';
-    var tags='<span class="tag tag-cat">'+(j.category||'General')+'</span>';
-    (j.tags||[]).forEach(function(t){tags+='<span class="tag tag-other">'+t+'</span>';});
-    var c=document.createElement('div');c.className='job-card';
-    c.innerHTML='<div><div class="job-title">'+esc(j.title)+'</div><div class="job-co">'+esc(j.company_type||'')+'</div><div class="job-loc">'+esc(j.location)+'</div>'+(j.reason?'<div style="font-size:.78rem;color:var(--em);font-weight:600;margin:.35rem 0;padding:.4rem .65rem;background:var(--em3);border:1px solid rgba(16,185,129,.15);border-radius:6px;line-height:1.5">'+esc(j.reason)+'</div>':'')+'<div class="job-desc">'+esc(j.description)+'</div><div class="job-tags">'+tags+'</div><div class="job-links"><a href="'+su+'" target="_blank" rel="noopener" class="job-link">Seek</a><a href="'+tu+'" target="_blank" rel="noopener" class="job-link">Trade Me</a><a href="https://www.linkedin.com/jobs/search/?keywords='+encodeURIComponent(j.title)+'&location=New+Zealand" target="_blank" rel="noopener" class="job-link">LinkedIn</a></div></div><div class="match-col"><div class="match-pct">'+j.match_percent+'%</div><div class="match-lbl">match</div></div>';
-    list.appendChild(c);
-  });
+  if(!live.length){
+    var noLive=document.createElement('div');
+    noLive.style.cssText='padding:1rem;color:var(--text3);font-size:.82rem;font-weight:500;text-align:center;border:1px solid var(--border);border-radius:var(--r);margin-top:.75rem';
+    noLive.textContent='No live job listings found matching your profile. Try browsing all NZ jobs instead.';
+    list.appendChild(noLive);
+  }
 }
 
 async function loadBrowse(){
