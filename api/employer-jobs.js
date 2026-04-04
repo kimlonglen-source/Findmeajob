@@ -50,6 +50,10 @@ module.exports = async function handler(req, res) {
         if (job.status === "approved") return res.status(400).json({ error: "Cannot edit a live listing. Contact hello@findmeajob.co.nz" });
         if (!updates || typeof updates !== "object") return res.status(400).json({ error: "Missing or invalid updates" });
         var allowed = ["title", "location", "category", "type", "salary", "description", "requirements", "why"];
+        var empPlan = emp2.plan || "free";
+        if (empPlan === "basic" || empPlan === "pro") {
+          allowed.push("companyProfile", "logoUrl");
+        }
         allowed.forEach(function(k) { if (updates[k] !== undefined) job[k] = updates[k]; });
         job.status = "pending";
         job.editedAt = new Date().toISOString();
@@ -60,6 +64,9 @@ module.exports = async function handler(req, res) {
 
       if (action === "relist") {
         if (job.status !== "approved") return res.status(400).json({ error: "Only live listings can be relisted" });
+        var LAUNCH_END_R = new Date("2026-10-01T00:00:00Z");
+        var PLAN_DAYS_R = { free: 30, basic: 60, pro: 90 };
+        job.planDays = (new Date() < LAUNCH_END_R) ? 90 : (PLAN_DAYS_R[job.plan] || 30);
         job.approvedAt = new Date().toISOString();
         if (job.plan === "pro") {
           job.featured = true;

@@ -197,6 +197,11 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
       </div>
       <a href="mailto:hello@findmeajob.co.nz?subject=Upgrade my plan" style="font-size:.75rem;font-weight:700;color:var(--em);text-decoration:none;white-space:nowrap">Upgrade &#8594;</a>
     </div>
+    <!-- Launch banner -->
+    <div id="launch-banner" style="display:none;background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(20,184,166,.04));border:1px solid rgba(16,185,129,.2);border-radius:var(--r);padding:.75rem 1rem;margin-bottom:1rem">
+      <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--em);margin-bottom:.2rem">Launch Special</div>
+      <div style="font-size:.82rem;color:var(--text2);font-weight:500">Post unlimited jobs FREE until October 2026. All plans get 90-day visibility.</div>
+    </div>
     <!-- Stats -->
     <div class="stats">
       <div class="stat"><div class="stat-n" id="ps-total" style="color:var(--text)">0</div><div class="stat-l">Total</div></div>
@@ -257,7 +262,9 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
 var session = null;
 var selectedPlan = 'free';
 var pendingAction = null;
-var PLAN_DAYS = {free:30, basic:60, pro:90};
+var LAUNCH_END = new Date("2026-10-01T00:00:00Z");
+var IS_LAUNCH = new Date() < LAUNCH_END;
+var PLAN_DAYS = IS_LAUNCH ? {free:90, basic:90, pro:90} : {free:30, basic:60, pro:90};
 
 function toast(msg) {
   var t = document.getElementById('toast');
@@ -289,7 +296,11 @@ function selectPlan(plan) {
     el.style.borderColor = p === plan ? 'var(--em)' : 'var(--border2)';
     el.style.background = p === plan ? 'rgba(16,185,129,.06)' : 'var(--bg3)';
   });
-  var notes = {
+  var notes = IS_LAUNCH ? {
+    free: 'Starter: Unlimited listings - 90 day visibility - FREE during launch',
+    basic: 'Growth: Unlimited listings - 90 day visibility - Priority - Company profile + logo - FREE during launch',
+    pro: 'Pro: Unlimited listings - 90 days - Auto-featured - AI matching - FREE during launch'
+  } : {
     free: 'Starter: 1 listing - 30 day visibility - Free forever',
     basic: 'Growth: 5 listings - 60 day visibility - Priority placement - Company profile + logo',
     pro: 'Pro: Unlimited listings - 90 days - Auto-featured - AI matching - Full analytics'
@@ -376,7 +387,11 @@ function showPortal(employer, jobs) {
   document.getElementById('emp-name').textContent = employer.name;
   document.getElementById('emp-meta').textContent = employer.company + ' \u00b7 ' + employer.email;
 
-  var planInfo = {
+  var planInfo = IS_LAUNCH ? {
+    free: {label:'Starter Plan', color:'var(--em)', features:'Unlimited listings \u00b7 90 day visibility \u00b7 Launch special'},
+    basic: {label:'Growth Plan', color:'var(--em)', features:'Unlimited listings \u00b7 90 day visibility \u00b7 Priority \u00b7 Company profile \u00b7 Launch special'},
+    pro: {label:'Pro Plan', color:'var(--gold)', features:'Unlimited \u00b7 90 days \u00b7 Auto-featured \u2b50 \u00b7 AI matching \u00b7 Launch special'}
+  } : {
     free: {label:'Starter Plan', color:'var(--text3)', features:'1 listing \u00b7 30 day visibility \u00b7 Standard placement'},
     basic: {label:'Growth Plan', color:'var(--em)', features:'5 listings \u00b7 60 day visibility \u00b7 Priority placement \u00b7 Company profile \u00b7 Analytics'},
     pro: {label:'Pro Plan', color:'var(--gold)', features:'Unlimited \u00b7 90 days \u00b7 Auto-featured \u2b50 \u00b7 AI matching \u00b7 Full analytics'}
@@ -392,6 +407,9 @@ function showPortal(employer, jobs) {
   if (cc) cc.style.display = (selectedPlan === 'basic' || selectedPlan === 'pro') ? 'block' : 'none';
   var pn = document.getElementById('pro-note');
   if (pn) pn.style.display = selectedPlan === 'pro' ? 'block' : 'none';
+
+  var lb = document.getElementById('launch-banner');
+  if (lb) lb.style.display = IS_LAUNCH ? 'block' : 'none';
 
   renderJobs(jobs);
 }
@@ -449,8 +467,9 @@ async function submitJob() {
       ok.innerHTML = '&#10003; Listing submitted! We will review it within 24 hours. <button onclick="loadAndShowPortal()" style="background:none;border:none;color:var(--em);font-family:Cabinet Grotesk,sans-serif;font-size:.82rem;cursor:pointer;font-weight:700;padding:0">View dashboard &#8594;</button>';
       ok.style.display = 'block';
       btn.style.display = 'none';
-      // Clear form
+      // Clear form and auto-redirect to dashboard
       ['e-title','e-desc','e-req','e-why','e-company-profile','e-logo'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+      setTimeout(loadAndShowPortal, 3000);
     } else if (d.limitReached) {
       err.textContent = d.error + ' Contact hello@findmeajob.co.nz to upgrade.';
       err.style.display = 'block';

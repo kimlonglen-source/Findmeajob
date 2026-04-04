@@ -1,5 +1,6 @@
 const { getKV, hget, hgetall, hset } = require('./_kv');
 
+const LAUNCH_END = new Date("2026-10-01T00:00:00Z");
 const PLAN_LIMITS = { free: 1, basic: 5, pro: 999 };
 const PLAN_DAYS = { free: 30, basic: 60, pro: 90 };
 
@@ -13,19 +14,22 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'Missing required fields' });
 
     const planKey = plan || 'free';
+    const isLaunchPeriod = new Date() < LAUNCH_END;
 
-    // Check listing limit
-    const limit = PLAN_LIMITS[planKey] || 1;
-    if (limit < 999) {
-      const allJobs = await hgetall('jobs');
-      const active = Object.values(allJobs)
-        .map(j => typeof j === 'string' ? JSON.parse(j) : j)
-        .filter(j => j.email === employerEmail && (j.status === 'approved' || j.status === 'pending'));
-      if (active.length >= limit) {
-        return res.status(400).json({
-          error: `Your ${planKey} plan allows ${limit} active listing${limit > 1 ? 's' : ''}. You have ${active.length} active. Upgrade to post more.`,
-          limitReached: true
-        });
+    // During launch: unlimited for all plans
+    if (!isLaunchPeriod) {
+      const limit = PLAN_LIMITS[planKey] || 1;
+      if (limit < 999) {
+        const allJobs = await hgetall('jobs');
+        const active = Object.values(allJobs)
+          .map(j => typeof j === 'string' ? JSON.parse(j) : j)
+          .filter(j => j.email === employerEmail && (j.status === 'approved' || j.status === 'pending'));
+        if (active.length >= limit) {
+          return res.status(400).json({
+            error: `Your ${planKey} plan allows ${limit} active listing${limit > 1 ? 's' : ''}. You have ${active.length} active. Upgrade to post more.`,
+            limitReached: true
+          });
+        }
       }
     }
 
@@ -43,11 +47,11 @@ module.exports = async function handler(req, res) {
       description,
       requirements: requirements || '',
       why: why || '',
-      companyProfile: companyProfile || '',
+      companyProfile: (planKey === 'basic' || planKey === 'pro') ? (companyProfile || '') : '',
       website: website || '',
-      logoUrl: logoUrl || '',
+      logoUrl: (planKey === 'basic' || planKey === 'pro') ? (logoUrl || '') : '',
       plan: planKey,
-      planDays: PLAN_DAYS[planKey] || 30,
+      planDays: isLaunchPeriod ? 90 : (PLAN_DAYS[planKey] || 30),
       // Pro listings get auto-featured when approved
       autoFeature: planKey === 'pro',
       // Growth+ get priority placement

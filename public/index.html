@@ -308,7 +308,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
           <input type="file" id="cv-file" accept=".pdf,.doc,.docx,.txt" style="display:none">
           <div style="color:var(--text3);margin-bottom:.75rem"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
           <div style="font-weight:800;color:var(--text);margin-bottom:.3rem">Drop your CV here or click to browse</div>
-          <div style="font-size:.75rem;color:var(--text3)">PDF, Word (.docx), or text file</div>
+          <div style="font-size:.75rem;color:var(--text3)">PDF, Word (.docx), or text file (max 10MB)</div>
         </div>
         <div id="cv-info" style="display:none;align-items:center;gap:.75rem;background:var(--em3);border:1px solid rgba(16,185,129,.2);border-radius:var(--r);padding:.75rem 1rem;margin-top:.75rem">
           <span style="color:var(--em)">📄</span>
@@ -383,6 +383,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     </div>
     <div id="skeleton" style="display:none">
       <div style="text-align:center;padding:.75rem;font-size:.82rem;color:var(--text3);font-weight:600">Matching you to NZ jobs<span class="dots"></span></div>
+      <div style="text-align:center;margin-top:.5rem"><button id="skel-cancel" type="button" style="background:none;border:none;color:var(--text3);font-size:.75rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:underline">Cancel</button></div>
       <div class="skel"><div class="skel-line" style="width:60%;height:14px;margin-bottom:.75rem"></div><div class="skel-line" style="width:40%"></div><div class="skel-line"></div><div class="skel-line" style="width:85%"></div></div>
       <div class="skel"><div class="skel-line" style="width:55%;height:14px;margin-bottom:.75rem"></div><div class="skel-line" style="width:35%"></div><div class="skel-line"></div><div class="skel-line" style="width:90%"></div></div>
       <div class="skel"><div class="skel-line" style="width:65%;height:14px;margin-bottom:.75rem"></div><div class="skel-line" style="width:45%"></div><div class="skel-line"></div><div class="skel-line" style="width:80%"></div></div>
@@ -416,7 +417,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <div style="margin-bottom:1.5rem"><div class="page-eyebrow">Live Listings</div><div class="page-title">Browse NZ Jobs</div></div>
     <div class="filter-row">
       <select id="f-cat"><option value="">All categories</option><option>Technology</option><option>Healthcare</option><option>Trades</option><option>Hospitality</option><option>Admin</option><option>Education</option><option>Sales</option><option>Transport</option><option>Agriculture</option><option>Creative</option></select>
-      <select id="f-reg"><option value="">All of NZ</option><option>Auckland</option><option>Wellington</option><option>Christchurch</option><option>Hamilton</option><option>Dunedin</option></select>
+      <select id="f-reg"><option value="">All of NZ</option><option>Auckland</option><option>Wellington</option><option>Christchurch</option><option>Hamilton</option><option>Tauranga</option><option>Dunedin</option><option>Whangarei</option><option>New Plymouth</option><option>Palmerston North</option><option>Nelson</option></select>
       <select id="f-type"><option value="">Any type</option><option>Full-time</option><option>Part-time</option><option>Casual</option><option>Remote</option></select>
     </div>
     <div id="employer-jobs"></div>
@@ -940,7 +941,7 @@ async function loadBrowse(){
   var cat=document.getElementById('f-cat').value;var reg=document.getElementById('f-reg').value;
   var empEl=document.getElementById('employer-jobs');var liveEl=document.getElementById('browse-live');
   empEl.innerHTML='';liveEl.innerHTML='<div style="padding:1rem;text-align:center;color:var(--text3);font-size:.82rem;font-weight:600;border:1px solid var(--border);border-radius:var(--rl)">Loading<span class="dots"></span></div>';
-  var regMap={'Auckland':'Auckland','Wellington':'Wellington','Christchurch':'Canterbury / Christchurch','Hamilton':'Waikato / Hamilton','Dunedin':'Otago / Dunedin','':'New Zealand'};
+  var regMap={'Auckland':'Auckland','Wellington':'Wellington','Christchurch':'Canterbury / Christchurch','Hamilton':'Waikato / Hamilton','Tauranga':'Bay of Plenty','Dunedin':'Otago / Dunedin','Whangarei':'Northland','New Plymouth':'Taranaki','Palmerston North':'Manawatu-Whanganui','Nelson':'Nelson / Marlborough','':'New Zealand'};
   var region=regMap[reg]||'New Zealand';
   var approvedP=fetch('/api/approved-jobs').then(function(r){return r.json();}).catch(function(){return{jobs:[]};});
   var adzunaP=fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:cat||'jobs',region:region})}).then(function(r){return r.json();}).catch(function(){return{jobs:[]};});
@@ -952,6 +953,7 @@ async function loadBrowse(){
     c.innerHTML='<div>'+logoImg+'<div class="job-title">'+j.title+'</div><div class="job-co">'+j.company+'</div><div class="job-loc">'+j.location+'</div><div class="job-desc">'+(j.description||'').substring(0,160)+'...</div>'+(j.companyProfile?'<div class="job-desc" style="margin-top:.25rem;opacity:.75;font-style:italic">'+j.companyProfile.substring(0,100)+'...</div>':'')+'<div class="job-tags"><span class="tag tag-cat">'+j.category+'</span><span class="tag tag-other">'+j.type+'</span><span class="tag tag-other">'+j.salary+'</span>'+(j.featured?'<span class="tag" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold)">⭐ Featured</span>':j.priority?'<span class="tag" style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);color:var(--em)">↑ Priority</span>':'')+'</div><div class="job-links"><button onclick="applyJob(this)" data-email="'+j.email+'" data-title="'+j.title+'" data-id="'+j.id+'" class="job-link apply">Apply Now &#8594;</button></div></div><div class="match-col"><div style="color:'+(j.featured?'var(--gold)':'var(--em)')+';font-size:.65rem;font-weight:800;text-transform:uppercase">'+(j.featured?'Pro':'New')+'</div></div>';empEl.appendChild(c);});
   }
   liveEl.innerHTML='';
+  if(!adzuna.length&&!approved.length){liveEl.innerHTML='<div style="padding:1.5rem;color:var(--text3);font-size:.85rem;font-weight:500;text-align:center;border:1px dashed var(--border2);border-radius:var(--rl)">No jobs found for this search. Try broadening your filters or searching a different region.</div>';return;}
   if(!adzuna.length){liveEl.innerHTML='<div style="padding:1rem;color:var(--text3);font-size:.82rem;font-weight:500;text-align:center">No live listings found. Try a different filter.</div>';return;}
   adzuna.forEach(function(job){var c=document.createElement('div');c.className='job-card';c.innerHTML='<div><div style="margin-bottom:.4rem"><span class="tag tag-live">Live</span></div><div class="job-title">'+job.title+'</div><div class="job-co">'+job.company+'</div><div class="job-loc">'+job.location+'</div><div class="job-desc">'+job.description+'</div>'+(job.salary?'<div class="job-tags"><span class="tag tag-other">'+job.salary+'</span></div>':'')+'<div class="job-links"><a href="'+job.url+'" target="_blank" class="job-link apply">Apply Now &#8594;</a></div></div><div class="match-col"><div style="color:var(--em);font-size:.65rem;font-weight:800;text-transform:uppercase">Live</div></div>';liveEl.appendChild(c);});
 }
@@ -1195,6 +1197,7 @@ document.addEventListener('DOMContentLoaded',function(){try{
   document.getElementById('btn-add').addEventListener('click',addSkill);
   document.querySelectorAll('#chips .chip').forEach(function(ch){ch.addEventListener('click',function(){var s=this.dataset.s;if(s&&!skills.includes(s.toLowerCase())){skills.push(s.toLowerCase());renderSkills();setStep(3);toast(s+' added');}});});
   document.getElementById('btn-search').addEventListener('click',findJobs);
+  document.getElementById('skel-cancel').addEventListener('click',function(){document.getElementById('skeleton').style.display='none';resetFind();toast('Search cancelled');});
   document.getElementById('btn-restart').addEventListener('click',function(){skills=[];renderSkills();document.getElementById('results').style.display='none';document.getElementById('insights').style.display='none';resetFind();});
   var bns=document.getElementById('btn-new-search');if(bns)bns.addEventListener('click',function(){skills=[];renderSkills();document.getElementById('results').style.display='none';document.getElementById('insights').style.display='none';resetFind();});
   document.getElementById('res-browse').addEventListener('click',function(){showPage('browse');loadBrowse();});
@@ -1290,7 +1293,10 @@ document.addEventListener('DOMContentLoaded',function(){try{
       </div>
     </div>
     <div style="font-size:.72rem;color:var(--text3);font-weight:500;line-height:1.6;margin-bottom:1rem;padding:.6rem .75rem;background:var(--bg3);border-radius:var(--r);border:1px solid var(--border)">&#128274; Your privacy is protected. Your CV is never stored on FindMeAJob.co.nz. You apply directly to the employer.</div>
-    <button onclick="document.getElementById('apply-modal').style.display='none'" style="width:100%;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:.75rem;border-radius:var(--r);font-family:Cabinet Grotesk,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer">Close</button>
+    <div style="display:flex;gap:.5rem">
+      <button onclick="document.getElementById('apply-modal').style.display='none';goPage('browse')" style="flex:1;background:linear-gradient(135deg,var(--em),var(--em2));border:none;color:#fff;padding:.75rem;border-radius:var(--r);font-family:Cabinet Grotesk,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer">Browse More Jobs</button>
+      <button onclick="document.getElementById('apply-modal').style.display='none'" style="flex:1;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:.75rem;border-radius:var(--r);font-family:Cabinet Grotesk,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer">Close</button>
+    </div>
   </div>
 </div>
 </body>
