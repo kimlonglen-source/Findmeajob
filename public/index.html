@@ -1241,7 +1241,7 @@ async function fetchLiveJobs(matches){
         if (tw.length > 3 && professionWords.indexOf(tw) === -1) professionWords.push(tw);
       });
     });
-    var genericWords = ['senior','junior','lead','manager','assistant','part','time','full','team','chief','head','general','staff','worker','officer','coordinator','specialist','consultant','advisor','executive','director','national','regional','area','new','the','and','for','with','community','clinical','hospital','medical','health','care','centre','center','service','services','practice','based','remote','home','mobile','local','primary','public','private','line','shift','plant','ground','site','field','main','first','second','third','night','front','back','shop','store','food','crew','train','hand','work','support','level','entry','city','town','road','house','upper','lower','west','east','north','south','central','cross','associate','applied','registered','certified','licensed','qualified','experienced','professional'];
+    var genericWords = ['senior','junior','lead','manager','assistant','part','time','full','team','chief','head','general','staff','worker','officer','coordinator','specialist','consultant','advisor','executive','director','national','regional','area','new','the','and','for','with','community','clinical','hospital','medical','health','care','centre','center','service','services','practice','based','remote','home','mobile','local','primary','public','private','line','shift','plant','ground','site','field','main','first','second','third','night','front','back','shop','store','food','crew','train','hand','work','support','level','entry','city','town','road','house','upper','lower','west','east','north','south','central','cross','associate','applied','registered','certified','licensed','qualified','experienced','professional','locum','locums','casual','casuals','temporary','permanent','contract','fixed','term','intern','internship','relief','acting','ongoing'];
     professionWords = professionWords.filter(function(w) { return genericWords.indexOf(w) === -1; });
   }
 
@@ -1313,7 +1313,6 @@ async function fetchLiveJobs(matches){
     // Region check
     var regMatch = regionKeywords.length === 0;
     if (regionKeywords.length > 0) {
-      if (loc.indexOf('new zealand') !== -1) regMatch = true;
       for (var r = 0; r < regionKeywords.length; r++) {
         if (regionKeywords[r] && loc.indexOf(regionKeywords[r]) !== -1) { regMatch = true; break; }
       }

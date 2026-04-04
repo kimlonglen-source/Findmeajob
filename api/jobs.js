@@ -12,7 +12,7 @@ module.exports = async function handler(req, res) {
 
   // Spam filters
   var spamTitles = ["no experience needed","no experience required","entry level remote","work from home","work from anywhere","remote usa","hiring immediately","urgently hiring"];
-  var spamDesc = ["united states","us citizen","us-based","w-2","401k","401(k)","hipaa","usa only","us only","usd per","eastern time","pacific time","sydney","melbourne","brisbane","uk based","london","manchester"];
+  var spamDesc = ["united states","us citizen","us-based","w-2","401k","401(k)","hipaa","usa only","us only","usd per","eastern time","pacific time","sydney","melbourne","brisbane","uk based","london","manchester","staffordshire","birmingham","leeds","sheffield","nottingham","bristol","edinburgh","glasgow","cardiff","nhs","band 6","band 7","band 5","perth, western","adelaide","canberra","gold coast"];
 
   function isNZJob(job) {
     var area = (job.location && job.location.area) ? job.location.area : [];
@@ -24,6 +24,7 @@ module.exports = async function handler(req, res) {
     for (var i = 0; i < spamTitles.length; i++) { if (title.indexOf(spamTitles[i]) !== -1) return false; }
     for (var j = 0; j < spamDesc.length; j++) { if (desc.indexOf(spamDesc[j]) !== -1) return false; }
     if (company.indexOf("staffing") !== -1 || company.indexOf("remoteok") !== -1 || company.indexOf("flexjobs") !== -1) return false;
+    if (desc.indexOf("\u00a3") !== -1) return false;
     return true;
   }
 
