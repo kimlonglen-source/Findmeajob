@@ -323,10 +323,13 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
           <option value="New Zealand">All of New Zealand</option>
           <option value="Auckland">Auckland</option><option value="Wellington">Wellington</option>
           <option value="Canterbury / Christchurch">Christchurch</option><option value="Waikato / Hamilton">Hamilton</option>
-          <option value="Bay of Plenty">Bay of Plenty</option><option value="Otago / Dunedin">Dunedin</option>
-          <option value="Manawatu-Whanganui">Manawatu</option><option value="Hawkes Bay">Hawkes Bay</option>
-          <option value="Northland">Northland</option><option value="Southland">Southland</option>
-          <option value="Nelson / Marlborough">Nelson</option>
+          <option value="Bay of Plenty">Tauranga / Bay of Plenty</option><option value="Otago / Dunedin">Dunedin / Otago</option>
+          <option value="Northland">Whangarei / Northland</option><option value="Bay of Plenty">Rotorua</option>
+          <option value="Taranaki">New Plymouth / Taranaki</option><option value="Hawkes Bay">Napier / Hastings</option>
+          <option value="Manawatu-Whanganui">Palmerston North</option><option value="Manawatu-Whanganui">Whanganui</option>
+          <option value="Nelson / Marlborough">Nelson / Marlborough</option><option value="Southland">Invercargill / Southland</option>
+          <option value="Otago / Queenstown">Queenstown</option><option value="Gisborne">Gisborne</option>
+          <option value="Tasman">Tasman</option><option value="West Coast">West Coast</option>
         </select>
       </div>
       <div class="alert alert-err" id="cv-err">Please upload your CV first.</div>
@@ -362,10 +365,10 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <label class="form-label" style="margin-bottom:.75rem">Preferences</label>
         <div class="g2">
           <div class="field"><label class="form-label">Region</label>
-            <select id="region"><option value="New Zealand">All of NZ</option><option value="Auckland">Auckland</option><option value="Wellington">Wellington</option><option value="Canterbury / Christchurch">Christchurch</option><option value="Waikato / Hamilton">Hamilton</option><option value="Bay of Plenty">Bay of Plenty</option><option value="Otago / Dunedin">Dunedin</option><option value="Manawatu-Whanganui">Manawatu</option><option value="Hawkes Bay">Hawkes Bay</option><option value="Northland">Northland</option><option value="Southland">Southland</option><option value="Nelson / Marlborough">Nelson</option></select>
+            <select id="region"><option value="New Zealand">All of NZ</option><option value="Auckland">Auckland</option><option value="Wellington">Wellington</option><option value="Canterbury / Christchurch">Christchurch</option><option value="Waikato / Hamilton">Hamilton</option><option value="Bay of Plenty">Tauranga / Bay of Plenty</option><option value="Otago / Dunedin">Dunedin / Otago</option><option value="Northland">Whangarei / Northland</option><option value="Bay of Plenty">Rotorua</option><option value="Taranaki">New Plymouth / Taranaki</option><option value="Hawkes Bay">Napier / Hastings</option><option value="Manawatu-Whanganui">Palmerston North</option><option value="Manawatu-Whanganui">Whanganui</option><option value="Nelson / Marlborough">Nelson / Marlborough</option><option value="Southland">Invercargill / Southland</option><option value="Otago / Queenstown">Queenstown</option><option value="Gisborne">Gisborne</option><option value="Tasman">Tasman</option><option value="West Coast">West Coast</option></select>
           </div>
           <div class="field"><label class="form-label">Work type</label>
-            <select id="wt"><option value="any">Any</option><option value="full-time">Full-time</option><option value="part-time">Part-time</option><option value="casual">Casual</option><option value="remote">Remote</option><option value="contract">Contract</option></select>
+            <select id="wt"><option value="any">Any</option><option value="full-time">Full-time</option><option value="part-time">Part-time</option><option value="casual">Casual</option><option value="contract">Contract</option><option value="fixed-term">Fixed-term</option><option value="internship">Internship</option><option value="volunteer">Volunteer</option><option value="remote">Remote</option></select>
           </div>
           <div class="field"><label class="form-label">Experience</label>
             <select id="exp"><option value="any level">Any level</option><option value="entry-level">Entry level</option><option value="1-3 years">1-3 years</option><option value="3-7 years">3-7 years</option><option value="7+ years">7+ years</option></select>
@@ -417,8 +420,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <div style="margin-bottom:1.5rem"><div class="page-eyebrow">Live Listings</div><div class="page-title">Browse NZ Jobs</div></div>
     <div class="filter-row">
       <select id="f-cat"><option value="">All categories</option><option>Technology</option><option>Healthcare</option><option>Trades</option><option>Hospitality</option><option>Admin</option><option>Education</option><option>Sales</option><option>Transport</option><option>Agriculture</option><option>Creative</option></select>
-      <select id="f-reg"><option value="">All of NZ</option><option>Auckland</option><option>Wellington</option><option>Christchurch</option><option>Hamilton</option><option>Tauranga</option><option>Dunedin</option><option>Whangarei</option><option>New Plymouth</option><option>Palmerston North</option><option>Nelson</option></select>
-      <select id="f-type"><option value="">Any type</option><option>Full-time</option><option>Part-time</option><option>Casual</option><option>Remote</option></select>
+      <select id="f-reg"><option value="">All of NZ</option><option>Auckland</option><option>Wellington</option><option>Christchurch</option><option>Hamilton</option><option>Tauranga</option><option>Dunedin</option><option>Whangarei</option><option>Rotorua</option><option>New Plymouth</option><option>Napier</option><option>Palmerston North</option><option>Whanganui</option><option>Nelson</option><option>Invercargill</option><option>Queenstown</option><option>Gisborne</option></select>
+      <select id="f-type"><option value="">Any type</option><option>Full-time</option><option>Part-time</option><option>Casual</option><option>Contract</option><option>Fixed-term</option><option>Internship</option><option>Volunteer</option><option>Remote</option></select>
     </div>
     <div id="employer-jobs"></div>
     <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin:1.5rem 0 .75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)">Live NZ Jobs from Adzuna</div>
@@ -613,9 +616,9 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:.85rem">Job details</div>
         <div class="field"><label class="form-label">Job title *</label><input type="text" id="e-title" placeholder="e.g. Senior Software Developer"></div>
         <div class="g2">
-          <div class="field"><label class="form-label">Location</label><select id="e-loc"><option>Auckland</option><option>Wellington</option><option>Christchurch</option><option>Hamilton</option><option>Tauranga</option><option>Dunedin</option><option>Remote NZ</option><option>Nationwide</option></select></div>
+          <div class="field"><label class="form-label">Location</label><select id="e-loc"><option>Auckland</option><option>Wellington</option><option>Christchurch</option><option>Hamilton</option><option>Tauranga</option><option>Dunedin</option><option>Whangarei</option><option>Rotorua</option><option>New Plymouth</option><option>Napier</option><option>Palmerston North</option><option>Whanganui</option><option>Nelson</option><option>Invercargill</option><option>Queenstown</option><option>Gisborne</option><option>Remote NZ</option><option>Nationwide</option></select></div>
           <div class="field"><label class="form-label">Category</label><select id="e-cat"><option>Technology</option><option>Healthcare</option><option>Trades</option><option>Hospitality</option><option>Admin</option><option>Education</option><option>Sales</option><option>Transport</option><option>Agriculture</option><option>Creative</option><option>Other</option></select></div>
-          <div class="field"><label class="form-label">Job type</label><select id="e-type"><option>Full-time</option><option>Part-time</option><option>Casual</option><option>Contract</option><option>Remote</option></select></div>
+          <div class="field"><label class="form-label">Job type</label><select id="e-type"><option>Full-time</option><option>Part-time</option><option>Casual</option><option>Contract</option><option>Fixed-term</option><option>Internship</option><option>Volunteer</option><option>Remote</option></select></div>
           <div class="field"><label class="form-label">Salary range</label><select id="e-sal"><option>Up to $50K</option><option>$50K-$70K</option><option>$70K-$90K</option><option>$90K-$120K</option><option>$120K+</option><option>Negotiable</option></select></div>
         </div>
         <div class="field"><label class="form-label">Job description *</label><textarea id="e-desc" placeholder="What does this role involve? What will the successful candidate be doing?" style="min-height:120px"></textarea></div>
@@ -941,7 +944,7 @@ async function loadBrowse(){
   var cat=document.getElementById('f-cat').value;var reg=document.getElementById('f-reg').value;
   var empEl=document.getElementById('employer-jobs');var liveEl=document.getElementById('browse-live');
   empEl.innerHTML='';liveEl.innerHTML='<div style="padding:1rem;text-align:center;color:var(--text3);font-size:.82rem;font-weight:600;border:1px solid var(--border);border-radius:var(--rl)">Loading<span class="dots"></span></div>';
-  var regMap={'Auckland':'Auckland','Wellington':'Wellington','Christchurch':'Canterbury / Christchurch','Hamilton':'Waikato / Hamilton','Tauranga':'Bay of Plenty','Dunedin':'Otago / Dunedin','Whangarei':'Northland','New Plymouth':'Taranaki','Palmerston North':'Manawatu-Whanganui','Nelson':'Nelson / Marlborough','':'New Zealand'};
+  var regMap={'Auckland':'Auckland','Wellington':'Wellington','Christchurch':'Canterbury / Christchurch','Hamilton':'Waikato / Hamilton','Tauranga':'Bay of Plenty','Dunedin':'Otago / Dunedin','Whangarei':'Northland','Rotorua':'Bay of Plenty','New Plymouth':'Taranaki','Napier':'Hawkes Bay','Palmerston North':'Manawatu-Whanganui','Whanganui':'Manawatu-Whanganui','Nelson':'Nelson / Marlborough','Invercargill':'Southland','Queenstown':'Otago / Queenstown','Gisborne':'Gisborne','':'New Zealand'};
   var region=regMap[reg]||'New Zealand';
   var approvedP=fetch('/api/approved-jobs').then(function(r){return r.json();}).catch(function(){return{jobs:[]};});
   var adzunaP=fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:cat||'jobs',region:region})}).then(function(r){return r.json();}).catch(function(){return{jobs:[]};});

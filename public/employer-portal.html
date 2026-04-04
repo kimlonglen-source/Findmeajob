@@ -225,9 +225,9 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
     <div class="card">
       <div class="field"><label>Job title *</label><input type="text" id="e-title" placeholder="e.g. Senior Software Developer"></div>
       <div class="g2">
-        <div class="field"><label>Location</label><select id="e-loc"><option>Auckland</option><option>Wellington</option><option>Christchurch</option><option>Hamilton</option><option>Tauranga</option><option>Dunedin</option><option>Remote NZ</option><option>Nationwide</option></select></div>
+        <div class="field"><label>Location</label><select id="e-loc"><option>Auckland</option><option>Wellington</option><option>Christchurch</option><option>Hamilton</option><option>Tauranga</option><option>Dunedin</option><option>Whangarei</option><option>Rotorua</option><option>New Plymouth</option><option>Napier</option><option>Palmerston North</option><option>Whanganui</option><option>Nelson</option><option>Invercargill</option><option>Queenstown</option><option>Gisborne</option><option>Remote NZ</option><option>Nationwide</option></select></div>
         <div class="field"><label>Category</label><select id="e-cat"><option>Technology</option><option>Healthcare</option><option>Trades</option><option>Hospitality</option><option>Admin</option><option>Education</option><option>Sales</option><option>Transport</option><option>Agriculture</option><option>Creative</option><option>Other</option></select></div>
-        <div class="field"><label>Job type</label><select id="e-type"><option>Full-time</option><option>Part-time</option><option>Casual</option><option>Contract</option><option>Remote</option></select></div>
+        <div class="field"><label>Job type</label><select id="e-type"><option>Full-time</option><option>Part-time</option><option>Casual</option><option>Contract</option><option>Fixed-term</option><option>Internship</option><option>Volunteer</option><option>Remote</option></select></div>
         <div class="field"><label>Salary range</label><select id="e-sal"><option>Up to $50K</option><option>$50K-$70K</option><option>$70K-$90K</option><option>$90K-$120K</option><option>$120K+</option><option>Negotiable</option></select></div>
       </div>
       <div class="field"><label>Job description *</label><textarea id="e-desc" placeholder="What does this role involve? What will the successful candidate be doing?" style="min-height:120px"></textarea></div>
@@ -568,9 +568,9 @@ function toggleEdit(id) {
   if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
 
-function locOptions(sel){return ['Auckland','Wellington','Christchurch','Hamilton','Tauranga','Dunedin','Remote NZ','Nationwide'].map(function(o){return '<option'+(o===sel?' selected':'')+'>'+o+'</option>';}).join('');}
+function locOptions(sel){return ['Auckland','Wellington','Christchurch','Hamilton','Tauranga','Dunedin','Whangarei','Rotorua','New Plymouth','Napier','Palmerston North','Whanganui','Nelson','Invercargill','Queenstown','Gisborne','Remote NZ','Nationwide'].map(function(o){return '<option'+(o===sel?' selected':'')+'>'+o+'</option>';}).join('');}
 function catOptions(sel){return ['Technology','Healthcare','Trades','Hospitality','Admin','Education','Sales','Transport','Agriculture','Creative','Other'].map(function(o){return '<option'+(o===sel?' selected':'')+'>'+o+'</option>';}).join('');}
-function typeOptions(sel){return ['Full-time','Part-time','Casual','Contract','Remote'].map(function(o){return '<option'+(o===sel?' selected':'')+'>'+o+'</option>';}).join('');}
+function typeOptions(sel){return ['Full-time','Part-time','Casual','Contract','Fixed-term','Internship','Volunteer','Remote'].map(function(o){return '<option'+(o===sel?' selected':'')+'>'+o+'</option>';}).join('');}
 function salOptions(sel){return ['Up to $50K','$50K-$70K','$70K-$90K','$90K-$120K','$120K+','Negotiable'].map(function(o){return '<option'+(o===sel?' selected':'')+'>'+o+'</option>';}).join('');}
 
 async function saveEdit(id) {
