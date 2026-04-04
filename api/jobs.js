@@ -6,6 +6,7 @@ module.exports = async function handler(req, res) {
 
   var query = req.body.query;
   var region = req.body.region;
+  var city = req.body.city;
   var limit = req.body.limit;
   var perPage = limit || 50;
   var clean = (query || "").replace(/[^a-zA-Z0-9 ]/g, " ").trim().split(/\s+/).slice(0, 3).join(" ");
@@ -14,10 +15,11 @@ module.exports = async function handler(req, res) {
   var locationMap = {
     "Auckland": "Auckland", "Wellington": "Wellington", "Canterbury / Christchurch": "Christchurch",
     "Waikato / Hamilton": "Hamilton", "Bay of Plenty": "Tauranga", "Otago / Dunedin": "Dunedin",
+    "Otago / Queenstown": "Queenstown", "Taranaki": "New Plymouth", "Gisborne": "Gisborne",
     "Manawatu-Whanganui": "Palmerston North", "Hawkes Bay": "Napier", "Northland": "Whangarei",
     "Southland": "Invercargill", "Nelson / Marlborough": "Nelson", "New Zealand": ""
   };
-  var loc = locationMap[region] || "";
+  var loc = city || locationMap[region] || "";
 
   // Spam filters
   var spamTitles = ["no experience needed","no experience required","entry level remote","work from home","work from anywhere","remote usa","hiring immediately","urgently hiring"];
@@ -36,19 +38,20 @@ module.exports = async function handler(req, res) {
     return true;
   }
 
-  function buildUrl(q, n) {
+  function buildUrl(q, n, broad) {
+    var param = broad ? "&what=" : "&what_and=";
     var url = "https://api.adzuna.com/v1/api/jobs/nz/search/1"
       + "?app_id=" + appId + "&app_key=" + appKey
       + "&results_per_page=" + n
-      + "&what=" + encodeURIComponent(q)
+      + param + encodeURIComponent(q)
       + "&location0=New+Zealand"
       + "&sort_by=relevance";
     if (loc) url += "&where=" + encodeURIComponent(loc);
     return url;
   }
 
-  async function fetchAndFilter(q, n) {
-    var r = await fetch(buildUrl(q, n), { headers: { "Accept": "application/json" } });
+  async function fetchAndFilter(q, n, broad) {
+    var r = await fetch(buildUrl(q, n, broad), { headers: { "Accept": "application/json" } });
     if (!r.ok) return [];
     var data = await r.json();
     return (data.results || []).filter(isNZJob);
@@ -57,7 +60,7 @@ module.exports = async function handler(req, res) {
   try {
     var jobs = await fetchAndFilter(clean, 50);
     if (jobs.length < 5 && clean.includes(" ")) {
-      var moreJobs = await fetchAndFilter(clean.split(" ")[0], 50);
+      var moreJobs = await fetchAndFilter(clean, 50, true);
       var ids = {};
       jobs.forEach(function(j) { ids[(j.title || "") + (j.company && j.company.display_name || "")] = true; });
       moreJobs.forEach(function(j) {
