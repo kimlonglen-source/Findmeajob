@@ -1008,7 +1008,7 @@ async function doRegister(){
     var r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,company,email,phone,website,password})});
     var d=await r.json();
     if(d.success){
-      empSession={id:d.id,name:name,company:company,email:email,plan:selectedPlan};
+      empSession={id:d.id,name:name,company:company,email:email,password:password,plan:selectedPlan};
       sessionStorage.setItem('empSession',JSON.stringify(empSession));
       document.getElementById('emp-name-display').textContent=name+' ('+company+')';
       document.getElementById('emp-plan-display').textContent=selectedPlan;
@@ -1027,13 +1027,13 @@ async function doLogin(){
     var r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:'__login__',company:'__login__',email,phone:'',website:'',password})});
     var d=await r.json();
     if(d.error&&d.error.includes('already exists')){
-      empSession={id:'existing',name:email.split('@')[0],company:'Your Company',email,plan:selectedPlan};
+      empSession={id:'existing',name:email.split('@')[0],company:'Your Company',email,password,plan:selectedPlan};
       sessionStorage.setItem('empSession',JSON.stringify(empSession));
       document.getElementById('emp-name-display').textContent=empSession.name;
       document.getElementById('emp-plan-display').textContent=selectedPlan;
       showEmpStep('emp-step-job');toast('Welcome back!');
     }else if(d.success){
-      empSession={id:d.id,name:d.name||email.split('@')[0],company:d.company||'Your Company',email,plan:selectedPlan};
+      empSession={id:d.id,name:d.name||email.split('@')[0],company:d.company||'Your Company',email,password,plan:selectedPlan};
       sessionStorage.setItem('empSession',JSON.stringify(empSession));
       document.getElementById('emp-name-display').textContent=empSession.name;document.getElementById('emp-plan-display').textContent=selectedPlan;
       showEmpStep('emp-step-job');toast('Welcome back!');
@@ -1049,7 +1049,7 @@ async function submitJob(){
   if(!title||!desc){err.classList.add('show');return;}
   var btn=document.getElementById('btn-submit');btn.textContent='Submitting...';btn.disabled=true;
   try{
-    var r=await fetch('/api/submit-job',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({employerId:empSession.id,employerEmail:empSession.email,company:empSession.company,title,location:document.getElementById('e-loc').value,category:document.getElementById('e-cat').value,type:document.getElementById('e-type').value,salary:document.getElementById('e-sal').value,description:desc,requirements:document.getElementById('e-req').value.trim(),why:document.getElementById('e-why').value.trim(),companyProfile:(document.getElementById('e-company-profile')?document.getElementById('e-company-profile').value.trim():''),logoUrl:(document.getElementById('e-logo')?document.getElementById('e-logo').value.trim():''),plan:empSession.plan})});
+    var r=await fetch('/api/employer-jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'submit',email:empSession.email,password:empSession.password,employerId:empSession.id,company:empSession.company,title,location:document.getElementById('e-loc').value,category:document.getElementById('e-cat').value,type:document.getElementById('e-type').value,salary:document.getElementById('e-sal').value,description:desc,requirements:document.getElementById('e-req').value.trim(),why:document.getElementById('e-why').value.trim(),companyProfile:(document.getElementById('e-company-profile')?document.getElementById('e-company-profile').value.trim():''),logoUrl:(document.getElementById('e-logo')?document.getElementById('e-logo').value.trim():'')})});
     var d=await r.json();
     if(d.success){
   var okEl=document.getElementById('emp-ok');

@@ -97,7 +97,7 @@ module.exports = async function handler(req, res) {
           title: sTitle, location: req.body.location || "New Zealand", category: req.body.category || "Other",
           type: req.body.type || "Full-time", salary: req.body.salary || "Negotiable",
           description: sDesc, requirements: req.body.requirements || "", why: req.body.why || "",
-          companyProfile: req.body.companyProfile || "", website: req.body.website || "", logoUrl: req.body.logoUrl || "",
+          companyProfile: (planKey === "basic" || planKey === "pro") ? (req.body.companyProfile || "") : "", website: req.body.website || "", logoUrl: (planKey === "basic" || planKey === "pro") ? (req.body.logoUrl || "") : "",
           plan: planKey, planDays: PLAN_DAYS[planKey] || 30,
           autoFeature: planKey === "pro", priority: planKey === "basic" || planKey === "pro",
           status: "pending", submitted: new Date().toISOString(), views: 0, applies: 0

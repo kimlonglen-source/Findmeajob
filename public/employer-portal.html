@@ -442,12 +442,14 @@ async function submitJob() {
   var btn = document.getElementById('btn-submit');
   btn.textContent = 'Submitting...'; btn.disabled = true;
   try {
-    var r = await fetch('/api/submit-job', {
+    var r = await fetch('/api/employer-jobs', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({
+        action: 'submit',
+        email: session.email,
+        password: session.password,
         employerId: session.employer.email,
-        employerEmail: session.email,
         company: session.employer.company,
         title: title,
         location: document.getElementById('e-loc').value,
