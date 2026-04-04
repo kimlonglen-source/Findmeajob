@@ -561,7 +561,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <div id="emp-step-login" style="display:none">
       <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem">
         <button class="btn-sm" id="btn-login-back" type="button">&#8592; Back</button>
-        <div><div class="page-eyebrow">Employer Login</div><div style="font-family:Fraunces,serif;font-size:1.3rem;font-style:italic;font-weight:300;color:var(--text)">Welcome back</div></div>
+        <div><div class="page-eyebrow">Employer Login</div><div style="font-family:'Inter',sans-serif;font-size:1.3rem;font-style:italic;font-weight:300;color:var(--text)">Welcome back</div></div>
       </div>
       <div class="card">
         <div class="field"><label class="form-label">Work email</label><input type="email" id="l-email" placeholder="jane@acme.co.nz" autocomplete="email"></div>
@@ -579,7 +579,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <div id="emp-step-forgot" style="display:none">
       <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem">
         <button class="btn-sm" id="btn-forgot-back" type="button">&#8592; Back</button>
-        <div><div class="page-eyebrow">Reset Password</div><div style="font-family:Fraunces,serif;font-size:1.3rem;font-style:italic;font-weight:300;color:var(--text)">Forgotten your password?</div></div>
+        <div><div class="page-eyebrow">Reset Password</div><div style="font-family:'Inter',sans-serif;font-size:1.3rem;font-style:italic;font-weight:300;color:var(--text)">Forgotten your password?</div></div>
       </div>
       <div class="card">
         <p style="color:var(--text2);font-size:.85rem;font-weight:500;line-height:1.7;margin-bottom:1rem">Enter your registered email and we will send you a reset link.</p>
@@ -592,7 +592,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 
     <!-- RESET (from link) -->
     <div id="emp-step-reset" style="display:none">
-      <div style="margin-bottom:1.5rem"><div class="page-eyebrow">Reset Password</div><div style="font-family:Fraunces,serif;font-size:1.3rem;font-style:italic;font-weight:300;color:var(--text)">Choose a new password</div></div>
+      <div style="margin-bottom:1.5rem"><div class="page-eyebrow">Reset Password</div><div style="font-family:'Inter',sans-serif;font-size:1.3rem;font-style:italic;font-weight:300;color:var(--text)">Choose a new password</div></div>
       <div class="card">
         <div class="field"><label class="form-label">New password *</label><input type="password" id="new-password" placeholder="Minimum 6 characters" autocomplete="new-password"></div>
         <div class="field" style="margin-bottom:0"><label class="form-label">Confirm password *</label><input type="password" id="confirm-password" placeholder="Repeat your new password" autocomplete="new-password"></div>
@@ -708,15 +708,15 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <!-- Trust signals -->
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:2rem">
       <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem;text-align:center">
-        <div style="font-family:Fraunces,serif;font-size:2rem;font-weight:300;font-style:italic;color:var(--em);line-height:1">AI</div>
+        <div style="font-family:'Inter',sans-serif;font-size:2rem;font-weight:300;font-style:italic;color:var(--em);line-height:1">AI</div>
         <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-top:.3rem">Powered matching</div>
       </div>
       <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem;text-align:center">
-        <div style="font-family:Fraunces,serif;font-size:2rem;font-weight:300;font-style:italic;color:var(--em);line-height:1">$0</div>
+        <div style="font-family:'Inter',sans-serif;font-size:2rem;font-weight:300;font-style:italic;color:var(--em);line-height:1">$0</div>
         <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-top:.3rem">For job seekers</div>
       </div>
       <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem;text-align:center">
-        <div style="font-family:Fraunces,serif;font-size:2rem;font-weight:300;font-style:italic;color:var(--em);line-height:1">NZ</div>
+        <div style="font-family:'Inter',sans-serif;font-size:2rem;font-weight:300;font-style:italic;color:var(--em);line-height:1">NZ</div>
         <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-top:.3rem">Jobs only</div>
       </div>
     </div>
@@ -1135,8 +1135,8 @@ async function submitJob(){
 }
 
 var legal={
-  privacy:'<div style="font-family:\'Fraunces\',serif;font-size:1.2rem;font-style:italic;font-weight:300;margin-bottom:.3rem">Privacy Policy</div><p style="color:var(--text3);font-size:.72rem;margin-bottom:1rem">March 2026 &mdash; FindMeAJob.co.nz</p><p style="color:var(--text2);font-size:.85rem;line-height:1.75;font-weight:500"><strong style="color:var(--text)">CV & Personal Data</strong><br>FindMeAJob.co.nz never stores CV or resume data. When you upload your CV, it is sent directly to Anthropic\'s Claude AI for real-time job matching analysis only, and is immediately discarded after processing. Neither FindMeAJob.co.nz nor Anthropic retains your CV after this process. We collect no personal information from job seekers.<br><br><strong style="color:var(--text)">Employer Accounts</strong><br>Employer registration details (name, company, email, hashed credentials) are stored securely in our database hosted by Upstash. We do not sell, share or disclose this information to third parties. Employers may request deletion of their account at any time by emailing hello@findmeajob.co.nz.<br><br><strong style="color:var(--text)">NZ Privacy Act 2020</strong><br>We operate in accordance with the New Zealand Privacy Act 2020. You have the right to access, correct or request deletion of any personal information we hold about you. Contact our Privacy Officer at hello@findmeajob.co.nz. We will respond within 20 working days.<br><br><strong style="color:var(--text)">Third Party Services</strong><br>We use Anthropic (AI processing), Adzuna (live job listings), Upstash (database), Vercel (hosting) and Resend (transactional email). Each operates under their own privacy policy.</p>',
-  terms:'<div style="font-family:\'Fraunces\',serif;font-size:1.2rem;font-style:italic;font-weight:300;margin-bottom:.3rem">Terms of Use</div><p style="color:var(--text3);font-size:.72rem;margin-bottom:1rem">March 2026 &mdash; FindMeAJob.co.nz</p><p style="color:var(--text2);font-size:.85rem;line-height:1.75;font-weight:500">This is an AI-powered job discovery tool, not a recruitment agency. AI results are for informational purposes only. Employers are responsible for the accuracy of their listings. We reserve the right to remove any listing. Governed by New Zealand law. Contact: hello@findmeajob.co.nz</p>'
+  privacy:'<div style="font-family:\'Inter\',sans-serif;font-size:1.2rem;font-style:italic;font-weight:300;margin-bottom:.3rem">Privacy Policy</div><p style="color:var(--text3);font-size:.72rem;margin-bottom:1rem">March 2026 &mdash; FindMeAJob.co.nz</p><p style="color:var(--text2);font-size:.85rem;line-height:1.75;font-weight:500"><strong style="color:var(--text)">CV & Personal Data</strong><br>FindMeAJob.co.nz never stores CV or resume data. When you upload your CV, it is sent directly to Anthropic\'s Claude AI for real-time job matching analysis only, and is immediately discarded after processing. Neither FindMeAJob.co.nz nor Anthropic retains your CV after this process. We collect no personal information from job seekers.<br><br><strong style="color:var(--text)">Employer Accounts</strong><br>Employer registration details (name, company, email, hashed credentials) are stored securely in our database hosted by Upstash. We do not sell, share or disclose this information to third parties. Employers may request deletion of their account at any time by emailing hello@findmeajob.co.nz.<br><br><strong style="color:var(--text)">NZ Privacy Act 2020</strong><br>We operate in accordance with the New Zealand Privacy Act 2020. You have the right to access, correct or request deletion of any personal information we hold about you. Contact our Privacy Officer at hello@findmeajob.co.nz. We will respond within 20 working days.<br><br><strong style="color:var(--text)">Third Party Services</strong><br>We use Anthropic (AI processing), Adzuna (live job listings), Upstash (database), Vercel (hosting) and Resend (transactional email). Each operates under their own privacy policy.</p>',
+  terms:'<div style="font-family:\'Inter\',sans-serif;font-size:1.2rem;font-style:italic;font-weight:300;margin-bottom:.3rem">Terms of Use</div><p style="color:var(--text3);font-size:.72rem;margin-bottom:1rem">March 2026 &mdash; FindMeAJob.co.nz</p><p style="color:var(--text2);font-size:.85rem;line-height:1.75;font-weight:500">This is an AI-powered job discovery tool, not a recruitment agency. AI results are for informational purposes only. Employers are responsible for the accuracy of their listings. We reserve the right to remove any listing. Governed by New Zealand law. Contact: hello@findmeajob.co.nz</p>'
 };
 function openModal(k){document.getElementById('modal-body').innerHTML=legal[k];document.getElementById('lm').style.display='block';document.body.style.overflow='hidden';}
 function closeModal(){document.getElementById('lm').style.display='none';document.body.style.overflow='';}
@@ -1432,7 +1432,7 @@ document.getElementById('sk-delete-yes').addEventListener('click',async function
 <div id="apply-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99999;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(8px);overflow-y:auto">
   <div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem;width:100%;max-width:480px;margin:auto">
     <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin-bottom:.3rem">How to apply</div>
-    <div style="font-family:Fraunces,serif;font-size:1.2rem;font-style:italic;font-weight:300;color:var(--text);margin-bottom:1.25rem" id="apply-title-display"></div>
+    <div style="font-family:'Inter',sans-serif;font-size:1.2rem;font-style:italic;font-weight:300;color:var(--text);margin-bottom:1.25rem" id="apply-title-display"></div>
     <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:1rem;margin-bottom:1rem">
       <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.3rem">Send your application to</div>
       <div style="font-size:1rem;font-weight:800;color:var(--em);margin-bottom:.5rem" id="apply-email-display"></div>
