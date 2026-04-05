@@ -205,7 +205,26 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
   .filter-row select{width:100%}
   .strip{padding:.65rem 1rem}
   #career-pivots .pivot-grid{grid-template-columns:1fr!important}
+  .pivot-teaser-grid{grid-template-columns:1fr 1fr!important}
 }
+@keyframes horizonFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes horizonGlow{0%,100%{box-shadow:0 0 20px rgba(139,92,246,.15)}50%{box-shadow:0 0 40px rgba(236,72,153,.2)}}
+@keyframes arrowSlide{0%{transform:translateX(0);opacity:.6}50%{transform:translateX(5px);opacity:1}100%{transform:translateX(0);opacity:.6}}
+.horizon-teaser{position:relative;padding:4rem 2rem;max-width:960px;margin:0 auto;overflow:hidden}
+.horizon-teaser::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(139,92,246,.06) 0%,rgba(236,72,153,.03) 40%,transparent 70%);pointer-events:none}
+.horizon-badge{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,rgba(139,92,246,.1),rgba(236,72,153,.1));border:1px solid rgba(139,92,246,.2);color:#a78bfa;font-size:.65rem;font-weight:800;padding:.35rem 1rem;border-radius:999px;margin-bottom:1rem;letter-spacing:1.5px;text-transform:uppercase}
+.horizon-title{font-size:clamp(1.8rem,5vw,2.8rem);font-weight:800;line-height:1.1;letter-spacing:-.5px;margin-bottom:.75rem}
+.horizon-title span{background:linear-gradient(135deg,#8b5cf6,#ec4899,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.pivot-teaser-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.85rem;margin-bottom:2rem}
+.pivot-teaser-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.4rem 1.1rem;text-align:center;transition:all .4s;cursor:default;overflow:hidden}
+.pivot-teaser-card:hover{border-color:rgba(139,92,246,.3);transform:translateY(-5px);box-shadow:0 20px 40px rgba(139,92,246,.12)}
+.pivot-teaser-card:nth-child(1){animation:horizonFloat 4s ease-in-out infinite}
+.pivot-teaser-card:nth-child(2){animation:horizonFloat 4s ease-in-out infinite .5s}
+.pivot-teaser-card:nth-child(3){animation:horizonFloat 4s ease-in-out infinite 1s}
+.pivot-teaser-card:nth-child(4){animation:horizonFloat 4s ease-in-out infinite 1.5s}
+.btn-horizon{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;padding:.95rem 2.2rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.95rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 25px rgba(139,92,246,.25);animation:horizonGlow 3s ease-in-out infinite}
+.btn-horizon:hover{transform:translateY(-2px);box-shadow:0 8px 35px rgba(139,92,246,.35)}
+@media(max-width:400px){.pivot-teaser-grid{grid-template-columns:1fr!important}}
 </style>
 </head>
 <body>
@@ -310,6 +329,52 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <div style="text-align:center">
       <a class="btn-hero" href="/employer-portal.html" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center">Post Your First Job Free &#8594;</a>
       <div style="font-size:.72rem;color:var(--text3);margin-top:.5rem;font-weight:500">No credit card required. First month free on all plans.</div>
+    </div>
+  </section>
+
+  <!-- Beyond Your Horizon — Home Page Teaser -->
+  <section class="horizon-teaser">
+    <div style="text-align:center;margin-bottom:2rem;position:relative">
+      <div style="font-size:.85rem;color:var(--text2);line-height:1.7;max-width:520px;margin:0 auto;font-weight:500">Upload your CV and our AI instantly matches you to <strong style="color:var(--text)">live NZ jobs</strong> you're qualified for. But we don't stop there...</div>
+    </div>
+    <div style="text-align:center;margin-bottom:2rem;position:relative">
+      <div class="horizon-badge"><span style="width:6px;height:6px;background:#8b5cf6;border-radius:50%;display:inline-block"></span> AI Career Discovery</div>
+      <div class="horizon-title">Your skills open<br><span>unexpected doors</span></div>
+      <p style="color:var(--text2);font-size:.85rem;line-height:1.7;max-width:500px;margin:0 auto;font-weight:500">Most job sites show you what you already know. <strong style="color:var(--text)">We show you what's possible.</strong> Our AI discovers career pivots you never considered — real NZ roles where your existing experience gives you a hidden edge.</p>
+    </div>
+    <div class="pivot-teaser-grid">
+      <div class="pivot-teaser-card">
+        <div style="font-size:2rem;margin-bottom:.6rem">&#128218;</div>
+        <div style="font-size:.75rem;font-weight:600;color:var(--text3);margin-bottom:.2rem">Teacher</div>
+        <div style="font-size:1rem;color:#8b5cf6;margin-bottom:.2rem;animation:arrowSlide 2s ease-in-out infinite">&#8595;</div>
+        <div style="font-size:.92rem;font-weight:800;color:var(--text);margin-bottom:.45rem">UX Researcher</div>
+        <div style="font-size:.7rem;color:var(--text2);line-height:1.5;font-weight:500">Curriculum design &amp; understanding learner behaviour maps to user research</div>
+      </div>
+      <div class="pivot-teaser-card">
+        <div style="font-size:2rem;margin-bottom:.6rem">&#127859;</div>
+        <div style="font-size:.75rem;font-weight:600;color:var(--text3);margin-bottom:.2rem">Chef</div>
+        <div style="font-size:1rem;color:#3b82f6;margin-bottom:.2rem;animation:arrowSlide 2s ease-in-out infinite .3s">&#8595;</div>
+        <div style="font-size:.92rem;font-weight:800;color:var(--text);margin-bottom:.45rem">Food Safety Auditor</div>
+        <div style="font-size:.7rem;color:var(--text2);line-height:1.5;font-weight:500">Kitchen knowledge &amp; HACCP awareness is gold in food compliance</div>
+      </div>
+      <div class="pivot-teaser-card">
+        <div style="font-size:2rem;margin-bottom:.6rem">&#127932;</div>
+        <div style="font-size:.75rem;font-weight:600;color:var(--text3);margin-bottom:.2rem">Musician</div>
+        <div style="font-size:1rem;color:#f59e0b;margin-bottom:.2rem;animation:arrowSlide 2s ease-in-out infinite .6s">&#8595;</div>
+        <div style="font-size:.92rem;font-weight:800;color:var(--text);margin-bottom:.45rem">Audio Engineer</div>
+        <div style="font-size:.7rem;color:var(--text2);line-height:1.5;font-weight:500">Trained ears &amp; technical sound knowledge translate to studio work</div>
+      </div>
+      <div class="pivot-teaser-card">
+        <div style="font-size:2rem;margin-bottom:.6rem">&#128722;</div>
+        <div style="font-size:.75rem;font-weight:600;color:var(--text3);margin-bottom:.2rem">Retail Manager</div>
+        <div style="font-size:1rem;color:#ec4899;margin-bottom:.2rem;animation:arrowSlide 2s ease-in-out infinite .9s">&#8595;</div>
+        <div style="font-size:.92rem;font-weight:800;color:var(--text);margin-bottom:.45rem">Logistics Coordinator</div>
+        <div style="font-size:.7rem;color:var(--text2);line-height:1.5;font-weight:500">Inventory, supplier relationships &amp; team leadership are core logistics skills</div>
+      </div>
+    </div>
+    <div style="text-align:center;position:relative">
+      <button class="btn-horizon" onclick="goFind()" type="button">Discover Your Hidden Paths &#10024;</button>
+      <div style="font-size:.72rem;color:var(--text3);margin-top:.75rem;font-weight:500">Upload your CV and our AI reveals career pivots with real NZ job listings</div>
     </div>
   </section>
 
@@ -437,10 +502,26 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <button class="btn" id="btn-search" type="button" style="margin-top:1rem">Find My NZ Jobs</button>
     </div>
     <div id="skeleton" style="display:none">
-      <div style="text-align:center;padding:1.5rem 1rem">
-        <div style="width:56px;height:56px;border:3px solid var(--border);border-top-color:var(--em);border-radius:50%;margin:0 auto 1rem;animation:spin 1s linear infinite"></div>
-        <div id="skel-status" style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:.35rem">Reading your CV</div>
-        <div id="skel-detail" style="font-size:.78rem;color:var(--text3);font-weight:500">Extracting your skills and experience</div>
+      <div style="text-align:center;padding:2rem 1rem 1.5rem">
+        <div style="position:relative;width:72px;height:72px;margin:0 auto 1.5rem">
+          <div style="position:absolute;inset:0;border:3px solid var(--border);border-top-color:var(--em);border-radius:50%;animation:spin 1s linear infinite"></div>
+          <div style="position:absolute;inset:-6px;border:2px solid transparent;border-top-color:rgba(139,92,246,.3);border-radius:50%;animation:spin 2.5s linear infinite reverse"></div>
+          <div id="skel-countdown" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;color:var(--em)">15</div>
+        </div>
+        <div id="skel-status" style="font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.35rem">Reading your CV</div>
+        <div id="skel-detail" style="font-size:.78rem;color:var(--text3);font-weight:500;margin-bottom:1.25rem">Extracting your skills and experience</div>
+        <div style="max-width:320px;margin:0 auto 1.25rem">
+          <div style="background:var(--bg3);border:1px solid var(--border);border-radius:999px;height:6px;overflow:hidden">
+            <div id="skel-progress" style="height:100%;width:0%;background:linear-gradient(90deg,var(--em),var(--purple));border-radius:999px;transition:width .5s ease-out"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:.35rem">
+            <span id="skel-pct" style="font-size:.65rem;font-weight:700;color:var(--em)">0%</span>
+            <span style="font-size:.65rem;font-weight:500;color:var(--text3)">~15 seconds</span>
+          </div>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(139,92,246,.06),rgba(236,72,153,.04));border:1px solid rgba(139,92,246,.1);border-radius:var(--r);padding:.85rem 1.2rem;max-width:400px;margin:0 auto">
+          <div id="skel-quote" style="font-size:.82rem;color:var(--text2);font-weight:600;line-height:1.5;font-style:italic;transition:opacity .3s">&ldquo;92% of NZ employers value transferable skills over exact experience&rdquo;</div>
+        </div>
       </div>
       <div class="skel"><div class="skel-line" style="width:60%;height:14px;margin-bottom:.75rem"></div><div class="skel-line" style="width:40%"></div><div class="skel-line"></div><div class="skel-line" style="width:85%"></div></div>
       <div class="skel"><div class="skel-line" style="width:55%;height:14px;margin-bottom:.75rem"></div><div class="skel-line" style="width:35%"></div><div class="skel-line"></div><div class="skel-line" style="width:90%"></div></div>
@@ -1065,7 +1146,7 @@ function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
 function showPage(id){document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});var pg=document.getElementById('page-'+id);if(pg){pg.classList.add('active');currentPage=id;}window.scrollTo(0,0);}
 function toggleTheme(){lightMode=!lightMode;document.body.classList.toggle('light',lightMode);document.getElementById('tbtn').innerHTML=lightMode?'&#9788;':'&#9790;';localStorage.setItem('theme',lightMode?'light':'dark');}
 function setStep(n){for(var i=1;i<=4;i++){var el=document.getElementById('s'+i);if(!el)continue;if(i<n)el.className='step done';else if(i===n)el.className='step active';else el.className='step';}}
-var _skelTimer=null;
+var _skelTimer=null;var _skelCountdown=null;var _skelQuoteTimer=null;var _skelProgressTimer=null;
 var _selectedRegion='New Zealand';
 function startSkelMessages(){
   var msgs=[
@@ -1076,19 +1157,55 @@ function startSkelMessages(){
     {title:'Ranking your matches',detail:'Calculating match percentages'},
     {title:'Almost there',detail:'Preparing your personalised results'}
   ];
-  var idx=0;
+  var quotes=[
+    '\u201c92% of NZ employers value transferable skills over exact experience\u201d',
+    '\u201cThe average Kiwi changes careers 3 times in their working life\u201d',
+    '\u201cYour next chapter starts here \u2014 every expert was once a beginner\u201d',
+    '\u201cAuckland alone has 12,000+ new job listings every month\u201d',
+    '\u201c78% of NZ hiring managers say attitude matters more than qualifications\u201d',
+    '\u201cNew Zealand\u2019s tech sector grew 8% last year \u2014 opportunities are everywhere\u201d',
+    '\u201cThe best career moves often come from unexpected directions\u201d',
+    '\u201cKiwis who upskill earn on average 20% more within two years\u201d'
+  ];
+  var idx=0;var quoteIdx=0;var seconds=15;
   var statusEl=document.getElementById('skel-status');
   var detailEl=document.getElementById('skel-detail');
+  var countdownEl=document.getElementById('skel-countdown');
+  var progressEl=document.getElementById('skel-progress');
+  var pctEl=document.getElementById('skel-pct');
+  var quoteEl=document.getElementById('skel-quote');
   if(statusEl)statusEl.textContent=msgs[0].title;
   if(detailEl)detailEl.textContent=msgs[0].detail;
-  clearInterval(_skelTimer);
+  if(countdownEl)countdownEl.textContent=seconds;
+  if(progressEl)progressEl.style.width='0%';
+  if(pctEl)pctEl.textContent='0%';
+  if(quoteEl)quoteEl.innerHTML=quotes[0];
+  clearInterval(_skelTimer);clearInterval(_skelCountdown);clearInterval(_skelQuoteTimer);clearInterval(_skelProgressTimer);
   _skelTimer=setInterval(function(){
     idx++;if(idx>=msgs.length)idx=msgs.length-1;
     if(statusEl)statusEl.textContent=msgs[idx].title;
     if(detailEl)detailEl.textContent=msgs[idx].detail;
   },3000);
+  _skelCountdown=setInterval(function(){
+    seconds--;if(seconds<0)seconds=0;
+    if(countdownEl)countdownEl.textContent=seconds;
+  },1000);
+  var progress=0;
+  _skelProgressTimer=setInterval(function(){
+    progress+=100/30;if(progress>95)progress=95;
+    if(progressEl)progressEl.style.width=Math.round(progress)+'%';
+    if(pctEl)pctEl.textContent=Math.round(progress)+'%';
+  },500);
+  _skelQuoteTimer=setInterval(function(){
+    quoteIdx=(quoteIdx+1)%quotes.length;
+    if(quoteEl){quoteEl.style.opacity='0';setTimeout(function(){quoteEl.innerHTML=quotes[quoteIdx];quoteEl.style.opacity='1';},300);}
+  },4000);
 }
-function stopSkelMessages(){clearInterval(_skelTimer);}
+function stopSkelMessages(){
+  clearInterval(_skelTimer);clearInterval(_skelCountdown);clearInterval(_skelQuoteTimer);clearInterval(_skelProgressTimer);
+  var p=document.getElementById('skel-progress');var pc=document.getElementById('skel-pct');var cd=document.getElementById('skel-countdown');
+  if(p)p.style.width='100%';if(pc)pc.textContent='100%';if(cd)cd.textContent='0';
+}
 function goFind(){showPage('find');resetFind();}
 function resetFind(){['step-entry','step-cv','step-manual','skeleton','results'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display=id==='step-entry'?'block':'none';});setStep(1);cvFileData=null;cvFileName='';document.getElementById('cv-info').style.display='none';document.getElementById('drop-zone').style.borderColor='';}
 function showCV(){document.getElementById('step-entry').style.display='none';document.getElementById('step-cv').style.display='block';setStep(2);}
