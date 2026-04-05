@@ -100,6 +100,77 @@ module.exports = async function handler(req, res) {
       employers.sort(function(a, b) { return new Date(b.registered) - new Date(a.registered); });
       return res.status(200).json({ employers: employers });
     }
+    if (action === "stats") {
+      var sRaw = await hgetall("seekers");
+      var eRaw = await hgetall("employers");
+      var jRaw = await hgetall("jobs");
+      var aRaw = await hgetall("applications");
+      var seekerCount = Object.keys(sRaw).length;
+      var employerCount = Object.keys(eRaw).length;
+      var jobCount = Object.keys(jRaw).length;
+      var appCount = 0;
+      Object.values(aRaw).forEach(function(v) {
+        try { var arr = typeof v === "string" ? JSON.parse(v) : v; if (Array.isArray(arr)) appCount += arr.length; } catch(e) {}
+      });
+      return res.status(200).json({ seekers: seekerCount, employers: employerCount, jobs: jobCount, applications: appCount });
+    }
+    if (action === "delete-seeker") {
+      var email = params.email;
+      if (!email) return res.status(400).json({ error: "Email required" });
+      await hdel("seekers", email);
+      await hdel("applications", email);
+      return res.status(200).json({ success: true });
+    }
+    if (action === "delete-employer") {
+      var email2 = params.email;
+      if (!email2) return res.status(400).json({ error: "Email required" });
+      // Also delete their job listings
+      var jobRaw = await hgetall("jobs");
+      var delCount = 0;
+      for (var jk in jobRaw) {
+        var jb = typeof jobRaw[jk] === "string" ? JSON.parse(jobRaw[jk]) : jobRaw[jk];
+        if (jb.email === email2) { await hdel("jobs", jk); delCount++; }
+      }
+      await hdel("employers", email2);
+      return res.status(200).json({ success: true, deletedJobs: delCount });
+    }
+    if (action === "update-employer") {
+      var email3 = params.email;
+      var newPlan = params.plan;
+      if (!email3) return res.status(400).json({ error: "Email required" });
+      var empData = await hget("employers", email3);
+      if (!empData) return res.status(404).json({ error: "Employer not found" });
+      var emp = typeof empData === "string" ? JSON.parse(empData) : empData;
+      if (newPlan && ["free", "basic", "pro"].indexOf(newPlan) !== -1) {
+        emp.plan = newPlan;
+        emp.planChangedAt = new Date().toISOString();
+      }
+      await hset("employers", email3, emp);
+      return res.status(200).json({ success: true });
+    }
+    if (action === "email-user") {
+      var resendKey = process.env.RESEND_API_KEY;
+      if (!resendKey) return res.status(500).json({ error: "Email service not configured" });
+      var toEmail = params.to;
+      var subject = params.subject;
+      var body = params.body;
+      if (!toEmail || !subject || !body) return res.status(400).json({ error: "to, subject, and body required" });
+      var emailRes = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + resendKey },
+        body: JSON.stringify({
+          from: "FindMeAJob <hello@findmeajob.co.nz>",
+          to: [toEmail],
+          subject: subject,
+          html: '<div style="font-family:sans-serif;font-size:15px;line-height:1.7;color:#333">' + body.replace(/\n/g, '<br>') + '<br><br><span style="color:#999;font-size:13px">— FindMeAJob.co.nz</span></div>'
+        })
+      });
+      if (!emailRes.ok) {
+        var errBody = await emailRes.text();
+        return res.status(500).json({ error: "Failed to send: " + errBody });
+      }
+      return res.status(200).json({ success: true });
+    }
     return res.status(400).json({ error: "Unknown action" });
   } catch (err) {
     return res.status(500).json({ error: err.message });

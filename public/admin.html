@@ -174,6 +174,11 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
       <div class="stat"><div class="stat-n" id="st-rejected" style="color:var(--red)">0</div><div class="stat-l">Rejected</div></div>
       <div class="stat"><div class="stat-n" id="st-expired" style="color:var(--text3)">0</div><div class="stat-l">Expired</div></div>
     </div>
+    <div class="stats" style="grid-template-columns:repeat(3,1fr);margin-bottom:1.75rem">
+      <div class="stat" style="border-left:3px solid var(--purple)"><div class="stat-n" id="st-seekers" style="color:var(--purple)">0</div><div class="stat-l">Job Seekers</div></div>
+      <div class="stat" style="border-left:3px solid var(--gold)"><div class="stat-n" id="st-employers" style="color:var(--gold)">0</div><div class="stat-l">Employers</div></div>
+      <div class="stat" style="border-left:3px solid var(--em)"><div class="stat-n" id="st-apps" style="color:var(--em)">0</div><div class="stat-l">Applications</div></div>
+    </div>
     <div class="refresh-bar">
       <div class="tabs">
         <button class="tab active" data-tab="pending" type="button">Pending</button>
@@ -202,6 +207,38 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
     <div class="confirm-btns">
       <button class="confirm-cancel" id="confirm-cancel" type="button">Cancel</button>
       <button class="confirm-ok action-delete" id="confirm-ok" type="button">Yes, delete permanently</button>
+    </div>
+  </div>
+</div>
+
+<div id="email-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(8px)">
+  <div class="confirm-box" style="max-width:520px;text-align:left">
+    <div style="font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:.25rem">&#9993; Send Email</div>
+    <div style="font-size:.78rem;color:var(--text3);margin-bottom:1.25rem" id="email-to-label">To: user@example.com</div>
+    <label>Subject</label>
+    <input type="text" id="email-subject" placeholder="Subject line" style="margin-bottom:.75rem">
+    <label>Message</label>
+    <textarea id="email-body" placeholder="Type your message..." style="background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;padding:.85rem 1.15rem;outline:none;width:100%;min-height:120px;resize:vertical;margin-bottom:1rem"></textarea>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" onclick="document.getElementById('email-modal').style.display='none'" type="button">Cancel</button>
+      <button class="confirm-ok action-approve" id="email-send-btn" type="button">Send Email</button>
+    </div>
+  </div>
+</div>
+
+<div id="plan-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(8px)">
+  <div class="confirm-box" style="max-width:420px;text-align:left">
+    <div style="font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:.25rem">&#9881; Change Plan</div>
+    <div style="font-size:.78rem;color:var(--text3);margin-bottom:1.25rem" id="plan-label">Employer: company</div>
+    <label>Select Plan</label>
+    <div style="display:flex;gap:.5rem;margin-bottom:1.25rem">
+      <button class="abtn" data-plan="free" type="button" style="flex:1;padding:.65rem;border:1px solid var(--border2);background:var(--bg3);color:var(--text3);border-radius:var(--r);font-weight:700;cursor:pointer" onclick="selectPlan('free',this)">Starter</button>
+      <button class="abtn" data-plan="basic" type="button" style="flex:1;padding:.65rem;border:1px solid rgba(16,185,129,.2);background:rgba(16,185,129,.08);color:var(--em);border-radius:var(--r);font-weight:700;cursor:pointer" onclick="selectPlan('basic',this)">Growth</button>
+      <button class="abtn" data-plan="pro" type="button" style="flex:1;padding:.65rem;border:1px solid rgba(245,158,11,.2);background:rgba(245,158,11,.08);color:var(--gold);border-radius:var(--r);font-weight:700;cursor:pointer" onclick="selectPlan('pro',this)">Pro</button>
+    </div>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" onclick="document.getElementById('plan-modal').style.display='none'" type="button">Cancel</button>
+      <button class="confirm-ok action-approve" id="plan-save-btn" type="button">Save Plan</button>
     </div>
   </div>
 </div>
@@ -241,7 +278,7 @@ document.getElementById("btn-signout").addEventListener("click",function(){pw=""
 document.getElementById("btn-refresh").addEventListener("click",loadJobs);
 document.querySelectorAll(".tab").forEach(function(t){t.addEventListener("click",function(){document.querySelectorAll(".tab").forEach(function(x){x.classList.remove("active");});this.classList.add("active");currentTab=this.dataset.tab;if(currentTab==="seekers"){loadPeople("seekers");}else if(currentTab==="employers"){loadPeople("employers");}else{document.getElementById("job-list").style.display="grid";document.getElementById("people-list").style.display="none";renderJobs();}});});
 document.getElementById("confirm-cancel").addEventListener("click",function(){document.getElementById("confirm-modal").classList.remove("show");pendingAction=null;pendingActionId=null;});
-document.getElementById("confirm-ok").addEventListener("click",function(){document.getElementById("confirm-modal").classList.remove("show");if(pendingAction&&pendingActionId){execAction(pendingAction,pendingActionId);pendingAction=null;pendingActionId=null;}});
+document.getElementById("confirm-ok").addEventListener("click",function(){document.getElementById("confirm-modal").classList.remove("show");if(pendingAction&&pendingActionId){if(pendingAction==="delete-seeker"||pendingAction==="delete-employer"){execUserAction(pendingAction,pendingActionId);}else{execAction(pendingAction,pendingActionId);}pendingAction=null;pendingActionId=null;}});
 
 function showConfirm(action, id, title) {
   var modal = document.getElementById("confirm-modal");
@@ -267,6 +304,16 @@ function showConfirm(action, id, title) {
     titleEl.textContent = "Reject this listing?";
     subEl.textContent = "\"" + title + "\" will be rejected and hidden from job seekers.";
     okBtn.textContent = "Yes, reject it";
+  } else if (action === "delete-seeker") {
+    iconEl.textContent = "\ud83d\uddd1";
+    titleEl.textContent = "Delete this job seeker?";
+    subEl.textContent = "This will permanently delete " + title + " and all their applications. This cannot be undone.";
+    okBtn.textContent = "Yes, delete user";
+  } else if (action === "delete-employer") {
+    iconEl.textContent = "\ud83d\uddd1";
+    titleEl.textContent = "Delete this employer?";
+    subEl.textContent = "This will permanently delete " + title + " and all their job listings. This cannot be undone.";
+    okBtn.textContent = "Yes, delete employer";
   }
   modal.classList.add("show");
 }
@@ -277,7 +324,7 @@ async function doLogin(){
     var r=await fetch("/api/admin",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"list",password:p})});
     if(r.status===401){document.getElementById("login-err").style.display="block";return;}
     var d=await r.json();
-    if(d.jobs!==undefined){pw=p;document.getElementById("login").style.display="none";document.getElementById("app").style.display="block";document.getElementById("login-err").style.display="none";allJobs=d.jobs;updateStats();renderJobs();refreshTimer=setInterval(loadJobs,30000);document.getElementById("last-refresh").textContent="Refreshed just now";}
+    if(d.jobs!==undefined){pw=p;document.getElementById("login").style.display="none";document.getElementById("app").style.display="block";document.getElementById("login-err").style.display="none";allJobs=d.jobs;updateStats();renderJobs();loadStats();refreshTimer=setInterval(function(){loadJobs();loadStats();},30000);document.getElementById("last-refresh").textContent="Refreshed just now";}
     else{document.getElementById("login-err").style.display="block";}
   } catch(e) {
     showToast("Connection error. Please try again.", "error");
@@ -419,7 +466,7 @@ async function loadPeople(type) {
       if (!seekers.length) { el.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3)">No registered job seekers yet.</div>'; return; }
       var h = '<div style="font-size:.72rem;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.75rem">'+seekers.length+' Registered Job Seeker'+(seekers.length===1?'':'s')+'</div>';
       seekers.forEach(function(s) {
-        h += '<div class="job-row" style="border-left:3px solid var(--purple);grid-template-columns:1fr">';
+        h += '<div class="job-row" style="border-left:3px solid var(--purple);grid-template-columns:1fr auto">';
         h += '<div><div class="jr-title">'+esc(s.name)+'</div>';
         h += '<div class="jr-meta"><a href="mailto:'+esc(s.email)+'">'+esc(s.email)+'</a>';
         if (s.phone) h += ' \u00b7 '+esc(s.phone);
@@ -428,7 +475,12 @@ async function loadPeople(type) {
         h += '<div class="pills">';
         if (s.hasCv) h += '<span class="status-pill sp-approved">CV Saved</span>';
         if (s.createdAt) h += '<span class="status-pill sp-expired">Joined '+new Date(s.createdAt).toLocaleDateString("en-NZ",{day:"numeric",month:"short",year:"numeric"})+'</span>';
-        h += '</div></div></div>';
+        h += '</div></div>';
+        h += '<div class="actions"><div class="action-row">';
+        h += '<button class="abtn abtn-ok" onclick="openEmailModal(\''+esc(s.email)+'\',\''+esc(s.name)+'\')" type="button">&#9993; Email</button>';
+        h += '<button class="abtn abtn-del" onclick="showConfirm(\'delete-seeker\',\''+esc(s.email)+'\',\''+esc(s.name)+' ('+esc(s.email)+')\');currentTab=\'seekers\'" type="button">&#128465; Delete</button>';
+        h += '</div></div>';
+        h += '</div>';
       });
       el.innerHTML = h;
     } else {
@@ -437,7 +489,7 @@ async function loadPeople(type) {
       var h2 = '<div style="font-size:.72rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.75rem">'+employers.length+' Registered Employer'+(employers.length===1?'':'s')+'</div>';
       employers.forEach(function(e) {
         var planColor = e.plan==='pro'?'var(--gold)':e.plan==='basic'?'var(--em)':'var(--text3)';
-        h2 += '<div class="job-row" style="border-left:3px solid var(--gold);grid-template-columns:1fr">';
+        h2 += '<div class="job-row" style="border-left:3px solid var(--gold);grid-template-columns:1fr auto">';
         h2 += '<div><div class="jr-title">'+esc(e.company)+'</div>';
         h2 += '<div class="jr-co" style="font-size:.82rem">'+esc(e.name)+'</div>';
         h2 += '<div class="jr-meta"><a href="mailto:'+esc(e.email)+'">'+esc(e.email)+'</a>';
@@ -446,7 +498,13 @@ async function loadPeople(type) {
         h2 += '<div class="pills">';
         h2 += '<span class="status-pill" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);color:'+planColor+'">'+esc((e.plan||'free').toUpperCase())+' plan</span>';
         if (e.registered) h2 += '<span class="status-pill sp-expired">Joined '+new Date(e.registered).toLocaleDateString("en-NZ",{day:"numeric",month:"short",year:"numeric"})+'</span>';
-        h2 += '</div></div></div>';
+        h2 += '</div></div>';
+        h2 += '<div class="actions"><div class="action-row">';
+        h2 += '<button class="abtn abtn-ok" onclick="openEmailModal(\''+esc(e.email)+'\',\''+esc(e.name)+'\')" type="button">&#9993; Email</button>';
+        h2 += '<button class="abtn abtn-feat" onclick="openPlanModal(\''+esc(e.email)+'\',\''+esc(e.company)+'\',\''+esc(e.plan||'free')+'\')" type="button">&#9881; Plan</button>';
+        h2 += '<button class="abtn abtn-del" onclick="showConfirm(\'delete-employer\',\''+esc(e.email)+'\',\''+esc(e.company)+' ('+esc(e.email)+')\');currentTab=\'employers\'" type="button">&#128465; Delete</button>';
+        h2 += '</div></div>';
+        h2 += '</div>';
       });
       el.innerHTML = h2;
     }
@@ -454,6 +512,101 @@ async function loadPeople(type) {
     el.innerHTML = '<div style="text-align:center;padding:2rem;color:#fca5a5">Failed to load. Please try again.</div>';
   }
 }
+
+async function loadStats() {
+  try {
+    var r = await fetch("/api/admin", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"stats",password:pw})});
+    var d = await r.json();
+    document.getElementById("st-seekers").textContent = d.seekers || 0;
+    document.getElementById("st-employers").textContent = d.employers || 0;
+    document.getElementById("st-apps").textContent = d.applications || 0;
+  } catch(e) {}
+}
+
+async function execUserAction(action, email) {
+  try {
+    var r = await fetch("/api/admin", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:action,password:pw,email:email})});
+    var d = await r.json();
+    if (d.success) {
+      showToast("User deleted successfully.", "success");
+      if (currentTab === "seekers") loadPeople("seekers");
+      else if (currentTab === "employers") loadPeople("employers");
+      loadStats();
+      loadJobs();
+    } else {
+      showToast("Error: " + (d.error || "Unknown error"), "error");
+    }
+  } catch(e) {
+    showToast("Network error. Please try again.", "error");
+  }
+}
+
+var emailTarget = "";
+function openEmailModal(email, name) {
+  emailTarget = email;
+  document.getElementById("email-to-label").textContent = "To: " + name + " <" + email + ">";
+  document.getElementById("email-subject").value = "";
+  document.getElementById("email-body").value = "";
+  document.getElementById("email-modal").style.display = "flex";
+}
+
+document.getElementById("email-send-btn").addEventListener("click", async function() {
+  var subject = document.getElementById("email-subject").value.trim();
+  var body = document.getElementById("email-body").value.trim();
+  if (!subject || !body) { showToast("Subject and message are required.", "error"); return; }
+  this.textContent = "Sending..."; this.disabled = true;
+  try {
+    var r = await fetch("/api/admin", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"email-user",password:pw,to:emailTarget,subject:subject,body:body})});
+    var d = await r.json();
+    if (d.success) {
+      showToast("Email sent to " + emailTarget, "success");
+      document.getElementById("email-modal").style.display = "none";
+    } else {
+      showToast("Failed: " + (d.error || "Unknown error"), "error");
+    }
+  } catch(e) {
+    showToast("Network error.", "error");
+  }
+  this.textContent = "Send Email"; this.disabled = false;
+});
+
+var planTarget = "";
+var selectedPlan = "free";
+function selectPlan(plan, btn) {
+  selectedPlan = plan;
+  btn.parentNode.querySelectorAll("button").forEach(function(b) { b.style.outline = "none"; });
+  btn.style.outline = "2px solid var(--em)";
+  btn.style.outlineOffset = "2px";
+}
+function openPlanModal(email, company, currentPlan) {
+  planTarget = email;
+  selectedPlan = currentPlan;
+  document.getElementById("plan-label").textContent = "Employer: " + company + " (" + email + ")";
+  document.getElementById("plan-modal").style.display = "flex";
+  // Highlight current plan
+  document.querySelectorAll("#plan-modal [data-plan]").forEach(function(b) {
+    b.style.outline = b.dataset.plan === currentPlan ? "2px solid var(--em)" : "none";
+    b.style.outlineOffset = "2px";
+  });
+}
+
+document.getElementById("plan-save-btn").addEventListener("click", async function() {
+  this.textContent = "Saving..."; this.disabled = true;
+  try {
+    var r = await fetch("/api/admin", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"update-employer",password:pw,email:planTarget,plan:selectedPlan})});
+    var d = await r.json();
+    if (d.success) {
+      showToast("Plan updated to " + selectedPlan.toUpperCase(), "success");
+      document.getElementById("plan-modal").style.display = "none";
+      loadPeople("employers");
+    } else {
+      showToast("Failed: " + (d.error || "Unknown error"), "error");
+    }
+  } catch(e) {
+    showToast("Network error.", "error");
+  }
+  this.textContent = "Save Plan"; this.disabled = false;
+});
 </script>
 </body>
 </html>
