@@ -9,6 +9,23 @@ var verifyPassword = _kv.verifyPassword;
 var isHashed = _kv.isHashed;
 var validatePassword = _kv.validatePassword;
 
+var ADMIN_EMAIL = process.env.ADMIN_EMAIL || "hello@findmeajob.co.nz";
+
+function notifyAdmin(subject, bodyHtml) {
+  var resendKey = process.env.RESEND_API_KEY;
+  if (!resendKey) return;
+  fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Authorization": "Bearer " + resendKey },
+    body: JSON.stringify({
+      from: "FindMeAJob <hello@findmeajob.co.nz>",
+      to: [ADMIN_EMAIL],
+      subject: subject,
+      html: '<div style="font-family:sans-serif;font-size:15px;line-height:1.7;color:#333">' + bodyHtml + '</div>'
+    })
+  }).catch(function() {});
+}
+
 var loginRateLimitMap = {};
 
 function checkLoginRateLimit(ip) {
@@ -58,6 +75,15 @@ module.exports = async function handler(req, res) {
         createdAt: new Date().toISOString()
       };
       await hset("seekers", email, seeker);
+      notifyAdmin(
+        "New job seeker registered: " + name,
+        "A new job seeker just created an account:<br><br>"
+        + "Name: " + (name || "") + "<br>"
+        + "Email: " + (email || "") + "<br>"
+        + "Right to work: " + (seeker.rtw || "—") + "<br>"
+        + "Email alerts: " + (seeker.emailAlerts ? "Yes" : "No") + "<br><br>"
+        + '<a href="https://www.findmeajob.co.nz/admin.html" style="color:#059669;font-weight:700">Open admin panel</a>'
+      );
       return res.status(200).json({ success: true, seeker: { id: id, name: name, email: email, phone: seeker.phone, rtw: seeker.rtw, notice: seeker.notice, hasCv: false } });
     }
 

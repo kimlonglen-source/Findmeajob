@@ -7,6 +7,23 @@ var verifyPassword = _kv.verifyPassword;
 var isHashed = _kv.isHashed;
 var hashPassword = _kv.hashPassword;
 
+var ADMIN_EMAIL = process.env.ADMIN_EMAIL || "hello@findmeajob.co.nz";
+
+function notifyAdmin(subject, bodyHtml) {
+  var resendKey = process.env.RESEND_API_KEY;
+  if (!resendKey) return;
+  fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Authorization": "Bearer " + resendKey },
+    body: JSON.stringify({
+      from: "FindMeAJob <hello@findmeajob.co.nz>",
+      to: [ADMIN_EMAIL],
+      subject: subject,
+      html: '<div style="font-family:sans-serif;font-size:15px;line-height:1.7;color:#333">' + bodyHtml + '</div>'
+    })
+  }).catch(function() {});
+}
+
 module.exports = async function handler(req, res) {
   if (!getKV()) return res.status(500).json({ error: "Database not configured." });
 
@@ -100,6 +117,17 @@ module.exports = async function handler(req, res) {
           status: "pending", submitted: new Date().toISOString(), views: 0, applies: 0
         };
         await hset("jobs", jid, newJob);
+        notifyAdmin(
+          "New job submitted: " + sTitle + " — " + (emp2.company || ""),
+          "A new job listing needs your review:<br><br>"
+          + "<strong>" + (sTitle || "") + "</strong><br>"
+          + "Company: " + (emp2.company || "") + "<br>"
+          + "Location: " + (req.body.location || "NZ") + "<br>"
+          + "Category: " + (req.body.category || "Other") + "<br>"
+          + "Type: " + (req.body.type || "Full-time") + "<br>"
+          + "Plan: " + planKey + "<br><br>"
+          + '<a href="https://www.findmeajob.co.nz/admin.html" style="color:#059669;font-weight:700">Review in admin panel</a>'
+        );
         return res.status(200).json({ success: true, id: jid });
       }
 
