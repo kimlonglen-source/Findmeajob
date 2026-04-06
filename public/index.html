@@ -266,7 +266,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 <div id="page-home" class="page active">
   <section class="hero">
     <div class="hero-badge"><span class="dot"></span>AI-Powered Job Matching for New Zealand</div>
-    <h1>Find your next NZ job<br><em><span class="typewriter" id="hero-typed"></span></em></h1>
+    <h1>Find your next NZ job<br><em><span class="typewriter" id="hero-typed">&nbsp;</span></em></h1>
     <p class="hero-sub">Upload your CV. Get matched to real NZ jobs in 60 seconds. Free, no sign-up required.</p>
     <div class="hero-ctas">
       <button class="btn-hero" id="hero-try" type="button">Upload CV &#8594;</button>
@@ -1128,24 +1128,29 @@ function loadMammoth(cb){
 // Typewriter effect
 (function(){
   var phrases=['in 60 seconds','with AI matching','or your next career','no sign-up needed','100% free','NZ jobs only','powered by AI'];
-  var el=document.getElementById('hero-typed');
-  if(!el)return;
-  var phraseIdx=0,charIdx=0,isDeleting=false;
-  function tick(){
-    var phrase=phrases[phraseIdx];
-    if(!isDeleting){
-      charIdx++;
-      el.textContent=phrase.substring(0,charIdx);
-      if(charIdx===phrase.length){isDeleting=true;setTimeout(tick,2000);return;}
-      setTimeout(tick,60+Math.floor(Math.random()*40));
-    }else{
-      charIdx--;
-      el.textContent=phrase.substring(0,charIdx);
-      if(charIdx===0){isDeleting=false;phraseIdx=(phraseIdx+1)%phrases.length;setTimeout(tick,400);return;}
-      setTimeout(tick,30);
+  function startTypewriter(){
+    var el=document.getElementById('hero-typed');
+    if(!el)return;
+    var phraseIdx=0,charIdx=0,isDeleting=false;
+    function update(txt){el.textContent=txt;el.style.opacity=1;}
+    function tick(){
+      var phrase=phrases[phraseIdx];
+      if(!isDeleting){
+        charIdx++;
+        update(phrase.substring(0,charIdx));
+        if(charIdx===phrase.length){isDeleting=true;setTimeout(tick,2000);return;}
+        setTimeout(tick,60+Math.floor(Math.random()*40));
+      }else{
+        charIdx--;
+        update(phrase.substring(0,charIdx));
+        if(charIdx===0){isDeleting=false;phraseIdx=(phraseIdx+1)%phrases.length;setTimeout(tick,400);return;}
+        setTimeout(tick,30);
+      }
     }
+    tick();
   }
-  setTimeout(tick,500);
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',startTypewriter);}
+  else{setTimeout(startTypewriter,100);}
 })();
 
 function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},2200);}
