@@ -1128,29 +1128,28 @@ function loadMammoth(cb){
 // Typewriter effect
 (function(){
   var phrases=['in 60 seconds','with AI matching','or your next career','no sign-up needed','100% free','NZ jobs only','powered by AI'];
-  function startTypewriter(){
-    var el=document.getElementById('hero-typed');
-    if(!el)return;
-    var phraseIdx=0,charIdx=0,isDeleting=false;
-    function update(txt){el.textContent=txt;el.style.opacity=1;}
-    function tick(){
-      var phrase=phrases[phraseIdx];
-      if(!isDeleting){
-        charIdx++;
-        update(phrase.substring(0,charIdx));
-        if(charIdx===phrase.length){isDeleting=true;setTimeout(tick,2000);return;}
-        setTimeout(tick,60+Math.floor(Math.random()*40));
-      }else{
-        charIdx--;
-        update(phrase.substring(0,charIdx));
-        if(charIdx===0){isDeleting=false;phraseIdx=(phraseIdx+1)%phrases.length;setTimeout(tick,400);return;}
-        setTimeout(tick,30);
-      }
+  var el=document.getElementById('hero-typed');
+  if(!el)return;
+  var phraseIdx=0,charIdx=0,isDeleting=false;
+  function tick(){
+    var phrase=phrases[phraseIdx];
+    var txt;
+    if(!isDeleting){
+      charIdx++;
+      txt=phrase.substring(0,charIdx);
+      el.innerHTML=txt||'&nbsp;';
+      if(charIdx>=phrase.length){isDeleting=true;setTimeout(tick,2000);return;}
+      setTimeout(tick,65);
+    }else{
+      charIdx--;
+      txt=phrase.substring(0,charIdx);
+      el.innerHTML=txt||'&nbsp;';
+      if(charIdx<=0){isDeleting=false;phraseIdx=(phraseIdx+1)%phrases.length;setTimeout(tick,400);return;}
+      setTimeout(tick,30);
     }
-    tick();
   }
-  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',startTypewriter);}
-  else{setTimeout(startTypewriter,100);}
+  el.innerHTML='&nbsp;';
+  setTimeout(tick,800);
 })();
 
 function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},2200);}
