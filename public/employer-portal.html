@@ -319,6 +319,7 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
         </div>
       </div>
       <div class="err" id="post-err1"></div>
+      <div id="free-plan-note" style="display:none;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.75rem 1rem;margin-top:.5rem;font-size:.78rem;color:var(--text2);line-height:1.6">Company logo and company profile are available on <strong style="color:var(--em)">Growth</strong> and <strong style="color:var(--gold)">Pro</strong> plans. <a href="#" onclick="document.getElementById('upgrade-panel').scrollIntoView({behavior:'smooth'});return false" style="color:var(--em);font-weight:600;text-decoration:none">Upgrade your plan</a></div>
       <button class="btn" id="btn-to-step2" type="button" style="margin-top:.5rem">Next: Company Details &#8594;</button>
     </div>
 
@@ -544,6 +545,15 @@ function showPostScreen() {
   var plan = (session && session.employer) ? session.employer.plan || 'free' : 'free';
   var pn = document.getElementById('pro-note');
   if (pn) pn.style.display = plan === 'pro' ? 'block' : 'none';
+  var fpn = document.getElementById('free-plan-note');
+  var step2Btn = document.getElementById('btn-to-step2');
+  if (plan === 'free') {
+    if (fpn) fpn.style.display = 'block';
+    if (step2Btn) step2Btn.textContent = 'Preview Listing \u2192';
+  } else {
+    if (fpn) fpn.style.display = 'none';
+    if (step2Btn) step2Btn.textContent = 'Next: Company Details \u2192';
+  }
   setPostStep(1);
 }
 
@@ -569,6 +579,14 @@ document.getElementById('btn-to-step2').addEventListener('click', function(){
   if (err) err.style.display = 'none';
   if (!title) { if(err){err.textContent='Please enter a job title.';err.style.display='block';} return; }
   if (!desc) { if(err){err.textContent='Please enter a job description.';err.style.display='block';} return; }
+  // Free plan skips Step 2 (company profile & logo are Growth/Pro features)
+  var plan = (session && session.employer) ? session.employer.plan || 'free' : 'free';
+  if (plan === 'free') {
+    document.getElementById('e-logo').value = '';
+    if (document.getElementById('e-company-profile')) document.getElementById('e-company-profile').value = '';
+    document.getElementById('btn-to-step3').click();
+    return;
+  }
   setPostStep(2);
 });
 

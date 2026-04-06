@@ -92,7 +92,9 @@ module.exports = async function handler(req, res) {
           title: sTitle, location: req.body.location || "New Zealand", category: req.body.category || "Other",
           type: req.body.type || "Full-time", salary: req.body.salary || "Negotiable",
           description: sDesc, requirements: req.body.requirements || "", why: req.body.why || "",
-          companyProfile: req.body.companyProfile || "", website: req.body.website || "", logoUrl: req.body.logoUrl || "",
+          companyProfile: (planKey === "free") ? "" : (req.body.companyProfile || ""),
+          website: req.body.website || "",
+          logoUrl: (planKey === "free") ? "" : (req.body.logoUrl || ""),
           plan: planKey, planDays: PLAN_DAYS[planKey] || 30,
           autoFeature: planKey === "pro", priority: planKey === "basic" || planKey === "pro",
           status: "pending", submitted: new Date().toISOString(), views: 0, applies: 0
@@ -111,7 +113,10 @@ module.exports = async function handler(req, res) {
       if (action === "edit") {
         if (!updates || typeof updates !== "object") return res.status(400).json({ error: "Missing or invalid updates" });
         var allowed = ["title", "location", "category", "type", "salary", "description", "requirements", "why", "companyProfile", "logoUrl"];
+        var editPlan = emp2.plan || "free";
         allowed.forEach(function(k) { if (updates[k] !== undefined) job[k] = updates[k]; });
+        // Free plan cannot have logo or company profile
+        if (editPlan === "free") { job.companyProfile = ""; job.logoUrl = ""; }
         job.editedAt = new Date().toISOString();
         if (job.status !== "approved") {
           job.status = "pending";
