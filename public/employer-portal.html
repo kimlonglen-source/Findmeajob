@@ -184,7 +184,7 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
               <div style="font-family:'Inter',sans-serif;font-size:1.25rem;font-weight:800;color:var(--text)">$79<span style="font-size:.7rem;font-weight:500;color:var(--text3)">/mo</span> <span style="font-size:.7rem;font-weight:600;color:var(--gold)">Featured &#11088;</span></div>
             </div>
             <ul style="list-style:none;padding:0;margin:0;font-size:.75rem;color:var(--text2);font-weight:500;display:flex;flex-wrap:wrap;gap:.25rem .75rem">
-              <li>Unlimited listings</li><li>90 day visibility</li><li>Auto-featured</li><li>AI candidate matching</li><li>Full analytics</li>
+              <li>Unlimited listings</li><li>90 day visibility</li><li>Auto-featured</li><li>Featured in weekly alerts</li><li>Application stats</li>
             </ul>
           </button>
         </div>
@@ -290,7 +290,7 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
       <div class="post-step" id="ps-3"><span style="background:var(--border2);color:var(--text3);width:20px;height:20px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;margin-right:.35rem">3</span>Preview</div>
     </div>
 
-    <div id="pro-note" style="display:none;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:var(--r);padding:.75rem 1rem;margin-bottom:.75rem;font-size:.8rem;color:var(--gold);font-weight:600">&#11088; Pro plan: Your listing will be auto-featured and surface in AI candidate matching.</div>
+    <div id="pro-note" style="display:none;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:var(--r);padding:.75rem 1rem;margin-bottom:.75rem;font-size:.8rem;color:var(--gold);font-weight:600">&#11088; Pro plan: Your listing will be auto-featured and highlighted in weekly job alerts.</div>
 
     <!-- STEP 1: Job Details -->
     <div id="post-step1">
@@ -429,7 +429,7 @@ function selectPlan(plan) {
   var notes = {
     free: 'Starter: 1 listing - 30 day visibility - Free forever',
     basic: 'Growth: 5 listings - 60 day visibility - Priority placement - Company profile + logo',
-    pro: 'Pro: Unlimited listings - 90 days - Auto-featured - AI matching - Full analytics'
+    pro: 'Pro: Unlimited listings - 90 days - Auto-featured - Weekly alerts - Application stats'
   };
   var n = document.getElementById('plan-note');
   if (n) n.textContent = notes[plan] || '';
@@ -516,7 +516,7 @@ function showPortal(employer, jobs) {
   var planInfo = {
     free: {label:'Starter Plan', color:'var(--text3)', features:'1 listing \u00b7 30 day visibility \u00b7 Standard placement'},
     basic: {label:'Growth Plan', color:'var(--em)', features:'5 listings \u00b7 60 day visibility \u00b7 Priority placement \u00b7 Company profile \u00b7 Analytics'},
-    pro: {label:'Pro Plan', color:'var(--gold)', features:'Unlimited \u00b7 90 days \u00b7 Auto-featured \u2b50 \u00b7 AI matching \u00b7 Full analytics'}
+    pro: {label:'Pro Plan', color:'var(--gold)', features:'Unlimited \u00b7 90 days \u00b7 Auto-featured \u2b50 \u00b7 Weekly alerts \u00b7 Application stats'}
   };
   var pi = planInfo[employer.plan || 'free'] || planInfo.free;
   document.getElementById('plan-name-label').textContent = pi.label;

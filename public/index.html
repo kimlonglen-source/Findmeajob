@@ -59,6 +59,8 @@ nav{position:sticky;top:0;z-index:200;padding:0 2rem;height:64px;display:flex;al
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .page{display:none;min-height:calc(100vh - 64px);overflow-x:hidden}
 .page.active{display:block}
+#page-home{scroll-snap-type:y proximity}
+#page-home>section,#page-home>.strip{scroll-snap-align:start;scroll-margin-top:64px}
 .wrap{max-width:720px;margin:0 auto;padding:3rem 1.5rem 5rem}
 .wrap-wide{max-width:1000px;margin:0 auto;padding:3rem 1.5rem 5rem}
 .page-eyebrow{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;background:linear-gradient(135deg,var(--em),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.5rem}
@@ -616,8 +618,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <div class="plan-grid">
       <div style="background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(16,185,129,.02));border:1px solid rgba(16,185,129,.2);border-radius:var(--rl);padding:1.25rem 1.5rem;margin-bottom:1.5rem;text-align:center;grid-column:1/-1"><div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin-bottom:.3rem">&#9733; Launch Offer</div><div style="font-family:'Inter',sans-serif;font-size:1.3rem;font-weight:800;color:var(--text);margin-bottom:.3rem">All plans are <em style="color:var(--em)">free for 6 months</em></div><div style="font-size:.78rem;color:var(--text2);font-weight:500">Try any plan free for 6 months — no credit card needed. After 6 months, continue at the plan rate or stay on Starter free forever.</div></div>
       <div class="plan"><div class="plan-tier">Starter</div><div class="plan-price">$0</div><div class="plan-period">Free forever &middot; no card required</div><ul class="plan-feats"><li>1 active listing</li><li>30 day visibility</li><li>Email applications</li><li>Standard placement</li></ul><div style="font-size:.68rem;color:var(--em);font-weight:700;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.12);border-radius:6px;padding:.4rem .6rem;margin-top:.5rem;text-align:center">Save $300 vs other job boards</div><a class="btn btn-sec" href="/employer-portal.html?plan=free" id="pp-free" style="margin-top:1rem;text-decoration:none">Get started free</a></div>
-      <div class="plan popular"><div class="pop-badge">Most Popular</div><div class="plan-tier">Growth</div><div class="plan-price" style="font-size:1.3rem;text-decoration:line-through;opacity:.4">$29</div><div class="plan-price">$0</div><div class="plan-period">Free for 6 months &middot; then <span style="color:var(--em);font-weight:700">$29/mo NZD incl. GST</span></div><ul class="plan-feats"><li>5 active listings</li><li>60 day visibility</li><li>Priority placement</li><li>Company profile</li><li>Company logo on listings</li><li>Applicant tracking</li></ul><div style="font-size:.68rem;color:var(--gold);font-weight:700;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.12);border-radius:6px;padding:.4rem .6rem;margin-top:.5rem;text-align:center">Save $1,200+/yr vs other job boards</div><a class="btn" href="/employer-portal.html?plan=basic" id="pp-basic" style="margin-top:1rem;text-decoration:none">Get started free</a></div>
-      <div class="plan"><div class="plan-tier">Pro</div><div class="plan-price" style="font-size:1.3rem;text-decoration:line-through;opacity:.4">$79</div><div class="plan-price">$0</div><div class="plan-period">Free for 6 months &middot; then <span style="color:var(--em);font-weight:700">$79/mo NZD incl. GST</span></div><ul class="plan-feats"><li>Unlimited listings</li><li>90 day visibility</li><li>Featured placement &#11088;</li><li>Company profile &amp; logo</li><li>Full analytics</li><li>AI candidate matching</li><li>Priority support</li></ul><div style="font-size:.68rem;color:var(--gold);font-weight:700;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.12);border-radius:6px;padding:.4rem .6rem;margin-top:.5rem;text-align:center">Unlimited listings for less than 1 ad elsewhere</div><a class="btn" href="/employer-portal.html?plan=pro" id="pp-pro" style="margin-top:1rem;text-decoration:none">Get started free</a></div>
+      <div class="plan popular"><div class="pop-badge">Most Popular</div><div class="plan-tier">Growth</div><div class="plan-price" style="font-size:1.3rem;text-decoration:line-through;opacity:.4">$29</div><div class="plan-price">$0</div><div class="plan-period">Free for 6 months &middot; then <span style="color:var(--em);font-weight:700">$29/mo NZD incl. GST</span></div><ul class="plan-feats"><li>5 active listings</li><li>60 day visibility</li><li>Priority placement</li><li>Company profile</li><li>Company logo on listings</li><li>Application stats</li></ul><div style="font-size:.68rem;color:var(--gold);font-weight:700;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.12);border-radius:6px;padding:.4rem .6rem;margin-top:.5rem;text-align:center">Save $1,200+/yr vs other job boards</div><a class="btn" href="/employer-portal.html?plan=basic" id="pp-basic" style="margin-top:1rem;text-decoration:none">Get started free</a></div>
+      <div class="plan"><div class="plan-tier">Pro</div><div class="plan-price" style="font-size:1.3rem;text-decoration:line-through;opacity:.4">$79</div><div class="plan-price">$0</div><div class="plan-period">Free for 6 months &middot; then <span style="color:var(--em);font-weight:700">$79/mo NZD incl. GST</span></div><ul class="plan-feats"><li>Unlimited listings</li><li>90 day visibility</li><li>Featured placement &#11088;</li><li>Company profile &amp; logo</li><li>Application stats</li><li>Featured in weekly alerts</li><li>Email support</li></ul><div style="font-size:.68rem;color:var(--gold);font-weight:700;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.12);border-radius:6px;padding:.4rem .6rem;margin-top:.5rem;text-align:center">Unlimited listings for less than 1 ad elsewhere</div><a class="btn" href="/employer-portal.html?plan=pro" id="pp-pro" style="margin-top:1rem;text-decoration:none">Get started free</a></div>
     </div>
     <p style="text-align:center;color:var(--text3);font-size:.75rem;font-weight:500;margin-top:1.5rem">Questions? <a href="mailto:hello@findmeajob.co.nz" style="color:var(--em);text-decoration:none;font-weight:700">hello@findmeajob.co.nz</a></p>
   </div>
@@ -661,7 +663,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
               <li>Priority placement</li>
               <li>Company profile</li>
               <li>Company logo</li>
-              <li>Applicant tracking</li>
+              <li>Application stats</li>
             </ul>
           </div>
           <div class="plan">
@@ -673,9 +675,9 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
               <li>90 day visibility</li>
               <li>Featured placement &#11088;</li>
               <li>Company profile &amp; logo</li>
-              <li>AI candidate matching</li>
-              <li>Full analytics</li>
-              <li>Priority support</li>
+              <li>Featured in weekly alerts</li>
+              <li>Application stats</li>
+              <li>Email support</li>
             </ul>
           </div>
         </div>
@@ -1784,7 +1786,7 @@ function selectPlan(plan){
   var notes={
     free:'Starter: 1 listing - 30 day visibility - Standard placement - Free forever',
     basic:'Growth: 5 listings - 60 day visibility - Priority placement - Company profile + logo - Analytics',
-    pro:'Pro: Unlimited listings - 90 days - Auto-featured ⭐ - Company profile + logo - AI matching - Full analytics'
+    pro:'Pro: Unlimited listings - 90 days - Auto-featured ⭐ - Company profile + logo - Weekly alerts - Application stats'
   };
   if(noteEl)noteEl.innerHTML=notes[plan]||'';
   // Show company profile for Growth/Pro in job form
@@ -1919,7 +1921,7 @@ var legal={
   +'<strong style="color:var(--text);font-size:.9rem">6. Plan Limits</strong><br><br>'
   +'\u2022 <strong style="color:var(--text)">Starter (Free):</strong> 1 active listing, 30-day visibility<br>'
   +'\u2022 <strong style="color:var(--text)">Growth ($29/mo NZD incl. GST):</strong> 5 active listings, 60-day visibility, priority placement<br>'
-  +'\u2022 <strong style="color:var(--text)">Pro ($79/mo NZD incl. GST):</strong> Unlimited listings, 90-day visibility, featured placement, AI matching<br>'
+  +'\u2022 <strong style="color:var(--text)">Pro ($79/mo NZD incl. GST):</strong> Unlimited listings, 90-day visibility, featured placement, weekly alerts<br>'
   +'Active listings include both approved and pending-review listings. Plan changes take effect immediately.<br><br>'
   +'<strong style="color:var(--text);font-size:.9rem">7. Acceptable Use</strong><br><br>'
   +'You agree not to:<br>'
