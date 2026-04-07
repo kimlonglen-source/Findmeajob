@@ -1053,6 +1053,38 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 <div id="lm"><div class="mbox"><button class="mbox-close" id="modal-close" type="button">&#215;</button><div id="modal-body"></div></div></div>
 
 <!-- AI Apply Modal -->
+<!-- JOB DETAIL MODAL -->
+<div id="job-detail-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99998;padding:1rem;backdrop-filter:blur(8px);overflow-y:auto">
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem;width:100%;max-width:680px;margin:2rem auto;position:relative">
+    <button onclick="document.getElementById('job-detail-modal').style.display='none'" style="position:absolute;top:1rem;right:1rem;background:var(--bg3);border:1px solid var(--border);color:var(--text3);width:28px;height:28px;border-radius:999px;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center">&times;</button>
+    <div id="jd-logo" style="display:none;margin-bottom:1rem"></div>
+    <div id="jd-featured" style="display:none;margin-bottom:.5rem"><span class="tag" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold);font-size:.65rem;font-weight:700;text-transform:uppercase">&#11088; Featured</span></div>
+    <div id="jd-title" style="font-size:1.4rem;font-weight:800;color:var(--text);line-height:1.2;margin-bottom:.35rem"></div>
+    <div id="jd-company" style="font-size:.9rem;font-weight:600;color:var(--em);margin-bottom:.2rem"></div>
+    <div id="jd-meta" style="font-size:.8rem;color:var(--text3);margin-bottom:1.25rem"></div>
+    <div style="border-top:1px solid var(--border);padding-top:1.25rem;margin-bottom:1rem">
+      <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.5rem">Job Description</div>
+      <div id="jd-description" style="font-size:.88rem;color:var(--text2);line-height:1.75;white-space:pre-wrap"></div>
+    </div>
+    <div id="jd-requirements-section" style="display:none;margin-bottom:1rem">
+      <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.5rem">Requirements</div>
+      <div id="jd-requirements" style="font-size:.88rem;color:var(--text2);line-height:1.75;white-space:pre-wrap"></div>
+    </div>
+    <div id="jd-why-section" style="display:none;margin-bottom:1rem">
+      <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.5rem">Why Work Here</div>
+      <div id="jd-why" style="font-size:.88rem;color:var(--text2);line-height:1.75;white-space:pre-wrap"></div>
+    </div>
+    <div id="jd-profile-section" style="display:none;margin-bottom:1rem">
+      <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.5rem">About the Company</div>
+      <div id="jd-profile" style="font-size:.85rem;color:var(--text3);line-height:1.7;font-style:italic"></div>
+    </div>
+    <div style="display:flex;gap:.5rem;margin-top:1.25rem">
+      <button class="btn" id="jd-apply-btn" type="button" style="flex:1">Apply Now &#8594;</button>
+      <a class="btn btn-sec" id="jd-external-link" href="#" target="_blank" rel="noopener" style="flex:1;text-decoration:none;display:none;text-align:center">View Original Listing &#8594;</a>
+    </div>
+  </div>
+</div>
+
 <div id="apply-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99999;padding:1rem;backdrop-filter:blur(8px);overflow-y:auto">
   <div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem;width:100%;max-width:540px;margin:2rem auto;position:relative">
     <button onclick="document.getElementById('apply-modal').style.display='none'" style="position:absolute;top:1rem;right:1rem;background:var(--bg3);border:1px solid var(--border);color:var(--text3);width:28px;height:28px;border-radius:999px;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center">&times;</button>
@@ -1600,7 +1632,8 @@ async function fetchLiveJobs(matches){
           var matchResult=calcLiveMatch({title:j.title,description:j.description},matches);var pct=matchResult.pct;
           var c=document.createElement('div');
           c.className='job-card featured';
-          c.style.position='relative';c.style.gridTemplateColumns='1fr auto';c.style.gap='1rem';
+          c.style.position='relative';c.style.gridTemplateColumns='1fr auto';c.style.gap='1rem';c.style.cursor='pointer';
+          c.addEventListener('click',function(e){if(e.target.closest('.job-link'))return;viewJob(j);});
           var logoAbs2=j.logoUrl?'<img src="'+j.logoUrl+'" alt="'+j.company+'" style="position:absolute;top:1rem;right:1rem;width:120px;height:120px;object-fit:contain;border-radius:12px" onerror="this.style.display=\'none\'">':'';
           c.innerHTML=logoAbs2+
             '<div style="padding-right:'+(j.logoUrl?'135px':'0')+'"><div style="margin-bottom:.35rem"><span class="tag" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold);font-size:.6rem;font-weight:800;text-transform:uppercase">\u2b50 Featured</span></div>'+
@@ -1610,7 +1643,7 @@ async function fetchLiveJobs(matches){
             '<div class="job-desc">'+(j.description||'').substring(0,180)+'...</div>'+
             (j.companyProfile?'<div class="job-desc" style="margin-top:.25rem;opacity:.8;font-style:italic">'+j.companyProfile.substring(0,100)+'</div>':'')+
             '<div class="job-tags"><span class="tag tag-cat">'+j.category+'</span><span class="tag tag-other">'+j.type+'</span><span class="tag tag-other">'+j.salary+'</span></div>'+
-            '<div class="job-links"><button onclick="applyJob(this)" data-email="'+j.email+'" data-title="'+(j.title||'').replace(/"/g,'')+'" data-id="'+j.id+'" data-company="'+(j.company||'').replace(/"/g,'')+'" data-desc="'+(j.description||'').replace(/"/g,'').substring(0,500)+'" data-reqs="'+(j.requirements||'').replace(/"/g,'').substring(0,300)+'" class="job-link apply">Apply Now &#8594;</button></div>'+
+            '<div class="job-links"><button onclick="applyJob(this)" data-email="'+j.email+'" data-title="'+(j.title||'').replace(/"/g,'')+'" data-id="'+j.id+'" data-company="'+(j.company||'').replace(/"/g,'')+'" data-desc="'+(j.description||'').replace(/"/g,'')+'" data-reqs="'+(j.requirements||'').replace(/"/g,'')+'" class="job-link apply">Apply Now &#8594;</button></div>'+
             '<div class="match-col">'+
             (pct?'<div class="match-pct" style="color:var(--gold)">'+pct+'%</div><div class="match-lbl">match</div>':'<div style="color:var(--gold);font-size:.65rem;font-weight:800;text-transform:uppercase">\u2b50 Featured</div>')+
             '</div>';
@@ -1744,12 +1777,13 @@ async function loadBrowse(){
     approved=approved.filter(function(j){return (j.title||'').toLowerCase().indexOf(kw)!==-1||(j.description||'').toLowerCase().indexOf(kw)!==-1||(j.company||'').toLowerCase().indexOf(kw)!==-1||(j.category||'').toLowerCase().indexOf(kw)!==-1;});
     adzuna=adzuna.filter(function(j){return (j.title||'').toLowerCase().indexOf(kw)!==-1||(j.description||'').toLowerCase().indexOf(kw)!==-1;});
   }
+  window._employerJobs = approved;
   if(approved.length){
     var h='<div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--gold);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)">Employer Listings</div>';empEl.innerHTML=h;
-    approved.forEach(function(j){var c=document.createElement('div');c.className='job-card'+(j.featured?' featured':'');
+    approved.forEach(function(j,ji){var c=document.createElement('div');c.className='job-card'+(j.featured?' featured':'');c.style.cursor='pointer';c.addEventListener('click',function(e){if(e.target.closest('.job-link'))return;viewJob(j);});
     c.style.position='relative';c.style.gridTemplateColumns='1fr';
     var logoAbsolute=j.logoUrl?'<img src="'+j.logoUrl+'" alt="'+j.company+'" style="position:absolute;top:1rem;right:1rem;width:120px;height:120px;object-fit:contain;border-radius:12px" onerror="this.style.display=\'none\'">':'';
-    c.innerHTML=logoAbsolute+'<div style="padding-right:'+(j.logoUrl?'135px':'0')+'">'+(j.featured?'<div style="margin-bottom:.35rem"><span class="tag" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold)">\u2b50 Featured</span></div>':'')+'<div class="job-title">'+j.title+'</div><div class="job-co">'+j.company+'</div><div class="job-loc">'+j.location+'</div></div><div class="job-desc">'+(j.description||'').substring(0,160)+'...</div>'+(j.companyProfile?'<div class="job-desc" style="margin-top:.25rem;opacity:.75;font-style:italic">'+j.companyProfile.substring(0,100)+'...</div>':'')+'<div class="job-tags"><span class="tag tag-cat">'+j.category+'</span><span class="tag tag-other">'+j.type+'</span><span class="tag tag-other">'+j.salary+'</span>'+(j.priority&&!j.featured?'<span class="tag" style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);color:var(--em)">\u2191 Priority</span>':'')+'</div><div class="job-links"><button onclick="applyJob(this)" data-email="'+j.email+'" data-title="'+(j.title||'').replace(/"/g,'')+'" data-id="'+j.id+'" data-company="'+(j.company||'').replace(/"/g,'')+'" data-desc="'+(j.description||'').replace(/"/g,'').substring(0,500)+'" data-reqs="'+(j.requirements||'').replace(/"/g,'').substring(0,300)+'" class="job-link apply">Apply Now &#8594;</button></div>';empEl.appendChild(c);});
+    c.innerHTML=logoAbsolute+'<div style="padding-right:'+(j.logoUrl?'135px':'0')+'">'+(j.featured?'<div style="margin-bottom:.35rem"><span class="tag" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold)">\u2b50 Featured</span></div>':'')+'<div class="job-title">'+j.title+'</div><div class="job-co">'+j.company+'</div><div class="job-loc">'+j.location+'</div></div><div class="job-desc">'+(j.description||'').substring(0,160)+'...</div>'+(j.companyProfile?'<div class="job-desc" style="margin-top:.25rem;opacity:.75;font-style:italic">'+j.companyProfile.substring(0,100)+'...</div>':'')+'<div class="job-tags"><span class="tag tag-cat">'+j.category+'</span><span class="tag tag-other">'+j.type+'</span><span class="tag tag-other">'+j.salary+'</span>'+(j.priority&&!j.featured?'<span class="tag" style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);color:var(--em)">\u2191 Priority</span>':'')+'</div><div class="job-links"><button onclick="applyJob(this)" data-email="'+j.email+'" data-title="'+(j.title||'').replace(/"/g,'')+'" data-id="'+j.id+'" data-company="'+(j.company||'').replace(/"/g,'')+'" data-desc="'+(j.description||'').replace(/"/g,'')+'" data-reqs="'+(j.requirements||'').replace(/"/g,'')+'" class="job-link apply">Apply Now &#8594;</button></div>';empEl.appendChild(c);});
     // Inject JobPosting structured data
     var oldLd=document.querySelectorAll('script[data-job-ld]');oldLd.forEach(function(el){el.remove();});
     var typeMap={"Full-time":"FULL_TIME","Part-time":"PART_TIME","Contract":"CONTRACTOR","Casual":"TEMPORARY","Internship":"INTERN"};
@@ -2029,6 +2063,41 @@ function openModal(k){document.getElementById('modal-body').innerHTML=legal[k];d
 function closeModal(){document.getElementById('lm').style.display='none';document.body.style.overflow='';}
 
 var _applyState = {};
+
+var _currentJobData = null;
+
+function viewJob(jobData) {
+  _currentJobData = jobData;
+  document.getElementById('jd-title').textContent = jobData.title || '';
+  document.getElementById('jd-company').textContent = jobData.company || '';
+  var meta = [jobData.location, jobData.category || jobData.type, jobData.salary].filter(function(x){return x;}).join(' · ');
+  document.getElementById('jd-meta').textContent = meta;
+  document.getElementById('jd-description').textContent = jobData.description || '';
+  var reqSec = document.getElementById('jd-requirements-section');
+  if (jobData.requirements) { document.getElementById('jd-requirements').textContent = jobData.requirements; reqSec.style.display = 'block'; } else { reqSec.style.display = 'none'; }
+  var whySec = document.getElementById('jd-why-section');
+  if (jobData.why) { document.getElementById('jd-why').textContent = jobData.why; whySec.style.display = 'block'; } else { whySec.style.display = 'none'; }
+  var profSec = document.getElementById('jd-profile-section');
+  if (jobData.companyProfile) { document.getElementById('jd-profile').textContent = jobData.companyProfile; profSec.style.display = 'block'; } else { profSec.style.display = 'none'; }
+  var logoEl = document.getElementById('jd-logo');
+  if (jobData.logoUrl) { logoEl.innerHTML = '<img src="'+jobData.logoUrl+'" style="max-width:100px;max-height:60px;object-fit:contain" onerror="this.style.display=\'none\'">'; logoEl.style.display = 'block'; } else { logoEl.style.display = 'none'; }
+  document.getElementById('jd-featured').style.display = jobData.featured ? 'block' : 'none';
+  // External link for Adzuna jobs
+  var extLink = document.getElementById('jd-external-link');
+  if (jobData.url && jobData.url !== '#') { extLink.href = jobData.url; extLink.style.display = 'flex'; } else { extLink.style.display = 'none'; }
+  // Apply button — only show for employer listings (have email)
+  var applyBtn = document.getElementById('jd-apply-btn');
+  if (jobData.email) { applyBtn.style.display = 'flex'; } else { applyBtn.style.display = 'none'; }
+  document.getElementById('job-detail-modal').style.display = 'block';
+}
+
+document.getElementById('jd-apply-btn').addEventListener('click', function(){
+  document.getElementById('job-detail-modal').style.display = 'none';
+  var j = _currentJobData;
+  if (!j || !j.email) return;
+  var fakeBtn = {dataset:{email:j.email, title:j.title||'', id:j.id||'', company:j.company||'', desc:j.description||'', reqs:j.requirements||''}};
+  applyJob(fakeBtn);
+});
 
 function applyJob(btn) {
   var email = btn.dataset.email;
