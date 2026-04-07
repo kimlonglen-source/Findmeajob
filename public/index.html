@@ -2310,20 +2310,26 @@ document.getElementById('app-cv-swap').addEventListener('change', function(e){
   if (!file) return;
   _applyState.cvFile = file;
   var ext = file.name.toLowerCase().split('.').pop();
+  // Read as base64 data URL for email attachment
   var reader = new FileReader();
   reader.onload = function(ev) {
-    _applyState.cvData = ev.target.result;
-    if (ext === 'txt') _applyState.cvText = ev.target.result;
+    _applyState.cvData = ev.target.result; // base64 data URL
+  };
+  reader.readAsDataURL(file);
+  // Also read as ArrayBuffer for text extraction
+  var reader2 = new FileReader();
+  reader2.onload = function(ev2) {
+    if (ext === 'txt') { _applyState.cvText = new TextDecoder().decode(ev2.target.result); }
     else if (ext === 'docx') {
       loadMammoth(function(){
         if(typeof mammoth==='undefined')return;
-        mammoth.extractRawText({arrayBuffer:ev.target.result}).then(function(res){
+        mammoth.extractRawText({arrayBuffer:ev2.target.result}).then(function(res){
           if(res.value&&res.value.trim().length>50)_applyState.cvText=res.value.trim();
         }).catch(function(){});
       });
     }
   };
-  if (ext === 'txt') reader.readAsText(file); else reader.readAsArrayBuffer(file);
+  reader2.readAsArrayBuffer(file);
   document.getElementById('app-cv-name-display').textContent = file.name;
   document.getElementById('app-cv-swap-name').textContent = '✓ ' + file.name;
   document.getElementById('app-cv-swap-name').style.display = 'inline';
