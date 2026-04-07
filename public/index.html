@@ -2231,6 +2231,7 @@ document.getElementById('app-tailor-cv-btn').addEventListener('click', async fun
     // Strip markdown formatting
     tailoredText = tailoredText.replace(/\*\*/g,'').replace(/\*/g,'').replace(/^#+\s*/gm,'').replace(/^---+$/gm,'');
 
+    _applyState.tailoredText = tailoredText;
     document.getElementById('app-tailor-preview').textContent = tailoredText;
     document.getElementById('app-tailor-loading').style.display = 'none';
     document.getElementById('app-tailor-result').style.display = 'block';
@@ -2310,7 +2311,8 @@ document.getElementById('app-btn-send').addEventListener('click', async function
       noticePeriod: document.getElementById('app-notice').value,
       coverLetter: document.getElementById('app-cover-letter').value,
       cvFileName: _applyState.cvFile ? _applyState.cvFile.name : '',
-      cvData: _applyState.cvData || ''
+      cvData: _applyState.cvData || '',
+      cvContent: _applyState.tailoredText || ''
     })});
     var d = await r.json();
     if (d.success) {

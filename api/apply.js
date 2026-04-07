@@ -52,9 +52,18 @@ module.exports = async function handler(req, res) {
   html += '<div style="font-size:14px;line-height:1.7;color:#374151;white-space:pre-wrap">' + esc(coverLetter) + '</div>';
   html += '</div>';
 
+  var cvContent = req.body.cvContent || ""; // Tailored CV HTML content
   if (cvFileName) {
     html += '<div style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:1rem;margin-bottom:1rem">';
     html += '<div style="font-size:13px;color:#6b7280">\ud83d\udcce Attached: <strong>' + esc(cvFileName) + '</strong></div>';
+    html += '</div>';
+  }
+
+  // If tailored CV content provided, include it inline in the email
+  if (cvContent) {
+    html += '<div style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:1.25rem;margin-bottom:1rem">';
+    html += '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#6b7280;margin-bottom:.75rem">Tailored CV</div>';
+    html += '<div style="font-size:13px;line-height:1.65;color:#374151;white-space:pre-wrap">' + esc(cvContent) + '</div>';
     html += '</div>';
   }
 
