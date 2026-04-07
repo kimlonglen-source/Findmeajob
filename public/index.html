@@ -1055,32 +1055,48 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 <!-- AI Apply Modal -->
 <!-- JOB DETAIL MODAL -->
 <div id="job-detail-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99998;padding:1rem;backdrop-filter:blur(8px);overflow-y:auto">
-  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem;width:100%;max-width:680px;margin:2rem auto;position:relative">
-    <button onclick="document.getElementById('job-detail-modal').style.display='none'" style="position:absolute;top:1rem;right:1rem;background:var(--bg3);border:1px solid var(--border);color:var(--text3);width:28px;height:28px;border-radius:999px;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center">&times;</button>
-    <div id="jd-logo" style="display:none;margin-bottom:1rem"></div>
-    <div id="jd-featured" style="display:none;margin-bottom:.5rem"><span class="tag" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold);font-size:.65rem;font-weight:700;text-transform:uppercase">&#11088; Featured</span></div>
-    <div id="jd-title" style="font-size:1.4rem;font-weight:800;color:var(--text);line-height:1.2;margin-bottom:.35rem"></div>
-    <div id="jd-company" style="font-size:.9rem;font-weight:600;color:var(--em);margin-bottom:.2rem"></div>
-    <div id="jd-meta" style="font-size:.8rem;color:var(--text3);margin-bottom:1.25rem"></div>
-    <div style="border-top:1px solid var(--border);padding-top:1.25rem;margin-bottom:1rem">
-      <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.5rem">Job Description</div>
-      <div id="jd-description" style="font-size:.88rem;color:var(--text2);line-height:1.75;white-space:pre-wrap"></div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;width:100%;max-width:700px;margin:2rem auto;position:relative">
+    <!-- Header bar -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--border)">
+      <button onclick="document.getElementById('job-detail-modal').style.display='none'" class="btn-sm" type="button">&#8592; Back to jobs</button>
+      <div id="jd-ref" style="font-size:.72rem;color:var(--text3);font-weight:600"></div>
     </div>
-    <div id="jd-requirements-section" style="display:none;margin-bottom:1rem">
-      <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.5rem">Requirements</div>
-      <div id="jd-requirements" style="font-size:.88rem;color:var(--text2);line-height:1.75;white-space:pre-wrap"></div>
+    <!-- Job content -->
+    <div style="padding:1.5rem 2rem">
+      <div style="display:flex;align-items:flex-start;gap:1rem;margin-bottom:1rem">
+        <div style="flex:1">
+          <div id="jd-featured" style="display:none;margin-bottom:.5rem"><span class="tag" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold);font-size:.65rem;font-weight:700;text-transform:uppercase">&#11088; Featured</span></div>
+          <div id="jd-title" style="font-size:1.4rem;font-weight:800;color:var(--text);line-height:1.2;margin-bottom:.35rem"></div>
+          <div id="jd-company" style="font-size:.9rem;font-weight:600;color:var(--em);margin-bottom:.25rem"></div>
+          <div id="jd-meta" style="font-size:.8rem;color:var(--text3)"></div>
+        </div>
+        <div id="jd-logo" style="display:none;flex-shrink:0"></div>
+      </div>
+      <div style="display:flex;gap:.5rem;margin-bottom:1.5rem">
+        <button class="btn" id="jd-apply-btn" type="button" style="flex:1;max-width:250px">Apply Now &#8594;</button>
+        <a class="btn btn-sec" id="jd-external-link" href="#" target="_blank" rel="noopener" style="flex:1;max-width:250px;text-decoration:none;display:none;text-align:center">View Original &#8594;</a>
+      </div>
+      <div style="border-top:1px solid var(--border);padding-top:1.25rem;margin-bottom:1.25rem">
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.65rem">Job Description</div>
+        <div id="jd-description" style="font-size:.88rem;color:var(--text2);line-height:1.8;white-space:pre-wrap"></div>
+      </div>
+      <div id="jd-requirements-section" style="display:none;margin-bottom:1.25rem">
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.65rem">Requirements</div>
+        <div id="jd-requirements" style="font-size:.88rem;color:var(--text2);line-height:1.8;white-space:pre-wrap"></div>
+      </div>
+      <div id="jd-why-section" style="display:none;margin-bottom:1.25rem">
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.65rem">Why Work Here</div>
+        <div id="jd-why" style="font-size:.88rem;color:var(--text2);line-height:1.8;white-space:pre-wrap"></div>
+      </div>
+      <div id="jd-profile-section" style="display:none;margin-bottom:1.25rem">
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.65rem">About the Company</div>
+        <div id="jd-profile" style="font-size:.85rem;color:var(--text3);line-height:1.7;font-style:italic"></div>
+      </div>
     </div>
-    <div id="jd-why-section" style="display:none;margin-bottom:1rem">
-      <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.5rem">Why Work Here</div>
-      <div id="jd-why" style="font-size:.88rem;color:var(--text2);line-height:1.75;white-space:pre-wrap"></div>
-    </div>
-    <div id="jd-profile-section" style="display:none;margin-bottom:1rem">
-      <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.5rem">About the Company</div>
-      <div id="jd-profile" style="font-size:.85rem;color:var(--text3);line-height:1.7;font-style:italic"></div>
-    </div>
-    <div style="display:flex;gap:.5rem;margin-top:1.25rem">
-      <button class="btn" id="jd-apply-btn" type="button" style="flex:1">Apply Now &#8594;</button>
-      <a class="btn btn-sec" id="jd-external-link" href="#" target="_blank" rel="noopener" style="flex:1;text-decoration:none;display:none;text-align:center">View Original Listing &#8594;</a>
+    <!-- Similar jobs -->
+    <div id="jd-similar" style="display:none;border-top:1px solid var(--border);padding:1.25rem 2rem">
+      <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.75rem">You might also like</div>
+      <div id="jd-similar-list" style="display:grid;gap:.5rem"></div>
     </div>
   </div>
 </div>
@@ -1863,7 +1879,13 @@ async function loadBrowse(){
   if (type) {
     approved = approved.filter(function(j) { return (j.type || '').toLowerCase() === type.toLowerCase(); });
   }
-  adzuna.forEach(function(job){var c=document.createElement('div');c.className='job-card';c.innerHTML='<div><div style="margin-bottom:.4rem"><span class="tag tag-live">Live</span></div><div class="job-title">'+esc(job.title)+'</div><div class="job-co">'+esc(job.company)+'</div><div class="job-loc">'+esc(job.location)+'</div><div class="job-desc">'+esc(job.description)+'</div>'+(job.salary?'<div class="job-tags"><span class="tag tag-other">'+esc(job.salary)+'</span></div>':'')+'<div class="job-links"><a href="'+esc(job.url)+'" target="_blank" rel="noopener" class="job-link apply">Apply Now &#8594;</a></div></div><div class="match-col"><div style="color:var(--em);font-size:.65rem;font-weight:800;text-transform:uppercase">Live</div></div>';liveEl.appendChild(c);});
+  adzuna.forEach(function(job){
+    var c=document.createElement('div');c.className='job-card';c.style.cursor='pointer';
+    var adzJob = {title:job.title, company:job.company, location:job.location, description:job.description, salary:job.salary, url:job.url, type:'Live'};
+    c.addEventListener('click',function(){viewJob(adzJob);});
+    c.innerHTML='<div><div class="job-title">'+esc(job.title)+'</div><div class="job-co">'+esc(job.company)+'</div><div class="job-loc">'+esc(job.location)+'</div><div class="job-desc">'+esc((job.description||'').substring(0,140))+'...</div>'+(job.salary?'<div class="job-tags"><span class="tag tag-other">'+esc(job.salary)+'</span></div>':'')+'<div class="job-links"><a href="'+esc(job.url)+'" target="_blank" rel="noopener" class="job-link" onclick="event.stopPropagation()">View listing &#8594;</a></div></div>';
+    liveEl.appendChild(c);
+  });
 }
 
 function showEmpStep(step){
@@ -2085,13 +2107,38 @@ function viewJob(jobData) {
   var logoEl = document.getElementById('jd-logo');
   if (jobData.logoUrl) { logoEl.innerHTML = '<img src="'+jobData.logoUrl+'" style="max-width:100px;max-height:60px;object-fit:contain" onerror="this.style.display=\'none\'">'; logoEl.style.display = 'block'; } else { logoEl.style.display = 'none'; }
   document.getElementById('jd-featured').style.display = jobData.featured ? 'block' : 'none';
+  document.getElementById('jd-ref').textContent = jobData.ref ? 'Ref: ' + jobData.ref : '';
   // External link for Adzuna jobs
   var extLink = document.getElementById('jd-external-link');
   if (jobData.url && jobData.url !== '#') { extLink.href = jobData.url; extLink.style.display = 'flex'; } else { extLink.style.display = 'none'; }
   // Apply button — only show for employer listings (have email)
   var applyBtn = document.getElementById('jd-apply-btn');
-  if (jobData.email) { applyBtn.style.display = 'flex'; } else { applyBtn.style.display = 'none'; }
+  if (jobData.email) { applyBtn.style.display = 'flex'; } else if (!jobData.url) { applyBtn.style.display = 'none'; }
+  // Similar jobs
+  var similarEl = document.getElementById('jd-similar');
+  var similarList = document.getElementById('jd-similar-list');
+  similarList.innerHTML = '';
+  var allJobs = (window._employerJobs || []).concat(window._allJobsStore || []);
+  var similar = allJobs.filter(function(j) {
+    if (!j || !j.title || j.id === jobData.id) return false;
+    var cat = (j.category || '').toLowerCase() === (jobData.category || '').toLowerCase();
+    var loc = (j.location || '').toLowerCase() === (jobData.location || '').toLowerCase();
+    return cat || loc;
+  }).slice(0, 3);
+  if (similar.length) {
+    similar.forEach(function(sj) {
+      var sc = document.createElement('div');
+      sc.style.cssText = 'background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.75rem 1rem;cursor:pointer;transition:all .2s';
+      sc.onmouseenter = function(){this.style.borderColor='rgba(16,185,129,.3)';};
+      sc.onmouseleave = function(){this.style.borderColor='var(--border)';};
+      sc.innerHTML = '<div style="font-size:.85rem;font-weight:700;color:var(--text)">'+esc(sj.title)+'</div><div style="font-size:.75rem;color:var(--em);font-weight:600">'+esc(sj.company||'')+'</div><div style="font-size:.72rem;color:var(--text3)">'+esc(sj.location||'')+' · '+esc(sj.salary||'')+'</div>';
+      sc.addEventListener('click', function(){viewJob(sj);});
+      similarList.appendChild(sc);
+    });
+    similarEl.style.display = 'block';
+  } else { similarEl.style.display = 'none'; }
   document.getElementById('job-detail-modal').style.display = 'block';
+  document.getElementById('job-detail-modal').scrollTop = 0;
 }
 
 document.getElementById('jd-apply-btn').addEventListener('click', function(){
