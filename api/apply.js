@@ -66,12 +66,13 @@ module.exports = async function handler(req, res) {
     // Header with applicant name and contact
     html += '<div style="border-bottom:2px solid #1a1a1a;padding-bottom:8px;margin-bottom:12px">';
     html += '<div style="font-size:18px;font-weight:700;color:#1a1a1a">' + esc(applicantName) + '</div>';
+    html += '<div style="font-size:12px;color:#555;margin-top:1px">' + esc(jobTitle) + ' Application</div>';
     html += '<div style="font-size:12px;color:#555;margin-top:2px">' + esc(applicantEmail);
     if (applicantPhone) html += ' &nbsp;|&nbsp; ' + esc(applicantPhone);
     if (rightToWork) html += ' &nbsp;|&nbsp; ' + esc(rightToWork);
     html += '</div></div>';
     var cvLines = cvContent.split('\n');
-    var sectionRe = /^(PROFILE|KEY SKILLS|EXPERIENCE|EDUCATION|REFERENCES|PROFESSIONAL SUMMARY|RELEVANT SKILLS|QUALIFICATIONS|CERTIFICATIONS|EDUCATION & QUALIFICATIONS)/i;
+    var sectionRe = /^(PROFILE|PROFESSIONAL PROFILE|KEY SKILLS|KEY SKILLS AND EXPERIENCE|EXPERIENCE|PROFESSIONAL EXPERIENCE|WORK EXPERIENCE|EDUCATION|EDUCATION & QUALIFICATIONS|EDUCATION AND TRAINING|REFERENCES|PROFESSIONAL SUMMARY|RELEVANT SKILLS|QUALIFICATIONS|CERTIFICATIONS|SKILLS|CAREER SUMMARY|WORK HISTORY|EMPLOYMENT HISTORY|KEY ACHIEVEMENTS)$/i;
     for (var ci = 0; ci < cvLines.length; ci++) {
       var cl = cvLines[ci].trim();
       if (!cl) continue;
