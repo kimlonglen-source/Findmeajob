@@ -73,8 +73,13 @@ module.exports = async function handler(req, res) {
   // Add CV attachment if provided
   if (cvData && cvFileName) {
     var base64Content = cvData;
-    if (base64Content.includes("base64,")) {
+    // Handle data URI format (data:type;base64,CONTENT)
+    if (typeof base64Content === "string" && base64Content.includes("base64,")) {
       base64Content = base64Content.split("base64,")[1];
+    }
+    // If it's plain text/HTML (not base64), encode it
+    if (typeof base64Content === "string" && !base64Content.match(/^[A-Za-z0-9+/=\s]+$/)) {
+      base64Content = Buffer.from(base64Content, "utf-8").toString("base64");
     }
     emailPayload.attachments = [{
       filename: cvFileName,
