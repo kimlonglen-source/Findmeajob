@@ -2283,10 +2283,9 @@ document.getElementById('app-tailor-download').addEventListener('click', functio
 
 document.getElementById('app-tailor-use').addEventListener('click', function(){
   if (!_tailoredCvHtml) return;
-  var blob = new Blob([_tailoredCvHtml], {type:'text/html'});
   var name = (document.getElementById('app-name').value.trim().replace(/\s+/g,'-')||'cv') + '-tailored.html';
-  _applyState.cvFile = new File([blob], name, {type:'text/html'});
-  _applyState.cvData = _tailoredCvHtml;
+  _applyState.cvFile = { name: name };
+  _applyState.cvData = 'data:text/html;base64,' + btoa(unescape(encodeURIComponent(_tailoredCvHtml)));
   document.getElementById('app-cv-name-display').textContent = name;
   toast('Tailored CV will be sent with your application');
 });
