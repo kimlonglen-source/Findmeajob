@@ -2442,6 +2442,7 @@ function initApp(){try{
   }
 
   function saveSeekerSession(s){seekerSession=s;sessionStorage.setItem('seekerSession',JSON.stringify(s));updateSeekerUI();}
+  window.saveSeekerSession=saveSeekerSession;
 
   // Account tabs
   document.getElementById('acct-tab-login').addEventListener('click',function(){
@@ -2741,7 +2742,7 @@ function handleGoogleSignIn(response) {
   })
   .then(function(d) {
     if (d.success && d.seeker) {
-      saveSeekerSession({
+      window.saveSeekerSession({
         name: d.seeker.name, email: d.seeker.email,
         password: '__google__', phone: d.seeker.phone || '',
         rtw: d.seeker.rtw || '', notice: d.seeker.notice || '',
@@ -2749,11 +2750,10 @@ function handleGoogleSignIn(response) {
       });
       toast('Welcome, ' + d.seeker.name + '!');
     } else {
-      alert('Google sign-in error: ' + (d.error || JSON.stringify(d)));
-      console.error('Google sign-in error:', d);
+      toast(d.error || 'Sign-in failed');
     }
   })
-  .catch(function(err) { alert('Google sign-in error: ' + err.message); console.error('Google sign-in fetch error:', err); });
+  .catch(function(err) { toast('Sign-in failed. Please try again.'); console.error('Google sign-in error:', err); });
 }
 
 function initGoogleSignIn() {
