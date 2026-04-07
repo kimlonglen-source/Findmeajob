@@ -2038,6 +2038,19 @@ function applyJob(btn) {
   var desc = btn.dataset.desc || '';
   var reqs = btn.dataset.reqs || '';
   if (!email) return;
+
+  // Require registration to apply
+  var ss = seekerSession || (sessionStorage.getItem('seekerSession') ? JSON.parse(sessionStorage.getItem('seekerSession')) : null);
+  if (!ss) {
+    // Store job details so we can resume after registration
+    sessionStorage.setItem('pendingApply', JSON.stringify({email:email, title:title, jobId:jobId, company:company, desc:desc, reqs:reqs}));
+    document.getElementById('apply-modal').style.display = 'none';
+    showPage('account');
+    document.getElementById('acct-tab-reg').click();
+    toast('Create a free account to apply for jobs');
+    return;
+  }
+
   _applyState = {employerEmail:email, jobTitle:title, jobId:jobId, company:company, desc:desc, reqs:reqs, cvFile:null, cvData:null, cvText:null};
   document.getElementById('apply-title-display').textContent = title;
   document.getElementById('apply-company-display').textContent = company;
@@ -2709,7 +2722,21 @@ function initApp(){try{
     }
   }
 
-  function saveSeekerSession(s){seekerSession=s;sessionStorage.setItem('seekerSession',JSON.stringify(s));updateSeekerUI();}
+  function saveSeekerSession(s){
+    seekerSession=s;sessionStorage.setItem('seekerSession',JSON.stringify(s));updateSeekerUI();
+    // Check for pending job application
+    var pending = sessionStorage.getItem('pendingApply');
+    if (pending) {
+      sessionStorage.removeItem('pendingApply');
+      try {
+        var p = JSON.parse(pending);
+        setTimeout(function(){
+          var fakeBtn = {dataset:{email:p.email,title:p.title,id:p.jobId,company:p.company,desc:p.desc,reqs:p.reqs}};
+          applyJob(fakeBtn);
+        }, 500);
+      } catch(e){}
+    }
+  }
   window.saveSeekerSession=saveSeekerSession;
 
   // Account tabs
