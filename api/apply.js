@@ -109,8 +109,8 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  // Add CV attachment if provided (only real files, not tailored HTML)
-  if (cvData && cvFileName && !cvFileName.endsWith('-tailored.html')) {
+  // Add CV attachment if provided (only real PDF/Word files, not HTML)
+  if (cvData && cvFileName && !cvFileName.endsWith('.html')) {
     var base64Content = cvData;
     if (typeof base64Content === "string" && base64Content.includes("base64,")) {
       base64Content = base64Content.split("base64,")[1];
