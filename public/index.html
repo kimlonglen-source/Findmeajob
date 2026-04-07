@@ -2126,7 +2126,7 @@ document.getElementById('app-btn-generate').addEventListener('click', async func
   try {
     var r = await fetch('/api/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({system:'NZ job application cover letter writer. Return only the letter text.', messages:[{role:'user',content:prompt}]})});
     var d = await r.json();
-    if (!d.content || !Array.isArray(d.content)) { console.error('Cover letter API error:', d); throw new Error(d.error || 'No content returned'); }
+    if (!d.content || !Array.isArray(d.content)) { console.error('Cover letter API error:', JSON.stringify(d)); throw new Error(d.error && typeof d.error === 'string' ? d.error : d.error && d.error.message ? d.error.message : JSON.stringify(d)); }
     var letter = d.content.map(function(b){return b.text||'';}).join('').trim();
     document.getElementById('app-cover-letter').value = letter;
     document.getElementById('app-cv-name-display').textContent = _applyState.cvFile.name;
@@ -2148,7 +2148,7 @@ document.getElementById('app-btn-generate').addEventListener('click', async func
   } catch(e) {
     document.getElementById('apply-step2').style.display = 'none';
     document.getElementById('apply-step1').style.display = 'block';
-    err.textContent = 'Could not generate cover letter: ' + (e.message || 'Please try again.');
+    err.textContent = 'Could not generate cover letter: ' + (typeof e === 'string' ? e : e.message || JSON.stringify(e));
     err.classList.add('show');
   }
 });
