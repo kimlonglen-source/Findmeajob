@@ -1098,6 +1098,11 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <div style="font-size:.78rem;color:var(--text2);line-height:1.7">
           <div>&#8226; Your cover letter (above)</div>
           <div>&#8226; Your CV attached (<span id="app-cv-name-display"></span>)</div>
+          <div style="margin-top:.35rem">
+            <input type="file" id="app-cv-swap" accept=".pdf,.doc,.docx" style="display:none">
+            <button type="button" id="app-cv-swap-btn" style="background:none;border:none;color:var(--em);font-size:.75rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;padding:0;text-decoration:underline">Upload a different CV for this application</button>
+            <span id="app-cv-swap-name" style="display:none;font-size:.72rem;color:var(--em);font-weight:600;margin-left:.5rem"></span>
+          </div>
           <div>&#8226; Your contact details (<span id="app-details-display"></span>)</div>
           <div>&#10003; Right to work: <span id="app-rtw-display"></span></div>
           <div id="app-notice-display-row" style="display:none">&#10003; Notice period: <span id="app-notice-display"></span></div>
@@ -2138,6 +2143,34 @@ document.getElementById('app-consent-box').addEventListener('click', function(){
 document.getElementById('app-btn-back').addEventListener('click', function(){
   document.getElementById('apply-step3').style.display = 'none';
   document.getElementById('apply-step1').style.display = 'block';
+});
+
+// Swap CV on step 3
+document.getElementById('app-cv-swap-btn').addEventListener('click', function(){document.getElementById('app-cv-swap').click();});
+document.getElementById('app-cv-swap').addEventListener('change', function(e){
+  var file = e.target.files[0];
+  if (!file) return;
+  _applyState.cvFile = file;
+  var ext = file.name.toLowerCase().split('.').pop();
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    _applyState.cvData = ev.target.result;
+    if (ext === 'txt') _applyState.cvText = ev.target.result;
+    else if (ext === 'docx') {
+      loadMammoth(function(){
+        if(typeof mammoth==='undefined')return;
+        mammoth.extractRawText({arrayBuffer:ev.target.result}).then(function(res){
+          if(res.value&&res.value.trim().length>50)_applyState.cvText=res.value.trim();
+        }).catch(function(){});
+      });
+    }
+  };
+  if (ext === 'txt') reader.readAsText(file); else reader.readAsArrayBuffer(file);
+  document.getElementById('app-cv-name-display').textContent = file.name;
+  document.getElementById('app-cv-swap-name').textContent = '✓ ' + file.name;
+  document.getElementById('app-cv-swap-name').style.display = 'inline';
+  document.getElementById('app-cv-swap-btn').textContent = 'Change again';
+  toast('CV updated for this application');
 });
 
 // Send application
