@@ -61,19 +61,24 @@ module.exports = async function handler(req, res) {
 
   // If tailored CV content provided, include it inline in the email
   if (cvContent) {
-    html += '<div style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:1.25rem;margin-bottom:1rem">';
-    html += '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#6b7280;margin-bottom:.75rem">Tailored CV</div>';
+    html += '<div style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:1.5rem;margin-bottom:1rem">';
+    // Header with applicant name and contact
+    html += '<div style="border-bottom:2px solid #1a1a1a;padding-bottom:8px;margin-bottom:12px">';
+    html += '<div style="font-size:18px;font-weight:700;color:#1a1a1a">' + esc(applicantName) + '</div>';
+    html += '<div style="font-size:12px;color:#555;margin-top:2px">' + esc(applicantEmail);
+    if (applicantPhone) html += ' &nbsp;|&nbsp; ' + esc(applicantPhone);
+    if (rightToWork) html += ' &nbsp;|&nbsp; ' + esc(rightToWork);
+    html += '</div></div>';
     var cvLines = cvContent.split('\n');
-    var cvHtml = '';
-    var sectionRe = /^(PROFILE|KEY SKILLS|EXPERIENCE|EDUCATION|REFERENCES|PROFESSIONAL SUMMARY|RELEVANT SKILLS|QUALIFICATIONS|CERTIFICATIONS)/i;
+    var sectionRe = /^(PROFILE|KEY SKILLS|EXPERIENCE|EDUCATION|REFERENCES|PROFESSIONAL SUMMARY|RELEVANT SKILLS|QUALIFICATIONS|CERTIFICATIONS|EDUCATION & QUALIFICATIONS)/i;
     for (var ci = 0; ci < cvLines.length; ci++) {
       var cl = cvLines[ci].trim();
       if (!cl) continue;
-      if (sectionRe.test(cl)) { cvHtml += '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#374151;border-bottom:1px solid #e5e7eb;padding-bottom:3px;margin:14px 0 6px">' + esc(cl) + '</div>'; }
-      else if (cl.match(/^[-•●]/)) { cvHtml += '<div style="font-size:13px;color:#374151;line-height:1.6;padding-left:14px;margin-bottom:3px">&bull; ' + esc(cl.replace(/^[-•●]\s*/, '')) + '</div>'; }
-      else { cvHtml += '<div style="font-size:13px;color:#374151;line-height:1.6;margin-bottom:3px">' + esc(cl) + '</div>'; }
+      if (sectionRe.test(cl)) { html += '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#1a1a1a;border-bottom:1px solid #ddd;padding-bottom:3px;margin:16px 0 8px">' + esc(cl) + '</div>'; }
+      else if (cl.match(/^[-•●]/)) { html += '<div style="font-size:13px;color:#374151;line-height:1.6;padding-left:16px;margin-bottom:4px">&bull; ' + esc(cl.replace(/^[-•●]\s*/, '')) + '</div>'; }
+      else if (cl.match(/^(.+)\s[—–-]\s(.+)/)) { html += '<div style="font-size:13px;font-weight:700;color:#1a1a1a;margin:10px 0 4px">' + esc(cl) + '</div>'; }
+      else { html += '<div style="font-size:13px;color:#374151;line-height:1.6;margin-bottom:3px">' + esc(cl) + '</div>'; }
     }
-    html += cvHtml;
     html += '</div>';
   }
 
@@ -100,21 +105,17 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  // Add CV attachment if provided
-  if (cvData && cvFileName) {
+  // Add CV attachment if provided (only real files, not tailored HTML)
+  if (cvData && cvFileName && !cvFileName.endsWith('-tailored.html')) {
     var base64Content = cvData;
-    // Handle data URI format (data:type;base64,CONTENT)
     if (typeof base64Content === "string" && base64Content.includes("base64,")) {
       base64Content = base64Content.split("base64,")[1];
     }
-    // If it's plain text/HTML (not base64), encode it
     if (typeof base64Content === "string" && !base64Content.match(/^[A-Za-z0-9+/=\s]+$/)) {
       base64Content = Buffer.from(base64Content, "utf-8").toString("base64");
     }
-    emailPayload.attachments = [{
-      filename: cvFileName,
-      content: base64Content
-    }];
+    if (!emailPayload.attachments) emailPayload.attachments = [];
+    emailPayload.attachments.push({ filename: cvFileName, content: base64Content });
   }
 
   try {
