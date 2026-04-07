@@ -62,24 +62,26 @@ module.exports = async function handler(req, res) {
   // If tailored CV content provided, include it inline in the email
   if (cvContent) {
     html += '<div style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:1.5rem;margin-bottom:1rem">';
-    html += '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#6b7280;margin-bottom:.75rem">CV</div>';
-    // Header with applicant name and contact
-    html += '<div style="border-bottom:2px solid #1a1a1a;padding-bottom:8px;margin-bottom:12px">';
-    html += '<div style="font-size:18px;font-weight:700;color:#1a1a1a">' + esc(applicantName) + '</div>';
-    html += '<div style="font-size:12px;color:#555;margin-top:1px">' + esc(jobTitle) + ' Application</div>';
-    html += '<div style="font-size:12px;color:#555;margin-top:2px">' + esc(applicantEmail);
-    if (applicantPhone) html += ' &nbsp;|&nbsp; ' + esc(applicantPhone);
-    if (rightToWork) html += ' &nbsp;|&nbsp; ' + esc(rightToWork);
-    html += '</div></div>';
+    // Check if CV content starts with the candidate name — if not, add header
+    var cvFirstLine = (cvContent.split('\n')[0] || '').trim().toUpperCase();
+    var nameInCv = cvFirstLine.indexOf((applicantName || '').toUpperCase()) !== -1;
+    if (!nameInCv) {
+      html += '<div style="border-bottom:2px solid #1a1a1a;padding-bottom:8px;margin-bottom:14px">';
+      html += '<div style="font-size:18px;font-weight:700;color:#1a1a1a">' + esc(applicantName) + '</div>';
+      html += '<div style="font-size:12px;color:#555;margin-top:2px">' + esc(applicantEmail);
+      if (applicantPhone) html += ' &nbsp;|&nbsp; ' + esc(applicantPhone);
+      if (rightToWork) html += ' &nbsp;|&nbsp; ' + esc(rightToWork);
+      html += '</div></div>';
+    }
     var cvLines = cvContent.split('\n');
     var sectionRe = /^(PROFILE|PROFESSIONAL PROFILE|KEY SKILLS|KEY SKILLS AND EXPERIENCE|EXPERIENCE|PROFESSIONAL EXPERIENCE|WORK EXPERIENCE|EDUCATION|EDUCATION & QUALIFICATIONS|EDUCATION AND TRAINING|REFERENCES|PROFESSIONAL SUMMARY|RELEVANT SKILLS|QUALIFICATIONS|CERTIFICATIONS|SKILLS|CAREER SUMMARY|WORK HISTORY|EMPLOYMENT HISTORY|KEY ACHIEVEMENTS)$/i;
     for (var ci = 0; ci < cvLines.length; ci++) {
       var cl = cvLines[ci].trim();
       if (!cl) continue;
-      if (sectionRe.test(cl)) { html += '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#1a1a1a;border-bottom:1px solid #ddd;padding-bottom:3px;margin:16px 0 8px">' + esc(cl) + '</div>'; }
-      else if (cl.match(/^[-•●]/)) { html += '<div style="font-size:13px;color:#374151;line-height:1.6;padding-left:16px;margin-bottom:4px">&bull; ' + esc(cl.replace(/^[-•●]\s*/, '')) + '</div>'; }
-      else if (cl.match(/^(.+)\s[—–-]\s(.+)/)) { html += '<div style="font-size:13px;font-weight:700;color:#1a1a1a;margin:10px 0 4px">' + esc(cl) + '</div>'; }
-      else { html += '<div style="font-size:13px;color:#374151;line-height:1.6;margin-bottom:3px">' + esc(cl) + '</div>'; }
+      if (sectionRe.test(cl)) { html += '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#1a1a1a;border-bottom:1px solid #ddd;padding-bottom:3px;margin:18px 0 8px">' + esc(cl) + '</div>'; }
+      else if (cl.match(/^[-•●]/)) { html += '<div style="font-size:13px;color:#374151;line-height:1.65;padding-left:16px;margin-bottom:4px">&bull; ' + esc(cl.replace(/^[-•●]\s*/, '')) + '</div>'; }
+      else if (cl.match(/^(.+)\s[—–-]\s(.+)\s\d{4}/) || cl.match(/^(.+)\s[—–-]\s(.+),/) || cl.match(/^(.+)\s[—–-]\s(.+)\s*\(/)) { html += '<div style="font-size:13px;font-weight:700;color:#1a1a1a;margin:12px 0 4px">' + esc(cl) + '</div>'; }
+      else { html += '<div style="font-size:13px;color:#374151;line-height:1.65;margin-bottom:4px">' + esc(cl) + '</div>'; }
     }
     html += '</div>';
   }

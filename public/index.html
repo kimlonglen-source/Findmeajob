@@ -2366,7 +2366,7 @@ document.getElementById('app-tailor-cv-btn').addEventListener('click', async fun
   document.getElementById('app-tailor-loading').style.display = 'block';
   document.getElementById('app-tailor-result').style.display = 'none';
 
-  var rewritePrompt = 'Read this CV and the job details below. Your task: rewrite this CV so a recruiter reading it thinks "this person is exactly what we need for this role".\n\nHOW TO TAILOR:\n- PROFILE: Write a new 3-4 sentence summary that directly addresses what THIS job is asking for. If the job wants someone with patient care experience, lead with that. If they want management skills, lead with that. Make the recruiter see the match immediately.\n- KEY SKILLS: List skills from the CV that match what the job is asking for. Put the most relevant ones FIRST. If the job mentions "dispensing" and the candidate has dispensing experience, that goes first. Use the same words the job ad uses.\n- EXPERIENCE: Keep the same jobs, companies, dates. But REWRITE the bullet points to emphasise the parts of each role that are relevant to THIS job. If applying for a medical centre pharmacist role and they previously managed a pharmacy, highlight the patient consultation and clinical aspects, not the retail management.\n- EDUCATION: Copy word for word. Do not change anything.\n- REFERENCES: Keep as is.\n\nRULES:\n- Every fact must come from the original CV\n- Do NOT invent experience, qualifications, or achievements\n- Do NOT change job titles, company names, dates, or education\n- DO actively rewrite descriptions to match what the employer is looking for\n- The rewritten CV should feel like it was written specifically for this job\n\nPlain text only. No markdown. No bold. No asterisks.\n\nTARGET JOB: '+jobTitle+'\nJOB DESCRIPTION: '+(jobDesc||'Not provided')+'\nJOB REQUIREMENTS: '+(jobReqs||'Not provided');
+  var rewritePrompt = 'Read this CV and the job details below. Your task: rewrite this CV so a recruiter reading it thinks "this person is exactly what we need for this role".\n\nHOW TO TAILOR:\n- PROFILE: Write a new 3-4 sentence summary that directly addresses what THIS job is asking for. If the job wants someone with patient care experience, lead with that. If they want management skills, lead with that. Make the recruiter see the match immediately.\n- KEY SKILLS: List skills from the CV that match what the job is asking for. Put the most relevant ones FIRST. If the job mentions "dispensing" and the candidate has dispensing experience, that goes first. Use the same words the job ad uses.\n- EXPERIENCE: Keep the same jobs, companies, dates. But REWRITE the bullet points to emphasise the parts of each role that are relevant to THIS job. If applying for a medical centre pharmacist role and they previously managed a pharmacy, highlight the patient consultation and clinical aspects, not the retail management.\n- EDUCATION: Copy word for word. Do not change anything.\n- REFERENCES: Copy exactly as it appears in the original CV. Do not change the wording.\n\nRULES:\n- Every fact must come from the original CV\n- Do NOT invent experience, qualifications, or achievements\n- Do NOT change job titles, company names, dates, or education\n- DO actively rewrite descriptions to match what the employer is looking for\n- The rewritten CV should feel like it was written specifically for this job\n\nPlain text only. No markdown. No bold. No asterisks.\n\nTARGET JOB: '+jobTitle+'\nJOB DESCRIPTION: '+(jobDesc||'Not provided')+'\nJOB REQUIREMENTS: '+(jobReqs||'Not provided');
   var rewriteSystem = 'You are an expert at rewriting CVs to target specific jobs. Your goal is to make the candidate look like the perfect fit. You do this by reorganising their existing experience and rewriting descriptions to match what the employer wants — NOT by inventing new experience. Same facts, better framing. The recruiter should read the first 3 lines and want to interview this person. Education is always copied exactly. Plain text only.';
 
   // Build message — prefer PDF (more accurate), fall back to text
@@ -2417,25 +2417,42 @@ function rebuildTailoredHtml(text){
   var applicantEmail = document.getElementById('app-email').value.trim();
   var applicantPhone = document.getElementById('app-phone').value.trim();
   var applicantRtw = document.getElementById('app-rtw').value;
-  var jobTitle = _applyState.jobTitle || '';
   var lines = text.split('\n');
   var cvBody = '';
   var headings = /^(PROFILE|PROFESSIONAL PROFILE|KEY SKILLS|KEY SKILLS AND EXPERIENCE|EXPERIENCE|PROFESSIONAL EXPERIENCE|WORK EXPERIENCE|EDUCATION|EDUCATION & QUALIFICATIONS|EDUCATION AND TRAINING|REFERENCES|PROFESSIONAL SUMMARY|RELEVANT SKILLS|QUALIFICATIONS|CERTIFICATIONS|SKILLS|CAREER SUMMARY|WORK HISTORY|EMPLOYMENT HISTORY|KEY ACHIEVEMENTS)$/i;
   var inList = false;
+  // Check if the AI output starts with the candidate name — if not, add contact header
+  var firstLine = (lines[0] || '').trim().toUpperCase();
+  var hasName = firstLine.indexOf(applicantName.toUpperCase()) !== -1;
   for (var li = 0; li < lines.length; li++) {
     var line = lines[li].trim();
     if (!line) { if (inList) { cvBody += '</ul>'; inList = false; } continue; }
     if (headings.test(line)) { if (inList) { cvBody += '</ul>'; inList = false; } cvBody += '<h2>' + esc(line) + '</h2>'; }
     else if (line.match(/^[-•●·]/)) { if (!inList) { cvBody += '<ul>'; inList = true; } cvBody += '<li>' + esc(line.replace(/^[-•●·]\s*/, '')) + '</li>'; }
-    else if (line.match(/^(.+)\s[—–-]\s(.+),\s*(.+)\s*\(/) || line.match(/^(.+)\s[—–-]\s(.+)\s*\(/)) { if (inList) { cvBody += '</ul>'; inList = false; } cvBody += '<div class="job-title">' + esc(line) + '</div>'; }
+    else if (line.match(/^(.+)\s[—–-]\s(.+)\s\d{4}/) || line.match(/^(.+)\s[—–-]\s(.+),\s*(.+)\s*\(/) || line.match(/^(.+)\s[—–-]\s(.+)\s*\(/)) { if (inList) { cvBody += '</ul>'; inList = false; } cvBody += '<div class="job-title">' + esc(line) + '</div>'; }
     else { if (inList) { cvBody += '</ul>'; inList = false; } cvBody += '<p>' + esc(line) + '</p>'; }
   }
   if (inList) cvBody += '</ul>';
+
+  var contactHeader = '';
+  if (!hasName) {
+    contactHeader = '<h1>'+esc(applicantName)+'</h1>'
+      +'<div class="contact">'+(applicantEmail?esc(applicantEmail):'')+(applicantPhone?' &nbsp;|&nbsp; '+esc(applicantPhone):'')+(applicantRtw?' &nbsp;|&nbsp; '+esc(applicantRtw):'')+'</div>';
+  }
+
   _tailoredCvHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>CV - '+esc(applicantName)+'</title>'
-    +'<style>@page{margin:2cm 2.5cm}*{margin:0;padding:0;box-sizing:border-box}body{font-family:Calibri,"Segoe UI",Arial,sans-serif;max-width:700px;margin:0 auto;padding:2.5rem 2rem;color:#2d2d2d;line-height:1.5;font-size:10.5pt}h1{font-size:22pt;font-weight:700;color:#1a1a1a;margin-bottom:2px;letter-spacing:-.3px}.contact{font-size:9.5pt;color:#555;padding-bottom:12px;margin-bottom:4px;border-bottom:2px solid #1a1a1a}h2{font-size:9pt;text-transform:uppercase;letter-spacing:2px;font-weight:700;color:#1a1a1a;margin:18px 0 8px;padding-bottom:4px;border-bottom:1px solid #ccc}p{margin:0 0 6px;line-height:1.5}.job-title{font-weight:700;color:#1a1a1a;margin:12px 0 4px;font-size:10.5pt}ul{margin:0 0 8px;padding-left:18px;list-style:none}li{margin-bottom:4px;padding-left:12px;position:relative;line-height:1.5}li::before{content:"\\2022";position:absolute;left:0;color:#555}</style></head>'
-    +'<body><h1>'+esc(applicantName)+'</h1>'
-    +'<div class="contact">'+(applicantEmail?esc(applicantEmail):'')+(applicantPhone?' &nbsp;|&nbsp; '+esc(applicantPhone):'')+(applicantRtw?' &nbsp;|&nbsp; '+esc(applicantRtw):'')+'</div>'
-    +cvBody+'</body></html>';
+    +'<style>@page{margin:2cm 2.5cm}*{margin:0;padding:0;box-sizing:border-box}body{font-family:Calibri,"Segoe UI",Arial,sans-serif;max-width:700px;margin:0 auto;padding:2.5rem 2rem;color:#2d2d2d;line-height:1.5;font-size:10.5pt}'
+    +'h1{font-size:18pt;font-weight:700;color:#1a1a1a;margin-bottom:2px}'
+    +'.subtitle{font-size:10pt;color:#444;margin-bottom:4px}'
+    +'.contact{font-size:9.5pt;color:#555;padding-bottom:10px;margin-bottom:6px;border-bottom:2px solid #1a1a1a}'
+    +'h2{font-size:9pt;text-transform:uppercase;letter-spacing:2px;font-weight:700;color:#1a1a1a;margin:16px 0 8px;padding-bottom:4px;border-bottom:1px solid #ccc}'
+    +'p{margin:0 0 6px;line-height:1.55}'
+    +'.job-title{font-weight:700;color:#1a1a1a;margin:12px 0 4px;font-size:10.5pt}'
+    +'ul{margin:0 0 8px;padding-left:18px;list-style:none}'
+    +'li{margin-bottom:4px;padding-left:12px;position:relative;line-height:1.5}'
+    +'li::before{content:"\\2022";position:absolute;left:0;color:#555}'
+    +'</style></head>'
+    +'<body>'+contactHeader+cvBody+'</body></html>';
 }
 
 function getEditedCvText(){
