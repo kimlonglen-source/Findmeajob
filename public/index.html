@@ -345,7 +345,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 
   <!-- Social proof strip -->
   <div class="strip">
-    <span class="strip-item" id="job-count-badge" style="display:none;background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.2);color:var(--em);font-weight:700"></span>
+    <span class="strip-item" id="job-count-badge" style="background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.2);color:var(--em);font-weight:700">Thousands of live NZ jobs</span>
     <span class="strip-item">AI-powered matching</span>
     <span class="strip-item">Real NZ listings</span>
     <span class="strip-item">Career pivot discovery</span>
@@ -2712,15 +2712,9 @@ function initApp(){try{
   document.getElementById('mm-signin').addEventListener('click',function(){showPage('account');document.getElementById('moverlay').classList.remove('open');});
 
   // Load live job count
-  fetch('/api/approved-jobs?stats=1').then(function(r){
-    if(!r.ok)throw new Error('fail');return r.json();
-  }).then(function(d){
-    var el=document.getElementById('job-count-badge');
-    if(el && d.totalJobs>0){el.textContent=d.totalJobs.toLocaleString()+' live NZ jobs';el.style.display='inline-flex';}
-  }).catch(function(){
-    var el=document.getElementById('job-count-badge');
-    if(el){el.textContent='Thousands of live NZ jobs';el.style.display='inline-flex';}
-  });
+  fetch('/api/approved-jobs?stats=1').then(function(r){return r.json();}).then(function(d){
+    if(d.totalJobs>0){var el=document.getElementById('job-count-badge');if(el)el.textContent=d.totalJobs.toLocaleString()+' live NZ jobs';}
+  }).catch(function(){});
 
   }catch(e){console.error('Init error:',e);}
 }
