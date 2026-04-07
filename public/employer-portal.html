@@ -584,7 +584,7 @@ document.getElementById('btn-to-step2').addEventListener('click', function(){
   if (plan === 'free') {
     document.getElementById('e-logo').value = '';
     if (document.getElementById('e-company-profile')) document.getElementById('e-company-profile').value = '';
-    document.getElementById('btn-to-step3').click();
+    buildPreviewAndShow();
     return;
   }
   setPostStep(2);
@@ -592,7 +592,7 @@ document.getElementById('btn-to-step2').addEventListener('click', function(){
 
 document.getElementById('btn-back-step1').addEventListener('click', function(){ setPostStep(1); });
 
-document.getElementById('btn-to-step3').addEventListener('click', function(){
+function buildPreviewAndShow(){
   // Build preview
   var title = document.getElementById('e-title').value.trim();
   var company = session && session.employer ? session.employer.company : '';
@@ -628,7 +628,9 @@ document.getElementById('btn-to-step3').addEventListener('click', function(){
 
   document.getElementById('post-preview').innerHTML = h;
   setPostStep(3);
-});
+}
+
+document.getElementById('btn-to-step3').addEventListener('click', buildPreviewAndShow);
 
 document.getElementById('btn-back-step2').addEventListener('click', function(){ setPostStep(2); });
 
