@@ -2735,7 +2735,10 @@ function handleGoogleSignIn(response) {
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({ action: 'google-login', credential: response.credential })
   })
-  .then(function(r) { return r.json(); })
+  .then(function(r) {
+    if (!r.ok) { return r.text().then(function(t) { throw new Error('HTTP ' + r.status + ': ' + t); }); }
+    return r.json();
+  })
   .then(function(d) {
     if (d.success && d.seeker) {
       saveSeekerSession({
@@ -2746,11 +2749,11 @@ function handleGoogleSignIn(response) {
       });
       toast('Welcome, ' + d.seeker.name + '!');
     } else {
-      toast(d.error || 'Sign-in failed');
+      alert('Google sign-in error: ' + (d.error || JSON.stringify(d)));
       console.error('Google sign-in error:', d);
     }
   })
-  .catch(function(err) { toast('Sign-in failed. Please try again.'); console.error('Google sign-in fetch error:', err); });
+  .catch(function(err) { alert('Google sign-in error: ' + err.message); console.error('Google sign-in fetch error:', err); });
 }
 
 function initGoogleSignIn() {
