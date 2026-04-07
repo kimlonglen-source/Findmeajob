@@ -172,6 +172,7 @@ module.exports = async function handler(req, res) {
       var sk2 = authResult.seeker;
       if (req.body.name !== undefined) sk2.name = req.body.name;
       if (req.body.phone !== undefined) sk2.phone = req.body.phone;
+      if (req.body.location !== undefined) sk2.location = req.body.location;
       if (req.body.rtw !== undefined) sk2.rtw = req.body.rtw;
       if (req.body.notice !== undefined) sk2.notice = req.body.notice;
       if (req.body.emailAlerts !== undefined) sk2.emailAlerts = !!req.body.emailAlerts;
@@ -313,6 +314,8 @@ async function authSeeker(email, password) {
   var raw = await hget("seekers", (email || "").toLowerCase().trim());
   if (!raw) return { status: 401, error: "Account not found." };
   var sk = typeof raw === "string" ? JSON.parse(raw) : raw;
+  // Allow Google OAuth users to authenticate with __google__ token
+  if (sk.googleAuth && password === "__google__") { return { seeker: sk }; }
   if (!verifyPassword(password, sk.password)) return { status: 401, error: "Incorrect password." };
   // Auto-upgrade plaintext password to hashed
   if (!isHashed(sk.password)) {
