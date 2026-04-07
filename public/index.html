@@ -2712,7 +2712,7 @@ function initApp(){try{
   document.getElementById('mm-signin').addEventListener('click',function(){showPage('account');document.getElementById('moverlay').classList.remove('open');});
 
   // Load live job count
-  fetch('/api/stats-public').then(function(r){
+  fetch('/api/approved-jobs?stats=1').then(function(r){
     if(!r.ok)throw new Error('fail');return r.json();
   }).then(function(d){
     var el=document.getElementById('job-count-badge');
