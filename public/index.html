@@ -345,6 +345,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 
   <!-- Social proof strip -->
   <div class="strip">
+    <span class="strip-item" id="job-count-badge" style="display:none;background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.2);color:var(--em);font-weight:700"></span>
     <span class="strip-item">AI-powered matching</span>
     <span class="strip-item">Real NZ listings</span>
     <span class="strip-item">Career pivot discovery</span>
@@ -2709,6 +2710,14 @@ function initApp(){try{
   document.getElementById('h-signin').addEventListener('click',function(){showPage('account');});
   document.getElementById('mm-account').addEventListener('click',function(){showPage('account');document.getElementById('moverlay').classList.remove('open');});
   document.getElementById('mm-signin').addEventListener('click',function(){showPage('account');document.getElementById('moverlay').classList.remove('open');});
+
+  // Load live job count
+  fetch('/api/stats-public').then(function(r){return r.json();}).then(function(d){
+    if(d.totalJobs>0){
+      var el=document.getElementById('job-count-badge');
+      if(el){el.textContent=d.totalJobs.toLocaleString()+' live NZ jobs';el.style.display='';}
+    }
+  }).catch(function(){});
 
   }catch(e){console.error('Init error:',e);}
 }

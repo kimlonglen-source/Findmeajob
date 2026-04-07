@@ -74,6 +74,10 @@
       "dest": "/api/cron-alerts.js"
     },
     {
+      "src": "/api/stats-public",
+      "dest": "/api/stats-public.js"
+    },
+    {
       "src": "/admin.html",
       "dest": "/public/admin.html"
     },
