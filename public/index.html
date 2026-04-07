@@ -337,8 +337,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       </div>
       <div class="how-step">
         <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--em);margin-bottom:.75rem">Step 3</div>
-        <div class="how-title">Apply directly</div>
-        <div class="how-desc">See your matches with live NZ listings. Apply with an AI-generated cover letter in one click.</div>
+        <div class="how-title">Apply with a tailored CV</div>
+        <div class="how-desc">Get a cover letter and a CV rewritten for each role. Download it, use it here or anywhere.</div>
       </div>
     </div>
   </section>
@@ -349,7 +349,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <span class="strip-item">AI-powered matching</span>
     <span class="strip-item">Real NZ listings</span>
     <span class="strip-item">Career pivot discovery</span>
-    <span class="strip-item">AI cover letters</span>
+    <span class="strip-item">Tailored CVs + cover letters</span>
     <span class="strip-item">Weekly job alerts</span>
   </div>
 
@@ -1106,6 +1106,25 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
           <div>&#8226; Your contact details (<span id="app-details-display"></span>)</div>
           <div>&#10003; Right to work: <span id="app-rtw-display"></span></div>
           <div id="app-notice-display-row" style="display:none">&#10003; Notice period: <span id="app-notice-display"></span></div>
+        </div>
+      </div>
+      <div style="background:linear-gradient(135deg,rgba(139,92,246,.06),rgba(236,72,153,.04));border:1px solid rgba(139,92,246,.15);border-radius:var(--r);padding:.85rem;margin-bottom:.75rem">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap">
+          <div>
+            <div style="font-size:.78rem;font-weight:700;color:var(--text);margin-bottom:.15rem">Tailor your CV for this role</div>
+            <div style="font-size:.7rem;color:var(--text2);font-weight:500">Rewrite your CV to highlight skills relevant to this job. Download and attach it.</div>
+          </div>
+          <button class="btn-sm" id="app-tailor-cv-btn" type="button" style="white-space:nowrap;border-color:rgba(139,92,246,.3);color:var(--purple)">Tailor CV</button>
+        </div>
+        <div id="app-tailor-loading" style="display:none;text-align:center;padding:.75rem 0;font-size:.78rem;color:var(--text3);font-weight:600">Tailoring your CV<span class="dots"></span></div>
+        <div id="app-tailor-result" style="display:none;margin-top:.75rem">
+          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:1rem;max-height:300px;overflow-y:auto;margin-bottom:.65rem">
+            <div id="app-tailor-preview" style="font-size:.8rem;color:var(--text2);line-height:1.7;white-space:pre-wrap"></div>
+          </div>
+          <div style="display:flex;gap:.5rem">
+            <button class="btn" id="app-tailor-download" type="button" style="padding:.5rem 1rem;font-size:.78rem">Download tailored CV</button>
+            <button class="btn btn-sec" id="app-tailor-use" type="button" style="padding:.5rem 1rem;font-size:.78rem">Use as my CV for this application</button>
+          </div>
         </div>
       </div>
       <div id="app-consent-box" style="margin-bottom:.75rem;background:var(--bg3);border:2px solid var(--border);border-radius:var(--r);padding:.85rem;cursor:pointer;user-select:none">
@@ -2171,6 +2190,73 @@ document.getElementById('app-cv-swap').addEventListener('change', function(e){
   document.getElementById('app-cv-swap-name').style.display = 'inline';
   document.getElementById('app-cv-swap-btn').textContent = 'Change again';
   toast('CV updated for this application');
+});
+
+// Tailor CV for this role
+var _tailoredCvHtml = '';
+document.getElementById('app-tailor-cv-btn').addEventListener('click', async function(){
+  var cvText = _applyState.cvText || '';
+  if (!cvText || cvText.length < 50) { toast('Upload a CV first so we can tailor it'); return; }
+  var jobTitle = _applyState.jobTitle || '';
+  var jobDesc = _applyState.desc || '';
+  var jobReqs = _applyState.reqs || '';
+  var applicantName = document.getElementById('app-name').value.trim();
+  var applicantEmail = document.getElementById('app-email').value.trim();
+  var applicantPhone = document.getElementById('app-phone').value.trim();
+  var applicantRtw = document.getElementById('app-rtw').value;
+
+  this.style.display = 'none';
+  document.getElementById('app-tailor-loading').style.display = 'block';
+  document.getElementById('app-tailor-result').style.display = 'none';
+
+  try {
+    var r = await fetch('/api/chat', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      messages:[{role:'user',content:'Rewrite this CV to be tailored for the following role. Keep all facts truthful. Do not invent experience or qualifications. Rewrite the professional summary to position the candidate for this role. Reorder and reword skills to highlight what is relevant. Reframe job description bullet points to emphasise transferable skills. Keep the same jobs, dates, and education. Output ONLY the CV content in clean sections: PROFESSIONAL SUMMARY, RELEVANT SKILLS, EXPERIENCE, EDUCATION. No explanations, no commentary.\n\nJOB TITLE: '+jobTitle+'\nJOB DESCRIPTION: '+jobDesc+'\nREQUIREMENTS: '+jobReqs+'\n\nCANDIDATE CV:\n'+cvText}],
+      system:'You are a professional CV writer for the New Zealand job market. Rewrite CVs to highlight relevant transferable skills for specific roles. Be concise and professional. Never fabricate experience.'
+    })});
+    var d = await r.json();
+    var tailoredText = (d.reply || d.content || '').trim();
+    if (!tailoredText) { toast('Could not tailor CV. Try again.'); this.style.display = ''; document.getElementById('app-tailor-loading').style.display = 'none'; return; }
+
+    document.getElementById('app-tailor-preview').textContent = tailoredText;
+    document.getElementById('app-tailor-loading').style.display = 'none';
+    document.getElementById('app-tailor-result').style.display = 'block';
+
+    // Build downloadable HTML
+    _tailoredCvHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>CV - '+esc(applicantName)+' - '+esc(jobTitle)+'</title>'
+      +'<style>body{font-family:Arial,Helvetica,sans-serif;max-width:700px;margin:0 auto;padding:2rem;color:#1a1a1a;line-height:1.6;font-size:14px}'
+      +'h1{font-size:22px;margin:0 0 4px;color:#111}h2{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:#555;border-bottom:1px solid #ddd;padding-bottom:4px;margin:1.5rem 0 .75rem}'
+      +'.contact{font-size:13px;color:#555;margin-bottom:1.5rem}p,li{margin-bottom:.35rem}</style></head>'
+      +'<body><h1>'+esc(applicantName)+'</h1>'
+      +'<div class="contact">'+(applicantPhone?esc(applicantPhone)+' | ':'')+esc(applicantEmail)+(applicantRtw?' | '+esc(applicantRtw):'')+'</div>'
+      +tailoredText.replace(/^(PROFESSIONAL SUMMARY|RELEVANT SKILLS|EXPERIENCE|EDUCATION|REFERENCES)/gm,'<h2>$1</h2>').replace(/\n/g,'<br>')
+      +'</body></html>';
+
+  } catch(e) { toast('Error tailoring CV'); }
+  this.style.display = '';
+  document.getElementById('app-tailor-loading').style.display = 'none';
+});
+
+document.getElementById('app-tailor-download').addEventListener('click', function(){
+  if (!_tailoredCvHtml) return;
+  var name = document.getElementById('app-name').value.trim().replace(/\s+/g,'-') || 'cv';
+  var blob = new Blob([_tailoredCvHtml], {type:'text/html'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name + '-tailored-cv.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('CV downloaded');
+});
+
+document.getElementById('app-tailor-use').addEventListener('click', function(){
+  if (!_tailoredCvHtml) return;
+  var blob = new Blob([_tailoredCvHtml], {type:'text/html'});
+  var name = (document.getElementById('app-name').value.trim().replace(/\s+/g,'-')||'cv') + '-tailored.html';
+  _applyState.cvFile = new File([blob], name, {type:'text/html'});
+  _applyState.cvData = _tailoredCvHtml;
+  document.getElementById('app-cv-name-display').textContent = name;
+  toast('Tailored CV will be sent with your application');
 });
 
 // Send application
