@@ -2353,7 +2353,14 @@ document.getElementById('app-tailor-cv-btn').addEventListener('click', async fun
 
   // Check we have either text or PDF data
   var hasPdf = _applyState.cvData && typeof _applyState.cvData === 'string' && _applyState.cvData.includes('base64,');
-  if ((!cvText || cvText.length < 50) && !hasPdf) { toast('Could not read your CV. Please upload your CV file to use this feature.'); return; }
+  // Also check if we have the original PDF from the initial CV upload (cvFileData global)
+  if (!hasPdf && cvFileData && typeof cvFileData === 'string' && cvFileData.includes('base64,')) {
+    _applyState.cvData = cvFileData; hasPdf = true;
+  }
+  if ((!cvText || cvText.length < 50) && !hasPdf) {
+    toast('To rewrite your CV, please upload the file again using the "Upload a different CV" button.');
+    return;
+  }
 
   this.style.display = 'none';
   document.getElementById('app-tailor-loading').style.display = 'block';
@@ -2362,13 +2369,13 @@ document.getElementById('app-tailor-cv-btn').addEventListener('click', async fun
   var rewritePrompt = 'Rewrite this CV for the job below. Work with whatever job information is provided — even if the description is short or incomplete, use the job title and any available details to tailor the CV.\n\nWHAT YOU MUST DO:\n1. ALWAYS produce a complete rewritten CV. Never refuse or ask for more information.\n2. Rewrite the PROFILE to target this specific job title.\n3. Reorder KEY SKILLS to put the most relevant ones for this role first.\n4. Rewrite EXPERIENCE bullet points to connect past work to this role. Start with action verbs.\n5. Keep all job titles, company names, locations, and dates exactly as they appear.\n6. EDUCATION: Copy word for word from the original CV. Do not change, add, or remove anything.\n\nWHAT YOU MUST NOT DO:\n- Do NOT refuse to rewrite. Always produce output.\n- Do NOT ask for more information. Work with what you have.\n- Do NOT add qualifications, certifications, or skills the candidate does not have\n- Do NOT invent numbers, metrics, or achievements\n- Do NOT add experience or roles not in the original CV\n- Do NOT change education details in any way\n\nPlain text only. No markdown. No bold. No asterisks.\n\nTARGET JOB: '+jobTitle+'\nJOB DESCRIPTION: '+(jobDesc||'Not provided')+'\nJOB REQUIREMENTS: '+(jobReqs||'Not provided');
   var rewriteSystem = 'You rewrite CVs for specific job roles. CRITICAL: Always produce a complete rewritten CV. Never refuse. Never ask for more information. If the job description is short or missing, use the job title to guide your rewriting. Every fact must come from the original CV. Education copied word for word. Plain text only.';
 
-  // Build message — use PDF document if no text available
+  // Build message — prefer PDF (more accurate), fall back to text
   var msgContent;
-  if (cvText && cvText.length >= 50) {
-    msgContent = [{role:'user',content:rewritePrompt+'\n\nORIGINAL CV:\n'+cvText}];
-  } else if (hasPdf) {
+  if (hasPdf) {
     var pdfB64 = _applyState.cvData.split('base64,')[1];
     msgContent = [{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:pdfB64}},{type:'text',text:rewritePrompt}]}];
+  } else if (cvText && cvText.length >= 50) {
+    msgContent = [{role:'user',content:rewritePrompt+'\n\nORIGINAL CV:\n'+cvText}];
   }
 
   try {
