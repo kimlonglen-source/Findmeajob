@@ -1077,10 +1077,33 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
           <div style="font-size:.68rem;color:var(--text3);margin-top:.2rem">PDF or Word document</div>
         </button>
       </div>
-      <div class="field"><label class="form-label">Why do you want this role? <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--text3)">(optional — helps AI write a better cover letter)</span></label><textarea id="app-why" placeholder="e.g. I have 3 years experience in this field and I am passionate about..." style="min-height:60px"></textarea></div>
+      <div style="margin-top:.75rem;margin-bottom:.75rem">
+        <label class="form-label">Cover letter</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
+          <button type="button" id="app-cl-opt-ai" class="choice sel" style="padding:.85rem;font-size:.8rem;border-width:2px" onclick="document.getElementById('app-cl-opt-ai').classList.add('sel');document.getElementById('app-cl-opt-own').classList.remove('sel');document.getElementById('app-why-box').style.display='block';document.getElementById('app-own-cl-box').style.display='none';_applyState.coverLetterMode='ai'">
+            <div style="font-weight:700;color:var(--text);margin-bottom:.2rem">Generate for me</div>
+            <div style="font-size:.7rem;color:var(--text3);font-weight:500">AI writes a tailored cover letter</div>
+          </button>
+          <button type="button" id="app-cl-opt-own" class="choice" style="padding:.85rem;font-size:.8rem;border-width:2px" onclick="document.getElementById('app-cl-opt-own').classList.add('sel');document.getElementById('app-cl-opt-ai').classList.remove('sel');document.getElementById('app-why-box').style.display='none';document.getElementById('app-own-cl-box').style.display='block';_applyState.coverLetterMode='own'">
+            <div style="font-weight:700;color:var(--text);margin-bottom:.2rem">Write my own</div>
+            <div style="font-size:.7rem;color:var(--text3);font-weight:500">Type or upload your cover letter</div>
+          </button>
+        </div>
+      </div>
+      <div id="app-why-box">
+        <div class="field"><label class="form-label">Why do you want this role? <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--text3)">(optional — helps write a better cover letter)</span></label><textarea id="app-why" placeholder="e.g. I have 3 years experience in this field and I am passionate about..." style="min-height:60px"></textarea></div>
+      </div>
+      <div id="app-own-cl-box" style="display:none">
+        <div class="field"><label class="form-label">Your cover letter</label><textarea id="app-own-cl-text" placeholder="Type your cover letter here..." style="min-height:160px;line-height:1.7"></textarea></div>
+        <div style="margin-bottom:.5rem">
+          <input type="file" id="app-own-cl-file" accept=".pdf,.doc,.docx,.txt" style="display:none">
+          <button type="button" id="app-own-cl-upload" style="background:none;border:none;color:var(--em);font-size:.75rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;padding:0;text-decoration:underline">Or upload a cover letter file (PDF/Word)</button>
+          <span id="app-own-cl-file-name" style="display:none;font-size:.72rem;color:var(--em);font-weight:600;margin-left:.5rem"></span>
+        </div>
+      </div>
       <div class="alert alert-err" id="app-err1"></div>
-      <button class="btn" id="app-btn-generate" type="button" style="margin-top:.5rem">Generate Cover Letter with AI &#8594;</button>
-      <div style="font-size:.68rem;color:var(--text3);text-align:center;margin-top:.6rem">Your CV is processed by AI to write a tailored cover letter. It is never stored.</div>
+      <button class="btn" id="app-btn-generate" type="button" style="margin-top:.5rem">Continue &#8594;</button>
+      <div style="font-size:.68rem;color:var(--text3);text-align:center;margin-top:.6rem">Your CV is never stored on our servers.</div>
     </div>
     <div id="apply-step2" style="display:none;text-align:center;padding:2rem 0">
       <div style="font-size:1.5rem;margin-bottom:.75rem">&#9997;</div>
@@ -1088,20 +1111,15 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <div style="font-size:.78rem;color:var(--text3)">AI is tailoring it to this specific role</div>
     </div>
     <div id="apply-step3" style="display:none">
-      <div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);border-radius:var(--r);padding:.65rem .85rem;margin-bottom:1rem;font-size:.78rem;color:var(--em);font-weight:600">&#10003; AI cover letter generated! Review and edit below before sending.</div>
+      <div id="app-step3-header" style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);border-radius:var(--r);padding:.65rem .85rem;margin-bottom:1rem;font-size:.78rem;color:var(--em);font-weight:600">&#10003; Review your application before sending.</div>
       <div class="field">
         <label class="form-label">Cover Letter <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--text3)">(edit as you like)</span></label>
         <textarea id="app-cover-letter" style="min-height:220px;line-height:1.7"></textarea>
       </div>
-      <div style="margin-bottom:.75rem">
-        <input type="file" id="app-cl-file" accept=".pdf,.doc,.docx,.txt" style="display:none">
-        <button type="button" id="app-cl-upload-btn" style="background:none;border:none;color:var(--em);font-size:.75rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;padding:0;text-decoration:underline">Or attach your own cover letter file (PDF/Word)</button>
-        <span id="app-cl-file-name" style="display:none;font-size:.72rem;color:var(--em);font-weight:600;margin-left:.5rem"></span>
-      </div>
       <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.75rem;margin-bottom:.75rem">
         <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;color:var(--text3);margin-bottom:.35rem">The employer will receive</div>
         <div style="font-size:.78rem;color:var(--text2);line-height:1.7">
-          <div>&#8226; Your cover letter (above) <span id="app-cl-attached" style="display:none;font-size:.7rem;color:var(--em)">+ attached file</span></div>
+          <div>&#8226; Your cover letter (above)</div>
           <div>&#8226; Your CV attached (<span id="app-cv-name-display"></span>)</div>
           <div style="margin-top:.35rem">
             <input type="file" id="app-cv-swap" accept=".pdf,.doc,.docx" style="display:none">
@@ -2091,6 +2109,41 @@ document.getElementById('app-cv-file').addEventListener('change', function(e){
 });
 
 // Generate cover letter
+_applyState.coverLetterMode = 'ai';
+
+function showApplyStep3(name, email, phone, rtw, coverText) {
+  document.getElementById('app-cover-letter').value = coverText;
+  document.getElementById('app-cv-name-display').textContent = _applyState.cvFile ? _applyState.cvFile.name : '';
+  document.getElementById('app-details-display').textContent = name + ', ' + email + ', ' + phone;
+  document.getElementById('app-rtw-display').textContent = rtw;
+  var noticeVal = document.getElementById('app-notice').value;
+  if (noticeVal) { document.getElementById('app-notice-display').textContent = noticeVal; document.getElementById('app-notice-display-row').style.display = 'block'; }
+  else { document.getElementById('app-notice-display-row').style.display = 'none'; }
+  document.getElementById('app-consent-company').textContent = _applyState.company;
+  document.getElementById('app-sent-company').textContent = _applyState.company;
+  document.getElementById('apply-step2').style.display = 'none';
+  document.getElementById('apply-step1').style.display = 'none';
+  document.getElementById('apply-step3').style.display = 'block';
+  document.getElementById('app-consent').value = '0';
+  document.getElementById('app-consent-tick').style.color = 'transparent';
+  document.getElementById('app-consent-tick').style.background = 'transparent';
+  document.getElementById('app-consent-tick').style.borderColor = 'var(--text3)';
+  document.getElementById('app-consent-box').style.borderColor = 'var(--border)';
+  document.getElementById('app-err3').classList.remove('show');
+}
+
+// Own cover letter file upload
+document.getElementById('app-own-cl-upload').addEventListener('click', function(){document.getElementById('app-own-cl-file').click();});
+document.getElementById('app-own-cl-file').addEventListener('change', function(e){
+  var file = e.target.files[0]; if (!file) return;
+  _applyState.coverLetterFile = file;
+  var reader = new FileReader(); reader.onload = function(ev){ _applyState.coverLetterData = ev.target.result; };
+  reader.readAsArrayBuffer(file);
+  document.getElementById('app-own-cl-file-name').textContent = '✓ ' + file.name;
+  document.getElementById('app-own-cl-file-name').style.display = 'inline';
+  toast('Cover letter file attached');
+});
+
 document.getElementById('app-btn-generate').addEventListener('click', async function(){
   var name = document.getElementById('app-name').value.trim();
   var email = document.getElementById('app-email').value.trim();
@@ -2104,6 +2157,17 @@ document.getElementById('app-btn-generate').addEventListener('click', async func
   if (!rtw) { err.textContent = 'Please select your right to work in NZ.'; err.classList.add('show'); return; }
   if (!_applyState.cvFile) { err.textContent = 'Please upload your CV.'; err.classList.add('show'); return; }
 
+  var mode = _applyState.coverLetterMode || 'ai';
+
+  // OWN COVER LETTER MODE
+  if (mode === 'own') {
+    var ownText = document.getElementById('app-own-cl-text').value.trim();
+    if (!ownText && !_applyState.coverLetterFile) { err.textContent = 'Please write or upload your cover letter.'; err.classList.add('show'); return; }
+    showApplyStep3(name, email, phone, rtw, ownText || '(Cover letter attached as file)');
+    return;
+  }
+
+  // AI COVER LETTER MODE
   document.getElementById('apply-step1').style.display = 'none';
   document.getElementById('apply-step2').style.display = 'block';
 
@@ -2128,23 +2192,7 @@ document.getElementById('app-btn-generate').addEventListener('click', async func
     var d = await r.json();
     if (!d.content || !Array.isArray(d.content)) { console.error('Cover letter API error:', JSON.stringify(d)); throw new Error(d.error && typeof d.error === 'string' ? d.error : d.error && d.error.message ? d.error.message : JSON.stringify(d)); }
     var letter = d.content.map(function(b){return b.text||'';}).join('').trim();
-    document.getElementById('app-cover-letter').value = letter;
-    document.getElementById('app-cv-name-display').textContent = _applyState.cvFile.name;
-    document.getElementById('app-details-display').textContent = name + ', ' + email + ', ' + phone;
-    document.getElementById('app-rtw-display').textContent = rtw;
-    var noticeVal = document.getElementById('app-notice').value;
-    if (noticeVal) { document.getElementById('app-notice-display').textContent = noticeVal; document.getElementById('app-notice-display-row').style.display = 'block'; }
-    else { document.getElementById('app-notice-display-row').style.display = 'none'; }
-    document.getElementById('app-consent-company').textContent = _applyState.company;
-    document.getElementById('app-sent-company').textContent = _applyState.company;
-    document.getElementById('apply-step2').style.display = 'none';
-    document.getElementById('apply-step3').style.display = 'block';
-    document.getElementById('app-consent').value = '0';
-    document.getElementById('app-consent-tick').style.color = 'transparent';
-    document.getElementById('app-consent-tick').style.background = 'transparent';
-    document.getElementById('app-consent-tick').style.borderColor = 'var(--text3)';
-    document.getElementById('app-consent-box').style.borderColor = 'var(--border)';
-    document.getElementById('app-err3').classList.remove('show');
+    showApplyStep3(name, email, phone, rtw, letter);
   } catch(e) {
     document.getElementById('apply-step2').style.display = 'none';
     document.getElementById('apply-step1').style.display = 'block';
@@ -2174,23 +2222,6 @@ document.getElementById('app-btn-back').addEventListener('click', function(){
 // Swap CV on step 3
 document.getElementById('app-cv-swap-btn').addEventListener('click', function(){document.getElementById('app-cv-swap').click();});
 
-// Attach own cover letter file
-document.getElementById('app-cl-upload-btn').addEventListener('click', function(){document.getElementById('app-cl-file').click();});
-document.getElementById('app-cl-file').addEventListener('change', function(e){
-  var file = e.target.files[0];
-  if (!file) return;
-  _applyState.coverLetterFile = file;
-  var reader = new FileReader();
-  reader.onload = function(ev){
-    _applyState.coverLetterData = ev.target.result;
-  };
-  reader.readAsArrayBuffer(file);
-  document.getElementById('app-cl-file-name').textContent = '✓ ' + file.name;
-  document.getElementById('app-cl-file-name').style.display = 'inline';
-  document.getElementById('app-cl-upload-btn').textContent = 'Change file';
-  var clInd = document.getElementById('app-cl-attached'); if(clInd) clInd.style.display = 'inline';
-  toast('Cover letter attached');
-});
 document.getElementById('app-cv-swap').addEventListener('change', function(e){
   var file = e.target.files[0];
   if (!file) return;
