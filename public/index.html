@@ -2712,12 +2712,15 @@ function initApp(){try{
   document.getElementById('mm-signin').addEventListener('click',function(){showPage('account');document.getElementById('moverlay').classList.remove('open');});
 
   // Load live job count
-  fetch('/api/stats-public').then(function(r){return r.json();}).then(function(d){
-    if(d.totalJobs>0){
-      var el=document.getElementById('job-count-badge');
-      if(el){el.textContent=d.totalJobs.toLocaleString()+' live NZ jobs';el.style.display='';}
-    }
-  }).catch(function(){});
+  fetch('/api/stats-public').then(function(r){
+    if(!r.ok)throw new Error('fail');return r.json();
+  }).then(function(d){
+    var el=document.getElementById('job-count-badge');
+    if(el && d.totalJobs>0){el.textContent=d.totalJobs.toLocaleString()+' live NZ jobs';el.style.display='inline-flex';}
+  }).catch(function(){
+    var el=document.getElementById('job-count-badge');
+    if(el){el.textContent='Thousands of live NZ jobs';el.style.display='inline-flex';}
+  });
 
   }catch(e){console.error('Init error:',e);}
 }
