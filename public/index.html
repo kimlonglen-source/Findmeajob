@@ -2392,14 +2392,18 @@ document.getElementById('app-tailor-cv-btn').addEventListener('click', async fun
     // Strip markdown formatting
     tailoredText = tailoredText.replace(/\*\*/g,'').replace(/\*/g,'').replace(/^#+\s*/gm,'').replace(/^---+$/gm,'');
 
-    // Check if AI hallucinated — warn user to verify
-    var warningHtml = '<div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:.65rem .85rem;margin-bottom:.65rem;font-size:.75rem;color:var(--gold);font-weight:600">Important: Check that all details — especially education, job titles, and dates — match your original CV exactly. Edit anything that is incorrect.</div>';
-
     _applyState.tailoredText = tailoredText;
     document.getElementById('app-tailor-preview').textContent = tailoredText;
     document.getElementById('app-tailor-loading').style.display = 'none';
     document.getElementById('app-tailor-result').style.display = 'block';
-    document.getElementById('app-tailor-result').insertAdjacentHTML('afterbegin', warningHtml);
+    // Remove any existing warnings before adding new one
+    var oldWarnings = document.getElementById('app-tailor-result').querySelectorAll('.cv-warning');
+    oldWarnings.forEach(function(w){w.remove();});
+    var warningDiv = document.createElement('div');
+    warningDiv.className = 'cv-warning';
+    warningDiv.style.cssText = 'background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:.65rem .85rem;margin-bottom:.65rem;font-size:.75rem;color:var(--gold);font-weight:600';
+    warningDiv.textContent = 'Important: Check that all details — especially education, job titles, and dates — match your original CV exactly. Edit anything that is incorrect.';
+    document.getElementById('app-tailor-result').insertBefore(warningDiv, document.getElementById('app-tailor-result').firstChild);
 
     rebuildTailoredHtml(tailoredText);
 
