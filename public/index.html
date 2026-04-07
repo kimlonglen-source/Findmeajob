@@ -2747,9 +2747,10 @@ function handleGoogleSignIn(response) {
       toast('Welcome, ' + d.seeker.name + '!');
     } else {
       toast(d.error || 'Sign-in failed');
+      console.error('Google sign-in error:', d);
     }
   })
-  .catch(function() { toast('Sign-in failed. Please try again.'); });
+  .catch(function(err) { toast('Sign-in failed. Please try again.'); console.error('Google sign-in fetch error:', err); });
 }
 
 function initGoogleSignIn() {
