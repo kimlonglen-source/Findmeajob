@@ -916,8 +916,9 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <div id="acct-reg-pane" style="display:none">
           <div id="google-signin-btn-reg" style="display:flex;justify-content:center;margin-bottom:1rem"></div>
           <div id="google-divider-reg" style="display:none;align-items:center;gap:.75rem;margin-bottom:1rem"><div style="flex:1;height:1px;background:var(--border)"></div><span style="font-size:.72rem;font-weight:600;color:var(--text3)">or create account with email</span><div style="flex:1;height:1px;background:var(--border)"></div></div>
-          <div class="g2">
+          <div class="g2" style="grid-template-columns:1fr 1fr 1fr">
             <div class="field"><label class="form-label">First name *</label><input type="text" id="acct-r-first" placeholder="Jane" autocomplete="given-name"></div>
+            <div class="field"><label class="form-label">Middle name</label><input type="text" id="acct-r-middle" placeholder="Optional" autocomplete="additional-name"></div>
             <div class="field"><label class="form-label">Last name *</label><input type="text" id="acct-r-last" placeholder="Smith" autocomplete="family-name"></div>
           </div>
           <div class="field"><label class="form-label">Email *</label><input type="email" id="acct-r-email" placeholder="jane@gmail.com" autocomplete="email"></div>
@@ -952,7 +953,9 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         </div>
         <div id="acct-details-view">
           <div style="font-size:.85rem;color:var(--text);line-height:2">
-            <div><strong>Name:</strong> <span id="acct-d-name"></span></div>
+            <div><strong>First name:</strong> <span id="acct-d-first"></span></div>
+            <div><strong>Middle name:</strong> <span id="acct-d-middle"></span></div>
+            <div><strong>Last name:</strong> <span id="acct-d-last"></span></div>
             <div><strong>Email:</strong> <span id="acct-d-email"></span></div>
             <div><strong>Phone:</strong> <span id="acct-d-phone"></span></div>
             <div><strong>Location:</strong> <span id="acct-d-location"></span></div>
@@ -961,7 +964,11 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
           </div>
         </div>
         <div id="acct-details-edit" style="display:none">
-          <div class="field"><label class="form-label">Name</label><input type="text" id="acct-e-name"></div>
+          <div class="g2" style="grid-template-columns:1fr 1fr 1fr">
+            <div class="field"><label class="form-label">First name</label><input type="text" id="acct-e-first"></div>
+            <div class="field"><label class="form-label">Middle name</label><input type="text" id="acct-e-middle" placeholder="Optional"></div>
+            <div class="field"><label class="form-label">Last name</label><input type="text" id="acct-e-last"></div>
+          </div>
           <div class="g2">
             <div class="field"><label class="form-label">Phone</label><input type="tel" id="acct-e-phone"></div>
             <div class="field"><label class="form-label">Location</label><select id="acct-e-location"><option value="">Select...</option><option>Auckland</option><option>Christchurch</option><option>Dunedin</option><option>Hamilton</option><option>Napier</option><option>Nelson</option><option>New Plymouth</option><option>Palmerston North</option><option>Queenstown</option><option>Rotorua</option><option>Tauranga</option><option>Wellington</option><option>Whangarei</option><option>Other NZ</option></select></div>
@@ -2440,8 +2447,10 @@ function initApp(){try{
       document.getElementById('acct-auth').style.display='none';
       document.getElementById('acct-dashboard').style.display='block';
       document.getElementById('acct-signout').style.display='inline-flex';
-      document.getElementById('acct-welcome').textContent='Hi, '+seekerSession.name;
-      document.getElementById('acct-d-name').textContent=seekerSession.name;
+      document.getElementById('acct-welcome').textContent='Hi, '+(seekerSession.firstName||seekerSession.name);
+      document.getElementById('acct-d-first').textContent=seekerSession.firstName||seekerSession.name||'';
+      document.getElementById('acct-d-middle').textContent=seekerSession.middleName||'—';
+      document.getElementById('acct-d-last').textContent=seekerSession.lastName||'';
       document.getElementById('acct-d-email').textContent=seekerSession.email;
       document.getElementById('acct-d-phone').textContent=seekerSession.phone||'Not set';
       document.getElementById('acct-d-location').textContent=seekerSession.location||'Not set';
@@ -2515,8 +2524,9 @@ function initApp(){try{
   // Register
   document.getElementById('acct-btn-register').addEventListener('click',async function(){
     var first=document.getElementById('acct-r-first').value.trim();
+    var middle=document.getElementById('acct-r-middle').value.trim();
     var last=document.getElementById('acct-r-last').value.trim();
-    var name=(first+' '+last).trim();
+    var name=(first+(middle?' '+middle:'')+' '+last).trim();
     var email=document.getElementById('acct-r-email').value.trim();
     var pass=document.getElementById('acct-r-pass').value;
     var phone=document.getElementById('acct-r-phone').value.trim();
@@ -2528,9 +2538,9 @@ function initApp(){try{
     if(pass.length<8||!/[A-Z]/.test(pass)||!/[a-z]/.test(pass)||!/[0-9]/.test(pass)||!/[^A-Za-z0-9]/.test(pass)){err.textContent='Password must be at least 8 characters with uppercase, lowercase, number and special character.';err.classList.add('show');return;}
     this.textContent='Creating account...';this.disabled=true;
     try{
-      var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',name:name,email:email,password:pass,phone:phone,rtw:rtw,notice:notice,location:location,emailAlerts:document.getElementById('acct-r-alerts').checked,emailUpdates:document.getElementById('acct-r-updates').checked})});
+      var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',name:name,firstName:first,middleName:middle,lastName:last,email:email,password:pass,phone:phone,rtw:rtw,notice:notice,location:location,emailAlerts:document.getElementById('acct-r-alerts').checked,emailUpdates:document.getElementById('acct-r-updates').checked})});
       var d=await r.json();
-      if(d.success){saveSeekerSession({name:d.seeker.name,email:d.seeker.email,password:pass,phone:d.seeker.phone||'',rtw:d.seeker.rtw||'',notice:notice,hasCv:false});toast('Account created! Welcome, '+first+'!');}
+      if(d.success){saveSeekerSession({name:d.seeker.name,firstName:first,middleName:middle,lastName:last,email:d.seeker.email,password:pass,phone:d.seeker.phone||'',location:location,rtw:d.seeker.rtw||'',notice:notice,hasCv:false});toast('Account created! Welcome, '+first+'!');}
       else{err.textContent=d.error||'Registration failed.';err.classList.add('show');}
     }catch(e){err.textContent='Connection error.';err.classList.add('show');}
     this.textContent='Create Free Account';this.disabled=false;
@@ -2547,7 +2557,9 @@ function initApp(){try{
   document.getElementById('acct-edit-toggle').addEventListener('click',function(){
     document.getElementById('acct-details-view').style.display='none';
     document.getElementById('acct-details-edit').style.display='block';
-    document.getElementById('acct-e-name').value=seekerSession.name||'';
+    document.getElementById('acct-e-first').value=seekerSession.firstName||seekerSession.name||'';
+    document.getElementById('acct-e-middle').value=seekerSession.middleName||'';
+    document.getElementById('acct-e-last').value=seekerSession.lastName||'';
     document.getElementById('acct-e-phone').value=seekerSession.phone||'';
     document.getElementById('acct-e-location').value=seekerSession.location||'';
     document.getElementById('acct-e-rtw').value=seekerSession.rtw||'';
@@ -2559,15 +2571,18 @@ function initApp(){try{
   });
   document.getElementById('acct-save-details').addEventListener('click',async function(){
     if(!seekerSession)return;
-    var name=document.getElementById('acct-e-name').value.trim();
+    var eFirst=document.getElementById('acct-e-first').value.trim();
+    var eMiddle=document.getElementById('acct-e-middle').value.trim();
+    var eLast=document.getElementById('acct-e-last').value.trim();
+    var name=(eFirst+(eMiddle?' '+eMiddle:'')+' '+eLast).trim();
     var phone=document.getElementById('acct-e-phone').value.trim();
     var location=document.getElementById('acct-e-location').value;
     var rtw=document.getElementById('acct-e-rtw').value;
     var notice=document.getElementById('acct-e-notice').value;
     try{
-      var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'update',email:seekerSession.email,password:seekerSession.password,name:name,phone:phone,location:location,rtw:rtw,notice:notice})});
+      var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'update',email:seekerSession.email,password:seekerSession.password,name:name,firstName:eFirst,middleName:eMiddle,lastName:eLast,phone:phone,location:location,rtw:rtw,notice:notice})});
       var d=await r.json();
-      if(d.success){seekerSession.name=name;seekerSession.phone=phone;seekerSession.location=location;seekerSession.rtw=rtw;seekerSession.notice=notice;saveSeekerSession(seekerSession);document.getElementById('acct-details-view').style.display='block';document.getElementById('acct-details-edit').style.display='none';toast('Details saved!');}
+      if(d.success){seekerSession.name=name;seekerSession.firstName=eFirst;seekerSession.middleName=eMiddle;seekerSession.lastName=eLast;seekerSession.phone=phone;seekerSession.location=location;seekerSession.rtw=rtw;seekerSession.notice=notice;saveSeekerSession(seekerSession);document.getElementById('acct-details-view').style.display='block';document.getElementById('acct-details-edit').style.display='none';toast('Details saved!');}
     }catch(e){toast('Save failed');}
   });
 
@@ -2767,13 +2782,16 @@ function handleGoogleSignIn(response) {
   })
   .then(function(d) {
     if (d.success && d.seeker) {
+      var gParts = (d.seeker.name || '').split(' ');
+      var gFirst = d.seeker.firstName || gParts[0] || '';
+      var gLast = d.seeker.lastName || gParts.slice(1).join(' ') || '';
       window.saveSeekerSession({
-        name: d.seeker.name, email: d.seeker.email,
-        password: '__google__', phone: d.seeker.phone || '',
-        rtw: d.seeker.rtw || '', notice: d.seeker.notice || '',
+        name: d.seeker.name, firstName: gFirst, middleName: d.seeker.middleName || '', lastName: gLast,
+        email: d.seeker.email, password: '__google__', phone: d.seeker.phone || '',
+        location: d.seeker.location || '', rtw: d.seeker.rtw || '', notice: d.seeker.notice || '',
         hasCv: d.seeker.hasCv || false, googleAuth: true
       });
-      toast('Welcome, ' + d.seeker.name + '!');
+      toast('Welcome, ' + gFirst + '!');
     } else {
       toast(d.error || 'Sign-in failed');
     }

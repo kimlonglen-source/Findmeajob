@@ -92,14 +92,15 @@ module.exports = async function handler(req, res) {
       if (gExisting) {
         // Existing user — log them in
         var gSeeker = typeof gExisting === "string" ? JSON.parse(gExisting) : gExisting;
-        return res.status(200).json({ success: true, seeker: { id: gSeeker.id, name: gSeeker.name, email: gSeeker.email, phone: gSeeker.phone || "", rtw: gSeeker.rtw || "", notice: gSeeker.notice || "", hasCv: !!(gSeeker.cvText || gSeeker.cvFileName) } });
+        return res.status(200).json({ success: true, seeker: { id: gSeeker.id, name: gSeeker.name, firstName: gSeeker.firstName || "", middleName: gSeeker.middleName || "", lastName: gSeeker.lastName || "", email: gSeeker.email, phone: gSeeker.phone || "", location: gSeeker.location || "", rtw: gSeeker.rtw || "", notice: gSeeker.notice || "", hasCv: !!(gSeeker.cvText || gSeeker.cvFileName) } });
       }
 
       // New user — create account
       var gId = "sk_" + Date.now() + "_" + Math.random().toString(36).substring(2, 8);
       var gNewSeeker = {
-        id: gId, name: gName, email: gEmail, password: "__google_oauth__",
-        phone: "", rtw: "", notice: "",
+        id: gId, name: gName, firstName: payload.given_name || gName.split(" ")[0] || "", middleName: "", lastName: payload.family_name || gName.split(" ").slice(1).join(" ") || "",
+        email: gEmail, password: "__google_oauth__",
+        phone: "", location: "", rtw: "", notice: "",
         emailAlerts: true, emailUpdates: false,
         cvText: null, cvFileName: null,
         createdAt: new Date().toISOString(),
@@ -113,7 +114,7 @@ module.exports = async function handler(req, res) {
         + "Email: " + gEmail + "<br><br>"
         + '<a href="https://www.findmeajob.co.nz/admin.html" style="color:#059669;font-weight:700">Open admin panel</a>'
       );
-      return res.status(200).json({ success: true, seeker: { id: gId, name: gName, email: gEmail, phone: "", rtw: "", notice: "", hasCv: false } });
+      return res.status(200).json({ success: true, seeker: { id: gId, name: gName, firstName: gNewSeeker.firstName || "", middleName: "", lastName: gNewSeeker.lastName || "", email: gEmail, phone: "", location: "", rtw: "", notice: "", hasCv: false } });
     }
 
     // REGISTER
@@ -128,8 +129,9 @@ module.exports = async function handler(req, res) {
       if (existing) return res.status(400).json({ error: "An account with this email already exists. Please sign in." });
       var id = "sk_" + Date.now() + "_" + Math.random().toString(36).substring(2, 8);
       var seeker = {
-        id: id, name: name, email: email, password: hashPassword(password),
-        phone: req.body.phone || "", rtw: req.body.rtw || "", notice: req.body.notice || "",
+        id: id, name: name, firstName: req.body.firstName || "", middleName: req.body.middleName || "", lastName: req.body.lastName || "",
+        email: email, password: hashPassword(password),
+        phone: req.body.phone || "", location: req.body.location || "", rtw: req.body.rtw || "", notice: req.body.notice || "",
         emailAlerts: !!req.body.emailAlerts, emailUpdates: !!req.body.emailUpdates,
         cvText: null, cvFileName: null,
         createdAt: new Date().toISOString()
@@ -144,7 +146,7 @@ module.exports = async function handler(req, res) {
         + "Email alerts: " + (seeker.emailAlerts ? "Yes" : "No") + "<br><br>"
         + '<a href="https://www.findmeajob.co.nz/admin.html" style="color:#059669;font-weight:700">Open admin panel</a>'
       );
-      return res.status(200).json({ success: true, seeker: { id: id, name: name, email: email, phone: seeker.phone, rtw: seeker.rtw, notice: seeker.notice, hasCv: false } });
+      return res.status(200).json({ success: true, seeker: { id: id, name: name, firstName: seeker.firstName || "", middleName: seeker.middleName || "", lastName: seeker.lastName || "", email: email, phone: seeker.phone, location: seeker.location || "", rtw: seeker.rtw, notice: seeker.notice, hasCv: false } });
     }
 
     // LOGIN
@@ -162,7 +164,7 @@ module.exports = async function handler(req, res) {
       if (!verifyPassword(loginPass, sk.password)) return res.status(401).json({ error: "Incorrect password." });
       // Auto-upgrade plaintext password to hashed
       if (!isHashed(sk.password)) { sk.password = hashPassword(loginPass); await hset("seekers", loginEmail, sk); }
-      return res.status(200).json({ success: true, seeker: { id: sk.id, name: sk.name, email: sk.email, phone: sk.phone || "", rtw: sk.rtw || "", notice: sk.notice || "", hasCv: !!(sk.cvText || sk.cvFileName) } });
+      return res.status(200).json({ success: true, seeker: { id: sk.id, name: sk.name, firstName: sk.firstName || "", middleName: sk.middleName || "", lastName: sk.lastName || "", email: sk.email, phone: sk.phone || "", location: sk.location || "", rtw: sk.rtw || "", notice: sk.notice || "", hasCv: !!(sk.cvText || sk.cvFileName) } });
     }
 
     // UPDATE PROFILE
@@ -171,6 +173,9 @@ module.exports = async function handler(req, res) {
       if (authResult.error) return res.status(authResult.status).json({ error: authResult.error });
       var sk2 = authResult.seeker;
       if (req.body.name !== undefined) sk2.name = req.body.name;
+      if (req.body.firstName !== undefined) sk2.firstName = req.body.firstName;
+      if (req.body.middleName !== undefined) sk2.middleName = req.body.middleName;
+      if (req.body.lastName !== undefined) sk2.lastName = req.body.lastName;
       if (req.body.phone !== undefined) sk2.phone = req.body.phone;
       if (req.body.location !== undefined) sk2.location = req.body.location;
       if (req.body.rtw !== undefined) sk2.rtw = req.body.rtw;
@@ -222,7 +227,7 @@ module.exports = async function handler(req, res) {
       var authResult5 = await authSeeker(req.body.email, req.body.password);
       if (authResult5.error) return res.status(authResult5.status).json({ error: authResult5.error });
       var sk5 = authResult5.seeker;
-      return res.status(200).json({ success: true, seeker: { id: sk5.id, name: sk5.name, email: sk5.email, phone: sk5.phone || "", rtw: sk5.rtw || "", notice: sk5.notice || "", hasCv: !!(sk5.cvText || sk5.cvFileName), cvFileName: sk5.cvFileName || null, emailAlerts: !!sk5.emailAlerts, emailUpdates: !!sk5.emailUpdates } });
+      return res.status(200).json({ success: true, seeker: { id: sk5.id, name: sk5.name, firstName: sk5.firstName || "", middleName: sk5.middleName || "", lastName: sk5.lastName || "", email: sk5.email, phone: sk5.phone || "", location: sk5.location || "", rtw: sk5.rtw || "", notice: sk5.notice || "", hasCv: !!(sk5.cvText || sk5.cvFileName), cvFileName: sk5.cvFileName || null, emailAlerts: !!sk5.emailAlerts, emailUpdates: !!sk5.emailUpdates } });
     }
 
     // GET CV TEXT (for auto-fill in apply form)
