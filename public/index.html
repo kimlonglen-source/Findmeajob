@@ -1121,24 +1121,22 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <div style="font-size:.78rem;color:var(--text2);line-height:1.7">
           <div>&#8226; Your cover letter (above)</div>
           <div>&#8226; Your CV attached (<span id="app-cv-name-display"></span>)</div>
-          <div style="margin-top:.35rem">
-            <input type="file" id="app-cv-swap" accept=".pdf,.doc,.docx" style="display:none">
-            <button type="button" id="app-cv-swap-btn" style="background:none;border:none;color:var(--em);font-size:.75rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;padding:0;text-decoration:underline">Upload a different CV for this application</button>
-            <span id="app-cv-swap-name" style="display:none;font-size:.72rem;color:var(--em);font-weight:600;margin-left:.5rem"></span>
-          </div>
           <div>&#8226; Your contact details (<span id="app-details-display"></span>)</div>
           <div>&#10003; Right to work: <span id="app-rtw-display"></span></div>
           <div id="app-notice-display-row" style="display:none">&#10003; Notice period: <span id="app-notice-display"></span></div>
         </div>
       </div>
-      <div style="background:linear-gradient(135deg,rgba(139,92,246,.06),rgba(236,72,153,.04));border:1px solid rgba(139,92,246,.15);border-radius:var(--r);padding:.85rem;margin-bottom:.75rem">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap">
-          <div>
-            <div style="font-size:.78rem;font-weight:700;color:var(--text);margin-bottom:.15rem">Rewrite your CV for this role</div>
-            <div style="font-size:.7rem;color:var(--text2);font-weight:500">Restructure your CV to highlight relevant experience. Included in your application.</div>
-          </div>
-          <button class="btn-sm" id="app-tailor-cv-btn" type="button" style="white-space:nowrap;border-color:rgba(139,92,246,.3);color:var(--purple)">Rewrite CV</button>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.75rem">
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.75rem;text-align:center">
+          <input type="file" id="app-cv-swap" accept=".pdf,.doc,.docx" style="display:none">
+          <button type="button" id="app-cv-swap-btn" style="background:none;border:none;color:var(--em);font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;padding:0">Upload a different CV</button>
+          <span id="app-cv-swap-name" style="display:none;font-size:.72rem;color:var(--em);font-weight:600;margin-top:.25rem"></span>
         </div>
+        <div style="background:linear-gradient(135deg,rgba(139,92,246,.06),rgba(236,72,153,.04));border:1px solid rgba(139,92,246,.15);border-radius:var(--r);padding:.75rem;text-align:center">
+          <button type="button" id="app-tailor-cv-btn" style="background:none;border:none;color:var(--purple);font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;padding:0">Rewrite CV for this role</button>
+        </div>
+      </div>
+      <div>
         <div id="app-tailor-loading" style="display:none;text-align:center;padding:.75rem 0;font-size:.78rem;color:var(--text3);font-weight:600">Tailoring your CV<span class="dots"></span></div>
         <div id="app-tailor-result" style="display:none;margin-top:.75rem">
           <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:1rem;max-height:300px;overflow-y:auto;margin-bottom:.65rem">
@@ -2061,13 +2059,8 @@ function applyJob(btn) {
       _applyState.cvFileName = ss.cvFileName || 'saved-cv.pdf';
       _applyState.cvFile = { name: ss.cvFileName || 'saved-cv.pdf' };
       // Fetch CV text from server
-      fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'profile',email:ss.email,password:ss.password})}).then(function(r){return r.json();}).then(function(d){
-        if(d.success && d.seeker){
-          // Get full CV data from seeker record
-          fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'get-cv',email:ss.email,password:ss.password})}).then(function(r2){return r2.json();}).then(function(d2){
-            if(d2.success){_applyState.cvText=d2.cvText||'';_applyState.cvData=d2.cvText||'';}
-          }).catch(function(){});
-        }
+      fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'get-cv',email:ss.email,password:ss.password})}).then(function(r){return r.json();}).then(function(d){
+        if(d.success && d.cvText){_applyState.cvText=d.cvText;_applyState.cvData=d.cvText;}
       }).catch(function(){});
     }
   }
@@ -2260,7 +2253,7 @@ document.getElementById('app-tailor-cv-btn').addEventListener('click', async fun
       if (cvD.success && cvD.cvText) { cvText = cvD.cvText; _applyState.cvText = cvText; }
     } catch(e){}
   }
-  if (!cvText || cvText.length < 50) { toast('Upload a CV first so we can tailor it'); return; }
+  if (!cvText || cvText.length < 50) { toast('Could not read your CV text. Please upload a Word (.docx) or text (.txt) file to use this feature.'); return; }
   var jobTitle = _applyState.jobTitle || '';
   var jobDesc = _applyState.desc || '';
   var jobReqs = _applyState.reqs || '';
