@@ -62,6 +62,7 @@ module.exports = async function handler(req, res) {
   // If tailored CV content provided, include it inline in the email
   if (cvContent) {
     html += '<div style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:1.5rem;margin-bottom:1rem">';
+    html += '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#6b7280;margin-bottom:.75rem">CV</div>';
     // Header with applicant name and contact
     html += '<div style="border-bottom:2px solid #1a1a1a;padding-bottom:8px;margin-bottom:12px">';
     html += '<div style="font-size:18px;font-weight:700;color:#1a1a1a">' + esc(applicantName) + '</div>';
