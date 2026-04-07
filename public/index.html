@@ -882,8 +882,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 <div id="page-account" class="page">
   <div class="wrap">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:.75rem">
-      <div><div class="page-eyebrow">My Account</div><div class="page-title" id="acct-welcome">Welcome back</div></div>
-      <button class="btn-sm" id="acct-signout" type="button">Sign out</button>
+      <div><div class="page-eyebrow">My Account</div><div class="page-title" id="acct-welcome">My Account</div></div>
+      <button class="btn-sm" id="acct-signout" type="button" style="display:none">Sign out</button>
     </div>
 
     <!-- Not logged in: show login/register -->
@@ -1140,7 +1140,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <div id="app-tailor-loading" style="display:none;text-align:center;padding:.75rem 0;font-size:.78rem;color:var(--text3);font-weight:600">Tailoring your CV<span class="dots"></span></div>
         <div id="app-tailor-result" style="display:none;margin-top:.75rem">
           <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:1rem;max-height:300px;overflow-y:auto;margin-bottom:.65rem">
-            <div id="app-tailor-preview" style="font-size:.8rem;color:var(--text2);line-height:1.7;white-space:pre-wrap"></div>
+            <div id="app-tailor-preview" style="font-size:.8rem;color:var(--text2);line-height:1.7;white-space:pre-wrap" contenteditable="true"></div>
           </div>
           <div style="display:flex;gap:.5rem">
             <button class="btn" id="app-tailor-download" type="button" style="padding:.5rem 1rem;font-size:.78rem">Download tailored CV</button>
@@ -2309,89 +2309,77 @@ document.getElementById('app-tailor-cv-btn').addEventListener('click', async fun
     // Strip markdown formatting
     tailoredText = tailoredText.replace(/\*\*/g,'').replace(/\*/g,'').replace(/^#+\s*/gm,'').replace(/^---+$/gm,'');
 
+    // Check if AI hallucinated — warn user to verify
+    var warningHtml = '<div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:.65rem .85rem;margin-bottom:.65rem;font-size:.75rem;color:var(--gold);font-weight:600">Important: Check that all details — especially education, job titles, and dates — match your original CV exactly. Edit anything that is incorrect.</div>';
+
     _applyState.tailoredText = tailoredText;
     document.getElementById('app-tailor-preview').textContent = tailoredText;
     document.getElementById('app-tailor-loading').style.display = 'none';
     document.getElementById('app-tailor-result').style.display = 'block';
+    document.getElementById('app-tailor-result').insertAdjacentHTML('afterbegin', warningHtml);
 
-    // Build downloadable HTML — professional CV format
-    var lines = tailoredText.split('\n');
-    var cvBody = '';
-    var headings = /^(PROFILE|PROFESSIONAL PROFILE|KEY SKILLS|KEY SKILLS AND EXPERIENCE|EXPERIENCE|PROFESSIONAL EXPERIENCE|WORK EXPERIENCE|EDUCATION|EDUCATION & QUALIFICATIONS|EDUCATION AND TRAINING|REFERENCES|PROFESSIONAL SUMMARY|RELEVANT SKILLS|QUALIFICATIONS|CERTIFICATIONS|SKILLS|CAREER SUMMARY|WORK HISTORY|EMPLOYMENT HISTORY|KEY ACHIEVEMENTS)$/i;
-    var inList = false;
-
-    for (var li = 0; li < lines.length; li++) {
-      var line = lines[li].trim();
-      if (!line) {
-        if (inList) { cvBody += '</ul>'; inList = false; }
-        continue;
-      }
-      if (headings.test(line)) {
-        if (inList) { cvBody += '</ul>'; inList = false; }
-        cvBody += '<h2>' + esc(line) + '</h2>';
-      } else if (line.match(/^[-•●·]/)) {
-        if (!inList) { cvBody += '<ul>'; inList = true; }
-        cvBody += '<li>' + esc(line.replace(/^[-•●·]\s*/, '')) + '</li>';
-      } else if (line.match(/^(.+)\s[—–-]\s(.+),\s*(.+)\s*\(/) || line.match(/^(.+)\s[—–-]\s(.+)\s*\(/)) {
-        // Job title line: "Job Title — Company, Location (Dates)"
-        if (inList) { cvBody += '</ul>'; inList = false; }
-        cvBody += '<div class="job-title">' + esc(line) + '</div>';
-      } else {
-        if (inList) { cvBody += '</ul>'; inList = false; }
-        cvBody += '<p>' + esc(line) + '</p>';
-      }
-    }
-    if (inList) cvBody += '</ul>';
-
-    _tailoredCvHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>CV - '+esc(applicantName)+'</title>'
-      +'<style>'
-      +'@page{margin:2cm 2.5cm}'
-      +'*{margin:0;padding:0;box-sizing:border-box}'
-      +'body{font-family:Calibri,"Segoe UI",Arial,sans-serif;max-width:700px;margin:0 auto;padding:2.5rem 2rem;color:#2d2d2d;line-height:1.5;font-size:10.5pt}'
-      +'h1{font-size:22pt;font-weight:700;color:#1a1a1a;margin-bottom:2px;letter-spacing:-.3px}'
-      +'.contact{font-size:9.5pt;color:#555;padding-bottom:12px;margin-bottom:4px;border-bottom:2px solid #1a1a1a}'
-      +'h2{font-size:9pt;text-transform:uppercase;letter-spacing:2px;font-weight:700;color:#1a1a1a;margin:18px 0 8px;padding-bottom:4px;border-bottom:1px solid #ccc}'
-      +'p{margin:0 0 6px;line-height:1.5}'
-      +'.job-title{font-weight:700;color:#1a1a1a;margin:12px 0 4px;font-size:10.5pt}'
-      +'ul{margin:0 0 8px;padding-left:18px;list-style:none}'
-      +'li{margin-bottom:4px;padding-left:12px;position:relative;line-height:1.5}'
-      +'li::before{content:"\\2022";position:absolute;left:0;color:#555}'
-      +'</style></head>'
-      +'<body>'
-      +'<h1>'+esc(applicantName)+'</h1>'
-      +'<div style="font-size:10pt;color:#444;margin-bottom:4px">'+esc(jobTitle)+' Application</div>'
-      +'<div class="contact">'
-      +(applicantEmail?esc(applicantEmail):'')
-      +(applicantPhone?' &nbsp; | &nbsp; '+esc(applicantPhone):'')
-      +(applicantRtw?' &nbsp; | &nbsp; '+esc(applicantRtw):'')
-      +'</div>'
-      +cvBody
-      +'</body></html>';
+    rebuildTailoredHtml(tailoredText);
 
   } catch(e) { toast('Error tailoring CV'); }
   this.style.display = '';
   document.getElementById('app-tailor-loading').style.display = 'none';
 });
 
+function rebuildTailoredHtml(text){
+  var applicantName = document.getElementById('app-name').value.trim();
+  var applicantEmail = document.getElementById('app-email').value.trim();
+  var applicantPhone = document.getElementById('app-phone').value.trim();
+  var applicantRtw = document.getElementById('app-rtw').value;
+  var jobTitle = _applyState.jobTitle || '';
+  var lines = text.split('\n');
+  var cvBody = '';
+  var headings = /^(PROFILE|PROFESSIONAL PROFILE|KEY SKILLS|KEY SKILLS AND EXPERIENCE|EXPERIENCE|PROFESSIONAL EXPERIENCE|WORK EXPERIENCE|EDUCATION|EDUCATION & QUALIFICATIONS|EDUCATION AND TRAINING|REFERENCES|PROFESSIONAL SUMMARY|RELEVANT SKILLS|QUALIFICATIONS|CERTIFICATIONS|SKILLS|CAREER SUMMARY|WORK HISTORY|EMPLOYMENT HISTORY|KEY ACHIEVEMENTS)$/i;
+  var inList = false;
+  for (var li = 0; li < lines.length; li++) {
+    var line = lines[li].trim();
+    if (!line) { if (inList) { cvBody += '</ul>'; inList = false; } continue; }
+    if (headings.test(line)) { if (inList) { cvBody += '</ul>'; inList = false; } cvBody += '<h2>' + esc(line) + '</h2>'; }
+    else if (line.match(/^[-•●·]/)) { if (!inList) { cvBody += '<ul>'; inList = true; } cvBody += '<li>' + esc(line.replace(/^[-•●·]\s*/, '')) + '</li>'; }
+    else if (line.match(/^(.+)\s[—–-]\s(.+),\s*(.+)\s*\(/) || line.match(/^(.+)\s[—–-]\s(.+)\s*\(/)) { if (inList) { cvBody += '</ul>'; inList = false; } cvBody += '<div class="job-title">' + esc(line) + '</div>'; }
+    else { if (inList) { cvBody += '</ul>'; inList = false; } cvBody += '<p>' + esc(line) + '</p>'; }
+  }
+  if (inList) cvBody += '</ul>';
+  _tailoredCvHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>CV - '+esc(applicantName)+'</title>'
+    +'<style>@page{margin:2cm 2.5cm}*{margin:0;padding:0;box-sizing:border-box}body{font-family:Calibri,"Segoe UI",Arial,sans-serif;max-width:700px;margin:0 auto;padding:2.5rem 2rem;color:#2d2d2d;line-height:1.5;font-size:10.5pt}h1{font-size:22pt;font-weight:700;color:#1a1a1a;margin-bottom:2px;letter-spacing:-.3px}.contact{font-size:9.5pt;color:#555;padding-bottom:12px;margin-bottom:4px;border-bottom:2px solid #1a1a1a}h2{font-size:9pt;text-transform:uppercase;letter-spacing:2px;font-weight:700;color:#1a1a1a;margin:18px 0 8px;padding-bottom:4px;border-bottom:1px solid #ccc}p{margin:0 0 6px;line-height:1.5}.job-title{font-weight:700;color:#1a1a1a;margin:12px 0 4px;font-size:10.5pt}ul{margin:0 0 8px;padding-left:18px;list-style:none}li{margin-bottom:4px;padding-left:12px;position:relative;line-height:1.5}li::before{content:"\\2022";position:absolute;left:0;color:#555}</style></head>'
+    +'<body><h1>'+esc(applicantName)+'</h1>'
+    +'<div class="contact">'+(applicantEmail?esc(applicantEmail):'')+(applicantPhone?' &nbsp;|&nbsp; '+esc(applicantPhone):'')+(applicantRtw?' &nbsp;|&nbsp; '+esc(applicantRtw):'')+'</div>'
+    +cvBody+'</body></html>';
+}
+
+function getEditedCvText(){
+  return (document.getElementById('app-tailor-preview').innerText || document.getElementById('app-tailor-preview').textContent || '').trim();
+}
+
 document.getElementById('app-tailor-download').addEventListener('click', function(){
-  if (!_tailoredCvHtml) return;
-  var name = document.getElementById('app-name').value.trim().replace(/\s+/g,'-') || 'cv';
+  var editedText = getEditedCvText();
+  if (!editedText) return;
+  _applyState.tailoredText = editedText;
+  rebuildTailoredHtml(editedText);
+  var dlName = document.getElementById('app-name').value.trim().replace(/\s+/g,'-') || 'cv';
   var blob = new Blob([_tailoredCvHtml], {type:'text/html'});
   var a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = name + '-tailored-cv.html';
+  a.download = dlName + '-cv.html';
   a.click();
   URL.revokeObjectURL(a.href);
   toast('CV downloaded');
 });
 
 document.getElementById('app-tailor-use').addEventListener('click', function(){
-  if (!_tailoredCvHtml) return;
-  var name = (document.getElementById('app-name').value.trim().replace(/\s+/g,'-')||'cv') + '-tailored.html';
+  var editedText = getEditedCvText();
+  if (!editedText) return;
+  _applyState.tailoredText = editedText;
+  rebuildTailoredHtml(editedText);
+  var name = (document.getElementById('app-name').value.trim().replace(/\s+/g,'-')||'cv') + '-cv.html';
   _applyState.cvFile = { name: name };
   _applyState.cvData = 'data:text/html;base64,' + btoa(unescape(encodeURIComponent(_tailoredCvHtml)));
   document.getElementById('app-cv-name-display').textContent = name;
-  toast('Tailored CV will be sent with your application');
+  toast('Updated CV will be sent with your application');
 });
 
 // Send application
