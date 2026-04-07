@@ -71,7 +71,8 @@ module.exports = async function handler(req, res) {
       if (parts.length !== 3) return res.status(400).json({ error: "Invalid credential" });
       var payload;
       try {
-        payload = JSON.parse(Buffer.from(parts[1], "base64url").toString());
+        var b64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+        payload = JSON.parse(Buffer.from(b64, "base64").toString());
       } catch (e) {
         return res.status(400).json({ error: "Invalid credential" });
       }
