@@ -157,6 +157,12 @@ module.exports = async function handler(req, res) {
       Object.values(aRaw).forEach(function(v) {
         try { var arr = typeof v === "string" ? JSON.parse(v) : v; if (Array.isArray(arr)) appCount += arr.length; } catch(e) {}
       });
+      // Also count from job.applies (server-side tracking, more reliable)
+      var jobAppCount = 0;
+      Object.values(jRaw).forEach(function(v) {
+        try { var j = typeof v === "string" ? JSON.parse(v) : v; jobAppCount += (j.applies || 0); } catch(e) {}
+      });
+      if (jobAppCount > appCount) appCount = jobAppCount;
       return res.status(200).json({ seekers: seekerCount, employers: employerCount, jobs: jobCount, applications: appCount });
     }
     if (action === "delete-seeker") {

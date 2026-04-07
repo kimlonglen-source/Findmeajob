@@ -2243,8 +2243,8 @@ document.getElementById('app-tailor-cv-btn').addEventListener('click', async fun
 
   try {
     var r = await fetch('/api/chat', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
-      messages:[{role:'user',content:'Rewrite this CV tailored for the role below. Write it the way a recruiter wants to read it.\n\nRules:\n- Keep all facts truthful. Never invent experience, qualifications, or skills.\n- PROFILE: 3-4 lines max. Lead with job title and years of experience. State exactly what they bring to THIS role. No generic phrases like "passionate professional" or "team player". Be specific: what have they done, what can they do for this employer.\n- KEY SKILLS: 8-12 skills. Use the EXACT keywords from the job description where the candidate genuinely has them — recruiters search for these. Most relevant first. Comma-separated on one line.\n- EXPERIENCE: Reverse chronological. Format: Job Title — Company, Location (Start – End).\n  Each role gets 3-5 bullet points. Start each bullet with a strong action verb. ONLY include numbers, percentages, or dollar values if they appear in the original CV. Do NOT invent metrics. Reframe responsibilities as achievements using the candidate own words and facts. Show impact where the original CV supports it.\n- EDUCATION & QUALIFICATIONS: Most recent first. Include professional registrations, licences, and certifications relevant to the role. Format: Qualification — Institution, Year.\n- REFERENCES: "Available on request"\n\nOutput ONLY these sections in this order: PROFILE, KEY SKILLS, EXPERIENCE, EDUCATION & QUALIFICATIONS, REFERENCES.\nNo markdown. No bold. No asterisks. No headings with #. Plain text only.\n\nJOB TITLE: '+jobTitle+'\nJOB DESCRIPTION: '+jobDesc+'\nREQUIREMENTS: '+jobReqs+'\n\nCANDIDATE CV:\n'+cvText}],
-      system:'You are a CV writer for the New Zealand job market. CRITICAL RULE: You must ONLY use information that exists in the candidate CV provided. NEVER invent, fabricate, or assume any achievements, numbers, percentages, dollar values, team sizes, or metrics that are not explicitly stated in the original CV. If the original CV says "managed inventory", you write "managed inventory" — you do NOT add "across 5,000 SKUs with 98% accuracy" unless those exact numbers are in the original. You may reword and restructure, but every fact must come from the source CV. Use plain text — no markdown formatting.'
+      messages:[{role:'user',content:'Rewrite this CV tailored for the role below.\n\nCRITICAL RULES — VIOLATIONS WILL MAKE THE CV UNUSABLE:\n1. NEVER invent, fabricate, or add ANY information not in the original CV.\n2. NEVER change qualifications, degrees, institutions, or graduation years.\n3. NEVER add certifications, registrations, or licences the candidate does not have.\n4. NEVER invent numbers, percentages, dollar values, team sizes, or metrics.\n5. NEVER change job titles, company names, or employment dates.\n6. You may ONLY reword descriptions and reorder existing information.\n\nSections:\n- PROFILE: 3-4 lines. Lead with their actual job title and years. What they bring to THIS role. No clichés.\n- KEY SKILLS: 8-12 skills from their CV that match the job description. Most relevant first.\n- EXPERIENCE: Reverse chronological. Same jobs, same dates, same companies. Reword bullet points to emphasise relevance to this role. Start with action verbs.\n- EDUCATION: Copy EXACTLY from the original CV. Same degrees, same institutions, same years. Do not change or add anything.\n- REFERENCES: "Available on request"\n\nOutput ONLY: PROFILE, KEY SKILLS, EXPERIENCE, EDUCATION, REFERENCES.\nPlain text only. No markdown. No bold. No asterisks.\n\nJOB TITLE: '+jobTitle+'\nJOB DESCRIPTION: '+jobDesc+'\nREQUIREMENTS: '+jobReqs+'\n\nCANDIDATE CV:\n'+cvText}],
+      system:'You are a CV writer. Your ONE job is to restructure and reword an existing CV to better match a job description. You MUST NOT add any information that is not in the original CV. Education, qualifications, dates, and job titles must be copied exactly as they appear. If the original CV says Bachelor of Pharmacy from University of Otago 2005, you write exactly that — not a different university, not a different year, not an additional degree. Every single fact in your output must be traceable to the original CV. Plain text only.'
     })});
     var d = await r.json();
     var tailoredText = '';
@@ -2261,10 +2261,20 @@ document.getElementById('app-tailor-cv-btn').addEventListener('click', async fun
     document.getElementById('app-tailor-result').style.display = 'block';
 
     // Build downloadable HTML — NZ employer-ready format
-    var cvBody = tailoredText
-      .replace(/^(PROFILE|KEY SKILLS|EXPERIENCE|EDUCATION & QUALIFICATIONS|EDUCATION|REFERENCES|PROFESSIONAL SUMMARY|RELEVANT SKILLS)/gm,'</div><h2>$1</h2><div class="section">')
-      .replace(/^[-•]\s*/gm,'<li>')
-      .replace(/\n/g,'<br>');
+    var lines = tailoredText.split('\n');
+    var cvBody = '';
+    var sectionHeadings = ['PROFILE','KEY SKILLS','EXPERIENCE','EDUCATION & QUALIFICATIONS','EDUCATION','REFERENCES','PROFESSIONAL SUMMARY','RELEVANT SKILLS'];
+    for (var li = 0; li < lines.length; li++) {
+      var line = lines[li].trim();
+      if (!line) { cvBody += '<br>'; continue; }
+      var isHeading = false;
+      for (var hi = 0; hi < sectionHeadings.length; hi++) {
+        if (line === sectionHeadings[hi]) { cvBody += '<h2>' + esc(line) + '</h2>'; isHeading = true; break; }
+      }
+      if (isHeading) continue;
+      if (line.match(/^[-•]/)) { cvBody += '<div style="padding-left:1rem;margin-bottom:.3rem"><span style="color:#444;margin-right:.4rem">&#8226;</span>' + esc(line.replace(/^[-•]\s*/, '')) + '</div>'; }
+      else { cvBody += '<p style="margin:0 0 .3rem">' + esc(line) + '</p>'; }
+    }
 
     _tailoredCvHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>CV - '+esc(applicantName)+'</title>'
       +'<style>'
@@ -2272,12 +2282,8 @@ document.getElementById('app-tailor-cv-btn').addEventListener('click', async fun
       +'body{font-family:Calibri,Arial,Helvetica,sans-serif;max-width:700px;margin:0 auto;padding:2rem;color:#222;line-height:1.55;font-size:11pt}'
       +'h1{font-size:20pt;font-weight:700;margin:0 0 2px;color:#111;letter-spacing:-.5px}'
       +'.contact{font-size:9.5pt;color:#444;margin-bottom:.25rem;padding-bottom:.75rem;border-bottom:2px solid #222}'
-      +'.tagline{font-size:9pt;color:#666;margin-bottom:.75rem}'
       +'h2{font-size:9pt;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;color:#222;border-bottom:1px solid #ccc;padding-bottom:3px;margin:1.25rem 0 .6rem}'
-      +'.section{margin-bottom:.25rem}'
-      +'.section li{margin-bottom:.3rem;padding-left:.5rem;list-style:none}'
-      +'.section li::before{content:"\\2022";color:#444;margin-right:.4rem}'
-      +'strong{color:#111}'
+      +'p{line-height:1.55}'
       +'</style></head>'
       +'<body>'
       +'<h1>'+esc(applicantName)+'</h1>'
@@ -2286,7 +2292,7 @@ document.getElementById('app-tailor-cv-btn').addEventListener('click', async fun
       +(applicantPhone?' &nbsp;|&nbsp; '+esc(applicantPhone):'')
       +(applicantRtw?' &nbsp;|&nbsp; '+esc(applicantRtw):'')
       +'</div>'
-      +'<div class="section">'+cvBody+'</div>'
+      +cvBody
       +'</body></html>';
 
   } catch(e) { toast('Error tailoring CV'); }
