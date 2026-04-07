@@ -2479,11 +2479,10 @@ document.getElementById('app-tailor-use').addEventListener('click', function(){
   if (!editedText) return;
   _applyState.tailoredText = editedText;
   rebuildTailoredHtml(editedText);
-  var name = (document.getElementById('app-name').value.trim().replace(/\s+/g,'-')||'cv') + '-cv.html';
-  _applyState.cvFile = { name: name };
-  _applyState.cvData = 'data:text/html;base64,' + btoa(unescape(encodeURIComponent(_tailoredCvHtml)));
-  document.getElementById('app-cv-name-display').textContent = name;
-  toast('Updated CV will be sent with your application');
+  // Don't replace cvFile/cvData — keep original PDF for attachment
+  // The tailored text goes via cvContent (inline in email body)
+  document.getElementById('app-cv-name-display').textContent = (_applyState.cvFile ? _applyState.cvFile.name : 'CV') + ' + rewritten version';
+  toast('Rewritten CV will be included in your application');
 });
 
 // Send application
