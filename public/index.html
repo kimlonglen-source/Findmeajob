@@ -2228,6 +2228,9 @@ document.getElementById('app-tailor-cv-btn').addEventListener('click', async fun
     else if (d.reply) { tailoredText = d.reply.trim(); }
     if (!tailoredText) { toast('Could not tailor CV. Try again.'); this.style.display = ''; document.getElementById('app-tailor-loading').style.display = 'none'; return; }
 
+    // Strip markdown formatting
+    tailoredText = tailoredText.replace(/\*\*/g,'').replace(/\*/g,'').replace(/^#+\s*/gm,'').replace(/^---+$/gm,'');
+
     document.getElementById('app-tailor-preview').textContent = tailoredText;
     document.getElementById('app-tailor-loading').style.display = 'none';
     document.getElementById('app-tailor-result').style.display = 'block';
