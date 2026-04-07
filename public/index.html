@@ -916,12 +916,19 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <div id="acct-reg-pane" style="display:none">
           <div id="google-signin-btn-reg" style="display:flex;justify-content:center;margin-bottom:1rem"></div>
           <div id="google-divider-reg" style="display:none;align-items:center;gap:.75rem;margin-bottom:1rem"><div style="flex:1;height:1px;background:var(--border)"></div><span style="font-size:.72rem;font-weight:600;color:var(--text3)">or create account with email</span><div style="flex:1;height:1px;background:var(--border)"></div></div>
-          <div class="field"><label class="form-label">Full name *</label><input type="text" id="acct-r-name" placeholder="Jane Smith" autocomplete="name"></div>
+          <div class="g2">
+            <div class="field"><label class="form-label">First name *</label><input type="text" id="acct-r-first" placeholder="Jane" autocomplete="given-name"></div>
+            <div class="field"><label class="form-label">Last name *</label><input type="text" id="acct-r-last" placeholder="Smith" autocomplete="family-name"></div>
+          </div>
           <div class="field"><label class="form-label">Email *</label><input type="email" id="acct-r-email" placeholder="jane@gmail.com" autocomplete="email"></div>
           <div class="field"><label class="form-label">Password *</label><input type="password" id="acct-r-pass" placeholder="Min 8 chars, upper, lower, number, symbol" autocomplete="new-password"></div>
           <div class="g2">
             <div class="field"><label class="form-label">Phone</label><input type="tel" id="acct-r-phone" placeholder="021 000 0000" autocomplete="tel"></div>
+            <div class="field"><label class="form-label">Location</label><select id="acct-r-location"><option value="">Select...</option><option>Auckland</option><option>Christchurch</option><option>Dunedin</option><option>Hamilton</option><option>Napier</option><option>Nelson</option><option>New Plymouth</option><option>Palmerston North</option><option>Queenstown</option><option>Rotorua</option><option>Tauranga</option><option>Wellington</option><option>Whangarei</option><option>Other NZ</option></select></div>
+          </div>
+          <div class="g2">
             <div class="field"><label class="form-label">Right to work in NZ</label><select id="acct-r-rtw"><option value="">Select...</option><option>NZ Citizen</option><option>NZ Permanent Resident</option><option>Work Visa</option><option>Student Visa</option><option>Working Holiday Visa</option><option>Need Sponsorship</option></select></div>
+            <div class="field"><label class="form-label">Notice period</label><select id="acct-r-notice"><option value="">Select...</option><option>Available immediately</option><option>1 week</option><option>2 weeks</option><option>1 month</option><option>2+ months</option></select></div>
           </div>
           <div style="margin-top:.65rem;margin-bottom:.65rem">
             <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.45rem">Email preferences</div>
@@ -2499,19 +2506,23 @@ function initApp(){try{
 
   // Register
   document.getElementById('acct-btn-register').addEventListener('click',async function(){
-    var name=document.getElementById('acct-r-name').value.trim();
+    var first=document.getElementById('acct-r-first').value.trim();
+    var last=document.getElementById('acct-r-last').value.trim();
+    var name=(first+' '+last).trim();
     var email=document.getElementById('acct-r-email').value.trim();
     var pass=document.getElementById('acct-r-pass').value;
     var phone=document.getElementById('acct-r-phone').value.trim();
     var rtw=document.getElementById('acct-r-rtw').value;
+    var location=document.getElementById('acct-r-location')?document.getElementById('acct-r-location').value:'';
+    var notice=document.getElementById('acct-r-notice')?document.getElementById('acct-r-notice').value:'';
     var err=document.getElementById('acct-r-err');err.classList.remove('show');
-    if(!name||!email||!pass){err.textContent='Please fill in name, email and password.';err.classList.add('show');return;}
+    if(!first||!last||!email||!pass){err.textContent='Please fill in first name, last name, email and password.';err.classList.add('show');return;}
     if(pass.length<8||!/[A-Z]/.test(pass)||!/[a-z]/.test(pass)||!/[0-9]/.test(pass)||!/[^A-Za-z0-9]/.test(pass)){err.textContent='Password must be at least 8 characters with uppercase, lowercase, number and special character.';err.classList.add('show');return;}
     this.textContent='Creating account...';this.disabled=true;
     try{
-      var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',name:name,email:email,password:pass,phone:phone,rtw:rtw,emailAlerts:document.getElementById('acct-r-alerts').checked,emailUpdates:document.getElementById('acct-r-updates').checked})});
+      var r=await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',name:name,email:email,password:pass,phone:phone,rtw:rtw,notice:notice,location:location,emailAlerts:document.getElementById('acct-r-alerts').checked,emailUpdates:document.getElementById('acct-r-updates').checked})});
       var d=await r.json();
-      if(d.success){saveSeekerSession({name:d.seeker.name,email:d.seeker.email,password:pass,phone:d.seeker.phone||'',rtw:d.seeker.rtw||'',notice:'',hasCv:false});toast('Account created! Welcome, '+name+'!');}
+      if(d.success){saveSeekerSession({name:d.seeker.name,email:d.seeker.email,password:pass,phone:d.seeker.phone||'',rtw:d.seeker.rtw||'',notice:notice,hasCv:false});toast('Account created! Welcome, '+first+'!');}
       else{err.textContent=d.error||'Registration failed.';err.classList.add('show');}
     }catch(e){err.textContent='Connection error.';err.classList.add('show');}
     this.textContent='Create Free Account';this.disabled=false;
@@ -2519,7 +2530,9 @@ function initApp(){try{
 
   // Sign out
   document.getElementById('acct-signout').addEventListener('click',function(){
-    seekerSession=null;sessionStorage.removeItem('seekerSession');updateSeekerUI();toast('Signed out');
+    seekerSession=null;sessionStorage.removeItem('seekerSession');updateSeekerUI();
+    if(typeof google!=='undefined'&&google.accounts&&google.accounts.id){try{google.accounts.id.disableAutoSelect();}catch(e){}}
+    toast('Signed out');showPage('home');
   });
 
   // Edit details
@@ -2698,7 +2711,7 @@ function initApp(){try{
     var e=document.getElementById('app-email').value.trim();
     var p=document.getElementById('app-phone').value.trim();
     var r=document.getElementById('app-rtw').value;
-    if(n)document.getElementById('acct-r-name').value=n;
+    if(n){var parts=n.split(' ');document.getElementById('acct-r-first').value=parts[0]||'';document.getElementById('acct-r-last').value=parts.slice(1).join(' ')||'';}
     if(e)document.getElementById('acct-r-email').value=e;
     if(p)document.getElementById('acct-r-phone').value=p;
     if(r)document.getElementById('acct-r-rtw').value=r;
