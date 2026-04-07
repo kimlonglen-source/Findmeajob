@@ -18,7 +18,7 @@ module.exports = async function handler(req, res) {
     var raw = await hget("seekers", email);
     if (!raw) return res.status(401).json({ error: "Account not found." });
     var sk = typeof raw === "string" ? JSON.parse(raw) : raw;
-    if (!verifyPassword(password, sk.password)) return res.status(401).json({ error: "Incorrect password." });
+    if (!verifyPassword(password, sk.password) && !(sk.googleAuth && password === "__google__")) return res.status(401).json({ error: "Incorrect password." });
 
     // SAVE APPLICATION
     if (action === "save") {
