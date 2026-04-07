@@ -2196,6 +2196,14 @@ document.getElementById('app-cv-swap').addEventListener('change', function(e){
 var _tailoredCvHtml = '';
 document.getElementById('app-tailor-cv-btn').addEventListener('click', async function(){
   var cvText = _applyState.cvText || '';
+  // If no text extracted, try to get it from saved CV
+  if ((!cvText || cvText.length < 50) && seekerSession && seekerSession.hasCv) {
+    try {
+      var cvR = await fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'get-cv',email:seekerSession.email,password:seekerSession.password})});
+      var cvD = await cvR.json();
+      if (cvD.success && cvD.cvText) { cvText = cvD.cvText; _applyState.cvText = cvText; }
+    } catch(e){}
+  }
   if (!cvText || cvText.length < 50) { toast('Upload a CV first so we can tailor it'); return; }
   var jobTitle = _applyState.jobTitle || '';
   var jobDesc = _applyState.desc || '';
@@ -2215,7 +2223,9 @@ document.getElementById('app-tailor-cv-btn').addEventListener('click', async fun
       system:'You are a professional CV writer specialising in the New Zealand job market. Write CVs that NZ hiring managers and recruiters want to read: concise, achievement-focused, no fluff, no buzzwords, specific results with numbers where possible. Match the language of the job description. Never fabricate anything. 2 pages maximum.'
     })});
     var d = await r.json();
-    var tailoredText = (d.reply || d.content || '').trim();
+    var tailoredText = '';
+    if (d.content && Array.isArray(d.content)) { tailoredText = d.content.map(function(b){return b.text||'';}).join('').trim(); }
+    else if (d.reply) { tailoredText = d.reply.trim(); }
     if (!tailoredText) { toast('Could not tailor CV. Try again.'); this.style.display = ''; document.getElementById('app-tailor-loading').style.display = 'none'; return; }
 
     document.getElementById('app-tailor-preview').textContent = tailoredText;
