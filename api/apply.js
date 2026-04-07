@@ -63,7 +63,17 @@ module.exports = async function handler(req, res) {
   if (cvContent) {
     html += '<div style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:1.25rem;margin-bottom:1rem">';
     html += '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#6b7280;margin-bottom:.75rem">Tailored CV</div>';
-    html += '<div style="font-size:13px;line-height:1.65;color:#374151;white-space:pre-wrap">' + esc(cvContent) + '</div>';
+    var cvLines = cvContent.split('\n');
+    var cvHtml = '';
+    var sectionRe = /^(PROFILE|KEY SKILLS|EXPERIENCE|EDUCATION|REFERENCES|PROFESSIONAL SUMMARY|RELEVANT SKILLS|QUALIFICATIONS|CERTIFICATIONS)/i;
+    for (var ci = 0; ci < cvLines.length; ci++) {
+      var cl = cvLines[ci].trim();
+      if (!cl) continue;
+      if (sectionRe.test(cl)) { cvHtml += '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#374151;border-bottom:1px solid #e5e7eb;padding-bottom:3px;margin:14px 0 6px">' + esc(cl) + '</div>'; }
+      else if (cl.match(/^[-•●]/)) { cvHtml += '<div style="font-size:13px;color:#374151;line-height:1.6;padding-left:14px;margin-bottom:3px">&bull; ' + esc(cl.replace(/^[-•●]\s*/, '')) + '</div>'; }
+      else { cvHtml += '<div style="font-size:13px;color:#374151;line-height:1.6;margin-bottom:3px">' + esc(cl) + '</div>'; }
+    }
+    html += cvHtml;
     html += '</div>';
   }
 

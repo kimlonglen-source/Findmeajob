@@ -2261,37 +2261,55 @@ document.getElementById('app-tailor-cv-btn').addEventListener('click', async fun
     document.getElementById('app-tailor-loading').style.display = 'none';
     document.getElementById('app-tailor-result').style.display = 'block';
 
-    // Build downloadable HTML — NZ employer-ready format
+    // Build downloadable HTML — professional CV format
     var lines = tailoredText.split('\n');
     var cvBody = '';
-    var sectionHeadings = ['PROFILE','KEY SKILLS','EXPERIENCE','EDUCATION & QUALIFICATIONS','EDUCATION','REFERENCES','PROFESSIONAL SUMMARY','RELEVANT SKILLS'];
+    var headings = /^(PROFILE|KEY SKILLS|EXPERIENCE|EDUCATION & QUALIFICATIONS|EDUCATION|REFERENCES|PROFESSIONAL SUMMARY|RELEVANT SKILLS|QUALIFICATIONS|CERTIFICATIONS|SKILLS|CAREER SUMMARY|WORK HISTORY|EMPLOYMENT HISTORY)$/i;
+    var inList = false;
+
     for (var li = 0; li < lines.length; li++) {
       var line = lines[li].trim();
-      if (!line) { cvBody += '<br>'; continue; }
-      var isHeading = false;
-      for (var hi = 0; hi < sectionHeadings.length; hi++) {
-        if (line === sectionHeadings[hi]) { cvBody += '<h2>' + esc(line) + '</h2>'; isHeading = true; break; }
+      if (!line) {
+        if (inList) { cvBody += '</ul>'; inList = false; }
+        continue;
       }
-      if (isHeading) continue;
-      if (line.match(/^[-•]/)) { cvBody += '<div style="padding-left:1rem;margin-bottom:.3rem"><span style="color:#444;margin-right:.4rem">&#8226;</span>' + esc(line.replace(/^[-•]\s*/, '')) + '</div>'; }
-      else { cvBody += '<p style="margin:0 0 .3rem">' + esc(line) + '</p>'; }
+      if (headings.test(line)) {
+        if (inList) { cvBody += '</ul>'; inList = false; }
+        cvBody += '<h2>' + esc(line) + '</h2>';
+      } else if (line.match(/^[-•●·]/)) {
+        if (!inList) { cvBody += '<ul>'; inList = true; }
+        cvBody += '<li>' + esc(line.replace(/^[-•●·]\s*/, '')) + '</li>';
+      } else if (line.match(/^(.+)\s[—–-]\s(.+),\s*(.+)\s*\(/) || line.match(/^(.+)\s[—–-]\s(.+)\s*\(/)) {
+        // Job title line: "Job Title — Company, Location (Dates)"
+        if (inList) { cvBody += '</ul>'; inList = false; }
+        cvBody += '<div class="job-title">' + esc(line) + '</div>';
+      } else {
+        if (inList) { cvBody += '</ul>'; inList = false; }
+        cvBody += '<p>' + esc(line) + '</p>';
+      }
     }
+    if (inList) cvBody += '</ul>';
 
     _tailoredCvHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>CV - '+esc(applicantName)+'</title>'
       +'<style>'
-      +'@page{margin:1.5cm}'
-      +'body{font-family:Calibri,Arial,Helvetica,sans-serif;max-width:700px;margin:0 auto;padding:2rem;color:#222;line-height:1.55;font-size:11pt}'
-      +'h1{font-size:20pt;font-weight:700;margin:0 0 2px;color:#111;letter-spacing:-.5px}'
-      +'.contact{font-size:9.5pt;color:#444;margin-bottom:.25rem;padding-bottom:.75rem;border-bottom:2px solid #222}'
-      +'h2{font-size:9pt;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;color:#222;border-bottom:1px solid #ccc;padding-bottom:3px;margin:1.25rem 0 .6rem}'
-      +'p{line-height:1.55}'
+      +'@page{margin:2cm 2.5cm}'
+      +'*{margin:0;padding:0;box-sizing:border-box}'
+      +'body{font-family:Calibri,"Segoe UI",Arial,sans-serif;max-width:700px;margin:0 auto;padding:2.5rem 2rem;color:#2d2d2d;line-height:1.5;font-size:10.5pt}'
+      +'h1{font-size:22pt;font-weight:700;color:#1a1a1a;margin-bottom:2px;letter-spacing:-.3px}'
+      +'.contact{font-size:9.5pt;color:#555;padding-bottom:12px;margin-bottom:4px;border-bottom:2px solid #1a1a1a}'
+      +'h2{font-size:9pt;text-transform:uppercase;letter-spacing:2px;font-weight:700;color:#1a1a1a;margin:18px 0 8px;padding-bottom:4px;border-bottom:1px solid #ccc}'
+      +'p{margin:0 0 6px;line-height:1.5}'
+      +'.job-title{font-weight:700;color:#1a1a1a;margin:12px 0 4px;font-size:10.5pt}'
+      +'ul{margin:0 0 8px;padding-left:18px;list-style:none}'
+      +'li{margin-bottom:4px;padding-left:12px;position:relative;line-height:1.5}'
+      +'li::before{content:"\\2022";position:absolute;left:0;color:#555}'
       +'</style></head>'
       +'<body>'
       +'<h1>'+esc(applicantName)+'</h1>'
       +'<div class="contact">'
       +(applicantEmail?esc(applicantEmail):'')
-      +(applicantPhone?' &nbsp;|&nbsp; '+esc(applicantPhone):'')
-      +(applicantRtw?' &nbsp;|&nbsp; '+esc(applicantRtw):'')
+      +(applicantPhone?' &nbsp; | &nbsp; '+esc(applicantPhone):'')
+      +(applicantRtw?' &nbsp; | &nbsp; '+esc(applicantRtw):'')
       +'</div>'
       +cvBody
       +'</body></html>';
