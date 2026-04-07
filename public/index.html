@@ -894,6 +894,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
           <button type="button" id="acct-tab-reg" style="padding:.65rem;text-align:center;font-size:.82rem;font-weight:700;cursor:pointer;background:transparent;color:var(--text3);border:none;font-family:'Inter',sans-serif;border-radius:999px">Create Account</button>
         </div>
         <div id="acct-login-pane">
+          <div id="google-signin-btn" style="display:flex;justify-content:center;margin-bottom:1rem"></div>
+          <div id="google-divider" style="display:none;align-items:center;gap:.75rem;margin-bottom:1rem"><div style="flex:1;height:1px;background:var(--border)"></div><span style="font-size:.72rem;font-weight:600;color:var(--text3)">or sign in with email</span><div style="flex:1;height:1px;background:var(--border)"></div></div>
           <div class="field"><label class="form-label">Email</label><input type="email" id="acct-l-email" placeholder="jane@gmail.com" autocomplete="email"></div>
           <div class="field"><label class="form-label">Password</label><input type="password" id="acct-l-pass" placeholder="Your password" autocomplete="current-password"></div>
           <div class="alert alert-err" id="acct-l-err"></div>
@@ -912,6 +914,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
           </div>
         </div>
         <div id="acct-reg-pane" style="display:none">
+          <div id="google-signin-btn-reg" style="display:flex;justify-content:center;margin-bottom:1rem"></div>
+          <div id="google-divider-reg" style="display:none;align-items:center;gap:.75rem;margin-bottom:1rem"><div style="flex:1;height:1px;background:var(--border)"></div><span style="font-size:.72rem;font-weight:600;color:var(--text3)">or create account with email</span><div style="flex:1;height:1px;background:var(--border)"></div></div>
           <div class="field"><label class="form-label">Full name *</label><input type="text" id="acct-r-name" placeholder="Jane Smith" autocomplete="name"></div>
           <div class="field"><label class="form-label">Email *</label><input type="email" id="acct-r-email" placeholder="jane@gmail.com" autocomplete="email"></div>
           <div class="field"><label class="form-label">Password *</label><input type="password" id="acct-r-pass" placeholder="Min 8 chars, upper, lower, number, symbol" autocomplete="new-password"></div>
@@ -2721,5 +2725,66 @@ function initApp(){try{
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',initApp);}else{initApp();}
 </script>
 <script defer src="/_vercel/insights/script.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+// Google Sign-In for job seekers
+function handleGoogleSignIn(response) {
+  if (!response.credential) return;
+  fetch('/api/seeker', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ action: 'google-login', credential: response.credential })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    if (d.success && d.seeker) {
+      saveSeekerSession({
+        name: d.seeker.name, email: d.seeker.email,
+        password: '__google__', phone: d.seeker.phone || '',
+        rtw: d.seeker.rtw || '', notice: d.seeker.notice || '',
+        hasCv: d.seeker.hasCv || false, googleAuth: true
+      });
+      toast('Welcome, ' + d.seeker.name + '!');
+    } else {
+      toast(d.error || 'Sign-in failed');
+    }
+  })
+  .catch(function() { toast('Sign-in failed. Please try again.'); });
+}
+
+function initGoogleSignIn() {
+  if (typeof google === 'undefined' || !google.accounts) return;
+  fetch('/api/seeker', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ action: 'google-client-id' })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    if (!d.clientId) return;
+    google.accounts.id.initialize({
+      client_id: d.clientId,
+      callback: handleGoogleSignIn
+    });
+    var btn1 = document.getElementById('google-signin-btn');
+    var btn2 = document.getElementById('google-signin-btn-reg');
+    if (btn1) {
+      google.accounts.id.renderButton(btn1, { theme: 'outline', size: 'large', width: 300, text: 'signin_with' });
+      document.getElementById('google-divider').style.display = 'flex';
+    }
+    if (btn2) {
+      google.accounts.id.renderButton(btn2, { theme: 'outline', size: 'large', width: 300, text: 'signup_with' });
+      document.getElementById('google-divider-reg').style.display = 'flex';
+    }
+  })
+  .catch(function() {});
+}
+
+// Wait for Google script to load
+var _gsiCheck = setInterval(function() {
+  if (typeof google !== 'undefined' && google.accounts) { clearInterval(_gsiCheck); initGoogleSignIn(); }
+}, 200);
+setTimeout(function() { clearInterval(_gsiCheck); }, 5000);
+</script>
 </body>
 </html>

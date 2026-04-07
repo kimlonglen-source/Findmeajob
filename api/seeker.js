@@ -56,6 +56,65 @@ module.exports = async function handler(req, res) {
   var action = req.body.action;
 
   try {
+    // Return Google Client ID to frontend
+    if (action === "google-client-id") {
+      var gClientId = process.env.GOOGLE_CLIENT_ID || "";
+      return res.status(200).json({ clientId: gClientId });
+    }
+
+    // GOOGLE SIGN-IN
+    if (action === "google-login") {
+      var credential = req.body.credential;
+      if (!credential) return res.status(400).json({ error: "Missing credential" });
+      // Decode the JWT payload (Google ID token)
+      var parts = credential.split(".");
+      if (parts.length !== 3) return res.status(400).json({ error: "Invalid credential" });
+      var payload;
+      try {
+        payload = JSON.parse(Buffer.from(parts[1], "base64url").toString());
+      } catch (e) {
+        return res.status(400).json({ error: "Invalid credential" });
+      }
+      // Verify issuer and audience
+      var gClientId2 = process.env.GOOGLE_CLIENT_ID;
+      if (!gClientId2) return res.status(500).json({ error: "Google sign-in not configured" });
+      if (payload.iss !== "accounts.google.com" && payload.iss !== "https://accounts.google.com") return res.status(400).json({ error: "Invalid token issuer" });
+      if (payload.aud !== gClientId2) return res.status(400).json({ error: "Invalid token audience" });
+      if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) return res.status(400).json({ error: "Token expired" });
+      if (!payload.email || !payload.email_verified) return res.status(400).json({ error: "Email not verified" });
+
+      var gEmail = payload.email.toLowerCase().trim();
+      var gName = payload.name || gEmail.split("@")[0];
+
+      // Check if seeker exists
+      var gExisting = await hget("seekers", gEmail);
+      if (gExisting) {
+        // Existing user — log them in
+        var gSeeker = typeof gExisting === "string" ? JSON.parse(gExisting) : gExisting;
+        return res.status(200).json({ success: true, seeker: { id: gSeeker.id, name: gSeeker.name, email: gSeeker.email, phone: gSeeker.phone || "", rtw: gSeeker.rtw || "", notice: gSeeker.notice || "", hasCv: !!(gSeeker.cvText || gSeeker.cvFileName) } });
+      }
+
+      // New user — create account
+      var gId = "sk_" + Date.now() + "_" + Math.random().toString(36).substring(2, 8);
+      var gNewSeeker = {
+        id: gId, name: gName, email: gEmail, password: "__google_oauth__",
+        phone: "", rtw: "", notice: "",
+        emailAlerts: true, emailUpdates: false,
+        cvText: null, cvFileName: null,
+        createdAt: new Date().toISOString(),
+        googleAuth: true
+      };
+      await hset("seekers", gEmail, gNewSeeker);
+      notifyAdmin(
+        "New job seeker registered (Google): " + gName,
+        "A new job seeker signed up with Google:<br><br>"
+        + "Name: " + gName + "<br>"
+        + "Email: " + gEmail + "<br><br>"
+        + '<a href="https://www.findmeajob.co.nz/admin.html" style="color:#059669;font-weight:700">Open admin panel</a>'
+      );
+      return res.status(200).json({ success: true, seeker: { id: gId, name: gName, email: gEmail, phone: "", rtw: "", notice: "", hasCv: false } });
+    }
+
     // REGISTER
     if (action === "register") {
       var name = req.body.name;
