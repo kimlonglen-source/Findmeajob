@@ -52,8 +52,9 @@ module.exports = async function handler(req, res) {
   html += '<div style="font-size:14px;line-height:1.7;color:#374151;white-space:pre-wrap">' + esc(coverLetter) + '</div>';
   html += '</div>';
 
-  var cvContent = req.body.cvContent || ""; // Tailored CV HTML content
-  if (cvFileName) {
+  var cvContent = req.body.cvContent || "";
+  var isRealAttachment = cvFileName && !cvFileName.endsWith('.html');
+  if (isRealAttachment) {
     html += '<div style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:1rem;margin-bottom:1rem">';
     html += '<div style="font-size:13px;color:#6b7280">\ud83d\udcce Attached: <strong>' + esc(cvFileName) + '</strong></div>';
     html += '</div>';
