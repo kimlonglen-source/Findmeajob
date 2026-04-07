@@ -2073,6 +2073,7 @@ function viewJob(jobData) {
   document.getElementById('jd-title').textContent = jobData.title || '';
   document.getElementById('jd-company').textContent = jobData.company || '';
   var meta = [jobData.location, jobData.category || jobData.type, jobData.salary].filter(function(x){return x;}).join(' · ');
+  if (jobData.ref) meta += ' · Ref: ' + jobData.ref;
   document.getElementById('jd-meta').textContent = meta;
   document.getElementById('jd-description').textContent = jobData.description || '';
   var reqSec = document.getElementById('jd-requirements-section');
@@ -2102,13 +2103,13 @@ document.getElementById('jd-apply-btn').addEventListener('click', function(){
 });
 
 function applyJob(btn) {
-  var email, title, jobId, company, desc, reqs;
+  var email, title, jobId, company, desc, reqs, ref;
   // Check if btn has a job store index
   var storeIdx = btn.dataset ? btn.dataset.jobidx : undefined;
   if (storeIdx !== undefined && window._allJobsStore[storeIdx]) {
     var sj = window._allJobsStore[storeIdx];
     email = sj.email; title = sj.title || ''; jobId = sj.id || ''; company = sj.company || '';
-    desc = sj.description || ''; reqs = sj.requirements || '';
+    desc = sj.description || ''; reqs = sj.requirements || ''; ref = sj.ref || '';
   } else {
     email = btn.dataset.email; title = btn.dataset.title; jobId = btn.dataset.id;
     company = btn.dataset.company || ''; desc = btn.dataset.desc || ''; reqs = btn.dataset.reqs || '';
@@ -2119,7 +2120,7 @@ function applyJob(btn) {
   var ss = seekerSession || (sessionStorage.getItem('seekerSession') ? JSON.parse(sessionStorage.getItem('seekerSession')) : null);
   if (!ss) {
     // Store job details so we can resume after registration
-    sessionStorage.setItem('pendingApply', JSON.stringify({email:email, title:title, jobId:jobId, company:company, desc:desc, reqs:reqs}));
+    sessionStorage.setItem('pendingApply', JSON.stringify({email:email, title:title, jobId:jobId, ref:ref||'', company:company, desc:desc, reqs:reqs}));
     document.getElementById('apply-modal').style.display = 'none';
     showPage('account');
     document.getElementById('acct-tab-reg').click();
@@ -2127,7 +2128,7 @@ function applyJob(btn) {
     return;
   }
 
-  _applyState = {employerEmail:email, jobTitle:title, jobId:jobId, company:company, desc:desc, reqs:reqs, cvFile:null, cvData:null, cvText:null};
+  _applyState = {employerEmail:email, jobTitle:title, jobId:jobId, ref:ref||'', company:company, desc:desc, reqs:reqs, cvFile:null, cvData:null, cvText:null};
   document.getElementById('apply-title-display').textContent = title;
   document.getElementById('apply-company-display').textContent = company;
   ['apply-step1','apply-step2','apply-step3','apply-step4'].forEach(function(id){document.getElementById(id).style.display=id==='apply-step1'?'block':'none';});
@@ -2504,6 +2505,7 @@ document.getElementById('app-btn-send').addEventListener('click', async function
       jobTitle: _applyState.jobTitle,
       company: _applyState.company,
       jobId: _applyState.jobId,
+      jobRef: _applyState.ref || '',
       name: document.getElementById('app-name').value.trim(),
       email: document.getElementById('app-email').value.trim(),
       phone: document.getElementById('app-phone').value.trim(),

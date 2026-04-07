@@ -11,6 +11,7 @@ module.exports = async function handler(req, res) {
   var jobTitle = body.jobTitle;
   var company = body.company;
   var jobId = body.jobId;
+  var jobRef = body.jobRef || "";
   var applicantName = body.name;
   var applicantEmail = body.email;
   var applicantPhone = body.phone || "";
@@ -31,6 +32,7 @@ module.exports = async function handler(req, res) {
   html += '<div style="background:#10b981;color:#fff;padding:1.25rem 1.5rem;border-radius:12px 12px 0 0">';
   html += '<div style="font-size:13px;font-weight:600;opacity:.85">New application via FindMeAJob.co.nz</div>';
   html += '<div style="font-size:20px;font-weight:800;margin-top:4px">Application for ' + esc(jobTitle) + '</div>';
+  if (jobRef) html += '<div style="font-size:12px;color:#9ca3af;margin-top:2px">Reference: ' + esc(jobRef) + '</div>';
   html += '</div>';
   html += '<div style="background:#f8f9fa;border:1px solid #e5e7eb;border-top:none;padding:1.5rem;border-radius:0 0 12px 12px">';
 
@@ -95,7 +97,7 @@ module.exports = async function handler(req, res) {
     from: "FindMeAJob Applications <applications@findmeajob.co.nz>",
     to: [employerEmail],
     reply_to: applicantEmail,
-    subject: "Application for " + jobTitle + " \u2014 " + applicantName,
+    subject: "Application for " + jobTitle + (jobRef ? " [" + jobRef + "]" : "") + " \u2014 " + applicantName,
     html: html
   };
 

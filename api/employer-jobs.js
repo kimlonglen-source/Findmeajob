@@ -104,8 +104,9 @@ module.exports = async function handler(req, res) {
           }
         }
         var jid = "job_" + Date.now() + "_" + Math.random().toString(36).substring(2, 8);
+        var refNum = "FMJ-" + Date.now().toString(36).toUpperCase().slice(-4) + Math.random().toString(36).substring(2, 4).toUpperCase();
         var newJob = {
-          id: jid, employerId: req.body.employerId || "", company: emp2.company || req.body.company, email: postEmail,
+          id: jid, ref: refNum, employerId: req.body.employerId || "", company: emp2.company || req.body.company, email: postEmail,
           title: sTitle, location: req.body.location || "New Zealand", category: req.body.category || "Other",
           type: req.body.type || "Full-time", salary: req.body.salary || "Negotiable",
           description: sDesc, requirements: req.body.requirements || "", why: req.body.why || "",
