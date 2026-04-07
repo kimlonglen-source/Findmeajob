@@ -1093,10 +1093,15 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <label class="form-label">Cover Letter <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--text3)">(edit as you like)</span></label>
         <textarea id="app-cover-letter" style="min-height:220px;line-height:1.7"></textarea>
       </div>
+      <div style="margin-bottom:.75rem">
+        <input type="file" id="app-cl-file" accept=".pdf,.doc,.docx,.txt" style="display:none">
+        <button type="button" id="app-cl-upload-btn" style="background:none;border:none;color:var(--em);font-size:.75rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;padding:0;text-decoration:underline">Or attach your own cover letter file (PDF/Word)</button>
+        <span id="app-cl-file-name" style="display:none;font-size:.72rem;color:var(--em);font-weight:600;margin-left:.5rem"></span>
+      </div>
       <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.75rem;margin-bottom:.75rem">
         <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;color:var(--text3);margin-bottom:.35rem">The employer will receive</div>
         <div style="font-size:.78rem;color:var(--text2);line-height:1.7">
-          <div>&#8226; Your cover letter (above)</div>
+          <div>&#8226; Your cover letter (above) <span id="app-cl-attached" style="display:none;font-size:.7rem;color:var(--em)">+ attached file</span></div>
           <div>&#8226; Your CV attached (<span id="app-cv-name-display"></span>)</div>
           <div style="margin-top:.35rem">
             <input type="file" id="app-cv-swap" accept=".pdf,.doc,.docx" style="display:none">
@@ -1163,6 +1168,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 
 <script>
 function esc(s){var d=document.createElement("div");d.textContent=s||"";return d.innerHTML;}
+function arrayBufferToBase64(buf){if(typeof buf==='string')return buf;var bytes=new Uint8Array(buf);var bin='';for(var i=0;i<bytes.length;i++)bin+=String.fromCharCode(bytes[i]);return btoa(bin);}
 var currentPage='home',skills=[],cvFileData=null,cvFileName='',lightMode=false,empSession=null,selectedPlan='free',seekerSession=null;
 
 function loadMammoth(cb){
@@ -2166,6 +2172,24 @@ document.getElementById('app-btn-back').addEventListener('click', function(){
 
 // Swap CV on step 3
 document.getElementById('app-cv-swap-btn').addEventListener('click', function(){document.getElementById('app-cv-swap').click();});
+
+// Attach own cover letter file
+document.getElementById('app-cl-upload-btn').addEventListener('click', function(){document.getElementById('app-cl-file').click();});
+document.getElementById('app-cl-file').addEventListener('change', function(e){
+  var file = e.target.files[0];
+  if (!file) return;
+  _applyState.coverLetterFile = file;
+  var reader = new FileReader();
+  reader.onload = function(ev){
+    _applyState.coverLetterData = ev.target.result;
+  };
+  reader.readAsArrayBuffer(file);
+  document.getElementById('app-cl-file-name').textContent = '✓ ' + file.name;
+  document.getElementById('app-cl-file-name').style.display = 'inline';
+  document.getElementById('app-cl-upload-btn').textContent = 'Change file';
+  var clInd = document.getElementById('app-cl-attached'); if(clInd) clInd.style.display = 'inline';
+  toast('Cover letter attached');
+});
 document.getElementById('app-cv-swap').addEventListener('change', function(e){
   var file = e.target.files[0];
   if (!file) return;
@@ -2312,7 +2336,9 @@ document.getElementById('app-btn-send').addEventListener('click', async function
       coverLetter: document.getElementById('app-cover-letter').value,
       cvFileName: _applyState.cvFile ? _applyState.cvFile.name : '',
       cvData: _applyState.cvData || '',
-      cvContent: _applyState.tailoredText || ''
+      cvContent: _applyState.tailoredText || '',
+      coverLetterFileName: _applyState.coverLetterFile ? _applyState.coverLetterFile.name : '',
+      coverLetterData: _applyState.coverLetterData ? arrayBufferToBase64(_applyState.coverLetterData) : ''
     })});
     var d = await r.json();
     if (d.success) {

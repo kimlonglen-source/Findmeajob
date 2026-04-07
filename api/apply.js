@@ -79,6 +79,17 @@ module.exports = async function handler(req, res) {
     html: html
   };
 
+  // Add cover letter file attachment if provided
+  var clFileName = body.coverLetterFileName;
+  var clData = body.coverLetterData;
+  if (clData && clFileName) {
+    if (!emailPayload.attachments) emailPayload.attachments = [];
+    emailPayload.attachments.push({
+      filename: clFileName,
+      content: clData
+    });
+  }
+
   // Add CV attachment if provided
   if (cvData && cvFileName) {
     var base64Content = cvData;
