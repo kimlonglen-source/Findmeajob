@@ -2254,7 +2254,6 @@ document.getElementById('app-tailor-cv-btn').addEventListener('click', async fun
       if (cvD.success && cvD.cvText) { cvText = cvD.cvText; _applyState.cvText = cvText; }
     } catch(e){}
   }
-  if (!cvText || cvText.length < 50) { toast('Could not read your CV text. Please upload a Word (.docx) or text (.txt) file to use this feature.'); return; }
   var jobTitle = _applyState.jobTitle || '';
   var jobDesc = _applyState.desc || '';
   var jobReqs = _applyState.reqs || '';
@@ -2263,14 +2262,30 @@ document.getElementById('app-tailor-cv-btn').addEventListener('click', async fun
   var applicantPhone = document.getElementById('app-phone').value.trim();
   var applicantRtw = document.getElementById('app-rtw').value;
 
+  // Check we have either text or PDF data
+  var hasPdf = _applyState.cvData && typeof _applyState.cvData === 'string' && _applyState.cvData.includes('base64,');
+  if ((!cvText || cvText.length < 50) && !hasPdf) { toast('Could not read your CV. Please upload your CV file to use this feature.'); return; }
+
   this.style.display = 'none';
   document.getElementById('app-tailor-loading').style.display = 'block';
   document.getElementById('app-tailor-result').style.display = 'none';
 
+  var rewritePrompt = 'Restructure this CV for the role below.\n\nABSOLUTE RULES:\n1. NEVER add information not in the original CV. Not a single word.\n2. NEVER change or add qualifications, degrees, institutions, years, certifications, or registrations.\n3. NEVER change job titles, company names, locations, or employment dates.\n4. NEVER invent numbers, percentages, metrics, or achievements.\n5. EDUCATION section: COPY AND PASTE word for word from the original CV. Do not rewrite, rephrase, add to, or reorganise the education section in any way.\n\nSections to output:\n- PROFILE: 3-4 lines. Their actual role and years of experience. What they bring to this specific job. No clichés.\n- KEY SKILLS: 8-12 skills that appear in their CV and match the job. Comma-separated.\n- EXPERIENCE: Same jobs, companies, dates. Reword bullet points to emphasise relevance to this role.\n- EDUCATION: COPY EXACTLY AS IT APPEARS IN THE ORIGINAL CV. Word for word. Character for character.\n- REFERENCES: Available on request\n\nPlain text only. No markdown. No bold. No asterisks. No hashtags.\n\nJOB: '+jobTitle+'\nDESCRIPTION: '+jobDesc+'\nREQUIREMENTS: '+jobReqs;
+  var rewriteSystem = 'You restructure CVs. The education section must be copied word for word from the original — do not change a single character. COPY IT EXACTLY. Plain text only.';
+
+  // Build message — use PDF document if no text available
+  var msgContent;
+  if (cvText && cvText.length >= 50) {
+    msgContent = [{role:'user',content:rewritePrompt+'\n\nORIGINAL CV:\n'+cvText}];
+  } else if (hasPdf) {
+    var pdfB64 = _applyState.cvData.split('base64,')[1];
+    msgContent = [{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:pdfB64}},{type:'text',text:rewritePrompt}]}];
+  }
+
   try {
     var r = await fetch('/api/chat', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
-      messages:[{role:'user',content:'Restructure this CV for the role below.\n\nABSOLUTE RULES:\n1. NEVER add information not in the original CV. Not a single word.\n2. NEVER change or add qualifications, degrees, institutions, years, certifications, or registrations.\n3. NEVER change job titles, company names, locations, or employment dates.\n4. NEVER invent numbers, percentages, metrics, or achievements.\n5. EDUCATION section: COPY AND PASTE word for word from the original CV. Do not rewrite, rephrase, add to, or reorganise the education section in any way.\n\nSections to output:\n- PROFILE: 3-4 lines. Their actual role and years of experience. What they bring to this specific job. No clichés.\n- KEY SKILLS: 8-12 skills that appear in their CV and match the job. Comma-separated.\n- EXPERIENCE: Same jobs, companies, dates. Reword bullet points to emphasise relevance to this role.\n- EDUCATION: COPY EXACTLY AS IT APPEARS IN THE ORIGINAL CV BELOW. Word for word. Character for character. If the original has 3 lines of education, output those same 3 lines.\n- REFERENCES: Available on request\n\nPlain text only. No markdown. No bold. No asterisks. No hashtags.\n\nJOB: '+jobTitle+'\nDESCRIPTION: '+jobDesc+'\nREQUIREMENTS: '+jobReqs+'\n\nORIGINAL CV (copy education from here exactly):\n'+cvText}],
-      system:'You restructure CVs. The education section must be copied word for word from the original — do not change a single character. If the original says Bachelor of Pharmacy University of Otago 2005, you output exactly Bachelor of Pharmacy University of Otago 2005. Not University of Auckland. Not 2021. Not a Masters degree. COPY IT EXACTLY. Plain text only.'
+      messages: msgContent,
+      system: rewriteSystem
     })});
     var d = await r.json();
     var tailoredText = '';
