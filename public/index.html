@@ -2211,8 +2211,8 @@ document.getElementById('app-tailor-cv-btn').addEventListener('click', async fun
 
   try {
     var r = await fetch('/api/chat', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
-      messages:[{role:'user',content:'Rewrite this CV to be tailored for the following role. Keep all facts truthful. Do not invent experience or qualifications. Rewrite the professional summary to position the candidate for this role. Reorder and reword skills to highlight what is relevant. Reframe job description bullet points to emphasise transferable skills. Keep the same jobs, dates, and education. Output ONLY the CV content in clean sections: PROFESSIONAL SUMMARY, RELEVANT SKILLS, EXPERIENCE, EDUCATION. No explanations, no commentary.\n\nJOB TITLE: '+jobTitle+'\nJOB DESCRIPTION: '+jobDesc+'\nREQUIREMENTS: '+jobReqs+'\n\nCANDIDATE CV:\n'+cvText}],
-      system:'You are a professional CV writer for the New Zealand job market. Rewrite CVs to highlight relevant transferable skills for specific roles. Be concise and professional. Never fabricate experience.'
+      messages:[{role:'user',content:'Rewrite this CV tailored for the role below. Follow NZ employer expectations.\n\nRules:\n- Keep all facts truthful. Never invent experience, qualifications, or skills the candidate does not have.\n- PROFILE: 3-4 sentences. State who they are, years of experience, key strengths relevant to THIS role, and what they bring. No buzzwords. Specific and direct.\n- KEY SKILLS: 8-12 skills in a comma-separated list. Most relevant to the job listed first. Use the language from the job description where the candidate genuinely has the skill.\n- EXPERIENCE: Reverse chronological. Job Title — Company, Location (dates). 3-5 bullet points per role starting with strong action verbs. Focus on measurable achievements (numbers, percentages, dollar values). Reframe duties as results. Emphasise transferable skills that match this role.\n- EDUCATION: Qualification — Institution, Year. Most recent first. Include relevant certifications or training.\n- REFERENCES: Just write "Available on request"\n\nOutput ONLY these sections in order: PROFILE, KEY SKILLS, EXPERIENCE, EDUCATION, REFERENCES. No explanations.\n\nJOB TITLE: '+jobTitle+'\nJOB DESCRIPTION: '+jobDesc+'\nREQUIREMENTS: '+jobReqs+'\n\nCANDIDATE CV:\n'+cvText}],
+      system:'You are a professional CV writer specialising in the New Zealand job market. Write CVs that NZ hiring managers and recruiters want to read: concise, achievement-focused, no fluff, no buzzwords, specific results with numbers where possible. Match the language of the job description. Never fabricate anything. 2 pages maximum.'
     })});
     var d = await r.json();
     var tailoredText = (d.reply || d.content || '').trim();
@@ -2222,14 +2222,33 @@ document.getElementById('app-tailor-cv-btn').addEventListener('click', async fun
     document.getElementById('app-tailor-loading').style.display = 'none';
     document.getElementById('app-tailor-result').style.display = 'block';
 
-    // Build downloadable HTML
-    _tailoredCvHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>CV - '+esc(applicantName)+' - '+esc(jobTitle)+'</title>'
-      +'<style>body{font-family:Arial,Helvetica,sans-serif;max-width:700px;margin:0 auto;padding:2rem;color:#1a1a1a;line-height:1.6;font-size:14px}'
-      +'h1{font-size:22px;margin:0 0 4px;color:#111}h2{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:#555;border-bottom:1px solid #ddd;padding-bottom:4px;margin:1.5rem 0 .75rem}'
-      +'.contact{font-size:13px;color:#555;margin-bottom:1.5rem}p,li{margin-bottom:.35rem}</style></head>'
-      +'<body><h1>'+esc(applicantName)+'</h1>'
-      +'<div class="contact">'+(applicantPhone?esc(applicantPhone)+' | ':'')+esc(applicantEmail)+(applicantRtw?' | '+esc(applicantRtw):'')+'</div>'
-      +tailoredText.replace(/^(PROFESSIONAL SUMMARY|RELEVANT SKILLS|EXPERIENCE|EDUCATION|REFERENCES)/gm,'<h2>$1</h2>').replace(/\n/g,'<br>')
+    // Build downloadable HTML — NZ employer-ready format
+    var cvBody = tailoredText
+      .replace(/^(PROFILE|KEY SKILLS|EXPERIENCE|EDUCATION|REFERENCES|PROFESSIONAL SUMMARY|RELEVANT SKILLS)/gm,'</div><h2>$1</h2><div class="section">')
+      .replace(/^[-•]\s*/gm,'<li>')
+      .replace(/\n/g,'<br>');
+
+    _tailoredCvHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>CV - '+esc(applicantName)+'</title>'
+      +'<style>'
+      +'@page{margin:1.5cm}'
+      +'body{font-family:Calibri,Arial,Helvetica,sans-serif;max-width:700px;margin:0 auto;padding:2rem;color:#222;line-height:1.55;font-size:11pt}'
+      +'h1{font-size:20pt;font-weight:700;margin:0 0 2px;color:#111;letter-spacing:-.5px}'
+      +'.contact{font-size:9.5pt;color:#444;margin-bottom:.25rem;padding-bottom:.75rem;border-bottom:2px solid #222}'
+      +'.tagline{font-size:9pt;color:#666;margin-bottom:.75rem}'
+      +'h2{font-size:9pt;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;color:#222;border-bottom:1px solid #ccc;padding-bottom:3px;margin:1.25rem 0 .6rem}'
+      +'.section{margin-bottom:.25rem}'
+      +'.section li{margin-bottom:.3rem;padding-left:.5rem;list-style:none}'
+      +'.section li::before{content:"\\2022";color:#444;margin-right:.4rem}'
+      +'strong{color:#111}'
+      +'</style></head>'
+      +'<body>'
+      +'<h1>'+esc(applicantName)+'</h1>'
+      +'<div class="contact">'
+      +(applicantEmail?esc(applicantEmail):'')
+      +(applicantPhone?' &nbsp;|&nbsp; '+esc(applicantPhone):'')
+      +(applicantRtw?' &nbsp;|&nbsp; '+esc(applicantRtw):'')
+      +'</div>'
+      +'<div class="section">'+cvBody+'</div>'
       +'</body></html>';
 
   } catch(e) { toast('Error tailoring CV'); }
