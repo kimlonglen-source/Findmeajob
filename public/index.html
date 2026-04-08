@@ -220,6 +220,9 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 .pivot-teaser-card:hover{border-color:rgba(139,92,246,.3);transform:translateY(-5px);box-shadow:0 20px 40px rgba(139,92,246,.12)}
 .btn-horizon{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;padding:.95rem 2.2rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.95rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 25px rgba(139,92,246,.25)}
 .btn-horizon:hover{transform:translateY(-2px);box-shadow:0 8px 35px rgba(139,92,246,.35)}
+.results-tab{background:none;border:none;color:var(--text3);font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;padding:.5rem 1.1rem;border-radius:999px;transition:all .2s}
+.results-tab.active{background:linear-gradient(135deg,var(--em),var(--em2));color:#fff}
+.results-tab:hover:not(.active){color:var(--text)}
 @media(max-width:400px){.pivot-teaser-grid{grid-template-columns:1fr!important}}
 </style>
 </head>
@@ -532,11 +535,15 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     </div>
     <div id="results" style="display:none">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:.75rem">
-        <div><div style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-bottom:.2rem">Your matches</div><div style="font-family:'Inter',sans-serif;font-size:1.7rem;font-weight:800;color:var(--text)">Jobs <span style="color:var(--em)">for you</span></div></div>
+        <div style="display:flex;gap:.35rem;background:var(--bg3);border:1px solid var(--border);border-radius:999px;padding:3px">
+          <button type="button" id="tab-matches" class="results-tab active">Your Matches</button>
+          <button type="button" id="tab-pivots" class="results-tab">Career Pivots</button>
+        </div>
         <button class="btn-sm" id="btn-new-search" type="button">&#8592; New search</button>
       </div>
-      <div id="job-list"></div>
-      <div class="insights" id="insights" style="display:none"><h4>Career Insights</h4><p id="insights-text"></p></div>
+      <div id="results-matches">
+        <div id="job-list"></div>
+        <div class="insights" id="insights" style="display:none"><h4>Career Insights</h4><p id="insights-text"></p></div>
       <div id="reg-prompt" style="display:none;background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(20,184,166,.04));border:1px solid rgba(16,185,129,.15);border-radius:var(--rl);padding:1.25rem 1.5rem;margin-top:.75rem;position:relative">
         <button id="reg-prompt-dismiss" type="button" style="position:absolute;top:.75rem;right:.85rem;background:none;border:none;color:var(--text3);cursor:pointer;font-size:1rem;line-height:1">&#10005;</button>
         <div style="text-align:center">
@@ -556,6 +563,10 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
           <div style="font-size:.72rem;color:var(--text2);font-weight:500;margin-bottom:.65rem">Try different skills</div>
           <button class="btn btn-sec" id="btn-restart" type="button" style="padding:.55rem 1rem;font-size:.78rem">Start over</button>
         </div>
+      </div>
+      </div>
+      <div id="results-pivots" style="display:none">
+        <div style="text-align:center;padding:2rem 0;color:var(--text3);font-size:.85rem;font-weight:500" id="pivots-loading">Discovering career pivots<span class="dots"></span></div>
       </div>
     </div>
   </div>
@@ -1416,6 +1427,13 @@ function renderResults(jobs,insights){
   var list=document.getElementById('job-list');
   list.innerHTML='';
   if(insights){document.getElementById('insights-text').textContent=insights;document.getElementById('insights').style.display='block';}
+  // Reset to matches tab
+  document.getElementById('tab-matches').classList.add('active');
+  document.getElementById('tab-pivots').classList.remove('active');
+  document.getElementById('tab-pivots').textContent='Career Pivots';
+  document.getElementById('results-matches').style.display='block';
+  document.getElementById('results-pivots').style.display='none';
+  document.getElementById('results-pivots').innerHTML='<div style="text-align:center;padding:2rem 0;color:var(--text3);font-size:.85rem;font-weight:500">Discovering career pivots<span class="dots"></span></div>';
   document.getElementById('results').style.display='block';
   document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
   var regPrompt=document.getElementById('reg-prompt');
@@ -1686,12 +1704,9 @@ async function fetchCareerPivots(matches, list) {
   var tags = [];
   matches.forEach(function(m){(m.tags||[]).forEach(function(t){if(tags.indexOf(t)===-1)tags.push(t);});});
 
-  // Add placeholder
-  var pivotSection = document.createElement('div');
-  pivotSection.id = 'career-pivots';
-  pivotSection.style.cssText = 'margin-top:2rem;position:relative;overflow:hidden';
-  pivotSection.innerHTML = '<div style="text-align:center;padding:2rem 1rem"><div class="dots" style="font-size:1.2rem;color:var(--purple)"></div><div style="font-size:.78rem;color:var(--text3);margin-top:.5rem">Discovering alternative career paths...</div></div>';
-  list.appendChild(pivotSection);
+  // Render into pivots tab
+  var pivotSection = document.getElementById('results-pivots');
+  pivotSection.innerHTML = '<div style="text-align:center;padding:2rem 1rem"><div class="dots" style="font-size:1.2rem;color:var(--purple)"></div><div style="font-size:.78rem;color:var(--text3);margin-top:.5rem">Discovering career pivots...</div></div>';
 
   try {
     var r = await fetch('/api/chat', {
@@ -1767,8 +1782,11 @@ async function fetchCareerPivots(matches, list) {
     html += '</div>';
 
     pivotSection.innerHTML = html;
+    // Update tab with count
+    var tabPivots = document.getElementById('tab-pivots');
+    if (tabPivots) tabPivots.textContent = 'Career Pivots (' + pivots.length + ')';
   } catch(e) {
-    pivotSection.remove();
+    pivotSection.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3);font-size:.85rem">No career pivots found. Try again with a different CV.</div>';
   }
 }
 
@@ -3166,6 +3184,16 @@ function initApp(){try{
 
   // Registration prompt after results
   document.getElementById('reg-prompt-dismiss').addEventListener('click',function(){document.getElementById('reg-prompt').style.display='none';sessionStorage.setItem('reg-prompt-dismissed','1');});
+
+  // Results tabs
+  document.getElementById('tab-matches').addEventListener('click',function(){
+    this.classList.add('active');document.getElementById('tab-pivots').classList.remove('active');
+    document.getElementById('results-matches').style.display='block';document.getElementById('results-pivots').style.display='none';
+  });
+  document.getElementById('tab-pivots').addEventListener('click',function(){
+    this.classList.add('active');document.getElementById('tab-matches').classList.remove('active');
+    document.getElementById('results-matches').style.display='none';document.getElementById('results-pivots').style.display='block';
+  });
   document.getElementById('reg-prompt-btn').addEventListener('click',function(){showPage('account');document.getElementById('acct-tab-reg').click();});
 
   // Nav links for account
