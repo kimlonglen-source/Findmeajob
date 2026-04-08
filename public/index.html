@@ -204,7 +204,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
   .filter-row{flex-direction:column}
   .filter-row select{width:100%}
   .strip{padding:.65rem 1rem}
-  #career-pivots .pivot-grid{grid-template-columns:1fr!important}
+  #career-pivots .pivot-grid,#results-pivots .pivot-grid{grid-template-columns:1fr!important}
   .results-hero-stats{flex-direction:column;gap:.75rem}
   .rh-divider{width:60px;height:1px}
   .pivot-teaser-grid{grid-template-columns:1fr 1fr!important}
@@ -225,6 +225,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 .results-tab{background:none;border:none;color:var(--text3);font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;padding:.5rem 1.1rem;border-radius:999px;transition:all .2s}
 .results-tab.active{background:linear-gradient(135deg,var(--em),var(--em2));color:#fff}
 .results-tab:hover:not(.active){color:var(--text)}
+.results-tab.pivot-tab{background:linear-gradient(135deg,rgba(139,92,246,.1),rgba(236,72,153,.08));border:1px solid rgba(139,92,246,.2);color:var(--purple)}
+.results-tab.pivot-tab.active{background:linear-gradient(135deg,var(--purple),#ec4899);color:#fff;border-color:transparent}
 @media(max-width:400px){.pivot-teaser-grid{grid-template-columns:1fr!important}}
 @keyframes resultsReveal{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
 @keyframes statPop{0%{opacity:0;transform:scale(.8)}100%{opacity:1;transform:scale(1)}}
@@ -574,10 +576,11 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:.75rem">
         <div style="display:flex;gap:.35rem;background:var(--bg3);border:1px solid var(--border);border-radius:999px;padding:3px">
           <button type="button" id="tab-matches" class="results-tab active">Your Matches</button>
-          <button type="button" id="tab-pivots" class="results-tab">Career Pivots</button>
+          <button type="button" id="tab-pivots" class="results-tab pivot-tab">Career Pivots</button>
         </div>
         <button class="btn-sm" id="btn-new-search" type="button">&#8592; New search</button>
       </div>
+      <div style="font-size:.72rem;color:var(--text3);margin-bottom:1rem;font-weight:500"><span id="tab-subtitle">Jobs matching your skills and experience</span></div>
       <div id="results-matches">
         <div id="job-list"></div>
         <div class="insights" id="insights" style="display:none"><h4>Career Insights</h4><p id="insights-text"></p></div>
@@ -1811,7 +1814,7 @@ async function fetchCareerPivots(matches, list) {
     html += '<div style="font-size:1.4rem;font-weight:800;color:var(--text);line-height:1.2">Your skills unlock<br><span style="background:linear-gradient(135deg,var(--purple),#ec4899,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent">unexpected doors</span></div>';
     html += '<div style="font-size:.78rem;color:var(--text3);margin-top:.5rem;font-weight:500;max-width:400px;margin-left:auto;margin-right:auto">AI-discovered career pivots with live NZ job listings</div>';
     html += '</div>';
-    html += '<div class="pivot-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">';
+    html += '<div class="pivot-grid" style="display:grid;grid-template-columns:1fr;gap:.75rem">';
 
     pivots.slice(0,4).forEach(function(p, i) {
       var c = colors[i % colors.length];
@@ -3263,10 +3266,12 @@ function initApp(){try{
   document.getElementById('tab-matches').addEventListener('click',function(){
     this.classList.add('active');document.getElementById('tab-pivots').classList.remove('active');
     document.getElementById('results-matches').style.display='block';document.getElementById('results-pivots').style.display='none';
+    document.getElementById('tab-subtitle').textContent='Jobs matching your skills and experience';
   });
   document.getElementById('tab-pivots').addEventListener('click',function(){
     this.classList.add('active');document.getElementById('tab-matches').classList.remove('active');
     document.getElementById('results-matches').style.display='none';document.getElementById('results-pivots').style.display='block';
+    document.getElementById('tab-subtitle').textContent='Careers you might not have considered \u2014 based on your transferable skills';
   });
   document.getElementById('reg-prompt-btn').addEventListener('click',function(){showPage('account');document.getElementById('acct-tab-reg').click();});
 
