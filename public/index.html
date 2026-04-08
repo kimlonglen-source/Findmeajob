@@ -205,6 +205,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
   .filter-row select{width:100%}
   .strip{padding:.65rem 1rem}
   #career-pivots .pivot-grid{grid-template-columns:1fr!important}
+  .results-hero-stats{flex-direction:column;gap:.75rem}
+  .rh-divider{width:60px;height:1px}
   .pivot-teaser-grid{grid-template-columns:1fr 1fr!important}
 }
 @keyframes horizonFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
@@ -224,6 +226,27 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 .results-tab.active{background:linear-gradient(135deg,var(--em),var(--em2));color:#fff}
 .results-tab:hover:not(.active){color:var(--text)}
 @media(max-width:400px){.pivot-teaser-grid{grid-template-columns:1fr!important}}
+@keyframes resultsReveal{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes statPop{0%{opacity:0;transform:scale(.8)}100%{opacity:1;transform:scale(1)}}
+@keyframes subtleGlow{0%,100%{opacity:.4}50%{opacity:.8}}
+@keyframes pivotPulse{0%{box-shadow:0 0 0 0 rgba(139,92,246,.5)}70%{box-shadow:0 0 0 8px rgba(139,92,246,0)}100%{box-shadow:0 0 0 0 rgba(139,92,246,0)}}
+@keyframes cardReveal{0%{opacity:0;transform:translateY(12px)}100%{opacity:1;transform:translateY(0)}}
+.results-hero{position:relative;background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(139,92,246,.05));border:1px solid rgba(16,185,129,.2);border-radius:var(--rl);padding:1.75rem 1.5rem;margin-bottom:1.25rem;text-align:center;overflow:hidden;animation:resultsReveal .6s ease-out both}
+.results-hero-glow{position:absolute;top:-50%;left:50%;transform:translateX(-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(16,185,129,.1) 0%,transparent 60%);pointer-events:none;animation:subtleGlow 3s ease-in-out infinite}
+.results-hero-stats{display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-top:1rem}
+.rh-stat{animation:statPop .5s ease-out both}
+.rh-stat:nth-child(1){animation-delay:.3s}.rh-stat:nth-child(3){animation-delay:.5s}.rh-stat:nth-child(5){animation-delay:.7s}
+.rh-val{font-size:2rem;font-weight:900;line-height:1;background:linear-gradient(135deg,var(--em),var(--em2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.rh-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-top:.2rem}
+.rh-divider{width:1px;height:36px;background:var(--border2)}
+.rh-tier{font-size:1rem;font-weight:800;padding:.3rem .8rem;border-radius:999px;line-height:1.2}
+.tier-excellent{background:rgba(16,185,129,.12);color:var(--em);border:1px solid rgba(16,185,129,.25)}
+.tier-good{background:rgba(52,211,153,.1);color:#34d399;border:1px solid rgba(52,211,153,.2)}
+.tier-fair{background:rgba(251,191,36,.1);color:#fbbf24;border:1px solid rgba(251,191,36,.2)}
+.pivot-badge{position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;background:linear-gradient(135deg,var(--purple),#ec4899);color:#fff;font-size:.55rem;font-weight:800;border-radius:999px;display:flex;align-items:center;justify-content:center;padding:0 4px;animation:pivotPulse 2s ease-out infinite}
+.results-tab{position:relative}
+.pivot-glow{box-shadow:0 0 12px rgba(139,92,246,.3);border-color:rgba(139,92,246,.3)!important}
+.job-card-animated{animation:cardReveal .4s ease-out both}
 </style>
 </head>
 <body>
@@ -534,6 +557,20 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <div class="skel"><div class="skel-line" style="width:65%;height:14px;margin-bottom:.75rem"></div><div class="skel-line" style="width:45%"></div><div class="skel-line"></div><div class="skel-line" style="width:80%"></div></div>
     </div>
     <div id="results" style="display:none">
+      <div id="results-hero" style="display:none">
+        <div class="results-hero">
+          <div class="results-hero-glow"></div>
+          <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--em);margin-bottom:.5rem">Analysis Complete</div>
+          <div style="font-size:1.3rem;font-weight:800;color:var(--text)">We found your matches</div>
+          <div class="results-hero-stats">
+            <div class="rh-stat"><div class="rh-val" id="rh-jobs">0</div><div class="rh-lbl">Jobs Found</div></div>
+            <div class="rh-divider"></div>
+            <div class="rh-stat"><div class="rh-val" id="rh-match">0%</div><div class="rh-lbl">Best Match</div></div>
+            <div class="rh-divider"></div>
+            <div class="rh-stat"><div class="rh-tier" id="rh-tier">--</div><div class="rh-lbl">Match Quality</div></div>
+          </div>
+        </div>
+      </div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:.75rem">
         <div style="display:flex;gap:.35rem;background:var(--bg3);border:1px solid var(--border);border-radius:999px;padding:3px">
           <button type="button" id="tab-matches" class="results-tab active">Your Matches</button>
@@ -544,6 +581,17 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <div id="results-matches">
         <div id="job-list"></div>
         <div class="insights" id="insights" style="display:none"><h4>Career Insights</h4><p id="insights-text"></p></div>
+        <div id="pivot-teaser" style="display:none">
+          <div style="background:linear-gradient(135deg,rgba(139,92,246,.06),rgba(236,72,153,.04));border:1px solid rgba(139,92,246,.15);border-radius:var(--rl);padding:1rem 1.25rem;margin:.75rem 0;cursor:pointer;transition:all .3s" id="pivot-teaser-card">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem">
+              <div>
+                <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--purple);margin-bottom:.2rem">Career Pivots Discovered</div>
+                <div style="font-size:.85rem;font-weight:700;color:var(--text)">Your skills could take you somewhere unexpected</div>
+              </div>
+              <div style="font-size:1.2rem;color:var(--purple);flex-shrink:0">&#8594;</div>
+            </div>
+          </div>
+        </div>
       <div id="reg-prompt" style="display:none;background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(20,184,166,.04));border:1px solid rgba(16,185,129,.15);border-radius:var(--rl);padding:1.25rem 1.5rem;margin-top:.75rem;position:relative">
         <button id="reg-prompt-dismiss" type="button" style="position:absolute;top:.75rem;right:.85rem;background:none;border:none;color:var(--text3);cursor:pointer;font-size:1rem;line-height:1">&#10005;</button>
         <div style="text-align:center">
@@ -1285,6 +1333,7 @@ function loadMammoth(cb){
 
 function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},2200);}
 function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+function countUp(el,target,suffix,duration){if(!el)return;suffix=suffix||'';duration=duration||1000;var st=null;function step(ts){if(!st)st=ts;var p=Math.min((ts-st)/duration,1);var e=1-Math.pow(1-p,3);el.textContent=Math.round(target*e)+suffix;if(p<1)requestAnimationFrame(step);}requestAnimationFrame(step);}
 function showPage(id){document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});var pg=document.getElementById('page-'+id);if(pg){pg.classList.add('active');currentPage=id;}window.scrollTo(0,0);}
 function toggleTheme(){lightMode=!lightMode;document.body.classList.toggle('light',lightMode);document.getElementById('tbtn').innerHTML=lightMode?'&#9788;':'&#9790;';localStorage.setItem('theme',lightMode?'light':'dark');}
 function setStep(n){for(var i=1;i<=4;i++){var el=document.getElementById('s'+i);if(!el)continue;if(i<n)el.className='step done';else if(i===n)el.className='step active';else el.className='step';}}
@@ -1436,6 +1485,13 @@ function renderResults(jobs,insights){
   document.getElementById('results-pivots').innerHTML='<div style="text-align:center;padding:2rem 0;color:var(--text3);font-size:.85rem;font-weight:500">Discovering career pivots<span class="dots"></span></div>';
   document.getElementById('results').style.display='block';
   document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+  // Show scorecard
+  var heroEl=document.getElementById('results-hero');if(heroEl)heroEl.style.display='block';
+  document.getElementById('rh-jobs').textContent='...';
+  document.getElementById('rh-match').textContent='...';
+  var tierEl=document.getElementById('rh-tier');tierEl.textContent='...';tierEl.className='rh-tier';
+  // Hide pivot teaser until pivots load
+  var pt=document.getElementById('pivot-teaser');if(pt)pt.style.display='none';
   var regPrompt=document.getElementById('reg-prompt');
   if(regPrompt){var ss=seekerSession||(sessionStorage.getItem('seekerSession')?JSON.parse(sessionStorage.getItem('seekerSession')):null);regPrompt.style.display=(!ss&&!sessionStorage.getItem('reg-prompt-dismissed'))?'block':'none';}
   fetchLiveJobs(jobs);
@@ -1620,12 +1676,13 @@ async function fetchLiveJobs(matches){
     lh.style.cssText='font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)';
     lh.innerHTML='Live NZ Job Listings <span style="font-size:.62rem;font-weight:600;color:var(--text3);text-transform:none;letter-spacing:0">— AI matched &amp; sorted by relevance</span>';
     list.appendChild(lh);
-    live.forEach(function(job){
+    live.forEach(function(job,idx){
       var pct=job.matchPct;
       var reason=job.matchReason||'';
       var pctColor=pct>=85?'var(--em)':pct>=75?'#34d399':'#6ee7b7';
       var c=document.createElement('div');
-      c.className='job-card';
+      c.className='job-card job-card-animated';
+      c.style.animationDelay=(idx*0.06)+'s';
       c.innerHTML='<div>'+
         '<div style="margin-bottom:.4rem"><span class="tag tag-live">Live</span></div>'+
         '<div class="job-title">'+esc(job.title)+'</div>'+
@@ -1641,6 +1698,14 @@ async function fetchLiveJobs(matches){
         '</div>';
       list.appendChild(c);
     });
+    // Update scorecard
+    countUp(document.getElementById('rh-jobs'),live.length,'',800);
+    var bestPct=0;live.forEach(function(j){if(j.matchPct>bestPct)bestPct=j.matchPct;});
+    setTimeout(function(){countUp(document.getElementById('rh-match'),bestPct||0,'%',1000);},300);
+    var tierEl2=document.getElementById('rh-tier');
+    if(bestPct>=85){tierEl2.textContent='Excellent';tierEl2.className='rh-tier tier-excellent';}
+    else if(bestPct>=70){tierEl2.textContent='Good';tierEl2.className='rh-tier tier-good';}
+    else{tierEl2.textContent='Fair';tierEl2.className='rh-tier tier-fair';}
   }
   // Fetch Pro employer listings and check for matches
   try {
@@ -1782,9 +1847,18 @@ async function fetchCareerPivots(matches, list) {
     html += '</div>';
 
     pivotSection.innerHTML = html;
-    // Update tab with count
+    // Update tab with pulsing badge
     var tabPivots = document.getElementById('tab-pivots');
-    if (tabPivots) tabPivots.textContent = 'Career Pivots (' + pivots.length + ')';
+    if (tabPivots) {
+      tabPivots.innerHTML = 'Career Pivots <span class="pivot-badge">' + pivots.length + '</span>';
+      tabPivots.classList.add('pivot-glow');
+      tabPivots.addEventListener('click', function(){ this.classList.remove('pivot-glow'); var b=this.querySelector('.pivot-badge');if(b)b.style.animation='none'; }, {once:true});
+    }
+    // Show teaser in matches tab
+    var teaser = document.getElementById('pivot-teaser');
+    if (teaser) { teaser.style.display = 'block'; teaser.style.animation = 'resultsReveal .5s ease-out both'; }
+    var teaserCard = document.getElementById('pivot-teaser-card');
+    if (teaserCard) teaserCard.onclick = function(){ document.getElementById('tab-pivots').click(); };
   } catch(e) {
     pivotSection.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3);font-size:.85rem">No career pivots found. Try again with a different CV.</div>';
   }
