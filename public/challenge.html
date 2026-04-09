@@ -113,6 +113,10 @@ a{color:var(--em);text-decoration:none}
 @keyframes pivotReveal{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @keyframes arrowPulse{0%,100%{opacity:.4;transform:translateY(0)}50%{opacity:1;transform:translateY(3px)}}
 @keyframes shimmer{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.lb-item{display:flex;align-items:center;gap:.65rem;padding:.55rem .85rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r);font-size:.8rem}
+.lb-rank{font-size:.72rem;font-weight:800;color:var(--text3);min-width:1.5rem;text-align:center}
+.lb-role{font-weight:700;color:var(--text);flex:1}
+.lb-count{font-size:.72rem;font-weight:600;color:var(--purple)}
 .hero-hook{font-size:clamp(.82rem,3vw,1rem);color:var(--text2);text-align:center;font-weight:600;height:1.6em;margin-bottom:1.5rem;opacity:0;animation:hookFade .5s ease forwards}
 @keyframes hookFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 </style>
@@ -126,6 +130,15 @@ a{color:var(--em);text-decoration:none}
   <button class="hero-cta" onclick="showSection('section-upload')">I'm Brave Enough</button>
   <div class="hero-trust">No sign-up &bull; CV not stored &bull; 100% free &bull; NZ only</div>
   <div style="margin-top:2.5rem;font-size:.62rem;color:var(--text3);text-align:center;max-width:320px;line-height:1.6;font-style:italic">Career suggestions are AI-generated for entertainment purposes. Please don't actually quit your job to become a volcano tour guide. (Unless...?)</div>
+</div>
+
+<!-- LEADERBOARD -->
+<div id="leaderboard" style="display:none;width:100%;max-width:400px;margin-top:1.5rem">
+  <div style="text-align:center;margin-bottom:.75rem">
+    <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:var(--pink)">Trending Careers</div>
+    <div style="font-size:.95rem;font-weight:800;color:var(--text);margin-top:.2rem">Most Common Pivots This Week</div>
+  </div>
+  <div id="leaderboard-list" style="display:flex;flex-direction:column;gap:.4rem"></div>
 </div>
 
 <!-- UPLOAD -->
@@ -169,6 +182,7 @@ a{color:var(--em);text-decoration:none}
     <div class="post-cta">
       <div class="share-prompt">Screenshot this &amp; tag us on TikTok!</div>
       <div class="share-hashtag">#cvchallengenz</div>
+      <button class="try-again" id="btn-share-link" onclick="copyShareLink()" style="background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none">Copy Share Link</button>
       <button class="try-again" onclick="resetChallenge()">Try Another CV</button>
       <a class="real-jobs-link" href="/">Okay but seriously, find REAL jobs &rarr;</a>
       <div style="margin-top:1.25rem;font-size:.58rem;color:var(--text3);max-width:300px;line-height:1.6;font-style:italic">Disclaimer: These career pivots are AI-generated for entertainment. We take no responsibility if you actually become a professional cheese sculptor. Results may cause existential crises, career envy, or spontaneous LinkedIn updates.</div>
@@ -375,6 +389,60 @@ function renderCard(data){
   h+='</div>';
 
   document.getElementById('result-card').innerHTML=h;
+
+  // Store for share link
+  window._lastResult=data;
+
+  // Track pivots to leaderboard
+  trackPivots(data);
+}
+
+function encodeResult(data){
+  var mini={r:data.current_role,p:data.pivots.slice(0,4).map(function(p){return{r:p.role,f:p.field,w:p.why,e:p.earning,i:p.icon};})};
+  return btoa(unescape(encodeURIComponent(JSON.stringify(mini))));
+}
+
+function decodeResult(str){
+  try{
+    var mini=JSON.parse(decodeURIComponent(escape(atob(str))));
+    return{current_role:mini.r,pivots:mini.p.map(function(p){return{role:p.r,field:p.f,why:p.w,earning:p.e,icon:p.i};})};
+  }catch(e){return null;}
+}
+
+function copyShareLink(){
+  if(!window._lastResult)return;
+  var encoded=encodeResult(window._lastResult);
+  var url=window.location.origin+'/challenge?r='+encoded;
+  navigator.clipboard.writeText(url).then(function(){
+    var btn=document.getElementById('btn-share-link');
+    btn.textContent='Link Copied!';
+    setTimeout(function(){btn.textContent='Copy Share Link';},2500);
+  });
+}
+
+function trackPivots(data){
+  if(!data.pivots)return;
+  var roles=data.pivots.slice(0,4).map(function(p){return p.role;});
+  fetch('/api/approved-jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'leaderboard',roles:roles})}).catch(function(){});
+}
+
+function loadLeaderboard(){
+  fetch('/api/approved-jobs?leaderboard=1').then(function(r){return r.json();}).then(function(d){
+    if(!d.leaderboard||!d.leaderboard.length)return;
+    var el=document.getElementById('leaderboard');
+    var list=document.getElementById('leaderboard-list');
+    el.style.display='block';
+    var h='';
+    d.leaderboard.slice(0,8).forEach(function(item,i){
+      var medal=i===0?'&#129351;':i===1?'&#129352;':i===2?'&#129353;':'';
+      h+='<div class="lb-item">';
+      h+='<div class="lb-rank">'+(medal||(i+1))+'</div>';
+      h+='<div class="lb-role">'+item.role.replace(/</g,'&lt;')+'</div>';
+      h+='<div class="lb-count">'+item.count+' pivots</div>';
+      h+='</div>';
+    });
+    list.innerHTML=h;
+  }).catch(function(){});
 }
 
 function resetChallenge(){
@@ -412,6 +480,27 @@ function resetChallenge(){
     el.textContent=hooks[i];
     el.style.animation='hookFade .5s ease forwards';
   },3000);
+})();
+
+// On load: check for shared result or show leaderboard
+(function(){
+  var params=new URLSearchParams(window.location.search);
+  var shared=params.get('r');
+  if(shared){
+    var data=decodeResult(shared);
+    if(data){
+      window._lastResult=data;
+      renderCard(data);
+      showSection('section-results');
+      return;
+    }
+  }
+  // Load leaderboard on hero page
+  loadLeaderboard();
+  // Move leaderboard into hero section
+  var hero=document.getElementById('section-hero');
+  var lb=document.getElementById('leaderboard');
+  hero.appendChild(lb);
 })();
 </script>
 </body>

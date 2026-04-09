@@ -190,6 +190,7 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
         <button class="tab" data-tab="seekers" type="button" style="margin-left:.5rem;border-color:rgba(139,92,246,.2);color:var(--purple)">Job Seekers</button>
         <button class="tab" data-tab="employers" type="button" style="border-color:rgba(245,158,11,.2);color:var(--gold)">Employers</button>
         <button class="tab" data-tab="social" type="button" style="margin-left:.5rem;border-color:rgba(236,72,153,.2);color:#ec4899">Social Media</button>
+        <button class="tab" data-tab="blog" type="button" style="border-color:rgba(16,185,129,.2);color:var(--em)">Blog</button>
       </div>
       <div style="display:flex;align-items:center;gap:.65rem">
         <span class="refresh-txt" id="last-refresh">Never refreshed</span>
@@ -198,6 +199,28 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
     </div>
     <div id="job-list"></div>
     <div id="people-list" style="display:none"></div>
+    <div id="blog-list" style="display:none">
+      <div style="padding:1.5rem 0">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:.75rem">
+          <div>
+            <div style="font-size:1.1rem;font-weight:800;color:var(--text)">Blog Content Generator</div>
+            <div style="font-size:.78rem;color:var(--text3);margin-top:.2rem">AI writes daily blog posts for job seekers &amp; employers. Publish to <a href="/blog" target="_blank" style="color:var(--em)">/blog</a></div>
+          </div>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+            <button onclick="generateBlog()" id="btn-gen-blog" style="background:linear-gradient(135deg,var(--em),#14b8a6);color:#fff;border:none;padding:.55rem 1.25rem;border-radius:999px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Generate Posts</button>
+            <button onclick="loadExistingBlog()" style="background:rgba(255,255,255,.06);border:1px solid var(--border2);color:var(--text2);padding:.55rem 1rem;border-radius:999px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">View Published</button>
+          </div>
+        </div>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem">
+          <select id="blog-count" style="background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.45rem .75rem;outline:none">
+            <option value="3">3 posts</option>
+            <option value="5">5 posts</option>
+            <option value="7">7 posts (weekly batch)</option>
+          </select>
+        </div>
+        <div id="blog-output"></div>
+      </div>
+    </div>
     <div id="social-list" style="display:none">
       <div style="padding:1.5rem 0">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
@@ -219,6 +242,9 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
             <option value="platform">Promote FindMeAJob.co.nz</option>
             <option value="results">Share funny results</option>
             <option value="milestone">Share milestone / stats</option>
+            <option value="seeker-tips">Job seeker tips</option>
+            <option value="employer-tips">Employer / hiring tips</option>
+            <option value="market-insight">NZ job market insight</option>
           </select>
         </div>
         <div id="social-output"></div>
@@ -304,7 +330,7 @@ document.getElementById("pw").addEventListener("keydown",function(e){if(e.key===
 document.getElementById("btn-login").addEventListener("click",doLogin);
 document.getElementById("btn-signout").addEventListener("click",function(){pw="";document.getElementById("login").style.display="flex";document.getElementById("app").style.display="none";clearInterval(refreshTimer);});
 document.getElementById("btn-refresh").addEventListener("click",loadJobs);
-document.querySelectorAll(".tab").forEach(function(t){t.addEventListener("click",function(){document.querySelectorAll(".tab").forEach(function(x){x.classList.remove("active");});this.classList.add("active");currentTab=this.dataset.tab;if(currentTab==="social"){document.getElementById("job-list").style.display="none";document.getElementById("people-list").style.display="none";document.getElementById("social-list").style.display="block";}else if(currentTab==="seekers"){document.getElementById("social-list").style.display="none";loadPeople("seekers");}else if(currentTab==="employers"){document.getElementById("social-list").style.display="none";loadPeople("employers");}else{document.getElementById("job-list").style.display="grid";document.getElementById("people-list").style.display="none";document.getElementById("social-list").style.display="none";renderJobs();}});});
+document.querySelectorAll(".tab").forEach(function(t){t.addEventListener("click",function(){document.querySelectorAll(".tab").forEach(function(x){x.classList.remove("active");});this.classList.add("active");currentTab=this.dataset.tab;document.getElementById("job-list").style.display="none";document.getElementById("people-list").style.display="none";document.getElementById("social-list").style.display="none";document.getElementById("blog-list").style.display="none";if(currentTab==="social"){document.getElementById("social-list").style.display="block";}else if(currentTab==="blog"){document.getElementById("blog-list").style.display="block";}else if(currentTab==="seekers"){loadPeople("seekers");}else if(currentTab==="employers"){loadPeople("employers");}else{document.getElementById("job-list").style.display="grid";renderJobs();}});});
 document.getElementById("confirm-cancel").addEventListener("click",function(){document.getElementById("confirm-modal").classList.remove("show");pendingAction=null;pendingActionId=null;});
 document.getElementById("confirm-ok").addEventListener("click",function(){document.getElementById("confirm-modal").classList.remove("show");if(pendingAction&&pendingActionId){if(pendingAction==="delete-seeker"||pendingAction==="delete-employer"){execUserAction(pendingAction,pendingActionId);}else{execAction(pendingAction,pendingActionId);}pendingAction=null;pendingActionId=null;}});
 
@@ -552,6 +578,106 @@ async function loadStats() {
   } catch(e) {}
 }
 
+async function generateBlog() {
+  var btn = document.getElementById("btn-gen-blog");
+  var out = document.getElementById("blog-output");
+  var count = parseInt(document.getElementById("blog-count").value) || 3;
+  btn.disabled = true;
+  btn.textContent = "Generating...";
+  out.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3);font-size:.85rem">Generating '+count+' blog posts<span class="dots"></span></div>';
+
+  var today = new Date().toLocaleDateString("en-NZ", {day:"numeric",month:"long",year:"numeric"});
+
+  var prompt = 'You are a content writer for FindMeAJob.co.nz, a free AI job matching platform in New Zealand.\n\nWrite exactly '+count+' blog posts about the NZ job market. Mix of content for JOB SEEKERS and EMPLOYERS.\n\nTopics should be timely, practical, and relevant to NZ in 2026. Include:\n- Job seeker advice (CV tips, interview prep, salary negotiation, career change)\n- Employer tips (hiring, retention, writing job ads, NZ employment law basics)\n- Market trends (in-demand skills, salary trends, regional job markets, immigration)\n- General tips (work-life balance, remote work in NZ, networking)\n\nFor each post return:\n- category: "seeker", "employer", "market", or "tips"\n- categoryLabel: human readable like "Job Seekers", "Employers", "Market Trends", "Tips"\n- title: attention-grabbing headline\n- excerpt: 1-2 sentence preview (max 160 chars)\n- body: full post, 200-400 words, practical and conversational, NZ-focused. Use line breaks between paragraphs.\n- date: "'+today+'"\n\nReturn ONLY valid JSON array:\n[{"category":"seeker","categoryLabel":"Job Seekers","title":"...","excerpt":"...","body":"...","date":"'+today+'"}]\n\nMake content genuinely helpful — not generic filler. Reference NZ-specific things (regions, industries, culture). Return ONLY the JSON array.';
+
+  try {
+    var r = await fetch("/api/chat", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:[{role:"user",content:prompt}]})});
+    var d = await r.json();
+    var raw = d.content.map(function(b){return b.text||"";}).join("").trim();
+    var si = raw.indexOf("["), ei = raw.lastIndexOf("]");
+    if (si === -1 || ei === -1) throw new Error("No JSON");
+    var posts = JSON.parse(raw.substring(si, ei+1));
+    if (!posts.length) throw new Error("Empty");
+
+    var h = '';
+    posts.forEach(function(p, i) {
+      var tagColors = {seeker:"var(--em)",employer:"var(--gold)",market:"var(--purple)",tips:"#ec4899"};
+      h += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--rl);padding:1.15rem;margin-bottom:.75rem">';
+      h += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">';
+      h += '<span style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:'+(tagColors[p.category]||'var(--text3)')+'">'+esc(p.categoryLabel||p.category)+'</span>';
+      h += '<span style="font-size:.68rem;color:var(--text3)">'+esc(p.date)+'</span>';
+      h += '</div>';
+      h += '<div style="font-size:.95rem;font-weight:800;color:var(--text);margin-bottom:.35rem">'+esc(p.title)+'</div>';
+      h += '<div style="font-size:.78rem;color:var(--text2);margin-bottom:.5rem;font-style:italic">'+esc(p.excerpt)+'</div>';
+      h += '<details style="font-size:.82rem;color:var(--text2);line-height:1.7"><summary style="cursor:pointer;color:var(--text3);font-size:.75rem;font-weight:600;margin-bottom:.5rem">Preview full post</summary><div style="white-space:pre-wrap;margin-top:.5rem">'+esc(p.body)+'</div></details>';
+      h += '</div>';
+    });
+
+    h += '<button onclick="publishBlog()" id="btn-publish-blog" style="width:100%;margin-top:.5rem;padding:.75rem;background:linear-gradient(135deg,var(--em),#14b8a6);color:#fff;border:none;border-radius:999px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:inherit">Publish '+posts.length+' Posts to Blog</button>';
+
+    out.innerHTML = h;
+    window._pendingBlogPosts = posts;
+  } catch(e) {
+    out.innerHTML = '<div style="text-align:center;padding:2rem;color:#fca5a5;font-size:.85rem">Failed to generate. Try again.</div>';
+  }
+  btn.disabled = false;
+  btn.textContent = "Generate Posts";
+}
+
+async function publishBlog() {
+  if (!window._pendingBlogPosts || !window._pendingBlogPosts.length) return;
+  var btn = document.getElementById("btn-publish-blog");
+  btn.disabled = true;
+  btn.textContent = "Publishing...";
+  try {
+    var r = await fetch("/api/approved-jobs", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({type:"save-blog", password:pw, posts:window._pendingBlogPosts})
+    });
+    var d = await r.json();
+    if (d.ok) {
+      btn.textContent = "Published!";
+      btn.style.background = "rgba(16,185,129,.15)";
+      btn.style.color = "var(--em)";
+      showToast("Blog posts published!", "success");
+      window._pendingBlogPosts = null;
+    } else {
+      btn.textContent = "Failed — try again";
+      btn.style.background = "rgba(239,68,68,.15)";
+      btn.style.color = "#fca5a5";
+    }
+  } catch(e) {
+    btn.textContent = "Failed — try again";
+  }
+}
+
+async function loadExistingBlog() {
+  var out = document.getElementById("blog-output");
+  out.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3);font-size:.85rem">Loading published posts...</div>';
+  try {
+    var r = await fetch("/api/approved-jobs?blog=1");
+    var d = await r.json();
+    var posts = d.posts || [];
+    if (!posts.length) {
+      out.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3);font-size:.85rem">No published posts yet. Generate some!</div>';
+      return;
+    }
+    var h = '<div style="font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:.75rem">'+posts.length+' published posts</div>';
+    posts.slice(0, 20).forEach(function(p) {
+      var tagColors = {seeker:"var(--em)",employer:"var(--gold)",market:"var(--purple)",tips:"#ec4899"};
+      h += '<div style="display:flex;align-items:center;gap:.75rem;padding:.5rem 0;border-bottom:1px solid var(--border)">';
+      h += '<span style="font-size:.6rem;font-weight:700;text-transform:uppercase;color:'+(tagColors[p.category]||'var(--text3)')+';min-width:55px">'+esc(p.categoryLabel||p.category)+'</span>';
+      h += '<span style="font-size:.82rem;font-weight:600;color:var(--text);flex:1">'+esc(p.title)+'</span>';
+      h += '<span style="font-size:.68rem;color:var(--text3);white-space:nowrap">'+esc(p.date)+'</span>';
+      h += '</div>';
+    });
+    out.innerHTML = h;
+  } catch(e) {
+    out.innerHTML = '<div style="text-align:center;padding:2rem;color:#fca5a5;font-size:.85rem">Failed to load posts.</div>';
+  }
+}
+
 async function generateSocial() {
   var btn = document.getElementById("btn-gen-social");
   var out = document.getElementById("social-output");
@@ -565,7 +691,8 @@ async function generateSocial() {
   var seekerCount = document.getElementById("st-seekers").textContent || "0";
 
   var toneDesc = {funny:"Funny, cheeky, roast-style. Like your best mate taking the piss.",professional:"Professional but engaging. LinkedIn-appropriate.",hype:"Hyped up, excited energy. Lots of enthusiasm.",casual:"Casual, relaxed, conversational."}[tone];
-  var focusDesc = {challenge:"Promote the #cvchallengenz TikTok challenge at findmeajob.co.nz/challenge",platform:"Promote FindMeAJob.co.nz as a free AI job matching platform for NZ",results:"Share funny example career pivot results from the challenge (make up entertaining examples)",milestone:"Share a milestone — "+cvCount+" CVs uploaded, "+seekerCount+" job seekers signed up"}[focus];
+  var focusMap = {challenge:"Promote the #cvchallengenz TikTok challenge at findmeajob.co.nz/challenge",platform:"Promote FindMeAJob.co.nz as a free AI job matching platform for NZ",results:"Share funny example career pivot results from the challenge (make up entertaining examples)",milestone:"Share a milestone — "+cvCount+" CVs uploaded, "+seekerCount+" job seekers signed up","seeker-tips":"Share genuinely helpful job seeking advice for NZ job seekers — CV tips, interview prep, salary negotiation, career change advice. Mention findmeajob.co.nz as a helpful free tool but focus on the advice being valuable. Include NZ-specific context (regions, industries, culture).","employer-tips":"Share helpful hiring and recruitment tips for NZ employers — writing better job ads, reducing time-to-hire, retention strategies, NZ employment law basics, onboarding tips. Mention findmeajob.co.nz for free job posting but focus on the advice. NZ business context.","market-insight":"Share an interesting NZ job market insight or trend — in-demand skills, salary movements, regional differences, industry growth, immigration impact on talent. Be data-informed and NZ-specific. Position FindMeAJob.co.nz as a source of market knowledge."};
+  var focusDesc = focusMap[focus] || focusMap.challenge;
 
   var prompt = 'Generate social media posts for a NZ job platform called FindMeAJob.co.nz.\n\nTone: '+toneDesc+'\nFocus: '+focusDesc+'\nStats: '+cvCount+' CV uploads, '+seekerCount+' job seekers\n\nGenerate ONE post for each platform. Each post must be ready to copy-paste with no editing needed.\n\nReturn ONLY valid JSON:\n{"twitter":"tweet text under 280 chars with hashtags","linkedin":"linkedin post with hashtags","facebook":"facebook post with hashtags","instagram":"instagram caption with hashtags","tiktok":"tiktok caption with hashtags","youtube":"youtube shorts description with hashtags","reddit":"reddit post — write a title and body separated by \\n\\n. Title should be attention-grabbing. Body should feel authentic, not like an ad. Suitable for r/newzealand or r/careerguidance"}\n\nMake each post feel native to the platform. Twitter is punchy. LinkedIn is insightful. Facebook is conversational. Instagram is visual-focused. TikTok is chaotic energy. YouTube is descriptive. Reddit hates ads — make it feel like a genuine person sharing something cool they found, not marketing.\n\nReturn ONLY the JSON.';
 

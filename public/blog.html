@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — FindMeAJob.co.nz | NZ Job Market Insights</title>
+<meta name="description" content="Daily insights on the NZ job market, career advice, hiring tips for employers, and job seeker guides. Powered by AI.">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.findmeajob.co.nz/blog">
+<meta property="og:title" content="NZ Job Market Blog — FindMeAJob.co.nz">
+<meta property="og:description" content="Daily insights on the NZ job market for job seekers and employers.">
+<meta property="og:image" content="https://www.findmeajob.co.nz/favicon-512.png">
+<link rel="icon" type="image/svg+xml" href="/logo-icon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#09090b;--bg2:rgba(255,255,255,.03);--text:#f8fafc;--text2:#a1a1aa;--text3:#71717a;--em:#10b981;--purple:#8b5cf6;--pink:#ec4899;--gold:#f59e0b;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--r:12px;--rl:20px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
+a{color:var(--em);text-decoration:none}
+a:hover{text-decoration:underline}
+
+.top-bar{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border)}
+.top-logo{font-size:.95rem;font-weight:800;color:var(--text);text-decoration:none}
+.top-logo span{color:var(--em)}
+.top-logo:hover{text-decoration:none}
+.top-links{display:flex;gap:1rem;font-size:.82rem;font-weight:600}
+.top-links a{color:var(--text2)}
+.top-links a:hover{color:var(--text)}
+
+.blog-header{text-align:center;padding:3rem 2rem 2rem}
+.blog-header h1{font-size:1.8rem;font-weight:900;margin-bottom:.35rem}
+.blog-header p{color:var(--text2);font-size:.9rem;max-width:500px;margin:0 auto}
+.blog-tabs{display:flex;justify-content:center;gap:.5rem;margin-top:1.25rem;flex-wrap:wrap}
+.blog-tab{padding:.4rem 1rem;border-radius:999px;font-size:.78rem;font-weight:600;border:1px solid var(--border2);background:none;color:var(--text2);cursor:pointer;font-family:inherit;transition:all .2s}
+.blog-tab:hover,.blog-tab.active{background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.3);color:var(--em)}
+
+.posts{max-width:720px;margin:0 auto;padding:0 1.5rem 3rem}
+.post-card{border:1px solid var(--border);border-radius:var(--rl);padding:1.5rem;margin-top:1.25rem;background:var(--bg2);transition:all .3s;cursor:pointer}
+.post-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.post-tag{display:inline-block;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:.2rem .6rem;border-radius:999px;margin-bottom:.6rem}
+.post-tag.seeker{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);color:var(--em)}
+.post-tag.employer{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);color:var(--gold)}
+.post-tag.market{background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);color:var(--purple)}
+.post-tag.tips{background:rgba(236,72,153,.08);border:1px solid rgba(236,72,153,.2);color:var(--pink)}
+.post-title{font-size:1.15rem;font-weight:800;color:var(--text);margin-bottom:.35rem;line-height:1.3}
+.post-date{font-size:.72rem;color:var(--text3);font-weight:500;margin-bottom:.65rem}
+.post-excerpt{font-size:.88rem;color:var(--text2);line-height:1.7}
+.post-full{display:none;font-size:.88rem;color:var(--text2);line-height:1.8;margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border)}
+.post-card.expanded .post-full{display:block}
+.post-card.expanded .post-excerpt{display:none}
+
+.empty-state{text-align:center;padding:4rem 2rem;color:var(--text3);font-size:.9rem}
+
+.blog-cta{text-align:center;padding:2rem;margin-top:1rem}
+.blog-cta a{display:inline-block;padding:.6rem 1.5rem;background:linear-gradient(135deg,var(--em),#14b8a6);color:#fff;border-radius:999px;font-size:.85rem;font-weight:700;text-decoration:none}
+.blog-cta a:hover{text-decoration:none;transform:translateY(-2px)}
+
+@media(max-width:600px){
+  .top-bar{padding:.75rem 1rem}
+  .blog-header{padding:2rem 1rem 1.5rem}
+  .blog-header h1{font-size:1.4rem}
+  .posts{padding:0 1rem 2rem}
+  .post-card{padding:1.15rem}
+}
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <a class="top-logo" href="/">FindMe<span>AJob</span></a>
+  <div class="top-links">
+    <a href="/">Find Jobs</a>
+    <a href="/challenge">#cvchallengenz</a>
+    <a href="/employer-portal.html">Employers</a>
+  </div>
+</div>
+
+<div class="blog-header">
+  <h1>NZ Job Market Insights</h1>
+  <p>Daily tips for job seekers and employers in Aotearoa New Zealand</p>
+  <div class="blog-tabs">
+    <button class="blog-tab active" onclick="filterPosts('all')">All</button>
+    <button class="blog-tab" onclick="filterPosts('seeker')">Job Seekers</button>
+    <button class="blog-tab" onclick="filterPosts('employer')">Employers</button>
+    <button class="blog-tab" onclick="filterPosts('market')">Market Trends</button>
+    <button class="blog-tab" onclick="filterPosts('tips')">Tips</button>
+  </div>
+</div>
+
+<div class="posts" id="posts">
+  <div class="empty-state">Loading posts...</div>
+</div>
+
+<div class="blog-cta">
+  <a href="/">Find your next NZ job with AI &rarr;</a>
+</div>
+
+<script>
+var allPosts=[];
+var currentFilter='all';
+
+function filterPosts(cat){
+  currentFilter=cat;
+  document.querySelectorAll('.blog-tab').forEach(function(t){t.classList.remove('active');});
+  event.target.classList.add('active');
+  renderPosts();
+}
+
+function renderPosts(){
+  var el=document.getElementById('posts');
+  var filtered=currentFilter==='all'?allPosts:allPosts.filter(function(p){return p.category===currentFilter;});
+  if(!filtered.length){
+    el.innerHTML='<div class="empty-state">No posts yet. Check back soon!</div>';
+    return;
+  }
+  var h='';
+  filtered.forEach(function(p,i){
+    h+='<div class="post-card" onclick="this.classList.toggle(\'expanded\')">';
+    h+='<div class="post-tag '+(p.category||'market')+'">'+(p.categoryLabel||p.category||'Insight')+'</div>';
+    h+='<div class="post-title">'+(p.title||'').replace(/</g,'&lt;')+'</div>';
+    h+='<div class="post-date">'+(p.date||'')+'</div>';
+    h+='<div class="post-excerpt">'+(p.excerpt||'').replace(/</g,'&lt;')+'</div>';
+    h+='<div class="post-full">'+(p.body||'').replace(/\n/g,'<br>')+'</div>';
+    h+='</div>';
+  });
+  el.innerHTML=h;
+}
+
+// Load posts
+fetch('/api/approved-jobs?blog=1').then(function(r){return r.json();}).then(function(d){
+  allPosts=d.posts||[];
+  renderPosts();
+}).catch(function(){
+  document.getElementById('posts').innerHTML='<div class="empty-state">No posts yet. Check back soon!</div>';
+});
+</script>
+</body>
+</html>

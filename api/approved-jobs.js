@@ -21,6 +21,34 @@ module.exports = async function handler(req, res) {
         await hset("stats", "cv-uploads", String(count));
         return res.status(200).json({ ok: true });
       }
+      if (type === "leaderboard") {
+        var roles = req.body.roles;
+        if (!roles || !Array.isArray(roles)) return res.status(200).json({ ok: true });
+        var lbRaw = await hget("stats", "leaderboard");
+        var lb = {};
+        try { lb = lbRaw ? (typeof lbRaw === "string" ? JSON.parse(lbRaw) : lbRaw) : {}; } catch(e) { lb = {}; }
+        roles.slice(0, 4).forEach(function(role) {
+          var key = role.trim().substring(0, 60);
+          if (!key) return;
+          lb[key] = (lb[key] || 0) + 1;
+        });
+        await hset("stats", "leaderboard", JSON.stringify(lb));
+        return res.status(200).json({ ok: true });
+      }
+      if (type === "save-blog") {
+        var blogPw = req.body.password;
+        var adminPw = process.env.ADMIN_PASSWORD;
+        if (!blogPw || blogPw !== adminPw) return res.status(200).json({ ok: false });
+        var posts = req.body.posts;
+        if (!posts || !Array.isArray(posts)) return res.status(200).json({ ok: false });
+        var existing = await hget("stats", "blog-posts");
+        var allPosts = [];
+        try { allPosts = existing ? JSON.parse(existing) : []; } catch(e) { allPosts = []; }
+        posts.forEach(function(p) { allPosts.unshift(p); });
+        if (allPosts.length > 50) allPosts = allPosts.slice(0, 50);
+        await hset("stats", "blog-posts", JSON.stringify(allPosts));
+        return res.status(200).json({ ok: true });
+      }
       if (!jobId || !type) return res.status(200).json({ ok: true });
       if (type !== "view" && type !== "apply") return res.status(200).json({ ok: true });
       var raw = await hget("jobs", jobId);
@@ -33,6 +61,30 @@ module.exports = async function handler(req, res) {
     } catch (err) {
       return res.status(200).json({ ok: true });
     }
+  }
+
+  // GET ?leaderboard=1
+  if (req.query && req.query.leaderboard === "1") {
+    try {
+      if (!getKV()) return res.status(200).json({ leaderboard: [] });
+      var lbRaw2 = await hget("stats", "leaderboard");
+      var lb2 = {};
+      try { lb2 = lbRaw2 ? (typeof lbRaw2 === "string" ? JSON.parse(lbRaw2) : lbRaw2) : {}; } catch(e) { lb2 = {}; }
+      var sorted = Object.keys(lb2).map(function(k) { return { role: k, count: lb2[k] }; })
+        .sort(function(a, b) { return b.count - a.count; }).slice(0, 10);
+      return res.status(200).json({ leaderboard: sorted });
+    } catch(e) { return res.status(200).json({ leaderboard: [] }); }
+  }
+
+  // GET ?blog=1
+  if (req.query && req.query.blog === "1") {
+    try {
+      if (!getKV()) return res.status(200).json({ posts: [] });
+      var blogRaw = await hget("stats", "blog-posts");
+      var blogPosts = [];
+      try { blogPosts = blogRaw ? JSON.parse(blogRaw) : []; } catch(e) { blogPosts = []; }
+      return res.status(200).json({ posts: blogPosts });
+    } catch(e) { return res.status(200).json({ posts: [] }); }
   }
 
   // GET ?stats=1 = public job count

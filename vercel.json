@@ -90,6 +90,10 @@
       "dest": "/public/challenge.html"
     },
     {
+      "src": "/blog",
+      "dest": "/public/blog.html"
+    },
+    {
       "src": "/",
       "dest": "/public/index.html"
     },
