@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>#cvchallengenz — Career Pivot Challenge | FindMeAJob.co.nz</title>
+<meta name="description" content="Upload your CV and discover 4 wild career pivots you never imagined. The viral NZ TikTok challenge.">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.findmeajob.co.nz/challenge">
+<meta property="og:title" content="#cvchallengenz — What Career Should You ACTUALLY Have?">
+<meta property="og:description" content="Upload your CV. Get 4 wild career pivots. Share on TikTok.">
+<meta property="og:image" content="https://www.findmeajob.co.nz/favicon-512.png">
+<meta property="og:site_name" content="FindMeAJob.co.nz">
+<meta property="og:locale" content="en_NZ">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="#cvchallengenz — Career Pivot Challenge">
+<meta name="twitter:description" content="Upload your CV. Get 4 wild career pivots you never imagined.">
+<link rel="icon" type="image/svg+xml" href="/logo-icon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#09090b;--bg2:#0f172a;--text:#f8fafc;--text2:#a1a1aa;--text3:#71717a;--em:#10b981;--purple:#8b5cf6;--gold:#f59e0b;--pink:#ec4899;--blue:#3b82f6;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--r:12px;--rl:20px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;min-height:100vh;min-height:100dvh;font-size:15px;line-height:1.6;overflow-x:hidden}
+a{color:var(--em);text-decoration:none}
+
+/* Sections */
+.section{display:none;min-height:100vh;min-height:100dvh}
+.section.active{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem}
+
+/* Hero */
+.hero-tag{font-size:clamp(2.2rem,8vw,3.5rem);font-weight:900;background:linear-gradient(135deg,var(--purple),var(--pink),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;line-height:1.1;margin-bottom:.75rem;animation:neonIn 1s ease-out}
+.hero-sub{font-size:clamp(.95rem,3.5vw,1.2rem);color:var(--text2);text-align:center;max-width:340px;line-height:1.5;margin-bottom:2rem;font-weight:500}
+.hero-sub strong{color:var(--text);font-weight:700}
+.hero-cta{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;padding:.9rem 2.2rem;border-radius:50px;font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;transition:all .3s;box-shadow:0 4px 25px rgba(139,92,246,.3)}
+.hero-cta:hover{transform:translateY(-2px);box-shadow:0 8px 35px rgba(139,92,246,.4)}
+.hero-trust{margin-top:1.5rem;font-size:.72rem;color:var(--text3);text-align:center;font-weight:500;letter-spacing:.3px}
+.hero-brand{position:absolute;top:1.25rem;left:50%;transform:translateX(-50%);font-size:.8rem;font-weight:800;color:var(--text3);letter-spacing:.5px}
+.hero-brand span{color:var(--em)}
+
+/* Upload */
+.upload-wrap{width:100%;max-width:400px}
+.upload-title{font-size:1.3rem;font-weight:800;text-align:center;margin-bottom:.25rem}
+.upload-hint{font-size:.78rem;color:var(--text3);text-align:center;margin-bottom:1.25rem;font-weight:500}
+.drop-zone{border:2px dashed var(--border2);border-radius:var(--rl);padding:2.5rem 1.5rem;text-align:center;cursor:pointer;transition:all .3s;background:rgba(255,255,255,.02)}
+.drop-zone:hover,.drop-zone.over{border-color:var(--purple);background:rgba(139,92,246,.04)}
+.drop-zone.loaded{border-color:rgba(16,185,129,.5);background:rgba(16,185,129,.04)}
+.drop-icon{font-size:2rem;margin-bottom:.5rem;opacity:.5}
+.drop-text{font-size:.85rem;color:var(--text2);font-weight:600}
+.drop-sub{font-size:.72rem;color:var(--text3);margin-top:.25rem}
+.cv-info{display:none;align-items:center;gap:.5rem;margin-top:.75rem;padding:.6rem .85rem;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);border-radius:var(--r);font-size:.82rem;font-weight:600;color:var(--em)}
+.cv-info .remove{margin-left:auto;cursor:pointer;color:var(--text3);font-size:.9rem}
+.cv-info .remove:hover{color:#ef4444}
+.analyze-btn{width:100%;margin-top:1rem;padding:.85rem;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;border-radius:50px;font-size:.95rem;font-weight:700;font-family:inherit;cursor:pointer;transition:all .3s;box-shadow:0 4px 20px rgba(139,92,246,.25)}
+.analyze-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(139,92,246,.35)}
+.analyze-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.back-link{margin-top:1.25rem;font-size:.78rem;color:var(--text3);cursor:pointer;font-weight:500}
+.back-link:hover{color:var(--text2)}
+.privacy-note{font-size:.68rem;color:var(--text3);text-align:center;margin-top:.75rem;font-weight:400}
+.cv-err{display:none;color:#ef4444;font-size:.78rem;font-weight:600;text-align:center;margin-top:.5rem}
+.cv-err.show{display:block}
+
+/* Loading */
+.loading-wrap{text-align:center;max-width:360px}
+.spinner{width:56px;height:56px;border:3px solid var(--border2);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1.5rem}
+.load-title{font-size:1.05rem;font-weight:700;margin-bottom:.25rem;transition:opacity .3s}
+.load-detail{font-size:.78rem;color:var(--text3);font-weight:500;margin-bottom:1.5rem;transition:opacity .3s}
+.progress-track{width:100%;height:4px;background:var(--border);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--purple),var(--pink));border-radius:4px;transition:width .5s ease}
+.load-time{font-size:.68rem;color:var(--text3);margin-top:.75rem;font-weight:500}
+
+/* Results */
+.results-wrap{width:100%;max-width:420px;display:flex;flex-direction:column;align-items:center}
+.result-card{width:min(380px,92vw);background:linear-gradient(180deg,#0f172a 0%,#09090b 100%);border:1px solid rgba(139,92,246,.25);border-radius:24px;padding:1.75rem 1.25rem;position:relative;overflow:hidden;box-shadow:0 0 60px rgba(139,92,246,.1),0 0 120px rgba(16,185,129,.05)}
+.result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(139,92,246,.5),transparent)}
+.card-hashtag{font-size:1.1rem;font-weight:900;background:linear-gradient(135deg,var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;margin-bottom:1rem}
+.card-current{text-align:center;margin-bottom:.75rem}
+.card-current-label{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:.2rem}
+.card-current-role{font-size:1.15rem;font-weight:800;color:var(--text)}
+.card-arrows{text-align:center;font-size:1.2rem;color:var(--purple);margin-bottom:.6rem;letter-spacing:6px;animation:arrowPulse 2s ease-in-out infinite}
+.card-pivots-title{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:2px;background:linear-gradient(135deg,var(--purple),var(--pink),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;margin-bottom:.85rem}
+.pivot-item{border-radius:14px;padding:.85rem 1rem;margin-bottom:.6rem;position:relative;opacity:0;animation:pivotReveal .5s ease-out forwards}
+.pivot-item:last-child{margin-bottom:0}
+.pivot-head{display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem}
+.pivot-icon{font-size:1.1rem}
+.pivot-role{font-size:.92rem;font-weight:800;color:var(--text)}
+.pivot-field{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.35rem}
+.pivot-why{font-size:.75rem;color:var(--text2);line-height:1.5;margin-bottom:.3rem}
+.pivot-salary{font-size:.72rem;font-weight:600;color:var(--text3)}
+.card-footer{text-align:center;margin-top:1rem;padding-top:.75rem;border-top:1px solid var(--border)}
+.card-footer-tag{font-size:.7rem;font-weight:800;background:linear-gradient(135deg,var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.card-footer-brand{font-size:.6rem;color:var(--text3);margin-top:.15rem;font-weight:500}
+
+/* Post-result CTAs */
+.post-cta{margin-top:1.5rem;text-align:center}
+.share-prompt{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:.35rem}
+.share-hashtag{font-size:.82rem;font-weight:600;color:var(--purple)}
+.try-again{margin-top:1.25rem;padding:.65rem 1.5rem;background:rgba(255,255,255,.06);border:1px solid var(--border2);color:var(--text);border-radius:50px;font-size:.82rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .3s}
+.try-again:hover{background:rgba(255,255,255,.1);border-color:var(--purple)}
+.real-jobs-link{display:block;margin-top:1rem;font-size:.78rem;color:var(--em);font-weight:600}
+.real-jobs-link:hover{text-decoration:underline}
+
+/* Error */
+.error-wrap{text-align:center;max-width:360px}
+.error-wrap h3{font-size:1.1rem;margin-bottom:.5rem;color:#ef4444}
+.error-wrap p{font-size:.82rem;color:var(--text2);margin-bottom:1rem}
+
+/* Animations */
+@keyframes neonIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pivotReveal{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes arrowPulse{0%,100%{opacity:.4;transform:translateY(0)}50%{opacity:1;transform:translateY(3px)}}
+@keyframes shimmer{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+</style>
+</head>
+<body>
+<!-- HERO -->
+<div class="section active" id="section-hero">
+  <div class="hero-brand">Find<span>Me</span>AJob</div>
+  <div class="hero-tag">#cvchallengenz</div>
+  <div class="hero-sub">Upload your CV.<br>Find out what career you <strong>should actually have</strong>.</div>
+  <button class="hero-cta" onclick="showSection('section-upload')">I'm Brave Enough</button>
+  <div class="hero-trust">No sign-up &bull; CV not stored &bull; 100% free &bull; NZ only</div>
+  <div style="margin-top:2.5rem;font-size:.62rem;color:var(--text3);text-align:center;max-width:320px;line-height:1.6;font-style:italic">Career suggestions are AI-generated for entertainment purposes. Please don't actually quit your job to become a volcano tour guide. (Unless...?)</div>
+</div>
+
+<!-- UPLOAD -->
+<div class="section" id="section-upload">
+  <div class="upload-wrap">
+    <div class="upload-title">The moment of truth</div>
+    <div class="upload-hint">PDF, Word (.docx), or text file &mdash; we won't judge</div>
+    <div class="drop-zone" id="drop-zone">
+      <div class="drop-icon">&#128196;</div>
+      <div class="drop-text">Tap to browse or drag &amp; drop</div>
+      <div class="drop-sub">Your CV is analysed locally and never stored</div>
+      <input type="file" id="cv-file" accept=".pdf,.doc,.docx,.txt" style="display:none">
+    </div>
+    <div class="cv-info" id="cv-info">
+      <span style="color:var(--em)">&#10003;</span>
+      <span id="cv-name"></span>
+      <span class="remove" id="cv-remove">&times;</span>
+    </div>
+    <div class="cv-err" id="cv-err">Please upload your CV first</div>
+    <button class="analyze-btn" id="analyze-btn" onclick="analyzeChallenge()">Show Me My Destiny</button>
+    <div class="privacy-note">Your CV is sent to AI for analysis only &mdash; never saved or shared</div>
+    <div class="back-link" onclick="showSection('section-hero')">&larr; Back</div>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div class="section" id="section-loading">
+  <div class="loading-wrap">
+    <div class="spinner"></div>
+    <div class="load-title" id="load-title">Reading your CV...</div>
+    <div class="load-detail" id="load-detail">Extracting your skills and experience</div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="load-time" id="load-time"></div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="section" id="section-results">
+  <div class="results-wrap">
+    <div class="result-card" id="result-card"></div>
+    <div class="post-cta">
+      <div class="share-prompt">Screenshot this &amp; tag us on TikTok!</div>
+      <div class="share-hashtag">#cvchallengenz</div>
+      <button class="try-again" onclick="resetChallenge()">Try Another CV</button>
+      <a class="real-jobs-link" href="/">Okay but seriously, find REAL jobs &rarr;</a>
+      <div style="margin-top:1.25rem;font-size:.58rem;color:var(--text3);max-width:300px;line-height:1.6;font-style:italic">Disclaimer: These career pivots are AI-generated for entertainment. We take no responsibility if you actually become a professional cheese sculptor. Results may cause existential crises, career envy, or spontaneous LinkedIn updates.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ERROR -->
+<div class="section" id="section-error">
+  <div class="error-wrap">
+    <h3>Oops!</h3>
+    <p id="error-msg">Something went wrong. Please try again.</p>
+    <button class="try-again" onclick="resetChallenge()">Try Again</button>
+  </div>
+</div>
+
+<script>
+var cvFileData=null,cvFileName='';
+
+function esc(s){var d=document.createElement("div");d.textContent=s||"";return d.innerHTML;}
+
+function loadMammoth(cb){
+  if(typeof mammoth!=="undefined")return cb();
+  var s=document.createElement("script");
+  s.src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js";
+  s.onload=cb;s.onerror=cb;
+  document.head.appendChild(s);
+}
+
+function showSection(id){
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});
+  var el=document.getElementById(id);
+  if(el)el.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function handleFile(file){
+  if(!file)return;
+  cvFileName=file.name;
+  var ext=file.name.toLowerCase().split('.').pop();
+  function done(data){
+    cvFileData=data;
+    document.getElementById('cv-info').style.display='flex';
+    document.getElementById('cv-name').textContent=cvFileName;
+    document.getElementById('drop-zone').classList.add('loaded');
+    document.getElementById('cv-err').classList.remove('show');
+  }
+  if(ext==='pdf'){
+    var r=new FileReader();r.onload=function(e){done(e.target.result);};r.readAsDataURL(file);
+  } else if(ext==='doc'||ext==='docx'){
+    var r2=new FileReader();r2.onload=function(e){
+      var buf=e.target.result;
+      loadMammoth(function(){
+        if(typeof mammoth!=='undefined'){
+          mammoth.extractRawText({arrayBuffer:buf}).then(function(res){
+            if(res.value.trim().length>50){done(res.value.trim());}
+            else{var r3=new FileReader();r3.onload=function(e2){done(e2.target.result);};r3.readAsDataURL(new Blob([buf]));}
+          }).catch(function(){var r3=new FileReader();r3.onload=function(e2){done(e2.target.result);};r3.readAsDataURL(new Blob([buf]));});
+        } else{var r3=new FileReader();r3.onload=function(e2){done(e2.target.result);};r3.readAsDataURL(new Blob([buf]));}
+      });
+    };r2.readAsArrayBuffer(file);
+  } else{
+    var r4=new FileReader();r4.onload=function(e){done(e.target.result);};r4.readAsText(file);
+  }
+}
+
+// Upload zone events
+(function(){
+  var dz=document.getElementById('drop-zone');
+  var fi=document.getElementById('cv-file');
+  dz.addEventListener('click',function(){fi.click();});
+  fi.addEventListener('change',function(){if(fi.files[0])handleFile(fi.files[0]);});
+  dz.addEventListener('dragover',function(e){e.preventDefault();dz.classList.add('over');});
+  dz.addEventListener('dragleave',function(){dz.classList.remove('over');});
+  dz.addEventListener('drop',function(e){e.preventDefault();dz.classList.remove('over');if(e.dataTransfer.files[0])handleFile(e.dataTransfer.files[0]);});
+  document.getElementById('cv-remove').addEventListener('click',function(){
+    cvFileData=null;cvFileName='';
+    document.getElementById('cv-info').style.display='none';
+    document.getElementById('drop-zone').classList.remove('loaded');
+    fi.value='';
+  });
+})();
+
+// Loading messages
+var _loadTimer=null,_loadProgress=null;
+function startLoading(){
+  var msgs=[
+    {title:'Reading your CV...',detail:'No judgement. Okay, maybe a little.'},
+    {title:'Discovering hidden superpowers...',detail:'You have more than you think'},
+    {title:'Thinking way outside the box...',detail:'The box has been destroyed'},
+    {title:'Getting wildly creative...',detail:'This is going to be good'},
+    {title:'Preparing your reveal...',detail:'You might want to sit down for this'}
+  ];
+  var i=0;
+  var titleEl=document.getElementById('load-title');
+  var detailEl=document.getElementById('load-detail');
+  var progressEl=document.getElementById('progress-fill');
+  var timeEl=document.getElementById('load-time');
+  progressEl.style.width='0%';
+  titleEl.textContent=msgs[0].title;
+  detailEl.textContent=msgs[0].detail;
+  _loadTimer=setInterval(function(){
+    i++;if(i>=msgs.length)i=msgs.length-1;
+    titleEl.textContent=msgs[i].title;
+    detailEl.textContent=msgs[i].detail;
+  },3000);
+  var p=0;
+  _loadProgress=setInterval(function(){
+    p+=Math.random()*8+2;if(p>92)p=92;
+    progressEl.style.width=p+'%';
+  },500);
+  var sec=0;
+  timeEl.textContent='';
+  timeEl._t=setInterval(function(){sec++;timeEl.textContent=sec+'s';},1000);
+}
+function stopLoading(){
+  clearInterval(_loadTimer);clearInterval(_loadProgress);
+  var timeEl=document.getElementById('load-time');
+  if(timeEl._t)clearInterval(timeEl._t);
+  document.getElementById('progress-fill').style.width='100%';
+}
+
+async function analyzeChallenge(){
+  if(!cvFileData){document.getElementById('cv-err').classList.add('show');return;}
+  document.getElementById('cv-err').classList.remove('show');
+  document.getElementById('analyze-btn').disabled=true;
+
+  showSection('section-loading');
+  startLoading();
+
+  // Track upload
+  fetch('/api/approved-jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'cv-upload'})}).catch(function(){});
+
+  var ext=cvFileName.toLowerCase().split('.').pop();
+  var isB64=typeof cvFileData==='string'&&cvFileData.includes('base64,');
+
+  var sysPrompt='You are a wildly creative NZ career advisor for the #cvchallengenz TikTok challenge. Your job is to find SURPRISING, UNEXPECTED, and ENTERTAINING career pivots that make people laugh and think "wait... that actually makes sense?!" Be bold. Be funny. But always ground it in their REAL transferable skills from the CV. Think: accountant → volcano tour guide, nurse → escape room designer, teacher → Netflix script consultant.';
+
+  var userPrompt='Read this CV carefully. Then:\n1) What is their current job/field? (Return as "current_role")\n2) Suggest exactly 4 WILD but weirdly plausible career pivots for New Zealand. These should be surprising, funny, and shareable — but the "why" must genuinely connect their real skills.\n\nReturn ONLY valid JSON:\n{"current_role":"Their Current Job Title","pivots":[{"role":"Creative Job Title","field":"Industry","why":"1 punchy sentence connecting their actual skills to this wild role","earning":"Realistic NZ salary range","icon":"single emoji"}]}\n\nMake it entertaining enough to screenshot and share on TikTok. Return ONLY the JSON.';
+
+  var msgs;
+  if(ext==='pdf'&&isB64){
+    msgs=[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:cvFileData.split('base64,')[1]}},{type:'text',text:userPrompt}]}];
+  } else if(!isB64&&cvFileData.length>50){
+    msgs=[{role:'user',content:'CV content:\n\n'+cvFileData.substring(0,5000)+'\n\n'+userPrompt}];
+  } else{
+    msgs=[{role:'user',content:'Someone with CV named "'+cvFileName+'" wants career pivots.\n\n'+userPrompt}];
+  }
+
+  try{
+    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sysPrompt,messages:msgs})});
+    var d=await r.json();
+    if(!d.content)throw new Error('No response from AI');
+    var raw=d.content.map(function(b){return b.text||'';}).join('').trim();
+    var si=raw.indexOf('{'),ei=raw.lastIndexOf('}');
+    if(si===-1||ei===-1)throw new Error('No JSON');
+    var data=JSON.parse(raw.substring(si,ei+1));
+    if(!data.pivots||!data.pivots.length)throw new Error('No pivots');
+
+    stopLoading();
+    renderCard(data);
+    showSection('section-results');
+  } catch(e){
+    console.error('Challenge error:',e);
+    stopLoading();
+    document.getElementById('error-msg').textContent='Could not process your CV. Please try again.';
+    showSection('section-error');
+  }
+
+  document.getElementById('analyze-btn').disabled=false;
+}
+
+function renderCard(data){
+  var colors=[
+    {bg:'rgba(139,92,246,.1)',border:'rgba(139,92,246,.25)',accent:'#8b5cf6'},
+    {bg:'rgba(59,130,246,.1)',border:'rgba(59,130,246,.25)',accent:'#3b82f6'},
+    {bg:'rgba(245,158,11,.1)',border:'rgba(245,158,11,.25)',accent:'#f59e0b'},
+    {bg:'rgba(236,72,153,.1)',border:'rgba(236,72,153,.25)',accent:'#ec4899'}
+  ];
+
+  var h='';
+  h+='<div class="card-hashtag">#cvchallengenz</div>';
+  h+='<div class="card-current">';
+  h+='<div class="card-current-label">Currently</div>';
+  h+='<div class="card-current-role">'+esc(data.current_role||'Mystery Role')+'</div>';
+  h+='</div>';
+  h+='<div class="card-arrows">&darr; &darr; &darr; &darr;</div>';
+  h+='<div class="card-pivots-title">Your Career Plot Twists</div>';
+
+  data.pivots.slice(0,4).forEach(function(p,i){
+    var c=colors[i%4];
+    h+='<div class="pivot-item" style="background:'+c.bg+';border:1px solid '+c.border+';animation-delay:'+(i*0.15)+'s">';
+    h+='<div class="pivot-head"><span class="pivot-icon">'+esc(p.icon||'✨')+'</span><span class="pivot-role">'+esc(p.role)+'</span></div>';
+    h+='<div class="pivot-field" style="color:'+c.accent+'">'+esc(p.field)+'</div>';
+    h+='<div class="pivot-why">'+esc(p.why)+'</div>';
+    h+='<div class="pivot-salary">'+esc(p.earning)+'</div>';
+    h+='</div>';
+  });
+
+  h+='<div class="card-footer">';
+  h+='<div class="card-footer-tag">#cvchallengenz</div>';
+  h+='<div class="card-footer-brand">FindMeAJob.co.nz</div>';
+  h+='<div style="font-size:.5rem;color:var(--text3);margin-top:.4rem;opacity:.6;font-style:italic">AI-generated for entertainment &bull; don\'t quit your day job (yet)</div>';
+  h+='</div>';
+
+  document.getElementById('result-card').innerHTML=h;
+}
+
+function resetChallenge(){
+  cvFileData=null;cvFileName='';
+  document.getElementById('cv-info').style.display='none';
+  document.getElementById('drop-zone').classList.remove('loaded');
+  document.getElementById('cv-file').value='';
+  document.getElementById('result-card').innerHTML='';
+  showSection('section-hero');
+}
+</script>
+</body>
+</html>

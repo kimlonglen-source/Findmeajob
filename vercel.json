@@ -86,6 +86,10 @@
       "dest": "/public/logo-icon.svg"
     },
     {
+      "src": "/challenge",
+      "dest": "/public/challenge.html"
+    },
+    {
       "src": "/",
       "dest": "/public/index.html"
     },
