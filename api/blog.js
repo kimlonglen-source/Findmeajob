@@ -27,12 +27,17 @@ module.exports = async function handler(req, res) {
       var gradients = {seeker:"linear-gradient(135deg,#059669,#10b981)",employer:"linear-gradient(135deg,#d97706,#f59e0b)",market:"linear-gradient(135deg,#7c3aed,#8b5cf6)",tips:"linear-gradient(135deg,#db2777,#ec4899)"};
       var grad = gradients[tagClass] || gradients.market;
 
+      var imgId = p.imageId || (schemaItems.length * 37 + 100);
+
       postsHtml += '<article class="post-card" id="' + slug + '" itemscope itemtype="https://schema.org/BlogPosting">';
-      postsHtml += '<div class="post-header" style="background:' + grad + ';padding:1.5rem;border-radius:var(--rl) var(--rl) 0 0;margin:-1.5rem -1.5rem 1rem;display:flex;align-items:center;gap:.75rem">';
-      postsHtml += '<span style="font-size:2.2rem" role="img">' + safeIcon + '</span>';
-      postsHtml += '<div><div class="post-tag ' + tagClass + '" style="margin-bottom:.2rem;background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);color:#fff">' + tagLabel + '</div>';
+      postsHtml += '<div style="position:relative;height:200px;background:url(https://picsum.photos/seed/' + imgId + '/800/400) center/cover,' + grad + ';border-radius:var(--rl) var(--rl) 0 0;margin:-1.5rem -1.5rem 1rem;display:flex;align-items:flex-end;overflow:hidden">';
+      postsHtml += '<div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.75) 0%,transparent 50%)"></div>';
+      postsHtml += '<div style="position:relative;padding:1.25rem;display:flex;align-items:center;gap:.75rem;width:100%">';
+      postsHtml += '<span style="font-size:2rem" role="img">' + safeIcon + '</span>';
+      postsHtml += '<div><div class="post-tag ' + tagClass + '" style="margin-bottom:.2rem;background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3);color:#fff">' + tagLabel + '</div>';
       postsHtml += '<time class="post-date" itemprop="datePublished" style="color:rgba(255,255,255,.6)">' + safeDate + '</time></div>';
-      postsHtml += '</div>';
+      postsHtml += '</div></div>';
+      postsHtml += '<meta itemprop="image" content="https://picsum.photos/seed/' + imgId + '/800/400">';
       postsHtml += '<h2 class="post-title" itemprop="headline">' + safeTitle + '</h2>';
       postsHtml += '<p itemprop="description" style="font-size:.88rem;color:var(--text2);line-height:1.7;margin-bottom:.75rem">' + safeExcerpt + '</p>';
       postsHtml += '<div itemprop="articleBody" style="font-size:.88rem;color:var(--text2);line-height:1.8"><p>' + safeBody + '</p></div>';
