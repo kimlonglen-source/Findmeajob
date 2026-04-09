@@ -254,11 +254,11 @@ function handleFile(file){
 var _loadTimer=null,_loadProgress=null;
 function startLoading(){
   var msgs=[
-    {title:'Reading your CV...',detail:'No judgement. Okay, maybe a little.'},
-    {title:'Discovering hidden superpowers...',detail:'You have more than you think'},
-    {title:'Thinking way outside the box...',detail:'The box has been destroyed'},
-    {title:'Getting wildly creative...',detail:'This is going to be good'},
-    {title:'Preparing your reveal...',detail:'You might want to sit down for this'}
+    {title:'Reading your CV...',detail:'Oh. Oh wow. Okay.'},
+    {title:'Judging your life choices...',detail:'No comment'},
+    {title:'Finding what you SHOULD be doing...',detail:'This is going to hurt'},
+    {title:'Generating your roast...',detail:'You asked for this'},
+    {title:'Preparing the truth bomb...',detail:'You might want to sit down'}
   ];
   var i=0;
   var titleEl=document.getElementById('load-title');
@@ -303,9 +303,9 @@ async function analyzeChallenge(){
   var ext=cvFileName.toLowerCase().split('.').pop();
   var isB64=typeof cvFileData==='string'&&cvFileData.includes('base64,');
 
-  var sysPrompt='You are a wildly creative NZ career advisor for the #cvchallengenz TikTok challenge. Your job is to find SURPRISING, UNEXPECTED, and ENTERTAINING career pivots that make people laugh and think "wait... that actually makes sense?!" Be bold. Be funny. But always ground it in their REAL transferable skills from the CV. Think: accountant → volcano tour guide, nurse → escape room designer, teacher → Netflix script consultant.';
+  var sysPrompt='You are a SAVAGE career troll for the #cvchallengenz TikTok challenge. Your job is to absolutely ROAST someone\'s career by suggesting the most hilariously unexpected pivots that still somehow make twisted sense based on their actual skills. Be funny. Be cheeky. Be the kind of career advisor who\'s had 3 coffees and zero filter. The "why" should be a backhanded compliment that makes people screenshot it and send to their group chat. Think: accountant → professional poker player ("you already bluff through spreadsheets"), nurse → bouncer ("crowd control and dealing with people who won\'t listen"), teacher → hostage negotiator ("you already talk down 30 emotional people daily"), HR manager → wedding planner ("you\'re used to people crying at work"). Keep it NZ-flavoured. Be FUNNY but never mean or offensive — the vibe is your best mate roasting you, not bullying.';
 
-  var userPrompt='Read this CV carefully. Then:\n1) What is their current job/field? (Return as "current_role")\n2) Suggest exactly 4 WILD but weirdly plausible career pivots for New Zealand. These should be surprising, funny, and shareable — but the "why" must genuinely connect their real skills.\n\nReturn ONLY valid JSON:\n{"current_role":"Their Current Job Title","pivots":[{"role":"Creative Job Title","field":"Industry","why":"1 punchy sentence connecting their actual skills to this wild role","earning":"Realistic NZ salary range","icon":"single emoji"}]}\n\nMake it entertaining enough to screenshot and share on TikTok. Return ONLY the JSON.';
+  var userPrompt='Read this CV carefully. Then:\n1) What is their current job/field? (Return as "current_role")\n2) Suggest exactly 4 HILARIOUSLY unexpected career pivots for New Zealand. Each one should make the person go "wait WHAT" then "okay... actually fair point". The "why" field should be a funny backhanded compliment that roasts their current skills — like something your best mate would say after a few beers. Keep it cheeky, not cruel.\n\nReturn ONLY valid JSON:\n{"current_role":"Their Current Job Title","pivots":[{"role":"Funny But Specific Job Title","field":"Industry","why":"A cheeky 1-liner roasting how their current skills transfer (backhanded compliment energy)","earning":"Realistic NZ salary range","icon":"single emoji"}]}\n\nThis is for a TikTok challenge. Make every result screenshot-worthy. Return ONLY the JSON.';
 
   var msgs;
   if(ext==='pdf'&&isB64){
@@ -354,7 +354,7 @@ function renderCard(data){
   h+='<div class="card-current-role">'+esc(data.current_role||'Mystery Role')+'</div>';
   h+='</div>';
   h+='<div class="card-arrows">&darr; &darr; &darr; &darr;</div>';
-  h+='<div class="card-pivots-title">Your Career Plot Twists</div>';
+  h+='<div class="card-pivots-title">What You Should Actually Be Doing</div>';
 
   data.pivots.slice(0,4).forEach(function(p,i){
     var c=colors[i%4];
