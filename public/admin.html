@@ -845,7 +845,6 @@ function downloadPostImage(btn) {
   var color = btn.dataset.color;
   var c = document.createElement("canvas");
 
-  // Platform-specific sizes
   var sizes = {
     "Twitter / X": {w:1200, h:675},
     "LinkedIn": {w:1200, h:627},
@@ -859,7 +858,6 @@ function downloadPostImage(btn) {
   var W = size.w, H = size.h;
   c.width = W; c.height = H;
   var ctx = c.getContext("2d");
-  var isPortrait = H > W;
 
   // Background
   var bg = ctx.createLinearGradient(0, 0, W*0.3, H);
@@ -869,12 +867,12 @@ function downloadPostImage(btn) {
   ctx.fillRect(0, 0, W, H);
 
   // Decorative circles
-  var c1 = ctx.createRadialGradient(W*0.8, H*0.2, 0, W*0.8, H*0.2, W*0.4);
-  c1.addColorStop(0, "rgba(139,92,246,.06)");
+  var c1 = ctx.createRadialGradient(W*0.85, H*0.15, 0, W*0.85, H*0.15, W*0.35);
+  c1.addColorStop(0, "rgba(139,92,246,.07)");
   c1.addColorStop(1, "transparent");
   ctx.fillStyle = c1;
   ctx.fillRect(0, 0, W, H);
-  var c2 = ctx.createRadialGradient(W*0.15, H*0.7, 0, W*0.15, H*0.7, W*0.35);
+  var c2 = ctx.createRadialGradient(W*0.1, H*0.85, 0, W*0.1, H*0.85, W*0.3);
   c2.addColorStop(0, "rgba(16,185,129,.05)");
   c2.addColorStop(1, "transparent");
   ctx.fillStyle = c2;
@@ -890,100 +888,108 @@ function downloadPostImage(btn) {
   ctx.fillStyle = topLine;
   ctx.fillRect(0, 0, W, 4);
 
-  // Scale factors
-  var s = Math.min(W/1200, H/630);
-  if (isPortrait) s = W/1080;
+  var pad = Math.round(W * 0.06);
 
-  // Logo area
-  var logoY = isPortrait ? 120 : 70;
-  ctx.font = "900 "+Math.round(42*s)+"px Inter, sans-serif";
-  ctx.textAlign = "center";
-  ctx.fillStyle = "#f8fafc";
-  ctx.fillText("FindMe", W/2 - ctx.measureText("AJob").width/2, logoY);
-  var findW = ctx.measureText("FindMe").width;
-  ctx.fillStyle = "#10b981";
-  ctx.fillText("AJob", W/2 + findW/2 - ctx.measureText("AJob").width/2 + 5, logoY);
+  // -- Layout: Logo top-left, text center, footer bottom --
 
-  // Tagline
-  ctx.font = "500 "+Math.round(18*s)+"px Inter, sans-serif";
-  ctx.fillStyle = "#71717a";
-  ctx.fillText("AI-powered job matching for New Zealand", W/2, logoY + Math.round(32*s));
-
-  // Platform badge
-  ctx.font = "700 "+Math.round(16*s)+"px Inter, sans-serif";
-  ctx.fillStyle = color;
-  var badgeY = logoY + Math.round(65*s);
-  var badgeW = ctx.measureText(platform).width + 30;
-  ctx.fillStyle = "rgba(255,255,255,.04)";
-  ctx.beginPath();
-  ctx.roundRect(W/2 - badgeW/2, badgeY - 14, badgeW, 28, 14);
-  ctx.fill();
-  ctx.fillStyle = color;
-  ctx.fillText(platform, W/2, badgeY + 5);
-
-  // Post text
-  var fontSize = isPortrait ? Math.round(34*s) : Math.round(30*s);
-  ctx.font = "600 "+fontSize+"px Inter, sans-serif";
-  ctx.fillStyle = "#f8fafc";
+  // Logo top-left
+  var logoSize = Math.round(Math.min(W, H) * 0.032);
+  ctx.font = "800 "+logoSize+"px Inter, sans-serif";
   ctx.textAlign = "left";
-  var pad = Math.round(80*s);
-  var maxW2 = W - pad*2;
+  ctx.fillStyle = "#f8fafc";
+  var fmText = "FindMe";
+  ctx.fillText(fmText, pad, pad + logoSize);
+  var fmW = ctx.measureText(fmText).width;
+  ctx.fillStyle = "#10b981";
+  ctx.fillText("AJob", pad + fmW, pad + logoSize);
+  var ajW = ctx.measureText("AJob").width;
+  ctx.fillStyle = "#52525b";
+  ctx.font = "500 "+Math.round(logoSize*0.55)+"px Inter, sans-serif";
+  ctx.fillText(".co.nz", pad + fmW + ajW, pad + logoSize);
+
+  // Platform badge top-right
+  ctx.font = "600 "+Math.round(logoSize*0.5)+"px Inter, sans-serif";
+  ctx.textAlign = "right";
+  ctx.fillStyle = color;
+  ctx.fillText(platform, W - pad, pad + logoSize);
+
+  // Post text - centered in the remaining space
+  var textTop = pad + logoSize + Math.round(H * 0.06);
+  var footerH = Math.round(H * 0.08);
+  var textAreaH = H - textTop - footerH;
+
+  var fontSize = Math.round(Math.min(W * 0.032, H * 0.045));
+  if (fontSize < 20) fontSize = 20;
+  if (fontSize > 42) fontSize = 42;
+
+  ctx.font = "600 "+fontSize+"px Inter, sans-serif";
+  ctx.textAlign = "left";
+  var maxW2 = W - pad * 2;
   var lines = [];
   var paras = text.split("\n");
   paras.forEach(function(para) {
     if (para.trim() === "") { lines.push(""); return; }
     var words = para.split(" ");
-    var line2 = "";
+    var ln = "";
     words.forEach(function(word) {
-      var test = line2 ? line2 + " " + word : word;
-      if (ctx.measureText(test).width > maxW2 && line2) {
-        lines.push(line2);
-        line2 = word;
-      } else { line2 = test; }
+      var test = ln ? ln + " " + word : word;
+      if (ctx.measureText(test).width > maxW2 && ln) {
+        lines.push(ln);
+        ln = word;
+      } else { ln = test; }
     });
-    if (line2) lines.push(line2);
+    if (ln) lines.push(ln);
   });
 
-  var lineH2 = Math.round(fontSize * 1.45);
-  var textBlockTop = badgeY + Math.round(50*s);
-  var footerH = Math.round(100*s);
-  var maxLines2 = Math.floor((H - textBlockTop - footerH) / lineH2);
-  if (lines.length > maxLines2) lines = lines.slice(0, maxLines2);
+  var lineH = Math.round(fontSize * 1.5);
+  var totalTextH = lines.length * lineH;
+  var maxLines = Math.floor(textAreaH / lineH);
+  if (lines.length > maxLines) lines = lines.slice(0, maxLines);
+  totalTextH = lines.length * lineH;
+
+  // Center text vertically in available space
+  var startY = textTop + Math.round((textAreaH - totalTextH) / 2) + fontSize;
 
   lines.forEach(function(line, i) {
+    if (line === "") return;
+    ctx.font = "600 "+fontSize+"px Inter, sans-serif";
     if (line.match(/#\w/)) {
       ctx.fillStyle = "#8b5cf6";
-    } else if (line === "") {
-      return;
     } else {
       ctx.fillStyle = "#e2e8f0";
     }
-    ctx.font = "600 "+fontSize+"px Inter, sans-serif";
-    ctx.fillText(line, pad, textBlockTop + i * lineH2);
+    ctx.fillText(line, pad, startY + i * lineH);
   });
 
   // Footer
-  var footY = H - Math.round(45*s);
-  var divGrad2 = ctx.createLinearGradient(pad, 0, W-pad, 0);
-  divGrad2.addColorStop(0, "transparent");
-  divGrad2.addColorStop(0.5, "rgba(255,255,255,.08)");
-  divGrad2.addColorStop(1, "transparent");
+  var footY = H - Math.round(footerH * 0.4);
+  var divGrad2 = ctx.createLinearGradient(pad, 0, W - pad, 0);
+  divGrad2.addColorStop(0, "rgba(255,255,255,.06)");
+  divGrad2.addColorStop(1, "rgba(255,255,255,.06)");
   ctx.fillStyle = divGrad2;
-  ctx.fillRect(pad, footY - Math.round(30*s), W-pad*2, 1);
+  ctx.fillRect(pad, footY - Math.round(footerH * 0.35), W - pad * 2, 1);
 
   ctx.textAlign = "left";
-  ctx.font = "700 "+Math.round(16*s)+"px Inter, sans-serif";
-  ctx.fillStyle = "#52525b";
+  ctx.font = "700 "+Math.round(fontSize*0.45)+"px Inter, sans-serif";
+  ctx.fillStyle = "#10b981";
   ctx.fillText("findmeajob.co.nz", pad, footY);
 
   ctx.textAlign = "right";
-  ctx.font = "600 "+Math.round(14*s)+"px Inter, sans-serif";
-  ctx.fillStyle = "#3f3f46";
-  ctx.fillText("Free AI job matching for NZ", W - pad, footY);
+  ctx.font = "500 "+Math.round(fontSize*0.4)+"px Inter, sans-serif";
+  ctx.fillStyle = "#52525b";
+  ctx.fillText("Free AI job matching for New Zealand", W - pad, footY);
 
-  // Download
+  // Bottom accent line
+  var botLine = ctx.createLinearGradient(0, 0, W, 0);
+  botLine.addColorStop(0, "transparent");
+  botLine.addColorStop(0.3, "#10b981");
+  botLine.addColorStop(0.7, "#8b5cf6");
+  botLine.addColorStop(1, "transparent");
+  ctx.fillStyle = botLine;
+  ctx.fillRect(0, H - 4, W, 4);
+
   var link2 = document.createElement("a");
-  link2.download = "findmeajob-" + platform.toLowerCase().replace(/[\s\/]/g,"-") + ".png";
+  link2.download = "findmeajob-" + platform.toLowerCase().replace(/[\s\/]/g, "-") + ".png";
   link2.href = c.toDataURL("image/png");
   link2.click();
 
