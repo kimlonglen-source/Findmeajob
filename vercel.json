@@ -86,10 +86,6 @@
       "dest": "/public/logo-icon.svg"
     },
     {
-      "src": "/kiwi-mascot.svg",
-      "dest": "/public/kiwi-mascot.svg"
-    },
-    {
       "src": "/challenge",
       "dest": "/public/challenge.html"
     },
