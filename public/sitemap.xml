@@ -6,4 +6,6 @@
   <url><loc>https://www.findmeajob.co.nz/#pricing</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.findmeajob.co.nz/#about</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://www.findmeajob.co.nz/employer-portal.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.findmeajob.co.nz/blog</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.findmeajob.co.nz/challenge</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
 </urlset>

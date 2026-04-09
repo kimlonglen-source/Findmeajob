@@ -6,11 +6,15 @@
 <title>Blog — FindMeAJob.co.nz | NZ Job Market Insights</title>
 <meta name="description" content="Daily insights on the NZ job market, career advice, hiring tips for employers, and job seeker guides. Powered by AI.">
 <meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.findmeajob.co.nz/blog">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.findmeajob.co.nz/blog">
 <meta property="og:title" content="NZ Job Market Blog — FindMeAJob.co.nz">
 <meta property="og:description" content="Daily insights on the NZ job market for job seekers and employers.">
 <meta property="og:image" content="https://www.findmeajob.co.nz/favicon-512.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Blog","name":"FindMeAJob.co.nz Blog","description":"Daily insights on the NZ job market, career advice for job seekers, and hiring tips for employers.","url":"https://www.findmeajob.co.nz/blog","publisher":{"@type":"Organization","name":"FindMeAJob.co.nz","url":"https://www.findmeajob.co.nz","logo":{"@type":"ImageObject","url":"https://www.findmeajob.co.nz/favicon-512.png"}}}
+</script>
 <link rel="icon" type="image/svg+xml" href="/logo-icon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -117,13 +121,14 @@ function renderPosts(){
   }
   var h='';
   filtered.forEach(function(p,i){
-    h+='<div class="post-card" onclick="this.classList.toggle(\'expanded\')">';
+    var slug=(p.title||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').substring(0,60);
+    h+='<article class="post-card" id="'+slug+'" onclick="this.classList.toggle(\'expanded\')" itemscope itemtype="https://schema.org/BlogPosting">';
     h+='<div class="post-tag '+(p.category||'market')+'">'+(p.categoryLabel||p.category||'Insight')+'</div>';
-    h+='<div class="post-title">'+(p.title||'').replace(/</g,'&lt;')+'</div>';
-    h+='<div class="post-date">'+(p.date||'')+'</div>';
-    h+='<div class="post-excerpt">'+(p.excerpt||'').replace(/</g,'&lt;')+'</div>';
-    h+='<div class="post-full">'+(p.body||'').replace(/\n/g,'<br>')+'</div>';
-    h+='</div>';
+    h+='<h2 class="post-title" itemprop="headline">'+(p.title||'').replace(/</g,'&lt;')+'</h2>';
+    h+='<time class="post-date" itemprop="datePublished" datetime="'+(p.isoDate||'')+'">'+(p.date||'')+'</time>';
+    h+='<p class="post-excerpt" itemprop="description">'+(p.excerpt||'').replace(/</g,'&lt;')+'</p>';
+    h+='<div class="post-full" itemprop="articleBody">'+(p.body||'').replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>')+'</div>';
+    h+='</article>';
   });
   el.innerHTML=h;
 }
