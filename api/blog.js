@@ -23,13 +23,19 @@ module.exports = async function handler(req, res) {
       var safeExcerpt = (p.excerpt || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
       var safeBody = (p.body || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n\n/g, "</p><p>").replace(/\n/g, "<br>");
       var safeDate = (p.date || "").replace(/</g,"&lt;");
+      var safeIcon = (p.icon || "📝").replace(/</g,"&lt;");
+      var gradients = {seeker:"linear-gradient(135deg,#059669,#10b981)",employer:"linear-gradient(135deg,#d97706,#f59e0b)",market:"linear-gradient(135deg,#7c3aed,#8b5cf6)",tips:"linear-gradient(135deg,#db2777,#ec4899)"};
+      var grad = gradients[tagClass] || gradients.market;
 
       postsHtml += '<article class="post-card" id="' + slug + '" itemscope itemtype="https://schema.org/BlogPosting">';
-      postsHtml += '<div class="post-tag ' + tagClass + '">' + tagLabel + '</div>';
+      postsHtml += '<div class="post-header" style="background:' + grad + ';padding:1.5rem;border-radius:var(--rl) var(--rl) 0 0;margin:-1.5rem -1.5rem 1rem;display:flex;align-items:center;gap:.75rem">';
+      postsHtml += '<span style="font-size:2.2rem" role="img">' + safeIcon + '</span>';
+      postsHtml += '<div><div class="post-tag ' + tagClass + '" style="margin-bottom:.2rem;background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);color:#fff">' + tagLabel + '</div>';
+      postsHtml += '<time class="post-date" itemprop="datePublished" style="color:rgba(255,255,255,.6)">' + safeDate + '</time></div>';
+      postsHtml += '</div>';
       postsHtml += '<h2 class="post-title" itemprop="headline">' + safeTitle + '</h2>';
-      postsHtml += '<time class="post-date" itemprop="datePublished">' + safeDate + '</time>';
-      postsHtml += '<p itemprop="description" style="font-size:.88rem;color:var(--text2);line-height:1.7">' + safeExcerpt + '</p>';
-      postsHtml += '<div itemprop="articleBody" style="font-size:.88rem;color:var(--text2);line-height:1.8;margin-top:.75rem"><p>' + safeBody + '</p></div>';
+      postsHtml += '<p itemprop="description" style="font-size:.88rem;color:var(--text2);line-height:1.7;margin-bottom:.75rem">' + safeExcerpt + '</p>';
+      postsHtml += '<div itemprop="articleBody" style="font-size:.88rem;color:var(--text2);line-height:1.8"><p>' + safeBody + '</p></div>';
       postsHtml += '<meta itemprop="author" content="FindMeAJob.co.nz">';
       postsHtml += '<meta itemprop="publisher" content="FindMeAJob.co.nz">';
       postsHtml += '</article>';

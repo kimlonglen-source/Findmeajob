@@ -588,7 +588,7 @@ async function generateBlog() {
 
   var today = new Date().toLocaleDateString("en-NZ", {day:"numeric",month:"long",year:"numeric"});
 
-  var prompt = 'You are a content writer for FindMeAJob.co.nz, a free AI job matching platform in New Zealand.\n\nWrite exactly '+count+' blog posts about the NZ job market. Mix of content for JOB SEEKERS and EMPLOYERS.\n\nTopics should be timely, practical, and relevant to NZ in 2026. Include:\n- Job seeker advice (CV tips, interview prep, salary negotiation, career change)\n- Employer tips (hiring, retention, writing job ads, NZ employment law basics)\n- Market trends (in-demand skills, salary trends, regional job markets, immigration)\n- General tips (work-life balance, remote work in NZ, networking)\n\nFor each post return:\n- category: "seeker", "employer", "market", or "tips"\n- categoryLabel: human readable like "Job Seekers", "Employers", "Market Trends", "Tips"\n- title: attention-grabbing headline\n- excerpt: 1-2 sentence preview (max 160 chars)\n- body: full post, 200-400 words, practical and conversational, NZ-focused. Use line breaks between paragraphs.\n- date: "'+today+'"\n\nReturn ONLY valid JSON array:\n[{"category":"seeker","categoryLabel":"Job Seekers","title":"...","excerpt":"...","body":"...","date":"'+today+'"}]\n\nMake content genuinely helpful — not generic filler. Reference NZ-specific things (regions, industries, culture). Return ONLY the JSON array.';
+  var prompt = 'You are a content writer for FindMeAJob.co.nz, a free AI job matching platform in New Zealand.\n\nWrite exactly '+count+' blog posts about the NZ job market. Mix of content for JOB SEEKERS and EMPLOYERS.\n\nTopics should be timely, practical, and relevant to NZ in 2026. Include:\n- Job seeker advice (CV tips, interview prep, salary negotiation, career change)\n- Employer tips (hiring, retention, writing job ads, NZ employment law basics)\n- Market trends (in-demand skills, salary trends, regional job markets, immigration)\n- General tips (work-life balance, remote work in NZ, networking)\n\nFor each post return:\n- category: "seeker", "employer", "market", or "tips"\n- categoryLabel: human readable like "Job Seekers", "Employers", "Market Trends", "Tips"\n- icon: a single relevant emoji for the post header image (e.g. briefcase, chart, lightbulb, rocket, target)\n- title: attention-grabbing headline\n- excerpt: 1-2 sentence preview (max 160 chars)\n- body: full post, 200-400 words, practical and conversational, NZ-focused. Use line breaks between paragraphs.\n- date: "'+today+'"\n\nReturn ONLY valid JSON array:\n[{"category":"seeker","categoryLabel":"Job Seekers","icon":"single emoji","title":"...","excerpt":"...","body":"...","date":"'+today+'"}]\n\nMake content genuinely helpful — not generic filler. Reference NZ-specific things (regions, industries, culture). Return ONLY the JSON array.';
 
   try {
     var r = await fetch("/api/chat", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:[{role:"user",content:prompt}]})});
@@ -599,29 +599,92 @@ async function generateBlog() {
     var posts = JSON.parse(raw.substring(si, ei+1));
     if (!posts.length) throw new Error("Empty");
 
+    var gradients = {seeker:"linear-gradient(135deg,#059669,#10b981)",employer:"linear-gradient(135deg,#d97706,#f59e0b)",market:"linear-gradient(135deg,#7c3aed,#8b5cf6)",tips:"linear-gradient(135deg,#db2777,#ec4899)"};
     var h = '';
     posts.forEach(function(p, i) {
       var tagColors = {seeker:"var(--em)",employer:"var(--gold)",market:"var(--purple)",tips:"#ec4899"};
-      h += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--rl);padding:1.15rem;margin-bottom:.75rem">';
-      h += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">';
-      h += '<span style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:'+(tagColors[p.category]||'var(--text3)')+'">'+esc(p.categoryLabel||p.category)+'</span>';
-      h += '<span style="font-size:.68rem;color:var(--text3)">'+esc(p.date)+'</span>';
+      var grad = gradients[p.category] || gradients.market;
+      h += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--rl);padding:0;margin-bottom:.75rem;overflow:hidden" data-blog-idx="'+i+'">';
+      // Header image card
+      h += '<div style="background:'+grad+';padding:1.25rem 1.15rem;display:flex;align-items:center;gap:.75rem;position:relative">';
+      h += '<span style="font-size:2rem">'+(p.icon||'📝')+'</span>';
+      h += '<div><span style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.7)">'+esc(p.categoryLabel||p.category)+'</span>';
+      h += '<div style="font-size:.68rem;color:rgba(255,255,255,.6);margin-top:.1rem">'+esc(p.date)+'</div></div>';
+      h += '<button onclick="removePendingPost('+i+')" style="position:absolute;top:.5rem;right:.65rem;background:rgba(0,0,0,.3);border:none;color:rgba(255,255,255,.7);width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:.75rem;display:flex;align-items:center;justify-content:center">&times;</button>';
       h += '</div>';
-      h += '<div style="font-size:.95rem;font-weight:800;color:var(--text);margin-bottom:.35rem">'+esc(p.title)+'</div>';
-      h += '<div style="font-size:.78rem;color:var(--text2);margin-bottom:.5rem;font-style:italic">'+esc(p.excerpt)+'</div>';
-      h += '<details style="font-size:.82rem;color:var(--text2);line-height:1.7"><summary style="cursor:pointer;color:var(--text3);font-size:.75rem;font-weight:600;margin-bottom:.5rem">Preview full post</summary><div style="white-space:pre-wrap;margin-top:.5rem">'+esc(p.body)+'</div></details>';
-      h += '</div>';
+      // Editable fields
+      h += '<div style="padding:1.15rem">';
+      h += '<label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Title</label>';
+      h += '<input type="text" data-field="title" data-idx="'+i+'" value="'+esc(p.title).replace(/"/g,'&quot;')+'" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;font-size:.88rem;font-weight:700;padding:.45rem .65rem;outline:none;margin-bottom:.6rem">';
+      h += '<label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Excerpt</label>';
+      h += '<input type="text" data-field="excerpt" data-idx="'+i+'" value="'+esc(p.excerpt).replace(/"/g,'&quot;')+'" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.45rem .65rem;outline:none;margin-bottom:.6rem;font-style:italic">';
+      h += '<label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Body</label>';
+      h += '<textarea data-field="body" data-idx="'+i+'" style="width:100%;min-height:120px;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.55rem .65rem;outline:none;resize:vertical;line-height:1.7">'+esc(p.body)+'</textarea>';
+      h += '</div></div>';
     });
 
     h += '<button onclick="publishBlog()" id="btn-publish-blog" style="width:100%;margin-top:.5rem;padding:.75rem;background:linear-gradient(135deg,var(--em),#14b8a6);color:#fff;border:none;border-radius:999px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:inherit">Publish '+posts.length+' Posts to Blog</button>';
 
     out.innerHTML = h;
     window._pendingBlogPosts = posts;
+
+    // Bind editable fields
+    out.querySelectorAll("[data-field]").forEach(function(el) {
+      el.addEventListener("input", function() {
+        var idx = parseInt(this.dataset.idx);
+        var field = this.dataset.field;
+        if (window._pendingBlogPosts[idx]) {
+          window._pendingBlogPosts[idx][field] = this.value;
+        }
+      });
+    });
   } catch(e) {
     out.innerHTML = '<div style="text-align:center;padding:2rem;color:#fca5a5;font-size:.85rem">Failed to generate. Try again.</div>';
   }
   btn.disabled = false;
   btn.textContent = "Generate Posts";
+}
+
+function removePendingPost(idx) {
+  if (!window._pendingBlogPosts) return;
+  window._pendingBlogPosts.splice(idx, 1);
+  // Re-trigger render
+  var out = document.getElementById("blog-output");
+  if (!window._pendingBlogPosts.length) {
+    out.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3);font-size:.85rem">All posts removed. Generate new ones.</div>';
+    return;
+  }
+  // Re-render with updated indices
+  var posts = window._pendingBlogPosts;
+  var gradients = {seeker:"linear-gradient(135deg,#059669,#10b981)",employer:"linear-gradient(135deg,#d97706,#f59e0b)",market:"linear-gradient(135deg,#7c3aed,#8b5cf6)",tips:"linear-gradient(135deg,#db2777,#ec4899)"};
+  var h = '';
+  posts.forEach(function(p, i) {
+    var grad = gradients[p.category] || gradients.market;
+    h += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--rl);padding:0;margin-bottom:.75rem;overflow:hidden">';
+    h += '<div style="background:'+grad+';padding:1.25rem 1.15rem;display:flex;align-items:center;gap:.75rem;position:relative">';
+    h += '<span style="font-size:2rem">'+(p.icon||'📝')+'</span>';
+    h += '<div><span style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.7)">'+esc(p.categoryLabel||p.category)+'</span>';
+    h += '<div style="font-size:.68rem;color:rgba(255,255,255,.6);margin-top:.1rem">'+esc(p.date)+'</div></div>';
+    h += '<button onclick="removePendingPost('+i+')" style="position:absolute;top:.5rem;right:.65rem;background:rgba(0,0,0,.3);border:none;color:rgba(255,255,255,.7);width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:.75rem;display:flex;align-items:center;justify-content:center">&times;</button>';
+    h += '</div><div style="padding:1.15rem">';
+    h += '<label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Title</label>';
+    h += '<input type="text" data-field="title" data-idx="'+i+'" value="'+esc(p.title).replace(/"/g,'&quot;')+'" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;font-size:.88rem;font-weight:700;padding:.45rem .65rem;outline:none;margin-bottom:.6rem">';
+    h += '<label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Excerpt</label>';
+    h += '<input type="text" data-field="excerpt" data-idx="'+i+'" value="'+esc(p.excerpt).replace(/"/g,'&quot;')+'" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.45rem .65rem;outline:none;margin-bottom:.6rem;font-style:italic">';
+    h += '<label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Body</label>';
+    h += '<textarea data-field="body" data-idx="'+i+'" style="width:100%;min-height:120px;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.55rem .65rem;outline:none;resize:vertical;line-height:1.7">'+esc(p.body)+'</textarea>';
+    h += '</div></div>';
+  });
+  h += '<button onclick="publishBlog()" id="btn-publish-blog" style="width:100%;margin-top:.5rem;padding:.75rem;background:linear-gradient(135deg,var(--em),#14b8a6);color:#fff;border:none;border-radius:999px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:inherit">Publish '+posts.length+' Posts to Blog</button>';
+  out.innerHTML = h;
+  out.querySelectorAll("[data-field]").forEach(function(el) {
+    el.addEventListener("input", function() {
+      var idx2 = parseInt(this.dataset.idx);
+      var field = this.dataset.field;
+      if (window._pendingBlogPosts[idx2]) window._pendingBlogPosts[idx2][field] = this.value;
+    });
+  });
+  showToast("Post removed", "success");
 }
 
 async function publishBlog() {
@@ -663,19 +726,42 @@ async function loadExistingBlog() {
       out.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3);font-size:.85rem">No published posts yet. Generate some!</div>';
       return;
     }
+    window._publishedBlogPosts = posts;
+    var gradients = {seeker:"linear-gradient(135deg,#059669,#10b981)",employer:"linear-gradient(135deg,#d97706,#f59e0b)",market:"linear-gradient(135deg,#7c3aed,#8b5cf6)",tips:"linear-gradient(135deg,#db2777,#ec4899)"};
     var h = '<div style="font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:.75rem">'+posts.length+' published posts</div>';
-    posts.slice(0, 20).forEach(function(p) {
-      var tagColors = {seeker:"var(--em)",employer:"var(--gold)",market:"var(--purple)",tips:"#ec4899"};
-      h += '<div style="display:flex;align-items:center;gap:.75rem;padding:.5rem 0;border-bottom:1px solid var(--border)">';
-      h += '<span style="font-size:.6rem;font-weight:700;text-transform:uppercase;color:'+(tagColors[p.category]||'var(--text3)')+';min-width:55px">'+esc(p.categoryLabel||p.category)+'</span>';
-      h += '<span style="font-size:.82rem;font-weight:600;color:var(--text);flex:1">'+esc(p.title)+'</span>';
-      h += '<span style="font-size:.68rem;color:var(--text3);white-space:nowrap">'+esc(p.date)+'</span>';
-      h += '</div>';
+    posts.slice(0, 30).forEach(function(p, i) {
+      var grad = gradients[p.category] || gradients.market;
+      h += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--rl);margin-bottom:.6rem;overflow:hidden">';
+      h += '<div style="background:'+grad+';padding:.65rem .85rem;display:flex;align-items:center;gap:.5rem">';
+      h += '<span style="font-size:1.2rem">'+(p.icon||'📝')+'</span>';
+      h += '<span style="font-size:.72rem;font-weight:700;color:rgba(255,255,255,.85);flex:1">'+esc(p.title)+'</span>';
+      h += '<span style="font-size:.6rem;color:rgba(255,255,255,.5)">'+esc(p.date)+'</span>';
+      h += '<button onclick="deletePublishedPost('+i+')" style="background:rgba(0,0,0,.3);border:none;color:rgba(255,255,255,.6);width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:.7rem;margin-left:.35rem">&times;</button>';
+      h += '</div></div>';
     });
     out.innerHTML = h;
   } catch(e) {
     out.innerHTML = '<div style="text-align:center;padding:2rem;color:#fca5a5;font-size:.85rem">Failed to load posts.</div>';
   }
+}
+
+async function deletePublishedPost(idx) {
+  if (!window._publishedBlogPosts) return;
+  var title = window._publishedBlogPosts[idx].title;
+  if (!confirm("Delete post: \"" + title + "\"?")) return;
+  window._publishedBlogPosts.splice(idx, 1);
+  try {
+    var r = await fetch("/api/approved-jobs", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({type:"replace-blog", password:pw, posts:window._publishedBlogPosts})
+    });
+    var d = await r.json();
+    if (d.ok) {
+      showToast("Post deleted", "success");
+      loadExistingBlog();
+    }
+  } catch(e) { showToast("Failed to delete", "error"); }
 }
 
 async function generateSocial() {

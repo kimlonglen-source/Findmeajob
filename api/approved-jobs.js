@@ -49,6 +49,15 @@ module.exports = async function handler(req, res) {
         await hset("stats", "blog-posts", JSON.stringify(allPosts));
         return res.status(200).json({ ok: true });
       }
+      if (type === "replace-blog") {
+        var rBlogPw = req.body.password;
+        var rAdminPw = process.env.ADMIN_PASSWORD;
+        if (!rBlogPw || rBlogPw !== rAdminPw) return res.status(200).json({ ok: false });
+        var rPosts = req.body.posts;
+        if (!Array.isArray(rPosts)) return res.status(200).json({ ok: false });
+        await hset("stats", "blog-posts", JSON.stringify(rPosts));
+        return res.status(200).json({ ok: true });
+      }
       if (!jobId || !type) return res.status(200).json({ ok: true });
       if (type !== "view" && type !== "apply") return res.status(200).json({ ok: true });
       var raw = await hget("jobs", jobId);
