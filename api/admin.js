@@ -163,7 +163,8 @@ module.exports = async function handler(req, res) {
         try { var j = typeof v === "string" ? JSON.parse(v) : v; jobAppCount += (j.applies || 0); } catch(e) {}
       });
       if (jobAppCount > appCount) appCount = jobAppCount;
-      return res.status(200).json({ seekers: seekerCount, employers: employerCount, jobs: jobCount, applications: appCount });
+      var cvUploads = await hget("stats", "cv-uploads");
+      return res.status(200).json({ seekers: seekerCount, employers: employerCount, jobs: jobCount, applications: appCount, cvUploads: parseInt(cvUploads) || 0 });
     }
     if (action === "delete-seeker") {
       var email = params.email;

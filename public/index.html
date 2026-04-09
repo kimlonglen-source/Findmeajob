@@ -1435,6 +1435,7 @@ async function analyzeCV(){
   if(ext==='pdf'&&isB64){msgs=[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:cvFileData.split('base64,')[1]}},{type:'text',text:'Step 1: Read this CV completely. Step 2: What is this person profession? What are their specific qualifications and registrations? Step 3: Based ONLY on their actual profession and qualifications, suggest exactly 5 NZ jobs in '+region+' they are qualified for. Do NOT suggest jobs outside their field. '+jp}]}];}
   else if(!isB64&&cvFileData.length>50){msgs=[{role:'user',content:'Step 1: Read this CV completely:\n\n'+cvFileData.substring(0,5000)+'\n\nStep 2: What is this person profession? What are their specific qualifications? Step 3: Based ONLY on their actual profession, suggest exactly 5 NZ jobs in '+region+' they are qualified for. Do NOT suggest jobs outside their field. '+jp}];}
   else{msgs=[{role:'user',content:'Suggest 5 realistic NZ jobs in '+region+' for someone with CV named "'+cvFileName+'". '+jp}];}
+  fetch('/api/approved-jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'cv-upload'})}).catch(function(){});
   try{
     var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sysPrompt,messages:msgs})});
     var d=await r.json();var raw=d.content.map(function(b){return b.text||'';}).join('').trim();

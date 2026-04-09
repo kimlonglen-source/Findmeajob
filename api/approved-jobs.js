@@ -15,6 +15,12 @@ module.exports = async function handler(req, res) {
     try {
       var jobId = req.body.jobId;
       var type = req.body.type;
+      if (type === "cv-upload") {
+        var count = await hget("stats", "cv-uploads");
+        count = count ? (parseInt(count) || 0) + 1 : 1;
+        await hset("stats", "cv-uploads", String(count));
+        return res.status(200).json({ ok: true });
+      }
       if (!jobId || !type) return res.status(200).json({ ok: true });
       if (type !== "view" && type !== "apply") return res.status(200).json({ ok: true });
       var raw = await hget("jobs", jobId);

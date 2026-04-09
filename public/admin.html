@@ -174,10 +174,11 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
       <div class="stat"><div class="stat-n" id="st-rejected" style="color:var(--red)">0</div><div class="stat-l">Rejected</div></div>
       <div class="stat"><div class="stat-n" id="st-expired" style="color:var(--text3)">0</div><div class="stat-l">Expired</div></div>
     </div>
-    <div class="stats" style="grid-template-columns:repeat(3,1fr);margin-bottom:1.75rem">
+    <div class="stats" style="grid-template-columns:repeat(4,1fr);margin-bottom:1.75rem">
       <div class="stat" style="border-left:3px solid var(--purple)"><div class="stat-n" id="st-seekers" style="color:var(--purple)">0</div><div class="stat-l">Job Seekers</div></div>
       <div class="stat" style="border-left:3px solid var(--gold)"><div class="stat-n" id="st-employers" style="color:var(--gold)">0</div><div class="stat-l">Employers</div></div>
       <div class="stat" style="border-left:3px solid var(--em)"><div class="stat-n" id="st-apps" style="color:var(--em)">0</div><div class="stat-l">Applications</div></div>
+      <div class="stat" style="border-left:3px solid #06b6d4"><div class="stat-n" id="st-cvs" style="color:#06b6d4">0</div><div class="stat-l">CV Uploads</div></div>
     </div>
     <div class="refresh-bar">
       <div class="tabs">
@@ -520,6 +521,7 @@ async function loadStats() {
     document.getElementById("st-seekers").textContent = d.seekers || 0;
     document.getElementById("st-employers").textContent = d.employers || 0;
     document.getElementById("st-apps").textContent = d.applications || 0;
+    document.getElementById("st-cvs").textContent = d.cvUploads || 0;
   } catch(e) {}
 }
 
