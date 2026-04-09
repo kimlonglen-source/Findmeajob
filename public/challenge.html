@@ -113,6 +113,8 @@ a{color:var(--em);text-decoration:none}
 @keyframes pivotReveal{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @keyframes arrowPulse{0%,100%{opacity:.4;transform:translateY(0)}50%{opacity:1;transform:translateY(3px)}}
 @keyframes shimmer{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.hero-hook{font-size:clamp(.82rem,3vw,1rem);color:var(--text2);text-align:center;font-weight:600;height:1.6em;margin-bottom:1.5rem;opacity:0;animation:hookFade .5s ease forwards}
+@keyframes hookFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
@@ -120,7 +122,7 @@ a{color:var(--em);text-decoration:none}
 <div class="section active" id="section-hero">
   <div class="hero-brand">FindMe<span>AJob</span></div>
   <div class="hero-tag">#cvchallengenz</div>
-  <div class="hero-sub">Upload your CV.<br>Find out what career you <strong>should actually have</strong>.</div>
+  <div class="hero-hook" id="hero-hook"></div>
   <button class="hero-cta" onclick="showSection('section-upload')">I'm Brave Enough</button>
   <div class="hero-trust">No sign-up &bull; CV not stored &bull; 100% free &bull; NZ only</div>
   <div style="margin-top:2.5rem;font-size:.62rem;color:var(--text3);text-align:center;max-width:320px;line-height:1.6;font-style:italic">Career suggestions are AI-generated for entertainment purposes. Please don't actually quit your job to become a volcano tour guide. (Unless...?)</div>
@@ -383,6 +385,34 @@ function resetChallenge(){
   document.getElementById('result-card').innerHTML='';
   showSection('section-hero');
 }
+
+// Rotating hero hooks
+(function(){
+  var hooks=[
+    'AI says you should quit your job',
+    'so I uploaded my CV to this site',
+    'find out what career you ACTUALLY should have',
+    'this AI just ended my whole career',
+    'turns out I\'ve been in the wrong job this whole time',
+    'POV: AI roasts your entire career',
+    'I didn\'t expect to be personally attacked by a website',
+    'my CV just got absolutely violated',
+    'apparently I should be a volcano tour guide??',
+    'this is the funniest thing I\'ve ever seen',
+    'upload your CV if you\'re brave enough',
+    'AI said my skills are wasted on my actual job'
+  ];
+  var el=document.getElementById('hero-hook');
+  var i=0;
+  el.textContent=hooks[0];
+  setInterval(function(){
+    el.style.animation='none';
+    el.offsetHeight;
+    i=(i+1)%hooks.length;
+    el.textContent=hooks[i];
+    el.style.animation='hookFade .5s ease forwards';
+  },3000);
+})();
 </script>
 </body>
 </html>
