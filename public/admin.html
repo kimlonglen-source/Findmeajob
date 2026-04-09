@@ -606,7 +606,7 @@ async function generateBlog() {
       var grad = gradients[p.category] || gradients.market;
       var imgId = p.imageId || (i * 37 + 100);
       h += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--rl);padding:0;margin-bottom:.75rem;overflow:hidden" data-blog-idx="'+i+'">';
-      h += '<div style="position:relative;height:140px;background:url(https://picsum.photos/seed/'+imgId+'/800/300) center/cover,'+grad+';display:flex;align-items:flex-end">';
+      h += '<div style="position:relative;height:140px;background:'+grad+';display:flex;align-items:flex-end;overflow:hidden"><img src="https://picsum.photos/seed/'+imgId+'/800/300" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\'">';
       h += '<div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.7) 0%,transparent 60%)"></div>';
       h += '<div style="position:relative;padding:1rem 1.15rem;display:flex;align-items:center;gap:.65rem;width:100%">';
       h += '<span style="font-size:1.8rem">'+(p.icon||'📝')+'</span>';
@@ -664,7 +664,7 @@ function removePendingPost(idx) {
     var grad = gradients[p.category] || gradients.market;
     var imgId = p.imageId || (i * 37 + 100);
     h += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--rl);padding:0;margin-bottom:.75rem;overflow:hidden">';
-    h += '<div style="position:relative;height:140px;background:url(https://picsum.photos/seed/'+imgId+'/800/300) center/cover,'+grad+';display:flex;align-items:flex-end">';
+    h += '<div style="position:relative;height:140px;background:'+grad+';display:flex;align-items:flex-end;overflow:hidden"><img src="https://picsum.photos/seed/'+imgId+'/800/300" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\'">';
     h += '<div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.7) 0%,transparent 60%)"></div>';
     h += '<div style="position:relative;padding:1rem 1.15rem;display:flex;align-items:center;gap:.65rem;width:100%">';
     h += '<span style="font-size:1.8rem">'+(p.icon||'📝')+'</span>';

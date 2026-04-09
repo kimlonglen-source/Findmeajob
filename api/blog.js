@@ -30,7 +30,7 @@ module.exports = async function handler(req, res) {
       var imgId = p.imageId || (schemaItems.length * 37 + 100);
 
       postsHtml += '<article class="post-card" id="' + slug + '" itemscope itemtype="https://schema.org/BlogPosting">';
-      postsHtml += '<div style="position:relative;height:200px;background:url(https://picsum.photos/seed/' + imgId + '/800/400) center/cover,' + grad + ';border-radius:var(--rl) var(--rl) 0 0;margin:-1.5rem -1.5rem 1rem;display:flex;align-items:flex-end;overflow:hidden">';
+      postsHtml += '<div style="position:relative;height:200px;border-radius:var(--rl) var(--rl) 0 0;margin:-1.5rem -1.5rem 1rem;display:flex;align-items:flex-end;overflow:hidden"><img src="https://picsum.photos/seed/' + imgId + '/800/400" alt="' + safeTitle + '" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\';this.parentElement.style.background=\'' + grad + '\'">';
       postsHtml += '<div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.75) 0%,transparent 50%)"></div>';
       postsHtml += '<div style="position:relative;padding:1.25rem;display:flex;align-items:center;gap:.75rem;width:100%">';
       postsHtml += '<span style="font-size:2rem" role="img">' + safeIcon + '</span>';
