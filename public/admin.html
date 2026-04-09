@@ -892,20 +892,40 @@ function downloadPostImage(btn) {
 
   // -- Layout: Logo top-left, text center, footer bottom --
 
-  // Logo top-left
-  var logoSize = Math.round(Math.min(W, H) * 0.032);
+  // Logo icon (green rounded square + magnifying glass)
+  var logoS = Math.round(Math.min(W, H) * 0.05);
+  var lx = pad, ly = pad;
+  ctx.beginPath();
+  ctx.roundRect(lx, ly, logoS, logoS, Math.round(logoS * 0.22));
+  ctx.fillStyle = "#10b981";
+  ctx.fill();
+  // Magnifying glass circle
+  var mgCx = lx + logoS * 0.41, mgCy = ly + logoS * 0.41, mgR = logoS * 0.19;
+  ctx.beginPath();
+  ctx.arc(mgCx, mgCy, mgR, 0, Math.PI * 2);
+  ctx.strokeStyle = "white";
+  ctx.lineWidth = Math.max(2, logoS * 0.08);
+  ctx.stroke();
+  // Magnifying glass handle
+  ctx.beginPath();
+  ctx.moveTo(mgCx + mgR * 0.7, mgCy + mgR * 0.7);
+  ctx.lineTo(lx + logoS * 0.72, ly + logoS * 0.72);
+  ctx.strokeStyle = "white";
+  ctx.lineCap = "round";
+  ctx.stroke();
+
+  // Text next to logo
+  var logoSize = Math.round(logoS * 0.55);
   ctx.font = "800 "+logoSize+"px Inter, sans-serif";
   ctx.textAlign = "left";
   ctx.fillStyle = "#f8fafc";
+  var textX = lx + logoS + Math.round(logoS * 0.25);
+  var textY = ly + logoS * 0.65;
   var fmText = "FindMe";
-  ctx.fillText(fmText, pad, pad + logoSize);
+  ctx.fillText(fmText, textX, textY);
   var fmW = ctx.measureText(fmText).width;
   ctx.fillStyle = "#10b981";
-  ctx.fillText("AJob", pad + fmW, pad + logoSize);
-  var ajW = ctx.measureText("AJob").width;
-  ctx.fillStyle = "#52525b";
-  ctx.font = "500 "+Math.round(logoSize*0.55)+"px Inter, sans-serif";
-  ctx.fillText(".co.nz", pad + fmW + ajW, pad + logoSize);
+  ctx.fillText("AJob", textX + fmW, textY);
 
   // Platform badge top-right
   ctx.font = "600 "+Math.round(logoSize*0.5)+"px Inter, sans-serif";

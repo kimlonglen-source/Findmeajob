@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Cute Kiwi Bird Mascot - FindMeAJob.co.nz -->
+
+  <!-- Body -->
+  <ellipse cx="100" cy="130" rx="55" ry="45" fill="#1e293b"/>
+
+  <!-- Body highlight -->
+  <ellipse cx="90" cy="125" rx="40" ry="32" fill="#334155"/>
+
+  <!-- Head -->
+  <circle cx="85" cy="85" r="35" fill="#1e293b"/>
+
+  <!-- Head highlight -->
+  <circle cx="80" cy="80" r="28" fill="#334155"/>
+
+  <!-- Eye (big cute eye) -->
+  <circle cx="75" cy="78" r="12" fill="white"/>
+  <circle cx="77" cy="76" r="7" fill="#09090b"/>
+  <circle cx="79" cy="74" r="3" fill="white"/>
+
+  <!-- Happy blush -->
+  <ellipse cx="62" cy="90" rx="6" ry="3.5" fill="rgba(236,72,153,.25)"/>
+
+  <!-- Beak (long kiwi beak) -->
+  <path d="M108 82 Q130 85 145 80 Q130 90 108 88 Z" fill="#f59e0b" stroke="#d97706" stroke-width="1"/>
+
+  <!-- Tiny feet -->
+  <path d="M75 172 L68 185 L75 182 L82 185 L75 172" fill="#f59e0b"/>
+  <path d="M115 170 L108 183 L115 180 L122 183 L115 170" fill="#f59e0b"/>
+
+  <!-- Magnifying glass (held by wing) -->
+  <ellipse cx="148" cy="110" rx="3" ry="20" fill="#334155" transform="rotate(-20 148 110)"/>
+  <circle cx="155" cy="75" r="18" fill="none" stroke="#10b981" stroke-width="4"/>
+  <circle cx="155" cy="75" r="12" fill="rgba(16,185,129,.08)"/>
+  <line x1="142" y1="88" x2="135" y2="105" stroke="#10b981" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Sparkle near magnifying glass -->
+  <path d="M175 60 L177 55 L179 60 L184 62 L179 64 L177 69 L175 64 L170 62 Z" fill="#10b981" opacity=".6"/>
+  <path d="M165 50 L166 47 L167 50 L170 51 L167 52 L166 55 L165 52 L162 51 Z" fill="#8b5cf6" opacity=".5"/>
+</svg>
