@@ -567,7 +567,7 @@ async function generateSocial() {
   var toneDesc = {funny:"Funny, cheeky, roast-style. Like your best mate taking the piss.",professional:"Professional but engaging. LinkedIn-appropriate.",hype:"Hyped up, excited energy. Lots of enthusiasm.",casual:"Casual, relaxed, conversational."}[tone];
   var focusDesc = {challenge:"Promote the #cvchallengenz TikTok challenge at findmeajob.co.nz/challenge",platform:"Promote FindMeAJob.co.nz as a free AI job matching platform for NZ",results:"Share funny example career pivot results from the challenge (make up entertaining examples)",milestone:"Share a milestone — "+cvCount+" CVs uploaded, "+seekerCount+" job seekers signed up"}[focus];
 
-  var prompt = 'Generate social media posts for a NZ job platform called FindMeAJob.co.nz.\n\nTone: '+toneDesc+'\nFocus: '+focusDesc+'\nStats: '+cvCount+' CV uploads, '+seekerCount+' job seekers\n\nGenerate ONE post for each platform. Each post must be ready to copy-paste with no editing needed.\n\nReturn ONLY valid JSON:\n{"twitter":"tweet text under 280 chars with hashtags","linkedin":"linkedin post with hashtags","facebook":"facebook post with hashtags","instagram":"instagram caption with hashtags","tiktok":"tiktok caption with hashtags","youtube":"youtube shorts description with hashtags"}\n\nMake each post feel native to the platform. Twitter is punchy. LinkedIn is insightful. Facebook is conversational. Instagram is visual-focused. TikTok is chaotic energy. YouTube is descriptive.\n\nReturn ONLY the JSON.';
+  var prompt = 'Generate social media posts for a NZ job platform called FindMeAJob.co.nz.\n\nTone: '+toneDesc+'\nFocus: '+focusDesc+'\nStats: '+cvCount+' CV uploads, '+seekerCount+' job seekers\n\nGenerate ONE post for each platform. Each post must be ready to copy-paste with no editing needed.\n\nReturn ONLY valid JSON:\n{"twitter":"tweet text under 280 chars with hashtags","linkedin":"linkedin post with hashtags","facebook":"facebook post with hashtags","instagram":"instagram caption with hashtags","tiktok":"tiktok caption with hashtags","youtube":"youtube shorts description with hashtags","reddit":"reddit post — write a title and body separated by \\n\\n. Title should be attention-grabbing. Body should feel authentic, not like an ad. Suitable for r/newzealand or r/careerguidance"}\n\nMake each post feel native to the platform. Twitter is punchy. LinkedIn is insightful. Facebook is conversational. Instagram is visual-focused. TikTok is chaotic energy. YouTube is descriptive. Reddit hates ads — make it feel like a genuine person sharing something cool they found, not marketing.\n\nReturn ONLY the JSON.';
 
   try {
     var r = await fetch("/api/chat", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:[{role:"user",content:prompt}]})});
@@ -583,7 +583,8 @@ async function generateSocial() {
       {key:"facebook",name:"Facebook",icon:"&#128220;",color:"#1877f2"},
       {key:"instagram",name:"Instagram",icon:"&#128247;",color:"#e4405f"},
       {key:"tiktok",name:"TikTok",icon:"&#127926;",color:"#ff0050"},
-      {key:"youtube",name:"YouTube Shorts",icon:"&#9654;",color:"#ff0000"}
+      {key:"youtube",name:"YouTube Shorts",icon:"&#9654;",color:"#ff0000"},
+      {key:"reddit",name:"Reddit",icon:"&#129302;",color:"#ff4500"}
     ];
 
     var h = "";
@@ -593,7 +594,10 @@ async function generateSocial() {
       h += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--rl);padding:1.15rem;margin-bottom:.75rem">';
       h += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem">';
       h += '<div style="display:flex;align-items:center;gap:.5rem"><span style="font-size:1.1rem">'+p.icon+'</span><span style="font-size:.88rem;font-weight:700;color:'+p.color+'">'+p.name+'</span></div>';
+      h += '<div style="display:flex;gap:.4rem">';
+      h += '<button onclick="downloadPostImage(this)" data-text="'+text.replace(/"/g,'&quot;').replace(/\n/g,'&#10;')+'" data-platform="'+p.name+'" data-color="'+p.color+'" style="background:rgba(255,255,255,.06);border:1px solid var(--border2);color:var(--text2);padding:.35rem .85rem;border-radius:999px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s">Image</button>';
       h += '<button onclick="copyPost(this)" data-text="'+text.replace(/"/g,'&quot;').replace(/\n/g,'&#10;')+'" style="background:rgba(255,255,255,.06);border:1px solid var(--border2);color:var(--text2);padding:.35rem .85rem;border-radius:999px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s">Copy</button>';
+      h += '</div>';
       h += '</div>';
       h += '<div style="font-size:.82rem;color:var(--text);line-height:1.7;white-space:pre-wrap">'+text.replace(/</g,"&lt;").replace(/>/g,"&gt;")+'</div>';
       h += '</div>';
@@ -615,6 +619,125 @@ function copyPost(btn) {
     btn.style.borderColor = "rgba(16,185,129,.3)";
     setTimeout(function() { btn.textContent = "Copy"; btn.style.color = "var(--text2)"; btn.style.borderColor = ""; }, 2000);
   });
+}
+
+function downloadPostImage(btn) {
+  var text = btn.dataset.text.replace(/&#10;/g, "\n");
+  var platform = btn.dataset.platform;
+  var color = btn.dataset.color;
+  var c = document.createElement("canvas");
+  var W = 1080, H = 1080;
+  c.width = W; c.height = H;
+  var ctx = c.getContext("2d");
+
+  // Background gradient
+  var bg = ctx.createLinearGradient(0, 0, 0, H);
+  bg.addColorStop(0, "#0f172a");
+  bg.addColorStop(1, "#09090b");
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // Subtle glow circle
+  var glow = ctx.createRadialGradient(W/2, H*0.35, 0, W/2, H*0.35, 400);
+  glow.addColorStop(0, "rgba(139,92,246,.08)");
+  glow.addColorStop(1, "transparent");
+  ctx.fillStyle = glow;
+  ctx.fillRect(0, 0, W, H);
+
+  // Top border accent
+  var topLine = ctx.createLinearGradient(0, 0, W, 0);
+  topLine.addColorStop(0, "transparent");
+  topLine.addColorStop(0.3, "#8b5cf6");
+  topLine.addColorStop(0.7, "#ec4899");
+  topLine.addColorStop(1, "transparent");
+  ctx.fillStyle = topLine;
+  ctx.fillRect(0, 0, W, 3);
+
+  // #cvchallengenz header
+  ctx.font = "900 52px Inter, sans-serif";
+  ctx.textAlign = "center";
+  var tagGrad = ctx.createLinearGradient(W*0.3, 0, W*0.7, 0);
+  tagGrad.addColorStop(0, "#8b5cf6");
+  tagGrad.addColorStop(0.5, "#ec4899");
+  tagGrad.addColorStop(1, "#f59e0b");
+  ctx.fillStyle = tagGrad;
+  ctx.fillText("#cvchallengenz", W/2, 100);
+
+  // Platform badge
+  ctx.font = "700 24px Inter, sans-serif";
+  ctx.fillStyle = color;
+  ctx.fillText(platform, W/2, 150);
+
+  // Post text - word wrap
+  ctx.font = "600 32px Inter, sans-serif";
+  ctx.fillStyle = "#f8fafc";
+  ctx.textAlign = "left";
+  var lines = [];
+  var paras = text.split("\n");
+  var maxW = W - 160;
+  paras.forEach(function(para) {
+    if (para.trim() === "") { lines.push(""); return; }
+    var words = para.split(" ");
+    var line = "";
+    words.forEach(function(word) {
+      var test = line ? line + " " + word : word;
+      if (ctx.measureText(test).width > maxW && line) {
+        lines.push(line);
+        line = word;
+      } else { line = test; }
+    });
+    if (line) lines.push(line);
+  });
+
+  // Center text block vertically
+  var lineH = 44;
+  var totalH = lines.length * lineH;
+  var startY = Math.max(220, (H - totalH) / 2 + 20);
+  // Cap lines to fit
+  var maxLines = Math.floor((H - startY - 180) / lineH);
+  if (lines.length > maxLines) lines = lines.slice(0, maxLines);
+
+  lines.forEach(function(line, i) {
+    // Color hashtags
+    if (line.match(/#\w/)) {
+      ctx.fillStyle = "#8b5cf6";
+    } else {
+      ctx.fillStyle = "#f8fafc";
+    }
+    ctx.fillText(line, 80, startY + i * lineH);
+  });
+
+  // Bottom section
+  var botY = H - 80;
+
+  // Divider line
+  var divGrad = ctx.createLinearGradient(80, 0, W-80, 0);
+  divGrad.addColorStop(0, "transparent");
+  divGrad.addColorStop(0.5, "rgba(255,255,255,.1)");
+  divGrad.addColorStop(1, "transparent");
+  ctx.fillStyle = divGrad;
+  ctx.fillRect(80, botY - 40, W-160, 1);
+
+  // Brand
+  ctx.textAlign = "center";
+  ctx.font = "800 28px Inter, sans-serif";
+  ctx.fillStyle = "#71717a";
+  ctx.fillText("FindMeAJob.co.nz", W/2, botY);
+
+  // Subtitle
+  ctx.font = "500 20px Inter, sans-serif";
+  ctx.fillStyle = "#52525b";
+  ctx.fillText("AI-powered job matching for New Zealand", W/2, botY + 30);
+
+  // Download
+  var link = document.createElement("a");
+  link.download = "cvchallengenz-" + platform.toLowerCase().replace(/[\s\/]/g,"-") + ".png";
+  link.href = c.toDataURL("image/png");
+  link.click();
+
+  btn.textContent = "Done!";
+  btn.style.color = "var(--em)";
+  setTimeout(function() { btn.textContent = "Image"; btn.style.color = "var(--text2)"; }, 2000);
 }
 
 async function execUserAction(action, email) {
