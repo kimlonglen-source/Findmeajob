@@ -189,6 +189,7 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
         <button class="tab" data-tab="all" type="button">All</button>
         <button class="tab" data-tab="seekers" type="button" style="margin-left:.5rem;border-color:rgba(139,92,246,.2);color:var(--purple)">Job Seekers</button>
         <button class="tab" data-tab="employers" type="button" style="border-color:rgba(245,158,11,.2);color:var(--gold)">Employers</button>
+        <button class="tab" data-tab="social" type="button" style="margin-left:.5rem;border-color:rgba(236,72,153,.2);color:#ec4899">Social Media</button>
       </div>
       <div style="display:flex;align-items:center;gap:.65rem">
         <span class="refresh-txt" id="last-refresh">Never refreshed</span>
@@ -197,6 +198,32 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
     </div>
     <div id="job-list"></div>
     <div id="people-list" style="display:none"></div>
+    <div id="social-list" style="display:none">
+      <div style="padding:1.5rem 0">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
+          <div>
+            <div style="font-size:1.1rem;font-weight:800;color:var(--text)">Social Media Generator</div>
+            <div style="font-size:.78rem;color:var(--text3);margin-top:.2rem">AI generates fresh posts for every platform. Just copy &amp; paste.</div>
+          </div>
+          <button onclick="generateSocial()" id="btn-gen-social" style="background:linear-gradient(135deg,#ec4899,var(--purple));color:#fff;border:none;padding:.55rem 1.25rem;border-radius:999px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Generate Posts</button>
+        </div>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem">
+          <select id="social-tone" style="background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.45rem .75rem;outline:none">
+            <option value="funny">Funny / Roast</option>
+            <option value="professional">Professional</option>
+            <option value="hype">Hype / Excited</option>
+            <option value="casual">Casual / Chill</option>
+          </select>
+          <select id="social-focus" style="background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.45rem .75rem;outline:none">
+            <option value="challenge">Promote #cvchallengenz</option>
+            <option value="platform">Promote FindMeAJob.co.nz</option>
+            <option value="results">Share funny results</option>
+            <option value="milestone">Share milestone / stats</option>
+          </select>
+        </div>
+        <div id="social-output"></div>
+      </div>
+    </div>
   </main>
 </div>
 
@@ -277,7 +304,7 @@ document.getElementById("pw").addEventListener("keydown",function(e){if(e.key===
 document.getElementById("btn-login").addEventListener("click",doLogin);
 document.getElementById("btn-signout").addEventListener("click",function(){pw="";document.getElementById("login").style.display="flex";document.getElementById("app").style.display="none";clearInterval(refreshTimer);});
 document.getElementById("btn-refresh").addEventListener("click",loadJobs);
-document.querySelectorAll(".tab").forEach(function(t){t.addEventListener("click",function(){document.querySelectorAll(".tab").forEach(function(x){x.classList.remove("active");});this.classList.add("active");currentTab=this.dataset.tab;if(currentTab==="seekers"){loadPeople("seekers");}else if(currentTab==="employers"){loadPeople("employers");}else{document.getElementById("job-list").style.display="grid";document.getElementById("people-list").style.display="none";renderJobs();}});});
+document.querySelectorAll(".tab").forEach(function(t){t.addEventListener("click",function(){document.querySelectorAll(".tab").forEach(function(x){x.classList.remove("active");});this.classList.add("active");currentTab=this.dataset.tab;if(currentTab==="social"){document.getElementById("job-list").style.display="none";document.getElementById("people-list").style.display="none";document.getElementById("social-list").style.display="block";}else if(currentTab==="seekers"){document.getElementById("social-list").style.display="none";loadPeople("seekers");}else if(currentTab==="employers"){document.getElementById("social-list").style.display="none";loadPeople("employers");}else{document.getElementById("job-list").style.display="grid";document.getElementById("people-list").style.display="none";document.getElementById("social-list").style.display="none";renderJobs();}});});
 document.getElementById("confirm-cancel").addEventListener("click",function(){document.getElementById("confirm-modal").classList.remove("show");pendingAction=null;pendingActionId=null;});
 document.getElementById("confirm-ok").addEventListener("click",function(){document.getElementById("confirm-modal").classList.remove("show");if(pendingAction&&pendingActionId){if(pendingAction==="delete-seeker"||pendingAction==="delete-employer"){execUserAction(pendingAction,pendingActionId);}else{execAction(pendingAction,pendingActionId);}pendingAction=null;pendingActionId=null;}});
 
@@ -523,6 +550,71 @@ async function loadStats() {
     document.getElementById("st-apps").textContent = d.applications || 0;
     document.getElementById("st-cvs").textContent = d.cvUploads || 0;
   } catch(e) {}
+}
+
+async function generateSocial() {
+  var btn = document.getElementById("btn-gen-social");
+  var out = document.getElementById("social-output");
+  var tone = document.getElementById("social-tone").value;
+  var focus = document.getElementById("social-focus").value;
+  btn.disabled = true;
+  btn.textContent = "Generating...";
+  out.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3);font-size:.85rem">Generating posts<span class="dots"></span></div>';
+
+  var cvCount = document.getElementById("st-cvs").textContent || "0";
+  var seekerCount = document.getElementById("st-seekers").textContent || "0";
+
+  var toneDesc = {funny:"Funny, cheeky, roast-style. Like your best mate taking the piss.",professional:"Professional but engaging. LinkedIn-appropriate.",hype:"Hyped up, excited energy. Lots of enthusiasm.",casual:"Casual, relaxed, conversational."}[tone];
+  var focusDesc = {challenge:"Promote the #cvchallengenz TikTok challenge at findmeajob.co.nz/challenge",platform:"Promote FindMeAJob.co.nz as a free AI job matching platform for NZ",results:"Share funny example career pivot results from the challenge (make up entertaining examples)",milestone:"Share a milestone — "+cvCount+" CVs uploaded, "+seekerCount+" job seekers signed up"}[focus];
+
+  var prompt = 'Generate social media posts for a NZ job platform called FindMeAJob.co.nz.\n\nTone: '+toneDesc+'\nFocus: '+focusDesc+'\nStats: '+cvCount+' CV uploads, '+seekerCount+' job seekers\n\nGenerate ONE post for each platform. Each post must be ready to copy-paste with no editing needed.\n\nReturn ONLY valid JSON:\n{"twitter":"tweet text under 280 chars with hashtags","linkedin":"linkedin post with hashtags","facebook":"facebook post with hashtags","instagram":"instagram caption with hashtags","tiktok":"tiktok caption with hashtags","youtube":"youtube shorts description with hashtags"}\n\nMake each post feel native to the platform. Twitter is punchy. LinkedIn is insightful. Facebook is conversational. Instagram is visual-focused. TikTok is chaotic energy. YouTube is descriptive.\n\nReturn ONLY the JSON.';
+
+  try {
+    var r = await fetch("/api/chat", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:[{role:"user",content:prompt}]})});
+    var d = await r.json();
+    var raw = d.content.map(function(b){return b.text||"";}).join("").trim();
+    var si = raw.indexOf("{"), ei = raw.lastIndexOf("}");
+    if (si === -1 || ei === -1) throw new Error("No JSON");
+    var posts = JSON.parse(raw.substring(si, ei+1));
+
+    var platforms = [
+      {key:"twitter",name:"Twitter / X",icon:"&#120143;",color:"#1da1f2"},
+      {key:"linkedin",name:"LinkedIn",icon:"&#128188;",color:"#0a66c2"},
+      {key:"facebook",name:"Facebook",icon:"&#128220;",color:"#1877f2"},
+      {key:"instagram",name:"Instagram",icon:"&#128247;",color:"#e4405f"},
+      {key:"tiktok",name:"TikTok",icon:"&#127926;",color:"#ff0050"},
+      {key:"youtube",name:"YouTube Shorts",icon:"&#9654;",color:"#ff0000"}
+    ];
+
+    var h = "";
+    platforms.forEach(function(p) {
+      var text = posts[p.key] || "";
+      if (!text) return;
+      h += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--rl);padding:1.15rem;margin-bottom:.75rem">';
+      h += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem">';
+      h += '<div style="display:flex;align-items:center;gap:.5rem"><span style="font-size:1.1rem">'+p.icon+'</span><span style="font-size:.88rem;font-weight:700;color:'+p.color+'">'+p.name+'</span></div>';
+      h += '<button onclick="copyPost(this)" data-text="'+text.replace(/"/g,'&quot;').replace(/\n/g,'&#10;')+'" style="background:rgba(255,255,255,.06);border:1px solid var(--border2);color:var(--text2);padding:.35rem .85rem;border-radius:999px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s">Copy</button>';
+      h += '</div>';
+      h += '<div style="font-size:.82rem;color:var(--text);line-height:1.7;white-space:pre-wrap">'+text.replace(/</g,"&lt;").replace(/>/g,"&gt;")+'</div>';
+      h += '</div>';
+    });
+
+    out.innerHTML = h;
+  } catch(e) {
+    out.innerHTML = '<div style="text-align:center;padding:2rem;color:#fca5a5;font-size:.85rem">Failed to generate. Try again.</div>';
+  }
+  btn.disabled = false;
+  btn.textContent = "Generate Posts";
+}
+
+function copyPost(btn) {
+  var text = btn.dataset.text.replace(/&#10;/g, "\n");
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = "Copied!";
+    btn.style.color = "var(--em)";
+    btn.style.borderColor = "rgba(16,185,129,.3)";
+    setTimeout(function() { btn.textContent = "Copy"; btn.style.color = "var(--text2)"; btn.style.borderColor = ""; }, 2000);
+  });
 }
 
 async function execUserAction(action, email) {
