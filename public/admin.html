@@ -879,28 +879,40 @@ function downloadPostImage(btn) {
     ctx.fillStyle="#10b981"; ctx.fillText("AJob",bx+fw,by);
     // Platform top-right
     ctx.font="600 "+Math.round(bs*0.65)+"px Inter, sans-serif"; ctx.textAlign="right"; ctx.fillStyle=color; ctx.fillText(platform,W-pad,by);
-    // --- MASSIVE KEYWORDS ONLY ---
+    // --- SHORT PUNCHY HEADLINE ---
     var textTop=ly+logoS+Math.round(H*0.03);
     var footerH2=Math.round(H*0.08);
     var textAreaH=H-textTop-footerH2;
-    // Extract keywords: strip hashtags, emojis, short words, URLs
-    var rawText=text.replace(/#\w+/g,"").replace(/https?:\/\/\S+/g,"").replace(/[^\w\s'-]/g," ").replace(/\s+/g," ").trim();
-    var stopWords=["the","a","an","and","or","but","in","on","at","to","for","of","with","by","from","is","are","was","were","be","been","being","have","has","had","do","does","did","will","would","could","should","may","might","shall","can","it","its","this","that","these","those","i","you","we","they","he","she","my","your","our","their","so","if","not","no","just","also","very","too","more","most","some","any","all","each","every","much","many","such","own","other","than","then","into","over","after","before","about","up","out","off","down"];
-    var keywords=rawText.split(" ").filter(function(w){ return w.length>2 && stopWords.indexOf(w.toLowerCase())===-1; });
-    // Take first 8-12 keywords, uppercase
-    var keyCount=Math.min(keywords.length, Math.max(8, Math.floor(textAreaH/80)));
-    var keyText=keywords.slice(0,keyCount).map(function(w){ return w.toUpperCase(); }).join("\n");
-    // Size to fill
-    var fontSize=Math.round(Math.min(W*0.08,textAreaH/(keyCount*1.1)));
-    if(H>W) fontSize=Math.round(W*0.085);
-    if(fontSize<40) fontSize=40;
-    if(fontSize>110) fontSize=110;
-    ctx.font="900 "+fontSize+"px Inter, sans-serif"; ctx.textAlign="left";
-    var lineH=Math.round(fontSize*1.15);
-    var kLines=keyText.split("\n");
-    var totalKH=kLines.length*lineH;
+    // Extract the first sentence as headline, strip hashtags/emojis/URLs
+    var headline=text.split(/\n/)[0].replace(/#\w+/g,"").replace(/https?:\/\/\S+/g,"").replace(/[^\w\s'!?.,\-]/g,"").replace(/\s+/g," ").trim().toUpperCase();
+    // If first line is too short, grab next line too
+    if(headline.length<15){ var lines2=text.split(/\n/).filter(function(l){return l.trim().length>0;}); headline=lines2.slice(0,2).join(" ").replace(/#\w+/g,"").replace(/https?:\/\/\S+/g,"").replace(/[^\w\s'!?.,\-]/g,"").replace(/\s+/g," ").trim().toUpperCase(); }
+    // Truncate to ~60 chars max for readability
+    if(headline.length>65){ headline=headline.substring(0,62).replace(/\s\S*$/,"")+"..."; }
+    // Word-wrap headline into lines that fit the canvas
+    var maxFontSize=H>W?Math.round(W*0.1):Math.round(W*0.07);
+    if(maxFontSize<36) maxFontSize=36;
+    if(maxFontSize>120) maxFontSize=120;
+    var maxTextW=W-pad*2;
+    function wrapText(str,fs){
+      ctx.font="900 "+fs+"px Inter, sans-serif";
+      var words=str.split(" "), lines=[], cur="";
+      words.forEach(function(w){ var test=cur?cur+" "+w:w; if(ctx.measureText(test).width>maxTextW&&cur){ lines.push(cur); cur=w; } else { cur=test; } });
+      if(cur) lines.push(cur);
+      return lines;
+    }
+    // Find largest font size that fits in 2-4 lines within textAreaH
+    var fontSize=maxFontSize, wrappedLines;
+    while(fontSize>=28){
+      wrappedLines=wrapText(headline,fontSize);
+      var lineH2=Math.round(fontSize*1.2);
+      if(wrappedLines.length<=5&&wrappedLines.length*lineH2<textAreaH*0.85) break;
+      fontSize-=4;
+    }
+    var lineH=Math.round(fontSize*1.2);
+    var totalKH=wrappedLines.length*lineH;
     var startY=textTop+Math.round((textAreaH-totalKH)/2)+fontSize;
-    kLines.forEach(function(line,i){ ctx.font="900 "+fontSize+"px Inter, sans-serif"; ctx.fillStyle="#ffffff"; ctx.fillText(line,pad,startY+i*lineH); });
+    wrappedLines.forEach(function(line,i){ ctx.font="900 "+fontSize+"px Inter, sans-serif"; ctx.fillStyle="#ffffff"; ctx.fillText(line,pad,startY+i*lineH); });
     // Footer
     var fy=H-Math.round(footerH2*0.35);
     ctx.fillStyle="rgba(255,255,255,.08)"; ctx.fillRect(pad,fy-Math.round(footerH2*0.3),W-pad*2,1);
