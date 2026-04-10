@@ -858,7 +858,7 @@ function downloadPostImage(btn) {
   bgImg.onerror = function(){ drawCard(null); };
   bgImg.src = "https://picsum.photos/seed/"+imgSeed+"/"+W+"/"+H;
   function drawCard(photo) {
-    if (photo) { ctx.drawImage(photo,0,0,W,H); ctx.fillStyle="rgba(9,9,11,.8)"; ctx.fillRect(0,0,W,H); }
+    if (photo) { ctx.drawImage(photo,0,0,W,H); ctx.fillStyle="rgba(9,9,11,.88)"; ctx.fillRect(0,0,W,H); }
     else { var bg=ctx.createLinearGradient(0,0,W*0.3,H); bg.addColorStop(0,"#0f172a"); bg.addColorStop(1,"#09090b"); ctx.fillStyle=bg; ctx.fillRect(0,0,W,H); }
     var g1=ctx.createRadialGradient(W*0.8,H*0.15,0,W*0.8,H*0.15,W*0.4); g1.addColorStop(0,"rgba(139,92,246,.12)"); g1.addColorStop(1,"transparent"); ctx.fillStyle=g1; ctx.fillRect(0,0,W,H);
     var g2=ctx.createRadialGradient(W*0.15,H*0.8,0,W*0.15,H*0.8,W*0.35); g2.addColorStop(0,"rgba(16,185,129,.08)"); g2.addColorStop(1,"transparent"); ctx.fillStyle=g2; ctx.fillRect(0,0,W,H);
@@ -901,13 +901,16 @@ function downloadPostImage(btn) {
       if(cur) lines.push(cur);
       return lines;
     }
-    // Find largest font size that fits in 2-4 lines within textAreaH
+    // Find largest font size where every line fits within maxTextW and total height fits
     var fontSize=maxFontSize, wrappedLines;
-    while(fontSize>=28){
+    while(fontSize>=20){
       wrappedLines=wrapText(headline,fontSize);
       var lineH2=Math.round(fontSize*1.2);
-      if(wrappedLines.length<=5&&wrappedLines.length*lineH2<textAreaH*0.85) break;
-      fontSize-=4;
+      var allFit=true;
+      ctx.font="900 "+fontSize+"px Inter, sans-serif";
+      for(var li=0;li<wrappedLines.length;li++){ if(ctx.measureText(wrappedLines[li]).width>maxTextW){ allFit=false; break; } }
+      if(allFit&&wrappedLines.length<=5&&wrappedLines.length*lineH2<textAreaH*0.85) break;
+      fontSize-=2;
     }
     var lineH=Math.round(fontSize*1.2);
     var totalKH=wrappedLines.length*lineH;
