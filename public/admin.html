@@ -785,7 +785,7 @@ async function generateSocial() {
   var focusMap = {challenge:"Promote the #cvchallengenz TikTok challenge at findmeajob.co.nz/challenge",platform:"Promote FindMeAJob.co.nz as a free AI job matching platform for NZ",results:"Share funny example career pivot results from the challenge (make up entertaining examples)",milestone:"Share a milestone — "+cvCount+" CVs uploaded, "+seekerCount+" job seekers signed up","seeker-tips":"Share genuinely helpful job seeking advice for NZ job seekers — CV tips, interview prep, salary negotiation, career change advice. Mention findmeajob.co.nz as a helpful free tool but focus on the advice being valuable. Include NZ-specific context (regions, industries, culture).","employer-tips":"Share helpful hiring and recruitment tips for NZ employers — writing better job ads, reducing time-to-hire, retention strategies, NZ employment law basics, onboarding tips. Mention findmeajob.co.nz for free job posting but focus on the advice. NZ business context.","market-insight":"Share an interesting NZ job market insight or trend — in-demand skills, salary movements, regional differences, industry growth, immigration impact on talent. Be data-informed and NZ-specific. Position FindMeAJob.co.nz as a source of market knowledge."};
   var focusDesc = focusMap[focus] || focusMap.challenge;
 
-  var prompt = 'Generate social media posts for a NZ job platform called FindMeAJob.co.nz. IMPORTANT: The current year is 2026. Never reference 2024 or 2025 as current.\n\nTone: '+toneDesc+'\nFocus: '+focusDesc+'\nStats: '+cvCount+' CV uploads, '+seekerCount+' job seekers\n\nGenerate ONE post for each platform. Each post must be ready to copy-paste with no editing needed.\n\nReturn ONLY valid JSON:\n{"twitter":"tweet text under 280 chars with hashtags","linkedin":"linkedin post with hashtags","facebook":"facebook post with hashtags","instagram":"instagram caption with hashtags","tiktok":"tiktok caption with hashtags","youtube":"youtube shorts description with hashtags","reddit":"reddit post — write a title and body separated by \\n\\n. Title should be attention-grabbing. Body should feel authentic, not like an ad. Suitable for r/newzealand or r/careerguidance"}\n\nMake each post feel native to the platform. Twitter is punchy. LinkedIn is insightful. Facebook is conversational. Instagram is visual-focused. TikTok is chaotic energy. YouTube is descriptive. Reddit hates ads — make it feel like a genuine person sharing something cool they found, not marketing.\n\nReturn ONLY the JSON.';
+  var prompt = 'Generate social media posts for a NZ job platform called FindMeAJob.co.nz. IMPORTANT: The current year is 2026. Never reference 2024 or 2025 as current. NEVER mention specific numbers of CV uploads, users, or job seekers — do not quote stats or numbers. Focus on the product and value instead.\n\nTone: '+toneDesc+'\nFocus: '+focusDesc+'\n\nGenerate ONE post for each platform. Each post must be ready to copy-paste with no editing needed.\n\nReturn ONLY valid JSON:\n{"twitter":"tweet text under 280 chars with hashtags","linkedin":"linkedin post with hashtags","facebook":"facebook post with hashtags","instagram":"instagram caption with hashtags","tiktok":"tiktok caption with hashtags","youtube":"youtube shorts description with hashtags","reddit":"reddit post — write a title and body separated by \\n\\n. Title should be attention-grabbing. Body should feel authentic, not like an ad. Suitable for r/newzealand or r/careerguidance"}\n\nMake each post feel native to the platform. Twitter is punchy. LinkedIn is insightful. Facebook is conversational. Instagram is visual-focused. TikTok is chaotic energy. YouTube is descriptive. Reddit hates ads — make it feel like a genuine person sharing something cool they found, not marketing.\n\nReturn ONLY the JSON.';
 
   try {
     var r = await fetch("/api/chat", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:[{role:"user",content:prompt}]})});
@@ -843,179 +843,72 @@ function downloadPostImage(btn) {
   var text = btn.dataset.text.replace(/&#10;/g, "\n");
   var platform = btn.dataset.platform;
   var color = btn.dataset.color;
-  var c = document.createElement("canvas");
-
-  var sizes = {
-    "Twitter / X": {w:1200, h:675},
-    "LinkedIn": {w:1200, h:627},
-    "Facebook": {w:1200, h:630},
-    "Instagram": {w:1080, h:1080},
-    "TikTok": {w:1080, h:1920},
-    "YouTube Shorts": {w:1280, h:720},
-    "Reddit": {w:1200, h:628}
-  };
-  var size = sizes[platform] || {w:1200, h:630};
+  var cn = document.createElement("canvas");
+  var sizes = {"Twitter / X":{w:1200,h:675},"LinkedIn":{w:1200,h:627},"Facebook":{w:1200,h:630},"Instagram":{w:1080,h:1080},"TikTok":{w:1080,h:1920},"YouTube Shorts":{w:1280,h:720},"Reddit":{w:1200,h:628}};
+  var size = sizes[platform]||{w:1200,h:630};
   var W = size.w, H = size.h;
-  c.width = W; c.height = H;
-  var ctx = c.getContext("2d");
-
-  // Background
-  var bg = ctx.createLinearGradient(0, 0, W*0.3, H);
-  bg.addColorStop(0, "#0f172a");
-  bg.addColorStop(1, "#09090b");
-  ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, W, H);
-
-  // Decorative circles
-  var c1 = ctx.createRadialGradient(W*0.85, H*0.15, 0, W*0.85, H*0.15, W*0.35);
-  c1.addColorStop(0, "rgba(139,92,246,.07)");
-  c1.addColorStop(1, "transparent");
-  ctx.fillStyle = c1;
-  ctx.fillRect(0, 0, W, H);
-  var c2 = ctx.createRadialGradient(W*0.1, H*0.85, 0, W*0.1, H*0.85, W*0.3);
-  c2.addColorStop(0, "rgba(16,185,129,.05)");
-  c2.addColorStop(1, "transparent");
-  ctx.fillStyle = c2;
-  ctx.fillRect(0, 0, W, H);
-
-  // Top accent line
-  var topLine = ctx.createLinearGradient(0, 0, W, 0);
-  topLine.addColorStop(0, "transparent");
-  topLine.addColorStop(0.2, "#10b981");
-  topLine.addColorStop(0.5, "#8b5cf6");
-  topLine.addColorStop(0.8, "#ec4899");
-  topLine.addColorStop(1, "transparent");
-  ctx.fillStyle = topLine;
-  ctx.fillRect(0, 0, W, 4);
-
-  var pad = Math.round(W * 0.06);
-
-  // -- Layout: Logo top-left, text center, footer bottom --
-
-  // Logo icon (green rounded square + magnifying glass)
-  var logoS = Math.round(Math.min(W, H) * 0.05);
-  var lx = pad, ly = pad;
-  ctx.beginPath();
-  ctx.roundRect(lx, ly, logoS, logoS, Math.round(logoS * 0.22));
-  ctx.fillStyle = "#10b981";
-  ctx.fill();
-  // Magnifying glass circle
-  var mgCx = lx + logoS * 0.41, mgCy = ly + logoS * 0.41, mgR = logoS * 0.19;
-  ctx.beginPath();
-  ctx.arc(mgCx, mgCy, mgR, 0, Math.PI * 2);
-  ctx.strokeStyle = "white";
-  ctx.lineWidth = Math.max(2, logoS * 0.08);
-  ctx.stroke();
-  // Magnifying glass handle
-  ctx.beginPath();
-  ctx.moveTo(mgCx + mgR * 0.7, mgCy + mgR * 0.7);
-  ctx.lineTo(lx + logoS * 0.72, ly + logoS * 0.72);
-  ctx.strokeStyle = "white";
-  ctx.lineCap = "round";
-  ctx.stroke();
-
-  // Text next to logo
-  var logoSize = Math.round(logoS * 0.55);
-  ctx.font = "800 "+logoSize+"px Inter, sans-serif";
-  ctx.textAlign = "left";
-  ctx.fillStyle = "#f8fafc";
-  var textX = lx + logoS + Math.round(logoS * 0.25);
-  var textY = ly + logoS * 0.65;
-  var fmText = "FindMe";
-  ctx.fillText(fmText, textX, textY);
-  var fmW = ctx.measureText(fmText).width;
-  ctx.fillStyle = "#10b981";
-  ctx.fillText("AJob", textX + fmW, textY);
-
-  // Platform badge top-right
-  ctx.font = "600 "+Math.round(logoSize*0.5)+"px Inter, sans-serif";
-  ctx.textAlign = "right";
-  ctx.fillStyle = color;
-  ctx.fillText(platform, W - pad, pad + logoSize);
-
-  // Post text - centered in the remaining space
-  var textTop = pad + logoSize + Math.round(H * 0.06);
-  var footerH = Math.round(H * 0.08);
-  var textAreaH = H - textTop - footerH;
-
-  var fontSize = Math.round(Math.min(W * 0.032, H * 0.045));
-  if (fontSize < 20) fontSize = 20;
-  if (fontSize > 42) fontSize = 42;
-
-  ctx.font = "600 "+fontSize+"px Inter, sans-serif";
-  ctx.textAlign = "left";
-  var maxW2 = W - pad * 2;
-  var lines = [];
-  var paras = text.split("\n");
-  paras.forEach(function(para) {
-    if (para.trim() === "") { lines.push(""); return; }
-    var words = para.split(" ");
-    var ln = "";
-    words.forEach(function(word) {
-      var test = ln ? ln + " " + word : word;
-      if (ctx.measureText(test).width > maxW2 && ln) {
-        lines.push(ln);
-        ln = word;
-      } else { ln = test; }
-    });
-    if (ln) lines.push(ln);
-  });
-
-  var lineH = Math.round(fontSize * 1.5);
-  var totalTextH = lines.length * lineH;
-  var maxLines = Math.floor(textAreaH / lineH);
-  if (lines.length > maxLines) lines = lines.slice(0, maxLines);
-  totalTextH = lines.length * lineH;
-
-  // Center text vertically in available space
-  var startY = textTop + Math.round((textAreaH - totalTextH) / 2) + fontSize;
-
-  lines.forEach(function(line, i) {
-    if (line === "") return;
-    ctx.font = "600 "+fontSize+"px Inter, sans-serif";
-    if (line.match(/#\w/)) {
-      ctx.fillStyle = "#8b5cf6";
-    } else {
-      ctx.fillStyle = "#e2e8f0";
-    }
-    ctx.fillText(line, pad, startY + i * lineH);
-  });
-
-  // Footer
-  var footY = H - Math.round(footerH * 0.4);
-  var divGrad2 = ctx.createLinearGradient(pad, 0, W - pad, 0);
-  divGrad2.addColorStop(0, "rgba(255,255,255,.06)");
-  divGrad2.addColorStop(1, "rgba(255,255,255,.06)");
-  ctx.fillStyle = divGrad2;
-  ctx.fillRect(pad, footY - Math.round(footerH * 0.35), W - pad * 2, 1);
-
-  ctx.textAlign = "left";
-  ctx.font = "700 "+Math.round(fontSize*0.45)+"px Inter, sans-serif";
-  ctx.fillStyle = "#10b981";
-  ctx.fillText("findmeajob.co.nz", pad, footY);
-
-  ctx.textAlign = "right";
-  ctx.font = "500 "+Math.round(fontSize*0.4)+"px Inter, sans-serif";
-  ctx.fillStyle = "#52525b";
-  ctx.fillText("Free AI job matching for New Zealand", W - pad, footY);
-
-  // Bottom accent line
-  var botLine = ctx.createLinearGradient(0, 0, W, 0);
-  botLine.addColorStop(0, "transparent");
-  botLine.addColorStop(0.3, "#10b981");
-  botLine.addColorStop(0.7, "#8b5cf6");
-  botLine.addColorStop(1, "transparent");
-  ctx.fillStyle = botLine;
-  ctx.fillRect(0, H - 4, W, 4);
-
-  var link2 = document.createElement("a");
-  link2.download = "findmeajob-" + platform.toLowerCase().replace(/[\s\/]/g, "-") + ".png";
-  link2.href = c.toDataURL("image/png");
-  link2.click();
-
-  btn.textContent = "Done!";
-  btn.style.color = "var(--em)";
-  setTimeout(function() { btn.textContent = "Image"; btn.style.color = "var(--text2)"; }, 2000);
+  cn.width = W; cn.height = H;
+  var ctx = cn.getContext("2d");
+  btn.textContent = "Loading...";
+  var imgSeed = Math.floor(Math.random()*500)+1;
+  var bgImg = new Image();
+  bgImg.crossOrigin = "anonymous";
+  bgImg.onload = function(){ drawCard(bgImg); };
+  bgImg.onerror = function(){ drawCard(null); };
+  bgImg.src = "https://picsum.photos/seed/"+imgSeed+"/"+W+"/"+H;
+  function drawCard(photo) {
+    if (photo) { ctx.drawImage(photo,0,0,W,H); ctx.fillStyle="rgba(9,9,11,.8)"; ctx.fillRect(0,0,W,H); }
+    else { var bg=ctx.createLinearGradient(0,0,W*0.3,H); bg.addColorStop(0,"#0f172a"); bg.addColorStop(1,"#09090b"); ctx.fillStyle=bg; ctx.fillRect(0,0,W,H); }
+    var g1=ctx.createRadialGradient(W*0.8,H*0.15,0,W*0.8,H*0.15,W*0.4); g1.addColorStop(0,"rgba(139,92,246,.12)"); g1.addColorStop(1,"transparent"); ctx.fillStyle=g1; ctx.fillRect(0,0,W,H);
+    var g2=ctx.createRadialGradient(W*0.15,H*0.8,0,W*0.15,H*0.8,W*0.35); g2.addColorStop(0,"rgba(16,185,129,.08)"); g2.addColorStop(1,"transparent"); ctx.fillStyle=g2; ctx.fillRect(0,0,W,H);
+    var tl=ctx.createLinearGradient(0,0,W,0); tl.addColorStop(0,"transparent"); tl.addColorStop(0.2,"#10b981"); tl.addColorStop(0.5,"#8b5cf6"); tl.addColorStop(0.8,"#ec4899"); tl.addColorStop(1,"transparent"); ctx.fillStyle=tl; ctx.fillRect(0,0,W,5);
+    var pad=Math.round(W*0.06);
+    // Logo icon
+    var logoS=Math.round(Math.min(W,H)*0.06);
+    var lx=pad, ly=pad;
+    ctx.beginPath(); ctx.roundRect(lx,ly,logoS,logoS,Math.round(logoS*0.22)); ctx.fillStyle="#10b981"; ctx.fill();
+    var mgCx=lx+logoS*0.41, mgCy=ly+logoS*0.41, mgR=logoS*0.19;
+    ctx.beginPath(); ctx.arc(mgCx,mgCy,mgR,0,Math.PI*2); ctx.strokeStyle="white"; ctx.lineWidth=Math.max(2,logoS*0.08); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(mgCx+mgR*0.7,mgCy+mgR*0.7); ctx.lineTo(lx+logoS*0.72,ly+logoS*0.72); ctx.strokeStyle="white"; ctx.lineCap="round"; ctx.stroke();
+    // Brand text
+    var bs=Math.round(logoS*0.55);
+    ctx.font="800 "+bs+"px Inter, sans-serif"; ctx.textAlign="left"; ctx.fillStyle="#ffffff";
+    var bx=lx+logoS+Math.round(logoS*0.25), by=ly+logoS*0.68;
+    ctx.fillText("FindMe",bx,by); var fw=ctx.measureText("FindMe").width;
+    ctx.fillStyle="#10b981"; ctx.fillText("AJob",bx+fw,by);
+    // Platform top-right
+    ctx.font="600 "+Math.round(bs*0.65)+"px Inter, sans-serif"; ctx.textAlign="right"; ctx.fillStyle=color; ctx.fillText(platform,W-pad,by);
+    // --- BIG BOLD TEXT ---
+    var textTop=ly+logoS+Math.round(H*0.04);
+    var footerH2=Math.round(H*0.1);
+    var textAreaH=H-textTop-footerH2;
+    var fontSize=Math.round(Math.min(W*0.048,textAreaH*0.085));
+    if(H>W) fontSize=Math.round(W*0.052);
+    if(fontSize<28) fontSize=28;
+    if(fontSize>64) fontSize=64;
+    ctx.font="900 "+fontSize+"px Inter, sans-serif"; ctx.textAlign="left";
+    var maxTW=W-pad*2;
+    var mainText="", hashLine="";
+    text.split("\n").forEach(function(ln){ if(ln.trim().match(/^[#@]/) || (ln.trim().match(/^#/) && ln.trim().split("#").length>2)){ hashLine+=(hashLine?" ":"")+ln.trim(); } else { mainText+=(mainText?"\n":"")+ln; }});
+    var lines=[];
+    mainText.split("\n").forEach(function(para){ if(para.trim()===""){ lines.push(""); return; } var words=para.split(" "); var ln2=""; words.forEach(function(w){ var t=ln2?ln2+" "+w:w; if(ctx.measureText(t).width>maxTW&&ln2){ lines.push(ln2); ln2=w; } else { ln2=t; }}); if(ln2) lines.push(ln2); });
+    var lineH=Math.round(fontSize*1.3);
+    var hashH=hashLine?Math.round(fontSize*1.2):0;
+    var maxLn=Math.floor((textAreaH-hashH)/lineH);
+    if(lines.length>maxLn) lines=lines.slice(0,maxLn);
+    var totalH2=lines.length*lineH+hashH;
+    var startY=textTop+Math.round((textAreaH-totalH2)/2)+fontSize;
+    lines.forEach(function(line,i){ if(line==="") return; ctx.font="900 "+fontSize+"px Inter, sans-serif"; ctx.fillStyle="#ffffff"; ctx.fillText(line,pad,startY+i*lineH); });
+    if(hashLine){ var hs=Math.round(fontSize*0.42); ctx.font="700 "+hs+"px Inter, sans-serif"; ctx.fillStyle="#8b5cf6"; var hy=startY+lines.length*lineH+Math.round(fontSize*0.3); var hw=hashLine.split(" "); var hl=""; hw.forEach(function(w){ var t=hl?hl+"  "+w:w; if(ctx.measureText(t).width>maxTW&&hl){ ctx.fillText(hl,pad,hy); hy+=Math.round(hs*1.4); hl=w; } else { hl=t; }}); if(hl) ctx.fillText(hl,pad,hy); }
+    // Footer
+    var fy=H-Math.round(footerH2*0.35);
+    ctx.fillStyle="rgba(255,255,255,.08)"; ctx.fillRect(pad,fy-Math.round(footerH2*0.3),W-pad*2,1);
+    ctx.textAlign="left"; ctx.font="700 "+Math.round(fontSize*0.35)+"px Inter, sans-serif"; ctx.fillStyle="#10b981"; ctx.fillText("findmeajob.co.nz",pad,fy);
+    ctx.textAlign="right"; ctx.font="500 "+Math.round(fontSize*0.28)+"px Inter, sans-serif"; ctx.fillStyle="#52525b"; ctx.fillText("Free AI job matching for New Zealand",W-pad,fy);
+    var bl=ctx.createLinearGradient(0,0,W,0); bl.addColorStop(0,"transparent"); bl.addColorStop(0.3,"#10b981"); bl.addColorStop(0.7,"#8b5cf6"); bl.addColorStop(1,"transparent"); ctx.fillStyle=bl; ctx.fillRect(0,H-5,W,5);
+    var dl=document.createElement("a"); dl.download="findmeajob-"+platform.toLowerCase().replace(/[\s\/]/g,"-")+".png"; dl.href=cn.toDataURL("image/png"); dl.click();
+    btn.textContent="Done!"; btn.style.color="var(--em)"; setTimeout(function(){ btn.textContent="Image"; btn.style.color="var(--text2)"; },2000);
+  }
 }
 
 async function execUserAction(action, email) {
