@@ -890,9 +890,8 @@ function downloadPostImage(btn) {
     // Truncate to ~60 chars max for readability
     if(headline.length>65){ headline=headline.substring(0,62).replace(/\s\S*$/,"")+"..."; }
     // Word-wrap headline into lines that fit the canvas
-    var maxFontSize=H>W?Math.round(W*0.1):Math.round(W*0.07);
-    if(maxFontSize<36) maxFontSize=36;
-    if(maxFontSize>120) maxFontSize=120;
+    var maxFontSize=Math.round(Math.min(W,H)*0.18);
+    if(maxFontSize<50) maxFontSize=50;
     var maxTextW=W-pad*2;
     function wrapText(str,fs){
       ctx.font="900 "+fs+"px Inter, sans-serif";
@@ -920,8 +919,9 @@ function downloadPostImage(btn) {
     // Footer
     var fy=H-Math.round(footerH2*0.35);
     ctx.fillStyle="rgba(255,255,255,.08)"; ctx.fillRect(pad,fy-Math.round(footerH2*0.3),W-pad*2,1);
-    ctx.textAlign="left"; ctx.font="700 "+Math.round(fontSize*0.35)+"px Inter, sans-serif"; ctx.fillStyle="#10b981"; ctx.fillText("findmeajob.co.nz",pad,fy);
-    ctx.textAlign="right"; ctx.font="500 "+Math.round(fontSize*0.28)+"px Inter, sans-serif"; ctx.fillStyle="#52525b"; ctx.fillText("Free AI job matching for New Zealand",W-pad,fy);
+    var footFs=Math.round(Math.min(W,H)*0.028); if(footFs<14) footFs=14; if(footFs>32) footFs=32;
+    ctx.textAlign="left"; ctx.font="700 "+footFs+"px Inter, sans-serif"; ctx.fillStyle="#10b981"; ctx.fillText("findmeajob.co.nz",pad,fy);
+    ctx.textAlign="right"; ctx.font="500 "+Math.round(footFs*0.8)+"px Inter, sans-serif"; ctx.fillStyle="#52525b"; ctx.fillText("Free AI job matching for New Zealand",W-pad,fy);
     var bl=ctx.createLinearGradient(0,0,W,0); bl.addColorStop(0,"transparent"); bl.addColorStop(0.3,"#10b981"); bl.addColorStop(0.7,"#8b5cf6"); bl.addColorStop(1,"transparent"); ctx.fillStyle=bl; ctx.fillRect(0,H-5,W,5);
     var dl=document.createElement("a"); dl.download="findmeajob-"+platform.toLowerCase().replace(/[\s\/]/g,"-")+".png"; dl.href=cn.toDataURL("image/png"); dl.click();
     btn.textContent="Done!"; btn.style.color="var(--em)"; setTimeout(function(){ btn.textContent="Image"; btn.style.color="var(--text2)"; },2000);
