@@ -305,7 +305,7 @@ module.exports = async function handler(req, res) {
     page += '<script>var _cat="all";function filterBlog(){var q=(document.getElementById("blog-search").value||"").toLowerCase();var cards=document.querySelectorAll(".post-card");cards.forEach(function(c){var text=c.textContent.toLowerCase();var cat=c.getAttribute("data-cat")||"";var matchQ=!q||text.indexOf(q)!==-1;var matchC=_cat==="all"||cat===_cat;c.style.display=matchQ&&matchC?"block":"none";});}function filterCat(btn,cat){_cat=cat;document.querySelectorAll(".blog-tab").forEach(function(t){t.classList.remove("active");});btn.classList.add("active");filterBlog();}</script>';
     page += '</body></html>';
     res.setHeader("Content-Type", "text/html; charset=utf-8");
-    res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=600");
+    res.setHeader("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
     return res.status(200).send(page);
   }
 

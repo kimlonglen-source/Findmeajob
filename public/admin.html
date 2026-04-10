@@ -589,7 +589,7 @@ async function generateBlog() {
 
   var today = new Date().toLocaleDateString("en-NZ", {day:"numeric",month:"long",year:"numeric"});
 
-  var prompt = 'You are a content writer for FindMeAJob.co.nz, a free AI job matching platform in New Zealand.\n\nWrite exactly '+count+' blog posts about the NZ job market. Mix of content for JOB SEEKERS and EMPLOYERS.\n\nTopics should be timely, practical, and relevant to NZ in 2026. Include:\n- Job seeker advice (CV tips, interview prep, salary negotiation, career change)\n- Employer tips (hiring, retention, writing job ads, NZ employment law basics)\n- Market trends (in-demand skills, salary trends, regional job markets, immigration)\n- General tips (work-life balance, remote work in NZ, networking)\n\nFor each post return:\n- category: "seeker", "employer", "market", or "tips"\n- categoryLabel: human readable like "Job Seekers", "Employers", "Market Trends", "Tips"\n- icon: a single relevant emoji for the post header\n- imageId: a number between 1 and 800 (used for stock photo selection — pick a different number for each post)\n- title: attention-grabbing headline\n- excerpt: 1-2 sentence preview (max 160 chars)\n- body: full post, 200-400 words, practical and conversational, NZ-focused. Use line breaks between paragraphs.\n- date: "'+today+'"\n\nReturn ONLY valid JSON array:\n[{"category":"seeker","categoryLabel":"Job Seekers","icon":"single emoji","imageId":42,"title":"...","excerpt":"...","body":"...","date":"'+today+'"}]\n\nMake content genuinely helpful — not generic filler. Reference NZ-specific things (regions, industries, culture). Return ONLY the JSON array.';
+  var prompt = 'You are an expert content strategist for FindMeAJob.co.nz, a free AI job matching platform in New Zealand.\n\nWrite exactly '+count+' blog posts optimised for SEO and designed to attract backlinks from NZ websites.\n\nIMPORTANT: The current year is 2026. Never reference 2024 or 2025 as current.\n\nEach post MUST:\n1. Target a specific long-tail keyword that Kiwis actually search (put it in the title naturally)\n2. Reference REAL NZ organisations, laws, stats, or places to build credibility and attract backlinks from those orgs\n3. Be genuinely useful enough that NZ career blogs, recruiters, and news sites would want to link to it\n4. Include internal links by mentioning "FindMeAJob.co.nz" naturally where relevant\n\nContent mix — make each post DIFFERENT:\n- Job seeker guides: "How to [specific task] in NZ" — CV templates, Seek vs Trade Me Jobs vs FindMeAJob comparison, visa holder job tips, specific industry guides (healthcare, tech, trades, agriculture)\n- Employer resources: NZ employment law (90-day trials, Holidays Act, minimum wage 2026), hiring in specific regions, writing inclusive job ads, Fair Pay Agreements impact\n- Data/research posts: Salary benchmarks by region/role, fastest growing NZ industries, Auckland vs Wellington vs Christchurch job markets, remote work statistics NZ\n- Listicles: "Top 10 highest paying jobs in NZ 2026", "Best NZ cities for tech jobs", "Industries hiring in [region]"\n- Opinion/trend pieces: AI impact on NZ jobs, immigration policy changes, gig economy in NZ, skills shortage sectors\n\nReference REAL things like: MBIE, Stats NZ, Immigration NZ, NZQA, NZ Qualifications Authority, Holidays Act 2003, Employment Relations Act, Health and Safety at Work Act, specific NZ cities (Auckland, Wellington, Christchurch, Hamilton, Tauranga, Dunedin, Queenstown), industries (dairy, tourism, tech, construction, healthcare, film), NZ-specific terms (Kiwi, Aotearoa, ACC, KiwiSaver, IRD).\n\nFor each post return:\n- category: "seeker", "employer", "market", or "tips"\n- categoryLabel: human readable like "Job Seekers", "Employers", "Market Trends", "Tips"\n- icon: a single relevant emoji\n- imageId: a unique number between 1 and 800 (different for each post)\n- title: SEO-optimised headline with target keyword (max 65 chars)\n- excerpt: compelling meta description (max 155 chars, include keyword)\n- body: 300-500 words, conversational but authoritative. Use short paragraphs. Include subheadings using ** for bold. Reference specific NZ things. End with a call to action mentioning FindMeAJob.co.nz.\n- date: "'+today+'"\n\nNEVER duplicate titles of existing posts. Each title must be unique.\n\nReturn ONLY valid JSON array:\n[{"category":"seeker","categoryLabel":"Job Seekers","icon":"emoji","imageId":42,"title":"...","excerpt":"...","body":"...","date":"'+today+'"}]';
 
   try {
     var r = await fetch("/api/chat", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:[{role:"user",content:prompt}]})});
@@ -735,20 +735,60 @@ async function loadExistingBlog() {
     window._publishedBlogPosts = posts;
     var gradients = {seeker:"linear-gradient(135deg,#059669,#10b981)",employer:"linear-gradient(135deg,#d97706,#f59e0b)",market:"linear-gradient(135deg,#7c3aed,#8b5cf6)",tips:"linear-gradient(135deg,#db2777,#ec4899)"};
     var h = '<div style="font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:.75rem">'+posts.length+' published posts</div>';
-    posts.slice(0, 30).forEach(function(p, i) {
+    posts.forEach(function(p, i) {
       var grad = gradients[p.category] || gradients.market;
-      h += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--rl);margin-bottom:.6rem;overflow:hidden">';
-      h += '<div style="background:'+grad+';padding:.65rem .85rem;display:flex;align-items:center;gap:.5rem">';
-      h += '<span style="font-size:1.2rem">'+(p.icon||'📝')+'</span>';
+      h += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--rl);margin-bottom:.6rem;overflow:hidden" id="pub-post-'+i+'">';
+      h += '<div style="background:'+grad+';padding:.65rem .85rem;display:flex;align-items:center;gap:.5rem;cursor:pointer" onclick="toggleEditPost('+i+')">';
+      h += '<span style="font-size:1.2rem">'+(p.icon||'')+'</span>';
       h += '<span style="font-size:.72rem;font-weight:700;color:rgba(255,255,255,.85);flex:1">'+esc(p.title)+'</span>';
       h += '<span style="font-size:.6rem;color:rgba(255,255,255,.5)">'+esc(p.date)+'</span>';
-      h += '<button onclick="deletePublishedPost('+i+')" style="background:rgba(0,0,0,.3);border:none;color:rgba(255,255,255,.6);width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:.7rem;margin-left:.35rem">&times;</button>';
+      h += '<span style="font-size:.55rem;color:rgba(255,255,255,.4);margin-left:.25rem">&#9998; Edit</span>';
+      h += '<button onclick="event.stopPropagation();deletePublishedPost('+i+')" style="background:rgba(0,0,0,.3);border:none;color:rgba(255,255,255,.6);width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:.7rem;margin-left:.35rem">&times;</button>';
+      h += '</div>';
+      // Collapsible edit section
+      h += '<div id="edit-section-'+i+'" style="display:none;padding:1rem">';
+      h += '<label style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.2rem">Title</label>';
+      h += '<input type="text" data-pub-field="title" data-pub-idx="'+i+'" value="'+esc(p.title).replace(/"/g,'&quot;')+'" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;font-size:.85rem;font-weight:700;padding:.4rem .6rem;outline:none;margin-bottom:.5rem">';
+      h += '<label style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.2rem">Excerpt</label>';
+      h += '<input type="text" data-pub-field="excerpt" data-pub-idx="'+i+'" value="'+esc(p.excerpt).replace(/"/g,'&quot;')+'" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.4rem .6rem;outline:none;margin-bottom:.5rem;font-style:italic">';
+      h += '<label style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.2rem">Body</label>';
+      h += '<textarea data-pub-field="body" data-pub-idx="'+i+'" style="width:100%;min-height:150px;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.5rem .6rem;outline:none;resize:vertical;line-height:1.7">'+esc(p.body)+'</textarea>';
+      h += '<button onclick="saveEditedPost('+i+')" style="margin-top:.5rem;padding:.45rem 1.2rem;background:var(--em);color:#fff;border:none;border-radius:999px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit">Save Changes</button>';
       h += '</div></div>';
     });
     out.innerHTML = h;
+    // Bind edit fields
+    out.querySelectorAll("[data-pub-field]").forEach(function(el) {
+      el.addEventListener("input", function() {
+        var idx = parseInt(this.dataset.pubIdx);
+        var field = this.dataset.pubField;
+        if (window._publishedBlogPosts[idx]) window._publishedBlogPosts[idx][field] = this.value;
+      });
+    });
   } catch(e) {
     out.innerHTML = '<div style="text-align:center;padding:2rem;color:#fca5a5;font-size:.85rem">Failed to load posts.</div>';
   }
+}
+
+function toggleEditPost(idx) {
+  var el = document.getElementById("edit-section-"+idx);
+  if (el) el.style.display = el.style.display === "none" ? "block" : "none";
+}
+
+async function saveEditedPost(idx) {
+  if (!window._publishedBlogPosts) return;
+  try {
+    var r = await fetch("/api/approved-jobs", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({type:"replace-blog", password:pw, posts:window._publishedBlogPosts})
+    });
+    var d = await r.json();
+    if (d.ok) {
+      showToast("Post updated!", "success");
+      document.getElementById("edit-section-"+idx).style.display = "none";
+    } else { showToast("Failed to save", "error"); }
+  } catch(e) { showToast("Network error", "error"); }
 }
 
 async function deletePublishedPost(idx) {
