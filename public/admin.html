@@ -915,6 +915,7 @@ function downloadPostImage(btn) {
     var lineH=Math.round(fontSize*1.2);
     var totalKH=wrappedLines.length*lineH;
     var startY=textTop+Math.round((textAreaH-totalKH)/2)+fontSize;
+    ctx.textAlign="left";
     wrappedLines.forEach(function(line,i){ ctx.font="900 "+fontSize+"px Inter, sans-serif"; ctx.fillStyle="#ffffff"; ctx.fillText(line,pad,startY+i*lineH); });
     // Footer
     var fy=H-Math.round(footerH2*0.35);
