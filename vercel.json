@@ -90,6 +90,18 @@
       "dest": "/public/challenge.html"
     },
     {
+      "src": "/sitemap.xml",
+      "dest": "/api/approved-jobs.js?sitemap=1"
+    },
+    {
+      "src": "/blog/rss",
+      "dest": "/api/approved-jobs.js?blogRss=1"
+    },
+    {
+      "src": "/blog/(.+)",
+      "dest": "/api/approved-jobs.js?blogPost=$1"
+    },
+    {
       "src": "/blog",
       "dest": "/api/approved-jobs.js?blogPage=1"
     },
