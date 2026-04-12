@@ -152,7 +152,7 @@ body.dark .spinner{border-color:rgba(255,255,255,.1);border-top-color:#10b981}
 
   <div id="formSection">
     <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
-      <div class="upload-icon">\uD83D\uDCC4</div>
+      <div class="upload-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg></div>
       <div class="upload-text">Drop your CV here or click to upload</div>
       <div class="upload-sub">PDF, DOCX, or TXT accepted</div>
     </div>
@@ -323,7 +323,7 @@ function showResult(r) {
   }
 
   if (r.fixes && r.fixes.length > 0) {
-    html += "<div class=\"section-card fixes\"><h3>\uD83D\uDD27 Specific Fixes</h3>";
+    html += "<div class=\"section-card fixes\"><h3>Specific Fixes</h3>";
     for (var k = 0; k < r.fixes.length; k++) {
       html += "<div class=\"fix-item\"><div class=\"fix-issue\">" + escHtml(r.fixes[k].issue) + "</div><div class=\"fix-solution\">" + escHtml(r.fixes[k].fix) + "</div></div>";
     }
