@@ -145,7 +145,7 @@ async function generate() {
   document.getElementById("result").style.display = "none";
 
   var companyPart = company ? " at " + company : "";
-  var prompt = "Generate 10 likely interview questions for a " + title + " role" + companyPart + " in New Zealand. For each, provide the question, a strong example answer, and a brief tip. Return ONLY valid JSON with no markdown: [{\"question\":\"string\",\"answer\":\"string\",\"tip\":\"string\"}]";
+  var prompt = "You are an NZ interview coach who ONLY prepares candidates for New Zealand job interviews. All questions and answers must reflect NZ workplace culture, NZ industry norms, and NZ interview style (which tends to be more conversational and values-based than US or UK interviews).\n\nGenerate 10 likely interview questions for a " + title + " role" + companyPart + " in New Zealand. CRITICAL RULES:\n1) Questions MUST be specific to the " + title + " INDUSTRY. A nurse should get clinical scenario questions. A software engineer should get technical questions. A teacher should get classroom management questions. Do NOT give generic questions that could apply to any job.\n2) At least 3 questions should be industry-specific technical or scenario-based questions for " + title + " roles in NZ.\n3) Example answers should reference NZ-specific context where relevant (NZ companies, NZ regulations, NZ industry bodies, NZ workplace values like whanaungatanga and manaakitanga where appropriate).\n4) Tips should reflect NZ interview culture (e.g. Kiwis value humility, teamwork, cultural fit, and straight-talking over self-promotion).\n\nReturn ONLY valid JSON with no markdown: [{\"question\":\"string\",\"answer\":\"string\",\"tip\":\"string\"}]";
 
   try {
     var res = await fetch("/api/chat", {
