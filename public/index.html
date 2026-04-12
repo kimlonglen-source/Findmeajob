@@ -128,6 +128,38 @@ a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
 @media(max-width:400px){
   .tools-grid{grid-template-columns:1fr}
 }
+body.dark{background:#09090b;color:#f8fafc}
+body.dark a{color:#10b981}
+body.dark .nav{background:rgba(9,9,11,.95);border-color:rgba(255,255,255,.06)}
+body.dark .nav-logo{color:#f8fafc}
+body.dark .nav-links a{color:#94a3b8}
+body.dark .nav-links a:hover{color:#f8fafc}
+body.dark .nav-cta{background:#10b981;color:#fff}
+body.dark .footer{background:#09090b;border-color:rgba(255,255,255,.06)}
+body.dark .footer p,.footer a{color:#94a3b8}
+body.dark .ai-disclaimer{color:#64748b}
+body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
+body.dark .hero-badge{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3);color:#10b981}
+body.dark .hero h1{color:#f8fafc}
+body.dark .hero p{color:#94a3b8}
+body.dark .hero-stat strong{color:#f8fafc}
+body.dark .hero-stat span{color:#64748b}
+body.dark .tool-card{background:#0f172a;border-color:rgba(255,255,255,.06);color:#f8fafc}
+body.dark .tool-card:hover{border-color:#10b981}
+body.dark .tool-card.primary{background:rgba(16,185,129,.08);border-color:#10b981}
+body.dark .tool-name{color:#f8fafc}
+body.dark .tool-desc{color:#94a3b8}
+body.dark .trust{background:#0f172a;border-color:rgba(255,255,255,.06)}
+body.dark .trust h3{color:#64748b}
+body.dark .trust-item{color:#94a3b8}
+body.dark .how-step{background:#0f172a;border-color:rgba(255,255,255,.06)}
+body.dark .how-step h3{color:#f8fafc}
+body.dark .how-step p{color:#64748b}
+body.dark .email-section h2{color:#f8fafc}
+body.dark .email-section p{color:#94a3b8}
+body.dark .email-form input{background:#0f172a;border-color:rgba(255,255,255,.1);color:#f8fafc}
+body.dark .email-perks span{color:#10b981}
+body.dark #toast{background:#f8fafc;color:#0f172a}
 </style>
 </head>
 <body>
@@ -139,6 +171,7 @@ a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
     <a href="/blog">Blog</a>
     <a href="#tools">Tools</a>
     <a href="/match.html" class="nav-cta">Match My CV</a>
+    <button onclick="toggleTheme()" id="tbtn" style="background:none;border:1px solid #e2e8f0;color:#64748b;width:30px;height:30px;border-radius:999px;cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center">&#9788;</button>
   </div>
 </nav>
 
@@ -357,6 +390,8 @@ function showToast(msg){
   t.textContent=msg;t.style.display="block";
   setTimeout(function(){t.style.display="none";},3000);
 }
+function toggleTheme(){document.body.classList.toggle('dark');var d=document.body.classList.contains('dark');localStorage.setItem('theme',d?'dark':'light');document.getElementById('tbtn').innerHTML=d?'&#9790;':'&#9788;';}
+if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');var tb=document.getElementById('tbtn');if(tb)tb.innerHTML='&#9790;';}
 </script>
 </body>
 </html>

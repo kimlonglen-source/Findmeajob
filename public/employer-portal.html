@@ -7,13 +7,13 @@
 <meta name="robots" content="noindex,nofollow">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#09090b;--bg2:#0f172a;--bg3:rgba(255,255,255,.04);--text:#f8fafc;--text2:#94a3b8;--text3:#64748b;--em:#10b981;--em2:#14b8a6;--em3:rgba(16,185,129,.08);--gold:#f59e0b;--red:#ef4444;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--card:rgba(255,255,255,.03);--inp:rgba(255,255,255,.05);--r:12px;--rl:20px;--glow:0 4px 25px rgba(16,185,129,.15)}
-body.light{--bg:#f8fafc;--bg2:#ffffff;--bg3:rgba(0,0,0,.03);--text:#0f172a;--text2:#475569;--text3:#64748b;--em:#059669;--em2:#0d9488;--em3:rgba(5,150,105,.08);--gold:#b45309;--red:#dc2626;--border:rgba(0,0,0,.1);--border2:rgba(0,0,0,.15);--card:rgba(255,255,255,.9);--inp:rgba(0,0,0,.04);--hdr:rgba(248,250,252,.9);--glow:0 4px 25px rgba(5,150,105,.1)}
-body.light .logo{color:var(--text)}
-body.light input,body.light select,body.light textarea{background:#fff;border-color:rgba(0,0,0,.15)}
-body.light .auth-tab{color:var(--text2)}
-body.light .auth-tab.active{color:#fff}
-body.light .modal-box{background:#fff}
+:root{--bg:#f8fafc;--bg2:#ffffff;--bg3:rgba(0,0,0,.03);--text:#0f172a;--text2:#475569;--text3:#64748b;--em:#10b981;--em2:#059669;--em3:rgba(16,185,129,.08);--gold:#b45309;--red:#ef4444;--border:rgba(0,0,0,.1);--border2:rgba(0,0,0,.15);--card:rgba(255,255,255,.9);--inp:rgba(0,0,0,.04);--r:12px;--rl:20px;--glow:0 4px 25px rgba(16,185,129,.15)}
+body.dark{--bg:#09090b;--bg2:#0f172a;--bg3:rgba(255,255,255,.04);--text:#f8fafc;--text2:#94a3b8;--text3:#64748b;--em:#10b981;--em2:#14b8a6;--em3:rgba(16,185,129,.08);--gold:#f59e0b;--red:#ef4444;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--card:rgba(255,255,255,.03);--inp:rgba(255,255,255,.05);--glow:0 4px 25px rgba(16,185,129,.15)}
+body.dark .logo{color:#f8fafc}
+body.dark input,body.dark select,body.dark textarea{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1)}
+body.dark .auth-tab{color:#94a3b8}
+body.dark .auth-tab.active{color:#fff}
+body.dark .modal-box{background:#0f172a}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
 nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;background:var(--hdr,rgba(9,9,11,.8));border-bottom:1px solid var(--border);backdrop-filter:blur(20px) saturate(180%)}
@@ -117,7 +117,7 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
   <div class="nav-links">
     <a class="nav-a" href="/" onclick="sessionStorage.setItem('goFind','1')">Find a Job</a>
     <a class="nav-a" href="/" onclick="sessionStorage.setItem('goBrowse','1')">Browse Jobs</a>
-    <button id="tbtn" onclick="toggleTheme()" style="background:var(--bg3);border:1px solid var(--border);color:var(--text3);width:34px;height:34px;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem">&#9790;</button>
+    <button id="tbtn" onclick="toggleTheme()" style="background:var(--bg3);border:1px solid var(--border);color:var(--text3);width:34px;height:34px;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem">&#9788;</button>
   </div>
 </nav>
 
@@ -388,8 +388,8 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
 </div>
 
 <script>
-function toggleTheme(){document.body.classList.toggle('light');var l=document.body.classList.contains('light');localStorage.setItem('theme',l?'light':'dark');document.getElementById('tbtn').innerHTML=l?'&#9788;':'&#9790;';}
-if(localStorage.getItem('theme')==='light'){document.body.classList.add('light');var tb=document.getElementById('tbtn');if(tb)tb.innerHTML='&#9788;';}
+function toggleTheme(){document.body.classList.toggle('dark');var d=document.body.classList.contains('dark');localStorage.setItem('theme',d?'dark':'light');document.getElementById('tbtn').innerHTML=d?'&#9790;':'&#9788;';}
+if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');var tb=document.getElementById('tbtn');if(tb)tb.innerHTML='&#9790;';}
 var session = null;
 var selectedPlan = 'free';
 var pendingAction = null;

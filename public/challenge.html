@@ -21,7 +21,8 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#09090b;--bg2:#0f172a;--text:#f8fafc;--text2:#a1a1aa;--text3:#71717a;--em:#10b981;--purple:#8b5cf6;--gold:#f59e0b;--pink:#ec4899;--blue:#3b82f6;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--r:12px;--rl:20px}
+:root{--bg:#f8fafc;--bg2:#ffffff;--text:#0f172a;--text2:#475569;--text3:#94a3b8;--em:#10b981;--purple:#8b5cf6;--gold:#f59e0b;--pink:#ec4899;--blue:#3b82f6;--border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.12);--r:12px;--rl:20px}
+body.dark{--bg:#09090b;--bg2:#0f172a;--text:#f8fafc;--text2:#b0b8c4;--text3:#64748b;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1)}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;min-height:100vh;min-height:100dvh;font-size:15px;line-height:1.6;overflow-x:hidden}
 a{color:var(--em);text-decoration:none}
@@ -125,6 +126,7 @@ a{color:var(--em);text-decoration:none}
 <!-- HERO -->
 <div class="section active" id="section-hero">
   <div class="hero-brand">FindMe<span>AJob</span></div>
+  <button onclick="toggleTheme()" id="tbtn" style="position:fixed;top:1rem;right:1rem;z-index:100;background:var(--bg2);border:1px solid var(--border);color:var(--text2);width:34px;height:34px;border-radius:999px;cursor:pointer;font-size:1rem">&#9788;</button>
   <div class="hero-tag">#cvchallengenz</div>
   <div class="hero-hook" id="hero-hook"></div>
   <button class="hero-cta" onclick="showSection('section-upload')">I'm Brave Enough</button>
@@ -502,6 +504,8 @@ function resetChallenge(){
   var lb=document.getElementById('leaderboard');
   hero.appendChild(lb);
 })();
+function toggleTheme(){document.body.classList.toggle('dark');var d=document.body.classList.contains('dark');localStorage.setItem('theme',d?'dark':'light');document.getElementById('tbtn').innerHTML=d?'&#9790;':'&#9788;';}
+if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');var tb=document.getElementById('tbtn');if(tb)tb.innerHTML='&#9790;';}
 </script>
 </body>
 </html>

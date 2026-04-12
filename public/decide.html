@@ -93,6 +93,28 @@ input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;hei
   .container{padding:1.5rem 1rem 3rem}
   .options{flex-direction:column}
 }
+body.dark{background:#09090b;color:#f8fafc}
+body.dark a{color:#10b981}
+body.dark .nav{background:rgba(9,9,11,.95);border-color:rgba(255,255,255,.06)}
+body.dark .nav-logo{color:#f8fafc}
+body.dark .nav-links a{color:#94a3b8}
+body.dark .nav-links a:hover{color:#f8fafc}
+body.dark .nav-cta{background:#10b981;color:#fff}
+body.dark .footer{background:#09090b;border-color:rgba(255,255,255,.06)}
+body.dark .footer p,.footer a{color:#94a3b8}
+body.dark .ai-disclaimer{color:#64748b}
+body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
+body.dark .card{background:#0f172a;border-color:rgba(255,255,255,.06)}
+body.dark .card:hover{border-color:rgba(255,255,255,.1)}
+body.dark .card-title{color:#f8fafc}
+body.dark label{color:#64748b}
+body.dark input[type="text"],body.dark input[type="number"],body.dark textarea,body.dark select{background:#0f172a;border-color:rgba(255,255,255,.1);color:#f8fafc}
+body.dark input::placeholder,body.dark textarea::placeholder{color:#64748b}
+body.dark .page-badge{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3);color:#10b981}
+body.dark h1{color:#f8fafc}
+body.dark .subtitle{color:#94a3b8}
+body.dark .loading p{color:#94a3b8}
+body.dark .spinner{border-color:rgba(255,255,255,.1);border-top-color:#10b981}
 </style>
 </head>
 <body>
@@ -103,6 +125,7 @@ input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;hei
     <a href="/">All Tools</a>
     <a href="/blog">Blog</a>
     <a href="/match.html" class="nav-cta">Match My CV</a>
+    <button onclick="toggleTheme()" id="tbtn" style="background:none;border:1px solid #e2e8f0;color:#64748b;width:30px;height:30px;border-radius:999px;cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center">&#9788;</button>
   </div>
 </nav>
 
@@ -324,6 +347,8 @@ async function fetchJobs(role, index) {
     if (el2) { el2.textContent = "Could not search"; el2.style.color = "#94a3b8"; }
   }
 }
+function toggleTheme(){document.body.classList.toggle('dark');var d=document.body.classList.contains('dark');localStorage.setItem('theme',d?'dark':'light');document.getElementById('tbtn').innerHTML=d?'&#9790;':'&#9788;';}
+if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');var tb=document.getElementById('tbtn');if(tb)tb.innerHTML='&#9790;';}
 </script>
 </body>
 </html>
