@@ -7,7 +7,7 @@ var hdel = _kv.hdel;
 
 var PASS = process.env.ADMIN_PASSWORD;
 var LAUNCH_END = new Date("2026-10-01T00:00:00Z");
-var PLAN_DAYS = { free: 30, basic: 60, pro: 90 };
+var PLAN_DAYS = { free: 90, basic: 90, pro: 90 };
 
 function notifyEmployer(email, subject, bodyHtml) {
   var resendKey = process.env.RESEND_API_KEY;

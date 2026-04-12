@@ -79,7 +79,7 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
 .pill-pending{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);color:var(--gold)}
 .pill-rejected{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#fca5a5}
 .pill-expired,.pill-closed{background:var(--bg3);border:1px solid var(--border2);color:var(--text3)}
-.pill-featured{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:var(--gold)}
+.pill-featured{display:none}
 .jcard-actions{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.75rem}
 .analytics{display:flex;gap:.5rem;margin-top:.5rem}
 .analytics span{font-size:.7rem;font-weight:700;background:var(--bg3);border:1px solid var(--border2);color:var(--text3);padding:.18rem .55rem;border-radius:999px}
@@ -156,41 +156,7 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
 
     <!-- REGISTER -->
     <div id="pane-register" style="display:none">
-      <!-- Plan selector -->
-      <div style="margin-bottom:1rem">
-        <div style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:.6rem">Choose your plan</div>
-        <div style="display:grid;grid-template-columns:1fr;gap:.6rem;margin-bottom:.75rem">
-          <button type="button" id="rp-free" onclick="selectPlan('free')" style="background:var(--bg3);border:2px solid var(--em);border-radius:var(--rl);padding:1.1rem 1.25rem;text-align:left;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;position:relative">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
-              <div style="font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text)">Starter</div>
-              <div style="font-family:'Inter',sans-serif;font-size:1.25rem;font-weight:800;color:var(--text)">$0 <span style="font-size:.7rem;font-weight:500;color:var(--text3)">free forever</span></div>
-            </div>
-            <ul style="list-style:none;padding:0;margin:0;font-size:.75rem;color:var(--text2);font-weight:500;display:flex;flex-wrap:wrap;gap:.25rem .75rem">
-              <li>1 job listing</li><li>30 day visibility</li><li>Standard placement</li>
-            </ul>
-          </button>
-          <button type="button" id="rp-basic" onclick="selectPlan('basic')" style="background:var(--bg3);border:2px solid var(--border2);border-radius:var(--rl);padding:1.1rem 1.25rem;text-align:left;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;position:relative">
-            <div style="position:absolute;top:-.55rem;right:1rem;background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:.2rem .65rem;border-radius:999px">Most Popular</div>
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
-              <div style="font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text)">Growth</div>
-              <div style="font-family:'Inter',sans-serif;font-size:1.25rem;font-weight:800;color:var(--text)">$29<span style="font-size:.7rem;font-weight:500;color:var(--text3)">/mo</span> <span style="font-size:.7rem;font-weight:600;color:var(--em)">6 months free</span></div>
-            </div>
-            <ul style="list-style:none;padding:0;margin:0;font-size:.75rem;color:var(--text2);font-weight:500;display:flex;flex-wrap:wrap;gap:.25rem .75rem">
-              <li>5 job listings</li><li>60 day visibility</li><li>Priority placement</li><li>Company profile + logo</li><li>Analytics dashboard</li>
-            </ul>
-          </button>
-          <button type="button" id="rp-pro" onclick="selectPlan('pro')" style="background:var(--bg3);border:2px solid var(--border2);border-radius:var(--rl);padding:1.1rem 1.25rem;text-align:left;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;position:relative">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
-              <div style="font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text)">Pro</div>
-              <div style="font-family:'Inter',sans-serif;font-size:1.25rem;font-weight:800;color:var(--text)">$79<span style="font-size:.7rem;font-weight:500;color:var(--text3)">/mo</span> <span style="font-size:.7rem;font-weight:600;color:var(--gold)">Featured &#11088;</span></div>
-            </div>
-            <ul style="list-style:none;padding:0;margin:0;font-size:.75rem;color:var(--text2);font-weight:500;display:flex;flex-wrap:wrap;gap:.25rem .75rem">
-              <li>Unlimited listings</li><li>90 day visibility</li><li>Auto-featured</li><li>Featured in weekly alerts</li><li>Application stats</li>
-            </ul>
-          </button>
-        </div>
-        <div id="plan-note" style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:.5rem .75rem;font-size:.75rem;color:var(--text2);font-weight:500">Starter: 1 listing - 30 day visibility - Free forever</div>
-      </div>
+      <div style="text-align:center;margin-bottom:1rem;font-size:.85rem;font-weight:600;color:var(--text2)">Create your free employer account &mdash; all features included.</div>
       <div class="field"><label>Your name *</label><input type="text" id="r-name" placeholder="Jane Smith" autocomplete="name"></div>
       <div class="field"><label>Company name *</label><input type="text" id="r-company" placeholder="Acme Ltd" autocomplete="organization"></div>
       <div class="field"><label>Work email *</label><input type="email" id="r-email" placeholder="jane@acme.co.nz" autocomplete="email"></div>
@@ -218,39 +184,9 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
     <!-- Plan badge -->
     <div class="plan-badge" id="plan-badge">
       <div>
-        <div class="plan-name" id="plan-name-label"></div>
-        <div class="plan-features" id="plan-features-label"></div>
+        <div class="plan-name" id="plan-name-label" style="color:var(--em)">Free Plan</div>
+        <div class="plan-features" id="plan-features-label">All features included &mdash; free forever</div>
       </div>
-      <button id="btn-upgrade" type="button" style="background:none;border:none;font-size:.75rem;font-weight:700;color:var(--em);cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;padding:0">Upgrade &#8594;</button>
-    </div>
-    <!-- Upgrade panel (hidden by default) -->
-    <div id="upgrade-panel" style="display:none;background:var(--card);border:1px solid rgba(16,185,129,.15);border-radius:var(--rl);padding:1.5rem;margin-bottom:1.25rem">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
-        <div style="font-size:.85rem;font-weight:800;color:var(--text)">Upgrade your plan</div>
-        <button id="btn-close-upgrade" type="button" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.1rem;padding:0">&times;</button>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem">
-        <div id="up-free" style="background:var(--bg3);border:2px solid var(--border);border-radius:var(--r);padding:1rem;text-align:center;cursor:pointer;transition:all .2s">
-          <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:var(--text3)">Starter</div>
-          <div style="font-size:1.5rem;font-weight:900;color:var(--text);margin:.25rem 0">$0</div>
-          <div style="font-size:.65rem;color:var(--text3)">Free forever</div>
-          <div style="font-size:.68rem;color:var(--text2);margin-top:.5rem;line-height:1.5">1 listing<br>30 days</div>
-        </div>
-        <div id="up-basic" style="background:rgba(16,185,129,.03);border:2px solid rgba(16,185,129,.2);border-radius:var(--r);padding:1rem;text-align:center;cursor:pointer;transition:all .2s;position:relative">
-          <div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:var(--em);color:#fff;font-size:.55rem;font-weight:800;padding:.15rem .5rem;border-radius:999px;text-transform:uppercase;white-space:nowrap">Popular</div>
-          <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:var(--em)">Growth</div>
-          <div style="font-size:1.5rem;font-weight:900;color:var(--text);margin:.25rem 0">$29<span style="font-size:.7rem;color:var(--text3)">/mo</span></div>
-          <div style="font-size:.65rem;color:var(--em)">6 months free</div>
-          <div style="font-size:.68rem;color:var(--text2);margin-top:.5rem;line-height:1.5">5 listings<br>60 days<br>Priority</div>
-        </div>
-        <div id="up-pro" style="background:rgba(245,158,11,.03);border:2px solid rgba(245,158,11,.15);border-radius:var(--r);padding:1rem;text-align:center;cursor:pointer;transition:all .2s">
-          <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:var(--gold)">Pro</div>
-          <div style="font-size:1.5rem;font-weight:900;color:var(--text);margin:.25rem 0">$79<span style="font-size:.7rem;color:var(--text3)">/mo</span></div>
-          <div style="font-size:.65rem;color:var(--gold)">6 months free</div>
-          <div style="font-size:.68rem;color:var(--text2);margin-top:.5rem;line-height:1.5">Unlimited<br>90 days<br>Featured</div>
-        </div>
-      </div>
-      <div id="upgrade-msg" style="margin-top:.75rem;font-size:.78rem;color:var(--text2);text-align:center;display:none"></div>
     </div>
     <!-- Stats -->
     <div class="stats">
@@ -291,7 +227,6 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
       <div class="post-step" id="ps-3"><span style="background:var(--border2);color:var(--text3);width:20px;height:20px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;margin-right:.35rem">3</span>Preview</div>
     </div>
 
-    <div id="pro-note" style="display:none;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:var(--r);padding:.75rem 1rem;margin-bottom:.75rem;font-size:.8rem;color:var(--gold);font-weight:600">&#11088; Pro plan: Your listing will be auto-featured and highlighted in weekly job alerts.</div>
 
     <!-- STEP 1: Job Details -->
     <div id="post-step1">
@@ -320,7 +255,6 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
         </div>
       </div>
       <div class="err" id="post-err1"></div>
-      <div id="free-plan-note" style="display:none;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.75rem 1rem;margin-top:.5rem;font-size:.78rem;color:var(--text2);line-height:1.6">Company logo and company profile are available on <strong style="color:var(--em)">Growth</strong> and <strong style="color:var(--gold)">Pro</strong> plans. <a href="#" onclick="document.getElementById('upgrade-panel').scrollIntoView({behavior:'smooth'});return false" style="color:var(--em);font-weight:600;text-decoration:none">Upgrade your plan</a></div>
       <button class="btn" id="btn-to-step2" type="button" style="margin-top:.5rem">Next: Company Details &#8594;</button>
     </div>
 
@@ -394,7 +328,7 @@ if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');v
 var session = null;
 var selectedPlan = 'free';
 var pendingAction = null;
-var PLAN_DAYS = {free:30, basic:60, pro:90};
+var PLAN_DAYS = 30;
 function esc(s){var d=document.createElement("div");d.textContent=s||"";return d.innerHTML;}
 
 function toast(msg) {
@@ -408,7 +342,7 @@ function fmtDate(d) { return new Date(d).toLocaleDateString('en-NZ',{day:'numeri
 function getDaysLeft(job) {
   var start = job.approvedAt || job.submitted;
   if (!start) return null;
-  var days = PLAN_DAYS[job.plan] || 30;
+  var days = PLAN_DAYS;
   var expiry = new Date(new Date(start).getTime() + days*24*60*60*1000);
   return {days: Math.ceil((expiry - new Date())/(1000*60*60*24)), expiry: expiry};
 }
@@ -416,28 +350,6 @@ function getDaysLeft(job) {
 function isExpired(job) {
   if (job.status !== 'approved') return false;
   var i = getDaysLeft(job); return i && i.days <= 0;
-}
-
-// Plan selection
-function selectPlan(plan) {
-  selectedPlan = plan;
-  ['free','basic','pro'].forEach(function(p) {
-    var el = document.getElementById('rp-'+p);
-    if (!el) return;
-    el.style.borderColor = p === plan ? 'var(--em)' : 'var(--border2)';
-    el.style.background = p === plan ? 'rgba(16,185,129,.06)' : 'var(--bg3)';
-  });
-  var notes = {
-    free: 'Starter: 1 listing - 30 day visibility - Free forever',
-    basic: 'Growth: 5 listings - 60 day visibility - Priority placement - Company profile + logo',
-    pro: 'Pro: Unlimited listings - 90 days - Auto-featured - Weekly alerts - Application stats'
-  };
-  var n = document.getElementById('plan-note');
-  if (n) n.textContent = notes[plan] || '';
-  var cc = document.getElementById('company-card');
-  if (cc) cc.style.display = (plan === 'basic' || plan === 'pro') ? 'block' : 'none';
-  var pn = document.getElementById('pro-note');
-  if (pn) pn.style.display = plan === 'pro' ? 'block' : 'none';
 }
 
 // Auth tabs
@@ -514,22 +426,12 @@ function showPortal(employer, jobs) {
   document.getElementById('emp-name').textContent = employer.name;
   document.getElementById('emp-meta').textContent = employer.company + ' \u00b7 ' + employer.email;
 
-  var planInfo = {
-    free: {label:'Starter Plan', color:'var(--text3)', features:'1 listing \u00b7 30 day visibility \u00b7 Standard placement'},
-    basic: {label:'Growth Plan', color:'var(--em)', features:'5 listings \u00b7 60 day visibility \u00b7 Priority placement \u00b7 Company profile \u00b7 Analytics'},
-    pro: {label:'Pro Plan', color:'var(--gold)', features:'Unlimited \u00b7 90 days \u00b7 Auto-featured \u2b50 \u00b7 Weekly alerts \u00b7 Application stats'}
-  };
-  var pi = planInfo[employer.plan || 'free'] || planInfo.free;
-  document.getElementById('plan-name-label').textContent = pi.label;
-  document.getElementById('plan-name-label').style.color = pi.color;
-  document.getElementById('plan-features-label').textContent = pi.features;
+  document.getElementById('plan-name-label').textContent = 'Free Plan';
+  document.getElementById('plan-name-label').style.color = 'var(--em)';
+  document.getElementById('plan-features-label').textContent = 'All features included \u2014 free forever';
 
   // Set plan for post form
-  selectedPlan = employer.plan || 'free';
-  var cc = document.getElementById('company-card');
-  if (cc) cc.style.display = (selectedPlan === 'basic' || selectedPlan === 'pro') ? 'block' : 'none';
-  var pn = document.getElementById('pro-note');
-  if (pn) pn.style.display = selectedPlan === 'pro' ? 'block' : 'none';
+  selectedPlan = 'free';
 
   renderJobs(jobs);
 }
@@ -542,19 +444,6 @@ function showPostScreen() {
   var errEl = document.getElementById('post-err'); if(errEl) errEl.style.display = 'none';
   var okEl = document.getElementById('post-ok'); if(okEl) okEl.style.display = 'none';
   var submitBtn = document.getElementById('btn-submit'); if(submitBtn) submitBtn.style.display = 'flex';
-  // Refresh plan-dependent fields
-  var plan = (session && session.employer) ? session.employer.plan || 'free' : 'free';
-  var pn = document.getElementById('pro-note');
-  if (pn) pn.style.display = plan === 'pro' ? 'block' : 'none';
-  var fpn = document.getElementById('free-plan-note');
-  var step2Btn = document.getElementById('btn-to-step2');
-  if (plan === 'free') {
-    if (fpn) fpn.style.display = 'block';
-    if (step2Btn) step2Btn.textContent = 'Preview Listing \u2192';
-  } else {
-    if (fpn) fpn.style.display = 'none';
-    if (step2Btn) step2Btn.textContent = 'Next: Company Details \u2192';
-  }
   setPostStep(1);
 }
 
@@ -580,14 +469,6 @@ document.getElementById('btn-to-step2').addEventListener('click', function(){
   if (err) err.style.display = 'none';
   if (!title) { if(err){err.textContent='Please enter a job title.';err.style.display='block';} return; }
   if (!desc) { if(err){err.textContent='Please enter a job description.';err.style.display='block';} return; }
-  // Free plan skips Step 2 (company profile & logo are Growth/Pro features)
-  var plan = (session && session.employer) ? session.employer.plan || 'free' : 'free';
-  if (plan === 'free') {
-    document.getElementById('e-logo').value = '';
-    if (document.getElementById('e-company-profile')) document.getElementById('e-company-profile').value = '';
-    buildPreviewAndShow();
-    return;
-  }
   setPostStep(2);
 });
 
@@ -606,12 +487,9 @@ function buildPreviewAndShow(){
   var why = document.getElementById('e-why').value.trim();
   var profile = document.getElementById('e-company-profile') ? document.getElementById('e-company-profile').value.trim() : '';
   var logoVal = document.getElementById('e-logo').value;
-  var plan = (session && session.employer) ? session.employer.plan || 'free' : 'free';
-
   var logoHtml = logoVal ? '<img src="'+logoVal+'" style="position:absolute;top:1.25rem;right:1.5rem;width:64px;height:64px;object-fit:contain;border-radius:10px" onerror="this.style.display=\'none\'">' : '';
   var h = logoHtml;
   h += '<div style="'+(logoVal?'padding-right:80px':'')+'">';
-  if (plan === 'pro') h += '<div style="margin-bottom:.35rem"><span style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold);padding:.2rem .6rem;border-radius:999px;font-size:.65rem;font-weight:700;text-transform:uppercase">\u2b50 Featured</span></div>';
   h += '<div style="font-size:1.1rem;font-weight:800;color:var(--text)">'+esc(title)+'</div>';
   h += '<div style="font-size:.82rem;font-weight:600;color:var(--em);margin-top:.15rem">'+esc(company)+'</div>';
   h += '<div style="font-size:.75rem;color:var(--text3);margin-top:.1rem">'+esc(loc)+'</div>';
@@ -730,9 +608,6 @@ async function submitJob() {
       // Clear form
       ['e-title','e-desc','e-req','e-why','e-company-profile','e-logo','e-logo-url'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
       document.getElementById('logo-preview').style.display='none';document.getElementById('logo-name').style.display='none';document.getElementById('logo-prompt').textContent='Click here to upload your logo';document.getElementById('logo-upload-area').style.borderColor='';
-    } else if (d.limitReached) {
-      err.textContent = d.error + ' Contact hello@findmeajob.co.nz to upgrade.';
-      err.style.display = 'block';
     } else {
       err.textContent = d.error || 'Submission failed.';
       err.style.display = 'block';
@@ -766,9 +641,7 @@ function renderJobs(jobs) {
     if (job.logoUrl) card.style.paddingRight = '8rem';
 
     var pillMap = {pending:'pill-pending',approved:'pill-approved',rejected:'pill-rejected',expired:'pill-expired',closed:'pill-closed'};
-    var pills = '<div class="jcard-pills"><span class="pill '+(pillMap[statusKey]||'pill-expired')+'">'+statusKey+'</span>';
-    if (job.featured && !exp) pills += '<span class="pill pill-featured">&#11088; Featured</span>';
-    pills += '</div>';
+    var pills = '<div class="jcard-pills"><span class="pill '+(pillMap[statusKey]||'pill-expired')+'">'+statusKey+'</span></div>';
 
     var meta = esc(job.location) + ' &middot; ' + esc(job.category) + ' &middot; ' + esc(job.type) + ' &middot; ' + esc(job.salary);
 
@@ -782,10 +655,7 @@ function renderJobs(jobs) {
       }
     }
 
-    var analytics = '';
-    if (session && session.employer && (session.employer.plan === 'basic' || session.employer.plan === 'pro')) {
-      analytics = '<div class="analytics"><span>&#128065; '+(job.views||0)+' views</span><span>&#128233; '+(job.applies||0)+' applies</span></div>';
-    }
+    var analytics = '<div class="analytics"><span>&#128065; '+(job.views||0)+' views</span><span>&#128233; '+(job.applies||0)+' applies</span></div>';
 
     var actions = '<div class="jcard-actions">';
     if (job.status === 'pending' || job.status === 'rejected' || (job.status === 'approved' && !exp)) actions += '<button class="btn-sm" onclick="toggleEdit(\''+job.id+'\')" type="button">&#9998; Edit</button>';
@@ -810,7 +680,6 @@ function renderJobs(jobs) {
         '<div class="field"><label>Description</label><textarea id="ef-desc-'+job.id+'" style="min-height:100px">'+esc(job.description)+'</textarea></div>'+
         '<div class="field"><label>Requirements</label><textarea id="ef-req-'+job.id+'" style="min-height:60px">'+esc(job.requirements)+'</textarea></div>'+
         '<div class="field"><label>Why work here?</label><textarea id="ef-why-'+job.id+'" style="min-height:60px">'+esc(job.why||'')+'</textarea></div>'+
-        ((session&&session.employer&&(session.employer.plan==='basic'||session.employer.plan==='pro'))?
         '<div class="field"><label>Company profile</label><textarea id="ef-profile-'+job.id+'" style="min-height:60px">'+esc(job.companyProfile||'')+'</textarea></div>'+
         '<div class="field"><label>Company logo</label>'+
         '<input type="file" id="ef-logo-file-'+job.id+'" accept="image/png,image/jpeg,image/svg+xml,image/webp" style="display:none">'+
@@ -932,38 +801,6 @@ async function loadAndShowPortal(){
   }catch(e){}
 }
 
-// Upgrade panel
-document.getElementById('btn-upgrade').addEventListener('click',function(){
-  var panel=document.getElementById('upgrade-panel');
-  panel.style.display=panel.style.display==='none'?'block':'none';
-});
-document.getElementById('btn-close-upgrade').addEventListener('click',function(){
-  document.getElementById('upgrade-panel').style.display='none';
-});
-['free','basic','pro'].forEach(function(plan){
-  document.getElementById('up-'+plan).addEventListener('click',async function(){
-    var msg=document.getElementById('upgrade-msg');
-    var names={free:'Starter',basic:'Growth',pro:'Pro'};
-    if(session && session.employer && session.employer.plan===plan){
-      msg.style.color='var(--text3)';msg.textContent='You are already on the '+names[plan]+' plan.';msg.style.display='block';return;
-    }
-    msg.style.color='var(--text2)';msg.textContent='Switching to '+names[plan]+'...';msg.style.display='block';
-    try{
-      var r=await fetch('/api/employer-jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'upgrade',email:session.email,password:session.password,plan:plan})});
-      var d=await r.json();
-      if(d.success){
-        session.employer.plan=plan;
-        sessionStorage.setItem('empPortal',JSON.stringify(session));
-        document.getElementById('upgrade-panel').style.display='none';
-        msg.style.display='none';
-        toast('Switched to '+names[plan]+' plan!');
-        loadAndShowPortal();
-      }else{
-        msg.style.color='#fca5a5';msg.textContent=d.error||'Failed to switch plan.';
-      }
-    }catch(e){msg.style.color='#fca5a5';msg.textContent='Connection error. Please try again.';}
-  });
-});
 
 // Delete employer account
 document.getElementById('emp-delete-acct').addEventListener('click',function(){document.getElementById('emp-delete-confirm').style.display='block';});
@@ -1022,13 +859,6 @@ if(resetTok&&resetEm){
   };
 }
 
-// Handle ?plan= param from pricing page - open register with plan pre-selected
-var urlParams=new URLSearchParams(window.location.search);
-var planParam=urlParams.get('plan');
-if(planParam&&['free','basic','pro'].includes(planParam)&&!resetTok){
-  switchTab('register');
-  selectPlan(planParam);
-}
 
 // Auto-login from session
 var saved=sessionStorage.getItem('empPortal');
