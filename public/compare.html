@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compare Jobs — FindMeAJob.co.nz</title>
+<meta name="description" content="Paste two job listings side by side and our AI will compare salary, benefits, growth, red flags, and pick a winner.">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#ffffff;color:#0f172a;font-family:'Inter',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
+a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
+
+.nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid #f1f5f9;position:sticky;top:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(12px)}
+.nav-logo{font-size:1.05rem;font-weight:800;color:#0f172a;text-decoration:none}
+.nav-logo span{color:#10b981}
+.nav-logo:hover{text-decoration:none}
+.nav-links{display:flex;align-items:center;gap:1.5rem}
+.nav-links a{color:#64748b;font-size:.82rem;font-weight:600;text-decoration:none}
+.nav-links a:hover{color:#0f172a}
+.nav-cta{background:#10b981 !important;color:#fff !important;padding:.45rem 1.15rem;border-radius:999px;font-size:.78rem;font-weight:700;transition:all .2s}
+.nav-cta:hover{background:#059669 !important;transform:translateY(-1px);box-shadow:0 4px 12px rgba(16,185,129,.3)}
+
+.container{max-width:900px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
+.page-badge{display:inline-block;background:#ede9fe;color:#6d28d9;padding:.3rem .85rem;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:1rem;border:1px solid #ddd6fe}
+h1{font-size:2.2rem;font-weight:900;line-height:1.15;margin-bottom:.5rem}
+h1 em{font-style:normal;color:#10b981}
+.subtitle{color:#64748b;font-size:.95rem;margin-bottom:2rem}
+
+label{display:block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;margin-bottom:.4rem}
+textarea{width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Inter',sans-serif;font-size:14px;color:#0f172a;outline:none;transition:all .2s;resize:vertical;min-height:180px;line-height:1.6}
+textarea:focus{border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,.1)}
+textarea::placeholder{color:#94a3b8}
+
+.jobs-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.job-input{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:1.5rem}
+.job-label{font-size:1rem;font-weight:800;margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
+.job-a-color{color:#3b82f6}
+.job-b-color{color:#8b5cf6}
+
+.btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;background:#10b981;color:#fff;padding:.85rem 1.8rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 15px rgba(16,185,129,.2)}
+.btn:hover{background:#059669;transform:translateY(-2px);box-shadow:0 8px 25px rgba(16,185,129,.3)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+.loading{display:none;text-align:center;padding:3rem 1rem}
+.spinner{width:40px;height:40px;border:3px solid #e2e8f0;border-top-color:#10b981;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading p{color:#64748b;font-size:.88rem}
+
+#result{display:none}
+.winner-banner{text-align:center;padding:1.5rem;border-radius:16px;margin-bottom:1.25rem;background:#f0fdf4;border:2px solid #10b981}
+.winner-banner h2{font-size:1.3rem;font-weight:900;color:#059669;margin-bottom:.25rem}
+.winner-banner p{font-size:.88rem;color:#064e3b;line-height:1.5}
+
+.compare-table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;margin-bottom:1rem}
+.compare-table th{background:#f8fafc;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;padding:.75rem 1rem;text-align:left;border-bottom:1px solid #e2e8f0}
+.compare-table th:first-child{width:130px}
+.compare-table td{padding:.75rem 1rem;font-size:.85rem;border-bottom:1px solid #f1f5f9;vertical-align:top}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table .winner-cell{background:#f0fdf4;font-weight:600}
+.check{color:#10b981;font-weight:700}
+.flag{color:#ef4444;font-size:.78rem}
+
+.cta-box{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:16px;padding:1.5rem;text-align:center;margin-top:1.5rem}
+.cta-box p{font-size:.88rem;color:#064e3b;margin-bottom:.75rem;font-weight:500}
+.cta-box a{display:inline-block;background:#10b981;color:#fff;padding:.6rem 1.5rem;border-radius:999px;font-size:.82rem;font-weight:700;text-decoration:none;transition:all .2s}
+.cta-box a:hover{background:#059669;transform:translateY(-1px);text-decoration:none}
+
+.footer{text-align:center;padding:2rem;border-top:1px solid #f1f5f9;margin-top:3rem}
+.footer p{font-size:.78rem;color:#94a3b8;font-weight:500}
+.ai-disclaimer{font-size:.68rem;color:#cbd5e1;margin-top:.5rem;max-width:500px;margin-left:auto;margin-right:auto}
+
+@media(max-width:640px){
+  .nav{padding:.75rem 1rem}
+  .nav-links{gap:.75rem}
+  .nav-links a:not(.nav-cta){display:none}
+  h1{font-size:1.6rem}
+  .container{padding:1.5rem 1rem 3rem}
+  .jobs-grid{grid-template-columns:1fr}
+  .compare-table{font-size:.78rem}
+  .compare-table th,.compare-table td{padding:.5rem .65rem}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="/">FindMe<span>AJob</span></a>
+  <div class="nav-links">
+    <a href="/">All Tools</a>
+    <a href="/blog">Blog</a>
+    <a href="/match.html" class="nav-cta">Match My CV</a>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="page-badge">Job Comparison</div>
+  <h1>Compare <em>Jobs</em></h1>
+  <p class="subtitle">Paste two job listings and we will compare them head-to-head so you can pick the winner.</p>
+
+  <div id="formSection">
+    <div class="jobs-grid">
+      <div class="job-input">
+        <div class="job-label"><span style="width:10px;height:10px;border-radius:50%;background:#3b82f6;display:inline-block"></span> <span class="job-a-color">Job A</span></div>
+        <label>Paste Job Description</label>
+        <textarea id="jobA" placeholder="Paste the first job listing here..."></textarea>
+      </div>
+      <div class="job-input">
+        <div class="job-label"><span style="width:10px;height:10px;border-radius:50%;background:#8b5cf6;display:inline-block"></span> <span class="job-b-color">Job B</span></div>
+        <label>Paste Job Description</label>
+        <textarea id="jobB" placeholder="Paste the second job listing here..."></textarea>
+      </div>
+    </div>
+    <button class="btn" id="compareBtn" onclick="compare()">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+      Compare These Jobs
+    </button>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>Analysing both job listings...</p>
+  </div>
+
+  <div id="result"></div>
+</div>
+
+<footer class="footer">
+  <p>&copy; 2026 FindMeAJob.co.nz &mdash; AI-powered career tools for New Zealand</p>
+  <div class="ai-disclaimer">AI Disclaimer: Results are AI-generated estimates and suggestions, not professional advice. Always verify independently.</div>
+</footer>
+
+<script>
+async function compare() {
+  var jobA = document.getElementById("jobA").value.trim();
+  var jobB = document.getElementById("jobB").value.trim();
+  if (!jobA || !jobB) { alert("Please paste both job listings."); return; }
+  if (jobA.length < 30 || jobB.length < 30) { alert("Please paste more complete job listings."); return; }
+
+  var btn = document.getElementById("compareBtn");
+  btn.disabled = true;
+  document.getElementById("formSection").style.display = "none";
+  document.getElementById("loading").style.display = "block";
+  document.getElementById("result").style.display = "none";
+
+  var prompt = "Compare these two job listings side by side. Analyse: title, company, salary, location, work from home, benefits, growth potential, red flags, required skills. Give a verdict on which is better and why. Return ONLY valid JSON with no markdown: {\"jobA\":{\"title\":\"string\",\"salary\":\"string\",\"location\":\"string\",\"wfh\":\"string\",\"benefits\":\"string\",\"growth\":\"string\",\"redFlags\":\"string\",\"skills\":\"string\"},\"jobB\":{\"title\":\"string\",\"salary\":\"string\",\"location\":\"string\",\"wfh\":\"string\",\"benefits\":\"string\",\"growth\":\"string\",\"redFlags\":\"string\",\"skills\":\"string\"},\"verdict\":\"string\",\"winner\":\"A or B\",\"reason\":\"string\"}\n\nJOB A:\n" + jobA + "\n\nJOB B:\n" + jobB;
+
+  try {
+    var res = await fetch("/api/chat", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({messages: [{role: "user", content: prompt}]})
+    });
+    var data = await res.json();
+    var text = data.choices ? data.choices[0].message.content : data.content || data.message || JSON.stringify(data);
+    text = text.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
+    var result = JSON.parse(text);
+    showResult(result);
+  } catch (e) {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("formSection").style.display = "block";
+    btn.disabled = false;
+    alert("Something went wrong. Please try again.");
+    console.error(e);
+  }
+}
+
+function showResult(r) {
+  var winnerName = r.winner === "A" ? "Job A" : "Job B";
+  var winnerColor = r.winner === "A" ? "#3b82f6" : "#8b5cf6";
+
+  var html = "<div class=\"winner-banner\">" +
+    "<h2>\uD83C\uDFC6 Winner: " + winnerName + " (" + escHtml(r.winner === "A" ? r.jobA.title : r.jobB.title) + ")</h2>" +
+    "<p>" + escHtml(r.reason) + "</p></div>";
+
+  var fields = [
+    {key: "title", label: "Job Title"},
+    {key: "salary", label: "Salary"},
+    {key: "location", label: "Location"},
+    {key: "wfh", label: "Work From Home"},
+    {key: "benefits", label: "Benefits"},
+    {key: "growth", label: "Growth Potential"},
+    {key: "skills", label: "Required Skills"},
+    {key: "redFlags", label: "Red Flags"}
+  ];
+
+  html += "<table class=\"compare-table\"><thead><tr><th>Category</th><th>Job A</th><th>Job B</th></tr></thead><tbody>";
+
+  for (var i = 0; i < fields.length; i++) {
+    var f = fields[i];
+    var aVal = r.jobA[f.key] || "Not specified";
+    var bVal = r.jobB[f.key] || "Not specified";
+    var aWin = r.winner === "A" && f.key !== "redFlags";
+    var bWin = r.winner === "B" && f.key !== "redFlags";
+
+    html += "<tr><td><strong>" + f.label + "</strong></td>";
+    if (f.key === "redFlags") {
+      html += "<td>" + (aVal === "None" || aVal === "Not specified" ? "<span class=\"check\">\u2713 None</span>" : "<span class=\"flag\">\u26A0 " + escHtml(aVal) + "</span>") + "</td>";
+      html += "<td>" + (bVal === "None" || bVal === "Not specified" ? "<span class=\"check\">\u2713 None</span>" : "<span class=\"flag\">\u26A0 " + escHtml(bVal) + "</span>") + "</td>";
+    } else {
+      html += "<td class=\"" + (aWin ? "winner-cell" : "") + "\">" + (aWin ? "<span class=\"check\">\u2713</span> " : "") + escHtml(aVal) + "</td>";
+      html += "<td class=\"" + (bWin ? "winner-cell" : "") + "\">" + (bWin ? "<span class=\"check\">\u2713</span> " : "") + escHtml(bVal) + "</td>";
+    }
+    html += "</tr>";
+  }
+
+  html += "</tbody></table>";
+
+  html += "<div style=\"background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:1.25rem;margin-bottom:1rem\">" +
+    "<strong>Verdict:</strong> " + escHtml(r.verdict) + "</div>";
+
+  html += "<div class=\"cta-box\"><p>Want to find even more jobs matched to your skills?</p><a href=\"/match.html\">Want matched jobs? Upload your CV</a></div>";
+
+  document.getElementById("loading").style.display = "none";
+  document.getElementById("result").innerHTML = html;
+  document.getElementById("result").style.display = "block";
+}
+
+function escHtml(s) {
+  var d = document.createElement("div");
+  d.textContent = s;
+  return d.innerHTML;
+}
+</script>
+</body>
+</html>

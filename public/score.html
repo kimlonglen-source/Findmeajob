@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV Score — FindMeAJob.co.nz</title>
+<meta name="description" content="Upload your CV and get an instant AI score out of 100, with specific strengths, weaknesses, and fixes.">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#ffffff;color:#0f172a;font-family:'Inter',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
+a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
+
+.nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid #f1f5f9;position:sticky;top:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(12px)}
+.nav-logo{font-size:1.05rem;font-weight:800;color:#0f172a;text-decoration:none}
+.nav-logo span{color:#10b981}
+.nav-logo:hover{text-decoration:none}
+.nav-links{display:flex;align-items:center;gap:1.5rem}
+.nav-links a{color:#64748b;font-size:.82rem;font-weight:600;text-decoration:none}
+.nav-links a:hover{color:#0f172a}
+.nav-cta{background:#10b981 !important;color:#fff !important;padding:.45rem 1.15rem;border-radius:999px;font-size:.78rem;font-weight:700;transition:all .2s}
+.nav-cta:hover{background:#059669 !important;transform:translateY(-1px);box-shadow:0 4px 12px rgba(16,185,129,.3)}
+
+.container{max-width:700px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
+.page-badge{display:inline-block;background:#fef3c7;color:#92400e;padding:.3rem .85rem;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:1rem;border:1px solid #fde68a}
+h1{font-size:2.2rem;font-weight:900;line-height:1.15;margin-bottom:.5rem}
+h1 em{font-style:normal;color:#10b981}
+.subtitle{color:#64748b;font-size:.95rem;margin-bottom:2rem}
+
+.upload-zone{background:#f8fafc;border:2px dashed #e2e8f0;border-radius:16px;padding:3rem 2rem;text-align:center;cursor:pointer;transition:all .25s;margin-bottom:1rem}
+.upload-zone:hover{border-color:#10b981;background:#f0fdf4}
+.upload-zone.dragover{border-color:#10b981;background:#f0fdf4}
+.upload-icon{font-size:2.5rem;margin-bottom:.75rem}
+.upload-text{font-size:.95rem;font-weight:600;margin-bottom:.25rem}
+.upload-sub{font-size:.78rem;color:#94a3b8}
+.file-name{display:none;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:.6rem 1rem;margin-bottom:1rem;font-size:.85rem;font-weight:600;color:#059669;text-align:center}
+input[type="file"]{display:none}
+
+.btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;background:#10b981;color:#fff;padding:.85rem 1.8rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 15px rgba(16,185,129,.2)}
+.btn:hover{background:#059669;transform:translateY(-2px);box-shadow:0 8px 25px rgba(16,185,129,.3)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+.loading{display:none;text-align:center;padding:3rem 1rem}
+.spinner{width:40px;height:40px;border:3px solid #e2e8f0;border-top-color:#10b981;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading p{color:#64748b;font-size:.88rem}
+
+#result{display:none}
+
+.score-circle{width:140px;height:140px;border-radius:50%;margin:0 auto 1rem;position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.score-circle svg{position:absolute;top:0;left:0;width:100%;height:100%;transform:rotate(-90deg)}
+.score-circle circle{fill:none;stroke-width:8;stroke-linecap:round}
+.score-bg{stroke:#e2e8f0}
+.score-fill{transition:stroke-dashoffset 1s ease}
+.score-num{font-size:2.5rem;font-weight:900;line-height:1}
+.score-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8}
+
+.grade-badge{text-align:center;margin-bottom:1.5rem}
+.grade-badge span{display:inline-block;padding:.35rem 1.2rem;border-radius:999px;font-size:.88rem;font-weight:800;letter-spacing:.5px}
+
+.summary-text{text-align:center;color:#475569;font-size:.9rem;line-height:1.6;margin-bottom:1.5rem;max-width:500px;margin-left:auto;margin-right:auto}
+
+.section-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.25rem;margin-bottom:.75rem}
+.section-card h3{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.75rem}
+.section-card.strengths h3{color:#10b981}
+.section-card.weaknesses h3{color:#ef4444}
+.section-card.fixes h3{color:#3b82f6}
+.list-item{display:flex;align-items:flex-start;gap:.5rem;margin-bottom:.5rem;font-size:.85rem;line-height:1.5}
+.list-item:last-child{margin-bottom:0}
+.list-icon-g{color:#10b981;flex-shrink:0;font-weight:700}
+.list-icon-r{color:#ef4444;flex-shrink:0;font-weight:700}
+
+.fix-item{background:#f8fafc;border-radius:8px;padding:.75rem 1rem;margin-bottom:.5rem}
+.fix-item:last-child{margin-bottom:0}
+.fix-issue{font-size:.82rem;font-weight:700;color:#dc2626;margin-bottom:.25rem}
+.fix-solution{font-size:.82rem;color:#334155;line-height:1.5}
+
+.cta-box{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:16px;padding:1.5rem;text-align:center;margin-top:1.5rem}
+.cta-box p{font-size:.88rem;color:#064e3b;margin-bottom:.75rem;font-weight:500}
+.cta-box a{display:inline-block;background:#10b981;color:#fff;padding:.6rem 1.5rem;border-radius:999px;font-size:.82rem;font-weight:700;text-decoration:none;transition:all .2s}
+.cta-box a:hover{background:#059669;transform:translateY(-1px);text-decoration:none}
+
+.footer{text-align:center;padding:2rem;border-top:1px solid #f1f5f9;margin-top:3rem}
+.footer p{font-size:.78rem;color:#94a3b8;font-weight:500}
+.ai-disclaimer{font-size:.68rem;color:#cbd5e1;margin-top:.5rem;max-width:500px;margin-left:auto;margin-right:auto}
+
+@media(max-width:640px){
+  .nav{padding:.75rem 1rem}
+  .nav-links{gap:.75rem}
+  .nav-links a:not(.nav-cta){display:none}
+  h1{font-size:1.6rem}
+  .container{padding:1.5rem 1rem 3rem}
+  .upload-zone{padding:2rem 1rem}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="/">FindMe<span>AJob</span></a>
+  <div class="nav-links">
+    <a href="/">All Tools</a>
+    <a href="/blog">Blog</a>
+    <a href="/match.html" class="nav-cta">Match My CV</a>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="page-badge">CV Analyser</div>
+  <h1>CV <em>Score</em></h1>
+  <p class="subtitle">Upload your CV and get an instant score out of 100, with actionable fixes.</p>
+
+  <div id="formSection">
+    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+      <div class="upload-icon">\uD83D\uDCC4</div>
+      <div class="upload-text">Drop your CV here or click to upload</div>
+      <div class="upload-sub">PDF, DOCX, or TXT accepted</div>
+    </div>
+    <input type="file" id="fileInput" accept=".pdf,.docx,.doc,.txt">
+    <div class="file-name" id="fileName"></div>
+    <button class="btn" id="scoreBtn" onclick="scoreCV()" disabled>
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      Score My CV
+    </button>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>Analysing your CV...</p>
+  </div>
+
+  <div id="result"></div>
+</div>
+
+<footer class="footer">
+  <p>&copy; 2026 FindMeAJob.co.nz &mdash; AI-powered career tools for New Zealand</p>
+  <div class="ai-disclaimer">AI Disclaimer: Results are AI-generated estimates and suggestions, not professional advice. Always verify independently.</div>
+</footer>
+
+<script>
+var cvText = "";
+var fileInput = document.getElementById("fileInput");
+var uploadZone = document.getElementById("uploadZone");
+var fileNameEl = document.getElementById("fileName");
+var scoreBtn = document.getElementById("scoreBtn");
+
+uploadZone.addEventListener("dragover", function(e) {
+  e.preventDefault();
+  uploadZone.classList.add("dragover");
+});
+uploadZone.addEventListener("dragleave", function() {
+  uploadZone.classList.remove("dragover");
+});
+uploadZone.addEventListener("drop", function(e) {
+  e.preventDefault();
+  uploadZone.classList.remove("dragover");
+  if (e.dataTransfer.files.length > 0) {
+    fileInput.files = e.dataTransfer.files;
+    handleFile(e.dataTransfer.files[0]);
+  }
+});
+fileInput.addEventListener("change", function() {
+  if (this.files.length > 0) handleFile(this.files[0]);
+});
+
+function handleFile(file) {
+  var name = file.name.toLowerCase();
+  fileNameEl.textContent = file.name;
+  fileNameEl.style.display = "block";
+  uploadZone.style.display = "none";
+
+  if (name.endsWith(".txt")) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      cvText = e.target.result;
+      scoreBtn.disabled = false;
+    };
+    reader.readAsText(file);
+  } else if (name.endsWith(".docx") || name.endsWith(".doc")) {
+    var reader2 = new FileReader();
+    reader2.onload = function(e) {
+      mammoth.extractRawText({arrayBuffer: e.target.result}).then(function(result) {
+        cvText = result.value;
+        scoreBtn.disabled = false;
+      }).catch(function() {
+        alert("Could not read this file. Try a different format.");
+      });
+    };
+    reader2.readAsArrayBuffer(file);
+  } else if (name.endsWith(".pdf")) {
+    var reader3 = new FileReader();
+    reader3.onload = function(e) {
+      var bytes = new Uint8Array(e.target.result);
+      var text = "";
+      for (var i = 0; i < bytes.length; i++) {
+        var c = bytes[i];
+        if (c >= 32 && c <= 126) text += String.fromCharCode(c);
+        else if (c === 10 || c === 13) text += "\n";
+        else text += " ";
+      }
+      text = text.replace(/\s{3,}/g, "\n").trim();
+      if (text.length < 100) {
+        alert("Could not extract enough text from this PDF. Try a DOCX or TXT file instead.");
+        return;
+      }
+      cvText = text.substring(0, 8000);
+      scoreBtn.disabled = false;
+    };
+    reader3.readAsArrayBuffer(file);
+  } else {
+    alert("Please upload a PDF, DOCX, or TXT file.");
+  }
+}
+
+async function scoreCV() {
+  if (!cvText || cvText.length < 50) {
+    alert("Could not read enough text from your CV. Try a different format.");
+    return;
+  }
+
+  scoreBtn.disabled = true;
+  document.getElementById("formSection").style.display = "none";
+  document.getElementById("loading").style.display = "block";
+  document.getElementById("result").style.display = "none";
+
+  var prompt = "Score this CV out of 100. Analyse: formatting, clarity, skills presentation, experience descriptions, keywords, length, overall impact. Return ONLY valid JSON with no markdown: {\"score\":number,\"grade\":\"string like A+, A, B+, B, C, D\",\"strengths\":[\"string\"],\"weaknesses\":[\"string\"],\"fixes\":[{\"issue\":\"string\",\"fix\":\"string\"}],\"summary\":\"string\"}\n\nCV TEXT:\n" + cvText.substring(0, 6000);
+
+  try {
+    var res = await fetch("/api/chat", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({messages: [{role: "user", content: prompt}]})
+    });
+    var data = await res.json();
+    var text = data.choices ? data.choices[0].message.content : data.content || data.message || JSON.stringify(data);
+    text = text.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
+    var result = JSON.parse(text);
+    showResult(result);
+  } catch (e) {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("formSection").style.display = "block";
+    scoreBtn.disabled = false;
+    alert("Something went wrong. Please try again.");
+    console.error(e);
+  }
+}
+
+function showResult(r) {
+  var score = r.score || 0;
+  var color = score >= 80 ? "#10b981" : score >= 60 ? "#f59e0b" : "#ef4444";
+  var gradeBg = score >= 80 ? "#f0fdf4" : score >= 60 ? "#fffbeb" : "#fef2f2";
+  var gradeBorder = score >= 80 ? "#10b981" : score >= 60 ? "#f59e0b" : "#ef4444";
+
+  var circumference = 2 * Math.PI * 60;
+  var offset = circumference - (score / 100) * circumference;
+
+  var html = "<div style=\"text-align:center;padding:1rem 0 .5rem\">" +
+    "<div class=\"score-circle\">" +
+    "<svg viewBox=\"0 0 140 140\"><circle class=\"score-bg\" cx=\"70\" cy=\"70\" r=\"60\"/>" +
+    "<circle class=\"score-fill\" cx=\"70\" cy=\"70\" r=\"60\" stroke=\"" + color + "\" stroke-dasharray=\"" + circumference + "\" stroke-dashoffset=\"" + offset + "\"/></svg>" +
+    "<div class=\"score-num\" style=\"color:" + color + "\">" + score + "</div>" +
+    "<div class=\"score-label\">out of 100</div>" +
+    "</div></div>";
+
+  html += "<div class=\"grade-badge\"><span style=\"background:" + gradeBg + ";color:" + gradeBorder + ";border:1px solid " + gradeBorder + "\">" + escHtml(r.grade) + "</span></div>";
+
+  html += "<div class=\"summary-text\">" + escHtml(r.summary) + "</div>";
+
+  if (r.strengths && r.strengths.length > 0) {
+    html += "<div class=\"section-card strengths\"><h3>\u2705 Strengths</h3>";
+    for (var i = 0; i < r.strengths.length; i++) {
+      html += "<div class=\"list-item\"><span class=\"list-icon-g\">\u2713</span><span>" + escHtml(r.strengths[i]) + "</span></div>";
+    }
+    html += "</div>";
+  }
+
+  if (r.weaknesses && r.weaknesses.length > 0) {
+    html += "<div class=\"section-card weaknesses\"><h3>\u26A0 Weaknesses</h3>";
+    for (var j = 0; j < r.weaknesses.length; j++) {
+      html += "<div class=\"list-item\"><span class=\"list-icon-r\">\u2717</span><span>" + escHtml(r.weaknesses[j]) + "</span></div>";
+    }
+    html += "</div>";
+  }
+
+  if (r.fixes && r.fixes.length > 0) {
+    html += "<div class=\"section-card fixes\"><h3>\uD83D\uDD27 Specific Fixes</h3>";
+    for (var k = 0; k < r.fixes.length; k++) {
+      html += "<div class=\"fix-item\"><div class=\"fix-issue\">" + escHtml(r.fixes[k].issue) + "</div><div class=\"fix-solution\">" + escHtml(r.fixes[k].fix) + "</div></div>";
+    }
+    html += "</div>";
+  }
+
+  html += "<div class=\"cta-box\"><p>Ready to put your improved CV to work?</p><a href=\"/match.html\">Want matched jobs? Upload your CV</a></div>";
+
+  document.getElementById("loading").style.display = "none";
+  document.getElementById("result").innerHTML = html;
+  document.getElementById("result").style.display = "block";
+}
+
+function escHtml(s) {
+  var d = document.createElement("div");
+  d.textContent = s;
+  return d.innerHTML;
+}
+</script>
+</body>
+</html>

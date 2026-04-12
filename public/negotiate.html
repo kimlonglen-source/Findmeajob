@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Negotiate My Salary — FindMeAJob.co.nz</title>
+<meta name="description" content="Get a ready-to-use salary negotiation script with pushback responses for common objections. Tailored for the NZ job market.">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#ffffff;color:#0f172a;font-family:'Inter',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
+a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
+
+.nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid #f1f5f9;position:sticky;top:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(12px)}
+.nav-logo{font-size:1.05rem;font-weight:800;color:#0f172a;text-decoration:none}
+.nav-logo span{color:#10b981}
+.nav-logo:hover{text-decoration:none}
+.nav-links{display:flex;align-items:center;gap:1.5rem}
+.nav-links a{color:#64748b;font-size:.82rem;font-weight:600;text-decoration:none}
+.nav-links a:hover{color:#0f172a}
+.nav-cta{background:#10b981 !important;color:#fff !important;padding:.45rem 1.15rem;border-radius:999px;font-size:.78rem;font-weight:700;transition:all .2s}
+.nav-cta:hover{background:#059669 !important;transform:translateY(-1px);box-shadow:0 4px 12px rgba(16,185,129,.3)}
+
+.container{max-width:700px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
+.page-badge{display:inline-block;background:#fce7f3;color:#be185d;padding:.3rem .85rem;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:1rem;border:1px solid #fbcfe8}
+h1{font-size:2.2rem;font-weight:900;line-height:1.15;margin-bottom:.5rem}
+h1 em{font-style:normal;color:#10b981}
+.subtitle{color:#64748b;font-size:.95rem;margin-bottom:2rem}
+
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:1.75rem;margin-bottom:1rem}
+label{display:block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;margin-bottom:.4rem}
+input[type="text"],input[type="number"]{width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Inter',sans-serif;font-size:15px;color:#0f172a;outline:none;transition:all .2s}
+input:focus{border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,.1)}
+input::placeholder{color:#94a3b8}
+.field{margin-bottom:1rem}
+.field:last-child{margin-bottom:0}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+
+.btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;background:#10b981;color:#fff;padding:.85rem 1.8rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 15px rgba(16,185,129,.2)}
+.btn:hover{background:#059669;transform:translateY(-2px);box-shadow:0 8px 25px rgba(16,185,129,.3)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+.loading{display:none;text-align:center;padding:3rem 1rem}
+.spinner{width:40px;height:40px;border:3px solid #e2e8f0;border-top-color:#10b981;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading p{color:#64748b;font-size:.88rem}
+
+#result{display:none}
+.market-banner{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:1rem 1.25rem;text-align:center;margin-bottom:1rem}
+.market-banner h3{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#059669;margin-bottom:.25rem}
+.market-banner p{font-size:.9rem;font-weight:700;color:#064e3b}
+
+.script-section{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:1.5rem;margin-bottom:.75rem}
+.script-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;margin-bottom:.5rem;display:flex;align-items:center;justify-content:space-between}
+.script-text{font-size:.88rem;color:#334155;line-height:1.7;background:#f8fafc;border-radius:10px;padding:1rem;white-space:pre-wrap}
+.copy-btn{display:inline-flex;align-items:center;gap:.3rem;background:none;border:1px solid #e2e8f0;color:#64748b;padding:.25rem .65rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.68rem;font-weight:600;cursor:pointer;transition:all .2s}
+.copy-btn:hover{border-color:#10b981;color:#10b981}
+
+.pushback-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.25rem;margin-bottom:.5rem}
+.pushback-objection{font-size:.82rem;font-weight:700;color:#dc2626;margin-bottom:.35rem}
+.pushback-objection::before{content:"They say: "}
+.pushback-response{font-size:.85rem;color:#334155;line-height:1.6;background:#f0fdf4;border-radius:8px;padding:.75rem 1rem}
+.pushback-response::before{content:"You say: ";font-weight:700;color:#059669}
+
+.tip-box{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:1rem 1.25rem;margin-top:.75rem}
+.tip-box p{font-size:.82rem;color:#92400e;line-height:1.6}
+
+.cta-box{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:16px;padding:1.5rem;text-align:center;margin-top:1.5rem}
+.cta-box p{font-size:.88rem;color:#064e3b;margin-bottom:.75rem;font-weight:500}
+.cta-box a{display:inline-block;background:#10b981;color:#fff;padding:.6rem 1.5rem;border-radius:999px;font-size:.82rem;font-weight:700;text-decoration:none;transition:all .2s}
+.cta-box a:hover{background:#059669;transform:translateY(-1px);text-decoration:none}
+
+.footer{text-align:center;padding:2rem;border-top:1px solid #f1f5f9;margin-top:3rem}
+.footer p{font-size:.78rem;color:#94a3b8;font-weight:500}
+.ai-disclaimer{font-size:.68rem;color:#cbd5e1;margin-top:.5rem;max-width:500px;margin-left:auto;margin-right:auto}
+
+@media(max-width:640px){
+  .nav{padding:.75rem 1rem}
+  .nav-links{gap:.75rem}
+  .nav-links a:not(.nav-cta){display:none}
+  h1{font-size:1.6rem}
+  .container{padding:1.5rem 1rem 3rem}
+  .g2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="/">FindMe<span>AJob</span></a>
+  <div class="nav-links">
+    <a href="/">All Tools</a>
+    <a href="/blog">Blog</a>
+    <a href="/match.html" class="nav-cta">Match My CV</a>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="page-badge">Salary Negotiation</div>
+  <h1>Negotiate My <em>Salary</em></h1>
+  <p class="subtitle">Get a word-for-word script to negotiate your offer with confidence.</p>
+
+  <div id="formSection">
+    <div class="card">
+      <div class="field">
+        <label>Job Title</label>
+        <input type="text" id="jobTitle" placeholder="e.g. Product Manager">
+      </div>
+      <div class="g2">
+        <div class="field">
+          <label>Current Salary (NZD)</label>
+          <input type="number" id="currentSalary" placeholder="e.g. 95000">
+        </div>
+        <div class="field">
+          <label>Offered Salary (NZD)</label>
+          <input type="number" id="offeredSalary" placeholder="e.g. 105000">
+        </div>
+      </div>
+    </div>
+    <button class="btn" id="negotiateBtn" onclick="negotiate()">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+      Write My Script
+    </button>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>Crafting your negotiation script...</p>
+  </div>
+
+  <div id="result"></div>
+</div>
+
+<footer class="footer">
+  <p>&copy; 2026 FindMeAJob.co.nz &mdash; AI-powered career tools for New Zealand</p>
+  <div class="ai-disclaimer">AI Disclaimer: Results are AI-generated estimates and suggestions, not professional advice. Always verify independently.</div>
+</footer>
+
+<script>
+async function negotiate() {
+  var title = document.getElementById("jobTitle").value.trim();
+  var current = document.getElementById("currentSalary").value.trim();
+  var offered = document.getElementById("offeredSalary").value.trim();
+
+  if (!title) { alert("Please enter a job title."); return; }
+  if (!current) { alert("Please enter your current salary."); return; }
+  if (!offered) { alert("Please enter the offered salary."); return; }
+
+  var btn = document.getElementById("negotiateBtn");
+  btn.disabled = true;
+  document.getElementById("formSection").style.display = "none";
+  document.getElementById("loading").style.display = "block";
+  document.getElementById("result").style.display = "none";
+
+  var prompt = "Write a salary negotiation script for someone who is a " + title + " currently earning $" + Number(current).toLocaleString() + " and has been offered $" + Number(offered).toLocaleString() + " in New Zealand. Include: opening statement, 3 pushback responses for common objections, and a closing line. Return ONLY valid JSON with no markdown: {\"opening\":\"string\",\"pushbacks\":[{\"objection\":\"string\",\"response\":\"string\"}],\"closing\":\"string\",\"marketRange\":\"string describing NZ market salary range for this role\",\"tip\":\"string\"}";
+
+  try {
+    var res = await fetch("/api/chat", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({messages: [{role: "user", content: prompt}]})
+    });
+    var data = await res.json();
+    var text = data.choices ? data.choices[0].message.content : data.content || data.message || JSON.stringify(data);
+    text = text.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
+    var result = JSON.parse(text);
+    showResult(result);
+  } catch (e) {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("formSection").style.display = "block";
+    btn.disabled = false;
+    alert("Something went wrong. Please try again.");
+    console.error(e);
+  }
+}
+
+function showResult(r) {
+  var html = "<div class=\"market-banner\"><h3>NZ Market Range</h3><p>" + escHtml(r.marketRange) + "</p></div>";
+
+  html += "<div class=\"script-section\"><div class=\"script-label\"><span>Opening Statement</span><button class=\"copy-btn\" onclick=\"copyText(0)\">Copy</button></div>" +
+    "<div class=\"script-text\" id=\"script-0\">" + escHtml(r.opening) + "</div></div>";
+
+  html += "<div class=\"script-section\"><div class=\"script-label\"><span>Handling Pushback</span></div>";
+  for (var i = 0; i < r.pushbacks.length; i++) {
+    var p = r.pushbacks[i];
+    html += "<div class=\"pushback-card\">" +
+      "<div class=\"pushback-objection\">" + escHtml(p.objection) + "</div>" +
+      "<div class=\"pushback-response\">" + escHtml(p.response) + "</div></div>";
+  }
+  html += "</div>";
+
+  html += "<div class=\"script-section\"><div class=\"script-label\"><span>Closing Line</span><button class=\"copy-btn\" onclick=\"copyText(1)\">Copy</button></div>" +
+    "<div class=\"script-text\" id=\"script-1\">" + escHtml(r.closing) + "</div></div>";
+
+  if (r.tip) {
+    html += "<div class=\"tip-box\"><p><strong>Pro tip:</strong> " + escHtml(r.tip) + "</p></div>";
+  }
+
+  html += "<div class=\"cta-box\"><p>Looking for roles that pay what you are worth?</p><a href=\"/match.html\">Want matched jobs? Upload your CV</a></div>";
+
+  document.getElementById("loading").style.display = "none";
+  document.getElementById("result").innerHTML = html;
+  document.getElementById("result").style.display = "block";
+}
+
+function copyText(index) {
+  var el = document.getElementById("script-" + index);
+  if (el) {
+    navigator.clipboard.writeText(el.textContent).then(function() {
+      var btns = document.querySelectorAll(".copy-btn");
+      if (btns[index]) {
+        btns[index].textContent = "Copied!";
+        setTimeout(function() { btns[index].textContent = "Copy"; }, 1500);
+      }
+    });
+  }
+}
+
+function escHtml(s) {
+  var d = document.createElement("div");
+  d.textContent = s;
+  return d.innerHTML;
+}
+</script>
+</body>
+</html>
