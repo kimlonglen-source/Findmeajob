@@ -25,7 +25,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/svg+xml" href="/logo-icon.svg">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#ffffff;color:#0f172a;font-family:'Inter',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
@@ -62,7 +62,7 @@ a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
 .tool-card:hover{border-color:#10b981;transform:translateY(-3px);box-shadow:0 8px 30px rgba(16,185,129,.1);text-decoration:none}
 .tool-card.primary{border:2px solid #10b981;background:#f0fdf4}
 .tool-card.primary:hover{box-shadow:0 8px 30px rgba(16,185,129,.2)}
-.tool-icon{font-size:1.5rem;margin-bottom:.75rem;display:block;font-family:'JetBrains Mono','Courier New',monospace;font-weight:800;color:#10b981}
+.tool-icon{font-size:1.8rem;margin-bottom:.75rem;display:block;filter:grayscale(1) sepia(1) hue-rotate(120deg) saturate(3) brightness(0.85)}
 .tool-name{font-size:.95rem;font-weight:800;color:#0f172a;margin-bottom:.25rem}
 .tool-desc{font-size:.78rem;color:#64748b;line-height:1.5}
 .tool-tag{display:inline-block;font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:.15rem .5rem;border-radius:999px;margin-top:.65rem}
@@ -76,7 +76,7 @@ a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
 .trust h3{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;margin-bottom:1rem}
 .trust-items{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;max-width:700px;margin:0 auto}
 .trust-item{display:flex;align-items:center;gap:.5rem;font-size:.82rem;font-weight:600;color:#475569}
-.trust-icon{font-size:1.1rem}
+.trust-icon{font-size:1.1rem;filter:grayscale(1) sepia(1) hue-rotate(120deg) saturate(3) brightness(0.85)}
 
 /* How It Works */
 .how-section{max-width:700px;margin:0 auto;padding:0 2rem 3rem}
@@ -97,7 +97,7 @@ a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
 .email-form button{padding:.65rem 1.25rem;background:#10b981;color:#fff;border:none;border-radius:999px;font-family:inherit;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s}
 .email-form button:hover{background:#059669}
 .email-perks{display:flex;justify-content:center;gap:1rem;margin-top:.75rem;flex-wrap:wrap}
-.email-perks span{font-size:.7rem;color:#94a3b8;font-weight:500}
+.email-perks span{font-size:.7rem;color:#10b981;font-weight:500}
 
 /* Footer */
 .footer{text-align:center;padding:2rem;border-top:1px solid #f1f5f9;background:#f8fafc}
@@ -155,10 +155,10 @@ a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
 <div class="trust">
   <h3>Why people trust us</h3>
   <div class="trust-items">
-    <div class="trust-item"><span class="trust-icon">&mdash;</span> Your data is never stored or shared</div>
-    <div class="trust-item"><span class="trust-icon">&mdash;</span> Built in New Zealand</div>
-    <div class="trust-item"><span class="trust-icon">&mdash;</span> No registration required</div>
-    <div class="trust-item"><span class="trust-icon">&mdash;</span> Powered by Claude AI</div>
+    <div class="trust-item"><span class="trust-icon">&#128274;</span> Your data is never stored or shared</div>
+    <div class="trust-item"><span class="trust-icon">&#127987;</span> Built in New Zealand</div>
+    <div class="trust-item"><span class="trust-icon">&#9889;</span> No registration required</div>
+    <div class="trust-item"><span class="trust-icon">&#129302;</span> Powered by Claude AI</div>
   </div>
 </div>
 
@@ -168,55 +168,55 @@ a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
   <p>No sign-up. No payment. Just results.</p>
   <div class="tools-grid">
     <a class="tool-card primary" href="/match.html">
-      <span class="tool-icon">&rarr;</span>
+      <span class="tool-icon">&#128196;</span>
       <div class="tool-name">Match My CV</div>
       <div class="tool-desc">Upload your CV and AI matches you to real NZ jobs in seconds.</div>
       <span class="tool-tag tag-core">Core Tool</span>
     </a>
     <a class="tool-card" href="/decide">
-      <span class="tool-icon">?</span>
+      <span class="tool-icon">&#128678;</span>
       <div class="tool-name">Should I Stay or Go?</div>
       <div class="tool-desc">Find out if it is time to move on. AI career health check with salary insight.</div>
       <span class="tool-tag tag-new">New</span>
     </a>
     <a class="tool-card" href="/decode">
-      <span class="tool-icon">!</span>
+      <span class="tool-icon">&#128269;</span>
       <div class="tool-name">Decode Job Ad</div>
       <div class="tool-desc">Paste a job listing. AI translates the corporate buzzwords into plain English.</div>
       <span class="tool-tag tag-popular">Popular</span>
     </a>
     <a class="tool-card" href="/interview">
-      <span class="tool-icon">&#9656;</span>
+      <span class="tool-icon">&#127908;</span>
       <div class="tool-name">Interview Questions</div>
       <div class="tool-desc">Enter a job title. Get 10 likely interview questions with strong answers.</div>
       <span class="tool-tag tag-popular">Popular</span>
     </a>
     <a class="tool-card" href="/negotiate">
-      <span class="tool-icon">$</span>
+      <span class="tool-icon">&#128176;</span>
       <div class="tool-name">Negotiate My Salary</div>
       <div class="tool-desc">Get a word-for-word script to negotiate your salary with confidence.</div>
       <span class="tool-tag tag-new">New</span>
     </a>
     <a class="tool-card" href="/compare">
-      <span class="tool-icon">=</span>
+      <span class="tool-icon">&#9878;</span>
       <div class="tool-name">Compare Jobs</div>
       <div class="tool-desc">Paste two job descriptions. AI compares salary, benefits, red flags side-by-side.</div>
       <span class="tool-tag tag-new">New</span>
     </a>
     <a class="tool-card" href="/score">
-      <span class="tool-icon">#</span>
+      <span class="tool-icon">&#128202;</span>
       <div class="tool-name">CV Score</div>
       <div class="tool-desc">Upload your CV and get a score out of 100 with specific fixes to improve it.</div>
       <span class="tool-tag tag-popular">Popular</span>
     </a>
     <a class="tool-card" href="/email">
-      <span class="tool-icon">@</span>
+      <span class="tool-icon">&#9993;</span>
       <div class="tool-name">Write This Email</div>
       <div class="tool-desc">Need to email your boss, follow up after an interview, or push back? AI writes it.</div>
       <span class="tool-tag tag-new">New</span>
     </a>
     <a class="tool-card" href="/challenge">
-      <span class="tool-icon">~</span>
+      <span class="tool-icon">&#128293;</span>
       <div class="tool-name">Career Roast</div>
       <div class="tool-desc">Upload your CV and let AI roast your career with savage pivot suggestions.</div>
       <span class="tool-tag tag-fun">Fun</span>
@@ -255,9 +255,9 @@ a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
     <button onclick="subscribeAlerts()">Subscribe</button>
   </div>
   <div class="email-perks">
-    <span>&mdash; Real NZ jobs weekly</span>
-    <span>&mdash; No spam ever</span>
-    <span>&mdash; Unsubscribe anytime</span>
+    <span>&#10003; Real NZ jobs weekly</span>
+    <span>&#10003; No spam ever</span>
+    <span>&#10003; Unsubscribe anytime</span>
   </div>
 </section>
 
