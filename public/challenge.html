@@ -38,8 +38,10 @@ a{color:var(--em);text-decoration:none}
 .hero-cta{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;padding:.9rem 2.2rem;border-radius:50px;font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;transition:all .3s;box-shadow:0 4px 25px rgba(139,92,246,.3)}
 .hero-cta:hover{transform:translateY(-2px);box-shadow:0 8px 35px rgba(139,92,246,.4)}
 .hero-trust{margin-top:1.5rem;font-size:.72rem;color:var(--text3);text-align:center;font-weight:500;letter-spacing:.3px}
-.hero-brand{position:absolute;top:1.25rem;left:50%;transform:translateX(-50%);font-size:.8rem;font-weight:800;color:var(--text3);letter-spacing:.5px}
-.hero-brand span{color:var(--em)}
+.hero-brand{position:absolute;top:1.25rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.4rem;font-size:.8rem;font-weight:800;color:var(--text2);letter-spacing:.5px;text-decoration:none}
+.hero-brand em{background:linear-gradient(135deg,#10b981,#059669);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
+.hero-brand .logo-mark{width:24px;height:24px;background:linear-gradient(135deg,#10b981,#059669);border-radius:6px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(16,185,129,.2)}
+.hero-brand .logo-mark svg{width:12px;height:12px;color:#fff}
 
 /* Upload */
 .upload-wrap{width:100%;max-width:400px}
@@ -125,7 +127,7 @@ a{color:var(--em);text-decoration:none}
 <body>
 <!-- HERO -->
 <div class="section active" id="section-hero">
-  <div class="hero-brand">FindMe<span>AJob</span></div>
+  <a class="hero-brand" href="/"><div class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="10" cy="10" r="7"/><path d="m21 21-4.35-4.35"/></svg></div>FindMe<em>AJob</em></a>
   <button onclick="toggleTheme()" id="tbtn" style="position:fixed;top:1rem;right:1rem;z-index:100;background:var(--bg2);border:1px solid var(--border);color:var(--text2);width:34px;height:34px;border-radius:999px;cursor:pointer;font-size:1rem">&#9788;</button>
   <div class="hero-tag">#cvchallengenz</div>
   <div class="hero-hook" id="hero-hook"></div>

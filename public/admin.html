@@ -14,7 +14,7 @@ body.dark input{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.
 body.dark .toast{background:rgba(15,23,42,.95);color:#f4f4f5;box-shadow:0 8px 32px rgba(0,0,0,.3)}
 body.dark .confirm-box{background:#0f172a}
 body.dark .job-row{background:rgba(255,255,255,.03)}
-body.dark .hlogo span{color:var(--em)}
+body.dark .hlogo em{color:var(--em)}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
 
@@ -30,8 +30,8 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-s
 /* Login */
 #login{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1.5rem}
 .login-box{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2.5rem;width:100%;max-width:400px;backdrop-filter:blur(20px)}
-.login-logo{font-size:1.3rem;font-weight:800;color:var(--text);margin-bottom:.35rem}
-.login-logo span{color:var(--em)}
+.login-logo{font-size:1.3rem;font-weight:800;color:var(--text);margin-bottom:.35rem;display:flex;align-items:center;gap:.5rem;justify-content:center}
+.login-logo em{background:linear-gradient(135deg,var(--em),var(--em2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
 .login-sub{font-size:.85rem;color:var(--text3);font-weight:600;margin-bottom:2rem}
 label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);display:block;margin-bottom:.5rem}
 input{background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;padding:.85rem 1.15rem;outline:none;width:100%;margin-bottom:1rem;transition:border-color .2s}
@@ -43,7 +43,8 @@ input:focus{border-color:var(--em);box-shadow:0 0 0 3px rgba(16,185,129,.1)}
 /* App */
 #app{display:none;min-height:100vh}
 header{background:var(--hdr,rgba(9,9,11,.8));border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
-.hlogo{font-size:1.05rem;font-weight:800}.hlogo span{color:var(--em)}
+.hlogo{display:flex;align-items:center;gap:.5rem;font-size:1.05rem;font-weight:800}.hlogo em{background:linear-gradient(135deg,var(--em),var(--em2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
+.logo-mark{width:30px;height:30px;background:linear-gradient(135deg,var(--em),var(--em2));border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(16,185,129,.2)}.logo-mark svg{width:15px;height:15px;color:#fff}
 .hright{display:flex;align-items:center;gap:1rem}
 .badge{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);color:var(--em);font-size:.72rem;font-weight:700;padding:.3rem .75rem;border-radius:999px}
 .signout{background:none;border:1px solid var(--border2);color:var(--text3);padding:.45rem 1rem;border-radius:999px;cursor:pointer;font-family:'Inter',system-ui,sans-serif;font-size:.78rem;font-weight:600;transition:all .2s}
@@ -148,7 +149,7 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
 <div id="login">
   <div style="position:absolute;top:1.5rem;right:1.5rem"><button id="tbtn-login" onclick="toggleTheme()" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text3);width:34px;height:34px;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem">&#9788;</button></div>
   <div class="login-box">
-    <div class="login-logo">FindMe<span>AJob</span>.co.nz</div>
+    <div class="login-logo"><div class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="10" cy="10" r="7"/><path d="m21 21-4.35-4.35"/></svg></div>FindMe<em>AJob</em></div>
     <div class="login-sub">Admin Panel</div>
     <label>Password</label>
     <input type="password" id="pw" placeholder="Enter admin password" autocomplete="current-password">
@@ -159,7 +160,7 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
 
 <div id="app">
   <header>
-    <div class="hlogo">FindMe<span>AJob</span> <span style="font-size:.72rem;color:var(--text3);font-weight:600">Admin</span></div>
+    <div class="hlogo"><div class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="10" cy="10" r="7"/><path d="m21 21-4.35-4.35"/></svg></div>FindMe<em>AJob</em> Admin</div>
     <div class="hright">
       <span class="badge" id="pending-badge">0 pending</span>
       <button id="tbtn" onclick="toggleTheme()" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text3);width:34px;height:34px;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem">&#9788;</button>
