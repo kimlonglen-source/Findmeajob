@@ -261,7 +261,7 @@ async function analyse() {
       body: JSON.stringify({messages: [{role: "user", content: prompt}]})
     });
     var data = await res.json();
-    var text = data.choices ? data.choices[0].message.content : data.content || data.message || JSON.stringify(data);
+    var text = (data.content && Array.isArray(data.content)) ? data.content.map(function(b){return b.text||"";}).join("") : JSON.stringify(data);
     text = text.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
     var result = JSON.parse(text);
     await showResult(result);
