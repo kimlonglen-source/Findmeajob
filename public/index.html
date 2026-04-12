@@ -105,6 +105,19 @@ a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
 .email-perks{display:flex;justify-content:center;gap:1rem;margin-top:.75rem;flex-wrap:wrap}
 .email-perks span{font-size:.7rem;color:#10b981;font-weight:500}
 
+/* About */
+.about{max-width:800px;margin:0 auto;padding:3rem 2rem}
+.about h2{text-align:center;font-size:1.5rem;font-weight:800;margin-bottom:.35rem}
+.about>p{text-align:center;color:#64748b;font-size:.88rem;margin-bottom:2rem}
+.about-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+.about-card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:1.25rem}
+.about-card h3{font-size:.85rem;font-weight:700;color:#0f172a;margin-bottom:.35rem;display:flex;align-items:center;gap:.4rem}
+.about-card h3 svg{width:18px;height:18px;stroke:#10b981;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.about-card p{font-size:.78rem;color:#64748b;line-height:1.6}
+.about-contact{text-align:center;margin-top:1.5rem;font-size:.82rem;color:#64748b}
+.about-contact a{color:#10b981;font-weight:700}
+@media(max-width:640px){.about-grid{grid-template-columns:1fr}}
+
 /* Footer */
 .footer{text-align:center;padding:2rem;border-top:1px solid #f1f5f9;background:#f8fafc}
 .footer p{font-size:.72rem;color:#94a3b8}
@@ -163,6 +176,10 @@ body.dark .email-section p{color:#94a3b8}
 body.dark .email-form input{background:#0f172a;border-color:rgba(255,255,255,.1);color:#f8fafc}
 body.dark .email-perks span{color:#10b981}
 body.dark #toast{background:#f8fafc;color:#0f172a}
+body.dark .about-card{background:#0f172a;border-color:rgba(255,255,255,.06)}
+body.dark .about-card h3{color:#f8fafc}
+body.dark .about-card p{color:#94a3b8}
+body.dark .about-contact{color:#94a3b8}
 </style>
 </head>
 <body>
@@ -290,7 +307,7 @@ body.dark #toast{background:#f8fafc;color:#0f172a}
     <div class="how-step">
       <div class="how-num">1</div>
       <h3>Pick a tool</h3>
-      <p>Choose from 9 free AI tools above</p>
+      <p>Choose from 12 free AI tools above</p>
     </div>
     <div class="how-step">
       <div class="how-num">2</div>
@@ -320,13 +337,38 @@ body.dark #toast{background:#f8fafc;color:#0f172a}
   </div>
 </section>
 
+<!-- About -->
+<section class="about" id="about">
+  <h2>About FindMeAJob.co.nz</h2>
+  <p>Built in New Zealand, for New Zealanders. 12 free AI career tools — no sign-up, no payment, no catch.</p>
+  <div class="about-grid">
+    <div class="about-card">
+      <h3><svg viewBox="0 0 24 24"><path d="M12 2a4 4 0 014 4c0 2-2 3-2 6H10c0-3-2-4-2-6a4 4 0 014-4z"/><line x1="10" y1="16" x2="14" y2="16"/><line x1="10" y1="19" x2="14" y2="19"/></svg>AI-Powered</h3>
+      <p>Powered by Claude AI. Every tool analyses your specific situation and gives personalised, NZ-relevant results in seconds.</p>
+    </div>
+    <div class="about-card">
+      <h3><svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>New Zealand Only</h3>
+      <p>Every job, salary figure, and piece of advice is specific to the NZ market. No overseas data, no irrelevant results.</p>
+    </div>
+    <div class="about-card">
+      <h3><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Private by Default</h3>
+      <p>Your CV is never stored. Data is processed in real time then discarded. We comply with the NZ Privacy Act 2020.</p>
+    </div>
+    <div class="about-card">
+      <h3><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>100% Free</h3>
+      <p>Free for job seekers. Free for employers. No plans, no payments, no credit card. Free forever.</p>
+    </div>
+  </div>
+  <div class="about-contact">Questions? <a href="mailto:hello@findmeajob.co.nz">hello@findmeajob.co.nz</a></div>
+</section>
+
 <!-- Footer -->
 <footer class="footer">
   <div class="footer-links">
     <a href="/">Home</a>
     <a href="/blog">Blog</a>
-    <a href="/challenge">Career Roast</a>
-    <a href="/admin.html">Admin</a>
+    <a href="#about">About</a>
+    <a href="/employer-portal.html">Post a Job</a>
   </div>
   <p>&copy; 2026 FindMeAJob.co.nz &mdash; AI-powered career tools for New Zealand</p>
   <div class="ai-disclaimer">
