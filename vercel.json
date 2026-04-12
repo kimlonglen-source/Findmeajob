@@ -90,6 +90,34 @@
       "dest": "/public/challenge.html"
     },
     {
+      "src": "/decide",
+      "dest": "/public/decide.html"
+    },
+    {
+      "src": "/decode",
+      "dest": "/public/decode.html"
+    },
+    {
+      "src": "/interview",
+      "dest": "/public/interview.html"
+    },
+    {
+      "src": "/negotiate",
+      "dest": "/public/negotiate.html"
+    },
+    {
+      "src": "/compare",
+      "dest": "/public/compare.html"
+    },
+    {
+      "src": "/score",
+      "dest": "/public/score.html"
+    },
+    {
+      "src": "/email",
+      "dest": "/public/email.html"
+    },
+    {
       "src": "/sitemap.xml",
       "dest": "/api/approved-jobs.js?sitemap=1"
     },
