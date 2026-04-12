@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cover Letter Writer — FindMeAJob.co.nz</title>
-<meta name="description" content="Generate a tailored cover letter for any NZ job. Paste the job ad, add your details, and AI writes it in seconds. Free.">
+<meta name="description" content="Generate a tailored cover letter for any NZ job. Upload your CV or enter details, paste the job ad, and AI writes it. Free.">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <link rel="canonical" href="https://www.findmeajob.co.nz/cover-letter">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.findmeajob.co.nz/cover-letter">
@@ -50,6 +51,12 @@ input[type="text"],input[type="number"],textarea,select{width:100%;background:#f
 input:focus,textarea:focus,select:focus{border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,.1)}
 input::placeholder,textarea::placeholder{color:#94a3b8}
 textarea{resize:vertical;min-height:100px}
+
+.upload-zone{border:2px dashed #e2e8f0;border-radius:12px;padding:1.5rem 1rem;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:.5rem}
+.upload-zone:hover,.upload-zone.dragover{border-color:#10b981;background:#f0fdf4}
+.upload-sub{font-size:.72rem;color:#94a3b8;margin-top:.25rem}
+.file-name{display:none;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:.5rem 1rem;font-size:.82rem;font-weight:600;color:#059669;margin-bottom:.5rem;text-align:center}
+.or-divider{text-align:center;font-size:.72rem;color:#94a3b8;font-weight:600;margin:.5rem 0;text-transform:uppercase;letter-spacing:.5px}
 
 .field{margin-bottom:1rem}
 .field:last-child{margin-bottom:0}
@@ -111,6 +118,10 @@ body.dark .copy-btn{background:#0f172a;border-color:#10b981;color:#10b981}
 body.dark .copy-btn:hover{background:rgba(16,185,129,.1)}
 body.dark .cta-box{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3)}
 body.dark .cta-box p{color:#10b981}
+body.dark .upload-zone{border-color:rgba(255,255,255,.1)}
+body.dark .upload-zone:hover{border-color:#10b981;background:rgba(16,185,129,.05)}
+body.dark .file-name{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3);color:#10b981}
+body.dark .or-divider{color:#64748b}
 </style>
 </head>
 <body>
@@ -157,8 +168,16 @@ body.dark .cta-box p{color:#10b981}
       </div>
 
       <div class="field">
-        <label>Your Key Experience</label>
-        <textarea id="keyExperience" rows="4" placeholder="Briefly describe your relevant experience..."></textarea>
+        <label>Your Experience (upload CV or type below)</label>
+        <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg>
+          <div style="font-size:.82rem;font-weight:600;margin-top:.35rem">Upload your CV for a more tailored letter</div>
+          <div class="upload-sub">PDF, DOCX, or TXT</div>
+        </div>
+        <input type="file" id="fileInput" accept=".pdf,.docx,.doc,.txt" style="display:none">
+        <div class="file-name" id="fileName"></div>
+        <div class="or-divider">or type your experience</div>
+        <textarea id="keyExperience" rows="3" placeholder="Briefly describe your relevant experience..."></textarea>
       </div>
 
       <div class="field">
@@ -191,6 +210,39 @@ body.dark .cta-box p{color:#10b981}
 </footer>
 
 <script>
+var cvText = "";
+var cvFileData = null;
+
+/* File handling */
+var uploadZone = document.getElementById("uploadZone");
+var fileInput = document.getElementById("fileInput");
+var fileNameEl = document.getElementById("fileName");
+
+uploadZone.addEventListener("dragover", function(e) { e.preventDefault(); uploadZone.classList.add("dragover"); });
+uploadZone.addEventListener("dragleave", function() { uploadZone.classList.remove("dragover"); });
+uploadZone.addEventListener("drop", function(e) { e.preventDefault(); uploadZone.classList.remove("dragover"); if (e.dataTransfer.files.length > 0) { fileInput.files = e.dataTransfer.files; handleFile(e.dataTransfer.files[0]); } });
+fileInput.addEventListener("change", function() { if (this.files.length > 0) handleFile(this.files[0]); });
+
+function handleFile(file) {
+  var name = file.name.toLowerCase();
+  fileNameEl.textContent = file.name;
+  fileNameEl.style.display = "block";
+  uploadZone.style.display = "none";
+  if (name.endsWith(".txt")) {
+    var reader = new FileReader();
+    reader.onload = function(e) { cvText = e.target.result; cvFileData = null; };
+    reader.readAsText(file);
+  } else if (name.endsWith(".docx") || name.endsWith(".doc")) {
+    var reader2 = new FileReader();
+    reader2.onload = function(e) { mammoth.extractRawText({arrayBuffer: e.target.result}).then(function(r) { cvText = r.value; cvFileData = null; }).catch(function() { alert("Could not read file."); }); };
+    reader2.readAsArrayBuffer(file);
+  } else if (name.endsWith(".pdf")) {
+    var reader3 = new FileReader();
+    reader3.onload = function(e) { var b64 = btoa(new Uint8Array(e.target.result).reduce(function(d, byte) { return d + String.fromCharCode(byte); }, "")); cvFileData = "data:application/pdf;base64," + b64; cvText = ""; };
+    reader3.readAsArrayBuffer(file);
+  } else { alert("Please upload a PDF, DOCX, or TXT file."); }
+}
+
 async function generate() {
   var name = document.getElementById("applicantName").value.trim();
   var role = document.getElementById("roleTitle").value.trim();
@@ -198,12 +250,13 @@ async function generate() {
   var jobDesc = document.getElementById("jobDescription").value.trim();
   var experience = document.getElementById("keyExperience").value.trim();
   var tone = document.getElementById("tone").value;
+  var hasCv = cvText || cvFileData;
 
   if (!name) { alert("Please enter your name."); return; }
   if (!role) { alert("Please enter the job title."); return; }
   if (!company) { alert("Please enter the company name."); return; }
   if (!jobDesc) { alert("Please paste the job description."); return; }
-  if (!experience) { alert("Please describe your key experience."); return; }
+  if (!experience && !hasCv) { alert("Please upload your CV or describe your experience."); return; }
 
   var btn = document.getElementById("generateBtn");
   btn.disabled = true;
@@ -211,13 +264,24 @@ async function generate() {
   document.getElementById("loading").style.display = "block";
   document.getElementById("result").style.display = "none";
 
-  var prompt = "You are a New Zealand cover letter expert. Write a professional cover letter for this job application. The letter must suit NZ workplace culture — warm, genuine, professional but not overly formal. Use NZ English spelling.\n\nIMPORTANT: Tailor the letter specifically to this job and company. Reference specific requirements from the job description. Do NOT use generic filler.\n\nDetails:\n- Applicant: " + name + "\n- Role: " + role + "\n- Company: " + company + "\n- Job Description: " + jobDesc + "\n- Key Experience: " + experience + "\n- Tone: " + tone + "\n\nWrite 3-4 paragraphs. Start with 'Dear Hiring Manager' and end with 'Kind regards,\n" + name + "'. Make it specific, compelling, and ready to send. Return ONLY the cover letter text, no markdown.";
+  var cvInfo = "";
+  if (cvText) cvInfo = "\n- CV Content: " + cvText.substring(0, 4000);
+  else if (experience) cvInfo = "\n- Key Experience: " + experience;
+
+  var prompt = "You are a New Zealand cover letter expert. Write a professional cover letter for this job application. The letter must suit NZ workplace culture — warm, genuine, professional but not overly formal. Use NZ English spelling.\n\nIMPORTANT: Tailor the letter specifically to this job and company. Reference specific requirements from the job description. If a CV was provided, reference specific skills and experience from it. Do NOT use generic filler.\n\nDetails:\n- Applicant: " + name + "\n- Role: " + role + "\n- Company: " + company + "\n- Job Description: " + jobDesc + cvInfo + "\n- Tone: " + tone + "\n\nWrite 3-4 paragraphs. Start with 'Dear Hiring Manager' and end with 'Kind regards,\n" + name + "'. Make it specific, compelling, and ready to send. Return ONLY the cover letter text, no markdown.";
+
+  var msgs;
+  if (cvFileData && cvFileData.includes("base64,")) {
+    msgs = [{role: "user", content: [{type: "document", source: {type: "base64", media_type: "application/pdf", data: cvFileData.split("base64,")[1]}}, {type: "text", text: prompt}]}];
+  } else {
+    msgs = [{role: "user", content: prompt}];
+  }
 
   try {
     var res = await fetch("/api/chat", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({messages: [{role: "user", content: prompt}]})
+      body: JSON.stringify({messages: msgs})
     });
     var data = await res.json();
     var text = (data.content && Array.isArray(data.content)) ? data.content.map(function(b){return b.text||"";}).join("") : (typeof data === "string" ? data : JSON.stringify(data));
