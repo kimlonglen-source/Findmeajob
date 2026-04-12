@@ -33,7 +33,7 @@ a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
 
 /* Nav */
 .nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid #f1f5f9;position:sticky;top:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(12px)}
-.nav-logo{font-size:1.05rem;font-weight:800;color:#10b981;text-decoration:none}
+.nav-logo{font-size:1.05rem;font-weight:800;color:#0f172a;text-decoration:none}
 .nav-logo span{color:#10b981}
 .nav-logo:hover{text-decoration:none}
 .nav-links{display:flex;align-items:center;gap:1.5rem}
@@ -62,7 +62,8 @@ a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
 .tool-card:hover{border-color:#10b981;transform:translateY(-3px);box-shadow:0 8px 30px rgba(16,185,129,.1);text-decoration:none}
 .tool-card.primary{border:2px solid #10b981;background:#f0fdf4}
 .tool-card.primary:hover{box-shadow:0 8px 30px rgba(16,185,129,.2)}
-.tool-icon{font-size:1.8rem;margin-bottom:.75rem;display:flex;align-items:center;justify-content:center;width:44px;height:44px;filter:grayscale(1) sepia(1) hue-rotate(120deg) saturate(5) brightness(1.3)}
+.tool-icon{margin-bottom:.75rem;display:flex;align-items:center;justify-content:center;width:36px;height:36px}
+.tool-icon svg{width:28px;height:28px;stroke:#10b981;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;fill:none}
 .tool-name{font-size:.95rem;font-weight:800;color:#0f172a;margin-bottom:.25rem}
 .tool-desc{font-size:.78rem;color:#64748b;line-height:1.5}
 .tool-tag{display:inline-block;font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:.15rem .5rem;border-radius:999px;margin-top:.65rem}
@@ -76,7 +77,8 @@ a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
 .trust h3{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;margin-bottom:1rem}
 .trust-items{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;max-width:700px;margin:0 auto}
 .trust-item{display:flex;align-items:center;gap:.5rem;font-size:.82rem;font-weight:600;color:#475569}
-.trust-icon{font-size:1.1rem;filter:grayscale(1) sepia(1) hue-rotate(120deg) saturate(5) brightness(1.3)}
+.trust-icon{font-size:0;display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px}
+.trust-icon svg{width:16px;height:16px;stroke:#10b981;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none}
 
 /* How It Works */
 .how-section{max-width:700px;margin:0 auto;padding:0 2rem 3rem}
@@ -155,10 +157,10 @@ a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
 <div class="trust">
   <h3>Why people trust us</h3>
   <div class="trust-items">
-    <div class="trust-item"><span class="trust-icon">&#128274;</span> Your data is never stored or shared</div>
-    <div class="trust-item"><span class="trust-icon">&#127987;</span> Built in New Zealand</div>
-    <div class="trust-item"><span class="trust-icon">&#9889;</span> No registration required</div>
-    <div class="trust-item"><span class="trust-icon">&#129302;</span> Powered by Claude AI</div>
+    <div class="trust-item"><span class="trust-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span> Your data is never stored or shared</div>
+    <div class="trust-item"><span class="trust-icon"><svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></span> Built in New Zealand</div>
+    <div class="trust-item"><span class="trust-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span> No registration required</div>
+    <div class="trust-item"><span class="trust-icon"><svg viewBox="0 0 24 24"><path d="M12 2a4 4 0 014 4c0 2-2 3-2 6H10c0-3-2-4-2-6a4 4 0 014-4z"/><line x1="10" y1="16" x2="14" y2="16"/><line x1="10" y1="19" x2="14" y2="19"/><path d="M11 22h2"/></svg></span> Powered by Claude AI</div>
   </div>
 </div>
 
@@ -168,55 +170,55 @@ a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
   <p>No sign-up. No payment. Just results.</p>
   <div class="tools-grid">
     <a class="tool-card primary" href="/match.html">
-      <span class="tool-icon">&#128196;</span>
+      <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>
       <div class="tool-name">Match My CV</div>
       <div class="tool-desc">Upload your CV and AI matches you to real NZ jobs in seconds.</div>
       <span class="tool-tag tag-core">Core Tool</span>
     </a>
     <a class="tool-card" href="/decide">
-      <span class="tool-icon">&#128678;</span>
+      <span class="tool-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="6" r="3"/><circle cx="12" cy="12" r="3"/><circle cx="12" cy="18" r="3"/><rect x="8" y="2" width="8" height="20" rx="4"/></svg></span>
       <div class="tool-name">Should I Stay or Go?</div>
       <div class="tool-desc">Find out if it is time to move on. AI career health check with salary insight.</div>
       <span class="tool-tag tag-new">New</span>
     </a>
     <a class="tool-card" href="/decode">
-      <span class="tool-icon">&#128269;</span>
+      <span class="tool-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
       <div class="tool-name">Decode Job Ad</div>
       <div class="tool-desc">Paste a job listing. AI translates the corporate buzzwords into plain English.</div>
       <span class="tool-tag tag-popular">Popular</span>
     </a>
     <a class="tool-card" href="/interview">
-      <span class="tool-icon">&#127908;</span>
+      <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></span>
       <div class="tool-name">Interview Questions</div>
       <div class="tool-desc">Enter a job title. Get 10 likely interview questions with strong answers.</div>
       <span class="tool-tag tag-popular">Popular</span>
     </a>
     <a class="tool-card" href="/negotiate">
-      <span class="tool-icon">&#128176;</span>
+      <span class="tool-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></span>
       <div class="tool-name">Negotiate My Salary</div>
       <div class="tool-desc">Get a word-for-word script to negotiate your salary with confidence.</div>
       <span class="tool-tag tag-new">New</span>
     </a>
     <a class="tool-card" href="/compare">
-      <span class="tool-icon">&#9878;</span>
+      <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M21 3l-7 7"/><path d="M3 3l7 7"/><path d="M16 21h5v-5"/><path d="M8 21H3v-5"/><path d="M21 21l-7-7"/><path d="M3 21l7-7"/></svg></span>
       <div class="tool-name">Compare Jobs</div>
       <div class="tool-desc">Paste two job descriptions. AI compares salary, benefits, red flags side-by-side.</div>
       <span class="tool-tag tag-new">New</span>
     </a>
     <a class="tool-card" href="/score">
-      <span class="tool-icon">&#128202;</span>
+      <span class="tool-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
       <div class="tool-name">CV Score</div>
       <div class="tool-desc">Upload your CV and get a score out of 100 with specific fixes to improve it.</div>
       <span class="tool-tag tag-popular">Popular</span>
     </a>
     <a class="tool-card" href="/email">
-      <span class="tool-icon">&#9993;</span>
+      <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
       <div class="tool-name">Write This Email</div>
       <div class="tool-desc">Need to email your boss, follow up after an interview, or push back? AI writes it.</div>
       <span class="tool-tag tag-new">New</span>
     </a>
     <a class="tool-card" href="/challenge">
-      <span class="tool-icon">&#128293;</span>
+      <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M12 22c-4 0-8-2.5-8-8 0-4 2-6.5 4-9 .5-.75 1.5-.5 1.5.5 0 1.5.5 3 2 4 0-3 2-5 4-7 .5-.5 1.5-.25 1.5.5 0 3 3 5 3 9 0 5.5-4 8-8 8z"/></svg></span>
       <div class="tool-name">Career Roast</div>
       <div class="tool-desc">Upload your CV and let AI roast your career with savage pivot suggestions.</div>
       <span class="tool-tag tag-fun">Fun</span>
