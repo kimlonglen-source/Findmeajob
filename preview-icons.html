@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Icon Style Preview — FindMeAJob</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#ffffff;color:#0f172a;font-family:'Inter',system-ui,sans-serif;padding:2rem;line-height:1.6}
+h1{font-size:1.8rem;font-weight:900;margin-bottom:.5rem}
+h1 em{font-style:normal;color:#10b981}
+.subtitle{color:#64748b;font-size:.95rem;margin-bottom:2.5rem}
+h2{font-size:1.2rem;font-weight:800;margin:2.5rem 0 1rem;padding-top:1.5rem;border-top:1px solid #e2e8f0}
+h2:first-of-type{border-top:none;padding-top:0}
+
+.tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:900px}
+.tool-card{display:block;background:#ffffff;border:1px solid #e2e8f0;border-radius:16px;padding:1.5rem;text-decoration:none;color:inherit;transition:all .25s;position:relative;overflow:hidden}
+.tool-card:hover{border-color:#10b981;transform:translateY(-3px);box-shadow:0 8px 30px rgba(16,185,129,.1)}
+.tool-card.primary{border:2px solid #10b981;background:#f0fdf4}
+.tool-card.primary:hover{box-shadow:0 8px 30px rgba(16,185,129,.2)}
+
+/* Shared icon base */
+.tool-icon{font-size:1.8rem;margin-bottom:.75rem;display:block;color:#10b981;font-weight:900}
+
+/* Monospace style for techy icons */
+.tool-icon.mono{font-family:'JetBrains Mono','Courier New',monospace;font-size:1.5rem;font-weight:800;letter-spacing:-1px}
+
+/* Larger mono for some styles */
+.tool-icon.mono-lg{font-family:'JetBrains Mono','Courier New',monospace;font-size:1.3rem;font-weight:800;letter-spacing:-0.5px}
+
+/* Pill/badge style */
+.tool-icon.pill{font-family:'JetBrains Mono','Courier New',monospace;font-size:.85rem;font-weight:800;background:#f0fdf4;border:2px solid #10b981;display:inline-block;padding:.3rem .65rem;border-radius:8px;letter-spacing:0px;margin-bottom:.75rem}
+
+/* Circle badge style */
+.tool-icon.circle{font-family:'JetBrains Mono','Courier New',monospace;font-size:1rem;font-weight:800;background:#10b981;color:#fff;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;margin-bottom:.75rem;letter-spacing:-0.5px}
+
+/* Outline circle style */
+.tool-icon.outline{font-family:'JetBrains Mono','Courier New',monospace;font-size:1rem;font-weight:800;background:transparent;color:#10b981;border:2px solid #10b981;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;margin-bottom:.75rem;letter-spacing:-0.5px}
+
+.tool-name{font-size:.95rem;font-weight:800;color:#0f172a;margin-bottom:.25rem}
+.tool-desc{font-size:.78rem;color:#64748b;line-height:1.5}
+.tool-tag{display:inline-block;font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:.15rem .5rem;border-radius:999px;margin-top:.65rem}
+.tag-popular{background:#fef3c7;color:#92400e}
+.tag-new{background:#ede9fe;color:#6d28d9}
+.tag-core{background:#f0fdf4;color:#059669}
+.tag-fun{background:#fce7f3;color:#be185d}
+
+@media(max-width:640px){
+  .tools-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:400px){
+  .tools-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<h1>Icon Style <em>Preview</em></h1>
+<p class="subtitle">Pick the style you like best. All rendered in your green (#10b981), bold, techy.</p>
+
+<!-- ============================================ -->
+<h2>Style A — Bold Angle Brackets (raw text)</h2>
+<!-- ============================================ -->
+<div class="tools-grid">
+  <div class="tool-card primary">
+    <span class="tool-icon mono">&lt;/&gt;</span>
+    <div class="tool-name">Match My CV</div>
+    <div class="tool-desc">Upload your CV and AI matches you to real NZ jobs in seconds.</div>
+    <span class="tool-tag tag-core">Core Tool</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon mono">&lt;?&gt;</span>
+    <div class="tool-name">Should I Stay or Go?</div>
+    <div class="tool-desc">Find out if it is time to move on. AI career health check with salary insight.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon mono">&lt;!&gt;</span>
+    <div class="tool-name">Decode Job Ad</div>
+    <div class="tool-desc">Paste a job listing. AI translates the corporate buzzwords into plain English.</div>
+    <span class="tool-tag tag-popular">Popular</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon mono">&lt;&gt;&gt;</span>
+    <div class="tool-name">Interview Questions</div>
+    <div class="tool-desc">Enter a job title. Get 10 likely interview questions with strong answers.</div>
+    <span class="tool-tag tag-popular">Popular</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon mono">&lt;$&gt;</span>
+    <div class="tool-name">Negotiate My Salary</div>
+    <div class="tool-desc">Get a word-for-word script to negotiate your salary with confidence.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon mono">&lt;=&gt;</span>
+    <div class="tool-name">Compare Jobs</div>
+    <div class="tool-desc">Paste two job descriptions. AI compares salary, benefits, red flags side-by-side.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon mono">&lt;#&gt;</span>
+    <div class="tool-name">CV Score</div>
+    <div class="tool-desc">Upload your CV and get a score out of 100 with specific fixes to improve it.</div>
+    <span class="tool-tag tag-popular">Popular</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon mono">&lt;@&gt;</span>
+    <div class="tool-name">Write This Email</div>
+    <div class="tool-desc">Need to email your boss, follow up after an interview, or push back? AI writes it.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon mono">&lt;~&gt;</span>
+    <div class="tool-name">Career Roast</div>
+    <div class="tool-desc">Upload your CV and let AI roast your career with savage pivot suggestions.</div>
+    <span class="tool-tag tag-fun">Fun</span>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<h2>Style B — Slash Commands (raw text)</h2>
+<!-- ============================================ -->
+<div class="tools-grid">
+  <div class="tool-card primary">
+    <span class="tool-icon mono-lg">/match</span>
+    <div class="tool-name">Match My CV</div>
+    <div class="tool-desc">Upload your CV and AI matches you to real NZ jobs in seconds.</div>
+    <span class="tool-tag tag-core">Core Tool</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon mono-lg">/exit</span>
+    <div class="tool-name">Should I Stay or Go?</div>
+    <div class="tool-desc">Find out if it is time to move on. AI career health check with salary insight.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon mono-lg">/scan</span>
+    <div class="tool-name">Decode Job Ad</div>
+    <div class="tool-desc">Paste a job listing. AI translates the corporate buzzwords into plain English.</div>
+    <span class="tool-tag tag-popular">Popular</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon mono-lg">/prep</span>
+    <div class="tool-name">Interview Questions</div>
+    <div class="tool-desc">Enter a job title. Get 10 likely interview questions with strong answers.</div>
+    <span class="tool-tag tag-popular">Popular</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon mono-lg">/pay</span>
+    <div class="tool-name">Negotiate My Salary</div>
+    <div class="tool-desc">Get a word-for-word script to negotiate your salary with confidence.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon mono-lg">/diff</span>
+    <div class="tool-name">Compare Jobs</div>
+    <div class="tool-desc">Paste two job descriptions. AI compares salary, benefits, red flags side-by-side.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon mono-lg">/lint</span>
+    <div class="tool-name">CV Score</div>
+    <div class="tool-desc">Upload your CV and get a score out of 100 with specific fixes to improve it.</div>
+    <span class="tool-tag tag-popular">Popular</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon mono-lg">/send</span>
+    <div class="tool-name">Write This Email</div>
+    <div class="tool-desc">Need to email your boss, follow up after an interview, or push back? AI writes it.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon mono-lg">/roast</span>
+    <div class="tool-name">Career Roast</div>
+    <div class="tool-desc">Upload your CV and let AI roast your career with savage pivot suggestions.</div>
+    <span class="tool-tag tag-fun">Fun</span>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<h2>Style C — Green Pill Badges</h2>
+<!-- ============================================ -->
+<div class="tools-grid">
+  <div class="tool-card primary">
+    <span class="tool-icon pill">&lt;/&gt;</span>
+    <div class="tool-name">Match My CV</div>
+    <div class="tool-desc">Upload your CV and AI matches you to real NZ jobs in seconds.</div>
+    <span class="tool-tag tag-core">Core Tool</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon pill">&lt;?&gt;</span>
+    <div class="tool-name">Should I Stay or Go?</div>
+    <div class="tool-desc">Find out if it is time to move on. AI career health check with salary insight.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon pill">&lt;!&gt;</span>
+    <div class="tool-name">Decode Job Ad</div>
+    <div class="tool-desc">Paste a job listing. AI translates the corporate buzzwords into plain English.</div>
+    <span class="tool-tag tag-popular">Popular</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon pill">&lt;&gt;&gt;</span>
+    <div class="tool-name">Interview Questions</div>
+    <div class="tool-desc">Enter a job title. Get 10 likely interview questions with strong answers.</div>
+    <span class="tool-tag tag-popular">Popular</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon pill">&lt;$&gt;</span>
+    <div class="tool-name">Negotiate My Salary</div>
+    <div class="tool-desc">Get a word-for-word script to negotiate your salary with confidence.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon pill">&lt;=&gt;</span>
+    <div class="tool-name">Compare Jobs</div>
+    <div class="tool-desc">Paste two job descriptions. AI compares salary, benefits, red flags side-by-side.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon pill">&lt;#&gt;</span>
+    <div class="tool-name">CV Score</div>
+    <div class="tool-desc">Upload your CV and get a score out of 100 with specific fixes to improve it.</div>
+    <span class="tool-tag tag-popular">Popular</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon pill">&lt;@&gt;</span>
+    <div class="tool-name">Write This Email</div>
+    <div class="tool-desc">Need to email your boss, follow up after an interview, or push back? AI writes it.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon pill">&lt;~&gt;</span>
+    <div class="tool-name">Career Roast</div>
+    <div class="tool-desc">Upload your CV and let AI roast your career with savage pivot suggestions.</div>
+    <span class="tool-tag tag-fun">Fun</span>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<h2>Style D — Solid Green Squares</h2>
+<!-- ============================================ -->
+<div class="tools-grid">
+  <div class="tool-card primary">
+    <span class="tool-icon circle">&lt;/&gt;</span>
+    <div class="tool-name">Match My CV</div>
+    <div class="tool-desc">Upload your CV and AI matches you to real NZ jobs in seconds.</div>
+    <span class="tool-tag tag-core">Core Tool</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon circle">&lt;?&gt;</span>
+    <div class="tool-name">Should I Stay or Go?</div>
+    <div class="tool-desc">Find out if it is time to move on. AI career health check with salary insight.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon circle">&lt;!&gt;</span>
+    <div class="tool-name">Decode Job Ad</div>
+    <div class="tool-desc">Paste a job listing. AI translates the corporate buzzwords into plain English.</div>
+    <span class="tool-tag tag-popular">Popular</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon circle">&lt;&gt;&gt;</span>
+    <div class="tool-name">Interview Questions</div>
+    <div class="tool-desc">Enter a job title. Get 10 likely interview questions with strong answers.</div>
+    <span class="tool-tag tag-popular">Popular</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon circle">&lt;$&gt;</span>
+    <div class="tool-name">Negotiate My Salary</div>
+    <div class="tool-desc">Get a word-for-word script to negotiate your salary with confidence.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon circle">&lt;=&gt;</span>
+    <div class="tool-name">Compare Jobs</div>
+    <div class="tool-desc">Paste two job descriptions. AI compares salary, benefits, red flags side-by-side.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon circle">&lt;#&gt;</span>
+    <div class="tool-name">CV Score</div>
+    <div class="tool-desc">Upload your CV and get a score out of 100 with specific fixes to improve it.</div>
+    <span class="tool-tag tag-popular">Popular</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon circle">&lt;@&gt;</span>
+    <div class="tool-name">Write This Email</div>
+    <div class="tool-desc">Need to email your boss, follow up after an interview, or push back? AI writes it.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon circle">&lt;~&gt;</span>
+    <div class="tool-name">Career Roast</div>
+    <div class="tool-desc">Upload your CV and let AI roast your career with savage pivot suggestions.</div>
+    <span class="tool-tag tag-fun">Fun</span>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<h2>Style E — Green Outline Squares</h2>
+<!-- ============================================ -->
+<div class="tools-grid">
+  <div class="tool-card primary">
+    <span class="tool-icon outline">&lt;/&gt;</span>
+    <div class="tool-name">Match My CV</div>
+    <div class="tool-desc">Upload your CV and AI matches you to real NZ jobs in seconds.</div>
+    <span class="tool-tag tag-core">Core Tool</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon outline">&lt;?&gt;</span>
+    <div class="tool-name">Should I Stay or Go?</div>
+    <div class="tool-desc">Find out if it is time to move on. AI career health check with salary insight.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon outline">&lt;!&gt;</span>
+    <div class="tool-name">Decode Job Ad</div>
+    <div class="tool-desc">Paste a job listing. AI translates the corporate buzzwords into plain English.</div>
+    <span class="tool-tag tag-popular">Popular</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon outline">&lt;&gt;&gt;</span>
+    <div class="tool-name">Interview Questions</div>
+    <div class="tool-desc">Enter a job title. Get 10 likely interview questions with strong answers.</div>
+    <span class="tool-tag tag-popular">Popular</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon outline">&lt;$&gt;</span>
+    <div class="tool-name">Negotiate My Salary</div>
+    <div class="tool-desc">Get a word-for-word script to negotiate your salary with confidence.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon outline">&lt;=&gt;</span>
+    <div class="tool-name">Compare Jobs</div>
+    <div class="tool-desc">Paste two job descriptions. AI compares salary, benefits, red flags side-by-side.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon outline">&lt;#&gt;</span>
+    <div class="tool-name">CV Score</div>
+    <div class="tool-desc">Upload your CV and get a score out of 100 with specific fixes to improve it.</div>
+    <span class="tool-tag tag-popular">Popular</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon outline">&lt;@&gt;</span>
+    <div class="tool-name">Write This Email</div>
+    <div class="tool-desc">Need to email your boss, follow up after an interview, or push back? AI writes it.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon outline">&lt;~&gt;</span>
+    <div class="tool-name">Career Roast</div>
+    <div class="tool-desc">Upload your CV and let AI roast your career with savage pivot suggestions.</div>
+    <span class="tool-tag tag-fun">Fun</span>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<h2>Style F — Slash Commands in Solid Green Squares</h2>
+<!-- ============================================ -->
+<div class="tools-grid">
+  <div class="tool-card primary">
+    <span class="tool-icon circle">/cv</span>
+    <div class="tool-name">Match My CV</div>
+    <div class="tool-desc">Upload your CV and AI matches you to real NZ jobs in seconds.</div>
+    <span class="tool-tag tag-core">Core Tool</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon circle">/go</span>
+    <div class="tool-name">Should I Stay or Go?</div>
+    <div class="tool-desc">Find out if it is time to move on. AI career health check with salary insight.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon circle">/ad</span>
+    <div class="tool-name">Decode Job Ad</div>
+    <div class="tool-desc">Paste a job listing. AI translates the corporate buzzwords into plain English.</div>
+    <span class="tool-tag tag-popular">Popular</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon circle">/qa</span>
+    <div class="tool-name">Interview Questions</div>
+    <div class="tool-desc">Enter a job title. Get 10 likely interview questions with strong answers.</div>
+    <span class="tool-tag tag-popular">Popular</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon circle">/$$</span>
+    <div class="tool-name">Negotiate My Salary</div>
+    <div class="tool-desc">Get a word-for-word script to negotiate your salary with confidence.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon circle">A|B</span>
+    <div class="tool-name">Compare Jobs</div>
+    <div class="tool-desc">Paste two job descriptions. AI compares salary, benefits, red flags side-by-side.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon circle">/100</span>
+    <div class="tool-name">CV Score</div>
+    <div class="tool-desc">Upload your CV and get a score out of 100 with specific fixes to improve it.</div>
+    <span class="tool-tag tag-popular">Popular</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon circle">/msg</span>
+    <div class="tool-name">Write This Email</div>
+    <div class="tool-desc">Need to email your boss, follow up after an interview, or push back? AI writes it.</div>
+    <span class="tool-tag tag-new">New</span>
+  </div>
+  <div class="tool-card">
+    <span class="tool-icon circle">&lt;~&gt;</span>
+    <div class="tool-name">Career Roast</div>
+    <div class="tool-desc">Upload your CV and let AI roast your career with savage pivot suggestions.</div>
+    <span class="tool-tag tag-fun">Fun</span>
+  </div>
+</div>
+
+</body>
+</html>
