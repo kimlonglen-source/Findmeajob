@@ -136,47 +136,33 @@ function makeCover() {
   ctx.fillStyle = "#ffffff";
   ctx.fillText("AI Job Board", 120, 72);
 
-  // Main title
-  ctx.font = "900 72px Inter, sans-serif";
+  // Main title — bigger, cleaner
   ctx.textAlign = "center";
+  ctx.font = "900 80px Inter, sans-serif";
   ctx.fillStyle = "#ffffff";
-  ctx.fillText("AI-POWERED", W/2, 220);
-
+  ctx.fillText("AI-POWERED", W/2, 240);
   ctx.fillStyle = "#10b981";
-  ctx.fillText("JOB MATCHING", W/2, 300);
-
-  ctx.font = "900 72px Inter, sans-serif";
-  ctx.fillStyle = "#ffffff";
-  ctx.fillText("PLATFORM", W/2, 380);
+  ctx.fillText("JOB MATCHING", W/2, 330);
 
   // Subtitle
-  ctx.font = "500 24px Inter, sans-serif";
+  ctx.font = "500 26px Inter, sans-serif";
   ctx.fillStyle = "#a1a1aa";
-  ctx.fillText("Upload CV  \u2192  AI Matches Jobs  \u2192  Apply", W/2, 440);
+  ctx.fillText("Upload CV  \u2192  AI Matches Jobs  \u2192  Apply", W/2, 400);
 
-  // Feature badges
-  var badges = [
-    {t:"5 Job APIs", c:"rgb(16,185,129)"},
-    {t:"10 Countries", c:"rgb(139,92,246)"},
-    {t:"Blog + SEO", c:"rgb(236,72,153)"},
-    {t:"Admin Dashboard", c:"rgb(245,158,11)"},
-    {t:"$5-20/mo to run", c:"rgb(16,185,129)"}
-  ];
-  var totalW = badges.length * 150;
-  var startX = (W - totalW) / 2;
-  ctx.font = "700 16px Inter, sans-serif";
-  badges.forEach(function(b, i) {
-    drawBadge(ctx, startX + i*155, 500, b.t, b.c);
-  });
-
-  // Bottom text
-  ctx.font = "600 20px Inter, sans-serif";
+  // Clean feature list — no badges, just text
+  ctx.font = "600 18px Inter, sans-serif";
   ctx.fillStyle = "#71717a";
-  ctx.fillText("Full source code \u2022 No frameworks \u2022 Deploy in 30 minutes", W/2, 620);
+  var features = "5 Job APIs  \u2022  10 Countries  \u2022  Admin Dashboard  \u2022  Blog + SEO";
+  ctx.fillText(features, W/2, 500);
 
-  ctx.font = "700 18px Inter, sans-serif";
+  // Bottom
+  ctx.font = "700 20px Inter, sans-serif";
   ctx.fillStyle = "#10b981";
-  ctx.fillText("Vanilla JavaScript \u2022 Vercel \u2022 Upstash Redis \u2022 Claude AI", W/2, 660);
+  ctx.fillText("Full Source Code  \u2022  No Frameworks  \u2022  Deploy in 30 Min  \u2022  $5-20/mo", W/2, 560);
+
+  ctx.font = "500 16px Inter, sans-serif";
+  ctx.fillStyle = "#52525b";
+  ctx.fillText("Vanilla JavaScript  \u2022  Vercel  \u2022  Upstash Redis  \u2022  Claude AI", W/2, 600);
 
   downloadCanvas(cn, "gumroad-cover");
 }
