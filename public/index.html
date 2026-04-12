@@ -46,7 +46,9 @@ a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
 .hero{text-align:center;padding:4.5rem 2rem 3rem;max-width:700px;margin:0 auto}
 .hero-badge{display:inline-block;background:#f0fdf4;color:#059669;padding:.3rem .85rem;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:1.25rem;border:1px solid #bbf7d0}
 .hero h1{font-size:2.6rem;font-weight:900;line-height:1.15;color:#0f172a;margin-bottom:.75rem}
-.hero h1 em{font-style:normal;color:#10b981}
+.hero h1 em{font-style:normal;color:#10b981;display:inline-block;overflow:hidden;white-space:nowrap;border-right:3px solid #10b981;width:0;animation:typing 1.2s steps(13,end) 0.5s forwards,blink .6s step-end 0.5s infinite}
+@keyframes typing{from{width:0}to{width:5.2em}}
+@keyframes blink{50%{border-color:transparent}}
 .hero p{color:#64748b;font-size:1.05rem;line-height:1.7;max-width:520px;margin:0 auto 1rem}
 .hero-stats{display:flex;justify-content:center;gap:2rem;margin-top:1.5rem;flex-wrap:wrap}
 .hero-stat{text-align:center}
@@ -118,6 +120,7 @@ a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
   .nav-links{gap:.75rem}
   .hero{padding:3rem 1.25rem 2rem}
   .hero h1{font-size:1.7rem}
+  .hero h1 em{animation:typing 1.2s steps(13,end) 0.5s forwards,blink .6s step-end 0.5s infinite}
   .hero-stats{gap:1.25rem}
   .tools-grid{grid-template-columns:1fr 1fr}
   .how-steps{flex-direction:column}
