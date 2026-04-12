@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CV Writer — FindMeAJob.co.nz</title>
-<meta name="description" content="Generate a professional CV from scratch. Enter your details and AI writes a complete NZ-ready CV in seconds. Free.">
+<meta name="description" content="Upload your CV to rewrite and improve it, or generate a brand new professional CV from scratch. AI-powered, NZ-ready. Free.">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <link rel="canonical" href="https://www.findmeajob.co.nz/write-cv">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.findmeajob.co.nz/write-cv">
@@ -50,6 +51,17 @@ input[type="text"],input[type="number"],textarea,select{width:100%;background:#f
 input:focus,textarea:focus,select:focus{border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,.1)}
 input::placeholder,textarea::placeholder{color:#94a3b8}
 textarea{resize:vertical;min-height:80px}
+
+.mode-toggle{display:flex;gap:0;margin-bottom:1.5rem;border:1px solid #e2e8f0;border-radius:999px;overflow:hidden}
+.mode-btn{flex:1;padding:.7rem 1rem;font-family:'Inter',sans-serif;font-size:.82rem;font-weight:700;border:none;cursor:pointer;transition:all .2s;background:#f8fafc;color:#64748b}
+.mode-btn.active{background:#10b981;color:#fff}
+.mode-btn:hover:not(.active){background:#f0fdf4;color:#059669}
+
+.upload-zone{border:2px dashed #e2e8f0;border-radius:16px;padding:2.5rem 1.5rem;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:1rem}
+.upload-zone:hover,.upload-zone.dragover{border-color:#10b981;background:#f0fdf4}
+.upload-text{font-size:.88rem;font-weight:600;margin-top:.5rem}
+.upload-sub{font-size:.75rem;color:#94a3b8;margin-top:.25rem}
+.file-name{display:none;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:.6rem 1rem;font-size:.82rem;font-weight:600;color:#059669;margin-bottom:1rem;text-align:center}
 
 .field{margin-bottom:1rem}
 .field:last-child{margin-bottom:0}
@@ -111,6 +123,12 @@ body.dark .copy-btn{background:#f8fafc;color:#0f172a}
 body.dark .copy-btn:hover{background:#e2e8f0}
 body.dark .cta-box{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3)}
 body.dark .cta-box p{color:#10b981}
+body.dark .mode-toggle{border-color:rgba(255,255,255,.1)}
+body.dark .mode-btn{background:#0f172a;color:#94a3b8}
+body.dark .mode-btn.active{background:#10b981;color:#fff}
+body.dark .upload-zone{border-color:rgba(255,255,255,.1)}
+body.dark .upload-zone:hover,.upload-zone.dragover{border-color:#10b981;background:rgba(16,185,129,.05)}
+body.dark .file-name{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3);color:#10b981}
 </style>
 </head>
 <body>
@@ -130,55 +148,76 @@ body.dark .cta-box p{color:#10b981}
 <div class="container">
   <div class="page-badge">CV Writer</div>
   <h1>Write My <em>CV</em></h1>
-  <p class="subtitle">Enter your details and AI generates a professional, NZ-ready CV in seconds.</p>
+  <p class="subtitle">Upload your existing CV to rewrite it, or generate a brand new one from scratch.</p>
 
   <div id="formSection">
-    <div class="card">
-      <div class="card-title">Your Details</div>
-
-      <div class="field">
-        <label>Full Name</label>
-        <input type="text" id="fullName" placeholder="e.g. Sarah Johnson">
-      </div>
-
-      <div class="field">
-        <label>Job Title / Target Role</label>
-        <input type="text" id="targetRole" placeholder="e.g. Marketing Manager">
-      </div>
-
-      <div class="field">
-        <label>Years of Experience</label>
-        <select id="yearsExp">
-          <option value="">Select...</option>
-          <option value="0-2">0-2 years</option>
-          <option value="3-5">3-5 years</option>
-          <option value="6-10">6-10 years</option>
-          <option value="10+">10+ years</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label>Key Skills</label>
-        <textarea id="keySkills" rows="3" placeholder="e.g. Project management, Excel, customer service..."></textarea>
-      </div>
-
-      <div class="field">
-        <label>Work History</label>
-        <textarea id="workHistory" rows="4" placeholder="List your recent roles, e.g:
-Marketing Manager at Xero, 2022-2024
-Marketing Coordinator at Spark, 2019-2022"></textarea>
-      </div>
-
-      <div class="field">
-        <label>Education</label>
-        <textarea id="education" rows="3" placeholder="e.g. Bachelor of Commerce, University of Auckland, 2018"></textarea>
-      </div>
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="mode-upload" onclick="switchMode('upload')">Upload and Rewrite</button>
+      <button class="mode-btn" id="mode-new" onclick="switchMode('new')">Generate From Scratch</button>
     </div>
 
-    <button class="btn" id="generateBtn" onclick="generateCV()">
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-      Generate My CV
-    </button>
+    <!-- UPLOAD MODE -->
+    <div id="uploadMode">
+      <div class="card">
+        <div class="card-title">Upload Your Existing CV</div>
+        <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg>
+          <div class="upload-text">Drop your CV here or click to upload</div>
+          <div class="upload-sub">PDF, DOCX, or TXT accepted</div>
+        </div>
+        <input type="file" id="fileInput" accept=".pdf,.docx,.doc,.txt" style="display:none">
+        <div class="file-name" id="fileName"></div>
+        <div class="field">
+          <label>Target Role (what job are you applying for?)</label>
+          <input type="text" id="uploadTargetRole" placeholder="e.g. Senior Software Engineer">
+        </div>
+      </div>
+      <button class="btn" id="rewriteBtn" onclick="rewriteCV()" disabled>
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Rewrite My CV
+      </button>
+    </div>
+
+    <!-- NEW CV MODE -->
+    <div id="newMode" style="display:none">
+      <div class="card">
+        <div class="card-title">Your Details</div>
+        <div class="field">
+          <label>Full Name</label>
+          <input type="text" id="fullName" placeholder="e.g. Sarah Johnson">
+        </div>
+        <div class="field">
+          <label>Job Title / Target Role</label>
+          <input type="text" id="targetRole" placeholder="e.g. Marketing Manager">
+        </div>
+        <div class="field">
+          <label>Years of Experience</label>
+          <select id="yearsExp">
+            <option value="">Select...</option>
+            <option value="0-2">0-2 years</option>
+            <option value="3-5">3-5 years</option>
+            <option value="6-10">6-10 years</option>
+            <option value="10+">10+ years</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Key Skills</label>
+          <textarea id="keySkills" rows="3" placeholder="e.g. Project management, Excel, customer service..."></textarea>
+        </div>
+        <div class="field">
+          <label>Work History</label>
+          <textarea id="workHistory" rows="4" placeholder="List your recent roles, e.g:&#10;Marketing Manager at Xero, 2022-2024&#10;Marketing Coordinator at Spark, 2019-2022"></textarea>
+        </div>
+        <div class="field">
+          <label>Education</label>
+          <textarea id="education" rows="3" placeholder="e.g. Bachelor of Commerce, University of Auckland, 2018"></textarea>
+        </div>
+      </div>
+      <button class="btn" id="generateBtn" onclick="generateCV()">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Generate My CV
+      </button>
+    </div>
   </div>
 
   <div class="loading" id="loading">
@@ -195,6 +234,91 @@ Marketing Coordinator at Spark, 2019-2022"></textarea>
 </footer>
 
 <script>
+var cvText = "";
+var cvFileData = null;
+
+/* Mode toggle */
+function switchMode(mode) {
+  document.getElementById("mode-upload").classList.toggle("active", mode === "upload");
+  document.getElementById("mode-new").classList.toggle("active", mode === "new");
+  document.getElementById("uploadMode").style.display = mode === "upload" ? "block" : "none";
+  document.getElementById("newMode").style.display = mode === "new" ? "block" : "none";
+}
+
+/* File handling */
+var uploadZone = document.getElementById("uploadZone");
+var fileInput = document.getElementById("fileInput");
+var fileNameEl = document.getElementById("fileName");
+var rewriteBtn = document.getElementById("rewriteBtn");
+
+uploadZone.addEventListener("dragover", function(e) { e.preventDefault(); uploadZone.classList.add("dragover"); });
+uploadZone.addEventListener("dragleave", function() { uploadZone.classList.remove("dragover"); });
+uploadZone.addEventListener("drop", function(e) { e.preventDefault(); uploadZone.classList.remove("dragover"); if (e.dataTransfer.files.length > 0) { fileInput.files = e.dataTransfer.files; handleFile(e.dataTransfer.files[0]); } });
+fileInput.addEventListener("change", function() { if (this.files.length > 0) handleFile(this.files[0]); });
+
+function handleFile(file) {
+  var name = file.name.toLowerCase();
+  fileNameEl.textContent = file.name;
+  fileNameEl.style.display = "block";
+  uploadZone.style.display = "none";
+
+  if (name.endsWith(".txt")) {
+    var reader = new FileReader();
+    reader.onload = function(e) { cvText = e.target.result; cvFileData = null; rewriteBtn.disabled = false; };
+    reader.readAsText(file);
+  } else if (name.endsWith(".docx") || name.endsWith(".doc")) {
+    var reader2 = new FileReader();
+    reader2.onload = function(e) {
+      mammoth.extractRawText({arrayBuffer: e.target.result}).then(function(result) { cvText = result.value; cvFileData = null; rewriteBtn.disabled = false; }).catch(function() { alert("Could not read this file. Try a different format."); });
+    };
+    reader2.readAsArrayBuffer(file);
+  } else if (name.endsWith(".pdf")) {
+    var reader3 = new FileReader();
+    reader3.onload = function(e) {
+      var base64 = btoa(new Uint8Array(e.target.result).reduce(function(data, byte) { return data + String.fromCharCode(byte); }, ""));
+      cvFileData = "data:application/pdf;base64," + base64;
+      cvText = "";
+      rewriteBtn.disabled = false;
+    };
+    reader3.readAsArrayBuffer(file);
+  } else { alert("Please upload a PDF, DOCX, or TXT file."); }
+}
+
+/* Rewrite existing CV */
+async function rewriteCV() {
+  var targetRole = document.getElementById("uploadTargetRole").value.trim();
+  if (!cvText && !cvFileData) { alert("Please upload a CV first."); return; }
+
+  rewriteBtn.disabled = true;
+  document.getElementById("formSection").style.display = "none";
+  document.getElementById("loading").style.display = "block";
+  document.getElementById("result").style.display = "none";
+
+  var rewritePrompt = "You are a professional NZ CV writer. Rewrite and improve this CV to make it stronger, more professional, and tailored" + (targetRole ? " for a " + targetRole + " role" : "") + " in New Zealand.\n\nRULES:\n- Keep all facts, dates, companies, and qualifications exactly as they are\n- Improve the wording, structure, and presentation\n- Add a strong personal profile if one is missing\n- Use NZ English spelling\n- Use clear section headings: PERSONAL PROFILE, KEY SKILLS, WORK EXPERIENCE, EDUCATION, REFERENCES\n- Make bullet points impactful with quantified achievements where possible\n- Do NOT invent any new experience or qualifications\n- Plain text only, no markdown\n\nReturn ONLY the rewritten CV text.";
+
+  var msgs;
+  if (cvFileData && cvFileData.includes("base64,")) {
+    msgs = [{role: "user", content: [{type: "document", source: {type: "base64", media_type: "application/pdf", data: cvFileData.split("base64,")[1]}}, {type: "text", text: rewritePrompt}]}];
+  } else {
+    msgs = [{role: "user", content: rewritePrompt + "\n\nORIGINAL CV:\n" + cvText.substring(0, 6000)}];
+  }
+
+  try {
+    var res = await fetch("/api/chat", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({messages: msgs}) });
+    var data = await res.json();
+    var text = (data.content && Array.isArray(data.content)) ? data.content.map(function(b){return b.text||"";}).join("") : "";
+    text = text.replace(/```\s*/g, "").replace(/\*\*/g, "").replace(/\*/g, "").trim();
+    showResult(text);
+  } catch (e) {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("formSection").style.display = "block";
+    rewriteBtn.disabled = false;
+    alert("Something went wrong. Please try again.");
+    console.error(e);
+  }
+}
+
+/* Generate new CV from scratch */
 async function generateCV() {
   var name = document.getElementById("fullName").value.trim();
   var role = document.getElementById("targetRole").value.trim();
@@ -214,16 +338,12 @@ async function generateCV() {
   document.getElementById("loading").style.display = "block";
   document.getElementById("result").style.display = "none";
 
-  var prompt = "You are a professional CV writer who specialises in New Zealand CVs. Write a complete, professional CV for this person. NZ CVs are typically 2-3 pages, include a personal profile summary, and do NOT include photos or date of birth.\n\nIMPORTANT: All content must be specific to the NZ job market. Use NZ English spelling. Reference NZ-specific context where relevant.\n\nDetails:\n- Name: " + name + "\n- Target Role: " + role + "\n- Experience: " + years + " years\n- Key Skills: " + skills + "\n- Work History: " + (history || "Not provided") + "\n- Education: " + (education || "Not provided") + "\n\nWrite the full CV in plain text with clear section headings (PERSONAL PROFILE, KEY SKILLS, WORK EXPERIENCE, EDUCATION, REFERENCES). Make it professional, tailored to the target role, and ready to copy-paste. Do NOT use markdown formatting. Do NOT invent qualifications or experience not provided — expand on what is given.\n\nReturn ONLY the CV text.";
+  var prompt = "You are a professional CV writer who specialises in New Zealand CVs. Write a complete, professional CV for this person. NZ CVs are typically 2-3 pages, include a personal profile summary, and do NOT include photos or date of birth.\n\nIMPORTANT: All content must be specific to the NZ job market. Use NZ English spelling.\n\nDetails:\n- Name: " + name + "\n- Target Role: " + role + "\n- Experience: " + years + " years\n- Key Skills: " + skills + "\n- Work History: " + (history || "Not provided") + "\n- Education: " + (education || "Not provided") + "\n\nWrite the full CV in plain text with clear section headings (PERSONAL PROFILE, KEY SKILLS, WORK EXPERIENCE, EDUCATION, REFERENCES). Make it professional, tailored to the target role, and ready to copy-paste. Do NOT use markdown. Do NOT invent qualifications or experience not provided — expand on what is given.\n\nReturn ONLY the CV text.";
 
   try {
-    var res = await fetch("/api/chat", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({messages: [{role: "user", content: prompt}]})
-    });
+    var res = await fetch("/api/chat", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({messages: [{role: "user", content: prompt}]}) });
     var data = await res.json();
-    var text = (data.content && Array.isArray(data.content)) ? data.content.map(function(b){return b.text||"";}).join("") : (typeof data === "string" ? data : JSON.stringify(data));
+    var text = (data.content && Array.isArray(data.content)) ? data.content.map(function(b){return b.text||"";}).join("") : "";
     text = text.replace(/```\s*/g, "").trim();
     showResult(text);
   } catch (e) {
