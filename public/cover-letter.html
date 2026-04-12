@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cover Letter Writer — FindMeAJob.co.nz</title>
+<meta name="description" content="Generate a tailored cover letter for any NZ job. Paste the job ad, add your details, and AI writes it in seconds. Free.">
+<link rel="canonical" href="https://www.findmeajob.co.nz/cover-letter">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.findmeajob.co.nz/cover-letter">
+<meta property="og:title" content="Cover Letter Writer — Free AI Cover Letter Generator NZ">
+<meta property="og:description" content="Generate a tailored cover letter for any NZ job. Paste the job ad, add your details, and AI writes it in seconds. Free.">
+<meta property="og:image" content="https://www.findmeajob.co.nz/favicon-512.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#ffffff;color:#0f172a;font-family:'Inter',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
+a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
+
+.nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid #f1f5f9;position:sticky;top:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(12px)}
+.nav-logo{display:flex;align-items:center;gap:.3rem;text-decoration:none;flex-shrink:0}
+.nav-logo:hover{text-decoration:none}
+.logo-mark{width:30px;height:30px;background:linear-gradient(135deg,#10b981,#059669);border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(16,185,129,.2)}
+.logo-mark svg{width:15px;height:15px;color:#fff}
+.nav-logo span{font-size:1.05rem;font-weight:800;color:#0f172a;letter-spacing:-.5px}
+.nav-logo em{background:linear-gradient(135deg,#10b981,#059669);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
+.nav-links{display:flex;align-items:center;gap:1.5rem}
+.nav-links a{color:#64748b;font-size:.82rem;font-weight:600;text-decoration:none}
+.nav-links a:hover{color:#0f172a}
+.nav-cta{background:#10b981 !important;color:#fff !important;padding:.45rem 1.15rem;border-radius:999px;font-size:.78rem;font-weight:700;transition:all .2s}
+.nav-cta:hover{background:#059669 !important;transform:translateY(-1px);box-shadow:0 4px 12px rgba(16,185,129,.3)}
+
+.container{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
+.page-badge{display:inline-block;background:#f0fdf4;color:#059669;padding:.3rem .85rem;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:1rem;border:1px solid #bbf7d0}
+h1{font-size:2.2rem;font-weight:900;line-height:1.15;margin-bottom:.5rem}
+h1 em{font-style:normal;color:#10b981}
+.subtitle{color:#64748b;font-size:.95rem;margin-bottom:2rem}
+
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:1.75rem;margin-bottom:1rem;transition:all .2s}
+.card:hover{border-color:#cbd5e1}
+.card-title{font-size:.95rem;font-weight:700;margin-bottom:1rem}
+
+label{display:block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;margin-bottom:.4rem}
+input[type="text"],input[type="number"],textarea,select{width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Inter',sans-serif;font-size:15px;color:#0f172a;outline:none;transition:all .2s}
+input:focus,textarea:focus,select:focus{border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,.1)}
+input::placeholder,textarea::placeholder{color:#94a3b8}
+textarea{resize:vertical;min-height:100px}
+
+.field{margin-bottom:1rem}
+.field:last-child{margin-bottom:0}
+
+.btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;background:#10b981;color:#fff;padding:.85rem 1.8rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 15px rgba(16,185,129,.2)}
+.btn:hover{background:#059669;transform:translateY(-2px);box-shadow:0 8px 25px rgba(16,185,129,.3)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+.loading{display:none;text-align:center;padding:3rem 1rem}
+.spinner{width:40px;height:40px;border:3px solid #e2e8f0;border-top-color:#10b981;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading p{color:#64748b;font-size:.88rem;font-weight:500}
+
+#result{display:none}
+.letter-output{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:1.5rem;white-space:pre-wrap;font-size:.9rem;line-height:1.8;color:#334155;margin-bottom:1rem}
+.copy-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;background:#fff;color:#10b981;padding:.75rem 1.5rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:700;border:2px solid #10b981;cursor:pointer;transition:all .25s}
+.copy-btn:hover{background:#f0fdf4;transform:translateY(-1px)}
+
+.cta-box{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:16px;padding:1.5rem;text-align:center;margin-top:1.5rem}
+.cta-box p{font-size:.88rem;color:#064e3b;margin-bottom:.75rem;font-weight:500}
+.cta-box a{display:inline-block;background:#10b981;color:#fff;padding:.6rem 1.5rem;border-radius:999px;font-size:.82rem;font-weight:700;text-decoration:none;transition:all .2s}
+.cta-box a:hover{background:#059669;transform:translateY(-1px);text-decoration:none}
+
+.footer{text-align:center;padding:2rem;border-top:1px solid #f1f5f9;margin-top:3rem}
+.footer p{font-size:.78rem;color:#94a3b8;font-weight:500}
+.ai-disclaimer{font-size:.68rem;color:#cbd5e1;margin-top:.5rem;max-width:500px;margin-left:auto;margin-right:auto}
+
+@media(max-width:640px){
+  .nav{padding:.75rem 1rem}
+  .nav-links{gap:.75rem}
+  .nav-links a:not(.nav-cta){display:none}
+  h1{font-size:1.6rem}
+  .container{padding:1.5rem 1rem 3rem}
+}
+body.dark{background:#09090b;color:#f8fafc}
+body.dark a{color:#10b981}
+body.dark .nav{background:rgba(9,9,11,.95);border-color:rgba(255,255,255,.06)}
+body.dark .nav-logo span{color:#f8fafc}
+body.dark .nav-links a{color:#94a3b8}
+body.dark .nav-links a:hover{color:#f8fafc}
+body.dark .nav-cta{background:#10b981;color:#fff}
+body.dark .footer{background:#09090b;border-color:rgba(255,255,255,.06)}
+body.dark .footer p,.footer a{color:#94a3b8}
+body.dark .ai-disclaimer{color:#64748b}
+body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
+body.dark .card{background:#0f172a;border-color:rgba(255,255,255,.06)}
+body.dark .card:hover{border-color:rgba(255,255,255,.1)}
+body.dark .card-title{color:#f8fafc}
+body.dark label{color:#64748b}
+body.dark input[type="text"],body.dark input[type="number"],body.dark textarea,body.dark select{background:#0f172a;border-color:rgba(255,255,255,.1);color:#f8fafc}
+body.dark input::placeholder,body.dark textarea::placeholder{color:#64748b}
+body.dark .page-badge{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3);color:#10b981}
+body.dark h1{color:#f8fafc}
+body.dark .subtitle{color:#94a3b8}
+body.dark .loading p{color:#94a3b8}
+body.dark .spinner{border-color:rgba(255,255,255,.1);border-top-color:#10b981}
+body.dark .letter-output{background:#0f172a;border-color:rgba(255,255,255,.1);color:#cbd5e1}
+body.dark .copy-btn{background:#0f172a;border-color:#10b981;color:#10b981}
+body.dark .copy-btn:hover{background:rgba(16,185,129,.1)}
+body.dark .cta-box{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3)}
+body.dark .cta-box p{color:#10b981}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="/"><div class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="10" cy="10" r="7"/><path d="m21 21-4.35-4.35"/></svg></div><span>FindMe<em>AJob</em></span></a>
+  <div class="nav-links">
+    <a href="/">All Tools</a>
+    <a href="/blog">Blog</a>
+    <a href="/match.html#account">Job Seekers</a>
+    <a href="/employer-portal.html">Employers</a>
+    <a href="/match.html" class="nav-cta">Match My CV</a>
+    <button onclick="toggleTheme()" id="tbtn" style="background:none;border:1px solid #e2e8f0;color:#64748b;width:30px;height:30px;border-radius:999px;cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center">&#9788;</button>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="page-badge">Cover Letter Writer</div>
+  <h1>Write My <em>Cover Letter</em></h1>
+  <p class="subtitle">Paste the job ad, add your details, and AI writes a tailored cover letter.</p>
+
+  <div id="formSection">
+    <div class="card">
+      <div class="card-title">Your Details</div>
+
+      <div class="field">
+        <label>Your Name</label>
+        <input type="text" id="applicantName" placeholder="e.g. Sarah Johnson">
+      </div>
+
+      <div class="field">
+        <label>Job Title You Are Applying For</label>
+        <input type="text" id="roleTitle" placeholder="e.g. Marketing Manager">
+      </div>
+
+      <div class="field">
+        <label>Company Name</label>
+        <input type="text" id="companyName" placeholder="e.g. Xero">
+      </div>
+
+      <div class="field">
+        <label>Job Description</label>
+        <textarea id="jobDescription" rows="6" placeholder="Paste the job ad here..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Your Key Experience</label>
+        <textarea id="keyExperience" rows="4" placeholder="Briefly describe your relevant experience..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Tone</label>
+        <select id="tone">
+          <option value="Professional">Professional</option>
+          <option value="Warm and Friendly">Warm and Friendly</option>
+          <option value="Confident and Direct">Confident and Direct</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn" id="generateBtn" onclick="generate()">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      Write My Cover Letter
+    </button>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>Writing your cover letter...</p>
+  </div>
+
+  <div id="result"></div>
+</div>
+
+<footer class="footer">
+  <p>&copy; 2026 FindMeAJob.co.nz &mdash; AI-powered career tools for New Zealand</p>
+  <div class="ai-disclaimer">AI Disclaimer: Results are AI-generated estimates and suggestions, not professional advice. Always verify independently.</div>
+</footer>
+
+<script>
+async function generate() {
+  var name = document.getElementById("applicantName").value.trim();
+  var role = document.getElementById("roleTitle").value.trim();
+  var company = document.getElementById("companyName").value.trim();
+  var jobDesc = document.getElementById("jobDescription").value.trim();
+  var experience = document.getElementById("keyExperience").value.trim();
+  var tone = document.getElementById("tone").value;
+
+  if (!name) { alert("Please enter your name."); return; }
+  if (!role) { alert("Please enter the job title."); return; }
+  if (!company) { alert("Please enter the company name."); return; }
+  if (!jobDesc) { alert("Please paste the job description."); return; }
+  if (!experience) { alert("Please describe your key experience."); return; }
+
+  var btn = document.getElementById("generateBtn");
+  btn.disabled = true;
+  document.getElementById("formSection").style.display = "none";
+  document.getElementById("loading").style.display = "block";
+  document.getElementById("result").style.display = "none";
+
+  var prompt = "You are a New Zealand cover letter expert. Write a professional cover letter for this job application. The letter must suit NZ workplace culture — warm, genuine, professional but not overly formal. Use NZ English spelling.\n\nIMPORTANT: Tailor the letter specifically to this job and company. Reference specific requirements from the job description. Do NOT use generic filler.\n\nDetails:\n- Applicant: " + name + "\n- Role: " + role + "\n- Company: " + company + "\n- Job Description: " + jobDesc + "\n- Key Experience: " + experience + "\n- Tone: " + tone + "\n\nWrite 3-4 paragraphs. Start with 'Dear Hiring Manager' and end with 'Kind regards,\n" + name + "'. Make it specific, compelling, and ready to send. Return ONLY the cover letter text, no markdown.";
+
+  try {
+    var res = await fetch("/api/chat", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({messages: [{role: "user", content: prompt}]})
+    });
+    var data = await res.json();
+    var text = (data.content && Array.isArray(data.content)) ? data.content.map(function(b){return b.text||"";}).join("") : (typeof data === "string" ? data : JSON.stringify(data));
+    text = text.replace(/```\s*/g, "").trim();
+    showResult(text, name);
+  } catch (e) {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("formSection").style.display = "block";
+    btn.disabled = false;
+    alert("Something went wrong. Please try again.");
+    console.error(e);
+  }
+}
+
+function showResult(letter, name) {
+  var html = "<div class=\"card\" style=\"padding:2rem\">" +
+    "<div class=\"card-title\">Your Cover Letter</div>" +
+    "<div class=\"letter-output\" id=\"letterText\">" + escapeHtml(letter) + "</div>" +
+    "<button class=\"copy-btn\" onclick=\"copyLetter()\">" +
+    "<svg width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"9\" y=\"9\" width=\"13\" height=\"13\" rx=\"2\" ry=\"2\" transform=\"scale(0.7) translate(2,2)\"/><path d=\"M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1\"/></svg>" +
+    "Copy Cover Letter</button>" +
+    "</div>" +
+    "<div class=\"cta-box\"><p>Want to find more jobs matched to your skills?</p><a href=\"/match.html\">Upload your CV for matched jobs</a></div>";
+
+  document.getElementById("loading").style.display = "none";
+  document.getElementById("result").innerHTML = html;
+  document.getElementById("result").style.display = "block";
+}
+
+function escapeHtml(str) {
+  var div = document.createElement("div");
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+}
+
+function copyLetter() {
+  var text = document.getElementById("letterText").innerText;
+  navigator.clipboard.writeText(text).then(function() {
+    var btn = document.querySelector(".copy-btn");
+    btn.innerHTML = "<svg width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\" transform=\"scale(0.7) translate(2,2)\"/></svg> Copied!";
+    setTimeout(function() {
+      btn.innerHTML = "<svg width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"9\" y=\"9\" width=\"13\" height=\"13\" rx=\"2\" ry=\"2\" transform=\"scale(0.7) translate(2,2)\"/><path d=\"M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1\"/></svg> Copy Cover Letter";
+    }, 2000);
+  });
+}
+
+function toggleTheme(){document.body.classList.toggle('dark');var d=document.body.classList.contains('dark');localStorage.setItem('theme',d?'dark':'light');document.getElementById('tbtn').innerHTML=d?'&#9790;':'&#9788;';}
+if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');var tb=document.getElementById('tbtn');if(tb)tb.innerHTML='&#9790;';}
+</script>
+</body>
+</html>

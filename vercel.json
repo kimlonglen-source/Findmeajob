@@ -118,6 +118,18 @@
       "dest": "/public/email.html"
     },
     {
+      "src": "/write-cv",
+      "dest": "/public/write-cv.html"
+    },
+    {
+      "src": "/cover-letter",
+      "dest": "/public/cover-letter.html"
+    },
+    {
+      "src": "/salary",
+      "dest": "/public/salary.html"
+    },
+    {
       "src": "/sitemap.xml",
       "dest": "/api/approved-jobs.js?sitemap=1"
     },

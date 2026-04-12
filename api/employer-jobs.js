@@ -88,7 +88,7 @@ module.exports = async function handler(req, res) {
 
       // Submit new job listing
       if (action === "submit") {
-        var PLAN_DAYS = { free: 90, basic: 90, pro: 90 };
+        var PLAN_DAYS = { free: 30, basic: 30, pro: 30 };
         var planKey = "free";
         var sTitle = req.body.title;
         var sDesc = req.body.description;
@@ -103,7 +103,7 @@ module.exports = async function handler(req, res) {
           companyProfile: req.body.companyProfile || "",
           website: req.body.website || "",
           logoUrl: req.body.logoUrl || "",
-          plan: "free", planDays: 90,
+          plan: "free", planDays: 30,
           autoFeature: false, priority: true,
           status: "pending", submitted: new Date().toISOString(), views: 0, applies: 0
         };
