@@ -46,8 +46,7 @@ a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
 .hero{text-align:center;padding:4.5rem 2rem 3rem;max-width:700px;margin:0 auto}
 .hero-badge{display:inline-block;background:#f0fdf4;color:#059669;padding:.3rem .85rem;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:1.25rem;border:1px solid #bbf7d0}
 .hero h1{font-size:2.6rem;font-weight:900;line-height:1.15;color:#0f172a;margin-bottom:.75rem}
-.hero h1 em{font-style:normal;color:#10b981;display:inline-block;overflow:hidden;white-space:nowrap;border-right:3px solid #10b981;width:0;animation:typing 1.2s steps(13,end) 0.5s forwards,blink .6s step-end 0.5s infinite}
-@keyframes typing{from{width:0}to{width:5.2em}}
+.hero h1 em{font-style:normal;color:#10b981;border-right:3px solid #10b981;animation:blink .6s step-end infinite}
 @keyframes blink{50%{border-color:transparent}}
 .hero p{color:#64748b;font-size:1.05rem;line-height:1.7;max-width:520px;margin:0 auto 1rem}
 .hero-stats{display:flex;justify-content:center;gap:2rem;margin-top:1.5rem;flex-wrap:wrap}
@@ -120,7 +119,6 @@ a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
   .nav-links{gap:.75rem}
   .hero{padding:3rem 1.25rem 2rem}
   .hero h1{font-size:1.7rem}
-  .hero h1 em{animation:typing 1.2s steps(13,end) 0.5s forwards,blink .6s step-end 0.5s infinite}
   .hero-stats{gap:1.25rem}
   .tools-grid{grid-template-columns:1fr 1fr}
   .how-steps{flex-direction:column}
@@ -147,7 +145,7 @@ a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
 <!-- Hero -->
 <section class="hero">
   <div class="hero-badge">Free AI Career Tools for NZ</div>
-  <h1>Your career deserves<br><em>better tools.</em></h1>
+  <h1>Your career deserves<br><em id="typed"></em></h1>
   <p>9 free AI-powered tools to help you find jobs, negotiate salary, decode job ads, and make smarter career decisions. Built for New Zealand.</p>
   <div class="hero-stats">
     <div class="hero-stat"><strong id="st-tools">9</strong><span>Free Tools</span></div>
@@ -284,6 +282,53 @@ a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
 <div id="toast"></div>
 
 <script>
+/* Typing effect */
+(function(){
+  var phrases = [
+    "better tools.",
+    "a fresh start.",
+    "more money.",
+    "real answers.",
+    "smarter moves.",
+    "honest advice.",
+    "an upgrade.",
+    "a game plan."
+  ];
+  var el = document.getElementById("typed");
+  var phraseIndex = 0;
+  var charIndex = 0;
+  var deleting = false;
+  var typeSpeed = 80;
+  var deleteSpeed = 40;
+  var pauseEnd = 2000;
+  var pauseStart = 500;
+
+  function tick() {
+    var current = phrases[phraseIndex];
+    if (!deleting) {
+      el.textContent = current.substring(0, charIndex + 1);
+      charIndex++;
+      if (charIndex === current.length) {
+        setTimeout(function(){ deleting = true; tick(); }, pauseEnd);
+        return;
+      }
+      setTimeout(tick, typeSpeed);
+    } else {
+      el.textContent = current.substring(0, charIndex - 1);
+      charIndex--;
+      if (charIndex === 0) {
+        deleting = false;
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+        setTimeout(tick, pauseStart);
+        return;
+      }
+      setTimeout(tick, deleteSpeed);
+    }
+  }
+
+  setTimeout(tick, 500);
+})();
+
 /* Load CV upload count */
 fetch("/api/approved-jobs?stats=1").then(function(r){return r.json();}).then(function(d){
   var el=document.getElementById("st-cvs");
