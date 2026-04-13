@@ -62,25 +62,25 @@ input:focus,select:focus{border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,1
 .avatar-body.male{background:linear-gradient(135deg,#3b82f6,#2563eb)}
 .avatar-neck{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);width:18px;height:14px;background:#e8b88a;z-index:2}
 .avatar-head{width:62px;height:68px;background:linear-gradient(180deg,#f0c8a0,#e8b88a);border-radius:50% 50% 45% 45%;position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:3;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.avatar-hair{position:absolute;z-index:4}
-.hair-female{top:-6px;left:50%;transform:translateX(-50%);width:72px;height:44px;background:linear-gradient(180deg,#8B6914 0%,#A67B1E 30%,#8B6914 100%);border-radius:50% 50% 35% 35%;box-shadow:inset 0 -8px 12px rgba(0,0,0,.15),0 1px 3px rgba(0,0,0,.08)}
-.hair-female::before{content:'';position:absolute;top:20px;left:-7px;width:15px;height:44px;background:linear-gradient(180deg,#A67B1E,#8B6914,#7A5D10);border-radius:6px 0 45% 45%;box-shadow:inset 2px 0 4px rgba(0,0,0,.08)}
-.hair-female::after{content:'';position:absolute;top:20px;right:-7px;width:15px;height:44px;background:linear-gradient(180deg,#A67B1E,#8B6914,#7A5D10);border-radius:0 6px 45% 45%;box-shadow:inset -2px 0 4px rgba(0,0,0,.08)}
-.hair-male{top:-4px;left:50%;transform:translateX(-50%);width:66px;height:32px;background:linear-gradient(180deg,#1a120b 0%,#2d1f14 50%,#1a120b 100%);border-radius:50% 50% 12% 12%;box-shadow:inset 0 -3px 6px rgba(0,0,0,.2),0 1px 2px rgba(0,0,0,.1)}
-.hair-male::before{content:'';position:absolute;top:4px;left:6px;right:6px;height:10px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);border-radius:50%}
-.hair-male::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:16px;background:linear-gradient(135deg,#2d1f14,transparent);border-radius:50% 0 0 0}
+.avatar-hair{position:absolute;z-index:2}
+.hair-female{top:-8px;left:50%;transform:translateX(-50%);width:74px;height:30px;background:linear-gradient(180deg,#2c1810 0%,#4a2c1a 50%,#3a2215 100%);border-radius:50% 50% 0 0;box-shadow:0 2px 4px rgba(0,0,0,.1)}
+.hair-female::before{content:'';position:absolute;top:14px;left:-9px;width:16px;height:52px;background:linear-gradient(180deg,#3a2215,#4a2c1a,#3a2215);border-radius:8px 0 12px 12px}
+.hair-female::after{content:'';position:absolute;top:14px;right:-9px;width:16px;height:52px;background:linear-gradient(180deg,#3a2215,#4a2c1a,#3a2215);border-radius:0 8px 12px 12px}
+.hair-male{top:-5px;left:50%;transform:translateX(-50%);width:68px;height:24px;background:linear-gradient(180deg,#1a120b 0%,#2d1f14 60%,#1a120b 100%);border-radius:50% 50% 10% 10%;box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.hair-male::before{content:'';position:absolute;top:3px;left:5px;right:5px;height:8px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);border-radius:50%}
+.hair-male::after{content:'';position:absolute;top:2px;left:3px;width:18px;height:12px;background:linear-gradient(135deg,#2d1f14,transparent);border-radius:50% 0 0 0}
 .avatar-ears{position:absolute;top:24px;z-index:2;width:100%}
 .avatar-ear{position:absolute;width:10px;height:14px;background:#e8b88a;border-radius:50%}
 .avatar-ear.l{left:9px}
 .avatar-ear.r{right:9px}
-.avatar-eyebrows{position:absolute;top:20px;left:50%;transform:translateX(-50%);display:flex;gap:20px;z-index:5}
-.avatar-brow{width:12px;height:3px;background:#4a3728;border-radius:2px;transition:all .3s}
+.avatar-eyebrows{position:absolute;top:19px;left:50%;transform:translateX(-50%);display:flex;gap:18px;z-index:5}
+.avatar-brow{width:13px;height:2.5px;background:#3a2215;border-radius:2px;transition:all .3s}
 .thinking .avatar-brow:first-child{transform:rotate(-8deg) translateY(-2px)}
 .thinking .avatar-brow:last-child{transform:rotate(8deg) translateY(-2px)}
-.avatar-eyes{position:absolute;top:28px;left:50%;transform:translateX(-50%);display:flex;gap:18px;z-index:5}
-.avatar-eye{width:10px;height:11px;background:#fff;border-radius:50%;position:relative;overflow:hidden;border:1px solid rgba(0,0,0,.08)}
-.avatar-pupil{width:5px;height:5px;background:#2d1f14;border-radius:50%;position:absolute;top:3px;left:2.5px;transition:all .4s;animation:eyeLook 6s ease-in-out infinite}
-.avatar-pupil::after{content:'';position:absolute;top:0;left:1px;width:2px;height:2px;background:#fff;border-radius:50%}
+.avatar-eyes{position:absolute;top:26px;left:50%;transform:translateX(-50%);display:flex;gap:16px;z-index:5}
+.avatar-eye{width:13px;height:14px;background:#fff;border-radius:50%;position:relative;overflow:hidden;border:1.5px solid rgba(0,0,0,.1);box-shadow:inset 0 1px 3px rgba(0,0,0,.05)}
+.avatar-pupil{width:7px;height:7px;background:radial-gradient(circle at 35% 35%,#5a3a1a,#2d1f14);border-radius:50%;position:absolute;top:3.5px;left:3px;transition:all .4s;animation:eyeLook 6s ease-in-out infinite}
+.avatar-pupil::after{content:'';position:absolute;top:1px;left:1.5px;width:2.5px;height:2.5px;background:#fff;border-radius:50%}
 @keyframes eyeLook{0%,40%,100%{transform:translateX(0)}10%{transform:translateX(2px)}25%{transform:translateX(-1px)}50%{transform:translateX(1px) translateY(1px)}70%{transform:translateX(-2px)}}
 .avatar-eye.blink{animation:blinkAnim .15s ease}
 @keyframes blinkAnim{0%,100%{transform:scaleY(1)}50%{transform:scaleY(0.05)}}
