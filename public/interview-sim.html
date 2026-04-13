@@ -120,6 +120,7 @@ body.dark .mic-btn{background:#0f172a !important;border-color:rgba(255,255,255,.
 body.dark .end-btn{background:#f8fafc;color:#0f172a}
 body.dark #voiceSelect select{background:#0f172a;border-color:rgba(255,255,255,.1);color:#f8fafc}
 body.dark .listening-bar{background:rgba(255,255,255,.1)}
+body.dark #skipBtn{background:#0f172a;color:#94a3b8;border-color:rgba(255,255,255,.1)}
 body.dark .fb-item{background:#0f172a;border-color:rgba(255,255,255,.06)}
 body.dark .fb-text{color:#f8fafc}
 body.dark .cta-box{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3)}
@@ -178,10 +179,14 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
   <div id="readyScreen" style="display:none">
     <div class="card" style="text-align:center;padding:2rem">
       <div style="font-size:1.3rem;font-weight:800;color:#0f172a;margin-bottom:.75rem">Ready to begin?</div>
-      <div style="font-size:.85rem;color:#64748b;line-height:1.7;max-width:420px;margin:0 auto 1.5rem">
-        The AI interviewer will ask you questions one at a time.<br>
-        Speak naturally or type your answers.<br>
-        Take your time — there are no wrong answers.
+      <div style="font-size:.85rem;color:#64748b;line-height:1.8;max-width:440px;margin:0 auto 1.5rem;text-align:left">
+        <strong style="color:#0f172a">How it works:</strong><br>
+        1. The AI interviewer asks you a question<br>
+        2. Click the mic or type your answer<br>
+        3. Pause for 5 seconds and your answer auto-submits<br>
+        4. Or click <strong style="color:#0f172a">Send</strong> to submit manually<br>
+        5. Click <strong style="color:#0f172a">Skip</strong> to move to the next question<br>
+        6. After all questions you get a score out of 100
       </div>
       <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1.5rem;flex-wrap:wrap">
         <div class="countdown-check wait" id="micStatus">&#9675; Microphone</div>
@@ -216,6 +221,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
         <textarea id="userInput" placeholder="Type your answer or click the mic..." rows="1"></textarea>
         <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Speak your answer">&#127908;</button>
         <button id="sendBtn" onclick="sendAnswer()">Send</button>
+        <button id="skipBtn" onclick="skipQuestion()" style="padding:.65rem .75rem;background:#f8fafc;color:#64748b;border:1px solid #e2e8f0;border-radius:12px;font-family:Inter,sans-serif;font-size:.72rem;font-weight:700;cursor:pointer" title="Skip to next question">Skip</button>
       </div>
     </div>
     <button class="end-btn" id="endBtn" onclick="endInterview()">End Interview &amp; Get Score</button>
@@ -252,7 +258,7 @@ function submitGateEmail(){var e=document.getElementById('gate-email').value.tri
 /* Interview state */
 var msgs=[],qCount=0,maxQ=5,iData={role:'',company:'',style:'',qa:[]},audioEnabled=false,recog=null;
 var timedMode=false,answerTimer=null,timeLeft=0;
-var camEnabled=false,autoSend=true,silenceTimer=null,silenceDelay=3000;
+var camEnabled=false,autoSend=true,silenceTimer=null,silenceDelay=5000;
 
 var _prepRole='';
 
@@ -373,6 +379,27 @@ async function sendAnswer(){
   }catch(e){hideTyping();addMsg('Error. Try again.','ai');dis(false);}
 }
 
+async function skipQuestion(){
+  stopTimer();
+  if(recog){recog.stop();recog=null;document.getElementById('micBtn').classList.remove('rec');document.getElementById('listenBar').style.display='none';}
+  window.speechSynthesis.cancel();
+  var inp=document.getElementById('userInput');
+  if(inp.value.trim()){sendAnswer();return;}
+  addMsg('(Skipped)','user');
+  var lastAi='';for(var i=msgs.length-1;i>=0;i--){if(msgs[i].role==='assistant'){lastAi=msgs[i].content;break;}}
+  iData.qa.push({q:lastAi,a:'(skipped)'});
+  msgs.push({role:'user',content:'(The candidate chose to skip this question. Move on to the next one.)'});
+  qCount++;updC();
+  if(qCount>=maxQ){document.getElementById('chatInput').style.display='none';document.getElementById('endBtn').style.display='block';document.getElementById('timerDisplay').style.display='none';return;}
+  dis(true);showTyping();
+  try{
+    var sys="You are a professional NZ job interviewer. "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. Question "+qCount+" of "+maxQ+". The candidate skipped the previous question. Move on to your next question without commenting on it.";
+    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:msgs})});
+    var d=await r.json();var t=d.content.map(function(b){return b.text||'';}).join('');
+    msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');speak(t);dis(false);startTimer();
+  }catch(e){hideTyping();dis(false);}
+}
+
 async function endInterview(){
   document.getElementById('endBtn').textContent='Scoring...';document.getElementById('endBtn').disabled=true;
   var p="You conducted a "+iData.style+" interview for "+iData.role+" in NZ. Score the candidate.\n\n";
@@ -405,7 +432,7 @@ function showScore(r){
 }
 
 /* Audio */
-function speak(t){if(!audioEnabled||!window.speechSynthesis)return;window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.rate=.82;u.lang='en-NZ';var gender=document.getElementById('voiceGender').value;var voices=window.speechSynthesis.getVoices();var match=null;for(var i=0;i<voices.length;i++){var n=voices[i].name.toLowerCase();if(gender==='female'&&(n.indexOf('female')>-1||n.indexOf('fiona')>-1||n.indexOf('karen')>-1||n.indexOf('samantha')>-1||n.indexOf('victoria')>-1||n.indexOf('zira')>-1||n.indexOf('hazel')>-1)){match=voices[i];break;}if(gender==='male'&&(n.indexOf('male')>-1||n.indexOf('daniel')>-1||n.indexOf('james')>-1||n.indexOf('david')>-1||n.indexOf('mark')>-1||n.indexOf('alex')>-1)){match=voices[i];break;}}if(!match){for(var j=0;j<voices.length;j++){if(voices[j].lang.indexOf('en')===0){if(gender==='female'&&j%2===0){match=voices[j];break;}if(gender==='male'&&j%2===1){match=voices[j];break;}}}}if(match)u.voice=match;if(gender==='male'){u.pitch=.85;}else{u.pitch=1.1;}u.onend=function(){if(autoSend&&!recog&&qCount<maxQ){setTimeout(toggleMic,500);}};window.speechSynthesis.speak(u);}
+function speak(t){if(!audioEnabled||!window.speechSynthesis)return;window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.rate=.72;u.lang='en-NZ';var gender=document.getElementById('voiceGender').value;var voices=window.speechSynthesis.getVoices();var match=null;var nzAu=[];var enVoices=[];for(var i=0;i<voices.length;i++){var l=voices[i].lang.toLowerCase();if(l==='en-nz'||l==='en-au'||l.indexOf('en_nz')>-1||l.indexOf('en_au')>-1)nzAu.push(voices[i]);else if(l.indexOf('en')===0)enVoices.push(voices[i]);}var pool=nzAu.length?nzAu:enVoices;for(var j=0;j<pool.length;j++){var n=pool[j].name.toLowerCase();if(gender==='female'&&(n.indexOf('female')>-1||n.indexOf('fiona')>-1||n.indexOf('karen')>-1||n.indexOf('samantha')>-1||n.indexOf('victoria')>-1||n.indexOf('moira')>-1||n.indexOf('tessa')>-1)){match=pool[j];break;}if(gender==='male'&&(n.indexOf('male')>-1||n.indexOf('daniel')>-1||n.indexOf('james')>-1||n.indexOf('lee')>-1||n.indexOf('gordon')>-1||n.indexOf('alex')>-1)){match=pool[j];break;}}if(!match&&pool.length){match=pool[0];}if(match)u.voice=match;if(gender==='male'){u.pitch=.8;}else{u.pitch=1.05;}u.onend=function(){if(autoSend&&!recog&&qCount<maxQ){setTimeout(toggleMic,800);}};window.speechSynthesis.speak(u);}
 window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
 
 /* Timer for real-life mode */
@@ -462,7 +489,7 @@ function toggleMic(){
     inp.value=t;lastResultTime=Date.now();
     document.getElementById('listenFill').style.width='0';
     clearTimeout(silenceTimer);
-    if(autoSend&&hasF&&t.trim().length>10){
+    if(autoSend&&t.trim().length>5){
       silenceTimer=setTimeout(function(){
         if(inp.value.trim()&&Date.now()-lastResultTime>=silenceDelay-500){
           recog.stop();recog=null;btn.classList.remove('rec');
