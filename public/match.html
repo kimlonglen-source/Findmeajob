@@ -2788,14 +2788,16 @@ function initApp(){try{
   document.getElementById('acct-tab-login').addEventListener('click',function(){
     document.getElementById('acct-login-pane').style.display='block';
     document.getElementById('acct-reg-pane').style.display='none';
-    this.style.background='linear-gradient(135deg,var(--em),var(--em2))';this.style.color='#fff';
-    document.getElementById('acct-tab-reg').style.background='transparent';document.getElementById('acct-tab-reg').style.color='var(--text3)';
+    this.style.color='var(--em)';this.style.borderBottom='2px solid var(--em)';
+    document.getElementById('acct-tab-reg').style.color='var(--text3)';document.getElementById('acct-tab-reg').style.borderBottom='2px solid transparent';
+    document.getElementById('acct-welcome').textContent='Sign In';
   });
   document.getElementById('acct-tab-reg').addEventListener('click',function(){
     document.getElementById('acct-login-pane').style.display='none';
     document.getElementById('acct-reg-pane').style.display='block';
-    this.style.background='linear-gradient(135deg,var(--em),var(--em2))';this.style.color='#fff';
-    document.getElementById('acct-tab-login').style.background='transparent';document.getElementById('acct-tab-login').style.color='var(--text3)';
+    this.style.color='var(--em)';this.style.borderBottom='2px solid var(--em)';
+    document.getElementById('acct-tab-login').style.color='var(--text3)';document.getElementById('acct-tab-login').style.borderBottom='2px solid transparent';
+    document.getElementById('acct-welcome').textContent='Create Account';
   });
 
   // Login
