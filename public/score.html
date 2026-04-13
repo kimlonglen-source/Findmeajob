@@ -66,7 +66,7 @@ input[type="file"]{display:none}
 .score-circle svg{position:absolute;top:0;left:0;width:100%;height:100%;transform:rotate(-90deg)}
 .score-circle circle{fill:none;stroke-width:8;stroke-linecap:round}
 .score-bg{stroke:#e2e8f0}
-.score-fill{transition:stroke-dashoffset 1s ease}
+.score-fill{transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)}
 .score-num{font-size:2.5rem;font-weight:900;line-height:1}
 .score-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8}
 
@@ -384,13 +384,13 @@ function showResult(r) {
   var gradeBorder = score >= 80 ? "#10b981" : score >= 60 ? "#f59e0b" : "#ef4444";
 
   var circumference = 2 * Math.PI * 60;
-  var offset = circumference - (score / 100) * circumference;
+  var targetOffset = circumference - (score / 100) * circumference;
 
   var html = "<div style=\"text-align:center;padding:1rem 0 .5rem\">" +
     "<div class=\"score-circle\">" +
     "<svg viewBox=\"0 0 140 140\"><circle class=\"score-bg\" cx=\"70\" cy=\"70\" r=\"60\"/>" +
-    "<circle class=\"score-fill\" cx=\"70\" cy=\"70\" r=\"60\" stroke=\"" + color + "\" stroke-dasharray=\"" + circumference + "\" stroke-dashoffset=\"" + offset + "\"/></svg>" +
-    "<div class=\"score-num\" style=\"color:" + color + "\">" + score + "</div>" +
+    "<circle class=\"score-fill\" id=\"scoreRing\" cx=\"70\" cy=\"70\" r=\"60\" stroke=\"" + color + "\" stroke-dasharray=\"" + circumference + "\" stroke-dashoffset=\"" + circumference + "\"/></svg>" +
+    "<div class=\"score-num\" id=\"scoreNum\" style=\"color:" + color + "\">0</div>" +
     "<div class=\"score-label\">out of 100</div>" +
     "</div></div>";
 
@@ -427,6 +427,36 @@ function showResult(r) {
   document.getElementById("loading").style.display = "none";
   document.getElementById("result").innerHTML = html;
   document.getElementById("result").style.display = "block";
+
+  /* Animate the SVG ring from empty to the target score */
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      var ring = document.getElementById("scoreRing");
+      if (ring) {
+        ring.style.strokeDashoffset = targetOffset;
+      }
+    });
+  });
+
+  /* Animate the score number counting up from 0 */
+  var numEl = document.getElementById("scoreNum");
+  if (numEl && score > 0) {
+    var duration = 1200;
+    var startTime = null;
+    function animateCount(timestamp) {
+      if (!startTime) startTime = timestamp;
+      var elapsed = timestamp - startTime;
+      var progress = Math.min(elapsed / duration, 1);
+      /* Ease-out curve to match the ring animation feel */
+      var easedProgress = 1 - Math.pow(1 - progress, 3);
+      var current = Math.round(easedProgress * score);
+      numEl.textContent = current;
+      if (progress < 1) {
+        requestAnimationFrame(animateCount);
+      }
+    }
+    requestAnimationFrame(animateCount);
+  }
 }
 
 function escHtml(s) {
