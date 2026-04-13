@@ -409,11 +409,23 @@ function startTimer(){
     timeLeft--;
     updTimer();
     if(timeLeft<=30&&timeLeft>0){td.classList.add('timer-warn');td.style.color='#ef4444';td.style.background='#fef2f2';td.style.borderColor='#fecaca';}
-    if(timeLeft<=0){stopTimer();addMsg('Time is up! The interviewer is moving on.','ai');
+    if(timeLeft<=0){stopTimer();
+      if(recog){recog.stop();recog=null;document.getElementById('micBtn').classList.remove('rec');document.getElementById('listenBar').style.display='none';}
       var inp=document.getElementById('userInput');
       if(inp.value.trim()){sendAnswer();}
-      else{iData.qa.push({q:'(timed out)',a:'(no answer given)'});msgs.push({role:'user',content:'(The candidate did not answer in time)'});qCount++;updC();
+      else{
+        addMsg('(No answer given)','user');
+        var lastAi='';for(var ii=msgs.length-1;ii>=0;ii--){if(msgs[ii].role==='assistant'){lastAi=msgs[ii].content;break;}}
+        iData.qa.push({q:lastAi,a:'(no answer — timed out)'});
+        msgs.push({role:'user',content:'(The candidate did not answer in time. Move on to the next question.)'});
+        qCount++;updC();
         if(qCount>=maxQ){document.getElementById('chatInput').style.display='none';document.getElementById('endBtn').style.display='block';document.getElementById('timerDisplay').style.display='none';}
+        else{dis(true);showTyping();
+          fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:"You are a professional NZ job interviewer. "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. Question "+qCount+" of "+maxQ+". The candidate did not answer the previous question. Acknowledge briefly and move on to your next question.",messages:msgs})}).then(function(r){return r.json();}).then(function(d){
+            var t=d.content.map(function(b){return b.text||'';}).join('');
+            msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');speak(t);dis(false);startTimer();
+          }).catch(function(){hideTyping();dis(false);startTimer();});
+        }
       }
     }
   },1000);
