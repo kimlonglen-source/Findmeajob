@@ -38,11 +38,21 @@ a{color:var(--em);text-decoration:none}
 .hero-cta{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;padding:.9rem 2.2rem;border-radius:50px;font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;transition:all .3s;box-shadow:0 4px 25px rgba(139,92,246,.3)}
 .hero-cta:hover{transform:translateY(-2px);box-shadow:0 8px 35px rgba(139,92,246,.4)}
 .hero-trust{margin-top:1.5rem;font-size:.72rem;color:var(--text3);text-align:center;font-weight:500;letter-spacing:.3px}
-.hero-brand{position:absolute;top:1.25rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.3rem;font-size:1.05rem;font-weight:800;color:#0f172a;letter-spacing:-.3px;text-decoration:none}
-.hero-brand em{background:linear-gradient(135deg,#10b981,#059669);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
-.hero-brand .logo-mark{width:30px;height:30px;background:linear-gradient(135deg,#10b981,#059669);border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(16,185,129,.2)}
-.hero-brand .logo-mark svg{width:15px;height:15px;color:#fff}
-body.dark .hero-brand{color:#f8fafc}
+.ch-nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid rgba(0,0,0,.08);position:sticky;top:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(12px)}
+.ch-nav-logo{display:flex;align-items:center;gap:.3rem;text-decoration:none;flex-shrink:0}
+.ch-nav-logo:hover{text-decoration:none}
+.ch-nav-logo .logo-mark{width:30px;height:30px;background:linear-gradient(135deg,#10b981,#059669);border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(16,185,129,.2)}
+.ch-nav-logo .logo-mark svg{width:15px;height:15px;color:#fff}
+.ch-nav-logo span{font-size:1.05rem;font-weight:800;color:#0f172a;letter-spacing:-.5px}
+.ch-nav-logo em{background:linear-gradient(135deg,#10b981,#059669);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
+.ch-nav-links{display:flex;align-items:center;gap:1.5rem}
+.ch-nav-links a{color:#64748b;font-size:.82rem;font-weight:600;text-decoration:none}
+.ch-nav-links a:hover{color:#0f172a}
+.ch-nav-cta{background:#10b981 !important;color:#fff !important;padding:.45rem 1.15rem;border-radius:999px;font-size:.78rem;font-weight:700;text-decoration:none !important;transition:all .2s}
+body.dark .ch-nav{background:rgba(9,9,11,.95);border-color:rgba(255,255,255,.06)}
+body.dark .ch-nav-logo span{color:#f8fafc}
+body.dark .ch-nav-links a{color:#94a3b8}
+body.dark .ch-nav-links a:hover{color:#f8fafc}
 
 /* Upload */
 .upload-wrap{width:100%;max-width:400px}
@@ -126,10 +136,19 @@ body.dark .hero-brand{color:#f8fafc}
 </style>
 </head>
 <body>
+<nav class="ch-nav">
+  <a class="ch-nav-logo" href="/"><div class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="10" cy="10" r="7"/><path d="m21 21-4.35-4.35"/></svg></div><span>FindMe<em>AJob</em></span></a>
+  <div class="ch-nav-links">
+    <a href="/">Tools</a>
+    <a href="/blog">Blog</a>
+    <a href="/match.html#account">Job Seekers</a>
+    <a href="/employer-portal.html">Post a Job</a>
+    <a class="ch-nav-cta" href="/match.html">Match My CV</a>
+    <button onclick="toggleTheme()" id="tbtn" style="background:none;border:1px solid #e2e8f0;color:#64748b;width:30px;height:30px;border-radius:999px;cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center">&#9788;</button>
+  </div>
+</nav>
 <!-- HERO -->
 <div class="section active" id="section-hero">
-  <a class="hero-brand" href="/"><div class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="10" cy="10" r="7"/><path d="m21 21-4.35-4.35"/></svg></div><span>FindMe<em>AJob</em></span></a>
-  <button onclick="toggleTheme()" id="tbtn" style="position:fixed;top:1rem;right:1rem;z-index:100;background:var(--bg2);border:1px solid var(--border);color:var(--text2);width:34px;height:34px;border-radius:999px;cursor:pointer;font-size:1rem">&#9788;</button>
   <div class="hero-tag">#cvchallengenz</div>
   <div class="hero-hook" id="hero-hook"></div>
   <button class="hero-cta" onclick="showSection('section-upload')">I'm Brave Enough</button>
