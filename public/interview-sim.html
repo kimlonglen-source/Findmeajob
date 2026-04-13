@@ -52,25 +52,56 @@ input:focus,select:focus{border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,1
 .stat-item{display:flex;align-items:center;gap:.3rem;color:#64748b}
 .stat-item strong{color:#0f172a}
 .stat-warn{color:#ef4444}
-.cam-wrap{position:relative;border-radius:12px;overflow:hidden;background:linear-gradient(135deg,#f0fdf4,#e0f2fe);min-width:140px;max-width:160px;display:none;padding:1rem;text-align:center;border:1px solid #e2e8f0}
-.avatar{width:80px;height:80px;margin:0 auto .5rem;position:relative}
-.avatar-head{width:80px;height:80px;background:linear-gradient(135deg,#fbbf24,#f59e0b);border-radius:50%;position:relative;overflow:hidden}
-.avatar-eyes{position:absolute;top:28px;left:50%;transform:translateX(-50%);display:flex;gap:16px}
-.avatar-eye{width:8px;height:10px;background:#0f172a;border-radius:50%;animation:blink 4s infinite}
-@keyframes blink{0%,96%,100%{transform:scaleY(1)}98%{transform:scaleY(0.1)}}
-.avatar-mouth{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);width:16px;height:6px;background:#0f172a;border-radius:0 0 10px 10px;transition:all .15s}
-.avatar-mouth.speaking{animation:talk .3s infinite alternate;height:12px;border-radius:50%}
-@keyframes talk{0%{height:6px;width:14px}100%{height:14px;width:18px}}
+.cam-wrap{position:relative;border-radius:16px;overflow:hidden;min-width:150px;max-width:170px;display:none;text-align:center;border:1px solid #e2e8f0;background:#f8fafc}
+.office-bg{background:linear-gradient(180deg,#e8eff7 0%,#d4dde8 40%,#8b7355 40%,#a08b6c 42%,#c4b898 42%,#c4b898 100%);padding:1rem 1rem .75rem;position:relative}
+.office-bg::before{content:'';position:absolute;top:8%;left:15%;width:28%;height:22%;background:linear-gradient(135deg,#87ceeb,#b0d4f1);border-radius:2px;border:2px solid #c4b898;opacity:.5}
+.office-bg::after{content:'';position:absolute;top:8%;right:15%;width:20%;height:18%;background:linear-gradient(135deg,#90ee90,#66bb6a);border-radius:50% 50% 0 0;opacity:.3}
+.avatar{width:90px;height:90px;margin:0 auto;position:relative}
+.avatar-body{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:70px;height:30px;border-radius:35px 35px 0 0;z-index:1}
+.avatar-body.female{background:linear-gradient(135deg,#10b981,#059669)}
+.avatar-body.male{background:linear-gradient(135deg,#3b82f6,#2563eb)}
+.avatar-neck{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);width:18px;height:14px;background:#e8b88a;z-index:2}
+.avatar-head{width:62px;height:68px;background:linear-gradient(180deg,#f0c8a0,#e8b88a);border-radius:50% 50% 45% 45%;position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:3;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.avatar-hair{position:absolute;z-index:4}
+.hair-female{top:-4px;left:50%;transform:translateX(-50%);width:68px;height:40px;background:linear-gradient(180deg,#4a3728,#3d2b1f);border-radius:50% 50% 30% 30%;box-shadow:inset 0 -5px 10px rgba(0,0,0,.15)}
+.hair-female::before{content:'';position:absolute;top:20px;left:-6px;width:14px;height:40px;background:#3d2b1f;border-radius:0 0 50% 50%}
+.hair-female::after{content:'';position:absolute;top:20px;right:-6px;width:14px;height:40px;background:#3d2b1f;border-radius:0 0 50% 50%}
+.hair-male{top:-2px;left:50%;transform:translateX(-50%);width:64px;height:28px;background:linear-gradient(180deg,#2d1f14,#1a120b);border-radius:50% 50% 20% 20%}
+.avatar-ears{position:absolute;top:24px;z-index:2;width:100%}
+.avatar-ear{position:absolute;width:10px;height:14px;background:#e8b88a;border-radius:50%}
+.avatar-ear.l{left:9px}
+.avatar-ear.r{right:9px}
+.avatar-eyebrows{position:absolute;top:20px;left:50%;transform:translateX(-50%);display:flex;gap:20px;z-index:5}
+.avatar-brow{width:12px;height:3px;background:#4a3728;border-radius:2px;transition:all .3s}
+.thinking .avatar-brow:first-child{transform:rotate(-8deg) translateY(-2px)}
+.thinking .avatar-brow:last-child{transform:rotate(8deg) translateY(-2px)}
+.avatar-eyes{position:absolute;top:28px;left:50%;transform:translateX(-50%);display:flex;gap:18px;z-index:5}
+.avatar-eye{width:10px;height:11px;background:#fff;border-radius:50%;position:relative;overflow:hidden;border:1px solid rgba(0,0,0,.08)}
+.avatar-pupil{width:5px;height:5px;background:#2d1f14;border-radius:50%;position:absolute;top:3px;left:2.5px;transition:all .4s;animation:eyeLook 6s ease-in-out infinite}
+.avatar-pupil::after{content:'';position:absolute;top:0;left:1px;width:2px;height:2px;background:#fff;border-radius:50%}
+@keyframes eyeLook{0%,40%,100%{transform:translateX(0)}10%{transform:translateX(2px)}25%{transform:translateX(-1px)}50%{transform:translateX(1px) translateY(1px)}70%{transform:translateX(-2px)}}
+.avatar-eye.blink{animation:blinkAnim .15s ease}
+@keyframes blinkAnim{0%,100%{transform:scaleY(1)}50%{transform:scaleY(0.05)}}
+.avatar-nose{position:absolute;top:35px;left:50%;transform:translateX(-50%);width:6px;height:8px;background:#daa678;border-radius:0 0 50% 50%;z-index:5}
+.avatar-mouth{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);z-index:5;transition:all .2s}
+.mouth-shape{width:16px;height:5px;background:#c97b63;border-radius:0 0 10px 10px;transition:all .2s}
+.speaking .mouth-shape{animation:talkReal .25s infinite alternate}
+@keyframes talkReal{0%{height:4px;width:14px;border-radius:0 0 8px 8px}50%{height:10px;width:18px;border-radius:50%}100%{height:6px;width:12px;border-radius:0 0 10px 10px}}
+.listening .mouth-shape{width:20px;height:3px;border-radius:999px;background:#c97b63}
+.smile .mouth-shape{width:18px;height:5px;border-radius:0 0 12px 12px;background:#c97b63}
 .avatar-head.bobbing{animation:headBob 1.2s ease-in-out infinite}
-@keyframes headBob{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-2px) rotate(1deg)}75%{transform:translateY(-1px) rotate(-1deg)}}
-.avatar-mouth.listening{height:3px;width:20px;border-radius:999px}
+@keyframes headBob{0%,100%{transform:translateX(-50%) translateY(0) rotate(0)}25%{transform:translateX(-50%) translateY(-2px) rotate(1.5deg)}75%{transform:translateX(-50%) translateY(-1px) rotate(-1deg)}}
+.listening .avatar-head{animation:nod 2s ease-in-out infinite}
+@keyframes nod{0%,100%{transform:translateX(-50%) rotate(0)}30%{transform:translateX(-50%) rotate(2deg) translateY(2px)}60%{transform:translateX(-50%) rotate(-1deg) translateY(1px)}}
+.avatar-info{padding:.5rem .5rem .65rem}
 .avatar-name{font-size:.72rem;font-weight:700;color:#0f172a}
 .avatar-role{font-size:.62rem;color:#64748b}
-.avatar-status{font-size:.58rem;font-weight:700;padding:.15rem .5rem;border-radius:999px;display:inline-block;margin-top:.35rem}
+.avatar-status{font-size:.58rem;font-weight:700;padding:.15rem .5rem;border-radius:999px;display:inline-block;margin-top:.3rem}
 .avatar-status.speaking-s{background:#f0fdf4;color:#059669;border:1px solid #bbf7d0}
 .avatar-status.listening-s{background:#fef3c7;color:#92400e;border:1px solid #fde68a}
 .avatar-status.thinking-s{background:#f8fafc;color:#94a3b8;border:1px solid #e2e8f0}
-body.dark .cam-wrap{background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(59,130,246,.08));border-color:rgba(255,255,255,.06)}
+body.dark .cam-wrap{background:#111827;border-color:rgba(255,255,255,.06)}
+body.dark .office-bg{background:linear-gradient(180deg,#1e293b 0%,#1a2332 40%,#3d3225 40%,#4a3d2e 42%,#2d2518 42%,#2d2518 100%)}
 body.dark .avatar-name{color:#f8fafc}
 body.dark .avatar-role{color:#94a3b8}
 .chat-msgs{min-height:100px;overflow-y:visible;padding:.5rem 0;display:flex;flex-direction:column;gap:.15rem}
@@ -274,15 +305,25 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
     <!-- Avatar + Chat side by side -->
     <div style="display:flex;gap:.5rem;margin-top:.5rem;align-items:flex-start">
       <div class="cam-wrap" id="camWrap">
-        <div class="avatar">
-          <div class="avatar-head">
-            <div class="avatar-eyes"><div class="avatar-eye"></div><div class="avatar-eye"></div></div>
-            <div class="avatar-mouth" id="avatarMouth"></div>
+        <div class="office-bg">
+          <div class="avatar" id="avatarWrap">
+            <div class="avatar-hair" id="avatarHair"></div>
+            <div class="avatar-head" id="avatarHead">
+              <div class="avatar-ears"><div class="avatar-ear l"></div><div class="avatar-ear r"></div></div>
+              <div class="avatar-eyebrows"><div class="avatar-brow"></div><div class="avatar-brow"></div></div>
+              <div class="avatar-eyes"><div class="avatar-eye"><div class="avatar-pupil"></div></div><div class="avatar-eye"><div class="avatar-pupil"></div></div></div>
+              <div class="avatar-nose"></div>
+              <div class="avatar-mouth" id="avatarMouth"><div class="mouth-shape"></div></div>
+            </div>
+            <div class="avatar-neck"></div>
+            <div class="avatar-body" id="avatarBody"></div>
           </div>
         </div>
-        <div class="avatar-name" id="avatarName">Sarah</div>
-        <div class="avatar-role" id="avatarRole">Interviewer</div>
-        <div class="avatar-status thinking-s" id="avatarStatus">Ready</div>
+        <div class="avatar-info">
+          <div class="avatar-name" id="avatarName">Sarah</div>
+          <div class="avatar-role" id="avatarRole">Interviewer</div>
+          <div class="avatar-status thinking-s" id="avatarStatus">Ready</div>
+        </div>
       </div>
       <video id="camVideo" autoplay muted playsinline style="display:none"></video>
       <div class="card" style="padding:.75rem;flex:1;margin:0">
@@ -429,7 +470,7 @@ async function _doStart(role){
   iData={role:role,company:company,style:style,qa:[]};
   document.getElementById('pageHeader').style.display='none';
   document.getElementById('chatSection').style.display='block';
-  var vg=document.getElementById('voiceGender').value;document.getElementById('avatarName').textContent=(vg==='male'?'James':'Sarah');document.getElementById('avatarRole').textContent='Interviewer';
+  var vg=document.getElementById('voiceGender').value;document.getElementById('avatarName').textContent=(vg==='male'?'James':'Sarah');document.getElementById('avatarRole').textContent='Interviewer';setupAvatarGender(vg);
   if(timedMode){document.getElementById('timerDisplay').style.display='flex';}
   document.getElementById('fillerCount').textContent='0';
   msgs=[{role:'user',content:'Start the interview. Introduce yourself briefly and ask your first question.'}];
@@ -519,19 +560,26 @@ function showScore(r){
 
 /* Audio */
 function setAvatar(state,name){
+  var wrap=document.getElementById('avatarWrap');
   var mouth=document.getElementById('avatarMouth');
+  var head=document.getElementById('avatarHead');
   var status=document.getElementById('avatarStatus');
-  if(name)document.getElementById('avatarName').textContent=name;
-  mouth.className='avatar-mouth';
-  status.className='avatar-status';
-  var head=document.getElementById('avatarMouth').closest('.avatar-head');
   var mic=document.getElementById('micBtn');
+  if(name)document.getElementById('avatarName').textContent=name;
+  wrap.className='avatar';mouth.className='avatar-mouth';status.className='avatar-status';
   if(head)head.classList.remove('bobbing');
   if(mic)mic.classList.remove('ready');
-  if(state==='speaking'){mouth.classList.add('speaking');status.classList.add('speaking-s');status.textContent='Speaking';if(head)head.classList.add('bobbing');}
-  else if(state==='listening'){mouth.classList.add('listening');status.classList.add('listening-s');status.textContent='Listening';if(mic)mic.classList.add('ready');}
-  else{status.classList.add('thinking-s');status.textContent='Thinking';}
+  if(state==='speaking'){wrap.classList.add('speaking');status.classList.add('speaking-s');status.textContent='Speaking';if(head)head.classList.add('bobbing');}
+  else if(state==='listening'){wrap.classList.add('listening');wrap.classList.add('smile');status.classList.add('listening-s');status.textContent='Listening';if(mic)mic.classList.add('ready');}
+  else{wrap.classList.add('thinking');status.classList.add('thinking-s');status.textContent='Thinking';}
 }
+function setupAvatarGender(gender){
+  var hair=document.getElementById('avatarHair');
+  var body=document.getElementById('avatarBody');
+  hair.className='avatar-hair '+(gender==='male'?'hair-male':'hair-female');
+  body.className='avatar-body '+(gender==='male'?'male':'female');
+}
+setInterval(function(){var eyes=document.querySelectorAll('.avatar-eye');eyes.forEach(function(e){e.classList.add('blink');setTimeout(function(){e.classList.remove('blink');},150);});},3500+Math.random()*2000);
 function speak(t){setAvatar('speaking');if(!audioEnabled||!window.speechSynthesis){setTimeout(function(){setAvatar('listening');},2000);return;}if(recog){recog.stop();recog=null;var mb=document.getElementById('micBtn');if(mb)mb.classList.remove('rec');document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);}window.speechSynthesis.cancel();var gender=document.getElementById('voiceGender').value;var voices=window.speechSynthesis.getVoices();var match=null;var nzAu=[];var enVoices=[];for(var i=0;i<voices.length;i++){var l=voices[i].lang.toLowerCase();if(l==='en-nz'||l==='en-au'||l.indexOf('en_nz')>-1||l.indexOf('en_au')>-1)nzAu.push(voices[i]);else if(l.indexOf('en')===0)enVoices.push(voices[i]);}var pool=nzAu.length?nzAu:enVoices;for(var j=0;j<pool.length;j++){var n=pool[j].name.toLowerCase();if(gender==='female'&&(n.indexOf('female')>-1||n.indexOf('fiona')>-1||n.indexOf('karen')>-1||n.indexOf('samantha')>-1||n.indexOf('victoria')>-1||n.indexOf('moira')>-1||n.indexOf('tessa')>-1)){match=pool[j];break;}if(gender==='male'&&(n.indexOf('male')>-1||n.indexOf('daniel')>-1||n.indexOf('james')>-1||n.indexOf('lee')>-1||n.indexOf('gordon')>-1||n.indexOf('alex')>-1)){match=pool[j];break;}}if(!match&&pool.length){match=pool[0];}var sentences=t.match(/[^.!?]+[.!?]+[\s]*/g)||[t];var idx=0;function speakNext(){if(idx>=sentences.length){setAvatar('listening');if(autoSend&&!recog&&qCount<maxQ){setTimeout(toggleMic,800);}return;}var chunk=sentences[idx].trim();idx++;if(!chunk){speakNext();return;}var u=new SpeechSynthesisUtterance(chunk);u.rate=1.0;u.lang='en-NZ';if(match)u.voice=match;if(gender==='male'){u.pitch=0.9;}else{u.pitch=1.0;}u.onend=function(){var pause=200;if(chunk.indexOf('?')>-1)pause=400;else if(chunk.indexOf('.')>-1)pause=300;setTimeout(speakNext,pause);};window.speechSynthesis.speak(u);}speakNext();}
 window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
 
