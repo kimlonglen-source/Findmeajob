@@ -150,47 +150,60 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
 
   <div id="setupForm">
     <div class="card">
+      <div class="card-title">Interview Details</div>
       <div class="field"><label>Job Title</label><input type="text" id="simRole" placeholder="e.g. Software Engineer"></div>
       <div class="field"><label>Company (optional)</label><input type="text" id="simCompany" placeholder="e.g. Xero"></div>
-      <div class="field"><label>Interview Style</label>
-        <select id="simStyle"><option value="Standard">Standard</option><option value="Behavioural">Behavioural</option><option value="Technical">Technical</option><option value="Casual">Casual</option></select>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+        <div class="field"><label>Interview Style</label>
+          <select id="simStyle"><option value="Standard">Standard</option><option value="Behavioural">Behavioural</option><option value="Technical">Technical</option><option value="Casual">Casual</option></select>
+        </div>
+        <div class="field"><label>Questions</label>
+          <select id="simCount"><option value="5">5 (quick)</option><option value="8">8 (standard)</option><option value="10">10 (full)</option></select>
+        </div>
       </div>
-      <div class="field"><label>Number of Questions</label>
-        <select id="simCount"><option value="5">5 questions (quick practice)</option><option value="8">8 questions (standard)</option><option value="10">10 questions (full interview)</option></select>
+      <div class="card-title" style="margin-top:1rem">Audio and Camera</div>
+      <div class="field"><label>AI Voice</label>
+        <select id="voiceGender"><option value="female">Female interviewer</option><option value="male">Male interviewer</option><option value="off">No voice (text only)</option></select>
       </div>
-      <div style="margin-top:.75rem;display:flex;flex-direction:column;gap:.5rem">
-        <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.82rem;color:#64748b;font-weight:600"><input type="checkbox" id="timedMode" style="accent-color:#10b981;width:16px;height:16px"> Real-life mode (timed answers)</label>
-        <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.82rem;color:#64748b;font-weight:600"><input type="checkbox" id="camMode" style="accent-color:#10b981;width:16px;height:16px"> Enable camera (practice eye contact)</label>
+      <div style="display:flex;flex-direction:column;gap:.5rem">
+        <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.82rem;color:#64748b;font-weight:600"><input type="checkbox" id="camMode" style="accent-color:#10b981;width:16px;height:16px"> Enable camera</label>
+        <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.82rem;color:#64748b;font-weight:600"><input type="checkbox" id="timedMode" style="accent-color:#10b981;width:16px;height:16px"> Timed answers (2 min per question)</label>
         <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.82rem;color:#64748b;font-weight:600"><input type="checkbox" id="autoSendMode" style="accent-color:#10b981;width:16px;height:16px" checked> Auto-send when you stop talking</label>
       </div>
     </div>
-    <button class="btn" onclick="prepInterview()">Start Interview</button>
+    <button class="btn" onclick="prepInterview()">Next</button>
   </div>
 
-  <div class="countdown-screen" id="countdownScreen">
-    <div class="countdown-status" id="permStatus">
-      <div class="countdown-check wait" id="micStatus">&#9675; Microphone</div>
-      <div class="countdown-check wait" id="camStatus">&#9675; Camera</div>
+  <!-- READY SCREEN — instructions + permissions -->
+  <div id="readyScreen" style="display:none">
+    <div class="card" style="text-align:center;padding:2rem">
+      <div style="font-size:1.3rem;font-weight:800;color:#0f172a;margin-bottom:.75rem">Ready to begin?</div>
+      <div style="font-size:.85rem;color:#64748b;line-height:1.7;max-width:420px;margin:0 auto 1.5rem">
+        The AI interviewer will ask you questions one at a time.<br>
+        Speak naturally or type your answers.<br>
+        Take your time — there are no wrong answers.
+      </div>
+      <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1.5rem;flex-wrap:wrap">
+        <div class="countdown-check wait" id="micStatus">&#9675; Microphone</div>
+        <div class="countdown-check wait" id="camStatus" style="display:none">&#9675; Camera</div>
+      </div>
+      <button class="btn" id="beginBtn" onclick="beginCountdown()" disabled style="max-width:300px;margin:0 auto">Setting up...</button>
     </div>
-    <div class="countdown-num" id="countNum">10</div>
-    <div class="countdown-tip" id="countTip">Take a deep breath</div>
-    <div class="countdown-sub" id="countSub">Relax your shoulders. Sit up straight. You have got this.</div>
+  </div>
+
+  <!-- COUNTDOWN — simple 3, 2, 1 -->
+  <div class="countdown-screen" id="countdownScreen">
+    <div class="countdown-num" id="countNum">3</div>
   </div>
 
   <div id="chatSection" style="display:none">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;flex-wrap:wrap;gap:.5rem">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;flex-wrap:wrap;gap:.5rem">
       <div class="q-counter" id="qCounter" style="margin:0">Question 1 of 5</div>
-      <div id="timerDisplay" style="display:none;font-size:.82rem;font-weight:700;color:#ef4444;background:#fef2f2;padding:.3rem .75rem;border-radius:999px;border:1px solid #fecaca">
+      <div id="timerDisplay" style="display:none;font-size:.82rem;font-weight:700;color:#059669;background:#f0fdf4;padding:.3rem .75rem;border-radius:999px;border:1px solid #bbf7d0">
         <span id="timerIcon">&#9202;</span> <span id="timerText">2:00</span>
       </div>
     </div>
-    <label class="audio-toggle"><input type="checkbox" id="audioToggle" onchange="audioEnabled=this.checked;document.getElementById('voiceSelect').style.display=this.checked?'block':'none'"> Enable audio (AI speaks questions)</label>
-    <div id="voiceSelect" style="display:none;margin-bottom:.75rem">
-      <select id="voiceGender" style="padding:.4rem .75rem;border:1px solid #e2e8f0;border-radius:8px;font-family:Inter,sans-serif;font-size:.78rem;color:#0f172a;outline:none">
-        <option value="female">Female interviewer</option>
-        <option value="male">Male interviewer</option>
-      </select>
-    </div>
+    <input type="hidden" id="audioToggle" value="1">
     <div class="cam-wrap" id="camWrap">
       <video id="camVideo" autoplay muted playsinline></video>
       <div class="cam-label">You</div>
@@ -241,18 +254,7 @@ var msgs=[],qCount=0,maxQ=5,iData={role:'',company:'',style:'',qa:[]},audioEnabl
 var timedMode=false,answerTimer=null,timeLeft=0;
 var camEnabled=false,autoSend=true,silenceTimer=null,silenceDelay=3000;
 
-var wisdomTips=[
-  {tip:"Take a deep breath",sub:"Relax your shoulders. Sit up straight. You have got this."},
-  {tip:"Speak clearly and slowly",sub:"It is better to pause and think than to rush an answer."},
-  {tip:"Be specific",sub:"Use real examples from your experience. Numbers and results impress."},
-  {tip:"It is okay to pause",sub:"Taking a moment to think shows you are thoughtful, not unprepared."},
-  {tip:"Listen carefully",sub:"Make sure you answer the question that was actually asked."},
-  {tip:"Be yourself",sub:"Authenticity beats rehearsed answers every time."},
-  {tip:"Show enthusiasm",sub:"Employers hire people who genuinely want the role."},
-  {tip:"Ask questions back",sub:"Good candidates are curious about the role and company."},
-  {tip:"You belong here",sub:"You were invited to interview because they see potential in you."},
-  {tip:"Let us go!",sub:"Your interview is about to begin. Good luck!"}
-];
+var _prepRole='';
 
 function prepInterview(){
   var role=document.getElementById('simRole').value.trim();
@@ -261,60 +263,72 @@ function prepInterview(){
 }
 
 function _doPrep(role){
-  audioEnabled=document.getElementById('audioToggle').checked;
+  _prepRole=role;
+  var voiceVal=document.getElementById('voiceGender').value;
+  audioEnabled=(voiceVal!=='off');
   camEnabled=document.getElementById('camMode').checked;
   autoSend=document.getElementById('autoSendMode').checked;
 
   document.getElementById('setupForm').style.display='none';
-  document.getElementById('countdownScreen').style.display='block';
+  document.getElementById('readyScreen').style.display='block';
 
-  var micOk=false,camOk=false;
   var micEl=document.getElementById('micStatus');
   var camEl=document.getElementById('camStatus');
+  var beginBtn=document.getElementById('beginBtn');
+  var pending=0;
+
+  function checkReady(){
+    if(pending<=0){beginBtn.disabled=false;beginBtn.textContent='Begin Interview';}
+  }
 
   // Request mic
+  pending++;
   navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
     s.getTracks().forEach(function(t){t.stop();});
-    micOk=true;micEl.className='countdown-check ok';micEl.innerHTML='&#10003; Microphone ready';
-  }).catch(function(){micEl.innerHTML='&#10007; Microphone denied';});
+    micEl.className='countdown-check ok';micEl.innerHTML='&#10003; Microphone ready';
+    pending--;checkReady();
+  }).catch(function(){
+    micEl.className='countdown-check ok';micEl.innerHTML='&#10007; Microphone unavailable (type instead)';
+    pending--;checkReady();
+  });
 
   // Request camera if enabled
   if(camEnabled){
     camEl.style.display='flex';
+    pending++;
     navigator.mediaDevices.getUserMedia({video:true}).then(function(s){
       document.getElementById('camVideo').srcObject=s;
-      camOk=true;camEl.className='countdown-check ok';camEl.innerHTML='&#10003; Camera ready';
-    }).catch(function(){camEl.innerHTML='&#10007; Camera denied';camEnabled=false;});
+      camEl.className='countdown-check ok';camEl.innerHTML='&#10003; Camera ready';
+      pending--;checkReady();
+    }).catch(function(){
+      camEl.innerHTML='&#10007; Camera unavailable';camEnabled=false;
+      pending--;checkReady();
+    });
   } else {
     camEl.style.display='none';
+    if(pending<=0){beginBtn.disabled=false;beginBtn.textContent='Begin Interview';}
   }
+}
 
-  // Start countdown
-  var count=10;
+function beginCountdown(){
+  document.getElementById('readyScreen').style.display='none';
+  document.getElementById('countdownScreen').style.display='block';
+  var count=3;
   var numEl=document.getElementById('countNum');
-  var tipEl=document.getElementById('countTip');
-  var subEl=document.getElementById('countSub');
 
   function tick(){
-    var idx=10-count;
-    if(idx<wisdomTips.length){
-      tipEl.textContent=wisdomTips[idx].tip;
-      subEl.textContent=wisdomTips[idx].sub;
-    }
     numEl.textContent=count;
     numEl.style.animation='none';numEl.offsetHeight;numEl.style.animation='countPop .5s ease';
-
     if(count<=0){
       document.getElementById('countdownScreen').style.display='none';
       if(camEnabled){document.getElementById('camWrap').style.display='block';}
-      startInterview(role);
+      startInterview(_prepRole);
       return;
     }
     count--;
     setTimeout(tick,1000);
   }
-
-  setTimeout(tick,500);
+  tick();
 }
 
 function startInterview(role){
