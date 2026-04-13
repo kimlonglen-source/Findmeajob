@@ -19,6 +19,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
+html,body{overflow-x:hidden}
 body{background:#fff;color:#0f172a;font-family:'Inter',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
 a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
 .nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid #f1f5f9;position:sticky;top:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(12px)}
@@ -184,7 +185,36 @@ body.dark .countdown-sub{color:#94a3b8}
 .footer{text-align:center;padding:2rem;border-top:1px solid #f1f5f9;margin-top:3rem}
 .footer p{font-size:.78rem;color:#94a3b8}
 .ai-disclaimer{font-size:.68rem;color:#cbd5e1;margin-top:.5rem;max-width:500px;margin-left:auto;margin-right:auto}
-@media(max-width:640px){.nav{padding:.75rem 1rem}.nav-links{gap:.75rem}.nav-links a:not(.nav-cta){display:none}h1{font-size:1.6rem}.container{padding:1.5rem 1rem 3rem}}
+@media(max-width:640px){
+  .nav{padding:.75rem 1rem}
+  .nav-links{gap:.5rem}
+  .nav-links a:not(.nav-cta){display:none}
+  .nav-links .nav-cta{font-size:.72rem;padding:.4rem .85rem}
+  h1{font-size:1.5rem}
+  .container{padding:1rem .85rem 2rem}
+  .subtitle{font-size:.85rem}
+  .card{padding:1.25rem}
+  .interview-layout .chat-layout{flex-direction:column !important}
+  .cam-wrap{position:relative !important;top:auto !important;max-width:100% !important;min-width:auto !important;flex-direction:row !important;display:none;border-radius:12px}
+  .cam-wrap .office-bg{padding:.75rem;border-radius:12px 12px 0 0}
+  .cam-wrap .avatar{width:70px;height:80px}
+  .cam-wrap .avatar-head{width:48px;height:52px}
+  .cam-wrap .avatar-info{padding:.35rem .5rem .5rem}
+  .cam-wrap .avatar-name{font-size:.68rem}
+  .msg{padding:.6rem .85rem;font-size:.8rem;line-height:1.55}
+  .msg-content{max-width:78%}
+  .msg-avatar{width:24px;height:24px;font-size:.6rem}
+  .msg-label{font-size:.55rem}
+  .chat-bar{gap:.3rem;padding:.6rem 0}
+  .chat-bar textarea{padding:.55rem .7rem;font-size:13px;min-height:40px}
+  .chat-bar button{padding:.55rem .7rem;font-size:.78rem}
+  .mic-btn{min-width:40px !important;padding:.55rem !important}
+  .status-bar{padding:.4rem .6rem;font-size:.68rem}
+  .end-btn{font-size:.82rem;padding:.65rem}
+  .score-big{font-size:2.5rem}
+  .fb-item{padding:.85rem}
+  .fb-text{font-size:.78rem}
+}
 body.dark{background:#09090b;color:#f8fafc}
 body.dark a{color:#10b981}
 body.dark .nav{background:rgba(9,9,11,.95);border-color:rgba(255,255,255,.06)}
@@ -318,7 +348,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
     </div>
 
     <!-- Avatar + Chat side by side -->
-    <div style="display:flex;gap:.5rem;margin-top:.5rem;align-items:flex-start">
+    <div class="chat-layout" style="display:flex;gap:.5rem;margin-top:.5rem;align-items:flex-start">
       <div class="cam-wrap" id="camWrap">
         <div class="office-bg">
           <div class="avatar" id="avatarWrap">
@@ -418,15 +448,20 @@ function _doPrep(){
   var micEl=document.getElementById('micStatus');
   var beginBtn=document.getElementById('beginBtn');
 
-  // Request mic
-  navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
-    s.getTracks().forEach(function(t){t.stop();});
-    micEl.className='countdown-check ok';micEl.innerHTML='&#10003; Microphone ready';
+  // Request mic — handle mobile browsers
+  if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
+    navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
+      s.getTracks().forEach(function(t){t.stop();});
+      micEl.className='countdown-check ok';micEl.innerHTML='&#10003; Microphone ready';
+      beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
+    }).catch(function(){
+      micEl.className='countdown-check ok';micEl.innerHTML='&#10007; Microphone unavailable (type instead)';
+      beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
+    });
+  } else {
+    micEl.className='countdown-check ok';micEl.innerHTML='&#10007; Microphone not supported (type instead)';
     beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
-  }).catch(function(){
-    micEl.className='countdown-check ok';micEl.innerHTML='&#10007; Microphone unavailable (type instead)';
-    beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
-  });
+  }
 }
 
 function beginCountdown(){
