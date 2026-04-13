@@ -71,26 +71,34 @@ input::placeholder,textarea::placeholder{color:#94a3b8}
 .salary-mid-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8}
 
 /* --- Salary Range Bar --- */
-.salary-bar-container{position:relative;max-width:440px;margin:1.5rem auto 0;padding:28px .5rem 0}
-.salary-bar-track{position:relative;height:14px;background:#e2e8f0;border-radius:999px}
+.salary-bar-container{position:relative;max-width:480px;margin:1.75rem auto 0;padding:0 .5rem}
+.salary-bar-track{position:relative;height:18px;background:#e2e8f0;border-radius:999px;overflow:visible}
 .salary-bar-clip{position:absolute;top:0;left:0;width:100%;height:100%;border-radius:999px;overflow:hidden}
-.salary-bar-fill{position:absolute;top:0;left:0;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#bbf7d0 0%,#34d399 30%,#10b981 60%,#059669 100%);animation:barGrow 1s cubic-bezier(.22,1,.36,1) forwards}
+.salary-bar-fill{position:absolute;top:0;left:0;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#a7f3d0 0%,#34d399 25%,#10b981 50%,#059669 75%,#047857 100%);box-shadow:0 2px 12px rgba(16,185,129,.25)}
+.salary-bar-fill.animate{animation:barGrow 1.1s cubic-bezier(.22,1,.36,1) forwards}
 @keyframes barGrow{0%{width:0}100%{width:100%}}
-.salary-bar-segment{position:absolute;top:0;height:100%;border-right:2px solid rgba(255,255,255,.45);z-index:1}
-.salary-bar-marker{position:absolute;top:50%;width:18px;height:18px;background:#fff;border:3px solid #059669;border-radius:50%;transform:translate(-50%,-50%) scale(0);box-shadow:0 2px 8px rgba(5,150,105,.35);animation:markerPop .4s cubic-bezier(.34,1.56,.64,1) .85s forwards;z-index:2}
+.salary-bar-tick{position:absolute;top:-4px;width:2px;height:26px;background:rgba(255,255,255,.55);z-index:1;border-radius:1px}
+.salary-bar-marker{position:absolute;top:50%;width:22px;height:22px;background:#fff;border:3px solid #059669;border-radius:50%;transform:translate(-50%,-50%) scale(0);box-shadow:0 2px 10px rgba(5,150,105,.4),0 0 0 4px rgba(16,185,129,.12);z-index:3}
+.salary-bar-marker.animate{animation:markerPop .45s cubic-bezier(.34,1.56,.64,1) .9s forwards}
 @keyframes markerPop{0%{transform:translate(-50%,-50%) scale(0)}100%{transform:translate(-50%,-50%) scale(1)}}
-.salary-bar-marker-label{position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:.62rem;font-weight:700;color:#059669;white-space:nowrap;opacity:0;animation:fadeIn .3s ease .95s forwards}
-@keyframes fadeIn{to{opacity:1}}
-.salary-bar-labels{display:flex;justify-content:space-between;max-width:440px;margin:.5rem auto 0;padding:0 .5rem;font-size:.7rem;color:#94a3b8;font-weight:600}
+.salary-bar-marker-label{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);font-size:.65rem;font-weight:800;color:#059669;white-space:nowrap;opacity:0;background:rgba(240,253,244,.95);padding:2px 8px;border-radius:6px;border:1px solid #bbf7d0;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.salary-bar-marker-label.animate{animation:fadeSlideIn .4s ease .95s forwards}
+.salary-bar-marker-label::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#bbf7d0}
+@keyframes fadeSlideIn{0%{opacity:0;transform:translateX(-50%) translateY(4px)}100%{opacity:1;transform:translateX(-50%) translateY(0)}}
+.salary-bar-labels{display:flex;justify-content:space-between;position:relative;max-width:480px;margin:.6rem auto 0;padding:0 .5rem;font-size:.72rem;color:#94a3b8;font-weight:600}
 .salary-bar-labels span{display:flex;flex-direction:column;align-items:center;gap:1px}
 .salary-bar-labels .bar-label-tag{font-size:.58rem;text-transform:uppercase;letter-spacing:.3px;opacity:.7}
+.salary-bar-labels .bar-label-mid{position:absolute;display:flex;flex-direction:column;align-items:center;gap:1px;transform:translateX(-50%);opacity:0}
+.salary-bar-labels .bar-label-mid.animate{animation:fadeSlideIn .4s ease 1.1s forwards}
 /* dark mode overrides for salary bar */
 body.dark .salary-bar-track{background:rgba(255,255,255,.08)}
 body.dark .salary-bar-clip{background:transparent}
-body.dark .salary-bar-fill{background:linear-gradient(90deg,rgba(52,211,153,.3) 0%,#34d399 30%,#10b981 60%,#059669 100%)}
-body.dark .salary-bar-segment{border-right-color:rgba(0,0,0,.3)}
-body.dark .salary-bar-marker{background:#1e293b;border-color:#34d399;box-shadow:0 2px 8px rgba(16,185,129,.4)}
-body.dark .salary-bar-marker-label{color:#34d399}
+body.dark .salary-bar-fill{background:linear-gradient(90deg,rgba(167,243,208,.2) 0%,#34d399 25%,#10b981 50%,#059669 75%,#047857 100%);box-shadow:0 2px 12px rgba(16,185,129,.2)}
+body.dark .salary-bar-tick{background:rgba(0,0,0,.35)}
+body.dark .salary-bar-marker{background:#1e293b;border-color:#34d399;box-shadow:0 2px 10px rgba(16,185,129,.45),0 0 0 4px rgba(16,185,129,.15)}
+body.dark .salary-bar-marker-label{color:#34d399;background:rgba(30,41,59,.95);border-color:rgba(52,211,153,.3)}
+body.dark .salary-bar-marker-label::after{border-top-color:rgba(52,211,153,.3)}
+body.dark .salary-bar-labels{color:#64748b}
 
 .insight-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:1.25rem;margin-bottom:.75rem}
 .insight-card h3{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;margin-bottom:.5rem}
@@ -384,9 +392,13 @@ function showResult(r) {
   /* Calculate the midpoint position as a percentage of the range */
   var range = high - low;
   var midPct = range > 0 ? ((mid - low) / range) * 100 : 50;
-  /* Clamp between 5% and 95% so the marker stays visible */
-  if (midPct < 5) midPct = 5;
-  if (midPct > 95) midPct = 95;
+  /* Clamp between 8% and 92% so the marker and label stay visible */
+  if (midPct < 8) midPct = 8;
+  if (midPct > 92) midPct = 92;
+
+  /* Calculate quarter positions for tick marks */
+  var q1 = range > 0 ? (((low + (mid - low) * 0.5) - low) / range) * 100 : 25;
+  var q3 = range > 0 ? (((mid + (high - mid) * 0.5) - low) / range) * 100 : 75;
 
   var html = "<div class=\"card salary-hero\">" +
     "<div class=\"salary-range-label\">Salary Range (NZD per year)</div>" +
@@ -396,16 +408,18 @@ function showResult(r) {
     "<div class=\"salary-bar-container\">" +
       "<div class=\"salary-bar-track\">" +
         "<div class=\"salary-bar-clip\">" +
-          "<div class=\"salary-bar-fill\"></div>" +
-          "<div class=\"salary-bar-segment\" style=\"left:33.3%\"></div>" +
-          "<div class=\"salary-bar-segment\" style=\"left:66.6%\"></div>" +
+          "<div class=\"salary-bar-fill\" id=\"salaryBarFill\"></div>" +
         "</div>" +
-        "<div class=\"salary-bar-marker\" style=\"left:" + midPct.toFixed(1) + "%\">" +
-          "<div class=\"salary-bar-marker-label\">" + fmt(mid) + "</div>" +
+        "<div class=\"salary-bar-tick\" style=\"left:" + q1.toFixed(1) + "%\"></div>" +
+        "<div class=\"salary-bar-tick\" style=\"left:" + midPct.toFixed(1) + "%\"></div>" +
+        "<div class=\"salary-bar-tick\" style=\"left:" + q3.toFixed(1) + "%\"></div>" +
+        "<div class=\"salary-bar-marker\" id=\"salaryBarMarker\" style=\"left:" + midPct.toFixed(1) + "%\">" +
+          "<div class=\"salary-bar-marker-label\" id=\"salaryBarMarkerLabel\">Median " + fmt(mid) + "</div>" +
         "</div>" +
       "</div>" +
       "<div class=\"salary-bar-labels\">" +
         "<span><span class=\"bar-label-tag\">Low</span>" + fmt(low) + "</span>" +
+        "<span class=\"bar-label-mid\" id=\"salaryBarMidLabel\" style=\"left:" + midPct.toFixed(1) + "%\"><span class=\"bar-label-tag\">Mid</span>" + fmt(mid) + "</span>" +
         "<span><span class=\"bar-label-tag\">High</span>" + fmt(high) + "</span>" +
       "</div>" +
     "</div>" +
@@ -432,6 +446,18 @@ function showResult(r) {
   document.getElementById("loading").style.display = "none";
   document.getElementById("result").innerHTML = html;
   document.getElementById("result").style.display = "block";
+
+  /* Trigger bar animations after DOM insertion via requestAnimationFrame */
+  requestAnimationFrame(function() {
+    var fill = document.getElementById("salaryBarFill");
+    var marker = document.getElementById("salaryBarMarker");
+    var markerLabel = document.getElementById("salaryBarMarkerLabel");
+    var midLabel = document.getElementById("salaryBarMidLabel");
+    if (fill) fill.classList.add("animate");
+    if (marker) marker.classList.add("animate");
+    if (markerLabel) markerLabel.classList.add("animate");
+    if (midLabel) midLabel.classList.add("animate");
+  });
 }
 
 function escHtml(s) {
