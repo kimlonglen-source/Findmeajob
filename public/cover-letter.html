@@ -216,7 +216,40 @@ body.dark .or-divider{color:#64748b}
   <div class="ai-disclaimer">AI Disclaimer: Results are AI-generated estimates and suggestions, not professional advice. Always verify independently.</div>
 </footer>
 
+<div id="email-gate" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(4px)">
+  <div style="background:#fff;border-radius:20px;padding:2rem;max-width:400px;width:100%;text-align:center;box-shadow:0 25px 60px rgba(0,0,0,.15)">
+    <div style="width:48px;height:48px;background:linear-gradient(135deg,#10b981,#059669);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+    <div style="font-size:1.2rem;font-weight:800;color:#0f172a;margin-bottom:.35rem">Enter your email for unlimited access</div>
+    <div style="font-size:.82rem;color:#64748b;margin-bottom:1.25rem;line-height:1.5">All 12 AI tools stay free forever. We will also send you weekly NZ job matches.</div>
+    <input type="email" id="gate-email" placeholder="your@email.com" style="width:100%;padding:.75rem 1rem;border:1px solid #e2e8f0;border-radius:12px;font-family:Inter,sans-serif;font-size:15px;outline:none;margin-bottom:.75rem;color:#0f172a">
+    <button onclick="submitGateEmail()" id="gate-btn" style="width:100%;padding:.85rem;background:#10b981;color:#fff;border:none;border-radius:999px;font-family:Inter,sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s">Continue</button>
+    <div style="font-size:.68rem;color:#94a3b8;margin-top:.75rem">No spam. Unsubscribe anytime. No password needed.</div>
+  </div>
+</div>
+
 <script>
+/* Email gate */
+var _gateCallback = null;
+function checkGate(callback) {
+  if (localStorage.getItem('fmaj_email')) { callback(); return; }
+  var uses = parseInt(localStorage.getItem('fmaj_uses') || '0');
+  if (uses < 1) { localStorage.setItem('fmaj_uses', String(uses + 1)); callback(); return; }
+  _gateCallback = callback;
+  document.getElementById('email-gate').style.display = 'flex';
+  setTimeout(function(){ document.getElementById('gate-email').focus(); }, 100);
+}
+function submitGateEmail() {
+  var email = document.getElementById('gate-email').value.trim();
+  if (!email || email.indexOf('@') === -1) { document.getElementById('gate-email').style.borderColor = '#ef4444'; return; }
+  document.getElementById('gate-btn').textContent = 'Saving...';
+  document.getElementById('gate-btn').disabled = true;
+  localStorage.setItem('fmaj_email', email);
+  localStorage.setItem('fmaj_uses', '999');
+  fetch('/api/seeker', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({action:'register', email:email, password:'__tool_gate__', name:email.split('@')[0], emailAlerts:true})}).catch(function(){});
+  document.getElementById('email-gate').style.display = 'none';
+  if (_gateCallback) { _gateCallback(); _gateCallback = null; }
+}
+
 var cvText = "";
 var cvFileData = null;
 
@@ -265,6 +298,9 @@ async function generate() {
   if (!jobDesc) { alert("Please paste the job description."); return; }
   if (!experience && !hasCv) { alert("Please upload your CV or describe your experience."); return; }
 
+  checkGate(function(){ _doGenerate(name, role, company, jobDesc, experience, tone); });
+}
+async function _doGenerate(name, role, company, jobDesc, experience, tone) {
   var btn = document.getElementById("generateBtn");
   btn.disabled = true;
   document.getElementById("formSection").style.display = "none";
