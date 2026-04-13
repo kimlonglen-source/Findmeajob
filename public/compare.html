@@ -62,9 +62,19 @@ textarea::placeholder{color:#94a3b8}
 .loading p{color:#64748b;font-size:.88rem}
 
 #result{display:none}
-.winner-banner{text-align:center;padding:1.5rem;border-radius:16px;margin-bottom:1.25rem;background:#f0fdf4;border:2px solid #10b981}
+.winner-banner{text-align:center;padding:1.5rem;border-radius:16px;margin-bottom:1.25rem;background:#f0fdf4;border:2px solid #10b981;opacity:0;transform:translateY(-30px);transition:opacity .6s ease,transform .6s ease}
+.winner-banner.slide-in{opacity:1;transform:translateY(0)}
 .winner-banner h2{font-size:1.3rem;font-weight:900;color:#059669;margin-bottom:.25rem}
 .winner-banner p{font-size:.88rem;color:#064e3b;line-height:1.5}
+.winner-trophy{font-size:2.5rem;margin-bottom:.5rem;display:block;animation:trophyBounce 1s ease-in-out}
+@keyframes trophyBounce{0%{transform:scale(0) rotate(-20deg);opacity:0}50%{transform:scale(1.3) rotate(5deg);opacity:1}70%{transform:scale(.9) rotate(-3deg)}100%{transform:scale(1) rotate(0)}}
+.winner-card-glow{box-shadow:0 0 20px rgba(16,185,129,.35),0 0 60px rgba(16,185,129,.15);border-color:#10b981 !important;transition:box-shadow .6s ease}
+body.dark .winner-card-glow{box-shadow:0 0 25px rgba(16,185,129,.3),0 0 70px rgba(16,185,129,.1)}
+.confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9998;overflow:hidden}
+.confetti-piece{position:absolute;top:-10px;width:10px;height:10px;opacity:0;animation:confettiFall var(--fall-duration, 3s) ease-in forwards;animation-delay:var(--fall-delay, 0s)}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(0) rotate(0deg) scale(1)}25%{opacity:1;transform:translateY(25vh) rotate(180deg) scale(.9)}50%{opacity:.9;transform:translateY(50vh) rotate(360deg) scale(.8)}100%{opacity:0;transform:translateY(105vh) rotate(720deg) scale(.4)}}
+.sparkle{position:absolute;width:6px;height:6px;border-radius:50%;background:radial-gradient(circle,#fbbf24,transparent);pointer-events:none;animation:sparkleAnim 1.2s ease-out forwards;animation-delay:var(--sparkle-delay, 0s)}
+@keyframes sparkleAnim{0%{transform:scale(0);opacity:1}50%{transform:scale(1.5);opacity:.8}100%{transform:scale(0);opacity:0}}
 
 .compare-table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;margin-bottom:1rem}
 .compare-table th{background:#f8fafc;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;padding:.75rem 1rem;text-align:left;border-bottom:1px solid #e2e8f0}
@@ -144,8 +154,10 @@ body.dark .red-flags-section{background:#0f172a;border-color:rgba(255,255,255,.0
 body.dark .compare-table{color:#f8fafc}
 body.dark .compare-table th{background:#0f172a;color:#94a3b8}
 body.dark .compare-table td{border-color:rgba(255,255,255,.06)}
-body.dark .winner-banner{background:#0f172a !important;border-color:rgba(255,255,255,.06) !important}
-body.dark .winner-banner h2,body.dark .winner-banner p{color:#f8fafc !important}
+body.dark .winner-banner{background:#0f172a !important;border-color:#10b981 !important}
+body.dark .winner-banner h2{color:#10b981 !important}
+body.dark .winner-banner p{color:#94a3b8 !important}
+body.dark .compare-table .winner-cell{background:rgba(16,185,129,.08)}
 body.dark .qa-item{background:#0f172a;border-color:rgba(255,255,255,.06)}
 body.dark .qa-question{color:#f8fafc}
 body.dark .qa-answer-text{color:#94a3b8}
@@ -296,12 +308,70 @@ async function _doCompare(jobA, jobB) {
   }
 }
 
+function launchConfetti() {
+  var container = document.createElement("div");
+  container.className = "confetti-container";
+  document.body.appendChild(container);
+  var colors = ["#10b981","#3b82f6","#8b5cf6","#f59e0b","#ef4444","#ec4899","#06b6d4","#fbbf24"];
+  var shapes = ["circle","square","triangle"];
+  for (var i = 0; i < 80; i++) {
+    var piece = document.createElement("div");
+    piece.className = "confetti-piece";
+    var color = colors[Math.floor(Math.random() * colors.length)];
+    var shape = shapes[Math.floor(Math.random() * shapes.length)];
+    var size = 6 + Math.random() * 10;
+    piece.style.left = Math.random() * 100 + "%";
+    piece.style.width = size + "px";
+    piece.style.height = size + "px";
+    piece.style.setProperty("--fall-duration", (2.5 + Math.random() * 2) + "s");
+    piece.style.setProperty("--fall-delay", (Math.random() * 1.2) + "s");
+    if (shape === "circle") {
+      piece.style.borderRadius = "50%";
+      piece.style.background = color;
+    } else if (shape === "square") {
+      piece.style.borderRadius = "2px";
+      piece.style.background = color;
+      piece.style.transform = "rotate(" + (Math.random() * 360) + "deg)";
+    } else {
+      piece.style.width = "0";
+      piece.style.height = "0";
+      piece.style.borderLeft = (size / 2) + "px solid transparent";
+      piece.style.borderRight = (size / 2) + "px solid transparent";
+      piece.style.borderBottom = size + "px solid " + color;
+      piece.style.background = "none";
+    }
+    container.appendChild(piece);
+  }
+  setTimeout(function() { container.remove(); }, 5500);
+}
+
+function addSparkles(element) {
+  var rect = element.getBoundingClientRect();
+  for (var i = 0; i < 18; i++) {
+    var sparkle = document.createElement("div");
+    sparkle.className = "sparkle";
+    sparkle.style.left = (rect.left + Math.random() * rect.width) + "px";
+    sparkle.style.top = (rect.top + Math.random() * rect.height) + "px";
+    sparkle.style.setProperty("--sparkle-delay", (Math.random() * 1.5) + "s");
+    var size = 4 + Math.random() * 8;
+    sparkle.style.width = size + "px";
+    sparkle.style.height = size + "px";
+    var sparkleColors = ["#fbbf24","#10b981","#3b82f6","#f59e0b","#ec4899"];
+    sparkle.style.background = "radial-gradient(circle," + sparkleColors[Math.floor(Math.random() * sparkleColors.length)] + ",transparent)";
+    document.body.appendChild(sparkle);
+    (function(el){ setTimeout(function(){ el.remove(); }, 3000); })(sparkle);
+  }
+}
+
 function showResult(r) {
   var winnerName = r.winner === "A" ? "Job A" : "Job B";
   var winnerColor = r.winner === "A" ? "#3b82f6" : "#8b5cf6";
+  var winnerTitle = escHtml(r.winner === "A" ? r.jobA.title : r.jobB.title);
 
-  var html = "<div class=\"winner-banner\">" +
-    "<h2>\uD83C\uDFC6 Winner: " + winnerName + " (" + escHtml(r.winner === "A" ? r.jobA.title : r.jobB.title) + ")</h2>" +
+  var html = "<div class=\"winner-banner\" id=\"winnerBanner\">" +
+    "<span class=\"winner-trophy\">\uD83D\uDC51</span>" +
+    "<h2>Winner: " + winnerName + "</h2>" +
+    "<p style=\"font-size:1.05rem;font-weight:700;margin-bottom:.35rem;color:" + winnerColor + "\">" + winnerTitle + "</p>" +
     "<p>" + escHtml(r.reason) + "</p></div>";
 
   var fields = [
@@ -315,7 +385,8 @@ function showResult(r) {
     {key: "redFlags", label: "Red Flags"}
   ];
 
-  html += "<table class=\"compare-table\"><thead><tr><th>Category</th><th>Job A</th><th>Job B</th></tr></thead><tbody>";
+  var winnerColIndex = r.winner === "A" ? 1 : 2;
+  html += "<table class=\"compare-table\" id=\"compareTable\"><thead><tr><th>Category</th><th" + (r.winner === "A" ? " class=\"winner-card-glow\"" : "") + ">Job A" + (r.winner === "A" ? " \uD83D\uDC51" : "") + "</th><th" + (r.winner === "B" ? " class=\"winner-card-glow\"" : "") + ">Job B" + (r.winner === "B" ? " \uD83D\uDC51" : "") + "</th></tr></thead><tbody>";
 
   for (var i = 0; i < fields.length; i++) {
     var f = fields[i];
@@ -345,6 +416,16 @@ function showResult(r) {
   document.getElementById("loading").style.display = "none";
   document.getElementById("result").innerHTML = html;
   document.getElementById("result").style.display = "block";
+
+  /* Trigger winner banner slide-in animation */
+  var banner = document.getElementById("winnerBanner");
+  if (banner) {
+    setTimeout(function() {
+      banner.classList.add("slide-in");
+      launchConfetti();
+      setTimeout(function() { addSparkles(banner); }, 400);
+    }, 100);
+  }
 }
 
 function escHtml(s) {
