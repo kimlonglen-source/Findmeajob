@@ -194,13 +194,32 @@ body.dark .countdown-sub{color:#94a3b8}
   .container{padding:1rem .85rem 2rem}
   .subtitle{font-size:.85rem}
   .card{padding:1.25rem}
-  .interview-layout .chat-layout{flex-direction:column !important}
-  .cam-wrap{position:relative !important;top:auto !important;max-width:100% !important;min-width:auto !important;flex-direction:row !important;display:none;border-radius:12px}
-  .cam-wrap .office-bg{padding:.75rem;border-radius:12px 12px 0 0}
-  .cam-wrap .avatar{width:70px;height:80px}
-  .cam-wrap .avatar-head{width:48px;height:52px}
-  .cam-wrap .avatar-info{padding:.35rem .5rem .5rem}
-  .cam-wrap .avatar-name{font-size:.68rem}
+  .chat-layout{flex-direction:column !important}
+  .cam-wrap{position:sticky !important;top:65px !important;max-width:100% !important;min-width:auto !important;display:none;border-radius:12px;z-index:50;flex-direction:row;align-self:stretch}
+  .cam-wrap .office-bg{padding:.5rem .75rem;border-radius:12px 0 0 12px;display:flex;align-items:center;justify-content:center}
+  .cam-wrap .avatar{width:50px;height:55px;margin:0}
+  .cam-wrap .avatar-head{width:36px;height:40px}
+  .cam-wrap .avatar-hair.hair-female{width:44px;height:22px;top:-5px}
+  .cam-wrap .avatar-hair.hair-female::before,.cam-wrap .avatar-hair.hair-female::after{width:10px;height:30px;top:12px}
+  .cam-wrap .avatar-hair.hair-male{width:40px;height:18px;top:-3px}
+  .cam-wrap .avatar-body{width:44px;height:18px;bottom:-5px}
+  .cam-wrap .avatar-neck{width:12px;height:8px;bottom:10px}
+  .cam-wrap .avatar-ears{top:14px}
+  .cam-wrap .avatar-ear{width:6px;height:9px}
+  .cam-wrap .avatar-ear.l{left:6px}
+  .cam-wrap .avatar-ear.r{right:6px}
+  .cam-wrap .avatar-eyes{top:16px;gap:10px}
+  .cam-wrap .avatar-eye{width:8px;height:9px}
+  .cam-wrap .avatar-pupil{width:4px;height:4px;top:2.5px;left:2px}
+  .cam-wrap .avatar-eyebrows{top:12px;gap:12px}
+  .cam-wrap .avatar-brow{width:8px;height:2px}
+  .cam-wrap .avatar-nose{top:22px;width:4px;height:5px}
+  .cam-wrap .avatar-mouth{bottom:8px}
+  .cam-wrap .mouth-shape{width:10px;height:3px}
+  .cam-wrap .avatar-info{display:flex;align-items:center;gap:.5rem;padding:.5rem .75rem;flex:1}
+  .cam-wrap .avatar-name{font-size:.78rem}
+  .cam-wrap .avatar-role{font-size:.62rem;display:none}
+  .cam-wrap .avatar-status{margin-top:0;font-size:.58rem}
   .msg{padding:.6rem .85rem;font-size:.8rem;line-height:1.55}
   .msg-content{max-width:78%}
   .msg-avatar{width:24px;height:24px;font-size:.6rem}
@@ -214,6 +233,7 @@ body.dark .countdown-sub{color:#94a3b8}
   .score-big{font-size:2.5rem}
   .fb-item{padding:.85rem}
   .fb-text{font-size:.78rem}
+  .office-bg::before,.office-bg::after{display:none !important}
 }
 body.dark{background:#09090b;color:#f8fafc}
 body.dark a{color:#10b981}
@@ -475,7 +495,7 @@ function beginCountdown(){
     numEl.style.animation='none';numEl.offsetHeight;numEl.style.animation='countPop .5s ease';
     if(count<=0){
       document.getElementById('countdownScreen').style.display='none';
-      document.getElementById('camWrap').style.display='block';
+      var cw=document.getElementById('camWrap');cw.style.display=window.innerWidth<=640?'flex':'block';
       startInterview(_prepRole);
       return;
     }
