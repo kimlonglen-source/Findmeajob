@@ -306,7 +306,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
     <button class="btn" onclick="goStep2()">Next — Set Up Audio</button>
   </div>
 
-  <!-- STEP 2: Audio + Camera -->
+  <!-- STEP 2: Audio -->
   <div id="step2" style="display:none">
     <div class="card">
       <div style="font-size:.72rem;font-weight:700;color:#10b981;text-transform:uppercase;letter-spacing:1px;margin-bottom:.75rem">Step 2 of 3 — Audio</div>
@@ -316,6 +316,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
       <div style="display:flex;flex-direction:column;gap:.65rem;margin-top:.5rem">
         <label style="display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;font-size:.85rem;color:#475569;line-height:1.5"><input type="checkbox" id="autoSendMode" style="accent-color:#10b981;width:18px;height:18px;margin-top:2px" checked> <span><strong style="color:#0f172a">Auto-send answers</strong><br><span style="font-size:.78rem;color:#94a3b8">When you stop talking for 5 seconds, your answer submits automatically</span></span></label>
       </div>
+      <div id="step2MicStatus" style="margin-top:1rem;padding:.75rem;border-radius:12px;text-align:center;font-size:.82rem;font-weight:600;display:none"></div>
     </div>
     <div style="display:flex;gap:.5rem">
       <button class="btn" onclick="document.getElementById('step2').style.display='none';document.getElementById('setupForm').style.display='block'" style="background:#f8fafc;color:#64748b;border:1px solid #e2e8f0;box-shadow:none;flex:0 0 auto;width:auto;padding:.85rem 1.5rem">Back</button>
@@ -342,15 +343,8 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
         <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#059669">5</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">Get your score</div><div style="font-size:.78rem;color:#64748b">AI scores you out of 100 with feedback on every answer. Learn what to improve.</div></div></div>
       </div>
 
-      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:16px;padding:1.25rem;text-align:center;margin-bottom:1.25rem" id="micRequestBox">
-        <div style="font-size:1.5rem;margin-bottom:.5rem">&#127908;</div>
-        <div style="font-size:.95rem;font-weight:700;color:#0f172a;margin-bottom:.25rem">Could we use your microphone?</div>
-        <div style="font-size:.78rem;color:#64748b;margin-bottom:.85rem;line-height:1.5">This lets you speak your answers like a real interview. You can also type if you prefer.</div>
-        <button id="micAllowBtn" onclick="requestMic()" style="background:#10b981;color:#fff;border:none;padding:.65rem 1.5rem;border-radius:999px;font-family:Inter,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;margin-bottom:.35rem">Allow Microphone</button>
-        <div><button onclick="skipMic()" style="background:none;border:none;color:#94a3b8;font-size:.72rem;cursor:pointer;font-family:Inter,sans-serif;font-weight:600">No thanks, I will type</button></div>
-      </div>
       <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1.25rem;flex-wrap:wrap">
-        <div class="countdown-check wait" id="micStatus" style="display:none">&#9675; Microphone</div>
+        <div class="countdown-check" id="micStatus">&#9675; Microphone</div>
       </div>
       <button class="btn" id="beginBtn" onclick="beginCountdown()" disabled style="max-width:320px;margin:0 auto">Setting up...</button>
       <div style="text-align:center;margin-top:.5rem"><button onclick="document.getElementById('readyScreen').style.display='none';document.getElementById('step2').style.display='block'" style="background:none;border:none;color:#64748b;font-size:.78rem;cursor:pointer;font-family:Inter,sans-serif">Back to settings</button></div>
@@ -454,6 +448,39 @@ function goStep2(){
   if(!role){alert('Please enter the job title you are interviewing for.');return;}
   document.getElementById('setupForm').style.display='none';
   document.getElementById('step2').style.display='block';
+  // Request mic permission immediately when step 2 appears
+  requestMicEarly();
+}
+
+function requestMicEarly(){
+  var statusEl=document.getElementById('step2MicStatus');
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){statusEl.style.display='none';return;}
+  statusEl.style.display='block';
+  statusEl.style.background='#f0fdf4';statusEl.style.color='#059669';statusEl.style.border='1px solid #bbf7d0';
+  statusEl.innerHTML='&#127908; Requesting microphone access...';
+  navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
+    _micStream=s;
+    statusEl.style.background='#f0fdf4';statusEl.style.color='#059669';statusEl.style.border='1px solid #bbf7d0';
+    statusEl.innerHTML='&#10003; Microphone allowed — you can speak your answers';
+  }).catch(function(){
+    statusEl.style.background='#fef2f2';statusEl.style.color='#dc2626';statusEl.style.border='1px solid #fecaca';
+    statusEl.innerHTML='&#10007; Microphone blocked — <a href="#" onclick="event.preventDefault();retryMicStep2()" style="color:#dc2626;font-weight:700;text-decoration:underline">Try again</a> or type your answers instead'
+      +'<div style="font-size:.72rem;color:#94a3b8;margin-top:.35rem;font-weight:400">If blocked: open this page in an <strong>Incognito tab</strong>, or go to Chrome &#8942; &rarr; Settings &rarr; Site settings &rarr; Microphone &rarr; Allow findmeajob.co.nz</div>';
+  });
+}
+
+function retryMicStep2(){
+  var statusEl=document.getElementById('step2MicStatus');
+  statusEl.style.background='#f0fdf4';statusEl.style.color='#059669';statusEl.style.border='1px solid #bbf7d0';
+  statusEl.innerHTML='&#127908; Requesting microphone access...';
+  navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
+    _micStream=s;
+    statusEl.style.background='#f0fdf4';statusEl.style.color='#059669';statusEl.style.border='1px solid #bbf7d0';
+    statusEl.innerHTML='&#10003; Microphone allowed — you can speak your answers';
+  }).catch(function(){
+    statusEl.style.background='#fef2f2';statusEl.style.color='#dc2626';statusEl.style.border='1px solid #fecaca';
+    statusEl.innerHTML='&#10007; Still blocked — type your answers or open in Incognito tab';
+  });
 }
 
 function prepInterview(){
@@ -474,83 +501,20 @@ function _doPrep(){
 
   var micEl=document.getElementById('micStatus');
   var beginBtn=document.getElementById('beginBtn');
-  var micBox=document.getElementById('micRequestBox');
 
-  var hasSR=!!(window.SpeechRecognition||window.webkitSpeechRecognition);
-  var hasMD=!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia);
-
-  if(!hasSR||!hasMD){
-    micBox.style.display='none';
-    micEl.style.display='flex';
-    micEl.className='countdown-check ok';micEl.innerHTML='&#10007; Voice not supported (type your answers)';
-    beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
-  }
-}
-
-function requestMic(){
-  var micEl=document.getElementById('micStatus');
-  var beginBtn=document.getElementById('beginBtn');
-  var micBox=document.getElementById('micRequestBox');
-  var allowBtn=document.getElementById('micAllowBtn');
-  allowBtn.textContent='Requesting...';allowBtn.disabled=true;
-
-  function showBlocked(){
-    var isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
-
-    micBox.innerHTML='<div style="font-size:2rem;margin-bottom:.5rem">&#127908;</div>'
-      +'<div style="font-size:.95rem;font-weight:800;color:#0f172a;margin-bottom:.35rem">Microphone needs to be enabled</div>'
-      +'<div style="font-size:.82rem;color:#64748b;margin-bottom:1.25rem;line-height:1.6">The microphone was blocked from a previous visit. Here are two easy ways to fix it:</div>'
-
-      +'<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:1rem;text-align:left;margin-bottom:.75rem;max-width:340px;margin-left:auto;margin-right:auto">'
-      +'<div style="font-size:.8rem;font-weight:800;color:#059669;margin-bottom:.35rem">Option 1 — Quickest (recommended)</div>'
-      +'<div style="font-size:.78rem;color:#475569;line-height:1.6">Open this page in a <strong>Private</strong> or <strong>Incognito</strong> tab. The microphone prompt will appear fresh.</div>'
-      +'<button onclick="navigator.clipboard.writeText(window.location.href).then(function(){this.textContent=\'Link copied!\';}.bind(this))" style="margin-top:.5rem;background:#059669;color:#fff;border:none;padding:.45rem 1rem;border-radius:999px;font-family:Inter,sans-serif;font-size:.75rem;font-weight:700;cursor:pointer">Copy Link to Open in Private Tab</button>'
-      +'</div>'
-
-      +'<div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1rem;text-align:left;margin-bottom:1rem;max-width:340px;margin-left:auto;margin-right:auto">'
-      +'<div style="font-size:.8rem;font-weight:800;color:#0f172a;margin-bottom:.35rem">Option 2 — Reset permission</div>'
-      +'<div style="font-size:.78rem;color:#475569;line-height:1.6">'
-      +(isIOS
-        ?'Open <strong>Settings</strong> &rarr; <strong>Safari</strong> &rarr; scroll to <strong>Settings for Websites</strong> &rarr; <strong>Microphone</strong> &rarr; <strong>Allow</strong>'
-        :'In Chrome, tap <strong>&#8942;</strong> (three dots, top right) &rarr; <strong>Settings</strong> &rarr; <strong>Site settings</strong> &rarr; <strong>Microphone</strong> &rarr; find <strong>findmeajob.co.nz</strong> in the Blocked list &rarr; tap it &rarr; change to <strong>Allow</strong>')
-      +'</div></div>'
-
-      +'<button onclick="location.reload()" style="background:#10b981;color:#fff;border:none;padding:.7rem 2rem;border-radius:999px;font-family:Inter,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;margin-bottom:.65rem;width:100%;max-width:280px">I fixed it — Try Again</button>'
-      +'<div><button onclick="skipMic()" style="background:none;border:none;color:#94a3b8;font-size:.75rem;cursor:pointer;font-family:Inter,sans-serif;font-weight:600;padding:.35rem">No mic — I will type my answers</button></div>';
-    beginBtn.disabled=false;beginBtn.textContent='Begin Interview (type only)';
-  }
-
-  // Always try getUserMedia — the user tap makes this a "user gesture"
-  // which gives the best chance of the browser showing the permission prompt
-  navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
-    _micStream=s;
-    micBox.style.display='none';
-    micEl.style.display='flex';
+  if(_micStream){
     micEl.className='countdown-check ok';micEl.innerHTML='&#10003; Microphone ready';
-    beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
-  }).catch(function(err){
-    // If NotAllowedError — user denied or browser blocked
-    // If NotFoundError — no mic hardware
-    if(err.name==='NotFoundError'){
-      micBox.style.display='none';
-      micEl.style.display='flex';
-      micEl.className='countdown-check ok';micEl.innerHTML='&#10007; No microphone found (type your answers)';
-      beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
+  } else {
+    var hasSR=!!(window.SpeechRecognition||window.webkitSpeechRecognition);
+    if(hasSR){
+      micEl.className='countdown-check wait';micEl.innerHTML='&#9997; Type mode — mic not enabled';
     } else {
-      showBlocked();
+      micEl.className='countdown-check wait';micEl.innerHTML='&#10007; Voice not supported — type your answers';
     }
-  });
-}
-
-function skipMic(){
-  var micBox=document.getElementById('micRequestBox');
-  var micEl=document.getElementById('micStatus');
-  var beginBtn=document.getElementById('beginBtn');
-  micBox.style.display='none';
-  micEl.style.display='flex';
-  micEl.className='countdown-check ok';micEl.innerHTML='&#9997; Type mode — no microphone';
+  }
   beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
 }
+
 
 function beginCountdown(){
   document.getElementById('readyScreen').style.display='none';
