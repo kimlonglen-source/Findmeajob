@@ -68,7 +68,9 @@ input:focus,select:focus{border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,1
 .end-btn{display:none;width:100%;padding:.75rem;background:#0f172a;color:#fff;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:.5rem}
 .end-btn:hover{background:#1e293b}
 .end-btn:disabled{opacity:.5}
-.q-counter{font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.5rem}
+.q-counter{font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px}
+@keyframes timerPulse{0%,100%{opacity:1}50%{opacity:.5}}
+.timer-warn{animation:timerPulse 1s infinite}
 .audio-toggle{display:flex;align-items:center;gap:.4rem;font-size:.78rem;color:#64748b;margin-bottom:.75rem;cursor:pointer}
 .audio-toggle input{accent-color:#10b981}
 .score-big{font-size:3.5rem;font-weight:900;text-align:center;margin:.5rem 0}
@@ -135,12 +137,21 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
       <div class="field"><label>Interview Style</label>
         <select id="simStyle"><option value="Standard">Standard</option><option value="Behavioural">Behavioural</option><option value="Technical">Technical</option><option value="Casual">Casual</option></select>
       </div>
+      <div class="field"><label>Number of Questions</label>
+        <select id="simCount"><option value="5">5 questions (quick practice)</option><option value="8">8 questions (standard)</option><option value="10">10 questions (full interview)</option></select>
+      </div>
+      <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.82rem;color:#64748b;font-weight:600;margin-top:.5rem"><input type="checkbox" id="timedMode" style="accent-color:#10b981;width:16px;height:16px"> Real-life mode (timed answers)</label>
     </div>
     <button class="btn" onclick="startInterview()">Start Interview</button>
   </div>
 
   <div id="chatSection" style="display:none">
-    <div class="q-counter" id="qCounter">Question 1 of 5</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;flex-wrap:wrap;gap:.5rem">
+      <div class="q-counter" id="qCounter" style="margin:0">Question 1 of 5</div>
+      <div id="timerDisplay" style="display:none;font-size:.82rem;font-weight:700;color:#ef4444;background:#fef2f2;padding:.3rem .75rem;border-radius:999px;border:1px solid #fecaca">
+        <span id="timerIcon">&#9202;</span> <span id="timerText">2:00</span>
+      </div>
+    </div>
     <label class="audio-toggle"><input type="checkbox" id="audioToggle" onchange="audioEnabled=this.checked;document.getElementById('voiceSelect').style.display=this.checked?'block':'none'"> Enable audio (AI speaks questions)</label>
     <div id="voiceSelect" style="display:none;margin-bottom:.75rem">
       <select id="voiceGender" style="padding:.4rem .75rem;border:1px solid #e2e8f0;border-radius:8px;font-family:Inter,sans-serif;font-size:.78rem;color:#0f172a;outline:none">
@@ -189,6 +200,7 @@ function submitGateEmail(){var e=document.getElementById('gate-email').value.tri
 
 /* Interview state */
 var msgs=[],qCount=0,maxQ=5,iData={role:'',company:'',style:'',qa:[]},audioEnabled=false,recog=null;
+var timedMode=false,answerTimer=null,timeLeft=0;
 
 function startInterview(){
   var role=document.getElementById('simRole').value.trim();
@@ -199,20 +211,24 @@ function startInterview(){
 async function _doStart(role){
   var company=document.getElementById('simCompany').value.trim();
   var style=document.getElementById('simStyle').value;
+  maxQ=parseInt(document.getElementById('simCount').value)||5;
+  timedMode=document.getElementById('timedMode').checked;
   iData={role:role,company:company,style:style,qa:[]};
   document.getElementById('setupForm').style.display='none';
   document.getElementById('chatSection').style.display='block';
+  if(timedMode){document.getElementById('timerDisplay').style.display='block';}
   msgs=[{role:'user',content:'Start the interview. Introduce yourself briefly and ask your first question.'}];
   showTyping();dis(true);
   try{
     var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:"You are a professional NZ job interviewer conducting a "+style+" interview for a "+role+" position"+(company?" at "+company:"")+" in New Zealand. Ask ONE question at a time. Be professional and warm. Use NZ workplace context. Do not number questions.",messages:msgs})});
     var d=await r.json();var t=d.content.map(function(b){return b.text||'';}).join('');
-    msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');speak(t);qCount=1;updC();dis(false);
+    msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');speak(t);qCount=1;updC();dis(false);startTimer();
   }catch(e){hideTyping();addMsg('Could not start. Please try again.','ai');dis(false);}
 }
 
 async function sendAnswer(){
   var inp=document.getElementById('userInput');var ans=inp.value.trim();if(!ans)return;
+  stopTimer();
   if(recog){recog.stop();recog=null;document.getElementById('micBtn').classList.remove('rec');}
   inp.value='';inp.style.height='44px';addMsg(ans,'user');
   var lastAi='';for(var i=msgs.length-1;i>=0;i--){if(msgs[i].role==='assistant'){lastAi=msgs[i].content;break;}}
@@ -222,7 +238,8 @@ async function sendAnswer(){
     var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:msgs})});
     var d=await r.json();var t=d.content.map(function(b){return b.text||'';}).join('');
     msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');speak(t);dis(false);
-    if(qCount>=maxQ){document.getElementById('chatInput').style.display='none';document.getElementById('endBtn').style.display='block';}
+    if(qCount>=maxQ){stopTimer();document.getElementById('chatInput').style.display='none';document.getElementById('endBtn').style.display='block';document.getElementById('timerDisplay').style.display='none';}
+    else{startTimer();}
   }catch(e){hideTyping();addMsg('Error. Try again.','ai');dis(false);}
 }
 
@@ -258,8 +275,35 @@ function showScore(r){
 }
 
 /* Audio */
-function speak(t){if(!audioEnabled||!window.speechSynthesis)return;window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.rate=.95;u.lang='en-NZ';var gender=document.getElementById('voiceGender').value;var voices=window.speechSynthesis.getVoices();var match=null;for(var i=0;i<voices.length;i++){var n=voices[i].name.toLowerCase();if(gender==='female'&&(n.indexOf('female')>-1||n.indexOf('fiona')>-1||n.indexOf('karen')>-1||n.indexOf('samantha')>-1||n.indexOf('victoria')>-1||n.indexOf('zira')>-1||n.indexOf('hazel')>-1)){match=voices[i];break;}if(gender==='male'&&(n.indexOf('male')>-1||n.indexOf('daniel')>-1||n.indexOf('james')>-1||n.indexOf('david')>-1||n.indexOf('mark')>-1||n.indexOf('alex')>-1)){match=voices[i];break;}}if(!match){for(var j=0;j<voices.length;j++){if(voices[j].lang.indexOf('en')===0){if(gender==='female'&&j%2===0){match=voices[j];break;}if(gender==='male'&&j%2===1){match=voices[j];break;}}}}if(match)u.voice=match;if(gender==='male'){u.pitch=.85;}else{u.pitch=1.1;}window.speechSynthesis.speak(u);}
+function speak(t){if(!audioEnabled||!window.speechSynthesis)return;window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.rate=.82;u.lang='en-NZ';var gender=document.getElementById('voiceGender').value;var voices=window.speechSynthesis.getVoices();var match=null;for(var i=0;i<voices.length;i++){var n=voices[i].name.toLowerCase();if(gender==='female'&&(n.indexOf('female')>-1||n.indexOf('fiona')>-1||n.indexOf('karen')>-1||n.indexOf('samantha')>-1||n.indexOf('victoria')>-1||n.indexOf('zira')>-1||n.indexOf('hazel')>-1)){match=voices[i];break;}if(gender==='male'&&(n.indexOf('male')>-1||n.indexOf('daniel')>-1||n.indexOf('james')>-1||n.indexOf('david')>-1||n.indexOf('mark')>-1||n.indexOf('alex')>-1)){match=voices[i];break;}}if(!match){for(var j=0;j<voices.length;j++){if(voices[j].lang.indexOf('en')===0){if(gender==='female'&&j%2===0){match=voices[j];break;}if(gender==='male'&&j%2===1){match=voices[j];break;}}}}if(match)u.voice=match;if(gender==='male'){u.pitch=.85;}else{u.pitch=1.1;}window.speechSynthesis.speak(u);}
 window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
+
+/* Timer for real-life mode */
+function startTimer(){
+  stopTimer();
+  if(!timedMode)return;
+  timeLeft=120;
+  var td=document.getElementById('timerDisplay');
+  var tt=document.getElementById('timerText');
+  td.style.display='block';
+  td.classList.remove('timer-warn');
+  td.style.color='#059669';td.style.background='#f0fdf4';td.style.borderColor='#bbf7d0';
+  updTimer();
+  answerTimer=setInterval(function(){
+    timeLeft--;
+    updTimer();
+    if(timeLeft<=30&&timeLeft>0){td.classList.add('timer-warn');td.style.color='#ef4444';td.style.background='#fef2f2';td.style.borderColor='#fecaca';}
+    if(timeLeft<=0){stopTimer();addMsg('Time is up! The interviewer is moving on.','ai');
+      var inp=document.getElementById('userInput');
+      if(inp.value.trim()){sendAnswer();}
+      else{iData.qa.push({q:'(timed out)',a:'(no answer given)'});msgs.push({role:'user',content:'(The candidate did not answer in time)'});qCount++;updC();
+        if(qCount>=maxQ){document.getElementById('chatInput').style.display='none';document.getElementById('endBtn').style.display='block';document.getElementById('timerDisplay').style.display='none';}
+      }
+    }
+  },1000);
+}
+function stopTimer(){if(answerTimer){clearInterval(answerTimer);answerTimer=null;}}
+function updTimer(){var m=Math.floor(timeLeft/60);var s=timeLeft%60;document.getElementById('timerText').textContent=m+':'+(s<10?'0':'')+s;}
 function toggleMic(){
   var btn=document.getElementById('micBtn');
   if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){alert('Speech recognition not supported in this browser.');return;}
