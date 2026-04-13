@@ -53,22 +53,22 @@ input:focus,select:focus{border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,1
 .stat-item strong{color:#0f172a}
 .stat-warn{color:#ef4444}
 .cam-wrap{position:relative;border-radius:16px;overflow:hidden;min-width:150px;max-width:170px;display:none;text-align:center;border:1px solid #e2e8f0;background:#f8fafc}
-.office-bg{background:linear-gradient(180deg,#e8eff7 0%,#d4dde8 40%,#8b7355 40%,#a08b6c 42%,#c4b898 42%,#c4b898 100%);padding:1rem 1rem .75rem;position:relative}
+.office-bg{background:linear-gradient(180deg,#e8eff7 0%,#d4dde8 40%,#8b7355 40%,#a08b6c 42%,#c4b898 42%,#c4b898 100%);padding:1.25rem 1rem 1rem;position:relative;border-radius:16px 16px 0 0}
 .office-bg::before{content:'';position:absolute;top:8%;left:15%;width:28%;height:22%;background:linear-gradient(135deg,#87ceeb,#b0d4f1);border-radius:2px;border:2px solid #c4b898;opacity:.5}
 .office-bg::after{content:'';position:absolute;top:8%;right:15%;width:20%;height:18%;background:linear-gradient(135deg,#90ee90,#66bb6a);border-radius:50% 50% 0 0;opacity:.3}
-.avatar{width:90px;height:90px;margin:0 auto;position:relative}
+.avatar{width:90px;height:100px;margin:0 auto;position:relative}
 .avatar-body{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:70px;height:30px;border-radius:35px 35px 0 0;z-index:1}
 .avatar-body.female{background:linear-gradient(135deg,#10b981,#059669)}
 .avatar-body.male{background:linear-gradient(135deg,#3b82f6,#2563eb)}
 .avatar-neck{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);width:18px;height:14px;background:#e8b88a;z-index:2}
 .avatar-head{width:62px;height:68px;background:linear-gradient(180deg,#f0c8a0,#e8b88a);border-radius:50% 50% 45% 45%;position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:3;box-shadow:0 2px 8px rgba(0,0,0,.1)}
 .avatar-hair{position:absolute;z-index:4}
-.hair-female{top:-6px;left:50%;transform:translateX(-50%);width:72px;height:44px;background:linear-gradient(180deg,#3d2b1f 0%,#5a3e2b 40%,#4a3425 100%);border-radius:50% 50% 35% 35%;box-shadow:inset 0 -8px 12px rgba(0,0,0,.2),0 1px 3px rgba(0,0,0,.1)}
-.hair-female::before{content:'';position:absolute;top:22px;left:-8px;width:16px;height:48px;background:linear-gradient(180deg,#4a3425,#5a3e2b,#4a3425);border-radius:8px 0 40% 40%;box-shadow:inset 2px 0 4px rgba(0,0,0,.1)}
-.hair-female::after{content:'';position:absolute;top:22px;right:-8px;width:16px;height:48px;background:linear-gradient(180deg,#4a3425,#5a3e2b,#4a3425);border-radius:0 8px 40% 40%;box-shadow:inset -2px 0 4px rgba(0,0,0,.1)}
-.hair-male{top:-3px;left:50%;transform:translateX(-50%);width:66px;height:30px;background:linear-gradient(180deg,#1a120b 0%,#2d1f14 60%,#1a120b 100%);border-radius:50% 50% 15% 15%;box-shadow:inset 0 -3px 6px rgba(0,0,0,.2),0 1px 2px rgba(0,0,0,.1)}
-.hair-male::before{content:'';position:absolute;top:2px;left:4px;right:4px;height:12px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);border-radius:50%}
-.hair-male::after{content:'';position:absolute;bottom:0;left:2px;right:50%;height:8px;background:#2d1f14;border-radius:0 0 0 8px}
+.hair-female{top:-6px;left:50%;transform:translateX(-50%);width:72px;height:44px;background:linear-gradient(180deg,#8B6914 0%,#A67B1E 30%,#8B6914 100%);border-radius:50% 50% 35% 35%;box-shadow:inset 0 -8px 12px rgba(0,0,0,.15),0 1px 3px rgba(0,0,0,.08)}
+.hair-female::before{content:'';position:absolute;top:20px;left:-7px;width:15px;height:44px;background:linear-gradient(180deg,#A67B1E,#8B6914,#7A5D10);border-radius:6px 0 45% 45%;box-shadow:inset 2px 0 4px rgba(0,0,0,.08)}
+.hair-female::after{content:'';position:absolute;top:20px;right:-7px;width:15px;height:44px;background:linear-gradient(180deg,#A67B1E,#8B6914,#7A5D10);border-radius:0 6px 45% 45%;box-shadow:inset -2px 0 4px rgba(0,0,0,.08)}
+.hair-male{top:-4px;left:50%;transform:translateX(-50%);width:66px;height:32px;background:linear-gradient(180deg,#1a120b 0%,#2d1f14 50%,#1a120b 100%);border-radius:50% 50% 12% 12%;box-shadow:inset 0 -3px 6px rgba(0,0,0,.2),0 1px 2px rgba(0,0,0,.1)}
+.hair-male::before{content:'';position:absolute;top:4px;left:6px;right:6px;height:10px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);border-radius:50%}
+.hair-male::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:16px;background:linear-gradient(135deg,#2d1f14,transparent);border-radius:50% 0 0 0}
 .avatar-ears{position:absolute;top:24px;z-index:2;width:100%}
 .avatar-ear{position:absolute;width:10px;height:14px;background:#e8b88a;border-radius:50%}
 .avatar-ear.l{left:9px}
@@ -91,10 +91,12 @@ input:focus,select:focus{border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,1
 @keyframes talkReal{0%{height:4px;width:14px;border-radius:0 0 8px 8px}50%{height:10px;width:18px;border-radius:50%}100%{height:6px;width:12px;border-radius:0 0 10px 10px}}
 .listening .mouth-shape{width:20px;height:3px;border-radius:999px;background:#c97b63}
 .smile .mouth-shape{width:18px;height:5px;border-radius:0 0 12px 12px;background:#c97b63}
-.avatar-head.bobbing{animation:headBob 1.2s ease-in-out infinite}
+.speaking .avatar-head{animation:headBob 1.2s ease-in-out infinite}
 @keyframes headBob{0%,100%{transform:translateX(-50%) translateY(0) rotate(0)}25%{transform:translateX(-50%) translateY(-2px) rotate(1.5deg)}75%{transform:translateX(-50%) translateY(-1px) rotate(-1deg)}}
 .listening .avatar-head{animation:nod 2s ease-in-out infinite}
 @keyframes nod{0%,100%{transform:translateX(-50%) rotate(0)}30%{transform:translateX(-50%) rotate(2deg) translateY(2px)}60%{transform:translateX(-50%) rotate(-1deg) translateY(1px)}}
+.speaking .avatar-hair{animation:hairBob 1.2s ease-in-out infinite}
+@keyframes hairBob{0%,100%{transform:translateX(-50%) translateY(0)}25%{transform:translateX(-50%) translateY(-2px)}75%{transform:translateX(-50%) translateY(-1px)}}
 .avatar-info{padding:.5rem .5rem .65rem}
 .avatar-name{font-size:.72rem;font-weight:700;color:#0f172a}
 .avatar-role{font-size:.62rem;color:#64748b}
@@ -582,9 +584,8 @@ function setAvatar(state,name){
   var mic=document.getElementById('micBtn');
   if(name)document.getElementById('avatarName').textContent=name;
   wrap.className='avatar';mouth.className='avatar-mouth';status.className='avatar-status';
-  if(head)head.classList.remove('bobbing');
   if(mic)mic.classList.remove('ready');
-  if(state==='speaking'){wrap.classList.add('speaking');status.classList.add('speaking-s');status.textContent='Speaking';if(head)head.classList.add('bobbing');}
+  if(state==='speaking'){wrap.classList.add('speaking');status.classList.add('speaking-s');status.textContent='Speaking';}
   else if(state==='listening'){wrap.classList.add('listening');wrap.classList.add('smile');status.classList.add('listening-s');status.textContent='Listening';if(mic)mic.classList.add('ready');}
   else{wrap.classList.add('thinking');status.classList.add('thinking-s');status.textContent='Thinking';}
 }
@@ -687,7 +688,7 @@ function stopCam(){
 
 /* Helpers */
 function addMsg(t,type){var c=document.getElementById('chatMessages');var w=document.createElement('div');w.className='msg-wrap msg-wrap-'+type;var av=document.createElement('div');av.className='msg-avatar msg-avatar-'+type;var iName=document.getElementById('avatarName');if(type==='ai'){av.textContent=(iName?iName.textContent:'S').charAt(0);}else{av.textContent='Y';}var ct=document.createElement('div');ct.className='msg-content';var lbl=document.createElement('div');lbl.className='msg-label msg-label-'+type;lbl.textContent=type==='ai'?(iName?iName.textContent:'Interviewer'):'You';var d=document.createElement('div');d.className='msg msg-'+type;d.textContent=t;ct.appendChild(lbl);ct.appendChild(d);w.appendChild(av);w.appendChild(ct);c.appendChild(w);setTimeout(function(){var input=document.getElementById('chatInput');if(input){input.scrollIntoView({behavior:'smooth',block:'end'});}else{w.scrollIntoView({behavior:'smooth',block:'end'});}},150);}
-function showTyping(){var c=document.getElementById('chatMessages');var w=document.createElement('div');w.className='msg-typing-wrap';w.id='typing';var av=document.createElement('div');av.className='msg-avatar msg-avatar-ai';var iName=document.getElementById('avatarName');av.textContent=(iName?iName.textContent:'S').charAt(0);var d=document.createElement('div');d.className='msg msg-typing';d.innerHTML='<i></i><i></i><i></i>';w.appendChild(av);w.appendChild(d);c.appendChild(w);setTimeout(function(){w.scrollIntoView({behavior:'smooth',block:'center'});},100);}
+function showTyping(){var c=document.getElementById('chatMessages');var w=document.createElement('div');w.className='msg-typing-wrap';w.id='typing';var av=document.createElement('div');av.className='msg-avatar msg-avatar-ai';var iName=document.getElementById('avatarName');av.textContent=(iName?iName.textContent:'S').charAt(0);var d=document.createElement('div');d.className='msg msg-typing';d.innerHTML='<i></i><i></i><i></i>';w.appendChild(av);w.appendChild(d);c.appendChild(w);setTimeout(function(){var input=document.getElementById('chatInput');if(input){input.scrollIntoView({behavior:'smooth',block:'end'});}},100);}
 function hideTyping(){var el=document.getElementById('typing');if(el)el.remove();}
 function updC(){document.getElementById('qCounter').innerHTML='Q <strong>'+Math.min(qCount,maxQ)+'</strong> / '+maxQ;}
 function countFillers(text){var m=text.match(fillerRegex);if(m){fillerWords+=m.length;document.getElementById('fillerCount').textContent=fillerWords;if(fillerWords>3)document.getElementById('fillerCount').style.color='#ef4444';}}
