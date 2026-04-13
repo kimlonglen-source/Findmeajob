@@ -469,9 +469,10 @@ async function _doStart(role){
   try{
     var iName=(vg==='male'?'James':'Sarah');
     var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:"You are "+iName+", a professional NZ job interviewer conducting a "+style+" interview for a "+role+" position"+(company?" at "+company:"")+" in New Zealand. Your name is "+iName+". Introduce yourself as "+iName+" at the start. Ask ONE question at a time. Be professional and warm. Use NZ workplace context. Do not number questions.",messages:msgs})});
-    var d=await r.json();var t=d.content.map(function(b){return b.text||'';}).join('');
+    var d=await r.json();var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
+    if(!t){throw new Error('empty');}
     msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');speak(t);qCount=1;updC();dis(false);startTimer();
-  }catch(e){hideTyping();addMsg('Could not start. Please try again.','ai');dis(false);}
+  }catch(e){hideTyping();addMsg('Could not connect — please refresh and try again.','ai');dis(false);}
 }
 
 async function sendAnswer(){
@@ -481,14 +482,16 @@ async function sendAnswer(){
   inp.value='';inp.style.height='44px';addMsg(ans,'user');countFillers(ans);
   var lastAi='';for(var i=msgs.length-1;i>=0;i--){if(msgs[i].role==='assistant'){lastAi=msgs[i].content;break;}}
   iData.qa.push({q:lastAi,a:ans});msgs.push({role:'user',content:ans});qCount++;updC();setAvatar('thinking');dis(true);showTyping();
+  var trimmed=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
   try{
     var sys="You are a professional NZ job interviewer. "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. Question "+qCount+" of "+maxQ+". Ask ONE question."+(qCount>=maxQ?" This is the last question, wrap up naturally.":"");
-    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:msgs})});
-    var d=await r.json();var t=d.content.map(function(b){return b.text||'';}).join('');
+    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:trimmed})});
+    var d=await r.json();var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):(d.error||'');
+    if(!t){throw new Error('empty');}
     msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');speak(t);dis(false);
     if(qCount>maxQ){stopTimer();document.getElementById('chatInput').style.display='none';document.getElementById('endBtn').style.display='block';document.getElementById('timerDisplay').style.display='none';}
     else{startTimer();}
-  }catch(e){hideTyping();addMsg('Error. Try again.','ai');dis(false);}
+  }catch(e){hideTyping();addMsg('Connection issue — click Send to retry or Skip to move on.','ai');dis(false);qCount--;updC();}
 }
 
 async function skipQuestion(){
@@ -504,12 +507,14 @@ async function skipQuestion(){
   qCount++;updC();
   if(qCount>maxQ){document.getElementById('chatInput').style.display='none';document.getElementById('endBtn').style.display='block';document.getElementById('timerDisplay').style.display='none';return;}
   setAvatar('thinking');dis(true);showTyping();
+  var trimmed2=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
   try{
     var sys="You are a professional NZ job interviewer. "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. Question "+qCount+" of "+maxQ+". The candidate skipped the previous question. Move on to your next question without commenting on it.";
-    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:msgs})});
-    var d=await r.json();var t=d.content.map(function(b){return b.text||'';}).join('');
+    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:trimmed2})});
+    var d=await r.json();var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
+    if(!t){throw new Error('empty');}
     msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');speak(t);dis(false);startTimer();
-  }catch(e){hideTyping();dis(false);}
+  }catch(e){hideTyping();addMsg('Connection issue — click Skip to move on.','ai');dis(false);}
 }
 
 async function endInterview(){
@@ -602,10 +607,12 @@ function startTimer(){
         qCount++;updC();
         if(qCount>maxQ){document.getElementById('chatInput').style.display='none';document.getElementById('endBtn').style.display='block';document.getElementById('timerDisplay').style.display='none';}
         else{setAvatar('thinking');dis(true);showTyping();
-          fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:"You are a professional NZ job interviewer. "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. Question "+qCount+" of "+maxQ+". The candidate did not answer the previous question. Acknowledge briefly and move on to your next question.",messages:msgs})}).then(function(r){return r.json();}).then(function(d){
-            var t=d.content.map(function(b){return b.text||'';}).join('');
+          var trimmed3=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
+          fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:"You are a professional NZ job interviewer. "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. Question "+qCount+" of "+maxQ+". The candidate did not answer the previous question. Acknowledge briefly and move on to your next question.",messages:trimmed3})}).then(function(r){return r.json();}).then(function(d){
+            var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
+            if(!t)throw new Error('empty');
             msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');speak(t);dis(false);startTimer();
-          }).catch(function(){hideTyping();dis(false);startTimer();});
+          }).catch(function(){hideTyping();addMsg('Connection issue — click Skip to move on.','ai');dis(false);});
         }
       }
     }
