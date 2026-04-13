@@ -493,16 +493,59 @@ function requestMic(){
   var micBox=document.getElementById('micRequestBox');
   var allowBtn=document.getElementById('micAllowBtn');
   allowBtn.textContent='Requesting...';allowBtn.disabled=true;
-  navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
-    _micStream=s;
-    micBox.style.display='none';
-    micEl.style.display='flex';
-    micEl.className='countdown-check ok';micEl.innerHTML='&#10003; Microphone ready';
-    beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
-  }).catch(function(){
-    micBox.innerHTML='<div style="font-size:1.2rem;margin-bottom:.5rem">&#128274;</div><div style="font-size:.88rem;font-weight:700;color:#0f172a;margin-bottom:.25rem">Microphone blocked</div><div style="font-size:.78rem;color:#64748b;margin-bottom:.65rem;line-height:1.5">Your browser has blocked microphone access. To fix this:<br><strong>1.</strong> Tap the lock icon in your address bar<br><strong>2.</strong> Set Microphone to Allow<br><strong>3.</strong> Refresh this page</div><button onclick="location.reload()" style="background:#10b981;color:#fff;border:none;padding:.55rem 1.25rem;border-radius:999px;font-family:Inter,sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;margin-bottom:.35rem">Refresh Page</button><div><button onclick="skipMic()" style="background:none;border:none;color:#94a3b8;font-size:.72rem;cursor:pointer;font-family:Inter,sans-serif;font-weight:600">Skip — I will type instead</button></div>';
+
+  function showBlocked(){
+    micBox.innerHTML='<div style="font-size:1.2rem;margin-bottom:.5rem">&#128274;</div>'
+      +'<div style="font-size:.88rem;font-weight:700;color:#0f172a;margin-bottom:.25rem">Microphone is blocked</div>'
+      +'<div style="font-size:.78rem;color:#64748b;margin-bottom:.75rem;line-height:1.6;text-align:left;max-width:320px;margin-left:auto;margin-right:auto">'
+      +'<strong>On Android Chrome:</strong><br>'
+      +'1. Tap the <strong>three dots</strong> menu (top right)<br>'
+      +'2. Tap <strong>Settings</strong> &rarr; <strong>Site settings</strong> &rarr; <strong>Microphone</strong><br>'
+      +'3. Find findmeajob.co.nz and set to <strong>Allow</strong><br>'
+      +'4. Come back and tap Refresh below<br><br>'
+      +'<strong>On Xiaomi/Redmi:</strong><br>'
+      +'Also check <strong>Phone Settings</strong> &rarr; <strong>Apps</strong> &rarr; <strong>Chrome</strong> &rarr; <strong>Permissions</strong> &rarr; <strong>Microphone</strong> &rarr; <strong>Allow</strong>'
+      +'</div>'
+      +'<button onclick="location.reload()" style="background:#10b981;color:#fff;border:none;padding:.6rem 1.5rem;border-radius:999px;font-family:Inter,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;margin-bottom:.5rem">Refresh Page</button>'
+      +'<div><button onclick="skipMic()" style="background:none;border:none;color:#94a3b8;font-size:.75rem;cursor:pointer;font-family:Inter,sans-serif;font-weight:600;padding:.35rem">Skip — I will type instead</button></div>';
     beginBtn.disabled=false;beginBtn.textContent='Begin Interview (type only)';
-  });
+  }
+
+  // Check permission state first (if Permissions API available)
+  if(navigator.permissions&&navigator.permissions.query){
+    navigator.permissions.query({name:'microphone'}).then(function(result){
+      if(result.state==='denied'){
+        showBlocked();
+      } else {
+        // state is 'prompt' or 'granted' — try getUserMedia
+        navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
+          _micStream=s;
+          micBox.style.display='none';
+          micEl.style.display='flex';
+          micEl.className='countdown-check ok';micEl.innerHTML='&#10003; Microphone ready';
+          beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
+        }).catch(function(){showBlocked();});
+      }
+    }).catch(function(){
+      // Permissions API failed, try getUserMedia directly
+      navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
+        _micStream=s;
+        micBox.style.display='none';
+        micEl.style.display='flex';
+        micEl.className='countdown-check ok';micEl.innerHTML='&#10003; Microphone ready';
+        beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
+      }).catch(function(){showBlocked();});
+    });
+  } else {
+    // No Permissions API, try getUserMedia directly
+    navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
+      _micStream=s;
+      micBox.style.display='none';
+      micEl.style.display='flex';
+      micEl.className='countdown-check ok';micEl.innerHTML='&#10003; Microphone ready';
+      beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
+    }).catch(function(){showBlocked();});
+  }
 }
 
 function skipMic(){
