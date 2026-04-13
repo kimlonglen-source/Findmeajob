@@ -61,6 +61,8 @@ input:focus,select:focus{border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,1
 .avatar-mouth{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);width:16px;height:6px;background:#0f172a;border-radius:0 0 10px 10px;transition:all .15s}
 .avatar-mouth.speaking{animation:talk .3s infinite alternate;height:12px;border-radius:50%}
 @keyframes talk{0%{height:6px;width:14px}100%{height:14px;width:18px}}
+.avatar-head.bobbing{animation:headBob 1.2s ease-in-out infinite}
+@keyframes headBob{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-2px) rotate(1deg)}75%{transform:translateY(-1px) rotate(-1deg)}}
 .avatar-mouth.listening{height:3px;width:20px;border-radius:999px}
 .avatar-name{font-size:.72rem;font-weight:700;color:#0f172a}
 .avatar-role{font-size:.62rem;color:#64748b}
@@ -86,9 +88,11 @@ body.dark .avatar-role{color:#94a3b8}
 .chat-bar textarea:focus{border-color:#10b981}
 .chat-bar button{padding:.65rem 1rem;background:#10b981;color:#fff;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer}
 .chat-bar button:disabled{opacity:.5}
-.mic-btn{background:#f8fafc !important;color:#64748b !important;border:1px solid #e2e8f0 !important;font-size:1rem !important;padding:.65rem !important;min-width:44px}
+.mic-btn{background:#f8fafc !important;color:#64748b !important;border:1px solid #e2e8f0 !important;font-size:1rem !important;padding:.65rem !important;min-width:44px;transition:all .3s}
 .mic-btn.rec{background:#fef2f2 !important;color:#ef4444 !important;border-color:#fca5a5 !important;animation:pulse 1.5s infinite}
+.mic-btn.ready{animation:micGlow 2s infinite;border-color:#10b981 !important;color:#10b981 !important}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.3)}50%{box-shadow:0 0 0 8px rgba(239,68,68,0)}}
+@keyframes micGlow{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,.3);background:#f0fdf4 !important}50%{box-shadow:0 0 0 10px rgba(16,185,129,0);background:#f8fafc !important}}
 .listening-bar{height:3px;background:#e2e8f0;border-radius:999px;margin-top:.35rem;overflow:hidden;display:none}
 .listening-fill{height:100%;background:#10b981;border-radius:999px;width:0;transition:width .3s}
 .end-btn{display:none;width:100%;padding:.75rem;background:#0f172a;color:#fff;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:.5rem}
@@ -111,7 +115,12 @@ body.dark .avatar-role{color:#94a3b8}
 body.dark .countdown-tip{color:#f8fafc}
 body.dark .countdown-sub{color:#94a3b8}
 .score-big{font-size:3.5rem;font-weight:900;text-align:center;margin:.5rem 0}
-.fb-item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:1rem;margin-bottom:.6rem}
+.score-card{animation:scoreReveal .6s ease}
+@keyframes scoreReveal{from{opacity:0;transform:scale(.9) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.fb-item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:1rem;margin-bottom:.6rem;opacity:0;animation:fbSlide .4s ease forwards}
+@keyframes fbSlide{from{opacity:0;transform:translateX(-15px)}to{opacity:1;transform:translateX(0)}}
+.sparkle{position:fixed;pointer-events:none;z-index:9999;font-size:1.5rem;animation:sparkleFloat 1.5s ease forwards}
+@keyframes sparkleFloat{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-120px) scale(0)}}
 .fb-q{font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.3rem}
 .fb-text{font-size:.82rem;color:#0f172a;line-height:1.6}
 .cta-box{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:16px;padding:1.5rem;text-align:center;margin-top:1.5rem}
@@ -478,14 +487,14 @@ async function endInterview(){
 function showScore(r){
   var c=r.score>=80?'#10b981':r.score>=60?'#f59e0b':'#ef4444';
   var bg=r.score>=80?'#f0fdf4':r.score>=60?'#fffbeb':'#fef2f2';
-  var h='<div class="card" style="text-align:center;padding:2rem">';
+  var h='<div class="card score-card" style="text-align:center;padding:2rem">';
   h+='<div style="font-size:.78rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px">Your Interview Score</div>';
-  h+='<div class="score-big" style="color:'+c+'">'+r.score+'/100</div>';
+  h+='<div class="score-big" id="score-num" style="color:'+c+'">0/100</div>';
   h+='<div style="display:inline-block;background:'+bg+';color:'+c+';padding:.3rem .85rem;border-radius:999px;font-size:.82rem;font-weight:700;border:1px solid '+c+'33">'+esc(r.grade)+'</div>';
   h+='<p style="color:#64748b;font-size:.88rem;margin-top:1rem;line-height:1.6">'+esc(r.overall)+'</p></div>';
-  if(r.feedback&&r.feedback.length){r.feedback.forEach(function(f){
+  if(r.feedback&&r.feedback.length){r.feedback.forEach(function(f,fi){
     var fc=f.rating==='Good'?'#10b981':f.rating==='Average'?'#f59e0b':'#ef4444';
-    h+='<div class="fb-item"><div class="fb-q">'+esc(f.question)+'</div>';
+    h+='<div class="fb-item" style="animation-delay:'+(0.3+fi*0.15)+'s"><div class="fb-q">'+esc(f.question)+'</div>';
     h+='<div style="font-size:.72rem;font-weight:700;color:'+fc+';margin-bottom:.3rem">'+esc(f.rating)+'</div>';
     h+='<div class="fb-text">'+esc(f.comment)+'</div></div>';
   });}
@@ -493,6 +502,10 @@ function showScore(r){
   stopCam();document.getElementById('chatSection').style.display='none';
   document.getElementById('scoreSection').innerHTML=h;document.getElementById('scoreSection').style.display='block';
   window.scrollTo({top:0,behavior:'smooth'});
+  var target=r.score;var cur=0;var numEl=document.getElementById('score-num');
+  var step=Math.max(1,Math.floor(target/40));
+  var countUp=setInterval(function(){cur+=step;if(cur>=target){cur=target;clearInterval(countUp);}numEl.textContent=cur+'/100';},30);
+  if(r.score>=80){setTimeout(function(){var emojis=['&#11088;','&#127881;','&#128079;','&#129395;','&#128293;'];for(var si=0;si<12;si++){var sp=document.createElement('div');sp.className='sparkle';sp.innerHTML=emojis[si%emojis.length];sp.style.left=Math.random()*80+10+'%';sp.style.top=Math.random()*30+20+'%';document.body.appendChild(sp);setTimeout(function(el){el.remove();},(si*100)+1600,sp);}},500);}
 }
 
 /* Audio */
@@ -502,8 +515,12 @@ function setAvatar(state,name){
   if(name)document.getElementById('avatarName').textContent=name;
   mouth.className='avatar-mouth';
   status.className='avatar-status';
-  if(state==='speaking'){mouth.classList.add('speaking');status.classList.add('speaking-s');status.textContent='Speaking';}
-  else if(state==='listening'){mouth.classList.add('listening');status.classList.add('listening-s');status.textContent='Listening';}
+  var head=document.getElementById('avatarMouth').closest('.avatar-head');
+  var mic=document.getElementById('micBtn');
+  if(head)head.classList.remove('bobbing');
+  if(mic)mic.classList.remove('ready');
+  if(state==='speaking'){mouth.classList.add('speaking');status.classList.add('speaking-s');status.textContent='Speaking';if(head)head.classList.add('bobbing');}
+  else if(state==='listening'){mouth.classList.add('listening');status.classList.add('listening-s');status.textContent='Listening';if(mic)mic.classList.add('ready');}
   else{status.classList.add('thinking-s');status.textContent='Thinking';}
 }
 function speak(t){setAvatar('speaking');if(!audioEnabled||!window.speechSynthesis){setTimeout(function(){setAvatar('listening');},2000);return;}if(recog){recog.stop();recog=null;var mb=document.getElementById('micBtn');if(mb)mb.classList.remove('rec');document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);}window.speechSynthesis.cancel();var gender=document.getElementById('voiceGender').value;var voices=window.speechSynthesis.getVoices();var match=null;var nzAu=[];var enVoices=[];for(var i=0;i<voices.length;i++){var l=voices[i].lang.toLowerCase();if(l==='en-nz'||l==='en-au'||l.indexOf('en_nz')>-1||l.indexOf('en_au')>-1)nzAu.push(voices[i]);else if(l.indexOf('en')===0)enVoices.push(voices[i]);}var pool=nzAu.length?nzAu:enVoices;for(var j=0;j<pool.length;j++){var n=pool[j].name.toLowerCase();if(gender==='female'&&(n.indexOf('female')>-1||n.indexOf('fiona')>-1||n.indexOf('karen')>-1||n.indexOf('samantha')>-1||n.indexOf('victoria')>-1||n.indexOf('moira')>-1||n.indexOf('tessa')>-1)){match=pool[j];break;}if(gender==='male'&&(n.indexOf('male')>-1||n.indexOf('daniel')>-1||n.indexOf('james')>-1||n.indexOf('lee')>-1||n.indexOf('gordon')>-1||n.indexOf('alex')>-1)){match=pool[j];break;}}if(!match&&pool.length){match=pool[0];}var sentences=t.match(/[^.!?]+[.!?]+[\s]*/g)||[t];var idx=0;function speakNext(){if(idx>=sentences.length){setAvatar('listening');if(autoSend&&!recog&&qCount<maxQ){setTimeout(toggleMic,800);}return;}var chunk=sentences[idx].trim();idx++;if(!chunk){speakNext();return;}var u=new SpeechSynthesisUtterance(chunk);u.rate=1.0;u.lang='en-NZ';if(match)u.voice=match;if(gender==='male'){u.pitch=0.9;}else{u.pitch=1.0;}u.onend=function(){var pause=200;if(chunk.indexOf('?')>-1)pause=400;else if(chunk.indexOf('.')>-1)pause=300;setTimeout(speakNext,pause);};window.speechSynthesis.speak(u);}speakNext();}
