@@ -496,35 +496,25 @@ function requestMic(){
 
   function showBlocked(){
     var isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
-    var isSamsung=/Samsung/i.test(navigator.userAgent);
-    var isXiaomi=/Xiaomi|Redmi|POCO|Mi /i.test(navigator.userAgent);
-    var isHuawei=/Huawei|HONOR/i.test(navigator.userAgent);
-    var isOppo=/OPPO|Realme|OnePlus/i.test(navigator.userAgent);
 
-    var steps='';
-    if(isIOS){
-      steps='<strong>On iPhone/iPad:</strong><br>'
-        +'1. Open <strong>Settings</strong> app<br>'
-        +'2. Scroll to <strong>Safari</strong> (or your browser)<br>'
-        +'3. Tap <strong>Microphone</strong> &rarr; set to <strong>Allow</strong><br>'
-        +'4. Come back and tap Try Again';
-    } else {
-      steps='<strong>Step 1 — Fix in browser:</strong><br>'
-        +'Tap the <strong>lock icon</strong> &#128274; or <strong>tune icon</strong> &#9776; in the address bar above &rarr; <strong>Permissions</strong> &rarr; Microphone &rarr; <strong>Allow</strong><br><br>'
-        +'<strong>Step 2 — If Step 1 did not work:</strong><br>'
-        +'Open your phone <strong>Settings</strong> &rarr; <strong>Apps</strong> &rarr; <strong>';
-      if(isSamsung) steps+='Chrome</strong> &rarr; <strong>Permissions</strong> &rarr; <strong>Microphone</strong> &rarr; <strong>Allow</strong>';
-      else if(isXiaomi) steps+='Manage apps</strong> &rarr; <strong>Chrome</strong> &rarr; <strong>App permissions</strong> &rarr; <strong>Microphone</strong> &rarr; <strong>Allow</strong>';
-      else if(isHuawei) steps+='Apps</strong> &rarr; <strong>Chrome</strong> &rarr; <strong>Permissions</strong> &rarr; <strong>Microphone</strong> &rarr; <strong>Allow</strong>';
-      else if(isOppo) steps+='App management</strong> &rarr; <strong>Chrome</strong> &rarr; <strong>Permissions</strong> &rarr; <strong>Microphone</strong> &rarr; <strong>Allow</strong>';
-      else steps+='Chrome</strong> (or your browser) &rarr; <strong>Permissions</strong> &rarr; <strong>Microphone</strong> &rarr; <strong>Allow</strong>';
-    }
+    micBox.innerHTML='<div style="font-size:2rem;margin-bottom:.5rem">&#127908;</div>'
+      +'<div style="font-size:.95rem;font-weight:800;color:#0f172a;margin-bottom:.35rem">Microphone needs to be enabled</div>'
+      +'<div style="font-size:.82rem;color:#64748b;margin-bottom:1.25rem;line-height:1.6">The microphone was blocked from a previous visit. Here are two easy ways to fix it:</div>'
 
-    micBox.innerHTML='<div style="font-size:2rem;margin-bottom:.5rem">&#128274;</div>'
-      +'<div style="font-size:.95rem;font-weight:800;color:#0f172a;margin-bottom:.35rem">Microphone is blocked</div>'
-      +'<div style="font-size:.82rem;color:#64748b;margin-bottom:1rem;line-height:1.6">Your phone blocked the microphone from a previous visit. You need to allow it in your settings to use voice.</div>'
+      +'<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:1rem;text-align:left;margin-bottom:.75rem;max-width:340px;margin-left:auto;margin-right:auto">'
+      +'<div style="font-size:.8rem;font-weight:800;color:#059669;margin-bottom:.35rem">Option 1 — Quickest (recommended)</div>'
+      +'<div style="font-size:.78rem;color:#475569;line-height:1.6">Open this page in a <strong>Private</strong> or <strong>Incognito</strong> tab. The microphone prompt will appear fresh.</div>'
+      +'<button onclick="navigator.clipboard.writeText(window.location.href).then(function(){this.textContent=\'Link copied!\';}.bind(this))" style="margin-top:.5rem;background:#059669;color:#fff;border:none;padding:.45rem 1rem;border-radius:999px;font-family:Inter,sans-serif;font-size:.75rem;font-weight:700;cursor:pointer">Copy Link to Open in Private Tab</button>'
+      +'</div>'
+
       +'<div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1rem;text-align:left;margin-bottom:1rem;max-width:340px;margin-left:auto;margin-right:auto">'
-      +'<div style="font-size:.78rem;color:#475569;line-height:1.7">'+steps+'</div></div>'
+      +'<div style="font-size:.8rem;font-weight:800;color:#0f172a;margin-bottom:.35rem">Option 2 — Reset permission</div>'
+      +'<div style="font-size:.78rem;color:#475569;line-height:1.6">'
+      +(isIOS
+        ?'Open <strong>Settings</strong> &rarr; <strong>Safari</strong> &rarr; scroll to <strong>Settings for Websites</strong> &rarr; <strong>Microphone</strong> &rarr; <strong>Allow</strong>'
+        :'In Chrome, tap <strong>&#8942;</strong> (three dots, top right) &rarr; <strong>Settings</strong> &rarr; <strong>Site settings</strong> &rarr; <strong>Microphone</strong> &rarr; find <strong>findmeajob.co.nz</strong> in the Blocked list &rarr; tap it &rarr; change to <strong>Allow</strong>')
+      +'</div></div>'
+
       +'<button onclick="location.reload()" style="background:#10b981;color:#fff;border:none;padding:.7rem 2rem;border-radius:999px;font-family:Inter,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;margin-bottom:.65rem;width:100%;max-width:280px">I fixed it — Try Again</button>'
       +'<div><button onclick="skipMic()" style="background:none;border:none;color:#94a3b8;font-size:.75rem;cursor:pointer;font-family:Inter,sans-serif;font-weight:600;padding:.35rem">No mic — I will type my answers</button></div>';
     beginBtn.disabled=false;beginBtn.textContent='Begin Interview (type only)';
