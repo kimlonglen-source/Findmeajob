@@ -119,7 +119,8 @@
     },
     {
       "src": "/write-cv",
-      "dest": "/public/write-cv.html"
+      "status": 301,
+      "headers": { "Location": "/apply" }
     },
     {
       "src": "/apply",
@@ -127,7 +128,8 @@
     },
     {
       "src": "/cover-letter",
-      "dest": "/public/cover-letter.html"
+      "status": 301,
+      "headers": { "Location": "/apply" }
     },
     {
       "src": "/salary",
