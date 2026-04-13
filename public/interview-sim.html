@@ -377,7 +377,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
     <div class="status-bar">
       <div class="stat-item" id="qCounter">Q <strong>1</strong> / 5</div>
       <div class="stat-item" id="timerDisplay" style="display:none"><span id="timerText">2:00</span></div>
-      <div class="stat-item">Fillers: <strong id="fillerCount">0</strong></div>
+      <div class="stat-item" id="fillerStat" style="background:#f8fafc;padding:.25rem .6rem;border-radius:999px;border:1px solid #e2e8f0">Fillers: <strong id="fillerCount" style="color:#10b981">0</strong></div>
     </div>
 
     <!-- Avatar + Chat side by side -->
@@ -753,15 +753,26 @@ function toggleMic(){
     document.getElementById('listenFill').style.width='0';
     var inp=document.getElementById('userInput');
     var lastResultTime=Date.now();
+    var _finalText='';
+    var _liveFillers=0;
     recog.onresult=function(e){
-      var t='';
-      for(var i=0;i<e.results.length;i++){t+=e.results[i][0].transcript;}
+      var final='';var interim='';
+      for(var i=0;i<e.results.length;i++){
+        if(e.results[i].isFinal){final+=e.results[i][0].transcript+' ';}
+        else{interim+=e.results[i][0].transcript;}
+      }
+      if(final)_finalText=final;
+      var t=(_finalText+interim).trim();
       inp.value=t;lastResultTime=Date.now();
       updateMicUI('listening','Listening...');
       var trEl=document.getElementById('micTranscript');
       trEl.className='mic-transcript active';
       trEl.textContent=t;
       trEl.scrollTop=trEl.scrollHeight;
+      var fm=t.match(fillerRegex);
+      _liveFillers=fm?fm.length:0;
+      document.getElementById('fillerCount').textContent=fillerWords+_liveFillers;
+      if(fillerWords+_liveFillers>3)document.getElementById('fillerCount').style.color='#ef4444';
       document.getElementById('listenFill').style.width='0';
       clearTimeout(silenceTimer);
       if(autoSend&&t.trim().length>3){
@@ -817,7 +828,7 @@ function addMsg(t,type){var c=document.getElementById('chatMessages');var w=docu
 function showTyping(){var c=document.getElementById('chatMessages');var w=document.createElement('div');w.className='msg-typing-wrap';w.id='typing';var av=document.createElement('div');av.className='msg-avatar msg-avatar-ai';var iName=document.getElementById('avatarName');av.textContent=(iName?iName.textContent:'S').charAt(0);var d=document.createElement('div');d.className='msg msg-typing';d.innerHTML='<i></i><i></i><i></i>';w.appendChild(av);w.appendChild(d);c.appendChild(w);setTimeout(function(){var input=document.getElementById('chatInput');if(input){input.scrollIntoView({behavior:'smooth',block:'end'});}},100);}
 function hideTyping(){var el=document.getElementById('typing');if(el)el.remove();}
 function updC(){document.getElementById('qCounter').innerHTML='Q <strong>'+Math.min(qCount,maxQ)+'</strong> / '+maxQ;}
-function countFillers(text){var m=text.match(fillerRegex);if(m){fillerWords+=m.length;document.getElementById('fillerCount').textContent=fillerWords;if(fillerWords>3)document.getElementById('fillerCount').style.color='#ef4444';}}
+function countFillers(text){var m=text.match(fillerRegex);if(m){fillerWords+=m.length;var fc=document.getElementById('fillerCount');var fs=document.getElementById('fillerStat');fc.textContent=fillerWords;if(fillerWords>=5){fc.style.color='#ef4444';fs.style.background='#fef2f2';fs.style.borderColor='#fecaca';}else if(fillerWords>=3){fc.style.color='#f59e0b';fs.style.background='#fffbeb';fs.style.borderColor='#fde68a';}}}
 function dis(v){document.getElementById('sendBtn').disabled=v;document.getElementById('userInput').disabled=v;}
 function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 
