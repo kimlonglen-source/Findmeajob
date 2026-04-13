@@ -584,9 +584,12 @@ async function _doStart(role){
   }catch(e){hideTyping();addMsg('Could not connect — please refresh and try again.','ai');dis(false);}
 }
 
+var _sending=false;
 async function sendAnswer(){
+  if(_sending)return;
   var inp=document.getElementById('userInput');var ans=inp.value.trim();
-  if(!ans){inp.style.borderColor='#ef4444';setTimeout(function(){inp.style.borderColor='';},1000);return;}
+  if(!ans){return;}
+  _sending=true;
   stopTimer();clearTimeout(_speakTimeout);_waitingForAI=true;_aiSpeaking=false;
   if(recog){recog.stop();recog=null;document.getElementById('listenBar').style.display='none';}
   inp.value='';inp.style.height='44px';addMsg(ans,'user');countFillers(ans);updateMicUI('waiting','Processing your answer...');
@@ -598,10 +601,10 @@ async function sendAnswer(){
     var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:trimmed})});
     var d=await r.json();var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):(d.error||'');
     if(!t){throw new Error('empty');}
-    msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;speak(t);dis(false);
+    msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;_sending=false;speak(t);dis(false);
     if(qCount>maxQ){stopTimer();document.getElementById('chatInput').style.display='none';document.getElementById('endBtn').style.display='block';document.getElementById('timerDisplay').style.display='none';}
     else{startTimer();}
-  }catch(e){_waitingForAI=false;hideTyping();addMsg('Connection issue — tap Skip to move on.','ai');dis(false);qCount--;updC();}
+  }catch(e){_waitingForAI=false;_sending=false;hideTyping();addMsg('Connection issue — tap Skip to move on.','ai');dis(false);qCount--;updC();}
 }
 
 async function skipQuestion(){
