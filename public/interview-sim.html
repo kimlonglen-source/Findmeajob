@@ -495,19 +495,19 @@ function requestMic(){
   allowBtn.textContent='Requesting...';allowBtn.disabled=true;
 
   function showBlocked(){
-    micBox.innerHTML='<div style="font-size:1.2rem;margin-bottom:.5rem">&#128274;</div>'
-      +'<div style="font-size:.88rem;font-weight:700;color:#0f172a;margin-bottom:.25rem">Microphone is blocked</div>'
-      +'<div style="font-size:.78rem;color:#64748b;margin-bottom:.75rem;line-height:1.6;text-align:left;max-width:320px;margin-left:auto;margin-right:auto">'
-      +'<strong>On Android Chrome:</strong><br>'
-      +'1. Tap the <strong>three dots</strong> menu (top right)<br>'
-      +'2. Tap <strong>Settings</strong> &rarr; <strong>Site settings</strong> &rarr; <strong>Microphone</strong><br>'
-      +'3. Find findmeajob.co.nz and set to <strong>Allow</strong><br>'
-      +'4. Come back and tap Refresh below<br><br>'
-      +'<strong>On Xiaomi/Redmi:</strong><br>'
-      +'Also check <strong>Phone Settings</strong> &rarr; <strong>Apps</strong> &rarr; <strong>Chrome</strong> &rarr; <strong>Permissions</strong> &rarr; <strong>Microphone</strong> &rarr; <strong>Allow</strong>'
-      +'</div>'
-      +'<button onclick="location.reload()" style="background:#10b981;color:#fff;border:none;padding:.6rem 1.5rem;border-radius:999px;font-family:Inter,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;margin-bottom:.5rem">Refresh Page</button>'
-      +'<div><button onclick="skipMic()" style="background:none;border:none;color:#94a3b8;font-size:.75rem;cursor:pointer;font-family:Inter,sans-serif;font-weight:600;padding:.35rem">Skip — I will type instead</button></div>';
+    micBox.innerHTML='<div style="font-size:2rem;margin-bottom:.5rem">&#128274;</div>'
+      +'<div style="font-size:.95rem;font-weight:800;color:#0f172a;margin-bottom:.35rem">Microphone was previously blocked</div>'
+      +'<div style="font-size:.82rem;color:#64748b;margin-bottom:1rem;line-height:1.6">Your phone remembered a previous "Deny". To get the prompt back, you need to reset the permission.</div>'
+      +'<div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1rem;text-align:left;margin-bottom:1rem;max-width:320px;margin-left:auto;margin-right:auto">'
+      +'<div style="font-size:.75rem;font-weight:700;color:#0f172a;margin-bottom:.5rem">Quick fix (10 seconds):</div>'
+      +'<div style="font-size:.78rem;color:#475569;line-height:1.7">'
+      +'<strong>1.</strong> Tap the <strong>lock icon</strong> &#128274; in the address bar above<br>'
+      +'<strong>2.</strong> Tap <strong>Permissions</strong> or <strong>Site settings</strong><br>'
+      +'<strong>3.</strong> Change Microphone to <strong>Allow</strong> or <strong>Ask</strong><br>'
+      +'<strong>4.</strong> Tap the button below'
+      +'</div></div>'
+      +'<button onclick="location.reload()" style="background:#10b981;color:#fff;border:none;padding:.7rem 2rem;border-radius:999px;font-family:Inter,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;margin-bottom:.65rem;width:100%;max-width:280px">I fixed it — Try Again</button>'
+      +'<div><button onclick="skipMic()" style="background:none;border:none;color:#94a3b8;font-size:.75rem;cursor:pointer;font-family:Inter,sans-serif;font-weight:600;padding:.35rem">No mic — I will type my answers</button></div>';
     beginBtn.disabled=false;beginBtn.textContent='Begin Interview (type only)';
   }
 
