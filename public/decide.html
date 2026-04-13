@@ -72,10 +72,17 @@ input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;hei
 .loading p{color:#64748b;font-size:.88rem;font-weight:500}
 
 #result{display:none}
-.traffic-light{width:80px;height:80px;border-radius:50%;margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;font-size:2rem}
-.tl-green{background:#f0fdf4;border:3px solid #10b981}
-.tl-amber{background:#fffbeb;border:3px solid #f59e0b}
-.tl-red{background:#fef2f2;border:3px solid #ef4444}
+.traffic-light-housing{width:76px;margin:0 auto 1.25rem;background:#1e293b;border-radius:38px;padding:10px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;box-shadow:0 4px 20px rgba(0,0,0,.25),inset 0 2px 4px rgba(255,255,255,.05)}
+.tl-bulb{width:48px;height:48px;border-radius:50%;transition:all .3s ease}
+.tl-bulb.tl-red{background:#3b1111;border:2px solid #5c2020;box-shadow:none}
+.tl-bulb.tl-amber{background:#3b2e0a;border:2px solid #5c4a14;box-shadow:none}
+.tl-bulb.tl-green{background:#0a3b24;border:2px solid #145c38;box-shadow:none}
+.tl-bulb.tl-red.active{background:#ef4444;border-color:#ef4444;box-shadow:0 0 18px 6px rgba(239,68,68,.5),0 0 40px 12px rgba(239,68,68,.2);animation:pulse-red 1.8s ease-in-out infinite}
+.tl-bulb.tl-amber.active{background:#f59e0b;border-color:#f59e0b;box-shadow:0 0 18px 6px rgba(245,158,11,.5),0 0 40px 12px rgba(245,158,11,.2);animation:pulse-amber 1.8s ease-in-out infinite}
+.tl-bulb.tl-green.active{background:#10b981;border-color:#10b981;box-shadow:0 0 18px 6px rgba(16,185,129,.5),0 0 40px 12px rgba(16,185,129,.2);animation:pulse-green 1.8s ease-in-out infinite}
+@keyframes pulse-red{0%,100%{box-shadow:0 0 18px 6px rgba(239,68,68,.5),0 0 40px 12px rgba(239,68,68,.2)}50%{box-shadow:0 0 24px 10px rgba(239,68,68,.7),0 0 56px 20px rgba(239,68,68,.3)}}
+@keyframes pulse-amber{0%,100%{box-shadow:0 0 18px 6px rgba(245,158,11,.5),0 0 40px 12px rgba(245,158,11,.2)}50%{box-shadow:0 0 24px 10px rgba(245,158,11,.7),0 0 56px 20px rgba(245,158,11,.3)}}
+@keyframes pulse-green{0%,100%{box-shadow:0 0 18px 6px rgba(16,185,129,.5),0 0 40px 12px rgba(16,185,129,.2)}50%{box-shadow:0 0 24px 10px rgba(16,185,129,.7),0 0 56px 20px rgba(16,185,129,.3)}}
 .verdict-text{text-align:center;font-size:1.8rem;font-weight:900;margin-bottom:.25rem}
 .verdict-sub{text-align:center;color:#64748b;font-size:.88rem;margin-bottom:1.5rem}
 .insight-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:1.25rem;margin-bottom:.75rem}
@@ -143,7 +150,7 @@ body.dark .insight-card h3{color:#64748b}
 body.dark .insight-card p{color:#94a3b8}
 body.dark .role-card{background:#0f172a;border-color:rgba(255,255,255,.06)}
 body.dark .role-card .role-name{color:#f8fafc}
-body.dark .traffic-light{border-color:rgba(255,255,255,.1)}
+body.dark .traffic-light-housing{background:#0a0a0c;box-shadow:0 4px 20px rgba(0,0,0,.5),inset 0 2px 4px rgba(255,255,255,.03)}
 body.dark .verdict-sub{color:#94a3b8}
 body.dark .rating-banner{border-color:rgba(255,255,255,.1) !important}
 body.dark .decode-row{border-color:rgba(255,255,255,.06)}
@@ -402,12 +409,17 @@ async function _doAnalyse(title, answers) {
 }
 
 async function showResult(r) {
-  var emoji = r.color === "green" ? "\u2705" : r.color === "amber" ? "\u26A0\uFE0F" : "\u274C";
-  var tlClass = r.color === "green" ? "tl-green" : r.color === "amber" ? "tl-amber" : "tl-red";
   var verdictColor = r.color === "green" ? "#10b981" : r.color === "amber" ? "#f59e0b" : "#ef4444";
+  var redActive = r.color === "red" ? " active" : "";
+  var amberActive = r.color === "amber" ? " active" : "";
+  var greenActive = r.color === "green" ? " active" : "";
 
   var html = "<div class=\"card\" style=\"text-align:center;padding:2rem\">" +
-    "<div class=\"traffic-light " + tlClass + "\">" + emoji + "</div>" +
+    "<div class=\"traffic-light-housing\">" +
+    "<div class=\"tl-bulb tl-red" + redActive + "\"></div>" +
+    "<div class=\"tl-bulb tl-amber" + amberActive + "\"></div>" +
+    "<div class=\"tl-bulb tl-green" + greenActive + "\"></div>" +
+    "</div>" +
     "<div class=\"verdict-text\" style=\"color:" + verdictColor + "\">" + r.verdict + "</div>" +
     "<div class=\"verdict-sub\">" + r.reasoning + "</div>" +
     "</div>" +
