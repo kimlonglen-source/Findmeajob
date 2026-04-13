@@ -690,7 +690,7 @@ function renderJobs(jobs) {
         '<div id="ef-logo-preview-'+job.id+'">'+(job.logoUrl?'<img src="'+esc(job.logoUrl)+'" style="max-width:72px;max-height:72px;object-fit:contain;border-radius:8px;margin-bottom:.35rem"><br>':'')+'</div><span id="ef-logo-status-'+job.id+'" style="font-size:.78rem;color:var(--em);font-weight:600">'+(job.logoUrl?'Change logo':'Click to upload logo')+'</span><div style="font-size:.65rem;color:var(--text3);margin-top:.15rem">PNG, JPG, SVG (max 500KB). Transparent background recommended.</div></button>'+
         '<input type="hidden" id="ef-logo-'+job.id+'" value="'+esc(job.logoUrl||'')+'">'+
         '<div style="margin-top:.3rem;font-size:.65rem;color:var(--text3)">Or paste URL: <input type="text" id="ef-logo-url-'+job.id+'" value="'+esc(job.logoUrl||'')+'" placeholder="https://..." style="display:inline;width:auto;padding:.2rem .4rem;font-size:.65rem;border-radius:4px"></div>'+
-        '</div>':'')+
+        '</div>'+
         '<div class="err" id="edit-err-'+job.id+'"></div>'+
         '<div class="ok" id="edit-ok-'+job.id+'"></div>'+
         '<div style="display:flex;gap:.5rem;margin-top:.5rem">'+
