@@ -761,9 +761,9 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <!-- Not logged in: show login/register -->
     <div id="acct-auth">
       <div class="card" style="max-width:420px;margin:0 auto">
-        <div style="display:flex;border-bottom:1px solid var(--border);margin:-1.75rem -1.75rem 1.5rem;padding:0">
-          <button type="button" id="acct-tab-login" style="flex:1;padding:1rem;text-align:center;font-size:.85rem;font-weight:700;cursor:pointer;background:none;color:var(--em);border:none;border-bottom:2px solid var(--em);font-family:'Inter',sans-serif">Sign In</button>
-          <button type="button" id="acct-tab-reg" style="flex:1;padding:1rem;text-align:center;font-size:.85rem;font-weight:700;cursor:pointer;background:none;color:var(--text3);border:none;border-bottom:2px solid transparent;font-family:'Inter',sans-serif">Create Account</button>
+        <div style="display:flex;margin:-1.75rem -1.75rem 1.5rem;padding:0">
+          <button type="button" id="acct-tab-login" style="flex:1;padding:1rem;text-align:center;font-size:.85rem;font-weight:700;cursor:pointer;background:none;color:var(--em);border-top:none;border-left:none;border-right:none;border-bottom:2px solid var(--em);font-family:'Inter',sans-serif">Sign In</button>
+          <button type="button" id="acct-tab-reg" style="flex:1;padding:1rem;text-align:center;font-size:.85rem;font-weight:700;cursor:pointer;background:none;color:var(--text3);border-top:none;border-left:none;border-right:none;border-bottom:2px solid transparent;font-family:'Inter',sans-serif">Create Account</button>
         </div>
         <div id="acct-login-pane">
           <div id="google-signin-btn" style="display:flex;justify-content:center;margin-bottom:1rem"></div>
@@ -2676,13 +2676,8 @@ function initApp(){try{
   document.getElementById('f-type').addEventListener('change',loadBrowse);
   document.getElementById('f-search-btn').addEventListener('click',loadBrowse);
   document.getElementById('f-keyword').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();loadBrowse();}});
-  document.getElementById('pricing-try').addEventListener('click',goFind);
-  // plan buttons are now direct links to portal
   document.getElementById('fl-find').addEventListener('click',goFind);
   document.getElementById('fl-browse').addEventListener('click',function(){showPage('browse');loadBrowse();});
-  document.getElementById('fl-pricing').addEventListener('click',function(){showPage('pricing');});
-  // fl-employer is now a direct link
-  document.getElementById('fl-about').addEventListener('click',function(){showPage('about');});
   document.getElementById('fl-privacy').addEventListener('click',function(){openModal('privacy');});
   document.getElementById('fl-terms').addEventListener('click',function(){openModal('terms');});
   document.getElementById('db-terms').addEventListener('click',function(){openModal('terms');});
