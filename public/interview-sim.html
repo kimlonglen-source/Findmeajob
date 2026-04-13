@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Interview Simulator — FindMeAJob.co.nz</title>
-<meta name="description" content="Practice job interviews with AI. Speak or type your answers. Get scored out of 100 with feedback. Free for NZ.">
+<meta name="description" content="Practice job interviews with AI. Speak your answers and get scored out of 100 with feedback. Free for NZ.">
 <link rel="canonical" href="https://www.findmeajob.co.nz/interview-sim">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.findmeajob.co.nz/interview-sim">
 <meta property="og:title" content="Interview Simulator — Free AI Interview Practice NZ">
-<meta property="og:description" content="Practice job interviews with AI. Speak or type. Get scored out of 100.">
+<meta property="og:description" content="Practice job interviews with AI. Speak your answers. Get scored out of 100.">
 <meta property="og:image" content="https://www.findmeajob.co.nz/favicon-512.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -292,7 +292,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
   <div id="pageHeader">
     <div class="page-badge">Interview Simulator</div>
     <h1>Practice Your <em>Interview</em></h1>
-  <p class="subtitle">Practice real job interviews with AI. Get scored and improve.</p>
+  <p class="subtitle">Practice real job interviews with AI. Speak your answers and get scored out of 100.</p>
   </div>
 
   <!-- STEP 1: What role -->
@@ -341,7 +341,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
       <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem">
         <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#059669">1</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">AI asks you a question</div><div style="font-size:.78rem;color:#64748b">The interviewer will introduce themselves, then ask questions one at a time.</div></div></div>
 
-        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#059669">2</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">You answer</div><div style="font-size:.78rem;color:#64748b">Click the microphone button to speak, or type your answer. Take your time.</div></div></div>
+        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#059669">2</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">You answer</div><div style="font-size:.78rem;color:#64748b">Tap the microphone button and speak your answer. Take your time.</div></div></div>
 
         <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#059669">3</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">Submit your answer</div><div style="font-size:.78rem;color:#64748b">Click <strong>Send</strong> when done. Or just pause — your answer auto-submits after 5 seconds of silence.</div></div></div>
 
@@ -476,7 +476,7 @@ function requestMicEarly(){
     statusEl.innerHTML='&#10003; Microphone allowed — you can speak your answers';
   }).catch(function(){
     statusEl.style.background='#fef2f2';statusEl.style.color='#dc2626';statusEl.style.border='1px solid #fecaca';
-    statusEl.innerHTML='&#10007; Microphone blocked — <a href="#" onclick="event.preventDefault();retryMicStep2()" style="color:#dc2626;font-weight:700;text-decoration:underline">Try again</a> or type your answers instead'
+    statusEl.innerHTML='&#10007; Microphone blocked — <a href="#" onclick="event.preventDefault();retryMicStep2()" style="color:#dc2626;font-weight:700;text-decoration:underline">Try again</a> or open in Incognito tab'
       +'<div style="font-size:.72rem;color:#94a3b8;margin-top:.35rem;font-weight:400">If blocked: open this page in an <strong>Incognito tab</strong>, or go to Chrome &#8942; &rarr; Settings &rarr; Site settings &rarr; Microphone &rarr; Allow findmeajob.co.nz</div>';
   });
 }
@@ -492,7 +492,7 @@ function retryMicStep2(){
     statusEl.innerHTML='&#10003; Microphone allowed — you can speak your answers';
   }).catch(function(){
     statusEl.style.background='#fef2f2';statusEl.style.color='#dc2626';statusEl.style.border='1px solid #fecaca';
-    statusEl.innerHTML='&#10007; Still blocked — type your answers or open in Incognito tab';
+    statusEl.innerHTML='&#10007; Still blocked — try opening in an Incognito tab';
   });
 }
 
@@ -520,9 +520,9 @@ function _doPrep(){
   } else {
     var hasSR=!!(window.SpeechRecognition||window.webkitSpeechRecognition);
     if(hasSR){
-      micEl.className='countdown-check wait';micEl.innerHTML='&#9997; Type mode — mic not enabled';
+      micEl.className='countdown-check wait';micEl.innerHTML='&#127908; Microphone not enabled — enable in Step 2';
     } else {
-      micEl.className='countdown-check wait';micEl.innerHTML='&#10007; Voice not supported — type your answers';
+      micEl.className='countdown-check wait';micEl.innerHTML='&#10007; Voice not supported on this browser — please use Chrome';
     }
   }
   beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
