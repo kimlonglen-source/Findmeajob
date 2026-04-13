@@ -150,6 +150,9 @@ body.dark .msg-typing::after{border-right-color:rgba(255,255,255,.04)}
 .mic-btn.ready{animation:micGlow 2s infinite}
 .mic-label{font-size:.72rem;font-weight:600;color:#94a3b8;margin-top:.15rem}
 .mic-label.recording{color:#ef4444;font-weight:700}
+.mic-transcript{display:none;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-size:.82rem;color:#0f172a;line-height:1.6;min-height:44px;max-height:200px;overflow-y:auto;text-align:left;width:100%;word-wrap:break-word}
+.mic-transcript.active{display:block}
+body.dark .mic-transcript{background:#0f172a;border-color:rgba(255,255,255,.1);color:#f8fafc}
 .chat-actions{display:flex;gap:.5rem;align-items:center}
 .chat-actions button{padding:.5rem 1rem;border-radius:999px;font-size:.75rem}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.3)}50%{box-shadow:0 0 0 8px rgba(239,68,68,0)}}
@@ -402,6 +405,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
           <textarea id="userInput" style="display:none" rows="1"></textarea>
           <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Tap to speak">&#127908;</button>
           <div class="mic-label" id="micLabel">Tap to answer</div>
+          <div class="mic-transcript" id="micTranscript"></div>
           <div class="chat-actions">
             <button id="sendBtn" onclick="sendAnswer()" style="display:none">Send</button>
             <button onclick="skipQuestion()" style="background:#f8fafc;color:#64748b;border:1px solid #e2e8f0;font-size:.72rem">Skip question</button>
@@ -727,13 +731,16 @@ function toggleMic(){
     recog.stop();recog=null;btn.classList.remove('rec');
     document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);
     lbl.textContent='Tap to answer';lbl.className='mic-label';
+    document.getElementById('micTranscript').className='mic-transcript';
     return;
   }
   try{
     var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
     recog=new SR();recog.lang='en';recog.continuous=true;recog.interimResults=true;
     btn.classList.add('rec');
-    lbl.textContent='Recording... tap to stop';lbl.className='mic-label recording';
+    lbl.textContent='Listening... speak now';lbl.className='mic-label recording';
+    document.getElementById('micTranscript').className='mic-transcript active';
+    document.getElementById('micTranscript').textContent='';
     document.getElementById('listenBar').style.display='block';
     document.getElementById('listenFill').style.width='0';
     var inp=document.getElementById('userInput');
@@ -742,7 +749,11 @@ function toggleMic(){
       var t='';
       for(var i=0;i<e.results.length;i++){t+=e.results[i][0].transcript;}
       inp.value=t;lastResultTime=Date.now();
-      lbl.textContent='Recording: "'+t.substring(0,40)+(t.length>40?'...':'')+'"';
+      lbl.textContent='Recording...';
+      var trEl=document.getElementById('micTranscript');
+      trEl.className='mic-transcript active';
+      trEl.textContent=t;
+      trEl.scrollTop=trEl.scrollHeight;
       document.getElementById('listenFill').style.width='0';
       clearTimeout(silenceTimer);
       if(autoSend&&t.trim().length>3){
@@ -750,6 +761,7 @@ function toggleMic(){
           if(inp.value.trim()&&Date.now()-lastResultTime>=silenceDelay-500){
             recog.stop();recog=null;btn.classList.remove('rec');
             document.getElementById('listenBar').style.display='none';
+            document.getElementById('micTranscript').className='mic-transcript';
             lbl.textContent='Sending...';lbl.className='mic-label';
             sendAnswer();
           }
@@ -758,8 +770,11 @@ function toggleMic(){
         (function tick(){var p=Math.min(((Date.now()-start)/silenceDelay)*100,100);bar.style.width=p+'%';if(p<100)requestAnimationFrame(tick);})();
       }
     };
-    recog.onend=function(){btn.classList.remove('rec');recog=null;document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);lbl.textContent='Tap to answer';lbl.className='mic-label';
-      var inp2=document.getElementById('userInput');if(inp2.value.trim()){lbl.textContent='Sending...';sendAnswer();}
+    recog.onend=function(){btn.classList.remove('rec');recog=null;document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);
+      document.getElementById('micTranscript').className='mic-transcript';
+      var inp2=document.getElementById('userInput');
+      if(inp2.value.trim()){lbl.textContent='Sending...';lbl.className='mic-label';sendAnswer();}
+      else{lbl.textContent='Tap to answer';lbl.className='mic-label';}
     };
     recog.onerror=function(ev){
       btn.classList.remove('rec');recog=null;document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);
