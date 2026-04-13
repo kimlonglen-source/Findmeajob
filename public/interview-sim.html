@@ -162,7 +162,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
     <a href="/match.html#account">Job Seekers</a>
     <a href="/employer-portal.html">Post a Job</a>
     <a href="/employer-portal.html">Employer Login</a>
-    <a href="/match.html#apply" class="nav-cta">CV + Cover Letter</a>
+    <a href="/match.html" class="nav-cta">Apply for a Job</a>
     <button onclick="toggleTheme()" id="tbtn" style="background:none;border:1px solid #e2e8f0;color:#64748b;width:30px;height:30px;border-radius:999px;cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center">&#9788;</button>
   </div>
 </nav>
@@ -487,7 +487,7 @@ function showScore(r){
     h+='<div style="font-size:.72rem;font-weight:700;color:'+fc+';margin-bottom:.3rem">'+esc(f.rating)+'</div>';
     h+='<div class="fb-text">'+esc(f.comment)+'</div></div>';
   });}
-  h+='<div class="cta-box"><p>Ready to apply for real?</p><a href="/match.html">Match My CV to Jobs</a></div>';
+  h+='<div class="cta-box"><p>Ready to apply for real?</p><a href="/match.html">Apply for a Job</a></div>';
   stopCam();document.getElementById('chatSection').style.display='none';
   document.getElementById('scoreSection').innerHTML=h;document.getElementById('scoreSection').style.display='block';
 }

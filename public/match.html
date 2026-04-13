@@ -261,8 +261,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <a class="mnavitem" href="/blog">Blog</a>
     <a class="mnavitem" href="/employer-portal.html">Post a Job</a>
     <a class="mnavitem" href="/employer-portal.html">Employer Login</a>
-    <a class="mnavitem" href="/match.html" style="color:var(--em);font-weight:700">Match My CV</a>
-    <button class="mnavitem" id="mm-apply" type="button">CV + Cover Letter</button>
+    <a class="mnavitem" href="/match.html" style="color:var(--em);font-weight:700">Apply for a Job</a>
+    <button class="mnavitem" id="mm-apply" type="button">Apply for a Job</button>
     <button class="mnavitem" id="mm-home" type="button" style="display:none">Home</button>
     <button class="mnavitem" id="mm-find" type="button" style="display:none">Find a Job</button>
     <button class="mnavitem" id="mm-browse" type="button" style="display:none">Browse Jobs</button>
@@ -285,7 +285,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <button class="nl" id="h-browse" type="button" style="display:none">Browse Jobs</button>
     <button class="nl" id="h-account" type="button" style="display:none">My Account</button>
     <button class="nl" id="h-signin" type="button" style="display:none">My Jobs</button>
-    <button class="nl cta" id="h-apply" type="button">CV + Cover Letter</button>
+    <button class="nl cta" id="h-apply" type="button">Apply for a Job</button>
   </div>
   <div class="nav-r">
     <button class="icon-btn" id="tbtn" type="button">&#9788;</button>
@@ -3208,7 +3208,7 @@ function initApp(){try{
     h+='</div></div>';
     h+='<div style="background:var(--em3);border:1px solid rgba(16,185,129,.15);border-radius:var(--rl);padding:1.25rem;text-align:center;margin-top:1rem">';
     h+='<p style="font-size:.88rem;color:var(--text);font-weight:600;margin-bottom:.65rem">Ready to find more jobs matched to your skills?</p>';
-    h+='<button class="btn" onclick="goFind()" type="button" style="max-width:280px">Match My CV to NZ Jobs</button>';
+    h+='<button class="btn" onclick="goFind()" type="button" style="max-width:280px">Find NZ Jobs for Me</button>';
     h+='</div>';
     h+='<div style="text-align:center;margin-top:.75rem"><button class="btn btn-sec" type="button" onclick="resetApply()" style="max-width:200px;padding:.6rem 1rem;font-size:.82rem">Generate another</button></div>';
 
@@ -3247,9 +3247,8 @@ function initApp(){try{
     window.scrollTo(0,0);
   };
 
-  function goApply(){showPage('apply');}
-  document.getElementById('h-apply').addEventListener('click',goApply);
-  document.getElementById('mm-apply').addEventListener('click',function(){document.getElementById('moverlay').classList.remove('open');goApply();});
+  document.getElementById('h-apply').addEventListener('click',goFind);
+  document.getElementById('mm-apply').addEventListener('click',function(){document.getElementById('moverlay').classList.remove('open');goFind();});
 
   }catch(e){console.error('Init error:',e);}
 }
