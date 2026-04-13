@@ -163,7 +163,7 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
       <div class="field"><label>Your name *</label><input type="text" id="r-name" placeholder="Jane Smith" autocomplete="name"></div>
       <div class="field"><label>Company name *</label><input type="text" id="r-company" placeholder="Acme Ltd" autocomplete="organization"></div>
       <div class="field"><label>Work email *</label><input type="email" id="r-email" placeholder="jane@acme.co.nz" autocomplete="email"></div>
-      <div class="field"><label>Password *</label><input type="password" id="r-password" placeholder="Min 8 chars, upper, lower, number, symbol" autocomplete="new-password"></div>
+      <div class="field"><label>Password *</label><input type="password" id="r-password" placeholder="Min 6 characters" autocomplete="new-password"></div>
       <div class="err" id="reg-err"></div>
       <button class="btn" id="btn-register" type="button" style="margin-top:.5rem">Create Account &#8594;</button>
       <div style="text-align:center;margin-top:.65rem;font-size:.72rem;color:var(--text3)">By registering you agree to our <a href="/?terms=1" style="color:var(--em);font-weight:600;text-decoration:none" target="_blank">Terms of Use</a> and <a href="/?privacy=1" style="color:var(--em);font-weight:600;text-decoration:none" target="_blank">Privacy Policy</a></div>
@@ -401,7 +401,7 @@ async function doRegister() {
   var err = document.getElementById('reg-err');
   err.style.display = 'none';
   if (!name||!company||!email||!password) { err.textContent = 'Please fill in all required fields.'; err.style.display = 'block'; return; }
-  if (password.length<8||!/[A-Z]/.test(password)||!/[a-z]/.test(password)||!/[0-9]/.test(password)||!/[^A-Za-z0-9]/.test(password)) { err.textContent = 'Password must be at least 8 characters with uppercase, lowercase, number and special character.'; err.style.display = 'block'; return; }
+  if (password.length<6) { err.textContent = 'Password must be at least 6 characters.'; err.style.display = 'block'; return; }
   var btn = document.getElementById('btn-register');
   btn.textContent = 'Creating account...'; btn.disabled = true;
   try {
@@ -848,7 +848,7 @@ var urlP=new URLSearchParams(window.location.search);
 var resetTok=urlP.get('reset');
 var resetEm=urlP.get('email');
 if(resetTok&&resetEm){
-  document.getElementById('auth-screen').innerHTML='<div style="max-width:420px;margin:2rem auto;padding:0 1.25rem"><div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem"><div style="font-size:.68rem;font-weight:800;text-transform:uppercase;color:var(--em);margin-bottom:.3rem">Reset Password</div><div style="font-family:Inter,sans-serif;font-size:1.4rem;font-weight:800;color:var(--text);margin-bottom:1rem">Choose a new password</div><p style="font-size:.82rem;color:var(--text2);font-weight:500;margin-bottom:1rem">For: <strong style="color:var(--em)">'+esc(resetEm)+'</strong></p><div class="field"><label>New password</label><input type="password" id="rp-new" placeholder="Min 8 chars, upper, lower, number, symbol"></div><div class="field"><label>Confirm password</label><input type="password" id="rp-confirm" placeholder="Repeat password"></div><div id="rp-msg" style="font-size:.82rem;font-weight:600;margin:.5rem 0;min-height:1rem"></div><button class="btn" onclick="doPortalReset()" type="button" style="margin-top:.5rem">Update Password</button></div></div>';
+  document.getElementById('auth-screen').innerHTML='<div style="max-width:420px;margin:2rem auto;padding:0 1.25rem"><div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem"><div style="font-size:.68rem;font-weight:800;text-transform:uppercase;color:var(--em);margin-bottom:.3rem">Reset Password</div><div style="font-family:Inter,sans-serif;font-size:1.4rem;font-weight:800;color:var(--text);margin-bottom:1rem">Choose a new password</div><p style="font-size:.82rem;color:var(--text2);font-weight:500;margin-bottom:1rem">For: <strong style="color:var(--em)">'+esc(resetEm)+'</strong></p><div class="field"><label>New password</label><input type="password" id="rp-new" placeholder="Min 6 characters"></div><div class="field"><label>Confirm password</label><input type="password" id="rp-confirm" placeholder="Repeat password"></div><div id="rp-msg" style="font-size:.82rem;font-weight:600;margin:.5rem 0;min-height:1rem"></div><button class="btn" onclick="doPortalReset()" type="button" style="margin-top:.5rem">Update Password</button></div></div>';
   window.doPortalReset=async function(){
     var np=document.getElementById('rp-new').value;
     var cp=document.getElementById('rp-confirm').value;
