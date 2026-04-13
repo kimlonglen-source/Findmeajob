@@ -441,6 +441,7 @@ var fillerWords=0;
 var fillerRegex=/\b(um+|uh+|ah+|er+|like|you know|basically|literally|sort of|kind of)\b/gi;
 
 var _prepRole='';
+var _micStream=null;
 
 function goStep2(){
   var role=document.getElementById('simRole').value.trim();
@@ -475,7 +476,7 @@ function _doPrep(){
   } else if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
     micEl.className='countdown-check wait';micEl.innerHTML='&#9675; Requesting microphone...';
     navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
-      s.getTracks().forEach(function(t){t.stop();});
+      _micStream=s;
       micEl.className='countdown-check ok';micEl.innerHTML='&#10003; Microphone ready';
       beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
     }).catch(function(){
@@ -729,17 +730,7 @@ function toggleMic(){
     }
   }
 
-  // On Android, request mic permission first then start recognition
-  if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
-    navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
-      stream.getTracks().forEach(function(t){t.stop();});
-      doStart();
-    }).catch(function(){
-      alert('Microphone permission is required for voice input. Please allow it in your browser settings and try again.');
-    });
-  } else {
-    doStart();
-  }
+  doStart();
 }
 
 /* Camera */
@@ -754,6 +745,7 @@ function startCam(){
 function stopCam(){
   var vid=document.getElementById('camVideo');
   if(vid.srcObject){vid.srcObject.getTracks().forEach(function(t){t.stop();});vid.srcObject=null;}
+  if(_micStream){_micStream.getTracks().forEach(function(t){t.stop();});_micStream=null;}
   document.getElementById('camWrap').style.display='none';
 }
 
