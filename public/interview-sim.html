@@ -459,7 +459,8 @@ function requestMicEarly(){
   statusEl.style.background='#f0fdf4';statusEl.style.color='#059669';statusEl.style.border='1px solid #bbf7d0';
   statusEl.innerHTML='&#127908; Requesting microphone access...';
   navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
-    _micStream=s;
+    s.getTracks().forEach(function(t){t.stop();});
+    _micStream=true;
     statusEl.style.background='#f0fdf4';statusEl.style.color='#059669';statusEl.style.border='1px solid #bbf7d0';
     statusEl.innerHTML='&#10003; Microphone allowed — you can speak your answers';
   }).catch(function(){
@@ -474,7 +475,8 @@ function retryMicStep2(){
   statusEl.style.background='#f0fdf4';statusEl.style.color='#059669';statusEl.style.border='1px solid #bbf7d0';
   statusEl.innerHTML='&#127908; Requesting microphone access...';
   navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
-    _micStream=s;
+    s.getTracks().forEach(function(t){t.stop();});
+    _micStream=true;
     statusEl.style.background='#f0fdf4';statusEl.style.color='#059669';statusEl.style.border='1px solid #bbf7d0';
     statusEl.innerHTML='&#10003; Microphone allowed — you can speak your answers';
   }).catch(function(){
@@ -772,7 +774,7 @@ function startCam(){
 function stopCam(){
   var vid=document.getElementById('camVideo');
   if(vid.srcObject){vid.srcObject.getTracks().forEach(function(t){t.stop();});vid.srcObject=null;}
-  if(_micStream){_micStream.getTracks().forEach(function(t){t.stop();});_micStream=null;}
+  if(_micStream&&_micStream.getTracks){_micStream.getTracks().forEach(function(t){t.stop();});}_micStream=null;
   document.getElementById('camWrap').style.display='none';
 }
 
