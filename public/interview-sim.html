@@ -194,8 +194,8 @@ body.dark .countdown-sub{color:#94a3b8}
   .container{padding:1rem .85rem 2rem}
   .subtitle{font-size:.85rem}
   .card{padding:1.25rem}
-  .chat-layout{flex-direction:column !important}
-  .cam-wrap{position:sticky !important;top:65px !important;max-width:100% !important;min-width:auto !important;display:none;border-radius:12px;z-index:50;flex-direction:row;align-self:stretch}
+  .chat-layout{flex-direction:column !important;padding-top:70px}
+  .cam-wrap{position:fixed !important;top:60px !important;left:0 !important;right:0 !important;max-width:100% !important;min-width:auto !important;display:none;border-radius:0 !important;z-index:50;border-left:none !important;border-right:none !important;border-top:none !important}
   .cam-wrap .office-bg{padding:.5rem .75rem;border-radius:12px 0 0 12px;display:flex;align-items:center;justify-content:center}
   .cam-wrap .avatar{width:50px;height:55px;margin:0}
   .cam-wrap .avatar-head{width:36px;height:40px}
@@ -675,33 +675,40 @@ function toggleMic(){
   if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){alert('Speech recognition not supported in this browser.');return;}
   if(_aiSpeaking){return;}
   if(recog){recog.stop();recog=null;btn.classList.remove('rec');document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);return;}
-  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  recog=new SR();recog.lang='en-NZ';recog.continuous=true;recog.interimResults=true;btn.classList.add('rec');
-  document.getElementById('listenBar').style.display='block';
-  document.getElementById('listenFill').style.width='0';
-  var inp=document.getElementById('userInput');
-  var lastResultTime=Date.now();
-  recog.onresult=function(e){
-    var t='';var hasF=false;
-    for(var i=0;i<e.results.length;i++){t+=e.results[i][0].transcript;if(e.results[i].isFinal)hasF=true;}
-    inp.value=t;lastResultTime=Date.now();
+  function startRecog(){
+    var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+    recog=new SR();recog.lang='en-NZ';recog.continuous=true;recog.interimResults=true;btn.classList.add('rec');
+    document.getElementById('listenBar').style.display='block';
     document.getElementById('listenFill').style.width='0';
-    clearTimeout(silenceTimer);
-    if(autoSend&&t.trim().length>5){
-      silenceTimer=setTimeout(function(){
-        if(inp.value.trim()&&Date.now()-lastResultTime>=silenceDelay-500){
-          recog.stop();recog=null;btn.classList.remove('rec');
-          document.getElementById('listenBar').style.display='none';
-          sendAnswer();
-        }
-      },silenceDelay);
-      var start=Date.now();var bar=document.getElementById('listenFill');
-      (function tick(){var p=Math.min(((Date.now()-start)/silenceDelay)*100,100);bar.style.width=p+'%';if(p<100)requestAnimationFrame(tick);})();
-    }
-  };
-  recog.onend=function(){btn.classList.remove('rec');recog=null;document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);};
-  recog.onerror=function(){btn.classList.remove('rec');recog=null;document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);};
-  recog.start();
+    var inp=document.getElementById('userInput');
+    var lastResultTime=Date.now();
+    recog.onresult=function(e){
+      var t='';var hasF=false;
+      for(var i=0;i<e.results.length;i++){t+=e.results[i][0].transcript;if(e.results[i].isFinal)hasF=true;}
+      inp.value=t;lastResultTime=Date.now();
+      document.getElementById('listenFill').style.width='0';
+      clearTimeout(silenceTimer);
+      if(autoSend&&t.trim().length>5){
+        silenceTimer=setTimeout(function(){
+          if(inp.value.trim()&&Date.now()-lastResultTime>=silenceDelay-500){
+            recog.stop();recog=null;btn.classList.remove('rec');
+            document.getElementById('listenBar').style.display='none';
+            sendAnswer();
+          }
+        },silenceDelay);
+        var start=Date.now();var bar=document.getElementById('listenFill');
+        (function tick(){var p=Math.min(((Date.now()-start)/silenceDelay)*100,100);bar.style.width=p+'%';if(p<100)requestAnimationFrame(tick);})();
+      }
+    };
+    recog.onend=function(){btn.classList.remove('rec');recog=null;document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);};
+    recog.onerror=function(ev){btn.classList.remove('rec');recog=null;document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);if(ev.error==='not-allowed'){alert('Microphone access denied. Please allow microphone in your browser settings.');}};
+    recog.start();
+  }
+  if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
+    navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){s.getTracks().forEach(function(t){t.stop();});startRecog();}).catch(function(err){alert('Please allow microphone access to use voice input.');});
+  } else {
+    startRecog();
+  }
 }
 
 /* Camera */
