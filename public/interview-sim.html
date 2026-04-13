@@ -416,41 +416,17 @@ function _doPrep(){
   document.getElementById('readyScreen').style.display='block';
 
   var micEl=document.getElementById('micStatus');
-  var camEl=document.getElementById('camStatus');
   var beginBtn=document.getElementById('beginBtn');
-  var pending=0;
-
-  function checkReady(){
-    if(pending<=0){beginBtn.disabled=false;beginBtn.textContent='Begin Interview';}
-  }
 
   // Request mic
-  pending++;
   navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
     s.getTracks().forEach(function(t){t.stop();});
     micEl.className='countdown-check ok';micEl.innerHTML='&#10003; Microphone ready';
-    pending--;checkReady();
+    beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
   }).catch(function(){
     micEl.className='countdown-check ok';micEl.innerHTML='&#10007; Microphone unavailable (type instead)';
-    pending--;checkReady();
+    beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
   });
-
-  // Request camera if enabled
-  if(camEnabled){
-    camEl.style.display='flex';
-    pending++;
-    navigator.mediaDevices.getUserMedia({video:true}).then(function(s){
-      document.getElementById('camVideo').srcObject=s;
-      camEl.className='countdown-check ok';camEl.innerHTML='&#10003; Camera ready';
-      pending--;checkReady();
-    }).catch(function(){
-      camEl.innerHTML='&#10007; Camera unavailable';camEnabled=false;
-      pending--;checkReady();
-    });
-  } else {
-    camEl.style.display='none';
-    if(pending<=0){beginBtn.disabled=false;beginBtn.textContent='Begin Interview';}
-  }
 }
 
 function beginCountdown(){
@@ -537,7 +513,7 @@ async function skipQuestion(){
 }
 
 async function endInterview(){
-  window.speechSynthesis.cancel();stopTimer();setAvatar('thinking');
+  _aiSpeaking=false;window.speechSynthesis.cancel();stopTimer();setAvatar('thinking');
   document.getElementById('endBtn').textContent='Scoring...';document.getElementById('endBtn').disabled=true;
   var p="You conducted a "+iData.style+" interview for "+iData.role+" in NZ. Score the candidate. They used "+fillerWords+" filler words (um, ah, like, you know, basically). Comment on this in your feedback.\n\n";
   iData.qa.forEach(function(x,i){p+="Q"+(i+1)+": "+x.q.substring(0,400)+"\nA"+(i+1)+": "+x.a.substring(0,400)+"\n\n";});
@@ -594,8 +570,9 @@ function setupAvatarGender(gender){
   body.className='avatar-body '+(gender==='male'?'male':'female');
 }
 setInterval(function(){var eyes=document.querySelectorAll('.avatar-eye');eyes.forEach(function(e){e.classList.add('blink');setTimeout(function(){e.classList.remove('blink');},150);});},3500+Math.random()*2000);
-function speak(t){setAvatar('speaking');if(!audioEnabled||!window.speechSynthesis){setTimeout(function(){setAvatar('listening');},2000);return;}if(recog){recog.stop();recog=null;var mb=document.getElementById('micBtn');if(mb)mb.classList.remove('rec');document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);}window.speechSynthesis.cancel();setTimeout(function(){_doSpeak(t);},150);}
-function _doSpeak(t){var gender=document.getElementById('voiceGender').value;var voices=window.speechSynthesis.getVoices();var match=null;var nzAu=[];var enVoices=[];for(var i=0;i<voices.length;i++){var l=voices[i].lang.toLowerCase();if(l==='en-nz'||l==='en-au'||l.indexOf('en_nz')>-1||l.indexOf('en_au')>-1)nzAu.push(voices[i]);else if(l.indexOf('en')===0)enVoices.push(voices[i]);}var pool=nzAu.length?nzAu:enVoices;for(var j=0;j<pool.length;j++){var n=pool[j].name.toLowerCase();if(gender==='female'&&(n.indexOf('female')>-1||n.indexOf('fiona')>-1||n.indexOf('karen')>-1||n.indexOf('samantha')>-1||n.indexOf('victoria')>-1||n.indexOf('moira')>-1||n.indexOf('tessa')>-1)){match=pool[j];break;}if(gender==='male'&&(n.indexOf('male')>-1||n.indexOf('daniel')>-1||n.indexOf('james')>-1||n.indexOf('lee')>-1||n.indexOf('gordon')>-1||n.indexOf('alex')>-1)){match=pool[j];break;}}if(!match&&pool.length){match=pool[0];}var sentences=t.match(/[^.!?]+[.!?]+[\s]*/g)||[t];var idx=0;function speakNext(){if(idx>=sentences.length){setAvatar('listening');return;}var chunk=sentences[idx].trim();idx++;if(!chunk){speakNext();return;}var u=new SpeechSynthesisUtterance(chunk);u.rate=1.0;u.lang='en-NZ';if(match)u.voice=match;if(gender==='male'){u.pitch=0.9;}else{u.pitch=1.0;}u.onend=function(){var pause=200;if(chunk.indexOf('?')>-1)pause=400;else if(chunk.indexOf('.')>-1)pause=300;setTimeout(speakNext,pause);};window.speechSynthesis.speak(u);}speakNext();}
+var _aiSpeaking=false;
+function speak(t){_aiSpeaking=true;setAvatar('speaking');if(!audioEnabled||!window.speechSynthesis){setTimeout(function(){_aiSpeaking=false;setAvatar('listening');},2000);return;}if(recog){recog.stop();recog=null;var mb=document.getElementById('micBtn');if(mb)mb.classList.remove('rec');document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);}window.speechSynthesis.cancel();setTimeout(function(){_doSpeak(t);},150);}
+function _doSpeak(t){var gender=document.getElementById('voiceGender').value;var voices=window.speechSynthesis.getVoices();var match=null;var nzAu=[];var enVoices=[];for(var i=0;i<voices.length;i++){var l=voices[i].lang.toLowerCase();if(l==='en-nz'||l==='en-au'||l.indexOf('en_nz')>-1||l.indexOf('en_au')>-1)nzAu.push(voices[i]);else if(l.indexOf('en')===0)enVoices.push(voices[i]);}var pool=nzAu.length?nzAu:enVoices;for(var j=0;j<pool.length;j++){var n=pool[j].name.toLowerCase();if(gender==='female'&&(n.indexOf('female')>-1||n.indexOf('fiona')>-1||n.indexOf('karen')>-1||n.indexOf('samantha')>-1||n.indexOf('victoria')>-1||n.indexOf('moira')>-1||n.indexOf('tessa')>-1)){match=pool[j];break;}if(gender==='male'&&(n.indexOf('male')>-1||n.indexOf('daniel')>-1||n.indexOf('james')>-1||n.indexOf('lee')>-1||n.indexOf('gordon')>-1||n.indexOf('alex')>-1)){match=pool[j];break;}}if(!match&&pool.length){match=pool[0];}var sentences=t.match(/[^.!?]+[.!?]+[\s]*/g)||[t];var idx=0;function speakNext(){if(idx>=sentences.length){_aiSpeaking=false;setAvatar('listening');return;}var chunk=sentences[idx].trim();idx++;if(!chunk){speakNext();return;}var u=new SpeechSynthesisUtterance(chunk);u.rate=1.0;u.lang='en-NZ';if(match)u.voice=match;if(gender==='male'){u.pitch=0.9;}else{u.pitch=1.0;}u.onend=function(){var pause=200;if(chunk.indexOf('?')>-1)pause=400;else if(chunk.indexOf('.')>-1)pause=300;setTimeout(speakNext,pause);};window.speechSynthesis.speak(u);}speakNext();}
 window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
 
 /* Timer for real-life mode */
@@ -639,7 +616,7 @@ function updTimer(){var m=Math.floor(timeLeft/60);var s=timeLeft%60;document.get
 function toggleMic(){
   var btn=document.getElementById('micBtn');
   if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){alert('Speech recognition not supported in this browser.');return;}
-  if(window.speechSynthesis&&window.speechSynthesis.speaking){return;}
+  if(_aiSpeaking){return;}
   if(recog){recog.stop();recog=null;btn.classList.remove('rec');document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);return;}
   var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   recog=new SR();recog.lang='en-NZ';recog.continuous=true;recog.interimResults=true;btn.classList.add('rec');
