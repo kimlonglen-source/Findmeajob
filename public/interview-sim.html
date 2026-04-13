@@ -342,9 +342,15 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
         <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#059669">5</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">Get your score</div><div style="font-size:.78rem;color:#64748b">AI scores you out of 100 with feedback on every answer. Learn what to improve.</div></div></div>
       </div>
 
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:16px;padding:1.25rem;text-align:center;margin-bottom:1.25rem" id="micRequestBox">
+        <div style="font-size:1.5rem;margin-bottom:.5rem">&#127908;</div>
+        <div style="font-size:.95rem;font-weight:700;color:#0f172a;margin-bottom:.25rem">Could we use your microphone?</div>
+        <div style="font-size:.78rem;color:#64748b;margin-bottom:.85rem;line-height:1.5">This lets you speak your answers like a real interview. You can also type if you prefer.</div>
+        <button id="micAllowBtn" onclick="requestMic()" style="background:#10b981;color:#fff;border:none;padding:.65rem 1.5rem;border-radius:999px;font-family:Inter,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;margin-bottom:.35rem">Allow Microphone</button>
+        <div><button onclick="skipMic()" style="background:none;border:none;color:#94a3b8;font-size:.72rem;cursor:pointer;font-family:Inter,sans-serif;font-weight:600">No thanks, I will type</button></div>
+      </div>
       <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1.25rem;flex-wrap:wrap">
-        <div class="countdown-check wait" id="micStatus">&#9675; Microphone</div>
-        
+        <div class="countdown-check wait" id="micStatus" style="display:none">&#9675; Microphone</div>
       </div>
       <button class="btn" id="beginBtn" onclick="beginCountdown()" disabled style="max-width:320px;margin:0 auto">Setting up...</button>
       <div style="text-align:center;margin-top:.5rem"><button onclick="document.getElementById('readyScreen').style.display='none';document.getElementById('step2').style.display='block'" style="background:none;border:none;color:#64748b;font-size:.78rem;cursor:pointer;font-family:Inter,sans-serif">Back to settings</button></div>
@@ -468,30 +474,45 @@ function _doPrep(){
 
   var micEl=document.getElementById('micStatus');
   var beginBtn=document.getElementById('beginBtn');
+  var micBox=document.getElementById('micRequestBox');
 
   var hasSR=!!(window.SpeechRecognition||window.webkitSpeechRecognition);
-  if(!hasSR){
-    micEl.className='countdown-check ok';micEl.innerHTML='&#10007; Speech not supported (type your answers)';
-    beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
-  } else if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
-    function requestMic(){
-      micEl.className='countdown-check wait';micEl.innerHTML='&#9675; Requesting microphone...';
-      navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
-        _micStream=s;
-        micEl.className='countdown-check ok';micEl.innerHTML='&#10003; Microphone ready';
-        beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
-      }).catch(function(){
-        micEl.className='countdown-check wait';
-        micEl.innerHTML='&#10007; Microphone blocked. <br><span style="font-weight:400;font-size:.72rem;line-height:1.5;display:block;margin-top:.25rem;color:#64748b">Tap the lock icon &#128274; in your browser address bar, allow Microphone, then tap Retry below.</span><button onclick="requestMic()" style="margin-top:.5rem;background:#10b981;color:#fff;border:none;padding:.4rem 1rem;border-radius:999px;font-family:Inter,sans-serif;font-size:.75rem;font-weight:700;cursor:pointer">Retry Microphone</button>';
-        beginBtn.disabled=false;beginBtn.textContent='Begin Interview (type only)';
-      });
-    }
-    window.requestMic=requestMic;
-    requestMic();
-  } else {
-    micEl.className='countdown-check ok';micEl.innerHTML='&#10003; Microphone ready';
+  var hasMD=!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia);
+
+  if(!hasSR||!hasMD){
+    micBox.style.display='none';
+    micEl.style.display='flex';
+    micEl.className='countdown-check ok';micEl.innerHTML='&#10007; Voice not supported (type your answers)';
     beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
   }
+}
+
+function requestMic(){
+  var micEl=document.getElementById('micStatus');
+  var beginBtn=document.getElementById('beginBtn');
+  var micBox=document.getElementById('micRequestBox');
+  var allowBtn=document.getElementById('micAllowBtn');
+  allowBtn.textContent='Requesting...';allowBtn.disabled=true;
+  navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
+    _micStream=s;
+    micBox.style.display='none';
+    micEl.style.display='flex';
+    micEl.className='countdown-check ok';micEl.innerHTML='&#10003; Microphone ready';
+    beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
+  }).catch(function(){
+    micBox.innerHTML='<div style="font-size:1.2rem;margin-bottom:.5rem">&#128274;</div><div style="font-size:.88rem;font-weight:700;color:#0f172a;margin-bottom:.25rem">Microphone blocked</div><div style="font-size:.78rem;color:#64748b;margin-bottom:.65rem;line-height:1.5">Your browser has blocked microphone access. To fix this:<br><strong>1.</strong> Tap the lock icon in your address bar<br><strong>2.</strong> Set Microphone to Allow<br><strong>3.</strong> Refresh this page</div><button onclick="location.reload()" style="background:#10b981;color:#fff;border:none;padding:.55rem 1.25rem;border-radius:999px;font-family:Inter,sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;margin-bottom:.35rem">Refresh Page</button><div><button onclick="skipMic()" style="background:none;border:none;color:#94a3b8;font-size:.72rem;cursor:pointer;font-family:Inter,sans-serif;font-weight:600">Skip — I will type instead</button></div>';
+    beginBtn.disabled=false;beginBtn.textContent='Begin Interview (type only)';
+  });
+}
+
+function skipMic(){
+  var micBox=document.getElementById('micRequestBox');
+  var micEl=document.getElementById('micStatus');
+  var beginBtn=document.getElementById('beginBtn');
+  micBox.style.display='none';
+  micEl.style.display='flex';
+  micEl.className='countdown-check ok';micEl.innerHTML='&#9997; Type mode — no microphone';
+  beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
 }
 
 function beginCountdown(){
