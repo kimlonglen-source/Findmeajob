@@ -588,7 +588,7 @@ async function sendAnswer(){
   var inp=document.getElementById('userInput');var ans=inp.value.trim();
   if(!ans){inp.style.borderColor='#ef4444';setTimeout(function(){inp.style.borderColor='';},1000);return;}
   stopTimer();_aiSpeaking=false;clearTimeout(_speakTimeout);try{window.speechSynthesis.cancel();}catch(e){}
-  if(recog){recog.stop();recog=null;document.getElementById('micBtn').classList.remove('rec');}
+  if(recog){recog.stop();recog=null;document.getElementById('listenBar').style.display='none';}
   inp.value='';inp.style.height='44px';addMsg(ans,'user');countFillers(ans);
   var lastAi='';for(var i=msgs.length-1;i>=0;i--){if(msgs[i].role==='assistant'){lastAi=msgs[i].content;break;}}
   iData.qa.push({q:lastAi,a:ans});msgs.push({role:'user',content:ans});qCount++;updC();setAvatar('thinking');dis(true);showTyping();
@@ -606,7 +606,7 @@ async function sendAnswer(){
 
 async function skipQuestion(){
   stopTimer();
-  if(recog){recog.stop();recog=null;document.getElementById('micBtn').classList.remove('rec');document.getElementById('listenBar').style.display='none';}
+  if(recog){recog.stop();recog=null;document.getElementById('listenBar').style.display='none';}
   window.speechSynthesis.cancel();
   var inp=document.getElementById('userInput');
   if(inp.value.trim()){sendAnswer();return;}
@@ -670,12 +670,10 @@ function setAvatar(state,name){
   var mouth=document.getElementById('avatarMouth');
   var head=document.getElementById('avatarHead');
   var status=document.getElementById('avatarStatus');
-  var mic=document.getElementById('micBtn');
   if(name)document.getElementById('avatarName').textContent=name;
   wrap.className='avatar';mouth.className='avatar-mouth';status.className='avatar-status';
-  if(mic)mic.classList.remove('ready');
   if(state==='speaking'){wrap.classList.add('speaking');status.classList.add('speaking-s');status.textContent='Speaking';}
-  else if(state==='listening'){wrap.classList.add('listening');wrap.classList.add('smile');status.classList.add('listening-s');status.textContent='Listening';if(mic)mic.classList.add('ready');}
+  else if(state==='listening'){wrap.classList.add('listening');wrap.classList.add('smile');status.classList.add('listening-s');status.textContent='Listening';}
   else{wrap.classList.add('thinking');status.classList.add('thinking-s');status.textContent='Thinking';}
 }
 function setupAvatarGender(gender){
@@ -689,7 +687,7 @@ var _aiSpeaking=false;
 var _speakTimeout=null;
 function updateMicUI(state,text){var dot=document.getElementById('micDot');var lbl=document.getElementById('micLabel');if(dot){dot.className='mic-dot';if(state)dot.classList.add(state);}if(lbl){lbl.textContent=text||'';lbl.className=state==='listening'?'mic-label recording':'mic-label';}}
 function autoStartListening(){if(_aiSpeaking)return;updateMicUI('listening','Your turn — speak now');setTimeout(function(){if(!_aiSpeaking)toggleMic();},300);}
-function speak(t){_aiSpeaking=true;clearTimeout(_speakTimeout);setAvatar('speaking');updateMicUI('speaking','Interviewer speaking...');_speakTimeout=setTimeout(function(){_aiSpeaking=false;setAvatar('listening');autoStartListening();},Math.max(3000,t.length*35));if(!audioEnabled||!window.speechSynthesis){return;}try{if(recog){recog.stop();recog=null;var mb=document.getElementById('micBtn');if(mb)mb.classList.remove('rec');document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);}window.speechSynthesis.cancel();setTimeout(function(){_doSpeak(t);},150);}catch(e){}}
+function speak(t){_aiSpeaking=true;clearTimeout(_speakTimeout);setAvatar('speaking');updateMicUI('speaking','Interviewer speaking...');_speakTimeout=setTimeout(function(){_aiSpeaking=false;setAvatar('listening');autoStartListening();},Math.max(3000,t.length*35));if(!audioEnabled||!window.speechSynthesis){return;}try{if(recog){recog.stop();recog=null;document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);}window.speechSynthesis.cancel();setTimeout(function(){_doSpeak(t);},150);}catch(e){}}
 function _doSpeak(t){try{var gender=document.getElementById('voiceGender').value;var voices=window.speechSynthesis.getVoices()||[];var match=null;var nzAu=[];var enVoices=[];for(var i=0;i<voices.length;i++){var l=voices[i].lang.toLowerCase();if(l==='en-nz'||l==='en-au'||l.indexOf('en_nz')>-1||l.indexOf('en_au')>-1)nzAu.push(voices[i]);else if(l.indexOf('en')===0)enVoices.push(voices[i]);}var pool=nzAu.length?nzAu:enVoices;for(var j=0;j<pool.length;j++){var n=pool[j].name.toLowerCase();if(gender==='female'&&(n.indexOf('female')>-1||n.indexOf('fiona')>-1||n.indexOf('karen')>-1||n.indexOf('samantha')>-1||n.indexOf('victoria')>-1||n.indexOf('moira')>-1||n.indexOf('tessa')>-1)){match=pool[j];break;}if(gender==='male'&&(n.indexOf('male')>-1||n.indexOf('daniel')>-1||n.indexOf('james')>-1||n.indexOf('lee')>-1||n.indexOf('gordon')>-1||n.indexOf('alex')>-1)){match=pool[j];break;}}if(!match&&pool.length){match=pool[0];}var sentences=t.match(/[^.!?]+[.!?]+[\s]*/g)||[t];var idx=0;function speakNext(){if(idx>=sentences.length){_aiSpeaking=false;clearTimeout(_speakTimeout);setAvatar('listening');autoStartListening();return;}var chunk=sentences[idx].trim();idx++;if(!chunk){speakNext();return;}var u=new SpeechSynthesisUtterance(chunk);u.rate=1.0;u.lang='en-NZ';if(match)u.voice=match;if(gender==='male'){u.pitch=0.9;}else{u.pitch=1.0;}u.onend=function(){var pause=200;if(chunk.indexOf('?')>-1)pause=400;else if(chunk.indexOf('.')>-1)pause=300;setTimeout(speakNext,pause);};u.onerror=function(){speakNext();};window.speechSynthesis.speak(u);}speakNext();}catch(e){_aiSpeaking=false;setAvatar('listening');}}
 window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
 
@@ -709,7 +707,7 @@ function startTimer(){
     updTimer();
     if(timeLeft<=30&&timeLeft>0){td.classList.add('timer-warn');td.style.color='#ef4444';td.style.background='#fef2f2';td.style.borderColor='#fecaca';}
     if(timeLeft<=0){stopTimer();
-      if(recog){recog.stop();recog=null;document.getElementById('micBtn').classList.remove('rec');document.getElementById('listenBar').style.display='none';}
+      if(recog){recog.stop();recog=null;document.getElementById('listenBar').style.display='none';}
       var inp=document.getElementById('userInput');
       if(inp.value.trim()){sendAnswer();}
       else{
