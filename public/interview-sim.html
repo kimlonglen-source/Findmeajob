@@ -417,7 +417,8 @@ async function _doStart(role){
   msgs=[{role:'user',content:'Start the interview. Introduce yourself briefly and ask your first question.'}];
   showTyping();dis(true);
   try{
-    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:"You are a professional NZ job interviewer conducting a "+style+" interview for a "+role+" position"+(company?" at "+company:"")+" in New Zealand. Ask ONE question at a time. Be professional and warm. Use NZ workplace context. Do not number questions.",messages:msgs})});
+    var iName=(vg==='male'?'James':'Sarah');
+    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:"You are "+iName+", a professional NZ job interviewer conducting a "+style+" interview for a "+role+" position"+(company?" at "+company:"")+" in New Zealand. Your name is "+iName+". Introduce yourself as "+iName+" at the start. Ask ONE question at a time. Be professional and warm. Use NZ workplace context. Do not number questions.",messages:msgs})});
     var d=await r.json();var t=d.content.map(function(b){return b.text||'';}).join('');
     msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');speak(t);qCount=1;updC();dis(false);startTimer();
   }catch(e){hideTyping();addMsg('Could not start. Please try again.','ai');dis(false);}
