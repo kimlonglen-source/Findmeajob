@@ -79,6 +79,17 @@ input:focus,select:focus{border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,1
 .timer-warn{animation:timerPulse 1s infinite}
 .audio-toggle{display:flex;align-items:center;gap:.4rem;font-size:.78rem;color:#64748b;margin-bottom:.75rem;cursor:pointer}
 .audio-toggle input{accent-color:#10b981}
+.countdown-screen{display:none;text-align:center;padding:3rem 1.5rem}
+.countdown-num{font-size:5rem;font-weight:900;color:#10b981;line-height:1;margin-bottom:1rem;animation:countPop .5s ease}
+@keyframes countPop{from{transform:scale(1.3);opacity:0}to{transform:scale(1);opacity:1}}
+.countdown-tip{font-size:1rem;font-weight:600;color:#0f172a;margin-bottom:.35rem}
+.countdown-sub{font-size:.82rem;color:#64748b;max-width:400px;margin:0 auto;line-height:1.6}
+.countdown-status{margin-top:2rem;display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap}
+.countdown-check{display:flex;align-items:center;gap:.35rem;font-size:.78rem;font-weight:600}
+.countdown-check.ok{color:#10b981}
+.countdown-check.wait{color:#94a3b8}
+body.dark .countdown-tip{color:#f8fafc}
+body.dark .countdown-sub{color:#94a3b8}
 .score-big{font-size:3.5rem;font-weight:900;text-align:center;margin:.5rem 0}
 .fb-item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:1rem;margin-bottom:.6rem}
 .fb-q{font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.3rem}
@@ -153,7 +164,17 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
         <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.82rem;color:#64748b;font-weight:600"><input type="checkbox" id="autoSendMode" style="accent-color:#10b981;width:16px;height:16px" checked> Auto-send when you stop talking</label>
       </div>
     </div>
-    <button class="btn" onclick="startInterview()">Start Interview</button>
+    <button class="btn" onclick="prepInterview()">Start Interview</button>
+  </div>
+
+  <div class="countdown-screen" id="countdownScreen">
+    <div class="countdown-status" id="permStatus">
+      <div class="countdown-check wait" id="micStatus">&#9675; Microphone</div>
+      <div class="countdown-check wait" id="camStatus">&#9675; Camera</div>
+    </div>
+    <div class="countdown-num" id="countNum">10</div>
+    <div class="countdown-tip" id="countTip">Take a deep breath</div>
+    <div class="countdown-sub" id="countSub">Relax your shoulders. Sit up straight. You have got this.</div>
   </div>
 
   <div id="chatSection" style="display:none">
@@ -220,9 +241,84 @@ var msgs=[],qCount=0,maxQ=5,iData={role:'',company:'',style:'',qa:[]},audioEnabl
 var timedMode=false,answerTimer=null,timeLeft=0;
 var camEnabled=false,autoSend=true,silenceTimer=null,silenceDelay=3000;
 
-function startInterview(){
+var wisdomTips=[
+  {tip:"Take a deep breath",sub:"Relax your shoulders. Sit up straight. You have got this."},
+  {tip:"Speak clearly and slowly",sub:"It is better to pause and think than to rush an answer."},
+  {tip:"Be specific",sub:"Use real examples from your experience. Numbers and results impress."},
+  {tip:"It is okay to pause",sub:"Taking a moment to think shows you are thoughtful, not unprepared."},
+  {tip:"Listen carefully",sub:"Make sure you answer the question that was actually asked."},
+  {tip:"Be yourself",sub:"Authenticity beats rehearsed answers every time."},
+  {tip:"Show enthusiasm",sub:"Employers hire people who genuinely want the role."},
+  {tip:"Ask questions back",sub:"Good candidates are curious about the role and company."},
+  {tip:"You belong here",sub:"You were invited to interview because they see potential in you."},
+  {tip:"Let us go!",sub:"Your interview is about to begin. Good luck!"}
+];
+
+function prepInterview(){
   var role=document.getElementById('simRole').value.trim();
   if(!role){alert('Please enter a job title.');return;}
+  checkGate(function(){_doPrep(role);});
+}
+
+function _doPrep(role){
+  audioEnabled=document.getElementById('audioToggle').checked;
+  camEnabled=document.getElementById('camMode').checked;
+  autoSend=document.getElementById('autoSendMode').checked;
+
+  document.getElementById('setupForm').style.display='none';
+  document.getElementById('countdownScreen').style.display='block';
+
+  var micOk=false,camOk=false;
+  var micEl=document.getElementById('micStatus');
+  var camEl=document.getElementById('camStatus');
+
+  // Request mic
+  navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
+    s.getTracks().forEach(function(t){t.stop();});
+    micOk=true;micEl.className='countdown-check ok';micEl.innerHTML='&#10003; Microphone ready';
+  }).catch(function(){micEl.innerHTML='&#10007; Microphone denied';});
+
+  // Request camera if enabled
+  if(camEnabled){
+    camEl.style.display='flex';
+    navigator.mediaDevices.getUserMedia({video:true}).then(function(s){
+      document.getElementById('camVideo').srcObject=s;
+      camOk=true;camEl.className='countdown-check ok';camEl.innerHTML='&#10003; Camera ready';
+    }).catch(function(){camEl.innerHTML='&#10007; Camera denied';camEnabled=false;});
+  } else {
+    camEl.style.display='none';
+  }
+
+  // Start countdown
+  var count=10;
+  var numEl=document.getElementById('countNum');
+  var tipEl=document.getElementById('countTip');
+  var subEl=document.getElementById('countSub');
+
+  function tick(){
+    var idx=10-count;
+    if(idx<wisdomTips.length){
+      tipEl.textContent=wisdomTips[idx].tip;
+      subEl.textContent=wisdomTips[idx].sub;
+    }
+    numEl.textContent=count;
+    numEl.style.animation='none';numEl.offsetHeight;numEl.style.animation='countPop .5s ease';
+
+    if(count<=0){
+      document.getElementById('countdownScreen').style.display='none';
+      if(camEnabled){document.getElementById('camWrap').style.display='block';}
+      startInterview(role);
+      return;
+    }
+    count--;
+    setTimeout(tick,1000);
+  }
+
+  setTimeout(tick,500);
+}
+
+function startInterview(role){
+  if(!role){role=document.getElementById('simRole').value.trim();}
   checkGate(function(){_doStart(role);});
 }
 
@@ -237,7 +333,6 @@ async function _doStart(role){
   document.getElementById('setupForm').style.display='none';
   document.getElementById('chatSection').style.display='block';
   if(timedMode){document.getElementById('timerDisplay').style.display='block';}
-  if(camEnabled){startCam();}
   msgs=[{role:'user',content:'Start the interview. Introduce yourself briefly and ask your first question.'}];
   showTyping();dis(true);
   try{
