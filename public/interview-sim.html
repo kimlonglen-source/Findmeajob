@@ -63,8 +63,7 @@ input:focus,select:focus{border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,1
 .avatar-neck{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);width:18px;height:14px;background:#e8b88a;z-index:2}
 .avatar-head{width:62px;height:68px;background:linear-gradient(180deg,#f0c8a0,#e8b88a);border-radius:50% 50% 45% 45%;position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:3;box-shadow:0 2px 8px rgba(0,0,0,.1)}
 .avatar-hair{position:absolute;z-index:2}
-.hair-female{top:-8px;left:50%;transform:translateX(-50%);width:74px;height:30px;background:linear-gradient(180deg,#2c1810 0%,#4a2c1a 50%,#3a2215 100%);border-radius:50% 50% 0 0;box-shadow:0 2px 4px rgba(0,0,0,.1)}
-.hair-fringe{position:absolute;top:12px;left:8px;width:42px;height:16px;background:linear-gradient(180deg,#3a2215 0%,#4a2c1a 100%);border-radius:0 40% 60% 20%;z-index:6;transform:skewX(-4deg)}
+.hair-female{top:-8px;left:50%;transform:translateX(-50%);width:74px;height:36px;background:linear-gradient(180deg,#2c1810 0%,#4a2c1a 50%,#3a2215 100%);border-radius:50% 50% 60% 20%;box-shadow:0 2px 4px rgba(0,0,0,.1)}
 .hair-female::before{content:'';position:absolute;top:14px;left:-9px;width:16px;height:52px;background:linear-gradient(180deg,#3a2215,#4a2c1a,#3a2215);border-radius:8px 0 12px 12px}
 .hair-female::after{content:'';position:absolute;top:14px;right:-9px;width:16px;height:52px;background:linear-gradient(180deg,#3a2215,#4a2c1a,#3a2215);border-radius:0 8px 12px 12px}
 .hair-male{top:-5px;left:50%;transform:translateX(-50%);width:68px;height:24px;background:linear-gradient(180deg,#1a120b 0%,#2d1f14 60%,#1a120b 100%);border-radius:50% 50% 10% 10%;box-shadow:0 1px 2px rgba(0,0,0,.1)}
@@ -326,7 +325,6 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
         <div class="office-bg">
           <div class="avatar" id="avatarWrap">
             <div class="avatar-hair" id="avatarHair"></div>
-            <div class="hair-fringe" id="avatarFringe" style="display:none"></div>
             <div class="avatar-head" id="avatarHead">
               <div class="avatar-ears"><div class="avatar-ear l"></div><div class="avatar-ear r"></div></div>
               <div class="avatar-eyebrows"><div class="avatar-brow"></div><div class="avatar-brow"></div></div>
@@ -594,10 +592,8 @@ function setAvatar(state,name){
 function setupAvatarGender(gender){
   var hair=document.getElementById('avatarHair');
   var body=document.getElementById('avatarBody');
-  var fringe=document.getElementById('avatarFringe');
   hair.className='avatar-hair '+(gender==='male'?'hair-male':'hair-female');
   body.className='avatar-body '+(gender==='male'?'male':'female');
-  if(fringe)fringe.style.display=(gender==='male'?'none':'block');
 }
 setInterval(function(){var eyes=document.querySelectorAll('.avatar-eye');eyes.forEach(function(e){e.classList.add('blink');setTimeout(function(){e.classList.remove('blink');},150);});},3500+Math.random()*2000);
 function speak(t){setAvatar('speaking');if(!audioEnabled||!window.speechSynthesis){setTimeout(function(){setAvatar('listening');},2000);return;}if(recog){recog.stop();recog=null;var mb=document.getElementById('micBtn');if(mb)mb.classList.remove('rec');document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);}window.speechSynthesis.cancel();setTimeout(function(){_doSpeak(t);},150);}
