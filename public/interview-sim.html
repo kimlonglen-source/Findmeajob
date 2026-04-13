@@ -683,39 +683,63 @@ function stopTimer(){if(answerTimer){clearInterval(answerTimer);answerTimer=null
 function updTimer(){var m=Math.floor(timeLeft/60);var s=timeLeft%60;document.getElementById('timerText').textContent=m+':'+(s<10?'0':'')+s;}
 function toggleMic(){
   var btn=document.getElementById('micBtn');
-  if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){alert('Speech recognition not supported in this browser.');return;}
+  if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){alert('Speech recognition is not supported in this browser. Please use Chrome.');return;}
   if(_aiSpeaking){_aiSpeaking=false;clearTimeout(_speakTimeout);try{window.speechSynthesis.cancel();}catch(e){}setAvatar('listening');}
   if(recog){recog.stop();recog=null;btn.classList.remove('rec');document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);return;}
-  function startRecog(){
-    var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-    recog=new SR();recog.lang='en-NZ';recog.continuous=true;recog.interimResults=true;btn.classList.add('rec');
-    document.getElementById('listenBar').style.display='block';
-    document.getElementById('listenFill').style.width='0';
-    var inp=document.getElementById('userInput');
-    var lastResultTime=Date.now();
-    recog.onresult=function(e){
-      var t='';var hasF=false;
-      for(var i=0;i<e.results.length;i++){t+=e.results[i][0].transcript;if(e.results[i].isFinal)hasF=true;}
-      inp.value=t;lastResultTime=Date.now();
+
+  function doStart(){
+    try{
+      var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+      recog=new SR();recog.lang='en-NZ';recog.continuous=true;recog.interimResults=true;
+      btn.classList.add('rec');btn.style.background='#fef2f2';
+      document.getElementById('listenBar').style.display='block';
       document.getElementById('listenFill').style.width='0';
-      clearTimeout(silenceTimer);
-      if(autoSend&&t.trim().length>5){
-        silenceTimer=setTimeout(function(){
-          if(inp.value.trim()&&Date.now()-lastResultTime>=silenceDelay-500){
-            recog.stop();recog=null;btn.classList.remove('rec');
-            document.getElementById('listenBar').style.display='none';
-            sendAnswer();
-          }
-        },silenceDelay);
-        var start=Date.now();var bar=document.getElementById('listenFill');
-        (function tick(){var p=Math.min(((Date.now()-start)/silenceDelay)*100,100);bar.style.width=p+'%';if(p<100)requestAnimationFrame(tick);})();
-      }
-    };
-    recog.onend=function(){btn.classList.remove('rec');recog=null;document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);};
-    recog.onerror=function(ev){btn.classList.remove('rec');recog=null;document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);if(ev.error==='not-allowed'){alert('Microphone access denied. Please allow microphone in your browser settings.');}};
-    recog.start();
+      var inp=document.getElementById('userInput');
+      inp.placeholder='Listening...';
+      var lastResultTime=Date.now();
+      recog.onresult=function(e){
+        var t='';
+        for(var i=0;i<e.results.length;i++){t+=e.results[i][0].transcript;}
+        inp.value=t;lastResultTime=Date.now();
+        document.getElementById('listenFill').style.width='0';
+        clearTimeout(silenceTimer);
+        if(autoSend&&t.trim().length>5){
+          silenceTimer=setTimeout(function(){
+            if(inp.value.trim()&&Date.now()-lastResultTime>=silenceDelay-500){
+              recog.stop();recog=null;btn.classList.remove('rec');btn.style.background='';
+              document.getElementById('listenBar').style.display='none';
+              inp.placeholder='Type or click mic to speak...';
+              sendAnswer();
+            }
+          },silenceDelay);
+          var start=Date.now();var bar=document.getElementById('listenFill');
+          (function tick(){var p=Math.min(((Date.now()-start)/silenceDelay)*100,100);bar.style.width=p+'%';if(p<100)requestAnimationFrame(tick);})();
+        }
+      };
+      recog.onend=function(){btn.classList.remove('rec');btn.style.background='';recog=null;document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);inp.placeholder='Type or click mic to speak...';};
+      recog.onerror=function(ev){
+        btn.classList.remove('rec');btn.style.background='';recog=null;document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);inp.placeholder='Type or click mic to speak...';
+        if(ev.error==='not-allowed'){alert('Microphone access was denied. Go to your browser settings and allow microphone for this site, then try again.');}
+        else if(ev.error==='network'){alert('Network error with speech recognition. Please check your connection.');}
+      };
+      recog.start();
+    }catch(err){
+      btn.classList.remove('rec');btn.style.background='';recog=null;
+      alert('Could not start speech recognition: '+err.message);
+    }
   }
-  startRecog();
+
+  // On Android, request mic permission first then start recognition
+  if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
+    navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
+      stream.getTracks().forEach(function(t){t.stop();});
+      doStart();
+    }).catch(function(){
+      alert('Microphone permission is required for voice input. Please allow it in your browser settings and try again.');
+    });
+  } else {
+    doStart();
+  }
 }
 
 /* Camera */
