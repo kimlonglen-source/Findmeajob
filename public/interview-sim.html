@@ -99,6 +99,7 @@ body.dark .chat-bar{border-color:rgba(255,255,255,.06)}
 body.dark .chat-bar textarea{background:#0f172a;border-color:rgba(255,255,255,.1);color:#f8fafc}
 body.dark .mic-btn{background:#0f172a !important;border-color:rgba(255,255,255,.1) !important;color:#94a3b8 !important}
 body.dark .end-btn{background:#f8fafc;color:#0f172a}
+body.dark #voiceSelect select{background:#0f172a;border-color:rgba(255,255,255,.1);color:#f8fafc}
 body.dark .fb-item{background:#0f172a;border-color:rgba(255,255,255,.06)}
 body.dark .fb-text{color:#f8fafc}
 body.dark .cta-box{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3)}
@@ -140,7 +141,13 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
 
   <div id="chatSection" style="display:none">
     <div class="q-counter" id="qCounter">Question 1 of 5</div>
-    <label class="audio-toggle"><input type="checkbox" id="audioToggle" onchange="audioEnabled=this.checked"> Enable audio (AI speaks questions)</label>
+    <label class="audio-toggle"><input type="checkbox" id="audioToggle" onchange="audioEnabled=this.checked;document.getElementById('voiceSelect').style.display=this.checked?'block':'none'"> Enable audio (AI speaks questions)</label>
+    <div id="voiceSelect" style="display:none;margin-bottom:.75rem">
+      <select id="voiceGender" style="padding:.4rem .75rem;border:1px solid #e2e8f0;border-radius:8px;font-family:Inter,sans-serif;font-size:.78rem;color:#0f172a;outline:none">
+        <option value="female">Female interviewer</option>
+        <option value="male">Male interviewer</option>
+      </select>
+    </div>
     <div class="card" style="padding:1rem">
       <div class="chat-msgs" id="chatMessages"></div>
       <div class="chat-bar" id="chatInput">
@@ -251,7 +258,8 @@ function showScore(r){
 }
 
 /* Audio */
-function speak(t){if(!audioEnabled||!window.speechSynthesis)return;window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.rate=.95;u.lang='en-NZ';window.speechSynthesis.speak(u);}
+function speak(t){if(!audioEnabled||!window.speechSynthesis)return;window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.rate=.95;u.lang='en-NZ';var gender=document.getElementById('voiceGender').value;var voices=window.speechSynthesis.getVoices();var match=null;for(var i=0;i<voices.length;i++){var n=voices[i].name.toLowerCase();if(gender==='female'&&(n.indexOf('female')>-1||n.indexOf('fiona')>-1||n.indexOf('karen')>-1||n.indexOf('samantha')>-1||n.indexOf('victoria')>-1||n.indexOf('zira')>-1||n.indexOf('hazel')>-1)){match=voices[i];break;}if(gender==='male'&&(n.indexOf('male')>-1||n.indexOf('daniel')>-1||n.indexOf('james')>-1||n.indexOf('david')>-1||n.indexOf('mark')>-1||n.indexOf('alex')>-1)){match=voices[i];break;}}if(!match){for(var j=0;j<voices.length;j++){if(voices[j].lang.indexOf('en')===0){if(gender==='female'&&j%2===0){match=voices[j];break;}if(gender==='male'&&j%2===1){match=voices[j];break;}}}}if(match)u.voice=match;if(gender==='male'){u.pitch=.85;}else{u.pitch=1.1;}window.speechSynthesis.speak(u);}
+window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
 function toggleMic(){
   var btn=document.getElementById('micBtn');
   if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){alert('Speech recognition not supported in this browser.');return;}
