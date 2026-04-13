@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b"/>
+      <stop offset="50%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.06)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#bg)"/>
+  <circle cx="540" cy="600" r="600" fill="url(#glow)"/>
+  <rect x="340" y="500" width="400" height="400" rx="80" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="485" cy="645" r="85" fill="none" stroke="#fff" stroke-width="24"/>
+  <line x1="540" y1="700" x2="620" y2="780" stroke="#fff" stroke-width="24" stroke-linecap="round"/>
+  <text x="540" y="1050" text-anchor="middle" fill="#fff" font-family="Inter,system-ui,sans-serif" font-weight="800" font-size="80">FindMeAJob</text>
+  <text x="540" y="1120" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-family="Inter,system-ui,sans-serif" font-weight="500" font-size="36">.co.nz</text>
+  <line x1="380" y1="1180" x2="700" y2="1180" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+  <text x="540" y="1240" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-family="Inter,system-ui,sans-serif" font-weight="600" font-size="36">Your AI Career Toolkit</text>
+  <text x="540" y="1300" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-family="Inter,system-ui,sans-serif" font-weight="400" font-size="28">12 Free AI Tools for NZ Job Seekers</text>
+  <text x="540" y="1450" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-family="Inter,system-ui,sans-serif" font-weight="700" font-size="32">#CVChallengenz</text>
+</svg>

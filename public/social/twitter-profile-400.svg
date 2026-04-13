@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+  </defs>
+  <circle cx="200" cy="200" r="200" fill="url(#bg)"/>
+  <circle cx="175" cy="165" r="52" fill="none" stroke="#fff" stroke-width="17"/>
+  <line x1="212" y1="202" x2="260" y2="250" stroke="#fff" stroke-width="17" stroke-linecap="round"/>
+  <text x="200" y="325" text-anchor="middle" fill="#fff" font-family="Inter,system-ui,sans-serif" font-weight="800" font-size="40">FMAJ</text>
+</svg>

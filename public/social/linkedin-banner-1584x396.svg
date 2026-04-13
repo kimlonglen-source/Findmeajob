@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1584 396" width="1584" height="396">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#064e3b"/>
+      <stop offset="50%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.12)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </linearGradient>
+  </defs>
+  <rect width="1584" height="396" fill="url(#bg)"/>
+  <circle cx="1400" cy="-50" r="350" fill="url(#accent)"/>
+  <circle cx="100" cy="450" r="300" fill="url(#accent)"/>
+  <rect x="80" y="80" width="236" height="236" rx="48" fill="rgba(255,255,255,0.12)"/>
+  <circle cx="176" cy="170" r="50" fill="none" stroke="#fff" stroke-width="16"/>
+  <line x1="212" y1="206" x2="258" y2="252" stroke="#fff" stroke-width="16" stroke-linecap="round"/>
+  <text x="380" y="160" fill="#fff" font-family="Inter,system-ui,sans-serif" font-weight="800" font-size="64">FindMeAJob<tspan fill="rgba(255,255,255,0.7)" font-size="32" font-weight="500">.co.nz</tspan></text>
+  <line x1="380" y1="185" x2="780" y2="185" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+  <text x="380" y="225" fill="rgba(255,255,255,0.9)" font-family="Inter,system-ui,sans-serif" font-weight="600" font-size="28">Your AI Career Toolkit for New Zealand</text>
+  <text x="380" y="270" fill="rgba(255,255,255,0.6)" font-family="Inter,system-ui,sans-serif" font-weight="400" font-size="20">AI Job Matching  |  CV Writer  |  Interview Prep  |  Salary Tools  |  100% Free</text>
+</svg>
