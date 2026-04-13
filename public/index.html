@@ -28,6 +28,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
+html,body{overflow-x:hidden}
 body{background:#ffffff;color:#0f172a;font-family:'Inter',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
 a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
 
@@ -143,30 +144,44 @@ body.dark .hamburger{border-color:rgba(255,255,255,.1);color:#94a3b8}
 
 /* Responsive */
 @media(max-width:768px){
-  .nav-links a:not(.nav-cta){display:none}
+  .nav{padding:.75rem 1rem}
+  .nav-links{gap:.5rem}
+  .nav-links a:not(.nav-cta),.nav-links button#tbtn{display:none}
   .nav-links .nav-cta{font-size:.72rem;padding:.4rem .9rem}
   .hamburger{display:flex}
-  .hero{padding:2.5rem 1.25rem 2rem}
-  .hero h1{font-size:1.6rem}
-  .hero p{font-size:.9rem}
+  .hero{padding:2rem 1.25rem 1.5rem}
+  .hero h1{font-size:1.5rem}
+  .hero p{font-size:.88rem}
   .hero-stats{gap:1rem}
-  .hero-stat strong{font-size:1.1rem}
-  .tools-grid{grid-template-columns:1fr 1fr !important}
+  .hero-stat strong{font-size:1rem}
+  .hero-ctas{flex-direction:column;align-items:center}
+  .hero-ctas a{width:100%;max-width:280px;justify-content:center;text-align:center}
+  .tools-grid{grid-template-columns:1fr 1fr}
   .how-steps{flex-direction:column}
   .trust-items{flex-direction:column;align-items:center;gap:.75rem}
+  .trust-item{font-size:.78rem}
   .email-form{flex-direction:column}
   .about-grid{grid-template-columns:1fr}
-  .feat-card{flex-direction:column !important;text-align:center}
+  .feat-section{padding:0 1.25rem 2rem}
+  .feat-card{flex-direction:column !important;text-align:center;gap:1rem !important;padding:1.5rem !important}
   .feat-icon{width:60px !important;height:60px !important;margin:0 auto}
   .feat-icon svg{width:30px !important;height:30px !important}
   .tools-section{padding:0 1.25rem 2rem}
-  .tools-section h2{font-size:1.2rem}
-  .tool-card{padding:1.15rem}
-  .tool-name{font-size:.88rem}
-  .tool-desc{font-size:.75rem}
+  .tools-section h2{font-size:1.15rem}
+  .tools-section>p{font-size:.82rem}
+  .tool-card{padding:1.1rem}
+  .tool-name{font-size:.85rem}
+  .tool-desc{font-size:.73rem}
+  .tool-icon{width:30px;height:30px;margin-bottom:.5rem}
+  .tool-icon svg{width:22px;height:22px}
+  .how-section{padding:0 1.25rem 2rem}
+  .email-section{padding:0 1.25rem 2rem}
+  .about{padding:2rem 1.25rem}
 }
-@media(max-width:400px){
-  .tools-grid{grid-template-columns:1fr !important}
+@media(max-width:480px){
+  .tools-grid{grid-template-columns:1fr}
+  .hero h1{font-size:1.35rem}
+  .hero-stats{gap:.75rem}
 }
 body.dark{background:#09090b;color:#f8fafc}
 body.dark a{color:#10b981}
@@ -238,7 +253,7 @@ body.dark .about-contact{color:#94a3b8}
   <div class="hero-badge">Free AI Career Tools for NZ</div>
   <h1>Your career deserves<br><em id="typed"></em></h1>
   <p>12 free AI tools to find jobs, nail interviews, write CVs, and earn more. Built for New Zealand.</p>
-  <div style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem">
+  <div class="hero-ctas" style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem">
     <a href="/match.html" style="display:inline-flex;align-items:center;gap:.4rem;background:#10b981;color:#fff;padding:.75rem 1.5rem;border-radius:999px;font-size:.9rem;font-weight:700;text-decoration:none;box-shadow:0 4px 20px rgba(16,185,129,.25);transition:all .2s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">Upload CV &amp; Find Jobs &#8594;</a>
     <a href="#tools" style="display:inline-flex;align-items:center;gap:.4rem;background:#fff;color:#0f172a;padding:.75rem 1.5rem;border-radius:999px;font-size:.9rem;font-weight:700;text-decoration:none;border:1px solid #e2e8f0;transition:all .2s" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='#e2e8f0'">Browse All Tools</a>
   </div>
@@ -250,7 +265,7 @@ body.dark .about-contact{color:#94a3b8}
 </section>
 
 <!-- Featured: Interview Simulator -->
-<section style="max-width:900px;margin:0 auto;padding:0 2rem 2.5rem">
+<section class="feat-section" style="max-width:900px;margin:0 auto;padding:0 2rem 2.5rem">
   <a href="/interview-sim" class="feat-card" style="display:flex;align-items:center;gap:2rem;background:linear-gradient(135deg,#f0fdf4,#e0f2fe);border:2px solid #bbf7d0;border-radius:20px;padding:2rem;text-decoration:none;color:inherit;transition:all .3s;overflow:hidden;position:relative" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 40px rgba(16,185,129,.15)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
     <div class="feat-icon" style="flex-shrink:0;width:80px;height:80px;background:linear-gradient(135deg,#10b981,#059669);border-radius:20px;display:flex;align-items:center;justify-content:center">
       <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
@@ -279,7 +294,7 @@ body.dark .about-contact{color:#94a3b8}
   <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#10b981;text-align:center;margin-bottom:.35rem">Step 1</div>
   <h2>Find and apply for jobs</h2>
   <p>Upload your CV and let AI do the heavy lifting.</p>
-  <div class="tools-grid" style="grid-template-columns:repeat(3,1fr)">
+  <div class="tools-grid">
     <a class="tool-card primary" href="/match.html">
       <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>
       <div class="tool-name">Apply for a Job</div>
@@ -306,7 +321,7 @@ body.dark .about-contact{color:#94a3b8}
   <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#8b5cf6;text-align:center;margin-bottom:.35rem">Step 2</div>
   <h2>Prepare for interviews</h2>
   <p>Walk in confident and ready to impress.</p>
-  <div class="tools-grid" style="grid-template-columns:repeat(3,1fr)">
+  <div class="tools-grid">
     <a class="tool-card" href="/interview-sim">
       <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>
       <div class="tool-name">Interview Simulator</div>
@@ -333,7 +348,7 @@ body.dark .about-contact{color:#94a3b8}
   <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#f59e0b;text-align:center;margin-bottom:.35rem">Step 3</div>
   <h2>Negotiate and decide</h2>
   <p>Get paid what you are worth and make the right move.</p>
-  <div class="tools-grid" style="grid-template-columns:repeat(3,1fr)">
+  <div class="tools-grid">
     <a class="tool-card" href="/salary">
       <span class="tool-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></span>
       <div class="tool-name">Salary Calculator</div>
@@ -360,7 +375,7 @@ body.dark .about-contact{color:#94a3b8}
   <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#ec4899;text-align:center;margin-bottom:.35rem">Bonus Tools</div>
   <h2>More career tools</h2>
   <p>Whether you are staying, going, or just curious.</p>
-  <div class="tools-grid" style="grid-template-columns:repeat(3,1fr)">
+  <div class="tools-grid">
     <a class="tool-card" href="/decide">
       <span class="tool-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="6" r="3"/><circle cx="12" cy="12" r="3"/><circle cx="12" cy="18" r="3"/><rect x="8" y="2" width="8" height="20" rx="4"/></svg></span>
       <div class="tool-name">Should I Stay or Go?</div>
