@@ -52,10 +52,10 @@ input:focus,select:focus{border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,1
 .stat-item{display:flex;align-items:center;gap:.3rem;color:#64748b}
 .stat-item strong{color:#0f172a}
 .stat-warn{color:#ef4444}
-.cam-wrap{position:relative;border-radius:12px;overflow:hidden;background:#0f172a;aspect-ratio:4/3;max-height:180px;display:none}
+.cam-wrap{position:relative;border-radius:12px;overflow:hidden;background:#0f172a;aspect-ratio:4/3;max-height:160px;min-width:180px;display:none}
 .cam-wrap video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
 .cam-live{position:absolute;top:.4rem;right:.4rem;background:#ef4444;color:#fff;font-size:.55rem;font-weight:800;padding:.15rem .4rem;border-radius:999px;animation:pulse 1.5s infinite}
-.chat-msgs{min-height:150px;max-height:280px;overflow-y:auto;padding:.5rem 0;display:flex;flex-direction:column;gap:.5rem}
+.chat-msgs{min-height:100px;max-height:220px;overflow-y:auto;padding:.5rem 0;display:flex;flex-direction:column;gap:.5rem}
 .msg{max-width:85%;padding:.7rem 1rem;border-radius:14px;font-size:.85rem;line-height:1.6;animation:msgIn .3s ease}
 .msg-ai{background:#f0fdf4;border:1px solid #bbf7d0;color:#0f172a;align-self:flex-start;border-bottom-left-radius:4px}
 .msg-user{background:#10b981;color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
@@ -152,9 +152,11 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
 </nav>
 
 <div class="container">
-  <div class="page-badge">Interview Simulator</div>
-  <h1>Practice Your <em>Interview</em></h1>
+  <div id="pageHeader">
+    <div class="page-badge">Interview Simulator</div>
+    <h1>Practice Your <em>Interview</em></h1>
   <p class="subtitle">Practice real job interviews with AI. Get scored and improve.</p>
+  </div>
 
   <!-- STEP 1: What role -->
   <div id="setupForm">
@@ -386,6 +388,7 @@ async function _doStart(role){
   var company=document.getElementById('simCompany').value.trim();
   var style=document.getElementById('simStyle').value;
   iData={role:role,company:company,style:style,qa:[]};
+  document.getElementById('pageHeader').style.display='none';
   document.getElementById('chatSection').style.display='block';
   if(timedMode){document.getElementById('timerDisplay').style.display='flex';}
   document.getElementById('fillerCount').textContent='0';
@@ -468,7 +471,7 @@ function showScore(r){
 }
 
 /* Audio */
-function speak(t){if(!audioEnabled||!window.speechSynthesis)return;window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.rate=.62;u.lang='en-NZ';var gender=document.getElementById('voiceGender').value;var voices=window.speechSynthesis.getVoices();var match=null;var nzAu=[];var enVoices=[];for(var i=0;i<voices.length;i++){var l=voices[i].lang.toLowerCase();if(l==='en-nz'||l==='en-au'||l.indexOf('en_nz')>-1||l.indexOf('en_au')>-1)nzAu.push(voices[i]);else if(l.indexOf('en')===0)enVoices.push(voices[i]);}var pool=nzAu.length?nzAu:enVoices;for(var j=0;j<pool.length;j++){var n=pool[j].name.toLowerCase();if(gender==='female'&&(n.indexOf('female')>-1||n.indexOf('fiona')>-1||n.indexOf('karen')>-1||n.indexOf('samantha')>-1||n.indexOf('victoria')>-1||n.indexOf('moira')>-1||n.indexOf('tessa')>-1)){match=pool[j];break;}if(gender==='male'&&(n.indexOf('male')>-1||n.indexOf('daniel')>-1||n.indexOf('james')>-1||n.indexOf('lee')>-1||n.indexOf('gordon')>-1||n.indexOf('alex')>-1)){match=pool[j];break;}}if(!match&&pool.length){match=pool[0];}if(match)u.voice=match;if(gender==='male'){u.pitch=.8;}else{u.pitch=1.05;}u.onend=function(){if(autoSend&&!recog&&qCount<maxQ){setTimeout(toggleMic,800);}};window.speechSynthesis.speak(u);}
+function speak(t){if(!audioEnabled||!window.speechSynthesis)return;if(recog){recog.stop();recog=null;var mb=document.getElementById('micBtn');if(mb)mb.classList.remove('rec');document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);}window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.rate=.62;u.lang='en-NZ';var gender=document.getElementById('voiceGender').value;var voices=window.speechSynthesis.getVoices();var match=null;var nzAu=[];var enVoices=[];for(var i=0;i<voices.length;i++){var l=voices[i].lang.toLowerCase();if(l==='en-nz'||l==='en-au'||l.indexOf('en_nz')>-1||l.indexOf('en_au')>-1)nzAu.push(voices[i]);else if(l.indexOf('en')===0)enVoices.push(voices[i]);}var pool=nzAu.length?nzAu:enVoices;for(var j=0;j<pool.length;j++){var n=pool[j].name.toLowerCase();if(gender==='female'&&(n.indexOf('female')>-1||n.indexOf('fiona')>-1||n.indexOf('karen')>-1||n.indexOf('samantha')>-1||n.indexOf('victoria')>-1||n.indexOf('moira')>-1||n.indexOf('tessa')>-1)){match=pool[j];break;}if(gender==='male'&&(n.indexOf('male')>-1||n.indexOf('daniel')>-1||n.indexOf('james')>-1||n.indexOf('lee')>-1||n.indexOf('gordon')>-1||n.indexOf('alex')>-1)){match=pool[j];break;}}if(!match&&pool.length){match=pool[0];}if(match)u.voice=match;if(gender==='male'){u.pitch=.8;}else{u.pitch=1.05;}u.onend=function(){if(autoSend&&!recog&&qCount<maxQ){setTimeout(toggleMic,800);}};window.speechSynthesis.speak(u);}
 window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
 
 /* Timer for real-life mode */
@@ -558,7 +561,7 @@ function stopCam(){
 }
 
 /* Helpers */
-function addMsg(t,type){var d=document.createElement('div');d.className='msg msg-'+type;d.textContent=t;var c=document.getElementById('chatMessages');c.appendChild(d);c.scrollTop=c.scrollHeight;}
+function addMsg(t,type){var c=document.getElementById('chatMessages');if(type==='ai'){c.innerHTML='';} var d=document.createElement('div');d.className='msg msg-'+type;d.textContent=t;c.appendChild(d);c.scrollTop=c.scrollHeight;}
 function showTyping(){var d=document.createElement('div');d.className='msg msg-typing';d.id='typing';d.innerHTML='<i></i><i></i><i></i>';var c=document.getElementById('chatMessages');c.appendChild(d);c.scrollTop=c.scrollHeight;}
 function hideTyping(){var el=document.getElementById('typing');if(el)el.remove();}
 function updC(){document.getElementById('qCounter').innerHTML='Q <strong>'+Math.min(qCount,maxQ)+'</strong> / '+maxQ;}
