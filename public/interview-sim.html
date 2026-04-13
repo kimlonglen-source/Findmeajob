@@ -333,7 +333,7 @@ function prepInterview(){
 function _doPrep(){
   var voiceVal=document.getElementById('voiceGender').value;
   audioEnabled=(voiceVal!=='off');
-  timedMode=document.getElementById('timedMode').checked;
+  timedMode=true;
   autoSend=document.getElementById('autoSendMode').checked;
   maxQ=parseInt(document.getElementById('simCount').value)||5;
   fillerWords=0;
