@@ -120,16 +120,17 @@
     {
       "src": "/write-cv",
       "status": 301,
-      "headers": { "Location": "/apply" }
+      "headers": { "Location": "/match.html#apply" }
     },
     {
       "src": "/apply",
-      "dest": "/public/apply.html"
+      "status": 301,
+      "headers": { "Location": "/match.html#apply" }
     },
     {
       "src": "/cover-letter",
       "status": 301,
-      "headers": { "Location": "/apply" }
+      "headers": { "Location": "/match.html#apply" }
     },
     {
       "src": "/salary",
