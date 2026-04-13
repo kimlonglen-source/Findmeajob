@@ -603,7 +603,6 @@ async function sendAnswer(){
     if(!t){throw new Error('empty');}
     msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;_sending=false;speak(t);dis(false);
     if(qCount>maxQ){stopTimer();document.getElementById('timerDisplay').style.display='none';setTimeout(function(){document.getElementById('endBtn').style.display='block';},1000);}
-    else{startTimer();}
   }catch(e){_waitingForAI=false;_sending=false;hideTyping();addMsg('Connection issue — tap Skip to move on.','ai');dis(false);qCount--;updC();}
 }
 
@@ -626,7 +625,7 @@ async function skipQuestion(){
     var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:trimmed2})});
     var d=await r.json();var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
     if(!t){throw new Error('empty');}
-    msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;speak(t);dis(false);startTimer();
+    msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;speak(t);dis(false);
   }catch(e){_waitingForAI=false;hideTyping();addMsg('Connection issue — tap Skip to move on.','ai');dis(false);}
 }
 
@@ -694,7 +693,8 @@ var _waitingForAI=false;
 var _micRetries=0;
 var _maxMicRetries=3;
 function updateMicUI(state,text){var dot=document.getElementById('micDot');var lbl=document.getElementById('micLabel');if(dot){dot.className='mic-dot';if(state)dot.classList.add(state);}if(lbl){lbl.textContent=text||'';lbl.className=state==='listening'?'mic-label recording':'mic-label';}}
-function autoStartListening(){if(_aiSpeaking||_waitingForAI)return;_micRetries=0;updateMicUI('listening','Your turn — speak now');setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog)toggleMic();},800);}
+function autoStartListening(){if(_aiSpeaking||_waitingForAI)return;_micRetries=0;_accumulated='';document.getElementById('userInput').value='';updateMicUI('listening','Your turn — speak now');startTimer();setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog)toggleMic();},800);}
+var _accumulated='';
 function speak(t){_aiSpeaking=true;clearTimeout(_speakTimeout);setAvatar('speaking');updateMicUI('speaking','Interviewer speaking...');if(!audioEnabled||!window.speechSynthesis){var readTime=Math.max(3000,Math.min(t.length*60,15000));_speakTimeout=setTimeout(function(){_aiSpeaking=false;setAvatar('listening');autoStartListening();},readTime);return;}_speakTimeout=setTimeout(function(){if(_aiSpeaking){_aiSpeaking=false;try{window.speechSynthesis.cancel();}catch(e){}setAvatar('listening');autoStartListening();}},Math.max(60000,t.length*200));try{if(recog){recog.stop();recog=null;document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);}window.speechSynthesis.cancel();setTimeout(function(){_doSpeak(t);},150);}catch(e){}}
 function _doSpeak(t){try{var gender=document.getElementById('voiceGender').value;var voices=window.speechSynthesis.getVoices()||[];var match=null;var googleVoices=[];var nzAu=[];var enVoices=[];for(var i=0;i<voices.length;i++){var l=voices[i].lang.toLowerCase();var n=voices[i].name.toLowerCase();if(n.indexOf('google')>-1&&l.indexOf('en')===0)googleVoices.push(voices[i]);else if(l==='en-nz'||l==='en-au'||l.indexOf('en_nz')>-1||l.indexOf('en_au')>-1)nzAu.push(voices[i]);else if(l.indexOf('en')===0)enVoices.push(voices[i]);}var pool=googleVoices.length?googleVoices:(nzAu.length?nzAu:enVoices);for(var j=0;j<pool.length;j++){var vn=pool[j].name.toLowerCase();if(gender==='female'&&(vn.indexOf('female')>-1||vn.indexOf('fiona')>-1||vn.indexOf('karen')>-1||vn.indexOf('samantha')>-1||vn.indexOf('victoria')>-1||vn.indexOf('moira')>-1||vn.indexOf('tessa')>-1||vn.indexOf('google uk english female')>-1)){match=pool[j];break;}if(gender==='male'&&(vn.indexOf('male')>-1||vn.indexOf('daniel')>-1||vn.indexOf('james')>-1||vn.indexOf('lee')>-1||vn.indexOf('gordon')>-1||vn.indexOf('alex')>-1||vn.indexOf('google uk english male')>-1)){match=pool[j];break;}}if(!match&&pool.length){match=pool[0];}var u=new SpeechSynthesisUtterance(t);u.rate=0.95;u.lang='en-GB';if(match)u.voice=match;if(gender==='male'){u.pitch=0.9;}else{u.pitch=1.0;}u.onend=function(){_aiSpeaking=false;clearTimeout(_speakTimeout);_currentAvatarState='';setAvatar('listening');autoStartListening();};u.onerror=function(){_aiSpeaking=false;clearTimeout(_speakTimeout);_currentAvatarState='';setAvatar('listening');autoStartListening();};window.speechSynthesis.speak(u);}catch(e){_aiSpeaking=false;_currentAvatarState='';setAvatar('listening');}}
 window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
@@ -730,7 +730,7 @@ function startTimer(){
           fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:"You are a professional NZ job interviewer. "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. Question "+qCount+" of "+maxQ+". The candidate did not answer the previous question. Acknowledge briefly and move on to your next question.",messages:trimmed3})}).then(function(r){return r.json();}).then(function(d){
             var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
             if(!t)throw new Error('empty');
-            msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;speak(t);dis(false);startTimer();
+            msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;speak(t);dis(false);
           }).catch(function(){_waitingForAI=false;hideTyping();addMsg('Connection issue — tap Skip to move on.','ai');dis(false);});
         }
       }
@@ -752,31 +752,32 @@ function toggleMic(){
   try{
     var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
     var isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    recog=new SR();recog.lang='en-NZ';recog.continuous=!isMobile;recog.interimResults=true;
+    recog=new SR();recog.lang='en-NZ';
+    recog.continuous=!isMobile;
+    recog.interimResults=!isMobile;
     _micRetries=0;
     updateMicUI('listening','Listening... speak now');
     document.getElementById('micTranscript').className='mic-transcript active';
-    document.getElementById('micTranscript').textContent='';
+    document.getElementById('micTranscript').textContent=_accumulated||'';
     document.getElementById('listenBar').style.display='block';
     document.getElementById('listenFill').style.width='0';
     var inp=document.getElementById('userInput');
     var lastResultTime=Date.now();
-    var _accumulated='';
     var _liveFillers=0;
     recog.onresult=function(e){
       _micRetries=0;
-      var final='';var interim='';
-      for(var i=0;i<e.results.length;i++){
-        if(e.results[i].isFinal){final+=e.results[i][0].transcript+' ';}
-        else{interim+=e.results[i][0].transcript;}
-      }
-      var t;
+      var t='';
       if(isMobile){
-        if(final)_accumulated+=final;
-        t=(_accumulated+interim).trim();
+        /* Mobile: only final results, append to accumulated */
+        for(var i=0;i<e.results.length;i++){
+          if(e.results[i].isFinal){_accumulated+=e.results[i][0].transcript+' ';}
+        }
+        t=_accumulated.trim();
       } else {
-        t=(final||_accumulated)+interim;
-        if(final)_accumulated=final;
+        /* Desktop: use all results normally */
+        for(var i2=0;i2<e.results.length;i2++){
+          t+=e.results[i2][0].transcript;
+        }
         t=t.trim();
       }
       inp.value=t;lastResultTime=Date.now();
@@ -785,18 +786,16 @@ function toggleMic(){
       trEl.className='mic-transcript active';
       trEl.textContent=t;
       trEl.scrollTop=trEl.scrollHeight;
-      var statusBar=document.getElementById('micStatusBar');
-      if(statusBar)statusBar.scrollIntoView({behavior:'smooth',block:'start'});
       var fm=t.match(fillerRegex);
       _liveFillers=fm?fm.length:0;
       document.getElementById('fillerCount').textContent=fillerWords+_liveFillers;
       if(fillerWords+_liveFillers>3)document.getElementById('fillerCount').style.color='#ef4444';
       document.getElementById('listenFill').style.width='0';
       clearTimeout(silenceTimer);
-      if(autoSend&&t.trim().length>3){
+      if(autoSend&&t.trim().length>1){
         silenceTimer=setTimeout(function(){
           if(inp.value.trim()&&Date.now()-lastResultTime>=silenceDelay-500){
-            recog.stop();recog=null;
+            if(recog){try{recog.stop();}catch(e2){}}recog=null;
             document.getElementById('listenBar').style.display='none';
             document.getElementById('micTranscript').className='mic-transcript';
             updateMicUI('waiting','Sending your answer...');
@@ -804,16 +803,19 @@ function toggleMic(){
           }
         },silenceDelay);
         var start=Date.now();var bar=document.getElementById('listenFill');
-        (function tick(){var p=Math.min(((Date.now()-start)/silenceDelay)*100,100);bar.style.width=p+'%';if(p<100)requestAnimationFrame(tick);})();
+        (function tick(){var p=Math.min(((Date.now()-start)/silenceDelay)*100,100);bar.style.width=p+'%';if(p<100&&recog)requestAnimationFrame(tick);})();
       }
     };
-    recog.onend=function(){recog=null;clearTimeout(silenceTimer);
+    recog.onend=function(){recog=null;
       var inp2=document.getElementById('userInput');
-      if(isMobile&&_accumulated.trim()&&!_aiSpeaking&&!_waitingForAI){
-        /* Mobile non-continuous: restart to keep listening for more */
-        setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog)toggleMic();},300);
+      if(isMobile&&!_aiSpeaking&&!_waitingForAI&&!_sending){
+        /* Mobile: recognition stopped after a phrase. Restart to keep listening. */
+        /* The silence timer handles auto-send — we just keep the mic open. */
+        if(answerTimer){setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog&&!_sending)toggleMic();},400);}
+        else if(inp2.value.trim()){updateMicUI('waiting','Sending your answer...');sendAnswer();}
         return;
       }
+      clearTimeout(silenceTimer);
       document.getElementById('listenBar').style.display='none';
       document.getElementById('micTranscript').className='mic-transcript';
       if(inp2.value.trim()){updateMicUI('waiting','Sending your answer...');sendAnswer();}
@@ -852,8 +854,8 @@ function stopCam(){
 }
 
 /* Helpers */
-function addMsg(t,type){var c=document.getElementById('chatMessages');var w=document.createElement('div');w.className='msg-wrap msg-wrap-'+type;var av=document.createElement('div');av.className='msg-avatar msg-avatar-'+type;var iName=document.getElementById('avatarName');if(type==='ai'){av.textContent=(iName?iName.textContent:'S').charAt(0);}else{av.textContent='Y';}var ct=document.createElement('div');ct.className='msg-content';var lbl=document.createElement('div');lbl.className='msg-label msg-label-'+type;lbl.textContent=type==='ai'?(iName?iName.textContent:'Interviewer'):'You';var d=document.createElement('div');d.className='msg msg-'+type;d.textContent=t;ct.appendChild(lbl);ct.appendChild(d);w.appendChild(av);w.appendChild(ct);c.appendChild(w);setTimeout(function(){w.scrollIntoView({behavior:'smooth',block:'start'});},150);}
-function showTyping(){var c=document.getElementById('chatMessages');var w=document.createElement('div');w.className='msg-typing-wrap';w.id='typing';var av=document.createElement('div');av.className='msg-avatar msg-avatar-ai';var iName=document.getElementById('avatarName');av.textContent=(iName?iName.textContent:'S').charAt(0);var d=document.createElement('div');d.className='msg msg-typing';d.innerHTML='<i></i><i></i><i></i>';w.appendChild(av);w.appendChild(d);c.appendChild(w);setTimeout(function(){w.scrollIntoView({behavior:'smooth',block:'start'});},100);}
+function addMsg(t,type){var c=document.getElementById('chatMessages');var w=document.createElement('div');w.className='msg-wrap msg-wrap-'+type;var av=document.createElement('div');av.className='msg-avatar msg-avatar-'+type;var iName=document.getElementById('avatarName');if(type==='ai'){av.textContent=(iName?iName.textContent:'S').charAt(0);}else{av.textContent='Y';}var ct=document.createElement('div');ct.className='msg-content';var lbl=document.createElement('div');lbl.className='msg-label msg-label-'+type;lbl.textContent=type==='ai'?(iName?iName.textContent:'Interviewer'):'You';var d=document.createElement('div');d.className='msg msg-'+type;d.textContent=t;ct.appendChild(lbl);ct.appendChild(d);w.appendChild(av);w.appendChild(ct);c.appendChild(w);setTimeout(function(){w.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(function(){window.scrollBy(0,-80);},300);},150);}
+function showTyping(){var c=document.getElementById('chatMessages');var w=document.createElement('div');w.className='msg-typing-wrap';w.id='typing';var av=document.createElement('div');av.className='msg-avatar msg-avatar-ai';var iName=document.getElementById('avatarName');av.textContent=(iName?iName.textContent:'S').charAt(0);var d=document.createElement('div');d.className='msg msg-typing';d.innerHTML='<i></i><i></i><i></i>';w.appendChild(av);w.appendChild(d);c.appendChild(w);setTimeout(function(){w.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(function(){window.scrollBy(0,-80);},300);},100);}
 function hideTyping(){var el=document.getElementById('typing');if(el)el.remove();}
 function updC(){document.getElementById('qCounter').innerHTML='Q <strong>'+Math.min(qCount,maxQ)+'</strong> / '+maxQ;}
 function countFillers(text){var m=text.match(fillerRegex);if(m){fillerWords+=m.length;var fc=document.getElementById('fillerCount');var fs=document.getElementById('fillerStat');fc.textContent=fillerWords;if(fillerWords>=5){fc.style.color='#ef4444';fs.style.background='#fef2f2';fs.style.borderColor='#fecaca';}else if(fillerWords>=3){fc.style.color='#f59e0b';fs.style.background='#fffbeb';fs.style.borderColor='#fde68a';}}}
