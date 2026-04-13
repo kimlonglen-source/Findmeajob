@@ -127,22 +127,46 @@ a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
 .ai-disclaimer{max-width:600px;margin:.75rem auto 0;font-size:.62rem;color:#cbd5e1;line-height:1.5}
 
 /* Toast */
+/* Hamburger */
+.hamburger{display:none;background:none;border:1px solid #e2e8f0;color:#64748b;width:34px;height:34px;border-radius:999px;cursor:pointer;font-size:1.1rem;align-items:center;justify-content:center}
+.mob-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;backdrop-filter:blur(8px)}
+.mob-overlay.open{display:flex;align-items:flex-start}
+.mob-sheet{background:#fff;width:100%;padding:1.5rem;border-radius:0 0 20px 20px;margin-top:60px;border-bottom:1px solid #e2e8f0}
+.mob-link{display:block;padding:.85rem 0;border-bottom:1px solid #f1f5f9;font-size:.95rem;font-weight:600;color:#0f172a;text-decoration:none}
+.mob-link:last-child{border-bottom:none}
+.mob-link:hover{text-decoration:none;color:#10b981}
+body.dark .mob-sheet{background:#0f172a;border-color:rgba(255,255,255,.06)}
+body.dark .mob-link{color:#f8fafc;border-color:rgba(255,255,255,.06)}
+body.dark .hamburger{border-color:rgba(255,255,255,.1);color:#94a3b8}
+
 #toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#0f172a;color:#f0fdf4;padding:.65rem 1.25rem;border-radius:999px;font-size:.8rem;font-weight:600;display:none;z-index:999;box-shadow:0 8px 30px rgba(0,0,0,.15)}
 
 /* Responsive */
-@media(max-width:640px){
-  .nav{padding:.75rem 1rem}
-  .nav-links{gap:.75rem}
-  .hero{padding:3rem 1.25rem 2rem}
-  .hero h1{font-size:1.7rem}
-  .hero-stats{gap:1.25rem}
-  .tools-grid{grid-template-columns:1fr 1fr}
+@media(max-width:768px){
+  .nav-links a:not(.nav-cta){display:none}
+  .nav-links .nav-cta{font-size:.72rem;padding:.4rem .9rem}
+  .hamburger{display:flex}
+  .hero{padding:2.5rem 1.25rem 2rem}
+  .hero h1{font-size:1.6rem}
+  .hero p{font-size:.9rem}
+  .hero-stats{gap:1rem}
+  .hero-stat strong{font-size:1.1rem}
+  .tools-grid{grid-template-columns:1fr 1fr !important}
   .how-steps{flex-direction:column}
   .trust-items{flex-direction:column;align-items:center;gap:.75rem}
   .email-form{flex-direction:column}
+  .about-grid{grid-template-columns:1fr}
+  .feat-card{flex-direction:column !important;text-align:center}
+  .feat-icon{width:60px !important;height:60px !important;margin:0 auto}
+  .feat-icon svg{width:30px !important;height:30px !important}
+  .tools-section{padding:0 1.25rem 2rem}
+  .tools-section h2{font-size:1.2rem}
+  .tool-card{padding:1.15rem}
+  .tool-name{font-size:.88rem}
+  .tool-desc{font-size:.75rem}
 }
 @media(max-width:400px){
-  .tools-grid{grid-template-columns:1fr}
+  .tools-grid{grid-template-columns:1fr !important}
 }
 body.dark{background:#09090b;color:#f8fafc}
 body.dark a{color:#10b981}
@@ -195,8 +219,19 @@ body.dark .about-contact{color:#94a3b8}
     <a href="/employer-portal.html">Employer Login</a>
     <a href="/match.html" class="nav-cta">Apply for a Job</a>
     <button onclick="toggleTheme()" id="tbtn" style="background:none;border:1px solid #e2e8f0;color:#64748b;width:30px;height:30px;border-radius:999px;cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center">&#9788;</button>
+    <button class="hamburger" id="hmbg" onclick="document.getElementById('mob').classList.add('open')">&#9776;</button>
   </div>
 </nav>
+<div class="mob-overlay" id="mob" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="mob-sheet">
+    <a class="mob-link" href="#tools" onclick="document.getElementById('mob').classList.remove('open')">Tools</a>
+    <a class="mob-link" href="/blog">Blog</a>
+    <a class="mob-link" href="/match.html#account">Job Seekers</a>
+    <a class="mob-link" href="/employer-portal.html">Post a Job</a>
+    <a class="mob-link" href="/employer-portal.html">Employer Login</a>
+    <a class="mob-link" href="/match.html" style="color:#10b981;font-weight:700">Apply for a Job</a>
+  </div>
+</div>
 
 <!-- Hero -->
 <section class="hero">
@@ -216,8 +251,8 @@ body.dark .about-contact{color:#94a3b8}
 
 <!-- Featured: Interview Simulator -->
 <section style="max-width:900px;margin:0 auto;padding:0 2rem 2.5rem">
-  <a href="/interview-sim" style="display:flex;align-items:center;gap:2rem;background:linear-gradient(135deg,#f0fdf4,#e0f2fe);border:2px solid #bbf7d0;border-radius:20px;padding:2rem;text-decoration:none;color:inherit;transition:all .3s;overflow:hidden;position:relative" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 40px rgba(16,185,129,.15)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-    <div style="flex-shrink:0;width:80px;height:80px;background:linear-gradient(135deg,#10b981,#059669);border-radius:20px;display:flex;align-items:center;justify-content:center">
+  <a href="/interview-sim" class="feat-card" style="display:flex;align-items:center;gap:2rem;background:linear-gradient(135deg,#f0fdf4,#e0f2fe);border:2px solid #bbf7d0;border-radius:20px;padding:2rem;text-decoration:none;color:inherit;transition:all .3s;overflow:hidden;position:relative" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 40px rgba(16,185,129,.15)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+    <div class="feat-icon" style="flex-shrink:0;width:80px;height:80px;background:linear-gradient(135deg,#10b981,#059669);border-radius:20px;display:flex;align-items:center;justify-content:center">
       <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
     </div>
     <div style="flex:1">
