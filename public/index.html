@@ -202,7 +202,11 @@ body.dark .about-contact{color:#94a3b8}
 <section class="hero">
   <div class="hero-badge">Free AI Career Tools for NZ</div>
   <h1>Your career deserves<br><em id="typed"></em></h1>
-  <p>12 free AI-powered tools to help you find jobs, write CVs, negotiate salary, and make smarter career decisions. Built for New Zealand.</p>
+  <p>12 free AI tools to find jobs, nail interviews, write CVs, and earn more. Built for New Zealand.</p>
+  <div style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem">
+    <a href="/match.html" style="display:inline-flex;align-items:center;gap:.4rem;background:#10b981;color:#fff;padding:.75rem 1.5rem;border-radius:999px;font-size:.9rem;font-weight:700;text-decoration:none;box-shadow:0 4px 20px rgba(16,185,129,.25);transition:all .2s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">Upload CV &amp; Find Jobs &#8594;</a>
+    <a href="#tools" style="display:inline-flex;align-items:center;gap:.4rem;background:#fff;color:#0f172a;padding:.75rem 1.5rem;border-radius:999px;font-size:.9rem;font-weight:700;text-decoration:none;border:1px solid #e2e8f0;transition:all .2s" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='#e2e8f0'">Browse All Tools</a>
+  </div>
   <div class="hero-stats">
     <div class="hero-stat"><strong id="st-tools">12</strong><span>Free Tools</span></div>
     <div class="hero-stat"><strong id="st-cvs">0</strong><span>CVs Analysed</span></div>
@@ -210,92 +214,134 @@ body.dark .about-contact{color:#94a3b8}
   </div>
 </section>
 
+<!-- Featured: Interview Simulator -->
+<section style="max-width:900px;margin:0 auto;padding:0 2rem 2.5rem">
+  <a href="/interview-sim" style="display:flex;align-items:center;gap:2rem;background:linear-gradient(135deg,#f0fdf4,#e0f2fe);border:2px solid #bbf7d0;border-radius:20px;padding:2rem;text-decoration:none;color:inherit;transition:all .3s;overflow:hidden;position:relative" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 40px rgba(16,185,129,.15)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+    <div style="flex-shrink:0;width:80px;height:80px;background:linear-gradient(135deg,#10b981,#059669);border-radius:20px;display:flex;align-items:center;justify-content:center">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    </div>
+    <div style="flex:1">
+      <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem"><span style="font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;background:#10b981;color:#fff;padding:.2rem .6rem;border-radius:999px">Most Popular</span></div>
+      <div style="font-size:1.2rem;font-weight:800;color:#0f172a;margin-bottom:.25rem">Interview Simulator</div>
+      <div style="font-size:.85rem;color:#475569;line-height:1.6">Practice a real AI interview with voice. Get scored out of 100 with feedback on every answer. The closest thing to a real interview without the pressure.</div>
+      <div style="display:inline-flex;align-items:center;gap:.3rem;color:#10b981;font-size:.82rem;font-weight:700;margin-top:.65rem">Try it free &#8594;</div>
+    </div>
+  </a>
+</section>
+
 <!-- Trust -->
 <div class="trust">
-  <h3>Why people trust us</h3>
   <div class="trust-items">
-    <div class="trust-item"><span class="trust-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span> Your data is never stored or shared</div>
-    <div class="trust-item"><span class="trust-icon"><svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></span> Built in New Zealand</div>
-    <div class="trust-item"><span class="trust-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span> No registration required</div>
+    <div class="trust-item"><span class="trust-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span> Data never stored</div>
+    <div class="trust-item"><span class="trust-icon"><svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></span> Built in NZ</div>
+    <div class="trust-item"><span class="trust-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span> No sign-up</div>
     <div class="trust-item"><span class="trust-icon"><svg viewBox="0 0 24 24"><path d="M12 2a4 4 0 014 4c0 2-2 3-2 6H10c0-3-2-4-2-6a4 4 0 014-4z"/><line x1="10" y1="16" x2="14" y2="16"/><line x1="10" y1="19" x2="14" y2="19"/><path d="M11 22h2"/></svg></span> Powered by Claude AI</div>
   </div>
 </div>
 
-<!-- Tools Grid -->
+<!-- STAGE 1: Find & Apply -->
 <section class="tools-section" id="tools">
-  <h2>Pick a tool. Get answers in seconds.</h2>
-  <p>No sign-up. No payment. Just results.</p>
-  <div class="tools-grid">
+  <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#10b981;text-align:center;margin-bottom:.35rem">Step 1</div>
+  <h2>Find and apply for jobs</h2>
+  <p>Upload your CV and let AI do the heavy lifting.</p>
+  <div class="tools-grid" style="grid-template-columns:repeat(3,1fr)">
     <a class="tool-card primary" href="/match.html">
       <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>
       <div class="tool-name">Apply for a Job</div>
-      <div class="tool-desc">Upload your CV. AI matches you to NZ jobs, writes a tailored CV and cover letter.</div>
-      <span class="tool-tag tag-core">Core Tool</span>
+      <div class="tool-desc">Upload your CV. AI matches you to real NZ jobs in 60 seconds.</div>
+      <span class="tool-tag tag-core">Start Here</span>
     </a>
-    <a class="tool-card" href="/decide">
-      <span class="tool-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="6" r="3"/><circle cx="12" cy="12" r="3"/><circle cx="12" cy="18" r="3"/><rect x="8" y="2" width="8" height="20" rx="4"/></svg></span>
-      <div class="tool-name">Should I Stay or Go?</div>
-      <div class="tool-desc">Find out if it is time to move on. AI career health check with salary insight.</div>
-      <span class="tool-tag tag-new">New</span>
-    </a>
-    <a class="tool-card" href="/decode">
-      <span class="tool-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
-      <div class="tool-name">Decode Job Ad</div>
-      <div class="tool-desc">Paste a job listing. AI translates the corporate buzzwords into plain English.</div>
+    <a class="tool-card" href="/match.html#apply">
+      <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg></span>
+      <div class="tool-name">CV + Cover Letter Writer</div>
+      <div class="tool-desc">Paste a job ad and AI tailors your CV and cover letter to the role.</div>
       <span class="tool-tag tag-popular">Popular</span>
+    </a>
+    <a class="tool-card" href="/score">
+      <span class="tool-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+      <div class="tool-name">CV Score</div>
+      <div class="tool-desc">Get a score out of 100 with specific fixes to improve your CV.</div>
+      <span class="tool-tag tag-popular">Popular</span>
+    </a>
+  </div>
+</section>
+
+<!-- STAGE 2: Prepare -->
+<section class="tools-section">
+  <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#8b5cf6;text-align:center;margin-bottom:.35rem">Step 2</div>
+  <h2>Prepare for interviews</h2>
+  <p>Walk in confident and ready to impress.</p>
+  <div class="tools-grid" style="grid-template-columns:repeat(3,1fr)">
+    <a class="tool-card" href="/interview-sim">
+      <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>
+      <div class="tool-name">Interview Simulator</div>
+      <div class="tool-desc">Practice a live AI interview with voice. Get scored out of 100.</div>
+      <span class="tool-tag tag-new">Try This</span>
     </a>
     <a class="tool-card" href="/interview">
       <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></span>
       <div class="tool-name">Interview Questions</div>
-      <div class="tool-desc">Enter a job title. Get 10 likely interview questions with strong answers.</div>
+      <div class="tool-desc">Get 10 likely questions with strong example answers for any role.</div>
+      <span class="tool-tag tag-popular">Popular</span>
+    </a>
+    <a class="tool-card" href="/decode">
+      <span class="tool-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+      <div class="tool-name">Decode Job Ad</div>
+      <div class="tool-desc">Translate corporate buzzwords into plain English. Spot red flags.</div>
+      <span class="tool-tag tag-popular">Popular</span>
+    </a>
+  </div>
+</section>
+
+<!-- STAGE 3: Decide & Negotiate -->
+<section class="tools-section">
+  <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#f59e0b;text-align:center;margin-bottom:.35rem">Step 3</div>
+  <h2>Negotiate and decide</h2>
+  <p>Get paid what you are worth and make the right move.</p>
+  <div class="tools-grid" style="grid-template-columns:repeat(3,1fr)">
+    <a class="tool-card" href="/salary">
+      <span class="tool-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></span>
+      <div class="tool-name">Salary Calculator</div>
+      <div class="tool-desc">Find out what you should earn based on role, location, and experience.</div>
       <span class="tool-tag tag-popular">Popular</span>
     </a>
     <a class="tool-card" href="/negotiate">
       <span class="tool-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></span>
       <div class="tool-name">Negotiate My Salary</div>
-      <div class="tool-desc">Get a word-for-word script to negotiate your salary with confidence.</div>
+      <div class="tool-desc">Get a word-for-word script to negotiate your offer with confidence.</div>
       <span class="tool-tag tag-new">New</span>
     </a>
     <a class="tool-card" href="/compare">
       <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M21 3l-7 7"/><path d="M3 3l7 7"/><path d="M16 21h5v-5"/><path d="M8 21H3v-5"/><path d="M21 21l-7-7"/><path d="M3 21l7-7"/></svg></span>
       <div class="tool-name">Compare Jobs</div>
-      <div class="tool-desc">Paste two job descriptions. AI compares salary, benefits, red flags side-by-side.</div>
+      <div class="tool-desc">Paste two job ads. AI compares salary, benefits, and red flags.</div>
       <span class="tool-tag tag-new">New</span>
     </a>
-    <a class="tool-card" href="/score">
-      <span class="tool-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
-      <div class="tool-name">CV Score</div>
-      <div class="tool-desc">Upload your CV and get a score out of 100 with specific fixes to improve it.</div>
-      <span class="tool-tag tag-popular">Popular</span>
+  </div>
+</section>
+
+<!-- STAGE 4: Career Tools -->
+<section class="tools-section">
+  <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#ec4899;text-align:center;margin-bottom:.35rem">Bonus Tools</div>
+  <h2>More career tools</h2>
+  <p>Whether you are staying, going, or just curious.</p>
+  <div class="tools-grid" style="grid-template-columns:repeat(3,1fr)">
+    <a class="tool-card" href="/decide">
+      <span class="tool-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="6" r="3"/><circle cx="12" cy="12" r="3"/><circle cx="12" cy="18" r="3"/><rect x="8" y="2" width="8" height="20" rx="4"/></svg></span>
+      <div class="tool-name">Should I Stay or Go?</div>
+      <div class="tool-desc">AI career health check. Find out if it is time to move on.</div>
+      <span class="tool-tag tag-new">New</span>
     </a>
     <a class="tool-card" href="/email">
       <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
       <div class="tool-name">Write This Email</div>
-      <div class="tool-desc">Need to email your boss, follow up after an interview, or push back? AI writes it.</div>
-      <span class="tool-tag tag-new">New</span>
-    </a>
-    <a class="tool-card" href="/match.html#apply">
-      <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg></span>
-      <div class="tool-name">CV and Cover Letter Writer</div>
-      <div class="tool-desc">Paste a job ad + upload your CV. AI tailors both your CV and cover letter.</div>
-      <span class="tool-tag tag-core">Popular</span>
-    </a>
-    <a class="tool-card" href="/salary">
-      <span class="tool-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></span>
-      <div class="tool-name">Salary Calculator</div>
-      <div class="tool-desc">Find out what you should earn in NZ based on your role, location, and experience.</div>
-      <span class="tool-tag tag-popular">Popular</span>
-    </a>
-    <a class="tool-card" href="/interview-sim">
-      <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>
-      <div class="tool-name">Interview Simulator</div>
-      <div class="tool-desc">Practice a live AI interview. Speak or type. Get scored out of 100.</div>
+      <div class="tool-desc">Follow-ups, resignations, negotiations — AI writes the email for you.</div>
       <span class="tool-tag tag-new">New</span>
     </a>
     <a class="tool-card" href="/challenge">
       <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M12 22c-4 0-8-2.5-8-8 0-4 2-6.5 4-9 .5-.75 1.5-.5 1.5.5 0 1.5.5 3 2 4 0-3 2-5 4-7 .5-.5 1.5-.25 1.5.5 0 3 3 5 3 9 0 5.5-4 8-8 8z"/></svg></span>
       <div class="tool-name">Career Roast</div>
-      <div class="tool-desc">Upload your CV and let AI roast your career with savage pivot suggestions.</div>
+      <div class="tool-desc">Upload your CV and let AI roast your career with savage pivots.</div>
       <span class="tool-tag tag-fun">Fun</span>
     </a>
   </div>
@@ -308,7 +354,7 @@ body.dark .about-contact{color:#94a3b8}
     <div class="how-step">
       <div class="how-num">1</div>
       <h3>Pick a tool</h3>
-      <p>Choose from 12 free AI tools above</p>
+      <p>Choose from 12 free AI tools</p>
     </div>
     <div class="how-step">
       <div class="how-num">2</div>
@@ -318,7 +364,7 @@ body.dark .about-contact{color:#94a3b8}
     <div class="how-step">
       <div class="how-num">3</div>
       <h3>Take action</h3>
-      <p>Apply for jobs, negotiate salary, make decisions</p>
+      <p>Apply for jobs, nail interviews, earn more</p>
     </div>
   </div>
 </section>
