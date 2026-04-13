@@ -530,41 +530,26 @@ function requestMic(){
     beginBtn.disabled=false;beginBtn.textContent='Begin Interview (type only)';
   }
 
-  // Check permission state first (if Permissions API available)
-  if(navigator.permissions&&navigator.permissions.query){
-    navigator.permissions.query({name:'microphone'}).then(function(result){
-      if(result.state==='denied'){
-        showBlocked();
-      } else {
-        // state is 'prompt' or 'granted' — try getUserMedia
-        navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
-          _micStream=s;
-          micBox.style.display='none';
-          micEl.style.display='flex';
-          micEl.className='countdown-check ok';micEl.innerHTML='&#10003; Microphone ready';
-          beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
-        }).catch(function(){showBlocked();});
-      }
-    }).catch(function(){
-      // Permissions API failed, try getUserMedia directly
-      navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
-        _micStream=s;
-        micBox.style.display='none';
-        micEl.style.display='flex';
-        micEl.className='countdown-check ok';micEl.innerHTML='&#10003; Microphone ready';
-        beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
-      }).catch(function(){showBlocked();});
-    });
-  } else {
-    // No Permissions API, try getUserMedia directly
-    navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
-      _micStream=s;
+  // Always try getUserMedia — the user tap makes this a "user gesture"
+  // which gives the best chance of the browser showing the permission prompt
+  navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
+    _micStream=s;
+    micBox.style.display='none';
+    micEl.style.display='flex';
+    micEl.className='countdown-check ok';micEl.innerHTML='&#10003; Microphone ready';
+    beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
+  }).catch(function(err){
+    // If NotAllowedError — user denied or browser blocked
+    // If NotFoundError — no mic hardware
+    if(err.name==='NotFoundError'){
       micBox.style.display='none';
       micEl.style.display='flex';
-      micEl.className='countdown-check ok';micEl.innerHTML='&#10003; Microphone ready';
+      micEl.className='countdown-check ok';micEl.innerHTML='&#10007; No microphone found (type your answers)';
       beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
-    }).catch(function(){showBlocked();});
-  }
+    } else {
+      showBlocked();
+    }
+  });
 }
 
 function skipMic(){
