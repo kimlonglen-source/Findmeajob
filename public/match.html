@@ -2629,7 +2629,7 @@ function initApp(){try{
   document.getElementById('tbtn').innerHTML=darkMode?'&#9790;':'&#9788;';
   document.getElementById('tbtn').addEventListener('click',toggleTheme);
 
-  document.getElementById('logo-home').addEventListener('click',function(e){e.preventDefault();showPage('home');});
+  document.getElementById('logo-home').addEventListener('click',function(e){window.location.href='/';});
   document.getElementById('h-find').addEventListener('click',goFind);
   document.getElementById('h-browse').addEventListener('click',function(){showPage('browse');loadBrowse();});
   // h-employer is now a direct link to employer portal
