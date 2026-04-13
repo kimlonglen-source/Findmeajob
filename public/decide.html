@@ -392,7 +392,7 @@ async function fetchJobs(role, index) {
     var count = data.total || (data.jobs ? data.jobs.length : 0);
     var el = document.getElementById("jobs-" + index);
     if (count > 0) {
-      el.innerHTML = count + " jobs found";
+      el.innerHTML = '<a href="https://www.seek.co.nz/' + encodeURIComponent(role).replace(/%20/g,'-') + '-jobs" target="_blank" rel="noopener">' + count + ' jobs found &rarr;</a>';
     } else {
       el.textContent = "No current listings";
       el.style.color = "#94a3b8";
