@@ -139,20 +139,24 @@ body.dark .msg-ai::after{border-right-color:rgba(16,185,129,.08)}
 body.dark .msg-typing{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08)}
 body.dark .msg-typing::before{border-right-color:rgba(255,255,255,.08)}
 body.dark .msg-typing::after{border-right-color:rgba(255,255,255,.04)}
-.chat-bar{display:flex;flex-direction:column;align-items:center;gap:.5rem;padding:1rem 0;border-top:1px solid #e2e8f0;margin-top:.5rem}
+.chat-bar{display:flex;flex-direction:column;align-items:center;gap:.5rem;padding:.75rem 0;border-top:1px solid #e2e8f0;margin-top:.5rem}
 .chat-bar textarea{display:none}
 .chat-bar button{padding:.65rem 1rem;background:#10b981;color:#fff;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer}
 .chat-bar button:disabled{opacity:.5}
-.mic-btn{width:64px !important;height:64px !important;border-radius:50% !important;background:linear-gradient(135deg,#10b981,#059669) !important;color:#fff !important;border:none !important;font-size:1.5rem !important;padding:0 !important;min-width:auto !important;display:flex !important;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(16,185,129,.3);transition:all .3s}
-.mic-btn:active{transform:scale(.9)}
-.mic-btn.rec{background:linear-gradient(135deg,#ef4444,#dc2626) !important;box-shadow:0 0 0 6px rgba(239,68,68,.2),0 4px 20px rgba(239,68,68,.3) !important;animation:micPulse 1s infinite}
-@keyframes micPulse{0%,100%{box-shadow:0 0 0 6px rgba(239,68,68,.2),0 4px 20px rgba(239,68,68,.3)}50%{box-shadow:0 0 0 14px rgba(239,68,68,0),0 4px 20px rgba(239,68,68,.3)}}
-.mic-btn.ready{animation:micGlow 2s infinite}
-.mic-label{font-size:.72rem;font-weight:600;color:#94a3b8;margin-top:.15rem}
-.mic-label.recording{color:#ef4444;font-weight:700}
+.mic-status-bar{display:flex;align-items:center;gap:.5rem;padding:.6rem 1rem;border-radius:999px;background:#f8fafc;border:1px solid #e2e8f0;width:100%}
+.mic-dot{width:10px;height:10px;border-radius:50%;background:#94a3b8;flex-shrink:0;transition:all .3s}
+.mic-dot.speaking{background:#10b981;animation:dotGreen 1.2s infinite}
+.mic-dot.listening{background:#ef4444;animation:dotRed .8s infinite}
+.mic-dot.waiting{background:#f59e0b}
+@keyframes dotRed{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4)}50%{box-shadow:0 0 0 6px rgba(239,68,68,0)}}
+@keyframes dotGreen{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,.4)}50%{box-shadow:0 0 0 6px rgba(16,185,129,0)}}
+.mic-label{font-size:.78rem;font-weight:600;color:#64748b;flex:1}
+.mic-label.recording{color:#ef4444}
 .mic-transcript{display:none;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-size:.82rem;color:#0f172a;line-height:1.6;min-height:44px;max-height:200px;overflow-y:auto;text-align:left;width:100%;word-wrap:break-word}
 .mic-transcript.active{display:block}
+body.dark .mic-status-bar{background:#0f172a;border-color:rgba(255,255,255,.1)}
 body.dark .mic-transcript{background:#0f172a;border-color:rgba(255,255,255,.1);color:#f8fafc}
+body.dark .mic-label{color:#94a3b8}
 .chat-actions{display:flex;gap:.5rem;align-items:center}
 .chat-actions button{padding:.5rem 1rem;border-radius:999px;font-size:.75rem}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.3)}50%{box-shadow:0 0 0 8px rgba(239,68,68,0)}}
@@ -232,9 +236,11 @@ body.dark .countdown-sub{color:#94a3b8}
   .msg-content{max-width:78%}
   .msg-avatar{width:24px;height:24px;font-size:.6rem}
   .msg-label{font-size:.55rem}
-  .chat-bar{gap:.4rem;padding:.6rem 0}
-  .chat-bar button{padding:.5rem .7rem;font-size:.75rem}
-  .mic-btn{width:56px !important;height:56px !important;font-size:1.3rem !important}
+  .chat-bar{gap:.4rem;padding:.5rem 0}
+  .chat-bar button{padding:.45rem .65rem;font-size:.72rem}
+  .mic-status-bar{padding:.45rem .75rem}
+  .mic-label{font-size:.72rem}
+  .mic-transcript{font-size:.78rem;padding:.6rem .85rem}
   .status-bar{padding:.4rem .6rem;font-size:.68rem}
   .end-btn{font-size:.82rem;padding:.65rem}
   .score-big{font-size:2.5rem}
@@ -341,9 +347,9 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
       <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem">
         <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#059669">1</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">AI asks you a question</div><div style="font-size:.78rem;color:#64748b">The interviewer will introduce themselves, then ask questions one at a time.</div></div></div>
 
-        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#059669">2</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">You answer</div><div style="font-size:.78rem;color:#64748b">Tap the microphone button and speak your answer. Take your time.</div></div></div>
+        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#059669">2</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">You answer</div><div style="font-size:.78rem;color:#64748b">The microphone starts automatically. Just speak your answer naturally.</div></div></div>
 
-        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#059669">3</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">Submit your answer</div><div style="font-size:.78rem;color:#64748b">Click <strong>Send</strong> when done. Or just pause — your answer auto-submits after 5 seconds of silence.</div></div></div>
+        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#059669">3</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">Submit your answer</div><div style="font-size:.78rem;color:#64748b">When you stop speaking for 5 seconds, your answer submits automatically.</div></div></div>
 
         <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#059669">4</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">Skip or finish anytime</div><div style="font-size:.78rem;color:#64748b">Click <strong>Skip</strong> to move on. Click <strong>End Interview</strong> when you have answered enough.</div></div></div>
 
@@ -403,12 +409,15 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
         <div class="listening-bar" id="listenBar"><div class="listening-fill" id="listenFill"></div></div>
         <div class="chat-bar" id="chatInput">
           <textarea id="userInput" style="display:none" rows="1"></textarea>
-          <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Tap to speak">&#127908;</button>
-          <div class="mic-label" id="micLabel">Tap to answer</div>
+          <button id="micBtn" style="display:none"></button>
+          <div class="mic-status-bar" id="micStatusBar">
+            <div class="mic-dot" id="micDot"></div>
+            <div class="mic-label" id="micLabel">Interviewer speaking...</div>
+          </div>
           <div class="mic-transcript" id="micTranscript"></div>
           <div class="chat-actions">
             <button id="sendBtn" onclick="sendAnswer()" style="display:none">Send</button>
-            <button onclick="skipQuestion()" style="background:#f8fafc;color:#64748b;border:1px solid #e2e8f0;font-size:.72rem">Skip question</button>
+            <button onclick="skipQuestion()" style="background:#f8fafc;color:#64748b;border:1px solid #e2e8f0;font-size:.72rem;border-radius:999px;padding:.5rem 1rem">Skip question</button>
           </div>
         </div>
       </div>
@@ -678,8 +687,10 @@ function setupAvatarGender(gender){
 setInterval(function(){var eyes=document.querySelectorAll('.avatar-eye');eyes.forEach(function(e){e.classList.add('blink');setTimeout(function(){e.classList.remove('blink');},150);});},3500+Math.random()*2000);
 var _aiSpeaking=false;
 var _speakTimeout=null;
-function speak(t){_aiSpeaking=true;clearTimeout(_speakTimeout);setAvatar('speaking');var micLbl=document.getElementById('micLabel');if(micLbl){micLbl.textContent='Interviewer speaking...';micLbl.className='mic-label';}_speakTimeout=setTimeout(function(){_aiSpeaking=false;setAvatar('listening');if(micLbl){micLbl.textContent='Tap to answer';micLbl.className='mic-label';}},Math.max(3000,t.length*35));if(!audioEnabled||!window.speechSynthesis){return;}try{if(recog){recog.stop();recog=null;var mb=document.getElementById('micBtn');if(mb)mb.classList.remove('rec');document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);}window.speechSynthesis.cancel();setTimeout(function(){_doSpeak(t);},150);}catch(e){}}
-function _doSpeak(t){try{var gender=document.getElementById('voiceGender').value;var voices=window.speechSynthesis.getVoices()||[];var match=null;var nzAu=[];var enVoices=[];for(var i=0;i<voices.length;i++){var l=voices[i].lang.toLowerCase();if(l==='en-nz'||l==='en-au'||l.indexOf('en_nz')>-1||l.indexOf('en_au')>-1)nzAu.push(voices[i]);else if(l.indexOf('en')===0)enVoices.push(voices[i]);}var pool=nzAu.length?nzAu:enVoices;for(var j=0;j<pool.length;j++){var n=pool[j].name.toLowerCase();if(gender==='female'&&(n.indexOf('female')>-1||n.indexOf('fiona')>-1||n.indexOf('karen')>-1||n.indexOf('samantha')>-1||n.indexOf('victoria')>-1||n.indexOf('moira')>-1||n.indexOf('tessa')>-1)){match=pool[j];break;}if(gender==='male'&&(n.indexOf('male')>-1||n.indexOf('daniel')>-1||n.indexOf('james')>-1||n.indexOf('lee')>-1||n.indexOf('gordon')>-1||n.indexOf('alex')>-1)){match=pool[j];break;}}if(!match&&pool.length){match=pool[0];}var sentences=t.match(/[^.!?]+[.!?]+[\s]*/g)||[t];var idx=0;function speakNext(){if(idx>=sentences.length){_aiSpeaking=false;clearTimeout(_speakTimeout);setAvatar('listening');var ml=document.getElementById('micLabel');if(ml){ml.textContent='Tap to answer';ml.className='mic-label';}return;}var chunk=sentences[idx].trim();idx++;if(!chunk){speakNext();return;}var u=new SpeechSynthesisUtterance(chunk);u.rate=1.0;u.lang='en-NZ';if(match)u.voice=match;if(gender==='male'){u.pitch=0.9;}else{u.pitch=1.0;}u.onend=function(){var pause=200;if(chunk.indexOf('?')>-1)pause=400;else if(chunk.indexOf('.')>-1)pause=300;setTimeout(speakNext,pause);};u.onerror=function(){speakNext();};window.speechSynthesis.speak(u);}speakNext();}catch(e){_aiSpeaking=false;setAvatar('listening');}}
+function updateMicUI(state,text){var dot=document.getElementById('micDot');var lbl=document.getElementById('micLabel');if(dot){dot.className='mic-dot';if(state)dot.classList.add(state);}if(lbl){lbl.textContent=text||'';lbl.className=state==='listening'?'mic-label recording':'mic-label';}}
+function autoStartListening(){if(_aiSpeaking)return;updateMicUI('listening','Your turn — speak now');setTimeout(function(){if(!_aiSpeaking)toggleMic();},300);}
+function speak(t){_aiSpeaking=true;clearTimeout(_speakTimeout);setAvatar('speaking');updateMicUI('speaking','Interviewer speaking...');_speakTimeout=setTimeout(function(){_aiSpeaking=false;setAvatar('listening');autoStartListening();},Math.max(3000,t.length*35));if(!audioEnabled||!window.speechSynthesis){return;}try{if(recog){recog.stop();recog=null;var mb=document.getElementById('micBtn');if(mb)mb.classList.remove('rec');document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);}window.speechSynthesis.cancel();setTimeout(function(){_doSpeak(t);},150);}catch(e){}}
+function _doSpeak(t){try{var gender=document.getElementById('voiceGender').value;var voices=window.speechSynthesis.getVoices()||[];var match=null;var nzAu=[];var enVoices=[];for(var i=0;i<voices.length;i++){var l=voices[i].lang.toLowerCase();if(l==='en-nz'||l==='en-au'||l.indexOf('en_nz')>-1||l.indexOf('en_au')>-1)nzAu.push(voices[i]);else if(l.indexOf('en')===0)enVoices.push(voices[i]);}var pool=nzAu.length?nzAu:enVoices;for(var j=0;j<pool.length;j++){var n=pool[j].name.toLowerCase();if(gender==='female'&&(n.indexOf('female')>-1||n.indexOf('fiona')>-1||n.indexOf('karen')>-1||n.indexOf('samantha')>-1||n.indexOf('victoria')>-1||n.indexOf('moira')>-1||n.indexOf('tessa')>-1)){match=pool[j];break;}if(gender==='male'&&(n.indexOf('male')>-1||n.indexOf('daniel')>-1||n.indexOf('james')>-1||n.indexOf('lee')>-1||n.indexOf('gordon')>-1||n.indexOf('alex')>-1)){match=pool[j];break;}}if(!match&&pool.length){match=pool[0];}var sentences=t.match(/[^.!?]+[.!?]+[\s]*/g)||[t];var idx=0;function speakNext(){if(idx>=sentences.length){_aiSpeaking=false;clearTimeout(_speakTimeout);setAvatar('listening');autoStartListening();return;}var chunk=sentences[idx].trim();idx++;if(!chunk){speakNext();return;}var u=new SpeechSynthesisUtterance(chunk);u.rate=1.0;u.lang='en-NZ';if(match)u.voice=match;if(gender==='male'){u.pitch=0.9;}else{u.pitch=1.0;}u.onend=function(){var pause=200;if(chunk.indexOf('?')>-1)pause=400;else if(chunk.indexOf('.')>-1)pause=300;setTimeout(speakNext,pause);};u.onerror=function(){speakNext();};window.speechSynthesis.speak(u);}speakNext();}catch(e){_aiSpeaking=false;setAvatar('listening');}}
 window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
 
 /* Timer for real-life mode */
@@ -723,22 +734,19 @@ function startTimer(){
 function stopTimer(){if(answerTimer){clearInterval(answerTimer);answerTimer=null;}}
 function updTimer(){var m=Math.floor(timeLeft/60);var s=timeLeft%60;document.getElementById('timerText').textContent=m+':'+(s<10?'0':'')+s;}
 function toggleMic(){
-  var btn=document.getElementById('micBtn');
-  var lbl=document.getElementById('micLabel');
-  if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){alert('Speech recognition is not supported in this browser. Please use Chrome.');return;}
+  if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){return;}
   if(_aiSpeaking){_aiSpeaking=false;clearTimeout(_speakTimeout);try{window.speechSynthesis.cancel();}catch(e){}setAvatar('listening');}
   if(recog){
-    recog.stop();recog=null;btn.classList.remove('rec');
+    recog.stop();recog=null;
     document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);
-    lbl.textContent='Tap to answer';lbl.className='mic-label';
+    updateMicUI('waiting','Processing...');
     document.getElementById('micTranscript').className='mic-transcript';
     return;
   }
   try{
     var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
     recog=new SR();recog.lang='en';recog.continuous=true;recog.interimResults=true;
-    btn.classList.add('rec');
-    lbl.textContent='Listening... speak now';lbl.className='mic-label recording';
+    updateMicUI('listening','Listening... speak now');
     document.getElementById('micTranscript').className='mic-transcript active';
     document.getElementById('micTranscript').textContent='';
     document.getElementById('listenBar').style.display='block';
@@ -749,7 +757,7 @@ function toggleMic(){
       var t='';
       for(var i=0;i<e.results.length;i++){t+=e.results[i][0].transcript;}
       inp.value=t;lastResultTime=Date.now();
-      lbl.textContent='Recording...';
+      updateMicUI('listening','Listening...');
       var trEl=document.getElementById('micTranscript');
       trEl.className='mic-transcript active';
       trEl.textContent=t;
@@ -759,10 +767,10 @@ function toggleMic(){
       if(autoSend&&t.trim().length>3){
         silenceTimer=setTimeout(function(){
           if(inp.value.trim()&&Date.now()-lastResultTime>=silenceDelay-500){
-            recog.stop();recog=null;btn.classList.remove('rec');
+            recog.stop();recog=null;
             document.getElementById('listenBar').style.display='none';
             document.getElementById('micTranscript').className='mic-transcript';
-            lbl.textContent='Sending...';lbl.className='mic-label';
+            updateMicUI('waiting','Sending your answer...');
             sendAnswer();
           }
         },silenceDelay);
@@ -770,22 +778,21 @@ function toggleMic(){
         (function tick(){var p=Math.min(((Date.now()-start)/silenceDelay)*100,100);bar.style.width=p+'%';if(p<100)requestAnimationFrame(tick);})();
       }
     };
-    recog.onend=function(){btn.classList.remove('rec');recog=null;document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);
+    recog.onend=function(){recog=null;document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);
       document.getElementById('micTranscript').className='mic-transcript';
       var inp2=document.getElementById('userInput');
-      if(inp2.value.trim()){lbl.textContent='Sending...';lbl.className='mic-label';sendAnswer();}
-      else{lbl.textContent='Tap to answer';lbl.className='mic-label';}
+      if(inp2.value.trim()){updateMicUI('waiting','Sending your answer...');sendAnswer();}
+      else{updateMicUI(null,'Waiting...');}
     };
     recog.onerror=function(ev){
-      btn.classList.remove('rec');recog=null;document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);
-      if(ev.error==='not-allowed'){lbl.textContent='Mic blocked — check browser settings';lbl.className='mic-label recording';}
-      else if(ev.error==='network'){lbl.textContent='Network error — try again';lbl.className='mic-label recording';}
-      else{lbl.textContent='Tap to try again';lbl.className='mic-label';}
+      recog=null;document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);
+      if(ev.error==='not-allowed'){updateMicUI(null,'Mic blocked — check browser settings');}
+      else if(ev.error==='network'){updateMicUI(null,'Network error — retrying...');setTimeout(toggleMic,2000);}
+      else if(ev.error!=='aborted'){updateMicUI(null,'Retrying...');setTimeout(toggleMic,1000);}
     };
     recog.start();
   }catch(err){
-    btn.classList.remove('rec');recog=null;
-    lbl.textContent='Error — tap to try again';lbl.className='mic-label recording';
+    recog=null;updateMicUI(null,'Speech recognition error');
   }
 }
 
@@ -811,7 +818,7 @@ function showTyping(){var c=document.getElementById('chatMessages');var w=docume
 function hideTyping(){var el=document.getElementById('typing');if(el)el.remove();}
 function updC(){document.getElementById('qCounter').innerHTML='Q <strong>'+Math.min(qCount,maxQ)+'</strong> / '+maxQ;}
 function countFillers(text){var m=text.match(fillerRegex);if(m){fillerWords+=m.length;document.getElementById('fillerCount').textContent=fillerWords;if(fillerWords>3)document.getElementById('fillerCount').style.color='#ef4444';}}
-function dis(v){document.getElementById('sendBtn').disabled=v;document.getElementById('userInput').disabled=v;document.getElementById('micBtn').disabled=v;if(v){document.getElementById('micBtn').style.opacity='.5';}else{document.getElementById('micBtn').style.opacity='1';}}
+function dis(v){document.getElementById('sendBtn').disabled=v;document.getElementById('userInput').disabled=v;}
 function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 
 document.getElementById('userInput').addEventListener('input',function(){this.style.height='44px';this.style.height=Math.min(this.scrollHeight,100)+'px';});
