@@ -122,6 +122,10 @@
       "dest": "/public/write-cv.html"
     },
     {
+      "src": "/apply",
+      "dest": "/public/apply.html"
+    },
+    {
       "src": "/cover-letter",
       "dest": "/public/cover-letter.html"
     },
