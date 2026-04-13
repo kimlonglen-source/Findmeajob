@@ -463,6 +463,7 @@ async function skipQuestion(){
 }
 
 async function endInterview(){
+  window.speechSynthesis.cancel();stopTimer();setAvatar('thinking');
   document.getElementById('endBtn').textContent='Scoring...';document.getElementById('endBtn').disabled=true;
   var p="You conducted a "+iData.style+" interview for "+iData.role+" in NZ. Score the candidate. They used "+fillerWords+" filler words (um, ah, like, you know, basically). Comment on this in your feedback.\n\n";
   iData.qa.forEach(function(x,i){p+="Q"+(i+1)+": "+x.q.substring(0,400)+"\nA"+(i+1)+": "+x.a.substring(0,400)+"\n\n";});
@@ -491,6 +492,7 @@ function showScore(r){
   h+='<div class="cta-box"><p>Ready to apply for real?</p><a href="/match.html">Apply for a Job</a></div>';
   stopCam();document.getElementById('chatSection').style.display='none';
   document.getElementById('scoreSection').innerHTML=h;document.getElementById('scoreSection').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 /* Audio */
