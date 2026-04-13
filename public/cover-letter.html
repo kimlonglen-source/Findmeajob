@@ -230,10 +230,10 @@ body.dark .or-divider{color:#64748b}
 <script>
 /* Email gate */
 var _gateCallback = null;
-function checkGate(callback) {
-  if (localStorage.getItem('fmaj_email')) { callback(); return; }
-  var uses = parseInt(localStorage.getItem('fmaj_uses') || '0');
-  if (uses < 1) { localStorage.setItem('fmaj_uses', String(uses + 1)); callback(); return; }
+function setCookie(n,v,d){var e=new Date();e.setTime(e.getTime()+(d*24*60*60*1000));document.cookie=n+"="+v+";expires="+e.toUTCString()+";path=/;SameSite=Lax";}function getCookie(n){var c=document.cookie.split(";");for(var i=0;i<c.length;i++){var p=c[i].trim();if(p.indexOf(n+"=")==0)return p.substring(n.length+1);}return"";}function checkGate(callback) {
+  if (localStorage.getItem('fmaj_email') || getCookie('fmaj_email')) { callback(); return; }
+  var uses = parseInt(localStorage.getItem('fmaj_uses') || getCookie('fmaj_uses') || '0');
+  if (uses < 1) { localStorage.setItem('fmaj_uses', String(uses + 1));setCookie('fmaj_uses',String(uses+1),365); callback(); return; }
   _gateCallback = callback;
   document.getElementById('email-gate').style.display = 'flex';
   setTimeout(function(){ document.getElementById('gate-email').focus(); }, 100);
@@ -243,8 +243,8 @@ function submitGateEmail() {
   if (!email || email.indexOf('@') === -1) { document.getElementById('gate-email').style.borderColor = '#ef4444'; return; }
   document.getElementById('gate-btn').textContent = 'Saving...';
   document.getElementById('gate-btn').disabled = true;
-  localStorage.setItem('fmaj_email', email);
-  localStorage.setItem('fmaj_uses', '999');
+  localStorage.setItem('fmaj_email', email);setCookie('fmaj_email',email,365);
+  localStorage.setItem('fmaj_uses', '999');setCookie('fmaj_uses','999',365);
   fetch('/api/seeker', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({action:'register', email:email, password:'__tool_gate__', name:email.split('@')[0], emailAlerts:true})}).catch(function(){});
   document.getElementById('email-gate').style.display = 'none';
   if (_gateCallback) { _gateCallback(); _gateCallback = null; }
