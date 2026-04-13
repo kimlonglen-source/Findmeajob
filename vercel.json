@@ -127,7 +127,15 @@
     },
     {
       "src": "/salary",
+    },
+    {
+      "src": "/interview-sim",
+      "dest": "/public/interview-sim.html"
       "dest": "/public/salary.html"
+    },
+    {
+      "src": "/interview-sim",
+      "dest": "/public/interview-sim.html"
     },
     {
       "src": "/sitemap.xml",
