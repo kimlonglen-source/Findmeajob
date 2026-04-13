@@ -474,15 +474,20 @@ function _doPrep(){
     micEl.className='countdown-check ok';micEl.innerHTML='&#10007; Speech not supported (type your answers)';
     beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
   } else if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
-    micEl.className='countdown-check wait';micEl.innerHTML='&#9675; Requesting microphone...';
-    navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
-      _micStream=s;
-      micEl.className='countdown-check ok';micEl.innerHTML='&#10003; Microphone ready';
-      beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
-    }).catch(function(){
-      micEl.className='countdown-check ok';micEl.innerHTML='&#10007; Microphone denied (type your answers)';
-      beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
-    });
+    function requestMic(){
+      micEl.className='countdown-check wait';micEl.innerHTML='&#9675; Requesting microphone...';
+      navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
+        _micStream=s;
+        micEl.className='countdown-check ok';micEl.innerHTML='&#10003; Microphone ready';
+        beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
+      }).catch(function(){
+        micEl.className='countdown-check wait';
+        micEl.innerHTML='&#10007; Microphone blocked. <br><span style="font-weight:400;font-size:.72rem;line-height:1.5;display:block;margin-top:.25rem;color:#64748b">Tap the lock icon &#128274; in your browser address bar, allow Microphone, then tap Retry below.</span><button onclick="requestMic()" style="margin-top:.5rem;background:#10b981;color:#fff;border:none;padding:.4rem 1rem;border-radius:999px;font-family:Inter,sans-serif;font-size:.75rem;font-weight:700;cursor:pointer">Retry Microphone</button>';
+        beginBtn.disabled=false;beginBtn.textContent='Begin Interview (type only)';
+      });
+    }
+    window.requestMic=requestMic;
+    requestMic();
   } else {
     micEl.className='countdown-check ok';micEl.innerHTML='&#10003; Microphone ready';
     beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
