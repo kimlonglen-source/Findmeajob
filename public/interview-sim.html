@@ -147,58 +147,77 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
 <div class="container">
   <div class="page-badge">Interview Simulator</div>
   <h1>Practice Your <em>Interview</em></h1>
-  <p class="subtitle">AI interviews you for any NZ role. Speak or type your answers. Get scored out of 100.</p>
+  <p class="subtitle">Practice real job interviews with AI. Get scored and improve.</p>
 
+  <!-- STEP 1: What role -->
   <div id="setupForm">
     <div class="card">
-      <div class="card-title">Interview Details</div>
-      <div class="field"><label>Job Title</label><input type="text" id="simRole" placeholder="e.g. Software Engineer"></div>
-      <div class="field"><label>Company (optional)</label><input type="text" id="simCompany" placeholder="e.g. Xero"></div>
+      <div style="font-size:.72rem;font-weight:700;color:#10b981;text-transform:uppercase;letter-spacing:1px;margin-bottom:.75rem">Step 1 of 3 — Your Interview</div>
+      <div class="field"><label>What role are you interviewing for?</label><input type="text" id="simRole" placeholder="e.g. Pharmacist, Software Engineer, Teacher"></div>
+      <div class="field"><label>Which company? (optional)</label><input type="text" id="simCompany" placeholder="e.g. Xero, Fisher &amp; Paykel, Countdown"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
-        <div class="field"><label>Interview Style</label>
-          <select id="simStyle"><option value="Standard">Standard</option><option value="Behavioural">Behavioural</option><option value="Technical">Technical</option><option value="Casual">Casual</option></select>
+        <div class="field"><label>Interview style</label>
+          <select id="simStyle"><option value="Standard">Standard</option><option value="Behavioural">Behavioural (STAR method)</option><option value="Technical">Technical</option><option value="Casual">Casual / coffee chat</option></select>
         </div>
-        <div class="field"><label>Questions</label>
-          <select id="simCount"><option value="5">5 (quick)</option><option value="8">8 (standard)</option><option value="10">10 (full)</option></select>
+        <div class="field"><label>How many questions?</label>
+          <select id="simCount"><option value="5">5 (10 min)</option><option value="8">8 (20 min)</option><option value="10">10 (30 min)</option></select>
         </div>
-      </div>
-      <div class="card-title" style="margin-top:1rem">Audio and Camera</div>
-      <div class="field"><label>AI Voice</label>
-        <select id="voiceGender"><option value="female">Female interviewer</option><option value="male">Male interviewer</option><option value="off">No voice (text only)</option></select>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:.5rem">
-        <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.82rem;color:#64748b;font-weight:600"><input type="checkbox" id="camMode" style="accent-color:#10b981;width:16px;height:16px"> Enable camera</label>
-        <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.82rem;color:#64748b;font-weight:600"><input type="checkbox" id="timedMode" style="accent-color:#10b981;width:16px;height:16px"> Timed answers (2 min per question)</label>
-        <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.82rem;color:#64748b;font-weight:600"><input type="checkbox" id="autoSendMode" style="accent-color:#10b981;width:16px;height:16px" checked> Auto-send when you stop talking</label>
       </div>
     </div>
-    <button class="btn" onclick="prepInterview()">Next</button>
+    <button class="btn" onclick="goStep2()">Next — Set Up Audio</button>
   </div>
 
-  <!-- READY SCREEN — instructions + permissions -->
-  <div id="readyScreen" style="display:none">
-    <div class="card" style="text-align:center;padding:2rem">
-      <div style="font-size:1.3rem;font-weight:800;color:#0f172a;margin-bottom:.75rem">Ready to begin?</div>
-      <div style="font-size:.85rem;color:#64748b;line-height:1.8;max-width:440px;margin:0 auto 1.5rem;text-align:left">
-        <strong style="color:#0f172a">How it works:</strong><br>
-        1. The AI interviewer asks you a question<br>
-        2. Click the mic or type your answer<br>
-        3. Pause for 5 seconds and your answer auto-submits<br>
-        4. Or click <strong style="color:#0f172a">Send</strong> to submit manually<br>
-        5. Click <strong style="color:#0f172a">Skip</strong> to move to the next question<br>
-        6. After all questions you get a score out of 100
+  <!-- STEP 2: Audio + Camera -->
+  <div id="step2" style="display:none">
+    <div class="card">
+      <div style="font-size:.72rem;font-weight:700;color:#10b981;text-transform:uppercase;letter-spacing:1px;margin-bottom:.75rem">Step 2 of 3 — Audio and Camera</div>
+      <div class="field"><label>Choose your interviewer voice</label>
+        <select id="voiceGender"><option value="female">Female interviewer (speaks questions aloud)</option><option value="male">Male interviewer (speaks questions aloud)</option><option value="off">No voice — text only</option></select>
       </div>
-      <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1.5rem;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;gap:.65rem;margin-top:.5rem">
+        <label style="display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;font-size:.85rem;color:#475569;line-height:1.5"><input type="checkbox" id="camMode" style="accent-color:#10b981;width:18px;height:18px;margin-top:2px"> <span><strong style="color:#0f172a">Enable camera</strong><br><span style="font-size:.78rem;color:#94a3b8">See yourself on screen — practice eye contact and body language</span></span></label>
+        <label style="display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;font-size:.85rem;color:#475569;line-height:1.5"><input type="checkbox" id="timedMode" style="accent-color:#10b981;width:18px;height:18px;margin-top:2px"> <span><strong style="color:#0f172a">Timed mode</strong><br><span style="font-size:.78rem;color:#94a3b8">2 minutes per answer, like a real interview</span></span></label>
+        <label style="display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;font-size:.85rem;color:#475569;line-height:1.5"><input type="checkbox" id="autoSendMode" style="accent-color:#10b981;width:18px;height:18px;margin-top:2px" checked> <span><strong style="color:#0f172a">Auto-send answers</strong><br><span style="font-size:.78rem;color:#94a3b8">When you stop talking for 5 seconds, your answer submits automatically</span></span></label>
+      </div>
+    </div>
+    <div style="display:flex;gap:.5rem">
+      <button class="btn" onclick="document.getElementById('step2').style.display='none';document.getElementById('setupForm').style.display='block'" style="background:#f8fafc;color:#64748b;border:1px solid #e2e8f0;box-shadow:none;flex:0 0 auto;width:auto;padding:.85rem 1.5rem">Back</button>
+      <button class="btn" onclick="prepInterview()" style="flex:1">Next — Review</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: Ready screen -->
+  <div id="readyScreen" style="display:none">
+    <div class="card" style="padding:2rem">
+      <div style="font-size:.72rem;font-weight:700;color:#10b981;text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem">Step 3 of 3 — Ready?</div>
+
+      <div style="font-size:1.1rem;font-weight:800;color:#0f172a;margin-bottom:1.25rem">Here is how your interview will work:</div>
+
+      <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem">
+        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#059669">1</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">AI asks you a question</div><div style="font-size:.78rem;color:#64748b">The interviewer will introduce themselves, then ask questions one at a time.</div></div></div>
+
+        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#059669">2</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">You answer</div><div style="font-size:.78rem;color:#64748b">Click the microphone button to speak, or type your answer. Take your time.</div></div></div>
+
+        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#059669">3</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">Submit your answer</div><div style="font-size:.78rem;color:#64748b">Click <strong>Send</strong> when done. Or just pause — your answer auto-submits after 5 seconds of silence.</div></div></div>
+
+        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#059669">4</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">Skip or finish anytime</div><div style="font-size:.78rem;color:#64748b">Click <strong>Skip</strong> to move on. Click <strong>End Interview</strong> when you have answered enough.</div></div></div>
+
+        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#10b981;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#fff">5</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">Get your score</div><div style="font-size:.78rem;color:#64748b">AI scores you out of 100 with feedback on every answer. Learn what to improve.</div></div></div>
+      </div>
+
+      <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1.25rem;flex-wrap:wrap">
         <div class="countdown-check wait" id="micStatus">&#9675; Microphone</div>
         <div class="countdown-check wait" id="camStatus" style="display:none">&#9675; Camera</div>
       </div>
-      <button class="btn" id="beginBtn" onclick="beginCountdown()" disabled style="max-width:300px;margin:0 auto">Setting up...</button>
+      <button class="btn" id="beginBtn" onclick="beginCountdown()" disabled style="max-width:320px;margin:0 auto">Setting up...</button>
+      <div style="text-align:center;margin-top:.5rem"><button onclick="document.getElementById('readyScreen').style.display='none';document.getElementById('step2').style.display='block'" style="background:none;border:none;color:#64748b;font-size:.78rem;cursor:pointer;font-family:Inter,sans-serif">Back to settings</button></div>
     </div>
   </div>
 
   <!-- COUNTDOWN — simple 3, 2, 1 -->
   <div class="countdown-screen" id="countdownScreen">
     <div class="countdown-num" id="countNum">3</div>
+    <div style="font-size:.88rem;color:#64748b;margin-top:.5rem">Your interview is about to begin</div>
   </div>
 
   <div id="chatSection" style="display:none">
@@ -262,20 +281,25 @@ var camEnabled=false,autoSend=true,silenceTimer=null,silenceDelay=5000;
 
 var _prepRole='';
 
-function prepInterview(){
+function goStep2(){
   var role=document.getElementById('simRole').value.trim();
-  if(!role){alert('Please enter a job title.');return;}
-  checkGate(function(){_doPrep(role);});
+  if(!role){alert('Please enter the job title you are interviewing for.');return;}
+  document.getElementById('setupForm').style.display='none';
+  document.getElementById('step2').style.display='block';
 }
 
-function _doPrep(role){
-  _prepRole=role;
+function prepInterview(){
+  _prepRole=document.getElementById('simRole').value.trim();
+  checkGate(function(){_doPrep();});
+}
+
+function _doPrep(){
   var voiceVal=document.getElementById('voiceGender').value;
   audioEnabled=(voiceVal!=='off');
   camEnabled=document.getElementById('camMode').checked;
   autoSend=document.getElementById('autoSendMode').checked;
 
-  document.getElementById('setupForm').style.display='none';
+  document.getElementById('step2').style.display='none';
   document.getElementById('readyScreen').style.display='block';
 
   var micEl=document.getElementById('micStatus');
@@ -432,7 +456,7 @@ function showScore(r){
 }
 
 /* Audio */
-function speak(t){if(!audioEnabled||!window.speechSynthesis)return;window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.rate=.72;u.lang='en-NZ';var gender=document.getElementById('voiceGender').value;var voices=window.speechSynthesis.getVoices();var match=null;var nzAu=[];var enVoices=[];for(var i=0;i<voices.length;i++){var l=voices[i].lang.toLowerCase();if(l==='en-nz'||l==='en-au'||l.indexOf('en_nz')>-1||l.indexOf('en_au')>-1)nzAu.push(voices[i]);else if(l.indexOf('en')===0)enVoices.push(voices[i]);}var pool=nzAu.length?nzAu:enVoices;for(var j=0;j<pool.length;j++){var n=pool[j].name.toLowerCase();if(gender==='female'&&(n.indexOf('female')>-1||n.indexOf('fiona')>-1||n.indexOf('karen')>-1||n.indexOf('samantha')>-1||n.indexOf('victoria')>-1||n.indexOf('moira')>-1||n.indexOf('tessa')>-1)){match=pool[j];break;}if(gender==='male'&&(n.indexOf('male')>-1||n.indexOf('daniel')>-1||n.indexOf('james')>-1||n.indexOf('lee')>-1||n.indexOf('gordon')>-1||n.indexOf('alex')>-1)){match=pool[j];break;}}if(!match&&pool.length){match=pool[0];}if(match)u.voice=match;if(gender==='male'){u.pitch=.8;}else{u.pitch=1.05;}u.onend=function(){if(autoSend&&!recog&&qCount<maxQ){setTimeout(toggleMic,800);}};window.speechSynthesis.speak(u);}
+function speak(t){if(!audioEnabled||!window.speechSynthesis)return;window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.rate=.62;u.lang='en-NZ';var gender=document.getElementById('voiceGender').value;var voices=window.speechSynthesis.getVoices();var match=null;var nzAu=[];var enVoices=[];for(var i=0;i<voices.length;i++){var l=voices[i].lang.toLowerCase();if(l==='en-nz'||l==='en-au'||l.indexOf('en_nz')>-1||l.indexOf('en_au')>-1)nzAu.push(voices[i]);else if(l.indexOf('en')===0)enVoices.push(voices[i]);}var pool=nzAu.length?nzAu:enVoices;for(var j=0;j<pool.length;j++){var n=pool[j].name.toLowerCase();if(gender==='female'&&(n.indexOf('female')>-1||n.indexOf('fiona')>-1||n.indexOf('karen')>-1||n.indexOf('samantha')>-1||n.indexOf('victoria')>-1||n.indexOf('moira')>-1||n.indexOf('tessa')>-1)){match=pool[j];break;}if(gender==='male'&&(n.indexOf('male')>-1||n.indexOf('daniel')>-1||n.indexOf('james')>-1||n.indexOf('lee')>-1||n.indexOf('gordon')>-1||n.indexOf('alex')>-1)){match=pool[j];break;}}if(!match&&pool.length){match=pool[0];}if(match)u.voice=match;if(gender==='male'){u.pitch=.8;}else{u.pitch=1.05;}u.onend=function(){if(autoSend&&!recog&&qCount<maxQ){setTimeout(toggleMic,800);}};window.speechSynthesis.speak(u);}
 window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
 
 /* Timer for real-life mode */
