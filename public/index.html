@@ -49,28 +49,34 @@ img{max-width:100%;display:block}
 .mob-sheet a:last-child{border:none}
 .mob-sheet a.coral{color:#E7515A}
 
-/* Hero - Monzo style full photo */
-.hero{position:relative;min-height:85vh;display:flex;align-items:flex-end;padding:4rem 3rem;overflow:hidden;background:#1a1a2e}
-.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.7}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,.2) 50%,transparent 100%)}
+/* Hero Slideshow */
+.hero{position:relative;min-height:85vh;overflow:hidden;background:#1a1a2e}
+.hero-slide{position:absolute;inset:0;display:flex;align-items:flex-end;padding:4rem 3rem;opacity:0;transition:opacity 1s ease;background-size:cover;background-position:center}
+.hero-slide::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,.2) 50%,transparent 100%)}
+.hero-slide.active{opacity:1;position:relative}
 .hero-content{position:relative;z-index:2;max-width:600px}
 .hero h1{font-size:3.2rem;font-weight:900;color:#fff;line-height:1.1;margin-bottom:1rem;letter-spacing:-1px}
 .hero p{font-size:1.15rem;color:rgba(255,255,255,.85);line-height:1.6;margin-bottom:2rem;max-width:480px}
 .hero-btn{display:inline-block;padding:.85rem 2rem;border:2px solid #fff;color:#fff;border-radius:999px;font-size:.95rem;font-weight:700;text-decoration:none;transition:all .2s}
 .hero-btn:hover{background:#fff;color:#1a1a2e;text-decoration:none}
+.hero-dots{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:10;display:flex;gap:.5rem}
+.hero-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:all .3s}
+.hero-dot.active{background:#fff;transform:scale(1.2)}
 
 /* Responsive */
 @media(max-width:768px){
   .nav{padding:1rem 1.25rem}
   .nav-links a:not(.nav-cta){display:none}
   .hamburger{display:block}
-  .hero{min-height:70vh;padding:2.5rem 1.5rem}
-  .hero h1{font-size:2.2rem}
-  .hero p{font-size:1rem}
+  .hero{min-height:65vh}
+  .hero-slide{padding:2.5rem 1.5rem}
+  .hero h1{font-size:2rem}
+  .hero p{font-size:.95rem}
 }
 @media(max-width:480px){
-  .hero h1{font-size:1.8rem}
-  .hero{min-height:60vh;padding:2rem 1.25rem}
+  .hero h1{font-size:1.6rem}
+  .hero{min-height:55vh}
+  .hero-slide{padding:2rem 1.25rem}
 }
 </style>
 </head>
@@ -98,15 +104,30 @@ img{max-width:100%;display:block}
   </div>
 </div>
 
-<!-- Hero -->
+<!-- Hero Slideshow -->
 <section class="hero">
-  <img class="hero-img" src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=1400&q=80" alt="Professional at work">
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <h1>FindMeAJob for your whole career</h1>
-    <p>Practice interviews with AI. Write tailored CVs. Find NZ jobs in 60 seconds. 12 free tools, no payment required.</p>
-    <a href="/match.html" class="hero-btn">Get started — free</a>
+  <div class="hero-slide active" data-bg="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=1400&q=80">
+    <div class="hero-content">
+      <h1>Upload your CV.<br>Get matched in 60 seconds.</h1>
+      <p>AI reads your CV and finds the best NZ jobs for you. No searching, no scrolling. Just results.</p>
+      <a href="/match.html" class="hero-btn">Upload CV — free</a>
+    </div>
   </div>
+  <div class="hero-slide" data-bg="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1400&q=80">
+    <div class="hero-content">
+      <h1>Practice interviews<br>with AI. Get scored.</h1>
+      <p>A voice-powered AI interviewer asks real questions, listens to your answers, and scores you out of 100.</p>
+      <a href="/interview-sim" class="hero-btn">Try the simulator — free</a>
+    </div>
+  </div>
+  <div class="hero-slide" data-bg="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1400&q=80">
+    <div class="hero-content">
+      <h1>Free for job seekers.<br>Free for employers.</h1>
+      <p>12 AI career tools. No payment, no credit card, no catch. Post jobs and find talent — all free.</p>
+      <a href="/employer-portal.html" class="hero-btn">Post a job — free</a>
+    </div>
+  </div>
+  <div class="hero-dots" id="heroDots"></div>
 </section>
 
 <!-- "I want to..." section - Monzo style -->
@@ -276,6 +297,27 @@ function subscribeAlerts(){
   }).catch(function(){showToast("Network error. Try again.");});
 }
 function showToast(msg){var t=document.getElementById("toast");t.textContent=msg;t.style.display="block";setTimeout(function(){t.style.display="none";},3000);}
+
+/* Hero slideshow */
+var slides=document.querySelectorAll('.hero-slide');
+var dotsBox=document.getElementById('heroDots');
+var currentSlide=0;
+slides.forEach(function(s,i){
+  var bg=s.getAttribute('data-bg');
+  if(bg)s.style.backgroundImage='url('+bg+')';
+  var dot=document.createElement('div');
+  dot.className='hero-dot'+(i===0?' active':'');
+  dot.onclick=function(){goSlide(i);};
+  dotsBox.appendChild(dot);
+});
+function goSlide(n){
+  slides[currentSlide].classList.remove('active');
+  dotsBox.children[currentSlide].classList.remove('active');
+  currentSlide=n;
+  slides[currentSlide].classList.add('active');
+  dotsBox.children[currentSlide].classList.add('active');
+}
+setInterval(function(){goSlide((currentSlide+1)%slides.length);},5000);
 
 /* Responsive flex fix */
 document.querySelectorAll('[style*="display:flex"][style*="gap:3rem"]').forEach(function(el){
