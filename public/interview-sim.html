@@ -597,7 +597,7 @@ async function sendAnswer(){
   iData.qa.push({q:lastAi,a:ans});msgs.push({role:'user',content:ans});qCount++;updC();setAvatar('thinking');dis(true);showTyping();
   var trimmed=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
   try{
-    var sys="You are a professional NZ job interviewer. "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. Question "+qCount+" of "+maxQ+". Ask ONE question."+(qCount>=maxQ?" This is the last question, wrap up naturally.":"");
+    var sys="You are a professional NZ job interviewer. "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. Question "+qCount+" of "+maxQ+". Ask ONE question. Do not say thank you or wrap up the interview. Just ask the question.";
     var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:trimmed})});
     var d=await r.json();var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):(d.error||'');
     if(!t){throw new Error('empty');}
@@ -754,7 +754,7 @@ function toggleMic(){
     var isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     recog=new SR();recog.lang='en-NZ';
     recog.continuous=!isMobile;
-    recog.interimResults=!isMobile;
+    recog.interimResults=true;
     _micRetries=0;
     updateMicUI('listening','Listening... speak now');
     document.getElementById('micTranscript').className='mic-transcript active';
@@ -766,13 +766,18 @@ function toggleMic(){
     var _liveFillers=0;
     recog.onresult=function(e){
       _micRetries=0;
-      var t='';
+      var t='';var interim='';
       if(isMobile){
-        /* Mobile: only final results, append to accumulated */
+        /* Mobile: accumulate finals, show interim for instant feedback */
         for(var i=0;i<e.results.length;i++){
-          if(e.results[i].isFinal){_accumulated+=e.results[i][0].transcript+' ';}
+          if(e.results[i].isFinal){
+            var ft=e.results[i][0].transcript;
+            if(_accumulated.indexOf(ft)===-1){_accumulated+=ft+' ';}
+          } else {
+            interim+=e.results[i][0].transcript;
+          }
         }
-        t=_accumulated.trim();
+        t=(_accumulated+interim).trim();
       } else {
         /* Desktop: use all results normally */
         for(var i2=0;i2<e.results.length;i2++){
