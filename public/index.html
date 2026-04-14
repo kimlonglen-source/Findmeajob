@@ -197,11 +197,17 @@ img{max-width:100%;display:block}
       <a href="/interview-sim" style="display:inline-block;padding:.75rem 1.75rem;border:2px solid #fff;color:#fff;border-radius:999px;font-size:.88rem;font-weight:700;text-decoration:none;transition:all .2s" onmouseover="this.style.background='#fff';this.style.color='#1B1B3A'" onmouseout="this.style.background='transparent';this.style.color='#fff'">Try the simulator</a>
     </div>
     <div style="flex:1;max-width:380px;flex-shrink:0">
-      <div style="background:#0f172a;border-radius:16px;padding:1.25rem;border:1px solid rgba(255,255,255,.1)">
-        <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:1rem"><div style="width:8px;height:8px;background:#E7515A;border-radius:50%"></div><span style="font-size:.68rem;color:#94a3b8;font-weight:600">Live Interview</span></div>
-        <div style="background:rgba(231,81,90,.08);border:1px solid rgba(231,81,90,.2);border-radius:10px;padding:.6rem .85rem;font-size:.75rem;color:#fca5a5;margin-bottom:.5rem;border-bottom-left-radius:3px">Could you tell me about a time you showed leadership?</div>
-        <div style="background:#E7515A;border-radius:10px;padding:.6rem .85rem;font-size:.75rem;color:#fff;margin-left:auto;max-width:80%;border-bottom-right-radius:3px;margin-bottom:.75rem">In my last role I led a team of four during a product launch...</div>
-        <div style="text-align:center;padding:.5rem"><span style="font-size:1.5rem;font-weight:900;color:#E7515A">85</span><span style="font-size:.75rem;color:#94a3b8">/100</span></div>
+      <div id="demoChat" style="background:#0f172a;border-radius:16px;padding:1.25rem;border:1px solid rgba(255,255,255,.1);min-height:260px;cursor:pointer" onclick="window.location.href='/interview-sim'">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+          <div style="display:flex;align-items:center;gap:.5rem"><div id="demoDot" style="width:8px;height:8px;background:#E7515A;border-radius:50%"></div><span id="demoStatus" style="font-size:.68rem;color:#94a3b8;font-weight:600">Starting interview...</span></div>
+          <div style="font-size:.6rem;color:#64748b;font-weight:600">Q1/5</div>
+        </div>
+        <div id="demoMsgs" style="display:flex;flex-direction:column;gap:.5rem;min-height:160px"></div>
+        <div id="demoScore" style="text-align:center;padding:.75rem 0;display:none">
+          <div style="font-size:.55rem;color:#94a3b8;text-transform:uppercase;font-weight:700;letter-spacing:.5px;margin-bottom:.25rem">Interview Score</div>
+          <span id="demoScoreNum" style="font-size:2.2rem;font-weight:900;color:#E7515A;line-height:1">0</span><span style="font-size:.85rem;color:#94a3b8;font-weight:600">/100</span>
+          <div style="font-size:.6rem;color:#10b981;font-weight:600;margin-top:.25rem">Great performance!</div>
+        </div>
       </div>
     </div>
   </div>
@@ -325,6 +331,48 @@ function goSlide(n){
   dotsBox.children[currentSlide].classList.add('active');
 }
 setInterval(function(){goSlide((currentSlide+1)%slides.length);},5000);
+
+/* Interview demo animation */
+function runDemo(){
+  var msgs=document.getElementById('demoMsgs');
+  var dot=document.getElementById('demoDot');
+  var status=document.getElementById('demoStatus');
+  var scoreBox=document.getElementById('demoScore');
+  var scoreNum=document.getElementById('demoScoreNum');
+  if(!msgs)return;
+  msgs.innerHTML='';scoreBox.style.display='none';
+  var steps=[
+    {delay:500,type:'status',text:'Sarah is speaking...',dotColor:'#10b981'},
+    {delay:800,type:'typing'},
+    {delay:2000,type:'ai',text:'Tell me about a time you showed leadership in a team.'},
+    {delay:500,type:'status',text:'Your turn — listening...',dotColor:'#E7515A'},
+    {delay:1500,type:'typing-user'},
+    {delay:2500,type:'user',text:'In my last role I led a team of four during a product launch and we delivered two weeks early.'},
+    {delay:500,type:'status',text:'Sarah is thinking...',dotColor:'#f59e0b'},
+    {delay:1000,type:'typing'},
+    {delay:2000,type:'ai',text:'Impressive! How did you handle any disagreements within the team?'},
+    {delay:1000,type:'status',text:'Scoring your interview...',dotColor:'#E7515A'},
+    {delay:1500,type:'score'}
+  ];
+  var i=0;var totalDelay=0;
+  steps.forEach(function(s){
+    totalDelay+=s.delay;
+    setTimeout(function(){
+      if(s.type==='status'){status.textContent=s.text;dot.style.background=s.dotColor;}
+      else if(s.type==='typing'){var d=document.createElement('div');d.style.cssText='background:rgba(231,81,90,.08);border:1px solid rgba(231,81,90,.15);border-radius:10px;padding:.5rem .75rem;font-size:.7rem;color:#94a3b8;border-bottom-left-radius:3px;max-width:85%';d.innerHTML='<span style="display:inline-flex;gap:3px"><i style="width:5px;height:5px;background:#94a3b8;border-radius:50%;animation:dot .8s infinite"></i><i style="width:5px;height:5px;background:#94a3b8;border-radius:50%;animation:dot .8s .15s infinite"></i><i style="width:5px;height:5px;background:#94a3b8;border-radius:50%;animation:dot .8s .3s infinite"></i></span>';d.id='demoTyping';msgs.appendChild(d);}
+      else if(s.type==='typing-user'){var d=document.createElement('div');d.style.cssText='background:rgba(231,81,90,.3);border-radius:10px;padding:.5rem .75rem;font-size:.7rem;color:#fca5a5;max-width:80%;margin-left:auto;border-bottom-right-radius:3px';d.innerHTML='<span style="display:inline-flex;gap:3px"><i style="width:5px;height:5px;background:#fca5a5;border-radius:50%;animation:dot .8s infinite"></i><i style="width:5px;height:5px;background:#fca5a5;border-radius:50%;animation:dot .8s .15s infinite"></i><i style="width:5px;height:5px;background:#fca5a5;border-radius:50%;animation:dot .8s .3s infinite"></i></span>';d.id='demoTyping';msgs.appendChild(d);}
+      else if(s.type==='ai'){var t=document.getElementById('demoTyping');if(t)t.remove();var d=document.createElement('div');d.style.cssText='background:rgba(231,81,90,.08);border:1px solid rgba(231,81,90,.2);border-radius:10px;padding:.6rem .85rem;font-size:.72rem;color:#fca5a5;border-bottom-left-radius:3px;max-width:90%;opacity:0;transform:translateY(5px);transition:all .3s';d.textContent=s.text;msgs.appendChild(d);requestAnimationFrame(function(){d.style.opacity='1';d.style.transform='translateY(0)';});}
+      else if(s.type==='user'){var t=document.getElementById('demoTyping');if(t)t.remove();var d=document.createElement('div');d.style.cssText='background:#E7515A;border-radius:10px;padding:.6rem .85rem;font-size:.72rem;color:#fff;margin-left:auto;max-width:85%;border-bottom-right-radius:3px;opacity:0;transform:translateY(5px);transition:all .3s';d.textContent=s.text;msgs.appendChild(d);requestAnimationFrame(function(){d.style.opacity='1';d.style.transform='translateY(0)';});}
+      else if(s.type==='score'){msgs.style.display='none';scoreBox.style.display='block';var target=85;var cur=0;var si=setInterval(function(){cur+=3;if(cur>=target){cur=target;clearInterval(si);}scoreNum.textContent=cur;},20);}
+    },totalDelay);
+  });
+  setTimeout(function(){msgs.style.display='flex';runDemo();},totalDelay+3000);
+}
+runDemo();
+
+var demoStyle=document.createElement('style');
+demoStyle.textContent='@keyframes dot{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-4px)}}';
+document.head.appendChild(demoStyle);
 
 /* Responsive flex fix */
 document.querySelectorAll('[style*="display:flex"][style*="gap:3rem"]').forEach(function(el){
