@@ -61,6 +61,14 @@ img{max-width:100%;display:block}
 .hero-btn:hover{background:#fff;color:#1a1a2e;text-decoration:none}
 
 /* "I want to" links */
+/* Layout helpers */
+.sec-pad{padding:3.5rem 3rem}
+.sec-narrow{max-width:900px;margin:0 auto}
+.sec-wide{max-width:1100px;margin:0 auto}
+.showcase-box{background:#1B1B3A;border-radius:24px;padding:3rem;display:flex;align-items:center;gap:3rem;overflow:hidden}
+.cta-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:3rem;padding:3.5rem 3rem}
+.footer-cols{display:flex;gap:3rem;flex-wrap:wrap;margin-bottom:2rem}
+
 .want-link{font-size:1.6rem;font-weight:800;color:#E7515A;padding:1.1rem 0;border-bottom:1px solid #f0f0f0;text-decoration:none;display:flex;align-items:center;justify-content:space-between;transition:all .25s;padding-left:0}
 .want-link span{font-size:1.2rem;transition:transform .3s;opacity:.5}
 .want-link:hover{padding-left:1rem;text-decoration:none;color:#c7313a}
@@ -77,8 +85,6 @@ img{max-width:100%;display:block}
 .tphoto-text{position:absolute;bottom:1.25rem;left:1.25rem;right:1rem;z-index:2}
 .tphoto-title{font-size:1rem;font-weight:800;color:#fff;margin-bottom:.2rem}
 .tphoto-desc{font-size:.72rem;color:rgba(255,255,255,.75);line-height:1.4}
-@media(max-width:768px){.tool-grid{grid-template-columns:repeat(2,1fr)}.tphoto{height:220px}}
-@media(max-width:480px){.tool-grid{grid-template-columns:1fr}.tphoto{height:200px}}
 .hero-dots{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:10;display:flex;gap:.5rem}
 .hero-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:all .3s}
 .hero-dot.active{background:#fff;transform:scale(1.2)}
@@ -88,15 +94,34 @@ img{max-width:100%;display:block}
   .nav{padding:1rem 1.25rem}
   .nav-links a:not(.nav-cta){display:none}
   .hamburger{display:block}
-  .hero{min-height:65vh}
+  .hero{min-height:60vh}
   .hero-slide{padding:2.5rem 1.5rem}
   .hero h1{font-size:2rem}
-  .hero p{font-size:.95rem}
+  .hero p{font-size:.92rem}
+  .sec-pad{padding:2.5rem 1.5rem}
+  .showcase-box{flex-direction:column;padding:2rem;gap:2rem;border-radius:16px}
+  .showcase-box>div:last-child{max-width:100% !important}
+  .cta-inner{flex-direction:column;padding:2.5rem 1.5rem;gap:1.5rem;text-align:center}
+  .footer-cols{flex-direction:column;gap:1.5rem}
+  .want-link{font-size:1.15rem;padding:.85rem 0}
+  .tool-grid{grid-template-columns:repeat(2,1fr)}
+  .tphoto{height:200px}
+  .tphoto-title{font-size:.88rem}
+  .tphoto-desc{font-size:.68rem}
+  .tphoto-arrow{width:28px;height:28px;font-size:.8rem}
 }
 @media(max-width:480px){
-  .hero h1{font-size:1.6rem}
-  .hero{min-height:55vh}
+  .hero{min-height:50vh}
   .hero-slide{padding:2rem 1.25rem}
+  .hero h1{font-size:1.5rem}
+  .hero p{font-size:.85rem}
+  .sec-pad{padding:2rem 1.25rem}
+  .showcase-box{padding:1.5rem;border-radius:14px}
+  .want-link{font-size:1rem;padding:.75rem 0}
+  .tool-grid{grid-template-columns:1fr 1fr}
+  .tphoto{height:180px}
+  .tphoto-title{font-size:.82rem}
+  .tphoto-arrow{width:24px;height:24px;font-size:.7rem;top:.75rem;right:.75rem}
 }
 </style>
 </head>
@@ -151,7 +176,7 @@ img{max-width:100%;display:block}
 </section>
 
 <!-- "I want to..." section - Monzo style -->
-<section style="padding:4rem 3rem;max-width:900px;margin:0 auto">
+<section class="sec-pad sec-narrow">
   <h2 style="font-size:2rem;font-weight:900;color:#1a1a2e;margin-bottom:2rem">I want to...</h2>
   <div style="display:flex;flex-direction:column">
     <a href="/match.html" class="want-link">Find NZ jobs matched to me <span>&#8594;</span></a>
@@ -164,8 +189,8 @@ img{max-width:100%;display:block}
 </section>
 
 <!-- Interview Showcase - Dark rounded section like Monzo promo -->
-<section style="padding:0 3rem;margin-bottom:4rem;max-width:1100px;margin-left:auto;margin-right:auto">
-  <div style="background:#1B1B3A;border-radius:24px;padding:3rem;display:flex;align-items:center;gap:3rem;overflow:hidden">
+<section class="sec-pad sec-wide">
+  <div class="showcase-box">
     <div style="flex:1">
       <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#E7515A;margin-bottom:.75rem">Most popular tool</div>
       <h2 style="font-size:2rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:1rem">Interviews that feel real</h2>
@@ -195,7 +220,7 @@ img{max-width:100%;display:block}
 </section>
 
 <!-- All 12 Tools - Monzo photo card style -->
-<section id="tools" style="padding:3rem 3rem 4rem;max-width:1100px;margin:0 auto">
+<section id="tools" class="sec-pad sec-wide">
   <h2 style="font-size:2rem;font-weight:900;color:#1a1a2e;margin-bottom:.5rem">12 tools. One career toolkit.</h2>
   <p style="color:#6b7280;font-size:1rem;margin-bottom:2rem">Everything you need to find, apply for, and land your next NZ job.</p>
   <div class="tool-grid">
@@ -215,8 +240,8 @@ img{max-width:100%;display:block}
 </section>
 
 <!-- Big Coral CTA - like Monzo download section -->
-<section style="background:#E7515A;padding:4rem 3rem;margin:0">
-  <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;gap:3rem">
+<section style="background:#E7515A;padding:0;margin:0">
+  <div class="cta-inner">
     <div style="flex:1">
       <h2 style="font-size:2.2rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:1rem">Start your career toolkit</h2>
       <p style="color:rgba(255,255,255,.85);font-size:1rem;line-height:1.7;margin-bottom:2rem">Free forever. No payment. No credit card. Just upload your CV and let AI do the rest.</p>
@@ -231,7 +256,7 @@ img{max-width:100%;display:block}
 </section>
 
 <!-- Email Capture -->
-<section style="background:#f7f7f7;padding:3rem;text-align:center">
+<section class="sec-pad" style="background:#f7f7f7;text-align:center">
   <h2 style="font-size:1.5rem;font-weight:800;color:#1a1a2e;margin-bottom:.5rem">Get weekly NZ job alerts</h2>
   <p style="color:#6b7280;font-size:.9rem;margin-bottom:1.25rem">Real jobs from Adzuna delivered every Monday. Free.</p>
   <div style="display:flex;gap:.5rem;max-width:420px;margin:0 auto">
@@ -241,10 +266,10 @@ img{max-width:100%;display:block}
 </section>
 
 <!-- Footer - Monzo style dark -->
-<footer style="background:#1B1B3A;padding:4rem 3rem 2rem">
+<footer class="sec-pad" style="background:#1B1B3A">
   <div style="max-width:900px;margin:0 auto">
-    <div style="font-size:3rem;font-weight:900;color:#E7515A;margin-bottom:2rem;letter-spacing:-1px">FindMeAJob</div>
-    <div style="display:flex;gap:3rem;flex-wrap:wrap;margin-bottom:2rem">
+    <div style="font-size:2.5rem;font-weight:900;color:#E7515A;margin-bottom:2rem;letter-spacing:-1px">FindMeAJob</div>
+    <div class="footer-cols">
       <div>
         <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.75rem">Tools</div>
         <a href="/match.html" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Apply for a Job</a>
@@ -361,10 +386,6 @@ var demoStyle=document.createElement('style');
 demoStyle.textContent='@keyframes dot{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-4px)}}';
 document.head.appendChild(demoStyle);
 
-/* Responsive flex fix */
-document.querySelectorAll('[style*="display:flex"][style*="gap:3rem"]').forEach(function(el){
-  if(window.innerWidth<=640){el.style.flexDirection='column';el.style.gap='2rem';}
-});
 </script>
 
 </body>
