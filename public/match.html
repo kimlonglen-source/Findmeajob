@@ -36,8 +36,8 @@ html{scroll-behavior:smooth;overflow-x:hidden}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;line-height:1.6;font-size:15px}
 nav{position:sticky;top:0;z-index:200;padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:var(--hdr);backdrop-filter:blur(20px) saturate(180%);gap:.5rem}
 .logo{display:flex;align-items:center;gap:.3rem;cursor:pointer;text-decoration:none;flex-shrink:0}
-.logo-mark{width:30px;height:30px;background:linear-gradient(135deg,var(--em),var(--em2));border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(231,81,90,.2)}
-.logo-mark svg{width:15px;height:15px;color:#fff}
+
+
 .logo-text{font-size:1.05rem;font-weight:800;color:var(--text);letter-spacing:-.3px}
 .logo-text span{background:linear-gradient(135deg,var(--em),var(--em2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .navlinks{display:flex;align-items:center;gap:.15rem;background:var(--bg3);border:1px solid var(--border);border-radius:999px;padding:3px}
@@ -261,7 +261,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <a class="mnavitem" href="/blog">Blog</a>
     <a class="mnavitem" href="/employer-portal.html">Post a Job</a>
     <a class="mnavitem" href="/employer-portal.html">Employer Login</a>
-    <a class="mnavitem" href="/match.html" style="color:var(--em);font-weight:700">Apply for a Job</a>
+    <a class="mnavitem" href="/match.html" style="color:#E7515A;font-weight:700">Get started free</a>
     <button class="mnavitem" id="mm-apply" type="button">Apply for a Job</button>
     <button class="mnavitem" id="mm-home" type="button" style="display:none">Home</button>
     <button class="mnavitem" id="mm-find" type="button" style="display:none">Find a Job</button>
@@ -272,10 +272,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 </div>
 
 <nav>
-  <a class="logo" id="logo-home" href="/">
-    <div class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="10" cy="10" r="7"/><path d="m21 21-4.35-4.35"/></svg></div>
-    <span class="logo-text">FindMe<span>AJob</span></span>
-  </a>
+  <a class="logo" id="logo-home" href="/" style="font-size:1.4rem;font-weight:900;color:#E7515A;text-decoration:none;letter-spacing:-.5px">FindMeAJob</a>
   <div class="navlinks">
     <a class="nl" href="/">Tools</a>
     <a class="nl" href="/blog">Blog</a>
@@ -285,7 +282,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <button class="nl" id="h-browse" type="button" style="display:none">Browse Jobs</button>
     <button class="nl" id="h-account" type="button" style="display:none">My Account</button>
     <button class="nl" id="h-signin" type="button" style="display:none">My Jobs</button>
-    <button class="nl cta" id="h-apply" type="button">Apply for a Job</button>
+    <button class="nl cta" id="h-apply" type="button" style="background:#1a1a2e;color:#fff">Get started free</button>
   </div>
   <div class="nav-r">
     <button class="icon-btn" id="tbtn" type="button">&#9788;</button>
