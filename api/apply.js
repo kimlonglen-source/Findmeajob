@@ -29,7 +29,7 @@ module.exports = async function handler(req, res) {
 
   // Build email HTML
   var html = '<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#1a1a1a">';
-  html += '<div style="background:#10b981;color:#fff;padding:1.25rem 1.5rem;border-radius:12px 12px 0 0">';
+  html += '<div style="background:#E7515A;color:#fff;padding:1.25rem 1.5rem;border-radius:12px 12px 0 0">';
   html += '<div style="font-size:13px;font-weight:600;opacity:.85">New application via FindMeAJob.co.nz</div>';
   html += '<div style="font-size:20px;font-weight:800;margin-top:4px">Application for ' + esc(jobTitle) + '</div>';
   if (jobRef) html += '<div style="font-size:12px;color:#9ca3af;margin-top:2px">Reference: ' + esc(jobRef) + '</div>';
@@ -41,7 +41,7 @@ module.exports = async function handler(req, res) {
   html += '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#6b7280;margin-bottom:.5rem">Applicant Details</div>';
   html += '<table style="width:100%;font-size:14px;border-collapse:collapse">';
   html += '<tr><td style="padding:4px 8px 4px 0;color:#6b7280;white-space:nowrap;vertical-align:top">Name</td><td style="padding:4px 0;font-weight:700;color:#111">' + esc(applicantName) + '</td></tr>';
-  html += '<tr><td style="padding:4px 8px 4px 0;color:#6b7280;white-space:nowrap;vertical-align:top">Email</td><td style="padding:4px 0"><a href="mailto:' + esc(applicantEmail) + '" style="color:#059669;text-decoration:none;font-weight:600">' + esc(applicantEmail) + '</a></td></tr>';
+  html += '<tr><td style="padding:4px 8px 4px 0;color:#6b7280;white-space:nowrap;vertical-align:top">Email</td><td style="padding:4px 0"><a href="mailto:' + esc(applicantEmail) + '" style="color:#c7313a;text-decoration:none;font-weight:600">' + esc(applicantEmail) + '</a></td></tr>';
   if (applicantPhone) html += '<tr><td style="padding:4px 8px 4px 0;color:#6b7280;white-space:nowrap;vertical-align:top">Phone</td><td style="padding:4px 0;font-weight:600">' + esc(applicantPhone) + '</td></tr>';
   if (rightToWork) html += '<tr><td style="padding:4px 8px 4px 0;color:#6b7280;white-space:nowrap;vertical-align:top">Right to work</td><td style="padding:4px 0">' + esc(rightToWork) + '</td></tr>';
   if (noticePeriod) html += '<tr><td style="padding:4px 8px 4px 0;color:#6b7280;white-space:nowrap;vertical-align:top">Notice period</td><td style="padding:4px 0">' + esc(noticePeriod) + '</td></tr>';
@@ -89,7 +89,7 @@ module.exports = async function handler(req, res) {
     html += '</div>';
   }
 
-  html += '<div style="font-size:12px;color:#9ca3af;text-align:center;margin-top:1rem">Sent via <a href="https://www.findmeajob.co.nz" style="color:#059669;text-decoration:none;font-weight:600">FindMeAJob.co.nz</a></div>';
+  html += '<div style="font-size:12px;color:#9ca3af;text-align:center;margin-top:1rem">Sent via <a href="https://www.findmeajob.co.nz" style="color:#c7313a;text-decoration:none;font-weight:600">FindMeAJob.co.nz</a></div>';
   html += '</div></div>';
 
   // Build Resend payload

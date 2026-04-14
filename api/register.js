@@ -87,7 +87,7 @@ module.exports = async function handler(req, res) {
         + "Phone: " + (phone || "—") + "<br>"
         + "Plan: " + (plan || "free") + "<br>"
         + "Website: " + (website || "—") + "<br><br>"
-        + '<a href="https://www.findmeajob.co.nz/admin.html" style="color:#059669;font-weight:700">Open admin panel</a>'
+        + '<a href="https://www.findmeajob.co.nz/admin.html" style="color:#c7313a;font-weight:700">Open admin panel</a>'
       );
       return res.status(200).json({ success: true, id: id, name: name, company: company, email: regEmail });
     }

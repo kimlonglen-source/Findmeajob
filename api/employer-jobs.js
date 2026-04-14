@@ -117,7 +117,7 @@ module.exports = async function handler(req, res) {
           + "Category: " + (req.body.category || "Other") + "<br>"
           + "Type: " + (req.body.type || "Full-time") + "<br>"
           + "Plan: " + planKey + "<br><br>"
-          + '<a href="https://www.findmeajob.co.nz/admin.html" style="color:#059669;font-weight:700">Review in admin panel</a>'
+          + '<a href="https://www.findmeajob.co.nz/admin.html" style="color:#c7313a;font-weight:700">Review in admin panel</a>'
         );
         return res.status(200).json({ success: true, id: jid });
       }

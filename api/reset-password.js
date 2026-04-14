@@ -12,13 +12,13 @@ async function sendResetEmail(toEmail, toName, resetUrl) {
   var html = ""
     + '<div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;padding:2rem;background:#0a0a08;color:#f2efe8;border-radius:12px">'
     + '<div style="margin-bottom:1.5rem">'
-    + '<span style="background:#10b981;color:#fff;font-size:1rem;font-weight:800;padding:.4rem .9rem;border-radius:6px">FindMeAJob.co.nz</span>'
+    + '<span style="background:#E7515A;color:#fff;font-size:1rem;font-weight:800;padding:.4rem .9rem;border-radius:6px">FindMeAJob.co.nz</span>'
     + "</div>"
     + '<h1 style="font-size:1.4rem;font-weight:700;color:#f2efe8;margin-bottom:.5rem">Reset your password</h1>'
     + '<p style="color:#c8c4bc;font-size:.95rem;line-height:1.6;margin-bottom:1.5rem">Hi ' + (toName || "there") + ",<br><br>We received a request to reset your FindMeAJob employer account password. Click the button below to set a new password.</p>"
-    + '<a href="' + resetUrl + '" style="display:inline-block;background:#10b981;color:#fff;padding:.85rem 1.8rem;border-radius:8px;text-decoration:none;font-weight:800;font-size:.95rem;margin-bottom:1.5rem">Reset My Password &rarr;</a>'
+    + '<a href="' + resetUrl + '" style="display:inline-block;background:#E7515A;color:#fff;padding:.85rem 1.8rem;border-radius:8px;text-decoration:none;font-weight:800;font-size:.95rem;margin-bottom:1.5rem">Reset My Password &rarr;</a>'
     + '<p style="color:#888480;font-size:.8rem;line-height:1.6;margin-bottom:.5rem">This link expires in 1 hour. If you did not request this, you can safely ignore this email.</p>'
-    + '<p style="color:#888480;font-size:.8rem">Or copy this link: <span style="color:#10b981">' + resetUrl + "</span></p>"
+    + '<p style="color:#888480;font-size:.8rem">Or copy this link: <span style="color:#E7515A">' + resetUrl + "</span></p>"
     + '<hr style="border:none;border-top:1px solid #2a2a28;margin:1.5rem 0">'
     + '<p style="color:#888480;font-size:.75rem">FindMeAJob.co.nz &mdash; AI-powered job discovery for Aotearoa New Zealand</p>'
     + "</div>";

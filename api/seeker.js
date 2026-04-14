@@ -48,7 +48,7 @@ module.exports = async function handler(req, res) {
       var rawU = await hget("seekers", unsubEmail);
       if (rawU) { var skU = typeof rawU === "string" ? JSON.parse(rawU) : rawU; skU.emailAlerts = false; skU.emailUpdates = false; await hset("seekers", unsubEmail, skU); }
     }
-    return res.status(200).send("<html><body style='font-family:Arial,sans-serif;text-align:center;padding:3rem;background:#09090b;color:#f8fafc'><div style='max-width:400px;margin:0 auto'><div style='font-size:2rem;margin-bottom:1rem'>&#10003;</div><h2 style='color:#10b981'>Unsubscribed</h2><p style='color:#94a3b8'>You have been unsubscribed from all FindMeAJob.co.nz emails. You can re-enable them anytime from your account.</p><a href='https://www.findmeajob.co.nz' style='color:#10b981'>Back to FindMeAJob.co.nz</a></div></body></html>");
+    return res.status(200).send("<html><body style='font-family:Arial,sans-serif;text-align:center;padding:3rem;background:#09090b;color:#f8fafc'><div style='max-width:400px;margin:0 auto'><div style='font-size:2rem;margin-bottom:1rem'>&#10003;</div><h2 style='color:#E7515A'>Unsubscribed</h2><p style='color:#94a3b8'>You have been unsubscribed from all FindMeAJob.co.nz emails. You can re-enable them anytime from your account.</p><a href='https://www.findmeajob.co.nz' style='color:#E7515A'>Back to FindMeAJob.co.nz</a></div></body></html>");
   }
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
   if (!getKV()) return res.status(500).json({ error: "Database not configured." });
@@ -112,7 +112,7 @@ module.exports = async function handler(req, res) {
         "A new job seeker signed up with Google:<br><br>"
         + "Name: " + gName + "<br>"
         + "Email: " + gEmail + "<br><br>"
-        + '<a href="https://www.findmeajob.co.nz/admin.html" style="color:#059669;font-weight:700">Open admin panel</a>'
+        + '<a href="https://www.findmeajob.co.nz/admin.html" style="color:#c7313a;font-weight:700">Open admin panel</a>'
       );
       return res.status(200).json({ success: true, seeker: { id: gId, name: gName, firstName: gNewSeeker.firstName || "", middleName: "", lastName: gNewSeeker.lastName || "", email: gEmail, phone: "", location: "", rtw: "", notice: "", hasCv: false } });
     }
@@ -144,7 +144,7 @@ module.exports = async function handler(req, res) {
         + "Email: " + (email || "") + "<br>"
         + "Right to work: " + (seeker.rtw || "—") + "<br>"
         + "Email alerts: " + (seeker.emailAlerts ? "Yes" : "No") + "<br><br>"
-        + '<a href="https://www.findmeajob.co.nz/admin.html" style="color:#059669;font-weight:700">Open admin panel</a>'
+        + '<a href="https://www.findmeajob.co.nz/admin.html" style="color:#c7313a;font-weight:700">Open admin panel</a>'
       );
       return res.status(200).json({ success: true, seeker: { id: id, name: name, firstName: seeker.firstName || "", middleName: seeker.middleName || "", lastName: seeker.lastName || "", email: email, phone: seeker.phone, location: seeker.location || "", rtw: seeker.rtw, notice: seeker.notice, hasCv: false } });
     }
@@ -260,7 +260,7 @@ module.exports = async function handler(req, res) {
               from: "FindMeAJob <noreply@findmeajob.co.nz>",
               to: [resetEmail],
               subject: "Reset your FindMeAJob password",
-              html: '<div style="font-family:Arial,sans-serif;max-width:500px;margin:0 auto"><div style="background:#10b981;color:#fff;padding:1.25rem;border-radius:12px 12px 0 0;text-align:center"><div style="font-size:18px;font-weight:800">Password Reset</div></div><div style="background:#f8f9fa;border:1px solid #e5e7eb;border-top:none;padding:1.5rem;border-radius:0 0 12px 12px"><p style="font-size:14px;color:#374151;line-height:1.7">You requested a password reset for your FindMeAJob.co.nz account.</p><div style="text-align:center;margin:1.5rem 0"><a href="' + resetUrl + '" style="display:inline-block;background:#10b981;color:#fff;padding:12px 28px;border-radius:25px;font-size:14px;font-weight:700;text-decoration:none">Reset My Password</a></div><p style="font-size:12px;color:#9ca3af">This link expires in 1 hour. If you did not request this, you can ignore this email.</p></div></div>'
+              html: '<div style="font-family:Arial,sans-serif;max-width:500px;margin:0 auto"><div style="background:#E7515A;color:#fff;padding:1.25rem;border-radius:12px 12px 0 0;text-align:center"><div style="font-size:18px;font-weight:800">Password Reset</div></div><div style="background:#f8f9fa;border:1px solid #e5e7eb;border-top:none;padding:1.5rem;border-radius:0 0 12px 12px"><p style="font-size:14px;color:#374151;line-height:1.7">You requested a password reset for your FindMeAJob.co.nz account.</p><div style="text-align:center;margin:1.5rem 0"><a href="' + resetUrl + '" style="display:inline-block;background:#E7515A;color:#fff;padding:12px 28px;border-radius:25px;font-size:14px;font-weight:700;text-decoration:none">Reset My Password</a></div><p style="font-size:12px;color:#9ca3af">This link expires in 1 hour. If you did not request this, you can ignore this email.</p></div></div>'
             })
           });
           return res.status(200).json({ success: true, method: "email" });
@@ -304,7 +304,7 @@ module.exports = async function handler(req, res) {
       skUnsub.emailAlerts = false;
       skUnsub.emailUpdates = false;
       await hset("seekers", unsubEmail, skUnsub);
-      if (req.method === "GET") return res.status(200).send("<html><body style='font-family:Arial,sans-serif;text-align:center;padding:3rem;background:#09090b;color:#f8fafc'><div style='max-width:400px;margin:0 auto'><div style='font-size:2rem;margin-bottom:1rem'>&#10003;</div><h2 style='color:#10b981'>Unsubscribed</h2><p style='color:#94a3b8'>You have been unsubscribed from all FindMeAJob.co.nz emails. You can re-enable them anytime from your account.</p><a href='https://www.findmeajob.co.nz' style='color:#10b981'>Back to FindMeAJob.co.nz</a></div></body></html>");
+      if (req.method === "GET") return res.status(200).send("<html><body style='font-family:Arial,sans-serif;text-align:center;padding:3rem;background:#09090b;color:#f8fafc'><div style='max-width:400px;margin:0 auto'><div style='font-size:2rem;margin-bottom:1rem'>&#10003;</div><h2 style='color:#E7515A'>Unsubscribed</h2><p style='color:#94a3b8'>You have been unsubscribed from all FindMeAJob.co.nz emails. You can re-enable them anytime from your account.</p><a href='https://www.findmeajob.co.nz' style='color:#E7515A'>Back to FindMeAJob.co.nz</a></div></body></html>");
       return res.status(200).json({ success: true });
     }
 

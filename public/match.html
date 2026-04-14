@@ -29,14 +29,14 @@
 <link rel="icon" type="image/svg+xml" href="/logo-icon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f8fafc;--bg2:#f1f5f9;--bg3:rgba(0,0,0,.03);--bg4:rgba(0,0,0,.04);--text:#0f172a;--text2:#475569;--text3:#94a3b8;--em:#10b981;--em2:#059669;--em3:rgba(16,185,129,.08);--gold:#b45309;--purple:#8b5cf6;--border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.12);--card:rgba(255,255,255,.8);--inp:rgba(0,0,0,.04);--hdr:rgba(255,255,255,.95);--r:12px;--rl:20px;--glow:0 4px 25px rgba(16,185,129,.15)}
-body.dark{--bg:#09090b;--bg2:#0f172a;--bg3:rgba(255,255,255,.04);--text:#f8fafc;--text2:#b0b8c4;--text3:#8891a0;--em:#10b981;--em2:#14b8a6;--em3:rgba(16,185,129,.08);--gold:#f59e0b;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--card:rgba(255,255,255,.03);--inp:rgba(255,255,255,.05);--hdr:rgba(9,9,11,.8)}
+:root{--bg:#f8fafc;--bg2:#f1f5f9;--bg3:rgba(0,0,0,.03);--bg4:rgba(0,0,0,.04);--text:#0f172a;--text2:#475569;--text3:#94a3b8;--em:#E7515A;--em2:#c7313a;--em3:rgba(231,81,90,.08);--gold:#b45309;--purple:#8b5cf6;--border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.12);--card:rgba(255,255,255,.8);--inp:rgba(0,0,0,.04);--hdr:rgba(255,255,255,.95);--r:12px;--rl:20px;--glow:0 4px 25px rgba(231,81,90,.15)}
+body.dark{--bg:#09090b;--bg2:#0f172a;--bg3:rgba(255,255,255,.04);--text:#f8fafc;--text2:#b0b8c4;--text3:#8891a0;--em:#E7515A;--em2:#14b8a6;--em3:rgba(231,81,90,.08);--gold:#f59e0b;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--card:rgba(255,255,255,.03);--inp:rgba(255,255,255,.05);--hdr:rgba(9,9,11,.8)}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth;overflow-x:hidden}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;line-height:1.6;font-size:15px}
 nav{position:sticky;top:0;z-index:200;padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:var(--hdr);backdrop-filter:blur(20px) saturate(180%);gap:.5rem}
 .logo{display:flex;align-items:center;gap:.3rem;cursor:pointer;text-decoration:none;flex-shrink:0}
-.logo-mark{width:30px;height:30px;background:linear-gradient(135deg,var(--em),var(--em2));border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(16,185,129,.2)}
+.logo-mark{width:30px;height:30px;background:linear-gradient(135deg,var(--em),var(--em2));border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(231,81,90,.2)}
 .logo-mark svg{width:15px;height:15px;color:#fff}
 .logo-text{font-size:1.05rem;font-weight:800;color:var(--text);letter-spacing:-.3px}
 .logo-text span{background:linear-gradient(135deg,var(--em),var(--em2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
@@ -45,7 +45,7 @@ nav{position:sticky;top:0;z-index:200;padding:0 2rem;height:64px;display:flex;al
 .nl:hover{color:var(--text2)}
 .nl.active{background:var(--em3);color:var(--em)}
 .nl.cta{background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;padding:.45rem 1.1rem;margin-left:.5rem;font-weight:700;border-radius:999px;box-shadow:var(--glow)}
-.nl.cta:hover{box-shadow:0 4px 30px rgba(16,185,129,.3);transform:translateY(-1px)}
+.nl.cta:hover{box-shadow:0 4px 30px rgba(231,81,90,.3);transform:translateY(-1px)}
 .nav-r{display:flex;align-items:center;gap:.5rem}
 .icon-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text3);width:34px;height:34px;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:all .2s}
 .hmbg{display:none}
@@ -61,14 +61,14 @@ nav{position:sticky;top:0;z-index:200;padding:0 2rem;height:64px;display:flex;al
 .page.active{display:block}
 .wrap{max-width:720px;margin:0 auto;padding:3rem 1.5rem 5rem}
 .wrap-wide{max-width:1000px;margin:0 auto;padding:3rem 1.5rem 5rem}
-.page-eyebrow{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#059669;margin-bottom:.5rem}
+.page-eyebrow{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#c7313a;margin-bottom:.5rem}
 .page-title{font-size:2.2rem;font-weight:900;color:var(--text);line-height:1.15;margin-bottom:.5rem;letter-spacing:-.3px}
 .card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.5rem;margin-bottom:.75rem;transition:border-color .2s}
 .card:hover{border-color:var(--border2)}
 .form-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);display:block;margin-bottom:.35rem}
 input,select,textarea{background:var(--inp);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;padding:.75rem 1rem;outline:none;width:100%;transition:all .2s;font-weight:500;-webkit-appearance:none;appearance:none}
 input[type="checkbox"]{-webkit-appearance:checkbox;appearance:checkbox;width:auto;padding:0;background:none;border:none;border-radius:0}
-input:focus,select:focus,textarea:focus{border-color:var(--em);box-shadow:0 0 0 3px rgba(16,185,129,.1)}
+input:focus,select:focus,textarea:focus{border-color:var(--em);box-shadow:0 0 0 3px rgba(231,81,90,.1)}
 input::placeholder,textarea::placeholder{color:var(--text3)}
 select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23888480' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .75rem center;padding-right:2.2rem;cursor:pointer}
 select option{background:var(--bg2)}
@@ -77,7 +77,7 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
 .field{margin-bottom:.65rem}
 .field:last-child{margin-bottom:0}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;padding:.85rem 1.8rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;width:100%;box-shadow:var(--glow)}
-.btn:hover{transform:translateY(-2px);box-shadow:0 8px 35px rgba(16,185,129,.25)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 35px rgba(231,81,90,.25)}
 .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .btn-sec{background:transparent;border:1px solid var(--border2);color:var(--text2);box-shadow:none}
 .btn-sec:hover{border-color:var(--text3);color:var(--text);background:var(--bg3);transform:translateY(-1px)}
@@ -86,7 +86,7 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
 .alert{padding:.7rem 1rem;border-radius:var(--r);font-size:.82rem;font-weight:600;margin:.75rem 0;display:none}
 .alert.show{display:block}
 .alert-err{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#fca5a5}
-.alert-ok{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);color:var(--em)}
+.alert-ok{background:rgba(231,81,90,.08);border:1px solid rgba(231,81,90,.2);color:var(--em)}
 .skel{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.5rem;margin-bottom:.75rem}
 .skel-line{height:11px;background:linear-gradient(90deg,var(--bg2) 25%,var(--bg3) 50%,var(--bg2) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:4px;margin-bottom:.5rem}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
@@ -97,11 +97,11 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
 .step{display:flex;align-items:center;gap:.3rem;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3)}
 .step.active{color:var(--em)}
 .step-dot{width:5px;height:5px;border-radius:50%;background:var(--border2)}
-.step.active .step-dot{background:var(--em);box-shadow:0 0 0 3px rgba(16,185,129,.2)}
+.step.active .step-dot{background:var(--em);box-shadow:0 0 0 3px rgba(231,81,90,.2)}
 .step.done .step-dot{background:var(--text3)}
 .step-dash{flex:1;height:1px;background:var(--border);max-width:40px}
 .job-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.5rem;display:grid;grid-template-columns:1fr auto;gap:1rem;margin-bottom:.75rem;position:relative;overflow:hidden;transition:all .3s}
-.job-card:hover{border-color:rgba(16,185,129,.15);transform:translateY(-2px);box-shadow:0 15px 30px rgba(0,0,0,.2)}
+.job-card:hover{border-color:rgba(231,81,90,.15);transform:translateY(-2px);box-shadow:0 15px 30px rgba(0,0,0,.2)}
 .job-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--em),var(--em2));transform:scaleY(0);transform-origin:bottom;transition:transform .3s}
 .job-card:hover::before{transform:scaleY(1)}
 .job-card.featured{border-color:rgba(245,158,11,.15)}
@@ -113,29 +113,29 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
 .job-desc{font-size:.85rem;color:var(--text2);line-height:1.65;font-weight:500}
 .job-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.7rem}
 .tag{padding:.22rem .7rem;border-radius:999px;font-size:.7rem;font-weight:600}
-.tag-cat{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.15);color:var(--em)}
+.tag-cat{background:rgba(231,81,90,.08);border:1px solid rgba(231,81,90,.15);color:var(--em)}
 .tag-other{background:var(--bg3);border:1px solid var(--border);color:var(--text3)}
-.tag-live{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);color:var(--em);font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.tag-live{background:rgba(231,81,90,.1);border:1px solid rgba(231,81,90,.2);color:var(--em);font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
 .job-links{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.75rem}
 .job-link{display:inline-flex;align-items:center;background:var(--bg3);border:1px solid var(--border);color:var(--text3);padding:.38rem .85rem;border-radius:999px;font-size:.75rem;text-decoration:none;font-weight:600;transition:all .2s}
 .job-link:hover{border-color:var(--em);color:var(--em)}
-.job-link.apply{background:linear-gradient(135deg,var(--em),var(--em2));border-color:transparent;color:#fff;box-shadow:0 2px 10px rgba(16,185,129,.2)}
-.job-link.apply:hover{box-shadow:0 4px 15px rgba(16,185,129,.3);transform:translateY(-1px)}
+.job-link.apply{background:linear-gradient(135deg,var(--em),var(--em2));border-color:transparent;color:#fff;box-shadow:0 2px 10px rgba(231,81,90,.2)}
+.job-link.apply:hover{box-shadow:0 4px 15px rgba(231,81,90,.3);transform:translateY(-1px)}
 .match-col{text-align:right;flex-shrink:0}
 .match-pct{font-size:2rem;font-weight:800;background:linear-gradient(135deg,var(--em),var(--em2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
 .match-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text3)}
-.insights{background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(139,92,246,.03));border:1px solid rgba(16,185,129,.1);border-radius:var(--rl);padding:1.5rem;margin:.75rem 0}
+.insights{background:linear-gradient(135deg,rgba(231,81,90,.06),rgba(139,92,246,.03));border:1px solid rgba(231,81,90,.1);border-radius:var(--rl);padding:1.5rem;margin:.75rem 0}
 .insights h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;background:linear-gradient(135deg,var(--em),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.6rem}
 .insights p{font-size:.88rem;color:var(--text2);line-height:1.75;font-weight:500}
-.skill-tag{display:inline-flex;align-items:center;gap:.3rem;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.15);color:var(--em);padding:.35rem .8rem;border-radius:999px;font-size:.8rem;font-weight:600;margin:.2rem}
+.skill-tag{display:inline-flex;align-items:center;gap:.3rem;background:rgba(231,81,90,.08);border:1px solid rgba(231,81,90,.15);color:var(--em);padding:.35rem .8rem;border-radius:999px;font-size:.8rem;font-weight:600;margin:.2rem}
 .skill-tag button{background:none;border:none;color:var(--em);cursor:pointer;font-size:.85rem;line-height:1;padding:0;opacity:.7}
 .chip{background:var(--bg3);border:1px solid var(--border);color:var(--text3);padding:.32rem .75rem;border-radius:999px;font-size:.78rem;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;transition:all .2s;display:inline-flex;align-items:center;margin:.2rem}
-.chip:hover{border-color:var(--em);color:var(--em);background:rgba(16,185,129,.04)}
+.chip:hover{border-color:var(--em);color:var(--em);background:rgba(231,81,90,.04)}
 .upload-zone{border:2px dashed var(--border2);border-radius:var(--rl);padding:3rem 2rem;text-align:center;cursor:pointer;transition:all .3s}
-.upload-zone:hover,.upload-zone.over{border-color:var(--em);background:rgba(16,185,129,.03);box-shadow:0 0 30px rgba(16,185,129,.05)}
+.upload-zone:hover,.upload-zone.over{border-color:var(--em);background:rgba(231,81,90,.03);box-shadow:0 0 30px rgba(231,81,90,.05)}
 .choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem}
 .choice{background:var(--card);border:2px solid var(--border);border-radius:var(--rl);padding:1.5rem;cursor:pointer;text-align:left;font-family:'Inter',sans-serif;width:100%;transition:all .3s}
-.choice:hover,.choice.sel{border-color:var(--em);background:rgba(16,185,129,.04)}
+.choice:hover,.choice.sel{border-color:var(--em);background:rgba(231,81,90,.04)}
 .choice-badge{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:.5rem}
 .choice.sel .choice-badge{color:var(--em)}
 .choice-title{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:.25rem}
@@ -143,8 +143,8 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
 .plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:1.5rem}
 .plan{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:2rem 1.8rem 2.2rem;position:relative;cursor:pointer;text-align:left;font-family:'Inter',sans-serif;width:100%;transition:all .3s;display:flex;flex-direction:column}
 .plan:hover,.plan.sel{border-color:var(--em);transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.3)}
-.plan.popular{border-color:rgba(16,185,129,.3);background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(20,184,166,.03));box-shadow:0 8px 30px rgba(16,185,129,.1)}
-.pop-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;font-size:.65rem;font-weight:800;padding:.35rem 1.2rem;border-radius:999px;white-space:nowrap;text-transform:uppercase;letter-spacing:.5px;box-shadow:0 4px 12px rgba(16,185,129,.3)}
+.plan.popular{border-color:rgba(231,81,90,.3);background:linear-gradient(135deg,rgba(231,81,90,.06),rgba(20,184,166,.03));box-shadow:0 8px 30px rgba(231,81,90,.1)}
+.pop-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;font-size:.65rem;font-weight:800;padding:.35rem 1.2rem;border-radius:999px;white-space:nowrap;text-transform:uppercase;letter-spacing:.5px;box-shadow:0 4px 12px rgba(231,81,90,.3)}
 .plan-tier{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:.5rem}
 .plan-price{font-size:2.5rem;font-weight:900;color:var(--text);line-height:1;letter-spacing:-1px;margin-bottom:.25rem}
 .plan-period{font-size:.78rem;font-weight:500;color:var(--text3);margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border)}
@@ -154,24 +154,24 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
 .filter-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem}
 .filter-row select{flex:1;min-width:110px;padding:.55rem .8rem;font-size:.78rem}
 .hero{padding:4.5rem 2rem 3rem;max-width:700px;margin:0 auto;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(16,185,129,.06) 0%,transparent 60%);pointer-events:none}
-.hero-badge{display:inline-block;background:#f0fdf4;color:#059669;padding:.3rem .85rem;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:1.25rem;border:1px solid #bbf7d0}
+.hero::before{content:'';position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(231,81,90,.06) 0%,transparent 60%);pointer-events:none}
+.hero-badge{display:inline-block;background:#fef2f2;color:#c7313a;padding:.3rem .85rem;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:1.25rem;border:1px solid #fecaca}
 .dot{width:6px;height:6px;background:var(--em);border-radius:50%;animation:pulse 2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
 .hero h1{font-size:2.6rem;line-height:1.15;font-weight:900;letter-spacing:-.5px;margin-bottom:.75rem}
-.hero h1 em{font-style:normal;color:#10b981}
-.typewriter{display:inline-block;border-right:3px solid #10b981;animation:blink .6s step-end infinite;white-space:nowrap;min-height:1.1em;min-width:1px;vertical-align:baseline;color:#10b981}
+.hero h1 em{font-style:normal;color:#E7515A}
+.typewriter{display:inline-block;border-right:3px solid #E7515A;animation:blink .6s step-end infinite;white-space:nowrap;min-height:1.1em;min-width:1px;vertical-align:baseline;color:#E7515A}
 @keyframes blink{50%{border-color:transparent}}
 .hero-sub{color:var(--text2);font-size:1.05rem;line-height:1.7;max-width:520px;margin:0 auto 1.5rem;font-weight:500}
 .hero-ctas{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem}
-.btn-hero{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;padding:.95rem 2rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.95rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 25px rgba(16,185,129,.25)}
-.btn-hero:hover{transform:translateY(-2px);box-shadow:0 8px 35px rgba(16,185,129,.35)}
+.btn-hero{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;padding:.95rem 2rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.95rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 25px rgba(231,81,90,.25)}
+.btn-hero:hover{transform:translateY(-2px);box-shadow:0 8px 35px rgba(231,81,90,.35)}
 .btn-hero-out{background:transparent;color:var(--text2);border:1px solid var(--border2);display:inline-flex;align-items:center;gap:.5rem;padding:.95rem 2rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;transition:all .25s}
 .btn-hero-out:hover{border-color:var(--text3);color:var(--text);background:rgba(255,255,255,.03)}
 .how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:2.5rem}
 .how-step{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:2rem;transition:all .3s}
-.how-step:hover{border-color:rgba(16,185,129,.15);transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.3)}
-.how-num{font-size:3rem;font-weight:900;background:linear-gradient(135deg,rgba(16,185,129,.3),rgba(139,92,246,.15));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:1rem}
+.how-step:hover{border-color:rgba(231,81,90,.15);transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.3)}
+.how-num{font-size:3rem;font-weight:900;background:linear-gradient(135deg,rgba(231,81,90,.3),rgba(139,92,246,.15));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:1rem}
 .how-title{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.5rem}
 .how-desc{font-size:.85rem;color:var(--text2);line-height:1.7;font-weight:500}
 .strip{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:.85rem 2rem;display:flex;align-items:center;justify-content:center;gap:.6rem;flex-wrap:wrap;background:rgba(255,255,255,.02)}
@@ -233,8 +233,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 @keyframes subtleGlow{0%,100%{opacity:.4}50%{opacity:.8}}
 @keyframes pivotPulse{0%{box-shadow:0 0 0 0 rgba(139,92,246,.5)}70%{box-shadow:0 0 0 8px rgba(139,92,246,0)}100%{box-shadow:0 0 0 0 rgba(139,92,246,0)}}
 @keyframes cardReveal{0%{opacity:0;transform:translateY(12px)}100%{opacity:1;transform:translateY(0)}}
-.results-hero{position:relative;background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(139,92,246,.05));border:1px solid rgba(16,185,129,.2);border-radius:var(--rl);padding:1.75rem 1.5rem;margin-bottom:1.25rem;text-align:center;overflow:hidden;animation:resultsReveal .6s ease-out both}
-.results-hero-glow{position:absolute;top:-50%;left:50%;transform:translateX(-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(16,185,129,.1) 0%,transparent 60%);pointer-events:none;animation:subtleGlow 3s ease-in-out infinite}
+.results-hero{position:relative;background:linear-gradient(135deg,rgba(231,81,90,.08),rgba(139,92,246,.05));border:1px solid rgba(231,81,90,.2);border-radius:var(--rl);padding:1.75rem 1.5rem;margin-bottom:1.25rem;text-align:center;overflow:hidden;animation:resultsReveal .6s ease-out both}
+.results-hero-glow{position:absolute;top:-50%;left:50%;transform:translateX(-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(231,81,90,.1) 0%,transparent 60%);pointer-events:none;animation:subtleGlow 3s ease-in-out infinite}
 .results-hero-stats{display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-top:1rem}
 .rh-stat{animation:statPop .5s ease-out both}
 .rh-stat:nth-child(1){animation-delay:.3s}.rh-stat:nth-child(3){animation-delay:.5s}.rh-stat:nth-child(5){animation-delay:.7s}
@@ -242,7 +242,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 .rh-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-top:.2rem}
 .rh-divider{width:1px;height:36px;background:var(--border2)}
 .rh-tier{font-size:1rem;font-weight:800;padding:.3rem .8rem;border-radius:999px;line-height:1.2}
-.tier-excellent{background:rgba(16,185,129,.12);color:var(--em);border:1px solid rgba(16,185,129,.25)}
+.tier-excellent{background:rgba(231,81,90,.12);color:var(--em);border:1px solid rgba(231,81,90,.25)}
 .tier-good{background:rgba(52,211,153,.1);color:#34d399;border:1px solid rgba(52,211,153,.2)}
 .tier-fair{background:rgba(251,191,36,.1);color:#fbbf24;border:1px solid rgba(251,191,36,.2)}
 .pivot-badge{position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;background:linear-gradient(135deg,var(--purple),#ec4899);color:#fff;font-size:.55rem;font-weight:800;border-radius:999px;display:flex;align-items:center;justify-content:center;padding:0 4px;animation:pivotPulse 2s ease-out infinite}
@@ -339,7 +339,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 
   <!-- Social proof strip -->
   <div class="strip">
-    <span class="strip-item" id="job-count-badge" style="background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.2);color:var(--em);font-weight:700">Thousands of live NZ jobs</span>
+    <span class="strip-item" id="job-count-badge" style="background:rgba(231,81,90,.1);border-color:rgba(231,81,90,.2);color:var(--em);font-weight:700">Thousands of live NZ jobs</span>
     <span class="strip-item">AI-powered matching</span>
     <span class="strip-item">Real NZ listings</span>
     <span class="strip-item">Industry-specific results</span>
@@ -418,7 +418,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
           <div style="font-weight:800;color:var(--text);margin-bottom:.3rem">Drop your CV here or click to browse</div>
           <div style="font-size:.75rem;color:var(--text3)">PDF, Word (.docx), or text file</div>
         </div>
-        <div id="cv-info" style="display:none;align-items:center;gap:.75rem;background:var(--em3);border:1px solid rgba(16,185,129,.2);border-radius:var(--r);padding:.75rem 1rem;margin-top:.75rem">
+        <div id="cv-info" style="display:none;align-items:center;gap:.75rem;background:var(--em3);border:1px solid rgba(231,81,90,.2);border-radius:var(--r);padding:.75rem 1rem;margin-top:.75rem">
           <span style="color:var(--em)">&#10003;</span>
           <span id="cv-name" style="font-size:.83rem;font-weight:700;color:var(--em);flex:1"></span>
           <button id="cv-remove" type="button" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1rem">✕</button>
@@ -456,7 +456,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <div id="skill-area" style="min-height:32px;margin-bottom:.75rem"></div>
         <div style="display:flex;gap:.5rem;margin-bottom:.75rem">
           <input type="text" id="ski" placeholder="Type a skill and press Enter..." maxlength="60" style="flex:1">
-          <button type="button" id="btn-add" style="background:var(--em3);border:1px solid rgba(16,185,129,.2);color:var(--em);padding:.72rem 1rem;border-radius:var(--r);cursor:pointer;font-size:.82rem;font-weight:700;white-space:nowrap;font-family:'Inter',sans-serif;flex-shrink:0">+ Add</button>
+          <button type="button" id="btn-add" style="background:var(--em3);border:1px solid rgba(231,81,90,.2);color:var(--em);padding:.72rem 1rem;border-radius:var(--r);cursor:pointer;font-size:.82rem;font-weight:700;white-space:nowrap;font-family:'Inter',sans-serif;flex-shrink:0">+ Add</button>
         </div>
         <div id="chips">
           <button class="chip" data-s="Customer service">Customer service</button>
@@ -561,7 +561,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
             </div>
           </div>
         </div>
-      <div id="reg-prompt" style="display:none;background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(20,184,166,.04));border:1px solid rgba(16,185,129,.15);border-radius:var(--rl);padding:1.25rem 1.5rem;margin-top:.75rem;position:relative">
+      <div id="reg-prompt" style="display:none;background:linear-gradient(135deg,rgba(231,81,90,.06),rgba(20,184,166,.04));border:1px solid rgba(231,81,90,.15);border-radius:var(--rl);padding:1.25rem 1.5rem;margin-top:.75rem;position:relative">
         <button id="reg-prompt-dismiss" type="button" style="position:absolute;top:.75rem;right:.85rem;background:none;border:none;color:var(--text3);cursor:pointer;font-size:1rem;line-height:1">&#10005;</button>
         <div style="text-align:center">
           <div style="font-size:.82rem;font-weight:800;color:var(--text);margin-bottom:.3rem">Get these jobs emailed weekly</div>
@@ -569,7 +569,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
           <button class="btn" id="reg-prompt-btn" type="button" style="padding:.6rem 1.5rem;font-size:.82rem;max-width:260px">Create free account</button>
         </div>
       </div>
-      <div style="background:var(--card);border:1px solid rgba(16,185,129,.15);border-radius:var(--rl);padding:1.4rem;margin-top:.75rem;display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+      <div style="background:var(--card);border:1px solid rgba(231,81,90,.15);border-radius:var(--rl);padding:1.4rem;margin-top:.75rem;display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
         <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:1rem;text-align:center">
           <div style="font-size:.82rem;font-weight:800;color:var(--text);margin-bottom:.3rem">Browse more jobs</div>
           <div style="font-size:.72rem;color:var(--text2);font-weight:500;margin-bottom:.65rem">See live NZ listings</div>
@@ -606,7 +606,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
           <div style="font-weight:700;color:var(--text);font-size:.85rem">Drop your CV here or click to browse</div>
           <div style="font-size:.72rem;color:var(--text3);margin-top:.2rem">PDF, Word (.docx), or text file</div>
         </div>
-        <div id="apply-file-name" style="display:none;background:var(--em3);border:1px solid rgba(16,185,129,.2);border-radius:var(--r);padding:.6rem 1rem;font-size:.82rem;font-weight:600;color:var(--em);margin-top:.5rem;text-align:center"></div>
+        <div id="apply-file-name" style="display:none;background:var(--em3);border:1px solid rgba(231,81,90,.2);border-radius:var(--r);padding:.6rem 1rem;font-size:.82rem;font-weight:600;color:var(--em);margin-top:.5rem;text-align:center"></div>
       </div>
       <div class="card">
         <div style="font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.75rem">3. Your Details</div>
@@ -676,7 +676,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       </div>
       <div class="card" style="margin-bottom:.75rem">
         <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:.85rem">Select your plan</div>
-        <div style="background:var(--em3);border:1px solid rgba(16,185,129,.2);border-radius:var(--r);padding:.85rem 1rem;margin-bottom:.75rem;text-align:center">
+        <div style="background:var(--em3);border:1px solid rgba(231,81,90,.2);border-radius:var(--r);padding:.85rem 1rem;margin-bottom:.75rem;text-align:center">
           <div style="font-size:.85rem;font-weight:700;color:var(--em)">100% Free — All Features Included</div>
           <div style="font-size:.72rem;color:var(--text2);margin-top:.25rem">Unlimited listings, company profile, logo, 30-day visibility. No payment ever.</div>
         </div>
@@ -747,7 +747,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 
     <!-- POST JOB -->
     <div id="emp-step-job" style="display:none">
-      <div style="background:var(--em3);border:1px solid rgba(16,185,129,.2);border-radius:var(--r);padding:.75rem 1rem;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap">
+      <div style="background:var(--em3);border:1px solid rgba(231,81,90,.2);border-radius:var(--r);padding:.75rem 1rem;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap">
         <div style="font-size:.82rem;font-weight:700;color:var(--em)">&#10003; Signed in as <span id="emp-name-display"></span> &mdash; <span id="emp-plan-display" style="text-transform:uppercase;font-size:.7rem;font-weight:800"></span> plan</div>
         <div style="display:flex;gap:.75rem;align-items:center">
           <a href="/employer-portal.html" style="font-size:.72rem;font-weight:700;color:var(--em);text-decoration:none">My Listings &#8594;</a>
@@ -771,7 +771,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <div class="card" id="company-profile-field" style="display:none">
         <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.85rem">
           <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3)">Company profile</div>
-          <span style="font-size:.62rem;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);color:var(--em);padding:.15rem .5rem;border-radius:999px;font-weight:700">Growth &amp; Pro</span>
+          <span style="font-size:.62rem;background:rgba(231,81,90,.1);border:1px solid rgba(231,81,90,.2);color:var(--em);padding:.15rem .5rem;border-radius:999px;font-weight:700">Growth &amp; Pro</span>
         </div>
         <div class="field"><label class="form-label">Company description</label><textarea id="e-company-profile" placeholder="Tell candidates about your company, culture, team and mission..." style="min-height:80px"></textarea></div>
         <div class="field" style="margin-bottom:0"><label class="form-label">Company logo URL <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--text3)">(optional)</span></label><input type="text" id="e-logo" placeholder="https://yourcompany.co.nz/logo.png"></div>
@@ -1062,7 +1062,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <div style="font-size:.78rem;color:var(--text3)">AI is tailoring it to this specific role</div>
     </div>
     <div id="apply-step3" style="display:none">
-      <div id="app-step3-header" style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);border-radius:var(--r);padding:.65rem .85rem;margin-bottom:1rem;font-size:.78rem;color:var(--em);font-weight:600">&#10003; Review your application before sending.</div>
+      <div id="app-step3-header" style="background:rgba(231,81,90,.06);border:1px solid rgba(231,81,90,.15);border-radius:var(--r);padding:.65rem .85rem;margin-bottom:1rem;font-size:.78rem;color:var(--em);font-weight:600">&#10003; Review your application before sending.</div>
       <div class="field">
         <label class="form-label">Cover Letter <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--text3)">(edit as you like)</span></label>
         <textarea id="app-cover-letter" style="min-height:220px;line-height:1.7"></textarea>
@@ -1112,7 +1112,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <button class="btn btn-sec" id="app-btn-back" type="button" style="margin-top:.5rem">&#8592; Back to edit details</button>
     </div>
     <div id="apply-step4" style="display:none;text-align:center;padding:2rem 0">
-      <div style="width:48px;height:48px;background:rgba(16,185,129,.1);border-radius:999px;display:flex;align-items:center;justify-content:center;margin:0 auto .75rem;font-size:1.5rem">&#10003;</div>
+      <div style="width:48px;height:48px;background:rgba(231,81,90,.1);border-radius:999px;display:flex;align-items:center;justify-content:center;margin:0 auto .75rem;font-size:1.5rem">&#10003;</div>
       <div style="font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:.5rem">Application sent!</div>
       <div style="font-size:.85rem;color:var(--text2);font-weight:500;line-height:1.7;margin-bottom:1.5rem">Your cover letter and CV have been emailed to <strong id="app-sent-company" style="color:var(--em)"></strong>. They will contact you directly if interested.</div>
       <div id="acct-save-cv-prompt" style="display:none;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:1rem;margin-bottom:1rem;text-align:left">
@@ -1124,7 +1124,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         </div>
         <div id="acct-save-cv-msg" style="display:none;font-size:.75rem;color:var(--em);font-weight:600;margin-top:.5rem"></div>
       </div>
-      <div id="acct-after-apply" style="display:none;background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(16,185,129,.02));border:1px solid rgba(16,185,129,.15);border-radius:var(--r);padding:1rem;margin-bottom:1rem;text-align:left">
+      <div id="acct-after-apply" style="display:none;background:linear-gradient(135deg,rgba(231,81,90,.06),rgba(231,81,90,.02));border:1px solid rgba(231,81,90,.15);border-radius:var(--r);padding:1rem;margin-bottom:1rem;text-align:left">
         <div style="font-size:.78rem;font-weight:700;color:var(--em);margin-bottom:.4rem">Want to track this application?</div>
         <div style="font-size:.78rem;color:var(--text2);line-height:1.6;font-weight:500;margin-bottom:.65rem">Create a free account to track your applications, save your CV for one-click apply, and get alerts for similar jobs.</div>
         <button class="btn" id="acct-create-after-apply" type="button" style="padding:.6rem 1rem;font-size:.78rem;width:auto">Create Free Account &#8594;</button>
@@ -1251,7 +1251,7 @@ function addSkill(){var inp=document.getElementById('ski');var v=inp.value.trim(
 function handleFile(file){
   if(!file)return;cvFileName=file.name;
   var ext=file.name.toLowerCase().split('.').pop();
-  function done(data){cvFileData=data;document.getElementById('cv-info').style.display='flex';document.getElementById('cv-name').textContent=cvFileName;document.getElementById('drop-zone').style.borderColor='rgba(16,185,129,.5)';setStep(3);toast('CV loaded');}
+  function done(data){cvFileData=data;document.getElementById('cv-info').style.display='flex';document.getElementById('cv-name').textContent=cvFileName;document.getElementById('drop-zone').style.borderColor='rgba(231,81,90,.5)';setStep(3);toast('CV loaded');}
   if(ext==='pdf'){var r=new FileReader();r.onload=function(e){done(e.target.result);};r.readAsDataURL(file);}
   else if(ext==='doc'||ext==='docx'){var r2=new FileReader();r2.onload=function(e){var buf=e.target.result;loadMammoth(function(){if(typeof mammoth!=='undefined'){mammoth.extractRawText({arrayBuffer:buf}).then(function(res){if(res.value.trim().length>50){done(res.value.trim());}else{var r3=new FileReader();r3.onload=function(e2){done(e2.target.result);};r3.readAsDataURL(new Blob([buf]));}}).catch(function(){var r3=new FileReader();r3.onload=function(e2){done(e2.target.result);};r3.readAsDataURL(new Blob([buf]));});}else{var r3=new FileReader();r3.onload=function(e2){done(e2.target.result);};r3.readAsDataURL(new Blob([buf]));}});};r2.readAsArrayBuffer(file);}
   else{var r4=new FileReader();r4.onload=function(e){done(e.target.result);};r4.readAsText(file);}
@@ -1533,7 +1533,7 @@ async function fetchLiveJobs(matches){
         '<div class="job-title">'+esc(job.title)+'</div>'+
         '<div class="job-co">'+esc(job.company)+'</div>'+
         '<div class="job-loc">'+esc(job.location)+'</div>'+
-        (reason?'<div style="font-size:.75rem;color:var(--em);font-weight:600;margin:.35rem 0;padding:.4rem .65rem;background:var(--em3);border:1px solid rgba(16,185,129,.15);border-radius:6px;line-height:1.5">'+esc(reason)+'</div>':'')+
+        (reason?'<div style="font-size:.75rem;color:var(--em);font-weight:600;margin:.35rem 0;padding:.4rem .65rem;background:var(--em3);border:1px solid rgba(231,81,90,.15);border-radius:6px;line-height:1.5">'+esc(reason)+'</div>':'')+
         '<div class="job-desc">'+esc(job.description)+'</div>'+
         (job.salary?'<div class="job-tags"><span class="tag tag-other">'+esc(job.salary)+'</span></div>':'')+
         '<div class="job-links"><a href="'+esc(job.url)+'" target="_blank" rel="noopener" class="job-link apply">Apply Now &#8594;</a></div>'+
@@ -1736,7 +1736,7 @@ async function loadBrowse(){
     approved.forEach(function(j,ji){var c=document.createElement('div');c.className='job-card'+(j.featured?' featured':'');c.style.cursor='pointer';c.addEventListener('click',function(e){if(e.target.closest('.job-link'))return;viewJob(j);});
     c.style.position='relative';c.style.gridTemplateColumns='1fr';
     var logoAbsolute=j.logoUrl?'<img src="'+j.logoUrl+'" alt="'+j.company+'" style="position:absolute;top:1rem;right:1rem;width:120px;height:120px;object-fit:contain;border-radius:12px" onerror="this.style.display=\'none\'">':'';
-    c.innerHTML=logoAbsolute+'<div style="padding-right:'+(j.logoUrl?'135px':'0')+'">'+(j.featured?'<div style="margin-bottom:.35rem"><span class="tag" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold)">\u2b50 Featured</span></div>':'')+'<div class="job-title">'+j.title+'</div><div class="job-co">'+j.company+'</div><div class="job-loc">'+j.location+'</div></div><div class="job-desc">'+(j.description||'').substring(0,160)+'...</div>'+(j.companyProfile?'<div class="job-desc" style="margin-top:.25rem;opacity:.75;font-style:italic">'+j.companyProfile.substring(0,100)+'...</div>':'')+'<div class="job-tags"><span class="tag tag-cat">'+j.category+'</span><span class="tag tag-other">'+j.type+'</span><span class="tag tag-other">'+j.salary+'</span>'+(j.priority&&!j.featured?'<span class="tag" style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);color:var(--em)">\u2191 Priority</span>':'')+'</div><div class="job-links"><button onclick="applyJob(this)" data-jobidx="'+storeJob(j)+'" class="job-link apply">Apply Now &#8594;</button></div>';empEl.appendChild(c);});
+    c.innerHTML=logoAbsolute+'<div style="padding-right:'+(j.logoUrl?'135px':'0')+'">'+(j.featured?'<div style="margin-bottom:.35rem"><span class="tag" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold)">\u2b50 Featured</span></div>':'')+'<div class="job-title">'+j.title+'</div><div class="job-co">'+j.company+'</div><div class="job-loc">'+j.location+'</div></div><div class="job-desc">'+(j.description||'').substring(0,160)+'...</div>'+(j.companyProfile?'<div class="job-desc" style="margin-top:.25rem;opacity:.75;font-style:italic">'+j.companyProfile.substring(0,100)+'...</div>':'')+'<div class="job-tags"><span class="tag tag-cat">'+j.category+'</span><span class="tag tag-other">'+j.type+'</span><span class="tag tag-other">'+j.salary+'</span>'+(j.priority&&!j.featured?'<span class="tag" style="background:rgba(231,81,90,.06);border:1px solid rgba(231,81,90,.15);color:var(--em)">\u2191 Priority</span>':'')+'</div><div class="job-links"><button onclick="applyJob(this)" data-jobidx="'+storeJob(j)+'" class="job-link apply">Apply Now &#8594;</button></div>';empEl.appendChild(c);});
     // Inject JobPosting structured data
     var oldLd=document.querySelectorAll('script[data-job-ld]');oldLd.forEach(function(el){el.remove();});
     var typeMap={"Full-time":"FULL_TIME","Part-time":"PART_TIME","Contract":"CONTRACTOR","Casual":"TEMPORARY","Internship":"INTERN"};
@@ -1843,7 +1843,7 @@ function selectPlan(plan){
   });
   var planMap={free:'rp-free',basic:'rp-basic',pro:'rp-pro'};
   var selEl=document.getElementById(planMap[plan]);
-  if(selEl){selEl.style.borderColor='var(--em)';selEl.style.background='rgba(16,185,129,.08)';}
+  if(selEl){selEl.style.borderColor='var(--em)';selEl.style.background='rgba(231,81,90,.08)';}
   // Plan features note
   var noteEl=document.getElementById('plan-features-note');
   var notes={
@@ -2065,7 +2065,7 @@ function viewJob(jobData) {
     similar.forEach(function(sj) {
       var sc = document.createElement('div');
       sc.style.cssText = 'background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.75rem 1rem;cursor:pointer;transition:all .2s';
-      sc.onmouseenter = function(){this.style.borderColor='rgba(16,185,129,.3)';};
+      sc.onmouseenter = function(){this.style.borderColor='rgba(231,81,90,.3)';};
       sc.onmouseleave = function(){this.style.borderColor='var(--border)';};
       sc.innerHTML = '<div style="font-size:.85rem;font-weight:700;color:var(--text)">'+esc(sj.title)+'</div><div style="font-size:.75rem;color:var(--em);font-weight:600">'+esc(sj.company||'')+'</div><div style="font-size:.72rem;color:var(--text3)">'+esc(sj.location||'')+' · '+esc(sj.salary||'')+'</div>';
       sc.addEventListener('click', function(){viewJob(sj);});
@@ -2129,7 +2129,7 @@ function applyJob(btn) {
     // Auto-load saved CV
     if (ss.hasCv) {
       document.getElementById('app-cv-prompt').textContent = '\u2713 Using saved CV' + (ss.cvFileName ? ' (' + ss.cvFileName + ')' : '');
-      document.getElementById('app-cv-btn').style.borderColor = 'rgba(16,185,129,.4)';
+      document.getElementById('app-cv-btn').style.borderColor = 'rgba(231,81,90,.4)';
       _applyState.cvFileName = ss.cvFileName || 'saved-cv.pdf';
       _applyState.cvFile = { name: ss.cvFileName || 'saved-cv.pdf' };
       // Fetch CV text from server
@@ -2148,7 +2148,7 @@ document.getElementById('app-cv-file').addEventListener('change', function(e){
   if (!file) return;
   _applyState.cvFile = file;
   document.getElementById('app-cv-prompt').textContent = '\u2713 ' + file.name;
-  document.getElementById('app-cv-btn').style.borderColor = 'rgba(16,185,129,.4)';
+  document.getElementById('app-cv-btn').style.borderColor = 'rgba(231,81,90,.4)';
   // Extract text for AI
   var ext = file.name.toLowerCase().split('.').pop();
   var reader = new FileReader();
@@ -2276,7 +2276,7 @@ document.getElementById('app-consent-box').addEventListener('click', function(){
   if (h.value === '1') {
     h.value = '0'; tick.style.color = 'transparent'; tick.style.background = 'transparent'; tick.style.borderColor = 'var(--text3)'; box.style.borderColor = 'var(--border)';
   } else {
-    h.value = '1'; tick.style.color = '#fff'; tick.style.background = 'var(--em)'; tick.style.borderColor = 'var(--em)'; box.style.borderColor = 'rgba(16,185,129,.4)';
+    h.value = '1'; tick.style.color = '#fff'; tick.style.background = 'var(--em)'; tick.style.borderColor = 'var(--em)'; box.style.borderColor = 'rgba(231,81,90,.4)';
   }
 });
 
@@ -2644,8 +2644,8 @@ function initApp(){try{
           + (match.requirements ? '<div style="margin-bottom:.75rem"><div style="font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--text3);margin-bottom:.3rem">Requirements</div><div style="font-size:.85rem;color:var(--text2);line-height:1.75;white-space:pre-wrap">'+esc(match.requirements)+'</div></div>' : '')
           + (match.why ? '<div style="margin-bottom:.75rem"><div style="font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--text3);margin-bottom:.3rem">Why work here</div><div style="font-size:.85rem;color:var(--text2);line-height:1.75;font-style:italic;white-space:pre-wrap">'+esc(match.why)+'</div></div>' : '')
           + (match.companyProfile ? '<div style="margin-bottom:.75rem"><div style="font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--text3);margin-bottom:.3rem">About '+esc(match.company)+'</div><div style="font-size:.85rem;color:var(--text2);line-height:1.75;white-space:pre-wrap">'+esc(match.companyProfile)+'</div></div>' : '')
-          + '<div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1rem"><span style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.15);color:var(--em);padding:.22rem .7rem;border-radius:999px;font-size:.72rem;font-weight:600">'+esc(match.category)+'</span><span style="background:var(--bg3);border:1px solid var(--border);color:var(--text3);padding:.22rem .7rem;border-radius:999px;font-size:.72rem;font-weight:600">'+esc(match.type)+'</span><span style="background:var(--bg3);border:1px solid var(--border);color:var(--text3);padding:.22rem .7rem;border-radius:999px;font-size:.72rem;font-weight:600">'+esc(match.salary)+'</span></div>'
-          + '<button onclick="applyJob(this)" data-jobidx="'+storeJob(match)+'" style="display:inline-flex;align-items:center;gap:.4rem;background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;padding:.75rem 1.5rem;border-radius:999px;font-family:Inter,sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(16,185,129,.25)">Apply Now \u2192</button>'
+          + '<div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1rem"><span style="background:rgba(231,81,90,.08);border:1px solid rgba(231,81,90,.15);color:var(--em);padding:.22rem .7rem;border-radius:999px;font-size:.72rem;font-weight:600">'+esc(match.category)+'</span><span style="background:var(--bg3);border:1px solid var(--border);color:var(--text3);padding:.22rem .7rem;border-radius:999px;font-size:.72rem;font-weight:600">'+esc(match.type)+'</span><span style="background:var(--bg3);border:1px solid var(--border);color:var(--text3);padding:.22rem .7rem;border-radius:999px;font-size:.72rem;font-weight:600">'+esc(match.salary)+'</span></div>'
+          + '<button onclick="applyJob(this)" data-jobidx="'+storeJob(match)+'" style="display:inline-flex;align-items:center;gap:.4rem;background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;padding:.75rem 1.5rem;border-radius:999px;font-family:Inter,sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(231,81,90,.25)">Apply Now \u2192</button>'
           + '</div>';
         m.style.display = 'block';
         document.body.style.overflow = 'hidden';
@@ -2948,7 +2948,7 @@ function initApp(){try{
           h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;border-bottom:1px solid var(--border)">';
           h+='<div><div style="font-size:.88rem;font-weight:700;color:var(--text)">'+esc(a.jobTitle)+'</div>';
           h+='<div style="font-size:.75rem;color:var(--text3)">'+esc(a.company)+' &middot; Applied '+new Date(a.appliedAt).toLocaleDateString('en-NZ',{day:'numeric',month:'short',year:'numeric'})+'</div></div>';
-          h+='<span style="font-size:.65rem;font-weight:700;text-transform:uppercase;padding:.2rem .5rem;border-radius:999px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.15);color:var(--em)">'+esc(a.status||'sent')+'</span>';
+          h+='<span style="font-size:.65rem;font-weight:700;text-transform:uppercase;padding:.2rem .5rem;border-radius:999px;background:rgba(231,81,90,.08);border:1px solid rgba(231,81,90,.15);color:var(--em)">'+esc(a.status||'sent')+'</span>';
           h+='</div>';
         });
         el.innerHTML=h;
@@ -3029,7 +3029,7 @@ function initApp(){try{
     if(!file)return;
     _acctCvName=file.name;
     document.getElementById('acct-cv-upload-prompt').textContent='\u2713 '+file.name;
-    document.getElementById('acct-cv-upload-btn').style.borderColor='rgba(16,185,129,.4)';
+    document.getElementById('acct-cv-upload-btn').style.borderColor='rgba(231,81,90,.4)';
     document.getElementById('acct-cv-save-btn').style.display='flex';
     // Extract text
     var ext=file.name.toLowerCase().split('.').pop();
@@ -3206,7 +3206,7 @@ function initApp(){try{
     h+='<div id="apply-tab-cv"><div id="apply-cv-text" style="width:100%;min-height:300px;background:var(--inp);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;font-family:Inter,monospace;font-size:.82rem;color:var(--text);line-height:1.7;white-space:pre-wrap;word-wrap:break-word">'+esc(cv)+'</div><button type="button" onclick="copyApplyText(\'apply-cv-text\',this)" style="width:100%;padding:.75rem;background:var(--text);color:var(--bg);border:none;border-radius:999px;font-family:Inter,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:.75rem">Copy CV</button></div>';
     h+='<div id="apply-tab-cl" style="display:none"><div id="apply-cl-text" style="width:100%;min-height:300px;background:var(--inp);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;font-family:Inter,monospace;font-size:.82rem;color:var(--text);line-height:1.7;white-space:pre-wrap;word-wrap:break-word">'+esc(cl)+'</div><button type="button" onclick="copyApplyText(\'apply-cl-text\',this)" style="width:100%;padding:.75rem;background:var(--text);color:var(--bg);border:none;border-radius:999px;font-family:Inter,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:.75rem">Copy Cover Letter</button></div>';
     h+='</div></div>';
-    h+='<div style="background:var(--em3);border:1px solid rgba(16,185,129,.15);border-radius:var(--rl);padding:1.25rem;text-align:center;margin-top:1rem">';
+    h+='<div style="background:var(--em3);border:1px solid rgba(231,81,90,.15);border-radius:var(--rl);padding:1.25rem;text-align:center;margin-top:1rem">';
     h+='<p style="font-size:.88rem;color:var(--text);font-weight:600;margin-bottom:.65rem">Ready to find more jobs matched to your skills?</p>';
     h+='<button class="btn" onclick="goFind()" type="button" style="max-width:280px">Find NZ Jobs for Me</button>';
     h+='</div>';

@@ -20,30 +20,30 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#ffffff;color:#0f172a;font-family:'Inter',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
-a{color:#10b981;text-decoration:none}a:hover{text-decoration:underline}
+a{color:#E7515A;text-decoration:none}a:hover{text-decoration:underline}
 
 .nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid #f1f5f9;position:sticky;top:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(12px)}
 .nav-logo{display:flex;align-items:center;gap:.3rem;text-decoration:none;flex-shrink:0}
 .nav-logo:hover{text-decoration:none}
-.logo-mark{width:30px;height:30px;background:linear-gradient(135deg,#10b981,#059669);border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(16,185,129,.2)}
+.logo-mark{width:30px;height:30px;background:linear-gradient(135deg,#E7515A,#c7313a);border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(231,81,90,.2)}
 .logo-mark svg{width:15px;height:15px;color:#fff}
 .nav-logo span{font-size:1.05rem;font-weight:800;color:#0f172a;letter-spacing:-.5px}
-.nav-logo em{background:linear-gradient(135deg,#10b981,#059669);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
+.nav-logo em{background:linear-gradient(135deg,#E7515A,#c7313a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
 .nav-links{display:flex;align-items:center;gap:1.5rem}
 .nav-links a{color:#64748b;font-size:.82rem;font-weight:600;text-decoration:none}
 .nav-links a:hover{color:#0f172a}
-.nav-cta{background:#10b981 !important;color:#fff !important;padding:.45rem 1.15rem;border-radius:999px;font-size:.78rem;font-weight:700;transition:all .2s}
-.nav-cta:hover{background:#059669 !important;transform:translateY(-1px);box-shadow:0 4px 12px rgba(16,185,129,.3)}
+.nav-cta{background:#E7515A !important;color:#fff !important;padding:.45rem 1.15rem;border-radius:999px;font-size:.78rem;font-weight:700;transition:all .2s}
+.nav-cta:hover{background:#c7313a !important;transform:translateY(-1px);box-shadow:0 4px 12px rgba(231,81,90,.3)}
 
 .container{max-width:900px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
 .page-badge{display:inline-block;background:#ede9fe;color:#6d28d9;padding:.3rem .85rem;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:1rem;border:1px solid #ddd6fe}
 h1{font-size:2.2rem;font-weight:900;line-height:1.15;margin-bottom:.5rem}
-h1 em{font-style:normal;color:#10b981}
+h1 em{font-style:normal;color:#E7515A}
 .subtitle{color:#64748b;font-size:.95rem;margin-bottom:2rem}
 
 label{display:block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;margin-bottom:.4rem}
 textarea{width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Inter',sans-serif;font-size:14px;color:#0f172a;outline:none;transition:all .2s;resize:vertical;min-height:180px;line-height:1.6}
-textarea:focus{border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,.1)}
+textarea:focus{border-color:#E7515A;box-shadow:0 0 0 3px rgba(231,81,90,.1)}
 textarea::placeholder{color:#94a3b8}
 
 .jobs-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
@@ -52,24 +52,24 @@ textarea::placeholder{color:#94a3b8}
 .job-a-color{color:#3b82f6}
 .job-b-color{color:#8b5cf6}
 
-.btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;background:#10b981;color:#fff;padding:.85rem 1.8rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 15px rgba(16,185,129,.2)}
-.btn:hover{background:#059669;transform:translateY(-2px);box-shadow:0 8px 25px rgba(16,185,129,.3)}
+.btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;background:#E7515A;color:#fff;padding:.85rem 1.8rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 15px rgba(231,81,90,.2)}
+.btn:hover{background:#c7313a;transform:translateY(-2px);box-shadow:0 8px 25px rgba(231,81,90,.3)}
 .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
 .loading{display:none;text-align:center;padding:3rem 1rem}
-.spinner{width:40px;height:40px;border:3px solid #e2e8f0;border-top-color:#10b981;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem}
+.spinner{width:40px;height:40px;border:3px solid #e2e8f0;border-top-color:#E7515A;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading p{color:#64748b;font-size:.88rem}
 
 #result{display:none}
-.winner-banner{text-align:center;padding:1.5rem;border-radius:16px;margin-bottom:1.25rem;background:#f0fdf4;border:2px solid #10b981;opacity:0;transform:translateY(-30px);transition:opacity .6s ease,transform .6s ease}
+.winner-banner{text-align:center;padding:1.5rem;border-radius:16px;margin-bottom:1.25rem;background:#fef2f2;border:2px solid #E7515A;opacity:0;transform:translateY(-30px);transition:opacity .6s ease,transform .6s ease}
 .winner-banner.slide-in{opacity:1;transform:translateY(0)}
-.winner-banner h2{font-size:1.3rem;font-weight:900;color:#059669;margin-bottom:.25rem}
+.winner-banner h2{font-size:1.3rem;font-weight:900;color:#c7313a;margin-bottom:.25rem}
 .winner-banner p{font-size:.88rem;color:#064e3b;line-height:1.5}
 .winner-trophy{font-size:2.5rem;margin-bottom:.5rem;display:block;animation:trophyBounce 1s ease-in-out}
 @keyframes trophyBounce{0%{transform:scale(0) rotate(-20deg);opacity:0}50%{transform:scale(1.3) rotate(5deg);opacity:1}70%{transform:scale(.9) rotate(-3deg)}100%{transform:scale(1) rotate(0)}}
-.winner-card-glow{box-shadow:0 0 20px rgba(16,185,129,.35),0 0 60px rgba(16,185,129,.15);border-color:#10b981 !important;transition:box-shadow .6s ease}
-body.dark .winner-card-glow{box-shadow:0 0 25px rgba(16,185,129,.3),0 0 70px rgba(16,185,129,.1)}
+.winner-card-glow{box-shadow:0 0 20px rgba(231,81,90,.35),0 0 60px rgba(231,81,90,.15);border-color:#E7515A !important;transition:box-shadow .6s ease}
+body.dark .winner-card-glow{box-shadow:0 0 25px rgba(231,81,90,.3),0 0 70px rgba(231,81,90,.1)}
 .confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9998;overflow:hidden}
 .confetti-piece{position:absolute;top:-10px;width:10px;height:10px;opacity:0;animation:confettiFall var(--fall-duration, 3s) ease-in forwards;animation-delay:var(--fall-delay, 0s)}
 @keyframes confettiFall{0%{opacity:1;transform:translateY(0) rotate(0deg) scale(1)}25%{opacity:1;transform:translateY(25vh) rotate(180deg) scale(.9)}50%{opacity:.9;transform:translateY(50vh) rotate(360deg) scale(.8)}100%{opacity:0;transform:translateY(105vh) rotate(720deg) scale(.4)}}
@@ -81,14 +81,14 @@ body.dark .winner-card-glow{box-shadow:0 0 25px rgba(16,185,129,.3),0 0 70px rgb
 .compare-table th:first-child{width:130px}
 .compare-table td{padding:.75rem 1rem;font-size:.85rem;border-bottom:1px solid #f1f5f9;vertical-align:top}
 .compare-table tr:last-child td{border-bottom:none}
-.compare-table .winner-cell{background:#f0fdf4;font-weight:600}
-.check{color:#10b981;font-weight:700}
+.compare-table .winner-cell{background:#fef2f2;font-weight:600}
+.check{color:#E7515A;font-weight:700}
 .flag{color:#ef4444;font-size:.78rem}
 
-.cta-box{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:16px;padding:1.5rem;text-align:center;margin-top:1.5rem}
+.cta-box{background:#fef2f2;border:1px solid #fecaca;border-radius:16px;padding:1.5rem;text-align:center;margin-top:1.5rem}
 .cta-box p{font-size:.88rem;color:#064e3b;margin-bottom:.75rem;font-weight:500}
-.cta-box a{display:inline-block;background:#10b981;color:#fff;padding:.6rem 1.5rem;border-radius:999px;font-size:.82rem;font-weight:700;text-decoration:none;transition:all .2s}
-.cta-box a:hover{background:#059669;transform:translateY(-1px);text-decoration:none}
+.cta-box a{display:inline-block;background:#E7515A;color:#fff;padding:.6rem 1.5rem;border-radius:999px;font-size:.82rem;font-weight:700;text-decoration:none;transition:all .2s}
+.cta-box a:hover{background:#c7313a;transform:translateY(-1px);text-decoration:none}
 
 .footer{text-align:center;padding:2rem;border-top:1px solid #f1f5f9;margin-top:3rem}
 .footer p{font-size:.78rem;color:#94a3b8;font-weight:500}
@@ -105,12 +105,12 @@ body.dark .winner-card-glow{box-shadow:0 0 25px rgba(16,185,129,.3),0 0 70px rgb
   .compare-table th,.compare-table td{padding:.5rem .65rem}
 }
 body.dark{background:#09090b;color:#f8fafc}
-body.dark a{color:#10b981}
+body.dark a{color:#E7515A}
 body.dark .nav{background:rgba(9,9,11,.95);border-color:rgba(255,255,255,.06)}
 body.dark .nav-logo span{color:#f8fafc}
 body.dark .nav-links a{color:#94a3b8}
 body.dark .nav-links a:hover{color:#f8fafc}
-body.dark .nav-cta{background:#10b981;color:#fff}
+body.dark .nav-cta{background:#E7515A;color:#fff}
 body.dark .footer{background:#09090b;border-color:rgba(255,255,255,.06)}
 body.dark .footer p,.footer a{color:#94a3b8}
 body.dark .ai-disclaimer{color:#64748b}
@@ -121,23 +121,23 @@ body.dark .card-title{color:#f8fafc}
 body.dark label{color:#64748b}
 body.dark input[type="text"],body.dark input[type="number"],body.dark textarea,body.dark select{background:#0f172a;border-color:rgba(255,255,255,.1);color:#f8fafc}
 body.dark input::placeholder,body.dark textarea::placeholder{color:#64748b}
-body.dark .page-badge{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3);color:#10b981}
+body.dark .page-badge{background:rgba(231,81,90,.1);border-color:rgba(231,81,90,.3);color:#E7515A}
 body.dark h1{color:#f8fafc}
 body.dark .subtitle{color:#94a3b8}
 body.dark .loading p{color:#94a3b8}
-body.dark .spinner{border-color:rgba(255,255,255,.1);border-top-color:#10b981}
-body.dark .cta-box{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3)}
-body.dark .cta-box p{color:#10b981}
-body.dark .cta-box a{background:#10b981;color:#fff}
-body.dark .btn{background:#10b981;color:#fff}
+body.dark .spinner{border-color:rgba(255,255,255,.1);border-top-color:#E7515A}
+body.dark .cta-box{background:rgba(231,81,90,.1);border-color:rgba(231,81,90,.3)}
+body.dark .cta-box p{color:#E7515A}
+body.dark .cta-box a{background:#E7515A;color:#fff}
+body.dark .btn{background:#E7515A;color:#fff}
 body.dark .opt{background:#0f172a;border-color:rgba(255,255,255,.1);color:#94a3b8}
-body.dark .opt:hover{border-color:#10b981;color:#10b981}
-body.dark .opt.selected{background:rgba(16,185,129,.1);border-color:#10b981;color:#10b981}
+body.dark .opt:hover{border-color:#E7515A;color:#E7515A}
+body.dark .opt.selected{background:rgba(231,81,90,.1);border-color:#E7515A;color:#E7515A}
 body.dark .card-title{color:#f8fafc}
-body.dark .salary-display{color:#10b981}
+body.dark .salary-display{color:#E7515A}
 body.dark .opt{background:#0f172a;border-color:rgba(255,255,255,.1);color:#94a3b8}
-body.dark .opt:hover{border-color:#10b981;color:#10b981}
-body.dark .opt.selected{background:rgba(16,185,129,.1);border-color:#10b981;color:#10b981}
+body.dark .opt:hover{border-color:#E7515A;color:#E7515A}
+body.dark .opt.selected{background:rgba(231,81,90,.1);border-color:#E7515A;color:#E7515A}
 body.dark .question p{color:#f8fafc}
 body.dark .insight-card{background:#0f172a;border-color:rgba(255,255,255,.06)}
 body.dark .insight-card h3{color:#64748b}
@@ -154,10 +154,10 @@ body.dark .red-flags-section{background:#0f172a;border-color:rgba(255,255,255,.0
 body.dark .compare-table{color:#f8fafc}
 body.dark .compare-table th{background:#0f172a;color:#94a3b8}
 body.dark .compare-table td{border-color:rgba(255,255,255,.06)}
-body.dark .winner-banner{background:#0f172a !important;border-color:#10b981 !important}
-body.dark .winner-banner h2{color:#10b981 !important}
+body.dark .winner-banner{background:#0f172a !important;border-color:#E7515A !important}
+body.dark .winner-banner h2{color:#E7515A !important}
 body.dark .winner-banner p{color:#94a3b8 !important}
-body.dark .compare-table .winner-cell{background:rgba(16,185,129,.08)}
+body.dark .compare-table .winner-cell{background:rgba(231,81,90,.08)}
 body.dark .qa-item{background:#0f172a;border-color:rgba(255,255,255,.06)}
 body.dark .qa-question{color:#f8fafc}
 body.dark .qa-answer-text{color:#94a3b8}
@@ -239,11 +239,11 @@ body.dark .grade-badge span{color:#f8fafc !important}
 
 <div id="email-gate" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(4px)">
   <div style="background:#fff;border-radius:20px;padding:2rem;max-width:400px;width:100%;text-align:center;box-shadow:0 25px 60px rgba(0,0,0,.15);position:relative">
-    <div style="width:48px;height:48px;background:linear-gradient(135deg,#10b981,#059669);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+    <div style="width:48px;height:48px;background:linear-gradient(135deg,#E7515A,#c7313a);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
     <button onclick="document.getElementById(\"email-gate\").style.display=\"none\"" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.2rem;color:#94a3b8;cursor:pointer;padding:.25rem">&#10005;</button><div style="font-size:1.2rem;font-weight:800;color:#0f172a;margin-bottom:.35rem">Enter your email for unlimited access</div>
     <div style="font-size:.82rem;color:#64748b;margin-bottom:1.25rem;line-height:1.5">All 12 AI tools stay free forever. We will also send you weekly NZ job matches.</div>
     <input type="email" id="gate-email" placeholder="your@email.com" style="width:100%;padding:.75rem 1rem;border:1px solid #e2e8f0;border-radius:12px;font-family:Inter,sans-serif;font-size:15px;outline:none;margin-bottom:.75rem;color:#0f172a">
-    <button onclick="submitGateEmail()" id="gate-btn" style="width:100%;padding:.85rem;background:#10b981;color:#fff;border:none;border-radius:999px;font-family:Inter,sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s">Continue</button>
+    <button onclick="submitGateEmail()" id="gate-btn" style="width:100%;padding:.85rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:Inter,sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s">Continue</button>
     <div style="font-size:.68rem;color:#94a3b8;margin-top:.75rem">No spam. Unsubscribe anytime. No password needed.</div>
   </div>
 </div>
@@ -312,7 +312,7 @@ function launchConfetti() {
   var container = document.createElement("div");
   container.className = "confetti-container";
   document.body.appendChild(container);
-  var colors = ["#10b981","#3b82f6","#8b5cf6","#f59e0b","#ef4444","#ec4899","#06b6d4","#fbbf24"];
+  var colors = ["#E7515A","#3b82f6","#8b5cf6","#f59e0b","#ef4444","#ec4899","#06b6d4","#fbbf24"];
   var shapes = ["circle","square","triangle"];
   for (var i = 0; i < 80; i++) {
     var piece = document.createElement("div");
@@ -356,7 +356,7 @@ function addSparkles(element) {
     var size = 4 + Math.random() * 8;
     sparkle.style.width = size + "px";
     sparkle.style.height = size + "px";
-    var sparkleColors = ["#fbbf24","#10b981","#3b82f6","#f59e0b","#ec4899"];
+    var sparkleColors = ["#fbbf24","#E7515A","#3b82f6","#f59e0b","#ec4899"];
     sparkle.style.background = "radial-gradient(circle," + sparkleColors[Math.floor(Math.random() * sparkleColors.length)] + ",transparent)";
     document.body.appendChild(sparkle);
     (function(el){ setTimeout(function(){ el.remove(); }, 3000); })(sparkle);

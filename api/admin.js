@@ -20,10 +20,10 @@ function notifyEmployer(email, subject, bodyHtml) {
       to: [email],
       subject: subject,
       html: '<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">'
-        + '<div style="background:#10b981;color:#fff;padding:1rem 1.5rem;border-radius:12px 12px 0 0;font-size:16px;font-weight:700">FindMeAJob.co.nz</div>'
+        + '<div style="background:#E7515A;color:#fff;padding:1rem 1.5rem;border-radius:12px 12px 0 0;font-size:16px;font-weight:700">FindMeAJob.co.nz</div>'
         + '<div style="background:#f8f9fa;border:1px solid #e5e7eb;border-top:none;padding:1.5rem;border-radius:0 0 12px 12px">'
         + bodyHtml
-        + '<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid #e5e7eb;font-size:12px;color:#9ca3af">Questions? Reply to this email or contact <a href="mailto:hello@findmeajob.co.nz" style="color:#059669">hello@findmeajob.co.nz</a></div>'
+        + '<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid #e5e7eb;font-size:12px;color:#9ca3af">Questions? Reply to this email or contact <a href="mailto:hello@findmeajob.co.nz" style="color:#c7313a">hello@findmeajob.co.nz</a></div>'
         + '</div></div>'
     })
   }).catch(function() {});
@@ -80,7 +80,7 @@ module.exports = async function handler(req, res) {
         '<p style="font-size:15px;line-height:1.7;margin:0 0 1rem">Hi,</p>'
         + '<p style="font-size:15px;line-height:1.7;margin:0 0 1rem">Your job listing <strong>' + esc(job.title) + '</strong> has been approved and is now live on FindMeAJob.co.nz.</p>'
         + '<p style="font-size:15px;line-height:1.7;margin:0 0 1rem">It will be visible for ' + (job.planDays || 30) + ' days. Applications will be sent directly to your email.</p>'
-        + '<p style="margin-top:1rem"><a href="https://www.findmeajob.co.nz/employer-portal.html" style="display:inline-block;background:#10b981;color:#fff;padding:10px 20px;border-radius:20px;font-size:14px;font-weight:700;text-decoration:none">View your dashboard</a></p>'
+        + '<p style="margin-top:1rem"><a href="https://www.findmeajob.co.nz/employer-portal.html" style="display:inline-block;background:#E7515A;color:#fff;padding:10px 20px;border-radius:20px;font-size:14px;font-weight:700;text-decoration:none">View your dashboard</a></p>'
       );
       return res.status(200).json({ success: true });
     }
@@ -96,7 +96,7 @@ module.exports = async function handler(req, res) {
         + '<p style="font-size:15px;line-height:1.7;margin:0 0 1rem">Your job listing <strong>' + esc(job2.title) + '</strong> has been reviewed and could not be approved in its current form.</p>'
         + '<p style="font-size:15px;line-height:1.7;margin:0 0 1rem">This may be due to missing details, unclear requirements, or content that doesn\'t meet our listing guidelines.</p>'
         + '<p style="font-size:15px;line-height:1.7;margin:0 0 1rem">You can edit and resubmit your listing from your employer dashboard — no need to start over.</p>'
-        + '<p style="margin-top:1rem"><a href="https://www.findmeajob.co.nz/employer-portal.html" style="display:inline-block;background:#10b981;color:#fff;padding:10px 20px;border-radius:20px;font-size:14px;font-weight:700;text-decoration:none">Edit and resubmit</a></p>'
+        + '<p style="margin-top:1rem"><a href="https://www.findmeajob.co.nz/employer-portal.html" style="display:inline-block;background:#E7515A;color:#fff;padding:10px 20px;border-radius:20px;font-size:14px;font-weight:700;text-decoration:none">Edit and resubmit</a></p>'
       );
       return res.status(200).json({ success: true });
     }
@@ -127,7 +127,7 @@ module.exports = async function handler(req, res) {
           'Your listing "' + (jobDel.title || 'Untitled') + '" has been removed',
           '<p style="font-size:15px;line-height:1.7;margin:0 0 1rem">Hi,</p>'
           + '<p style="font-size:15px;line-height:1.7;margin:0 0 1rem">Your job listing <strong>' + esc(jobDel.title) + '</strong> has been removed from FindMeAJob.co.nz as it did not meet our listing guidelines.</p>'
-          + '<p style="font-size:15px;line-height:1.7;margin:0 0 1rem">If you believe this was an error, please contact us at <a href="mailto:hello@findmeajob.co.nz" style="color:#059669;text-decoration:none;font-weight:600">hello@findmeajob.co.nz</a>.</p>'
+          + '<p style="font-size:15px;line-height:1.7;margin:0 0 1rem">If you believe this was an error, please contact us at <a href="mailto:hello@findmeajob.co.nz" style="color:#c7313a;text-decoration:none;font-weight:600">hello@findmeajob.co.nz</a>.</p>'
         );
       }
       await hdel("jobs", id);

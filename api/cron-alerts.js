@@ -88,7 +88,7 @@ module.exports = async function handler(req, res) {
 
       // Build email
       var html = '<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#1a1a1a">';
-      html += '<div style="background:#10b981;color:#fff;padding:1.25rem 1.5rem;border-radius:12px 12px 0 0">';
+      html += '<div style="background:#E7515A;color:#fff;padding:1.25rem 1.5rem;border-radius:12px 12px 0 0">';
       html += '<div style="font-size:18px;font-weight:800">New NZ jobs for you this week</div>';
       html += '<div style="font-size:13px;opacity:.85;margin-top:4px">FindMeAJob.co.nz \u2014 Weekly Job Alert</div>';
       html += '</div>';
@@ -100,17 +100,17 @@ module.exports = async function handler(req, res) {
         html += '<div style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:1rem;margin-bottom:.75rem">';
         if (job.featured) html += '<div style="font-size:11px;font-weight:700;color:#f59e0b;text-transform:uppercase;margin-bottom:4px">\u2b50 Featured</div>';
         html += '<div style="font-size:16px;font-weight:700;color:#111">' + esc(job.title) + '</div>';
-        html += '<div style="font-size:13px;color:#059669;font-weight:600;margin-top:2px">' + esc(job.company) + '</div>';
+        html += '<div style="font-size:13px;color:#c7313a;font-weight:600;margin-top:2px">' + esc(job.company) + '</div>';
         html += '<div style="font-size:13px;color:#6b7280;margin-top:2px">' + esc(job.location) + ' \u00b7 ' + esc(job.type || "Full-time") + ' \u00b7 ' + esc(job.salary || "Negotiable") + '</div>';
         html += '<div style="font-size:13px;color:#374151;margin-top:8px;line-height:1.6">' + esc((job.description || "").substring(0, 150)) + '...</div>';
-        html += '<div style="margin-top:10px"><a href="https://www.findmeajob.co.nz/?job=' + encodeURIComponent(job.id) + '" style="display:inline-block;background:#10b981;color:#fff;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:700;text-decoration:none">View &amp; Apply</a></div>';
+        html += '<div style="margin-top:10px"><a href="https://www.findmeajob.co.nz/?job=' + encodeURIComponent(job.id) + '" style="display:inline-block;background:#E7515A;color:#fff;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:700;text-decoration:none">View &amp; Apply</a></div>';
         html += '</div>';
       });
 
-      html += '<div style="text-align:center;margin-top:1rem"><a href="https://www.findmeajob.co.nz/#browse" style="color:#059669;font-size:13px;font-weight:600;text-decoration:none">Browse all NZ jobs \u2192</a></div>';
+      html += '<div style="text-align:center;margin-top:1rem"><a href="https://www.findmeajob.co.nz/#browse" style="color:#c7313a;font-size:13px;font-weight:600;text-decoration:none">Browse all NZ jobs \u2192</a></div>';
       var unsubUrl = 'https://www.findmeajob.co.nz/api/seeker?action=unsubscribe&email=' + encodeURIComponent(seeker.email);
       html += '<div style="text-align:center;margin-top:1.5rem;padding-top:1rem;border-top:1px solid #e5e7eb">';
-      html += '<div style="font-size:11px;color:#9ca3af">You received this because you opted in to weekly job alerts on <a href="https://www.findmeajob.co.nz" style="color:#059669;text-decoration:none">FindMeAJob.co.nz</a>.</div>';
+      html += '<div style="font-size:11px;color:#9ca3af">You received this because you opted in to weekly job alerts on <a href="https://www.findmeajob.co.nz" style="color:#c7313a;text-decoration:none">FindMeAJob.co.nz</a>.</div>';
       html += '<div style="font-size:11px;color:#9ca3af;margin-top:4px"><a href="' + unsubUrl + '" style="color:#9ca3af;text-decoration:underline">Unsubscribe from job alerts</a> | <a href="https://www.findmeajob.co.nz/#account" style="color:#9ca3af;text-decoration:underline">Manage preferences</a></div>';
       html += '<div style="font-size:10px;color:#d1d5db;margin-top:6px">FindMeAJob.co.nz \u2014 New Zealand</div>';
       html += '</div></div></div>';
