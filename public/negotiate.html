@@ -239,10 +239,7 @@ body.dark .grade-badge span{color:#f8fafc !important}
     <a href="/interview-sim" style="position:relative;border-radius:16px;overflow:hidden;height:240px;display:block;text-decoration:none;background:url(https://images.unsplash.com/photo-1553877522-43269d4ea984?w=400&q=80) center/cover;transition:transform .3s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.8) 0%,transparent 50%)"></div><div style="position:absolute;top:1rem;right:1rem;width:28px;height:28px;background:#E7515A;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;z-index:2">&#8594;</div><div style="position:absolute;bottom:1rem;left:1rem;right:1rem;z-index:2"><div style="font-size:.95rem;font-weight:800;color:#fff;margin-bottom:.15rem">Interview Simulator</div><div style="font-size:.7rem;color:rgba(255,255,255,.75)">Practice before the call</div></div></a>
   </div>
 </section>
-<footer class="footer">
-  <p>&copy; 2026 FindMeAJob.co.nz &mdash; AI-powered career tools for New Zealand</p>
-  <div class="ai-disclaimer">AI Disclaimer: Results are AI-generated estimates and suggestions, not professional advice. Always verify independently.</div>
-</footer>
+
 
 <div id="email-gate" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(4px)">
   <div style="background:#fff;border-radius:20px;padding:2rem;max-width:400px;width:100%;text-align:center;box-shadow:0 25px 60px rgba(0,0,0,.15);position:relative">
@@ -368,5 +365,27 @@ function escHtml(s) {
 function toggleTheme(){document.body.classList.toggle('dark');var d=document.body.classList.contains('dark');localStorage.setItem('theme',d?'dark':'light');document.getElementById('tbtn').innerHTML=d?'&#9790;':'&#9788;';}
 if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');var tb=document.getElementById('tbtn');if(tb)tb.innerHTML='&#9790;';}
 </script>
+
+<section style="background:#E7515A;padding:0;margin-top:2rem">
+  <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;gap:3rem;padding:3rem 2rem">
+    <div style="flex:1">
+      <h2 style="font-size:1.8rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:.75rem">Start your career toolkit</h2>
+      <p style="color:rgba(255,255,255,.85);font-size:.9rem;line-height:1.6;margin-bottom:1.5rem">12 free AI tools. No payment required.</p>
+      <a href="/match.html" style="display:inline-block;padding:.75rem 1.75rem;border:2px solid #fff;color:#fff;border-radius:999px;font-size:.88rem;font-weight:700;text-decoration:none">Get started free</a>
+    </div>
+    <div style="flex-shrink:0;text-align:center"><div style="font-size:3rem;font-weight:900;color:#fff;line-height:1">12</div><div style="font-size:.85rem;color:rgba(255,255,255,.85);font-weight:600">free tools</div></div>
+  </div>
+</section>
+<footer style="background:#1B1B3A;padding:3rem 2rem 1.5rem">
+  <div style="max-width:900px;margin:0 auto">
+    <div style="font-size:2rem;font-weight:900;color:#E7515A;margin-bottom:1.5rem;letter-spacing:-.5px">FindMeAJob</div>
+    <div style="display:flex;gap:2.5rem;flex-wrap:wrap;margin-bottom:1.5rem">
+      <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.6rem">Tools</div><a href="/match.html" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Apply for a Job</a><a href="/interview-sim" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Interview Simulator</a><a href="/match.html#apply" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">CV + Cover Letter</a><a href="/score" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">CV Score</a><a href="/salary" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Salary Calculator</a></div>
+      <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.6rem">More</div><a href="/interview" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Interview Questions</a><a href="/negotiate" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Negotiate Salary</a><a href="/compare" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Compare Jobs</a><a href="/decode" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Decode Job Ad</a><a href="/email" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Write This Email</a></div>
+      <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.6rem">Company</div><a href="/blog" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Blog</a><a href="/employer-portal.html" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Post a Job</a></div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:1rem;font-size:.62rem;color:rgba(255,255,255,.3);line-height:1.6"><p>&copy; 2026 FindMeAJob.co.nz</p><p style="margin-top:.25rem">AI results are suggestions, not professional advice.</p></div>
+  </div>
+</footer>
 </body>
 </html>
