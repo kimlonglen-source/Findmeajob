@@ -66,6 +66,19 @@ img{max-width:100%;display:block}
 .want-link:hover{padding-left:1rem;text-decoration:none;color:#c7313a}
 .want-link:hover span{transform:translateX(6px);opacity:1}
 .want-link:active{transform:scale(.98)}
+
+/* Tool photo cards - Monzo style */
+.tool-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.tphoto{position:relative;border-radius:16px;overflow:hidden;height:280px;display:block;text-decoration:none;background-size:cover;background-position:center;transition:transform .3s,box-shadow .3s}
+.tphoto:hover{transform:translateY(-5px);box-shadow:0 12px 30px rgba(0,0,0,.2);text-decoration:none}
+.tphoto::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.8) 0%,rgba(0,0,0,.1) 50%,transparent 100%)}
+.tphoto-arrow{position:absolute;top:1rem;right:1rem;width:32px;height:32px;background:#E7515A;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.9rem;z-index:2;transition:transform .3s}
+.tphoto:hover .tphoto-arrow{transform:translateX(3px)}
+.tphoto-text{position:absolute;bottom:1.25rem;left:1.25rem;right:1rem;z-index:2}
+.tphoto-title{font-size:1rem;font-weight:800;color:#fff;margin-bottom:.2rem}
+.tphoto-desc{font-size:.72rem;color:rgba(255,255,255,.75);line-height:1.4}
+@media(max-width:768px){.tool-grid{grid-template-columns:repeat(2,1fr)}.tphoto{height:220px}}
+@media(max-width:480px){.tool-grid{grid-template-columns:1fr}.tphoto{height:200px}}
 .hero-dots{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:10;display:flex;gap:.5rem}
 .hero-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:all .3s}
 .hero-dot.active{background:#fff;transform:scale(1.2)}
@@ -213,17 +226,23 @@ img{max-width:100%;display:block}
   </div>
 </section>
 
-<!-- More Tools Grid -->
-<section id="tools" style="padding:3rem 3rem 4rem;max-width:900px;margin:0 auto">
+<!-- All 12 Tools - Monzo photo card style -->
+<section id="tools" style="padding:3rem 3rem 4rem;max-width:1100px;margin:0 auto">
   <h2 style="font-size:2rem;font-weight:900;color:#1a1a2e;margin-bottom:.5rem">12 tools. One career toolkit.</h2>
   <p style="color:#6b7280;font-size:1rem;margin-bottom:2rem">Everything you need to find, apply for, and land your next NZ job.</p>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
-    <a href="/score" class="tcard"><span class="ticon">&#128202;</span><div><strong>CV Score</strong><br><span>Score out of 100 with fixes</span></div></a>
-    <a href="/negotiate" class="tcard"><span class="ticon">&#128176;</span><div><strong>Negotiate Salary</strong><br><span>Word-for-word scripts</span></div></a>
-    <a href="/compare" class="tcard"><span class="ticon">&#9878;</span><div><strong>Compare Jobs</strong><br><span>Side-by-side comparison</span></div></a>
-    <a href="/decide" class="tcard"><span class="ticon">&#128161;</span><div><strong>Should I Stay or Go?</strong><br><span>AI career health check</span></div></a>
-    <a href="/email" class="tcard"><span class="ticon">&#9993;</span><div><strong>Write This Email</strong><br><span>Professional emails in seconds</span></div></a>
-    <a href="/challenge" class="tcard"><span class="ticon">&#128293;</span><div><strong>Career Roast</strong><br><span>Fun AI career pivots</span></div></a>
+  <div class="tool-grid">
+    <a href="/match.html" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Apply for a Job</div><div class="tphoto-desc">AI matches your CV to NZ jobs in 60 seconds</div></div></a>
+    <a href="/match.html#apply" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">CV + Cover Letter</div><div class="tphoto-desc">AI tailors both to any job ad</div></div></a>
+    <a href="/score" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">CV Score</div><div class="tphoto-desc">Score out of 100 with specific fixes</div></div></a>
+    <a href="/interview-sim" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1553877522-43269d4ea984?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Interview Simulator</div><div class="tphoto-desc">Practice with AI. Get scored out of 100</div></div></a>
+    <a href="/interview" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Interview Questions</div><div class="tphoto-desc">10 likely questions with strong answers</div></div></a>
+    <a href="/decode" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1450101499163-c8848e968838?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Decode Job Ad</div><div class="tphoto-desc">Translate corporate buzzwords to plain English</div></div></a>
+    <a href="/salary" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Salary Calculator</div><div class="tphoto-desc">Know what you should earn in NZ</div></div></a>
+    <a href="/negotiate" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Negotiate Salary</div><div class="tphoto-desc">Word-for-word negotiation scripts</div></div></a>
+    <a href="/compare" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Compare Jobs</div><div class="tphoto-desc">Side-by-side job comparison</div></div></a>
+    <a href="/decide" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Should I Stay or Go?</div><div class="tphoto-desc">AI career health check with salary insight</div></div></a>
+    <a href="/email" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Write This Email</div><div class="tphoto-desc">Professional emails written in seconds</div></div></a>
+    <a href="/challenge" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1533227268428-f9ed0900fb3b?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Career Roast</div><div class="tphoto-desc">Fun AI career pivot suggestions</div></div></a>
   </div>
 </section>
 
