@@ -293,18 +293,17 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 <!-- HOME -->
 <div id="page-home" class="page active">
   <section class="hero">
-    <div class="hero-badge">Free AI Job Matching for NZ</div>
-    <h1>Find your next NZ job<br><em><span class="typewriter" id="hero-typed">&nbsp;</span></em></h1>
-    <p class="hero-sub">Upload your CV. Get matched to real NZ jobs in 60 seconds. Free forever for NZ job seekers.</p>
-    <div class="hero-ctas">
-      <button class="btn-hero" id="hero-try" type="button">Upload CV &#8594;</button>
-      <button class="btn-hero-out" id="hero-browse" type="button">Browse Jobs</button>
-    </div>
-    <div style="display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem">
-      <div style="font-size:.75rem;color:var(--text3);font-weight:600;display:flex;align-items:center;gap:.35rem"><span style="color:var(--em)">&#10003;</span> 100% free</div>
-      <div style="font-size:.75rem;color:var(--text3);font-weight:600;display:flex;align-items:center;gap:.35rem"><span style="color:var(--em)">&#10003;</span> CV not stored by default</div>
-      <div style="font-size:.75rem;color:var(--text3);font-weight:600;display:flex;align-items:center;gap:.35rem"><span style="color:var(--em)">&#10003;</span> NZ jobs only</div>
-      <div style="font-size:.75rem;color:var(--text3);font-weight:600;display:flex;align-items:center;gap:.35rem"><span style="color:var(--em)">&#10003;</span> 100% free</div>
+  <!-- Monzo-style hero with stock photo -->
+  <section style="position:relative;min-height:70vh;display:flex;align-items:flex-end;padding:3rem 2rem;overflow:hidden;background:#1a1a2e">
+    <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1400&q=80" alt="Find NZ Jobs" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5">
+    <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,.2) 50%,transparent 100%)"></div>
+    <div style="position:relative;z-index:2;max-width:600px">
+      <h1 style="font-size:2.8rem;font-weight:900;color:#fff;line-height:1.1;margin-bottom:.75rem;letter-spacing:-1px">Find your next<br>NZ job</h1>
+      <p style="font-size:1.1rem;color:rgba(255,255,255,.85);line-height:1.6;margin-bottom:1.5rem;max-width:450px">Upload your CV and get matched to real NZ jobs in 60 seconds. Free forever.</p>
+      <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+        <button class="btn-hero" id="hero-try" type="button" style="background:#E7515A;color:#fff;border:none;padding:.85rem 2rem;border-radius:999px;font-family:Inter,sans-serif;font-size:.95rem;font-weight:700;cursor:pointer">Upload CV &#8594;</button>
+        <button class="btn-hero-out" id="hero-browse" type="button" style="background:transparent;color:#fff;border:2px solid #fff;padding:.85rem 2rem;border-radius:999px;font-family:Inter,sans-serif;font-size:.95rem;font-weight:700;cursor:pointer">Browse Jobs</button>
+      </div>
     </div>
   </section>
 
@@ -935,17 +934,25 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
   </div>
 </div>
 
-<footer>
-  <div class="footer-inner">
-    <div><div class="footer-logo">Find<em>Me</em>AJob<span style="font-family:'Inter',sans-serif;font-style:normal;font-size:.58rem;color:var(--text3)">.co.nz</span></div><div class="footer-sub">AI-powered job discovery for Aotearoa New Zealand &copy; 2026</div></div>
-    <div class="footer-links">
-      <button id="fl-find" type="button">Find a Job</button>
-      <button id="fl-browse" type="button">Browse Jobs</button>
-      <a href="/employer-portal.html" id="fl-employer">Post a Job Free</a>
-      <a href="mailto:hello@findmeajob.co.nz">Contact</a>
-      <button id="fl-privacy" type="button">Privacy</button>
-      <button id="fl-terms" type="button">Terms</button>
+<section style="background:#E7515A;padding:0;margin-top:2rem">
+  <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;gap:3rem;padding:3rem 2rem">
+    <div style="flex:1">
+      <h2 style="font-size:1.8rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:.75rem">Explore all 12 tools</h2>
+      <p style="color:rgba(255,255,255,.85);font-size:.9rem;line-height:1.6;margin-bottom:1.5rem">Interview simulator, salary calculator, CV writer and more. All free.</p>
+      <a href="/#tools" style="display:inline-block;padding:.75rem 1.75rem;border:2px solid #fff;color:#fff;border-radius:999px;font-size:.88rem;font-weight:700;text-decoration:none">See all tools</a>
     </div>
+    <div style="flex-shrink:0;text-align:center"><div style="font-size:3rem;font-weight:900;color:#fff;line-height:1">12</div><div style="font-size:.85rem;color:rgba(255,255,255,.85);font-weight:600">free tools</div></div>
+  </div>
+</section>
+<footer style="background:#1B1B3A;padding:3rem 2rem 1.5rem">
+  <div style="max-width:900px;margin:0 auto">
+    <div style="font-size:2rem;font-weight:900;color:#E7515A;margin-bottom:1.5rem;letter-spacing:-.5px">FindMeAJob</div>
+    <div style="display:flex;gap:2.5rem;flex-wrap:wrap;margin-bottom:1.5rem">
+      <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.6rem">Tools</div><a href="/match.html" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Apply for a Job</a><a href="/interview-sim" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Interview Simulator</a><a href="/score" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">CV Score</a><a href="/salary" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Salary Calculator</a></div>
+      <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.6rem">More</div><a href="/interview" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Interview Questions</a><a href="/negotiate" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Negotiate Salary</a><a href="/compare" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Compare Jobs</a><a href="/decode" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Decode Job Ad</a></div>
+      <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.6rem">Company</div><a href="/blog" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Blog</a><a href="/employer-portal.html" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Post a Job</a><button id="fl-privacy" type="button" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;background:none;border:none;cursor:pointer;padding:0;font-family:inherit;text-align:left">Privacy</button><button id="fl-terms" type="button" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;background:none;border:none;cursor:pointer;padding:0;font-family:inherit;text-align:left">Terms</button></div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:1rem;font-size:.62rem;color:rgba(255,255,255,.3)">&copy; 2026 FindMeAJob.co.nz — AI results are suggestions, not professional advice.</div>
   </div>
 </footer>
 
