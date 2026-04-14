@@ -59,6 +59,13 @@ img{max-width:100%;display:block}
 .hero p{font-size:1.15rem;color:rgba(255,255,255,.85);line-height:1.6;margin-bottom:2rem;max-width:480px}
 .hero-btn{display:inline-block;padding:.85rem 2rem;border:2px solid #fff;color:#fff;border-radius:999px;font-size:.95rem;font-weight:700;text-decoration:none;transition:all .2s}
 .hero-btn:hover{background:#fff;color:#1a1a2e;text-decoration:none}
+
+/* "I want to" links */
+.want-link{font-size:1.6rem;font-weight:800;color:#E7515A;padding:1.1rem 0;border-bottom:1px solid #f0f0f0;text-decoration:none;display:flex;align-items:center;justify-content:space-between;transition:all .25s;padding-left:0}
+.want-link span{font-size:1.2rem;transition:transform .3s;opacity:.5}
+.want-link:hover{padding-left:1rem;text-decoration:none;color:#c7313a}
+.want-link:hover span{transform:translateX(6px);opacity:1}
+.want-link:active{transform:scale(.98)}
 .hero-dots{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:10;display:flex;gap:.5rem}
 .hero-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:all .3s}
 .hero-dot.active{background:#fff;transform:scale(1.2)}
@@ -133,13 +140,13 @@ img{max-width:100%;display:block}
 <!-- "I want to..." section - Monzo style -->
 <section style="padding:4rem 3rem;max-width:900px;margin:0 auto">
   <h2 style="font-size:2rem;font-weight:900;color:#1a1a2e;margin-bottom:2rem">I want to...</h2>
-  <div style="display:flex;flex-direction:column;gap:.25rem">
-    <a href="/interview-sim" style="font-size:1.6rem;font-weight:800;color:#E7515A;padding:1rem 0;border-bottom:1px solid #f0f0f0;text-decoration:none;display:flex;align-items:center;justify-content:space-between">Practice a job interview <span style="font-size:1.2rem">&#8594;</span></a>
-    <a href="/match.html#apply" style="font-size:1.6rem;font-weight:800;color:#E7515A;padding:1rem 0;border-bottom:1px solid #f0f0f0;text-decoration:none;display:flex;align-items:center;justify-content:space-between">Write my CV and cover letter <span style="font-size:1.2rem">&#8594;</span></a>
-    <a href="/match.html" style="font-size:1.6rem;font-weight:800;color:#E7515A;padding:1rem 0;border-bottom:1px solid #f0f0f0;text-decoration:none;display:flex;align-items:center;justify-content:space-between">Find NZ jobs matched to me <span style="font-size:1.2rem">&#8594;</span></a>
-    <a href="/salary" style="font-size:1.6rem;font-weight:800;color:#E7515A;padding:1rem 0;border-bottom:1px solid #f0f0f0;text-decoration:none;display:flex;align-items:center;justify-content:space-between">Check what I should earn <span style="font-size:1.2rem">&#8594;</span></a>
-    <a href="/interview" style="font-size:1.6rem;font-weight:800;color:#E7515A;padding:1rem 0;border-bottom:1px solid #f0f0f0;text-decoration:none;display:flex;align-items:center;justify-content:space-between">Prepare for interview questions <span style="font-size:1.2rem">&#8594;</span></a>
-    <a href="/decode" style="font-size:1.6rem;font-weight:800;color:#E7515A;padding:1rem 0;text-decoration:none;display:flex;align-items:center;justify-content:space-between">Decode a job listing <span style="font-size:1.2rem">&#8594;</span></a>
+  <div style="display:flex;flex-direction:column">
+    <a href="/interview-sim" class="want-link">Practice a job interview <span>&#8594;</span></a>
+    <a href="/match.html#apply" class="want-link">Write my CV and cover letter <span>&#8594;</span></a>
+    <a href="/match.html" class="want-link">Find NZ jobs matched to me <span>&#8594;</span></a>
+    <a href="/salary" class="want-link">Check what I should earn <span>&#8594;</span></a>
+    <a href="/interview" class="want-link">Prepare for interview questions <span>&#8594;</span></a>
+    <a href="/decode" class="want-link" style="border-bottom:none">Decode a job listing <span>&#8594;</span></a>
   </div>
 </section>
 
