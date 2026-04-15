@@ -952,7 +952,7 @@ function toggleMic(quiet){
           document.getElementById('micTranscript').className='mic-transcript';
           silenceTimer=setTimeout(function(){
             if(!_sending&&!_interviewEnded&&inp2.value.trim()) sendAnswer();
-          },1500);
+          },4000);
         } else {
           /* No text — mic stopped before user spoke. Show tap-to-speak. */
           updateMicUI(null,'Tap Skip or try again');
