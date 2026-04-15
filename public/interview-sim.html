@@ -569,14 +569,15 @@ async function sendAnswer(){
   iData.qa.push({q:lastAi,a:ans});msgs.push({role:'user',content:ans});qCount++;updC();
   /* Closing phase: user answered the closing question — end everything */
   if(_closingPhase){
-    _interviewEnded=true;_sending=false;_waitingForAI=false;_aiSpeaking=false;
+    _sending=false;_waitingForAI=false;_aiSpeaking=false;
     clearTimeout(_speakTimeout);stopTimer();
     if(recog){try{recog.stop();}catch(e){}}recog=null;
     try{window.speechSynthesis.cancel();}catch(e){}
-    addMsg('Thank you so much for your time today. It was great speaking with you. Click below to get your score and feedback.','ai');
+    var tyMsg='Thank you so much for your time today. It was great speaking with you. Click below to get your score and feedback.';
+    addMsg(tyMsg,'ai');
     document.getElementById('micControl').style.display='none';
     document.getElementById('endBtn').style.display='block';
-    setOrb('thinking');
+    setOrb('speaking');speakFinal(tyMsg);
     return;
   }
   /* Last question answered — ask a closing question */
@@ -617,14 +618,15 @@ async function skipQuestion(){
   qCount++;updC();
   /* Closing phase: user skipped the closing question — end everything */
   if(_closingPhase){
-    _interviewEnded=true;_waitingForAI=false;_aiSpeaking=false;
+    _waitingForAI=false;_aiSpeaking=false;
     clearTimeout(_speakTimeout);stopTimer();
     if(recog){try{recog.stop();}catch(e){}}recog=null;
     try{window.speechSynthesis.cancel();}catch(e){}
-    addMsg('Thank you so much for your time today. It was great speaking with you. Click below to get your score and feedback.','ai');
+    var tyMsg2='Thank you so much for your time today. It was great speaking with you. Click below to get your score and feedback.';
+    addMsg(tyMsg2,'ai');
     document.getElementById('micControl').style.display='none';
     document.getElementById('endBtn').style.display='block';
-    setOrb('thinking');
+    setOrb('speaking');speakFinal(tyMsg2);
     return;
   }
   /* Last question skipped — ask closing question */
@@ -734,7 +736,23 @@ function speak(t){if(_interviewEnded)return;_aiSpeaking=true;clearTimeout(_speak
 function _doSpeak(t){try{var gender=document.getElementById('voiceGender').value;var voices=window.speechSynthesis.getVoices()||[];var match=null;var googleVoices=[];var nzAu=[];var enVoices=[];for(var i=0;i<voices.length;i++){var l=voices[i].lang.toLowerCase();var n=voices[i].name.toLowerCase();if(n.indexOf('google')>-1&&l.indexOf('en')===0)googleVoices.push(voices[i]);else if(l==='en-nz'||l==='en-au'||l.indexOf('en_nz')>-1||l.indexOf('en_au')>-1)nzAu.push(voices[i]);else if(l.indexOf('en')===0)enVoices.push(voices[i]);}var pool=googleVoices.length?googleVoices:(nzAu.length?nzAu:enVoices);for(var j=0;j<pool.length;j++){var vn=pool[j].name.toLowerCase();if(gender==='female'&&(vn.indexOf('female')>-1||vn.indexOf('fiona')>-1||vn.indexOf('karen')>-1||vn.indexOf('samantha')>-1||vn.indexOf('victoria')>-1||vn.indexOf('moira')>-1||vn.indexOf('tessa')>-1||vn.indexOf('google uk english female')>-1)){match=pool[j];break;}if(gender==='male'&&(vn.indexOf('male')>-1||vn.indexOf('daniel')>-1||vn.indexOf('james')>-1||vn.indexOf('lee')>-1||vn.indexOf('gordon')>-1||vn.indexOf('alex')>-1||vn.indexOf('google uk english male')>-1)){match=pool[j];break;}}if(!match&&pool.length){match=pool[0];}var u=new SpeechSynthesisUtterance(t);u.rate=0.95;u.lang='en-GB';if(match)u.voice=match;if(gender==='male'){u.pitch=0.9;}else{u.pitch=1.0;}u.onend=function(){if(_interviewEnded)return;_aiSpeaking=false;clearTimeout(_speakTimeout);_currentOrbState='';setAvatar('listening');autoStartListening();};u.onerror=function(){if(_interviewEnded)return;_aiSpeaking=false;clearTimeout(_speakTimeout);_currentOrbState='';setAvatar('listening');autoStartListening();};window.speechSynthesis.speak(u);}catch(e){_aiSpeaking=false;_currentOrbState='';setAvatar('listening');}}
 window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
 /* Chrome TTS keepalive — prevents speechSynthesis from dying on longer sessions */
-setInterval(function(){if(window.speechSynthesis&&!window.speechSynthesis.speaking){window.speechSynthesis.cancel();}},10000);
+setInterval(function(){if(window.speechSynthesis&&!window.speechSynthesis.speaking&&!_interviewEnded){window.speechSynthesis.cancel();}},10000);
+/* Speak final thank you — does NOT trigger auto-listen, sets _interviewEnded when done */
+function speakFinal(t){
+  if(!audioEnabled||!window.speechSynthesis){_interviewEnded=true;setOrb('thinking');return;}
+  try{
+    window.speechSynthesis.cancel();
+    var gender=document.getElementById('voiceGender').value;
+    var voices=window.speechSynthesis.getVoices()||[];var match=null;
+    var pool=[];for(var i=0;i<voices.length;i++){var l=voices[i].lang.toLowerCase();var n=voices[i].name.toLowerCase();if(n.indexOf('google')>-1&&l.indexOf('en')===0)pool.push(voices[i]);else if(l.indexOf('en')===0)pool.push(voices[i]);}
+    for(var j=0;j<pool.length;j++){var vn=pool[j].name.toLowerCase();if(gender==='female'&&(vn.indexOf('female')>-1||vn.indexOf('fiona')>-1||vn.indexOf('karen')>-1||vn.indexOf('samantha')>-1||vn.indexOf('google uk english female')>-1)){match=pool[j];break;}if(gender==='male'&&(vn.indexOf('male')>-1||vn.indexOf('daniel')>-1||vn.indexOf('james')>-1||vn.indexOf('google uk english male')>-1)){match=pool[j];break;}}
+    if(!match&&pool.length)match=pool[0];
+    var u=new SpeechSynthesisUtterance(t);u.rate=0.95;u.lang='en-GB';if(match)u.voice=match;u.pitch=gender==='male'?0.9:1.0;
+    u.onend=function(){_interviewEnded=true;setOrb('thinking');};
+    u.onerror=function(){_interviewEnded=true;setOrb('thinking');};
+    setTimeout(function(){window.speechSynthesis.speak(u);},150);
+  }catch(e){_interviewEnded=true;setOrb('thinking');}
+}
 
 /* Timer for real-life mode */
 function startTimer(){
@@ -763,10 +781,12 @@ function startTimer(){
         qCount++;updC();
         /* Closing phase timeout — end everything */
         if(_closingPhase){
-          _interviewEnded=true;_waitingForAI=false;_aiSpeaking=false;
+          _waitingForAI=false;_aiSpeaking=false;
           clearTimeout(_speakTimeout);try{window.speechSynthesis.cancel();}catch(e){}
-          addMsg('Thank you so much for your time today. It was great speaking with you. Click below to get your score and feedback.','ai');
-          document.getElementById('micControl').style.display='none';document.getElementById('endBtn').style.display='block';setOrb('thinking');
+          var tyMsg3='Thank you so much for your time today. It was great speaking with you. Click below to get your score and feedback.';
+          addMsg(tyMsg3,'ai');
+          document.getElementById('micControl').style.display='none';document.getElementById('endBtn').style.display='block';
+          setOrb('speaking');speakFinal(tyMsg3);
         }
         else if(qCount>maxQ){
           /* Last question timed out — ask closing question */
@@ -819,11 +839,11 @@ function toggleMic(){
     var inp=document.getElementById('userInput');
     var lastResultTime=Date.now();
     var _liveFillers=0;
+    var _seenInterimFillers={};
     recog.onresult=function(e){
       _micRetries=0;
-      var t='';var interim='';
+      var t='';var interim='';var allInterim='';
       if(isMobile){
-        /* Mobile: accumulate finals, show interim for instant feedback */
         for(var i=0;i<e.results.length;i++){
           if(e.results[i].isFinal){
             var ft=e.results[i][0].transcript;
@@ -833,10 +853,11 @@ function toggleMic(){
           }
         }
         t=(_accumulated+interim).trim();
+        allInterim=interim;
       } else {
-        /* Desktop: use all results normally */
         for(var i2=0;i2<e.results.length;i2++){
           t+=e.results[i2][0].transcript;
+          if(!e.results[i2].isFinal){allInterim+=e.results[i2][0].transcript;}
         }
         t=t.trim();
       }
@@ -846,8 +867,10 @@ function toggleMic(){
       trEl.className='mic-transcript active';
       trEl.textContent=t;
       trEl.scrollTop=trEl.scrollHeight;
+      /* Count fillers from both final text AND interim (speech recognition strips fillers from finals) */
       var fm=t.match(fillerRegex);
       _liveFillers=fm?fm.length:0;
+      if(allInterim){var ifm=allInterim.match(fillerRegex);if(ifm){for(var fi=0;fi<ifm.length;fi++){var key=ifm[fi].toLowerCase()+'_'+Math.floor(Date.now()/2000);if(!_seenInterimFillers[key]){_seenInterimFillers[key]=true;_liveFillers++;}}}}
       document.getElementById('fillerCount').textContent=fillerWords+_liveFillers;
       if(fillerWords+_liveFillers>3)document.getElementById('fillerCount').style.color='#ef4444';
       document.getElementById('listenFill').style.width='0';
