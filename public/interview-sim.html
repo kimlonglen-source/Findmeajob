@@ -295,7 +295,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
         <select id="voiceGender"><option value="female">Female interviewer (speaks questions aloud)</option><option value="male">Male interviewer (speaks questions aloud)</option><option value="off">No voice — text only</option></select>
       </div>
       <div style="display:flex;flex-direction:column;gap:.65rem;margin-top:.5rem">
-        <label style="display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;font-size:.85rem;color:#475569;line-height:1.5"><input type="checkbox" id="autoSendMode" style="accent-color:#E7515A;width:18px;height:18px;margin-top:2px" checked> <span><strong style="color:#0f172a">Auto-send answers</strong><br><span style="font-size:.78rem;color:#94a3b8">When you stop talking for 3 seconds, your answer submits automatically</span></span></label>
+        <label style="display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;font-size:.85rem;color:#475569;line-height:1.5"><input type="checkbox" id="autoSendMode" style="accent-color:#E7515A;width:18px;height:18px;margin-top:2px" checked> <span><strong style="color:#0f172a">Auto-send answers</strong><br><span style="font-size:.78rem;color:#94a3b8">When you stop talking for 4 seconds, your answer submits automatically</span></span></label>
       </div>
       <div id="step2MicStatus" style="margin-top:1rem;padding:.75rem;border-radius:12px;text-align:center;font-size:.82rem;font-weight:600;display:none"></div>
     </div>
@@ -418,7 +418,7 @@ function submitGateEmail(){var e=document.getElementById('gate-email').value.tri
 /* Interview state */
 var msgs=[],qCount=0,maxQ=5,iData={role:'',company:'',style:'',jobDesc:'',qa:[]},audioEnabled=false,recog=null;
 var timedMode=false,answerTimer=null,timeLeft=0;
-var autoSend=true,silenceTimer=null,silenceDelay=3000;
+var autoSend=true,silenceTimer=null,silenceDelay=4000;
 var fillerWords=0;
 var _pauseFillersPending=0;
 var _fillerBreakdown={pauses:0,ums:0,uhs:0,ahs:0,ers:0,hmms:0,likes:0,other:0};
@@ -563,7 +563,7 @@ async function _doStart(role){
 
 var _sending=false;
 async function sendAnswer(){
-  if(_sending)return;
+  if(_sending||_interviewEnded)return;
   var inp=document.getElementById('userInput');var ans=inp.value.trim();
   if(!ans){return;}
   _sending=true;
@@ -612,6 +612,7 @@ async function sendAnswer(){
 }
 
 async function skipQuestion(){
+  if(_interviewEnded)return;
   /* Block skip if closing question is loading or playing */
   if(_closingPhase&&!_closingAsked)return;
   stopTimer();clearTimeout(_speakTimeout);clearTimeout(silenceTimer);_waitingForAI=true;_aiSpeaking=false;_sending=false;
@@ -914,7 +915,7 @@ function toggleMic(){
       clearTimeout(silenceTimer);
       if(autoSend&&t.trim().length>1){
         silenceTimer=setTimeout(function(){
-          if(inp.value.trim()&&Date.now()-lastResultTime>=silenceDelay-500){
+          if(inp.value.trim()&&Date.now()-lastResultTime>=silenceDelay-200){
             if(recog){try{recog.stop();}catch(e2){}}recog=null;
             document.getElementById('listenBar').style.display='none';
             document.getElementById('micTranscript').className='mic-transcript';
