@@ -420,8 +420,10 @@ var msgs=[],qCount=0,maxQ=5,iData={role:'',company:'',style:'',jobDesc:'',qa:[]}
 var timedMode=false,answerTimer=null,timeLeft=0;
 var autoSend=true,silenceTimer=null,silenceDelay=5000;
 var fillerWords=0;
+var _pauseFillersPending=0;
 var _interviewEnded=false;
 var _closingPhase=false;
+var _interviewStartTime=0;
 var fillerRegex=/\b(um+|umm+|uhm+|uh+|uhh+|ah+|ahh+|er+|err+|hmm+|hm+)\b/gi;
 
 var _prepRole='';
@@ -535,7 +537,7 @@ async function _doStart(role){
   var style=document.getElementById('simStyle').value;
   var jobDesc=iData.jobDesc||'';
   iData={role:role,company:company,style:style,jobDesc:jobDesc,qa:[]};
-  _interviewEnded=false;_closingPhase=false;
+  _interviewEnded=false;_closingPhase=false;_interviewStartTime=Date.now();
   document.getElementById('pageHeader').style.display='none';
   document.getElementById('chatSection').style.display='block';
   var vg=document.getElementById('voiceGender').value;
@@ -606,7 +608,7 @@ async function sendAnswer(){
 }
 
 async function skipQuestion(){
-  stopTimer();clearTimeout(_speakTimeout);_waitingForAI=true;_aiSpeaking=false;
+  stopTimer();clearTimeout(_speakTimeout);clearTimeout(silenceTimer);_waitingForAI=true;_aiSpeaking=false;_sending=false;
   if(recog){recog.stop();recog=null;document.getElementById('listenBar').style.display='none';}
   try{window.speechSynthesis.cancel();}catch(e){}
   var inp=document.getElementById('userInput');
@@ -657,7 +659,7 @@ async function skipQuestion(){
 async function endInterview(){
   _interviewEnded=true;_aiSpeaking=false;_waitingForAI=false;
   clearTimeout(_speakTimeout);clearTimeout(silenceTimer);
-  if(recog){try{recog.stop();}catch(e){}}recog=null;
+  releaseMic();
   try{window.speechSynthesis.cancel();}catch(e){}
   stopTimer();setOrb('thinking');
   document.getElementById('micControl').style.display='none';
@@ -665,7 +667,7 @@ async function endInterview(){
   document.getElementById('micTranscript').className='mic-transcript';
   updateMicUI(null,'');
   document.getElementById('endBtn').textContent='Scoring...';document.getElementById('endBtn').disabled=true;
-  var p="You conducted a "+iData.style+" interview for "+iData.role+" in NZ. Score the candidate. They used "+fillerWords+" filler sounds (um, uh, ah, er, hmm). Comment on this in your feedback.\n\n";
+  var p="You conducted a "+iData.style+" interview for "+iData.role+" in NZ. Score the candidate. They had "+fillerWords+" filler sounds and hesitations (um, uh, ah, long pauses). Comment on this in your feedback.\n\n";
   iData.qa.forEach(function(x,i){var label=(i===iData.qa.length-1&&_closingPhase)?'Closing':'Q'+(i+1);p+=label+": "+x.q.substring(0,400)+"\nA"+(i+1)+": "+x.a.substring(0,400)+"\n\n";});
   if(_closingPhase){p+="The last entry is the candidate closing remarks when asked if they had anything to add. Factor this into your overall assessment — it shows initiative and communication skills.\n\n";}
   p+="Return ONLY valid JSON: {\"score\":number,\"grade\":\"A+ to D\",\"overall\":\"2-3 sentences\",\"feedback\":[{\"question\":\"short\",\"rating\":\"Good|Average|Needs Work\",\"comment\":\"1-2 sentences\"}]}";
@@ -683,6 +685,8 @@ function showScore(r){
   h+='<div style="font-size:.78rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px">Your Interview Score</div>';
   h+='<div class="score-big" id="score-num" style="color:'+c+'">0/100</div>';
   h+='<div style="display:inline-block;background:'+bg+';color:'+c+';padding:.3rem .85rem;border-radius:999px;font-size:.82rem;font-weight:700;border:1px solid '+c+'33">'+esc(r.grade)+'</div>';
+  var elapsed=Math.round((Date.now()-_interviewStartTime)/1000);var eMin=Math.floor(elapsed/60);var eSec=elapsed%60;
+  h+='<div style="margin-top:.75rem;display:flex;justify-content:center;gap:1.5rem;font-size:.75rem;color:#94a3b8;font-weight:600"><span>Duration: '+eMin+'m '+eSec+'s</span><span>Questions: '+maxQ+'</span><span>Fillers: '+fillerWords+'</span></div>';
   h+='<p style="color:#64748b;font-size:.88rem;margin-top:1rem;line-height:1.6">'+esc(r.overall)+'</p></div>';
   if(r.feedback&&r.feedback.length){r.feedback.forEach(function(f,fi){
     var fc=f.rating==='Good'?'#E7515A':f.rating==='Average'?'#f59e0b':'#ef4444';
@@ -741,17 +745,19 @@ function _doSpeak(t){try{var gender=document.getElementById('voiceGender').value
 window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
 /* Chrome TTS keepalive — prevents speechSynthesis from dying on longer sessions */
 setInterval(function(){if(window.speechSynthesis&&!window.speechSynthesis.speaking&&!_interviewEnded){window.speechSynthesis.cancel();}},10000);
-/* Speak final thank you — does NOT trigger auto-listen, sets _interviewEnded when done */
+/* Speak final thank you — same voice as _doSpeak but does NOT auto-listen afterward */
 function speakFinal(t){
   if(!audioEnabled||!window.speechSynthesis){_interviewEnded=true;setOrb('thinking');return;}
   try{
     window.speechSynthesis.cancel();
     var gender=document.getElementById('voiceGender').value;
     var voices=window.speechSynthesis.getVoices()||[];var match=null;
-    var pool=[];for(var i=0;i<voices.length;i++){var l=voices[i].lang.toLowerCase();var n=voices[i].name.toLowerCase();if(n.indexOf('google')>-1&&l.indexOf('en')===0)pool.push(voices[i]);else if(l.indexOf('en')===0)pool.push(voices[i]);}
-    for(var j=0;j<pool.length;j++){var vn=pool[j].name.toLowerCase();if(gender==='female'&&(vn.indexOf('female')>-1||vn.indexOf('fiona')>-1||vn.indexOf('karen')>-1||vn.indexOf('samantha')>-1||vn.indexOf('google uk english female')>-1)){match=pool[j];break;}if(gender==='male'&&(vn.indexOf('male')>-1||vn.indexOf('daniel')>-1||vn.indexOf('james')>-1||vn.indexOf('google uk english male')>-1)){match=pool[j];break;}}
+    var googleVoices=[];var nzAu=[];var enVoices=[];
+    for(var i=0;i<voices.length;i++){var l=voices[i].lang.toLowerCase();var n=voices[i].name.toLowerCase();if(n.indexOf('google')>-1&&l.indexOf('en')===0)googleVoices.push(voices[i]);else if(l==='en-nz'||l==='en-au'||l.indexOf('en_nz')>-1||l.indexOf('en_au')>-1)nzAu.push(voices[i]);else if(l.indexOf('en')===0)enVoices.push(voices[i]);}
+    var pool=googleVoices.length?googleVoices:(nzAu.length?nzAu:enVoices);
+    for(var j=0;j<pool.length;j++){var vn=pool[j].name.toLowerCase();if(gender==='female'&&(vn.indexOf('female')>-1||vn.indexOf('fiona')>-1||vn.indexOf('karen')>-1||vn.indexOf('samantha')>-1||vn.indexOf('victoria')>-1||vn.indexOf('moira')>-1||vn.indexOf('tessa')>-1||vn.indexOf('google uk english female')>-1)){match=pool[j];break;}if(gender==='male'&&(vn.indexOf('male')>-1||vn.indexOf('daniel')>-1||vn.indexOf('james')>-1||vn.indexOf('lee')>-1||vn.indexOf('gordon')>-1||vn.indexOf('alex')>-1||vn.indexOf('google uk english male')>-1)){match=pool[j];break;}}
     if(!match&&pool.length)match=pool[0];
-    var u=new SpeechSynthesisUtterance(t);u.rate=0.95;u.lang='en-GB';if(match)u.voice=match;u.pitch=gender==='male'?0.9:1.0;
+    var u=new SpeechSynthesisUtterance(t);u.rate=0.95;u.lang='en-GB';if(match)u.voice=match;if(gender==='male'){u.pitch=0.9;}else{u.pitch=1.0;}
     u.onend=function(){_interviewEnded=true;setOrb('thinking');};
     u.onerror=function(){_interviewEnded=true;setOrb('thinking');};
     setTimeout(function(){window.speechSynthesis.speak(u);},150);
@@ -844,7 +850,13 @@ function toggleMic(){
     var lastResultTime=Date.now();
     var _liveFillers=0;
     var _seenInterimFillers={};
+    var _lastSpeechTime=Date.now();
+    _pauseFillersPending=0;
     recog.onresult=function(e){
+      /* Detect hesitation pauses (>2s gap between speech) as filler proxy */
+      var now=Date.now();
+      if(_lastSpeechTime&&now-_lastSpeechTime>2000&&inp.value.trim().length>0){_pauseFillersPending++;}
+      _lastSpeechTime=now;
       _micRetries=0;
       var t='';var interim='';var allInterim='';
       if(isMobile){
@@ -875,7 +887,7 @@ function toggleMic(){
       var fm=t.match(fillerRegex);
       _liveFillers=fm?fm.length:0;
       if(allInterim){var ifm=allInterim.match(fillerRegex);if(ifm){for(var fi=0;fi<ifm.length;fi++){var key=ifm[fi].toLowerCase()+'_'+Math.floor(Date.now()/2000);if(!_seenInterimFillers[key]){_seenInterimFillers[key]=true;_liveFillers++;}}}}
-      document.getElementById('fillerCount').textContent=fillerWords+_liveFillers;
+      document.getElementById('fillerCount').textContent=fillerWords+_liveFillers+_pauseFillersPending;
       if(fillerWords+_liveFillers>3)document.getElementById('fillerCount').style.color='#ef4444';
       document.getElementById('listenFill').style.width='0';
       clearTimeout(silenceTimer);
@@ -926,9 +938,16 @@ function toggleMic(){
   }
 }
 
-/* Cleanup */
+/* Cleanup — release mic so browser tab indicator goes away */
+function releaseMic(){
+  if(recog){try{recog.stop();}catch(e){}}recog=null;
+  /* Request and immediately release a mic stream to flush any lingering access */
+  if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
+    navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){s.getTracks().forEach(function(t){t.stop();});}).catch(function(){});
+  }
+}
 function stopCam(){
-  if(_micStream&&_micStream.getTracks){_micStream.getTracks().forEach(function(t){t.stop();});}_micStream=null;
+  releaseMic();
   document.getElementById('interviewerBar').classList.remove('visible');
 }
 
@@ -937,7 +956,7 @@ function addMsg(t,type){var c=document.getElementById('chatMessages');var w=docu
 function showTyping(){var c=document.getElementById('chatMessages');var w=document.createElement('div');w.className='msg-typing-wrap';w.id='typing';var av=document.createElement('div');av.className='msg-avatar msg-avatar-ai';var iName=document.getElementById('avatarName');av.textContent=(iName?iName.textContent:'S').charAt(0);var d=document.createElement('div');d.className='msg msg-typing';d.innerHTML='<i></i><i></i><i></i>';w.appendChild(av);w.appendChild(d);c.appendChild(w);setTimeout(function(){w.scrollIntoView({behavior:'smooth',block:'start'});},100);}
 function hideTyping(){var el=document.getElementById('typing');if(el)el.remove();}
 function updC(){document.getElementById('qCounter').innerHTML='Q <strong>'+Math.min(qCount,maxQ)+'</strong> / '+maxQ;}
-function countFillers(text){var m=text.match(fillerRegex);if(m){fillerWords+=m.length;var fc=document.getElementById('fillerCount');var fs=document.getElementById('fillerStat');fc.textContent=fillerWords;if(fillerWords>=5){fc.style.color='#ef4444';fs.style.background='#fef2f2';fs.style.borderColor='#fecaca';}else if(fillerWords>=3){fc.style.color='#f59e0b';fs.style.background='#fffbeb';fs.style.borderColor='#fde68a';}}}
+function countFillers(text){var m=text.match(fillerRegex);var count=(m?m.length:0)+_pauseFillersPending;_pauseFillersPending=0;if(count){fillerWords+=count;var fc=document.getElementById('fillerCount');var fs=document.getElementById('fillerStat');fc.textContent=fillerWords;if(fillerWords>=5){fc.style.color='#ef4444';fs.style.background='#fef2f2';fs.style.borderColor='#fecaca';}else if(fillerWords>=3){fc.style.color='#f59e0b';fs.style.background='#fffbeb';fs.style.borderColor='#fde68a';}}}
 function dis(v){document.getElementById('sendBtn').disabled=v;document.getElementById('userInput').disabled=v;}
 function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 
