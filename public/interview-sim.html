@@ -586,17 +586,19 @@ async function sendAnswer(){
     return;
   }
   /* Last question answered — ask a closing question */
-  if(qCount>maxQ){
+  if(qCount>maxQ&&!_closingPhase){
     _closingPhase=true;_closingAsked=false;_sending=false;
+    stopTimer();clearTimeout(silenceTimer);
     setAvatar('thinking');dis(true);showTyping();
     var trimmedC=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
     var sysC="You are a professional NZ job interviewer wrapping up a "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. You have asked all your questions. Now briefly thank the candidate for their answers and ask if there is anything else they would like to add or any questions they have for you. Keep it short — 2 sentences max.";
     fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sysC,messages:trimmedC})}).then(function(r){return r.json();}).then(function(d){
+      if(_interviewEnded)return;
       var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
       if(!t)throw new Error('empty');
       _closingAsked=true;
       msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;speak(t);dis(false);
-    }).catch(function(){_closingAsked=true;_waitingForAI=false;hideTyping();addMsg('Is there anything else you would like to add or any questions for me?','ai');speak('Is there anything else you would like to add or any questions for me?');dis(false);});
+    }).catch(function(){if(_interviewEnded)return;_closingAsked=true;_waitingForAI=false;hideTyping();addMsg('Is there anything else you would like to add or any questions for me?','ai');speak('Is there anything else you would like to add or any questions for me?');dis(false);});
     return;
   }
   setAvatar('thinking');dis(true);showTyping();
@@ -639,17 +641,19 @@ async function skipQuestion(){
     return;
   }
   /* Last question skipped — ask closing question */
-  if(qCount>maxQ){
+  if(qCount>maxQ&&!_closingPhase){
     _closingPhase=true;_closingAsked=false;
+    stopTimer();clearTimeout(silenceTimer);/* Kill all timers while closing loads */
     setAvatar('thinking');dis(true);showTyping();
     var trimmedC2=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
     var sysC2="You are a professional NZ job interviewer wrapping up a "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. You have asked all your questions. Now briefly thank the candidate for their answers and ask if there is anything else they would like to add or any questions they have for you. Keep it short — 2 sentences max.";
     fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sysC2,messages:trimmedC2})}).then(function(r){return r.json();}).then(function(d){
+      if(_interviewEnded)return;
       var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
       if(!t)throw new Error('empty');
       _closingAsked=true;
       msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;speak(t);dis(false);
-    }).catch(function(){_closingAsked=true;_waitingForAI=false;hideTyping();addMsg('Is there anything else you would like to add or any questions for me?','ai');speak('Is there anything else you would like to add or any questions for me?');dis(false);});
+    }).catch(function(){if(_interviewEnded)return;_closingAsked=true;_waitingForAI=false;hideTyping();addMsg('Is there anything else you would like to add or any questions for me?','ai');speak('Is there anything else you would like to add or any questions for me?');dis(false);});
     return;
   }
   setAvatar('thinking');dis(true);showTyping();
@@ -820,17 +824,19 @@ function startTimer(){
           document.getElementById('micControl').style.display='none';document.getElementById('endBtn').style.display='block';
           setOrb('speaking');speakFinal(tyMsg3);
         }
-        else if(qCount>maxQ){
+        else if(qCount>maxQ&&!_closingPhase){
           /* Last question timed out — ask closing question */
           _closingPhase=true;_closingAsked=false;
+          clearTimeout(silenceTimer);
           _waitingForAI=true;setAvatar('thinking');dis(true);showTyping();
           var trimmedCT=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
           var sysCT="You are a professional NZ job interviewer wrapping up a "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. You have asked all your questions. Now briefly thank the candidate for their answers and ask if there is anything else they would like to add or any questions they have for you. Keep it short — 2 sentences max.";
           fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sysCT,messages:trimmedCT})}).then(function(r){return r.json();}).then(function(d){
+            if(_interviewEnded)return;
             var t2=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
             if(!t2)throw new Error('empty');
             _closingAsked=true;msgs.push({role:'assistant',content:t2});hideTyping();addMsg(t2,'ai');_waitingForAI=false;speak(t2);dis(false);
-          }).catch(function(){_closingAsked=true;_waitingForAI=false;hideTyping();addMsg('Is there anything else you would like to add or any questions for me?','ai');speak('Is there anything else you would like to add or any questions for me?');dis(false);});
+          }).catch(function(){if(_interviewEnded)return;_closingAsked=true;_waitingForAI=false;hideTyping();addMsg('Is there anything else you would like to add or any questions for me?','ai');speak('Is there anything else you would like to add or any questions for me?');dis(false);});
         }
         else{_waitingForAI=true;setAvatar('thinking');dis(true);showTyping();
           var trimmed3=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
