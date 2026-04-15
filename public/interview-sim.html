@@ -656,10 +656,14 @@ async function skipQuestion(){
 
 async function endInterview(){
   _interviewEnded=true;_aiSpeaking=false;_waitingForAI=false;
-  clearTimeout(_speakTimeout);
+  clearTimeout(_speakTimeout);clearTimeout(silenceTimer);
   if(recog){try{recog.stop();}catch(e){}}recog=null;
   try{window.speechSynthesis.cancel();}catch(e){}
   stopTimer();setOrb('thinking');
+  document.getElementById('micControl').style.display='none';
+  document.getElementById('listenBar').style.display='none';
+  document.getElementById('micTranscript').className='mic-transcript';
+  updateMicUI(null,'');
   document.getElementById('endBtn').textContent='Scoring...';document.getElementById('endBtn').disabled=true;
   var p="You conducted a "+iData.style+" interview for "+iData.role+" in NZ. Score the candidate. They used "+fillerWords+" filler sounds (um, uh, ah, er, hmm). Comment on this in your feedback.\n\n";
   iData.qa.forEach(function(x,i){var label=(i===iData.qa.length-1&&_closingPhase)?'Closing':'Q'+(i+1);p+=label+": "+x.q.substring(0,400)+"\nA"+(i+1)+": "+x.a.substring(0,400)+"\n\n";});
