@@ -852,7 +852,7 @@ function startTimer(){
 }
 function stopTimer(){if(answerTimer){clearInterval(answerTimer);answerTimer=null;}}
 function updTimer(){var m=Math.floor(timeLeft/60);var s=timeLeft%60;document.getElementById('timerText').textContent=m+':'+(s<10?'0':'')+s;}
-function toggleMic(){
+function toggleMic(quiet){
   if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){return;}
   if(_aiSpeaking){_aiSpeaking=false;clearTimeout(_speakTimeout);try{window.speechSynthesis.cancel();}catch(e){}setAvatar('listening');}
   if(recog){
@@ -868,10 +868,12 @@ function toggleMic(){
     recog=new SR();recog.lang='en-NZ';
     recog.continuous=!isMobile;
     recog.interimResults=true;
-    _micRetries=0;
-    updateMicUI('listening','Interviewer is listening — please speak now');
-    document.getElementById('micTranscript').className='mic-transcript active';
-    document.getElementById('micTranscript').textContent=_accumulated||'';
+    if(!quiet){
+      _micRetries=0;
+      updateMicUI('listening','Interviewer is listening — please speak now');
+      document.getElementById('micTranscript').className='mic-transcript active';
+      document.getElementById('micTranscript').textContent=_accumulated||'';
+    }
     document.getElementById('listenBar').style.display='block';
     document.getElementById('listenFill').style.width='0';
     var inp=document.getElementById('userInput');
@@ -937,10 +939,12 @@ function toggleMic(){
     };
     recog.onend=function(){recog=null;
       var inp2=document.getElementById('userInput');
-      if(isMobile&&!_aiSpeaking&&!_waitingForAI&&!_sending){
-        /* Mobile: recognition stopped after a phrase. Restart to keep listening. */
-        /* The silence timer handles auto-send — we just keep the mic open. */
-        if(answerTimer){setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog&&!_sending)toggleMic();},150);}
+      if(isMobile&&!_aiSpeaking&&!_waitingForAI&&!_sending&&!_interviewEnded){
+        /* Mobile: recognition stopped after a phrase. Restart quietly. */
+        if(answerTimer||_closingPhase){
+          clearTimeout(silenceTimer);/* Pause auto-send during restart gap */
+          setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog&&!_sending&&!_interviewEnded)toggleMic(true);},250);
+        }
         else if(inp2.value.trim()){updateMicUI('waiting','Sending your answer...');sendAnswer();}
         return;
       }
