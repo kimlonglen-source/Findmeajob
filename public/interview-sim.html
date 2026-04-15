@@ -420,7 +420,7 @@ var timedMode=false,answerTimer=null,timeLeft=0;
 var autoSend=true,silenceTimer=null,silenceDelay=5000;
 var fillerWords=0;
 var _interviewEnded=false;
-var fillerRegex=/\b(um+|umm+|uhm+|uh+|uhh+|ah+|ahh+|er+|err+|hmm+|hm+|oh+|so+|well|yeah|yep|right|okay|ok|like|you know|i mean|basically|literally|sort of|kind of|i guess|i think|actually|honestly|obviously)\b/gi;
+var fillerRegex=/\b(um+|umm+|uhm+|uh+|uhh+|ah+|ahh+|er+|err+|hmm+|hm+)\b/gi;
 
 var _prepRole='';
 var _micStream=null;
@@ -568,6 +568,8 @@ async function sendAnswer(){
   /* If we have reached or passed the last question, stop — do not fetch another */
   if(qCount>maxQ){
     stopTimer();_waitingForAI=false;_sending=false;
+    var iName=document.getElementById('avatarName').textContent;
+    addMsg('Thank you for your time today. That was the last question. Click below to get your score and feedback.','ai');
     document.getElementById('micControl').style.display='none';
     document.getElementById('endBtn').style.display='block';
     return;
@@ -595,7 +597,7 @@ async function skipQuestion(){
   iData.qa.push({q:lastAi,a:'(skipped)'});
   msgs.push({role:'user',content:'(The candidate chose to skip this question. Move on to the next one.)'});
   qCount++;updC();
-  if(qCount>maxQ){_waitingForAI=false;document.getElementById('micControl').style.display='none';document.getElementById('endBtn').style.display='block';return;}
+  if(qCount>maxQ){_waitingForAI=false;addMsg('Thank you for your time today. That was the last question. Click below to get your score and feedback.','ai');document.getElementById('micControl').style.display='none';document.getElementById('endBtn').style.display='block';return;}
   setAvatar('thinking');dis(true);showTyping();
   var trimmed2=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
   try{
@@ -615,7 +617,7 @@ async function endInterview(){
   try{window.speechSynthesis.cancel();}catch(e){}
   stopTimer();setOrb('thinking');
   document.getElementById('endBtn').textContent='Scoring...';document.getElementById('endBtn').disabled=true;
-  var p="You conducted a "+iData.style+" interview for "+iData.role+" in NZ. Score the candidate. They used "+fillerWords+" filler words (um, uh, ah, like, you know, basically, I mean, sort of, kind of, etc). Comment on this in your feedback.\n\n";
+  var p="You conducted a "+iData.style+" interview for "+iData.role+" in NZ. Score the candidate. They used "+fillerWords+" filler sounds (um, uh, ah, er, hmm). Comment on this in your feedback.\n\n";
   iData.qa.forEach(function(x,i){p+="Q"+(i+1)+": "+x.q.substring(0,400)+"\nA"+(i+1)+": "+x.a.substring(0,400)+"\n\n";});
   p+="Return ONLY valid JSON: {\"score\":number,\"grade\":\"A+ to D\",\"overall\":\"2-3 sentences\",\"feedback\":[{\"question\":\"short\",\"rating\":\"Good|Average|Needs Work\",\"comment\":\"1-2 sentences\"}]}";
   try{
@@ -716,7 +718,7 @@ function startTimer(){
         iData.qa.push({q:lastAi,a:'(no answer — timed out)'});
         msgs.push({role:'user',content:'(The candidate did not answer in time. Move on to the next question.)'});
         qCount++;updC();
-        if(qCount>maxQ){document.getElementById('micControl').style.display='none';document.getElementById('endBtn').style.display='block';}
+        if(qCount>maxQ){addMsg('Thank you for your time today. That was the last question. Click below to get your score and feedback.','ai');document.getElementById('micControl').style.display='none';document.getElementById('endBtn').style.display='block';}
         else{_waitingForAI=true;setAvatar('thinking');dis(true);showTyping();
           var trimmed3=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
           fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:"You are a professional NZ job interviewer. "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. Question "+qCount+" of "+maxQ+". The candidate did not answer the previous question. Acknowledge briefly and move on to your next question.",messages:trimmed3})}).then(function(r){return r.json();}).then(function(d){
