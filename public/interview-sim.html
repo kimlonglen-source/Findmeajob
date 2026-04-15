@@ -568,8 +568,12 @@ async function sendAnswer(){
   if(!ans){return;}
   _sending=true;
   stopTimer();clearTimeout(_speakTimeout);_waitingForAI=true;_aiSpeaking=false;
+  clearTimeout(silenceTimer);
   if(recog){recog.stop();recog=null;document.getElementById('listenBar').style.display='none';}
-  inp.value='';inp.style.height='44px';addMsg(ans,'user');countFillers(ans);updateMicUI('waiting','Processing your answer...');
+  inp.value='';_accumulated='';inp.style.height='44px';
+  document.getElementById('micTranscript').textContent='';document.getElementById('micTranscript').className='mic-transcript';
+  var sc3=document.getElementById('silenceCountdown');if(sc3){sc3.className='silence-countdown';sc3.textContent='';}
+  addMsg(ans,'user');countFillers(ans);updateMicUI('waiting','Processing your answer...');
   var lastAi='';for(var i=msgs.length-1;i>=0;i--){if(msgs[i].role==='assistant'){lastAi=msgs[i].content;break;}}
   iData.qa.push({q:lastAi,a:ans});msgs.push({role:'user',content:ans});qCount++;updC();
   /* Closing phase: user answered the closing question — end everything */
@@ -866,7 +870,7 @@ function toggleMic(quiet){
     var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
     var isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     recog=new SR();recog.lang='en-NZ';
-    recog.continuous=!isMobile;
+    recog.continuous=true;/* Continuous on all devices — prevents phrase-end stops */
     recog.interimResults=true;
     if(!quiet){
       _micRetries=0;
@@ -940,22 +944,19 @@ function toggleMic(quiet){
     recog.onend=function(){recog=null;
       var inp2=document.getElementById('userInput');
       if(isMobile&&!_aiSpeaking&&!_waitingForAI&&!_sending&&!_interviewEnded){
-        /* Mobile: recognition stopped after a phrase. */
+        /* Mobile: continuous may still stop — restart mic so user can keep talking */
+        clearTimeout(silenceTimer);
+        /* Set fallback auto-send: if no new speech in silenceDelay, send answer */
         if(inp2.value.trim()){
-          /* User has spoken — do NOT restart mic (causes beep). */
-          /* Just wait silenceDelay then auto-send. If they tap mic/skip, that overrides. */
-          updateMicUI('listening','Pause detected — auto-sending soon...');
-          clearTimeout(silenceTimer);
           silenceTimer=setTimeout(function(){
-            if(!_sending&&!_interviewEnded&&inp2.value.trim()){
+            if(!_sending&&!_interviewEnded&&!recog&&inp2.value.trim()){
               updateMicUI('waiting','Sending your answer...');
               sendAnswer();
             }
           },silenceDelay);
-        } else {
-          /* No text yet — restart mic so user can start speaking */
-          setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog&&!_sending&&!_interviewEnded)toggleMic(true);},250);
         }
+        /* Restart mic quietly to keep listening */
+        setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog&&!_sending&&!_interviewEnded)toggleMic(true);},200);
         return;
       }
       clearTimeout(silenceTimer);
