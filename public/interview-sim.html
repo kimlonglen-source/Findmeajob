@@ -686,7 +686,7 @@ function showScore(r){
   h+='<div class="score-big" id="score-num" style="color:'+c+'">0/100</div>';
   h+='<div style="display:inline-block;background:'+bg+';color:'+c+';padding:.3rem .85rem;border-radius:999px;font-size:.82rem;font-weight:700;border:1px solid '+c+'33">'+esc(r.grade)+'</div>';
   var elapsed=Math.round((Date.now()-_interviewStartTime)/1000);var eMin=Math.floor(elapsed/60);var eSec=elapsed%60;
-  h+='<div style="margin-top:.75rem;display:flex;justify-content:center;gap:1.5rem;font-size:.75rem;color:#94a3b8;font-weight:600"><span>Duration: '+eMin+'m '+eSec+'s</span><span>Questions: '+maxQ+'</span><span>Fillers: '+fillerWords+'</span></div>';
+  h+='<div style="margin-top:.75rem;display:flex;justify-content:center;gap:1.5rem;font-size:.78rem;color:#64748b;font-weight:600"><span>&#9201; '+eMin+'m '+eSec+'s</span><span>&#10003; '+maxQ+' questions</span><span style="color:'+(fillerWords>=3?'#ef4444':'#64748b')+'">Fillers: '+fillerWords+'</span></div>';
   h+='<p style="color:#64748b;font-size:.88rem;margin-top:1rem;line-height:1.6">'+esc(r.overall)+'</p></div>';
   if(r.feedback&&r.feedback.length){r.feedback.forEach(function(f,fi){
     var fc=f.rating==='Good'?'#E7515A':f.rating==='Average'?'#f59e0b':'#ef4444';
@@ -695,7 +695,7 @@ function showScore(r){
     h+='<div class="fb-text">'+esc(f.comment)+'</div></div>';
   });}
   h+='<div class="cta-box"><p>Ready to apply for real?</p><a href="/match.html">Apply for a Job</a></div>';
-  document.getElementById('interviewerBar').classList.remove('visible');document.getElementById('chatSection').style.display='none';
+  releaseMic();document.getElementById('interviewerBar').classList.remove('visible');document.getElementById('chatSection').style.display='none';
   document.getElementById('scoreSection').innerHTML=h;document.getElementById('scoreSection').style.display='block';
   window.scrollTo({top:0,behavior:'smooth'});
   var target=r.score;var cur=0;var numEl=document.getElementById('score-num');
@@ -853,9 +853,9 @@ function toggleMic(){
     var _lastSpeechTime=Date.now();
     _pauseFillersPending=0;
     recog.onresult=function(e){
-      /* Detect hesitation pauses (>2s gap between speech) as filler proxy */
+      /* Detect hesitation pauses (>1.2s gap between speech) as filler/hesitation */
       var now=Date.now();
-      if(_lastSpeechTime&&now-_lastSpeechTime>2000&&inp.value.trim().length>0){_pauseFillersPending++;}
+      if(_lastSpeechTime&&now-_lastSpeechTime>1200&&inp.value.trim().length>0){_pauseFillersPending++;}
       _lastSpeechTime=now;
       _micRetries=0;
       var t='';var interim='';var allInterim='';
@@ -940,11 +940,8 @@ function toggleMic(){
 
 /* Cleanup — release mic so browser tab indicator goes away */
 function releaseMic(){
-  if(recog){try{recog.stop();}catch(e){}}recog=null;
-  /* Request and immediately release a mic stream to flush any lingering access */
-  if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
-    navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){s.getTracks().forEach(function(t){t.stop();});}).catch(function(){});
-  }
+  if(recog){try{recog.abort();}catch(e){try{recog.stop();}catch(e2){}}}recog=null;
+  clearTimeout(silenceTimer);
 }
 function stopCam(){
   releaseMic();
