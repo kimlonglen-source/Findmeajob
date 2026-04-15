@@ -421,6 +421,7 @@ var timedMode=false,answerTimer=null,timeLeft=0;
 var autoSend=true,silenceTimer=null,silenceDelay=3000;
 var fillerWords=0;
 var _pauseFillersPending=0;
+var _fillerBreakdown={pauses:0,ums:0,uhs:0,ahs:0,ers:0,hmms:0,likes:0,other:0};
 var _interviewEnded=false;
 var _closingPhase=false;
 var _closingAsked=false;
@@ -539,6 +540,7 @@ async function _doStart(role){
   var jobDesc=iData.jobDesc||'';
   iData={role:role,company:company,style:style,jobDesc:jobDesc,qa:[]};
   _interviewEnded=false;_closingPhase=false;_closingAsked=false;_interviewStartTime=Date.now();
+  _fillerBreakdown={pauses:0,ums:0,uhs:0,ahs:0,ers:0,hmms:0,likes:0,other:0};
   document.getElementById('pageHeader').style.display='none';
   document.getElementById('chatSection').style.display='block';
   var vg=document.getElementById('voiceGender').value;
@@ -672,7 +674,9 @@ async function endInterview(){
   document.getElementById('micTranscript').className='mic-transcript';
   updateMicUI(null,'');
   document.getElementById('endBtn').textContent='Scoring...';document.getElementById('endBtn').disabled=true;
-  var p="You conducted a "+iData.style+" interview for "+iData.role+" in NZ. Score the candidate. They had "+fillerWords+" filler sounds and hesitations (um, uh, ah, long pauses). Comment on this in your feedback.\n\n";
+  var fb=_fillerBreakdown;
+  var fillerDetail="Filler breakdown: "+fb.pauses+" hesitation pauses, "+fb.ums+" ums, "+fb.uhs+" uhs, "+fb.ahs+" ahs, "+fb.ers+" ers, "+fb.hmms+" hmms. Total: "+fillerWords+".";
+  var p="You conducted a "+iData.style+" interview for "+iData.role+" in NZ. Score the candidate.\n"+fillerDetail+"\nComment specifically on their filler sounds and hesitations in your feedback. Be specific about which types were most frequent.\n\n";
   iData.qa.forEach(function(x,i){var label=(i===iData.qa.length-1&&_closingPhase)?'Closing':'Q'+(i+1);p+=label+": "+x.q.substring(0,400)+"\nA"+(i+1)+": "+x.a.substring(0,400)+"\n\n";});
   if(_closingPhase){p+="The last entry is the candidate closing remarks when asked if they had anything to add. Factor this into your overall assessment — it shows initiative and communication skills.\n\n";}
   p+="Return ONLY valid JSON: {\"score\":number,\"grade\":\"A+ to D\",\"overall\":\"2-3 sentences\",\"feedback\":[{\"question\":\"short\",\"rating\":\"Good|Average|Needs Work\",\"comment\":\"1-2 sentences\"}]}";
@@ -691,8 +695,26 @@ function showScore(r){
   h+='<div class="score-big" id="score-num" style="color:'+c+'">0/100</div>';
   h+='<div style="display:inline-block;background:'+bg+';color:'+c+';padding:.3rem .85rem;border-radius:999px;font-size:.82rem;font-weight:700;border:1px solid '+c+'33">'+esc(r.grade)+'</div>';
   var elapsed=Math.round((Date.now()-_interviewStartTime)/1000);var eMin=Math.floor(elapsed/60);var eSec=elapsed%60;
-  h+='<div style="margin-top:.75rem;display:flex;justify-content:center;gap:1.5rem;font-size:.78rem;color:#64748b;font-weight:600"><span>&#9201; '+eMin+'m '+eSec+'s</span><span>&#10003; '+maxQ+' questions</span><span style="color:'+(fillerWords>=3?'#ef4444':'#64748b')+'">Fillers: '+fillerWords+'</span></div>';
+  h+='<div style="margin-top:.75rem;display:flex;justify-content:center;gap:1.5rem;font-size:.78rem;color:#64748b;font-weight:600"><span>&#9201; '+eMin+'m '+eSec+'s</span><span>&#10003; '+maxQ+' questions</span></div>';
   h+='<p style="color:#64748b;font-size:.88rem;margin-top:1rem;line-height:1.6">'+esc(r.overall)+'</p></div>';
+  /* Filler breakdown card */
+  var fb2=_fillerBreakdown;var totalF=fillerWords;
+  var fColor=totalF>=5?'#ef4444':totalF>=3?'#f59e0b':'#E7515A';
+  h+='<div class="fb-item" style="animation-delay:0.1s;text-align:center;padding:1.25rem">';
+  h+='<div style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.5rem">Filler &amp; Hesitation Report</div>';
+  h+='<div style="font-size:2rem;font-weight:900;color:'+fColor+'">'+totalF+'</div>';
+  h+='<div style="font-size:.75rem;color:#64748b;margin-bottom:.75rem">total fillers detected</div>';
+  h+='<div style="display:flex;justify-content:center;gap:.5rem;flex-wrap:wrap">';
+  if(fb2.pauses>0)h+='<span style="background:#fef2f2;border:1px solid #fecaca;padding:.25rem .65rem;border-radius:999px;font-size:.72rem;font-weight:600;color:#c7313a">&#9208; Pauses: '+fb2.pauses+'</span>';
+  if(fb2.ums>0)h+='<span style="background:#fef2f2;border:1px solid #fecaca;padding:.25rem .65rem;border-radius:999px;font-size:.72rem;font-weight:600;color:#c7313a">Um: '+fb2.ums+'</span>';
+  if(fb2.uhs>0)h+='<span style="background:#fef2f2;border:1px solid #fecaca;padding:.25rem .65rem;border-radius:999px;font-size:.72rem;font-weight:600;color:#c7313a">Uh: '+fb2.uhs+'</span>';
+  if(fb2.ahs>0)h+='<span style="background:#fef2f2;border:1px solid #fecaca;padding:.25rem .65rem;border-radius:999px;font-size:.72rem;font-weight:600;color:#c7313a">Ah: '+fb2.ahs+'</span>';
+  if(fb2.ers>0)h+='<span style="background:#fef2f2;border:1px solid #fecaca;padding:.25rem .65rem;border-radius:999px;font-size:.72rem;font-weight:600;color:#c7313a">Er: '+fb2.ers+'</span>';
+  if(fb2.hmms>0)h+='<span style="background:#fef2f2;border:1px solid #fecaca;padding:.25rem .65rem;border-radius:999px;font-size:.72rem;font-weight:600;color:#c7313a">Hmm: '+fb2.hmms+'</span>';
+  if(totalF===0)h+='<span style="background:#f0fdf4;border:1px solid #bbf7d0;padding:.25rem .65rem;border-radius:999px;font-size:.72rem;font-weight:600;color:#16a34a">No fillers detected — great job!</span>';
+  h+='</div>';
+  h+='<div style="font-size:.68rem;color:#94a3b8;margin-top:.65rem;line-height:1.5">Pauses are hesitations longer than 1 second during your answer. Filler sounds (um, uh, ah) are counted when detected in your speech.</div>';
+  h+='</div>';
   if(r.feedback&&r.feedback.length){r.feedback.forEach(function(f,fi){
     var fc=f.rating==='Good'?'#E7515A':f.rating==='Average'?'#f59e0b':'#ef4444';
     h+='<div class="fb-item" style="animation-delay:'+(0.3+fi*0.15)+'s"><div class="fb-q">'+esc(f.question)+'</div>';
@@ -958,7 +980,12 @@ function addMsg(t,type){var c=document.getElementById('chatMessages');var w=docu
 function showTyping(){var c=document.getElementById('chatMessages');var w=document.createElement('div');w.className='msg-typing-wrap';w.id='typing';var av=document.createElement('div');av.className='msg-avatar msg-avatar-ai';var iName=document.getElementById('avatarName');av.textContent=(iName?iName.textContent:'S').charAt(0);var d=document.createElement('div');d.className='msg msg-typing';d.innerHTML='<i></i><i></i><i></i>';w.appendChild(av);w.appendChild(d);c.appendChild(w);setTimeout(function(){w.scrollIntoView({behavior:'smooth',block:'start'});},100);}
 function hideTyping(){var el=document.getElementById('typing');if(el)el.remove();}
 function updC(){document.getElementById('qCounter').innerHTML='Q <strong>'+Math.min(qCount,maxQ)+'</strong> / '+maxQ;}
-function countFillers(text){var m=text.match(fillerRegex);var count=(m?m.length:0)+_pauseFillersPending;_pauseFillersPending=0;if(count){fillerWords+=count;var fc=document.getElementById('fillerCount');var fs=document.getElementById('fillerStat');fc.textContent=fillerWords;if(fillerWords>=5){fc.style.color='#ef4444';fs.style.background='#fef2f2';fs.style.borderColor='#fecaca';}else if(fillerWords>=3){fc.style.color='#f59e0b';fs.style.background='#fffbeb';fs.style.borderColor='#fde68a';}}}
+function countFillers(text){
+  var m=text.match(fillerRegex);
+  if(m){for(var fi=0;fi<m.length;fi++){var w=m[fi].toLowerCase();if(/^um/.test(w))_fillerBreakdown.ums++;else if(/^uh/.test(w))_fillerBreakdown.uhs++;else if(/^ah/.test(w))_fillerBreakdown.ahs++;else if(/^er/.test(w))_fillerBreakdown.ers++;else if(/^hm/.test(w))_fillerBreakdown.hmms++;else _fillerBreakdown.other++;}}
+  _fillerBreakdown.pauses+=_pauseFillersPending;
+  var count=(m?m.length:0)+_pauseFillersPending;_pauseFillersPending=0;
+  if(count){fillerWords+=count;var fc=document.getElementById('fillerCount');var fs=document.getElementById('fillerStat');fc.textContent=fillerWords;if(fillerWords>=5){fc.style.color='#ef4444';fs.style.background='#fef2f2';fs.style.borderColor='#fecaca';}else if(fillerWords>=3){fc.style.color='#f59e0b';fs.style.background='#fffbeb';fs.style.borderColor='#fde68a';}}}
 function dis(v){document.getElementById('sendBtn').disabled=v;document.getElementById('userInput').disabled=v;}
 function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 
