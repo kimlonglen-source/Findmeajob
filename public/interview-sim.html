@@ -420,7 +420,7 @@ var timedMode=false,answerTimer=null,timeLeft=0;
 var autoSend=true,silenceTimer=null,silenceDelay=5000;
 var fillerWords=0;
 var _interviewEnded=false;
-var fillerRegex=/\b(um+|uh+|ah+|er+|like|you know|basically|literally|sort of|kind of)\b/gi;
+var fillerRegex=/\b(um+|umm+|uhm+|uh+|uhh+|ah+|ahh+|er+|err+|hmm+|hm+|oh+|so+|well|yeah|yep|right|okay|ok|like|you know|i mean|basically|literally|sort of|kind of|i guess|i think|actually|honestly|obviously)\b/gi;
 
 var _prepRole='';
 var _micStream=null;
@@ -564,7 +564,15 @@ async function sendAnswer(){
   if(recog){recog.stop();recog=null;document.getElementById('listenBar').style.display='none';}
   inp.value='';inp.style.height='44px';addMsg(ans,'user');countFillers(ans);updateMicUI('waiting','Processing your answer...');
   var lastAi='';for(var i=msgs.length-1;i>=0;i--){if(msgs[i].role==='assistant'){lastAi=msgs[i].content;break;}}
-  iData.qa.push({q:lastAi,a:ans});msgs.push({role:'user',content:ans});qCount++;updC();setAvatar('thinking');dis(true);showTyping();
+  iData.qa.push({q:lastAi,a:ans});msgs.push({role:'user',content:ans});qCount++;updC();
+  /* If we have reached or passed the last question, stop — do not fetch another */
+  if(qCount>maxQ){
+    stopTimer();_waitingForAI=false;_sending=false;
+    document.getElementById('micControl').style.display='none';
+    document.getElementById('endBtn').style.display='block';
+    return;
+  }
+  setAvatar('thinking');dis(true);showTyping();
   var trimmed=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
   try{
     var sys="You are a professional NZ job interviewer. "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. Question "+qCount+" of "+maxQ+". Ask ONE question. Do not say thank you or wrap up the interview. Just ask the question.";
@@ -573,7 +581,6 @@ async function sendAnswer(){
     var d=await r.json();var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):(d.error||'');
     if(!t){throw new Error('empty');}
     msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;_sending=false;speak(t);dis(false);
-    if(qCount>maxQ){stopTimer();document.getElementById('timerDisplay').style.display='none';setTimeout(function(){document.getElementById('endBtn').style.display='block';},1000);}
   }catch(e){_waitingForAI=false;_sending=false;hideTyping();addMsg('Connection issue — tap Skip to move on.','ai');dis(false);qCount--;updC();}
 }
 
@@ -582,13 +589,13 @@ async function skipQuestion(){
   if(recog){recog.stop();recog=null;document.getElementById('listenBar').style.display='none';}
   try{window.speechSynthesis.cancel();}catch(e){}
   var inp=document.getElementById('userInput');
-  if(inp.value.trim()){sendAnswer();return;}
+  inp.value='';/* Discard any partial mic text — user chose to skip */
   addMsg('(Skipped)','user');updateMicUI('waiting','Loading next question...');
   var lastAi='';for(var i=msgs.length-1;i>=0;i--){if(msgs[i].role==='assistant'){lastAi=msgs[i].content;break;}}
   iData.qa.push({q:lastAi,a:'(skipped)'});
   msgs.push({role:'user',content:'(The candidate chose to skip this question. Move on to the next one.)'});
   qCount++;updC();
-  if(qCount>maxQ){_waitingForAI=false;document.getElementById('micControl').style.display='none';document.getElementById('endBtn').style.display='block';document.getElementById('timerDisplay').style.display='none';return;}
+  if(qCount>maxQ){_waitingForAI=false;document.getElementById('micControl').style.display='none';document.getElementById('endBtn').style.display='block';return;}
   setAvatar('thinking');dis(true);showTyping();
   var trimmed2=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
   try{
@@ -608,7 +615,7 @@ async function endInterview(){
   try{window.speechSynthesis.cancel();}catch(e){}
   stopTimer();setOrb('thinking');
   document.getElementById('endBtn').textContent='Scoring...';document.getElementById('endBtn').disabled=true;
-  var p="You conducted a "+iData.style+" interview for "+iData.role+" in NZ. Score the candidate. They used "+fillerWords+" filler words (um, ah, like, you know, basically). Comment on this in your feedback.\n\n";
+  var p="You conducted a "+iData.style+" interview for "+iData.role+" in NZ. Score the candidate. They used "+fillerWords+" filler words (um, uh, ah, like, you know, basically, I mean, sort of, kind of, etc). Comment on this in your feedback.\n\n";
   iData.qa.forEach(function(x,i){p+="Q"+(i+1)+": "+x.q.substring(0,400)+"\nA"+(i+1)+": "+x.a.substring(0,400)+"\n\n";});
   p+="Return ONLY valid JSON: {\"score\":number,\"grade\":\"A+ to D\",\"overall\":\"2-3 sentences\",\"feedback\":[{\"question\":\"short\",\"rating\":\"Good|Average|Needs Work\",\"comment\":\"1-2 sentences\"}]}";
   try{
@@ -709,7 +716,7 @@ function startTimer(){
         iData.qa.push({q:lastAi,a:'(no answer — timed out)'});
         msgs.push({role:'user',content:'(The candidate did not answer in time. Move on to the next question.)'});
         qCount++;updC();
-        if(qCount>maxQ){document.getElementById('micControl').style.display='none';document.getElementById('endBtn').style.display='block';document.getElementById('timerDisplay').style.display='none';}
+        if(qCount>maxQ){document.getElementById('micControl').style.display='none';document.getElementById('endBtn').style.display='block';}
         else{_waitingForAI=true;setAvatar('thinking');dis(true);showTyping();
           var trimmed3=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
           fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:"You are a professional NZ job interviewer. "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. Question "+qCount+" of "+maxQ+". The candidate did not answer the previous question. Acknowledge briefly and move on to your next question.",messages:trimmed3})}).then(function(r){return r.json();}).then(function(d){
