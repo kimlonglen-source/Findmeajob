@@ -353,7 +353,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
       <div class="interview-stats">
         <div class="stat-item" id="qCounter">Q <strong>1</strong> / 5</div>
         <div class="stat-item" id="timerDisplay" style="display:none"><span id="timerText" style="color:#c7313a;font-weight:700">2:00</span></div>
-        <div class="stat-item" id="fillerStat" style="background:#f8fafc;padding:.2rem .55rem;border-radius:999px;border:1px solid #e2e8f0;font-size:.68rem">Fillers <strong id="fillerCount" style="color:#E7515A">0</strong></div>
+        <div class="stat-item" id="fillerStat" style="background:#f8fafc;padding:.2rem .55rem;border-radius:999px;border:1px solid #e2e8f0;font-size:.68rem">Pauses <strong id="fillerCount" style="color:#E7515A">0</strong></div>
       </div>
     </div>
 
@@ -423,6 +423,7 @@ var fillerWords=0;
 var _pauseFillersPending=0;
 var _interviewEnded=false;
 var _closingPhase=false;
+var _closingAsked=false;
 var _interviewStartTime=0;
 var fillerRegex=/\b(um+|umm+|uhm+|uh+|uhh+|ah+|ahh+|er+|err+|hmm+|hm+)\b/gi;
 
@@ -537,7 +538,7 @@ async function _doStart(role){
   var style=document.getElementById('simStyle').value;
   var jobDesc=iData.jobDesc||'';
   iData={role:role,company:company,style:style,jobDesc:jobDesc,qa:[]};
-  _interviewEnded=false;_closingPhase=false;_interviewStartTime=Date.now();
+  _interviewEnded=false;_closingPhase=false;_closingAsked=false;_interviewStartTime=Date.now();
   document.getElementById('pageHeader').style.display='none';
   document.getElementById('chatSection').style.display='block';
   var vg=document.getElementById('voiceGender').value;
@@ -570,10 +571,10 @@ async function sendAnswer(){
   var lastAi='';for(var i=msgs.length-1;i>=0;i--){if(msgs[i].role==='assistant'){lastAi=msgs[i].content;break;}}
   iData.qa.push({q:lastAi,a:ans});msgs.push({role:'user',content:ans});qCount++;updC();
   /* Closing phase: user answered the closing question — end everything */
-  if(_closingPhase){
-    _sending=false;_waitingForAI=false;_aiSpeaking=false;
+  if(_closingPhase&&_closingAsked){
+    _interviewEnded=true;_sending=false;_waitingForAI=false;_aiSpeaking=false;
     clearTimeout(_speakTimeout);stopTimer();
-    if(recog){try{recog.stop();}catch(e){}}recog=null;
+    releaseMic();
     try{window.speechSynthesis.cancel();}catch(e){}
     var tyMsg='Thank you so much for your time today. It was great speaking with you. Click below to get your score and feedback.';
     addMsg(tyMsg,'ai');
@@ -584,15 +585,16 @@ async function sendAnswer(){
   }
   /* Last question answered — ask a closing question */
   if(qCount>maxQ){
-    _closingPhase=true;_sending=false;
+    _closingPhase=true;_closingAsked=false;_sending=false;
     setAvatar('thinking');dis(true);showTyping();
     var trimmedC=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
     var sysC="You are a professional NZ job interviewer wrapping up a "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. You have asked all your questions. Now briefly thank the candidate for their answers and ask if there is anything else they would like to add or any questions they have for you. Keep it short — 2 sentences max.";
     fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sysC,messages:trimmedC})}).then(function(r){return r.json();}).then(function(d){
       var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
       if(!t)throw new Error('empty');
+      _closingAsked=true;
       msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;speak(t);dis(false);
-    }).catch(function(){_waitingForAI=false;hideTyping();addMsg('Is there anything else you would like to add or any questions for me?','ai');_closingPhase=true;speak('Is there anything else you would like to add or any questions for me?');dis(false);});
+    }).catch(function(){_closingAsked=true;_waitingForAI=false;hideTyping();addMsg('Is there anything else you would like to add or any questions for me?','ai');speak('Is there anything else you would like to add or any questions for me?');dis(false);});
     return;
   }
   setAvatar('thinking');dis(true);showTyping();
@@ -608,21 +610,23 @@ async function sendAnswer(){
 }
 
 async function skipQuestion(){
+  /* Block skip if closing question is loading or playing */
+  if(_closingPhase&&!_closingAsked)return;
   stopTimer();clearTimeout(_speakTimeout);clearTimeout(silenceTimer);_waitingForAI=true;_aiSpeaking=false;_sending=false;
   if(recog){recog.stop();recog=null;document.getElementById('listenBar').style.display='none';}
   try{window.speechSynthesis.cancel();}catch(e){}
   var inp=document.getElementById('userInput');
-  inp.value='';/* Discard any partial mic text — user chose to skip */
+  inp.value='';
   addMsg('(Skipped)','user');updateMicUI('waiting','Loading next question...');
   var lastAi='';for(var i=msgs.length-1;i>=0;i--){if(msgs[i].role==='assistant'){lastAi=msgs[i].content;break;}}
   iData.qa.push({q:lastAi,a:'(skipped)'});
   msgs.push({role:'user',content:'(The candidate chose to skip this question. Move on to the next one.)'});
   qCount++;updC();
   /* Closing phase: user skipped the closing question — end everything */
-  if(_closingPhase){
-    _waitingForAI=false;_aiSpeaking=false;
+  if(_closingPhase&&_closingAsked){
+    _interviewEnded=true;_waitingForAI=false;_aiSpeaking=false;
     clearTimeout(_speakTimeout);stopTimer();
-    if(recog){try{recog.stop();}catch(e){}}recog=null;
+    releaseMic();
     try{window.speechSynthesis.cancel();}catch(e){}
     var tyMsg2='Thank you so much for your time today. It was great speaking with you. Click below to get your score and feedback.';
     addMsg(tyMsg2,'ai');
@@ -633,15 +637,16 @@ async function skipQuestion(){
   }
   /* Last question skipped — ask closing question */
   if(qCount>maxQ){
-    _closingPhase=true;
+    _closingPhase=true;_closingAsked=false;
     setAvatar('thinking');dis(true);showTyping();
     var trimmedC2=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
     var sysC2="You are a professional NZ job interviewer wrapping up a "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. You have asked all your questions. Now briefly thank the candidate for their answers and ask if there is anything else they would like to add or any questions they have for you. Keep it short — 2 sentences max.";
     fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sysC2,messages:trimmedC2})}).then(function(r){return r.json();}).then(function(d){
       var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
       if(!t)throw new Error('empty');
+      _closingAsked=true;
       msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;speak(t);dis(false);
-    }).catch(function(){_waitingForAI=false;hideTyping();addMsg('Is there anything else you would like to add or any questions for me?','ai');speak('Is there anything else you would like to add or any questions for me?');dis(false);});
+    }).catch(function(){_closingAsked=true;_waitingForAI=false;hideTyping();addMsg('Is there anything else you would like to add or any questions for me?','ai');speak('Is there anything else you would like to add or any questions for me?');dis(false);});
     return;
   }
   setAvatar('thinking');dis(true);showTyping();
@@ -790,9 +795,9 @@ function startTimer(){
         msgs.push({role:'user',content:'(The candidate did not answer in time. Move on to the next question.)'});
         qCount++;updC();
         /* Closing phase timeout — end everything */
-        if(_closingPhase){
-          _waitingForAI=false;_aiSpeaking=false;
-          clearTimeout(_speakTimeout);try{window.speechSynthesis.cancel();}catch(e){}
+        if(_closingPhase&&_closingAsked){
+          _interviewEnded=true;_waitingForAI=false;_aiSpeaking=false;
+          clearTimeout(_speakTimeout);releaseMic();try{window.speechSynthesis.cancel();}catch(e){}
           var tyMsg3='Thank you so much for your time today. It was great speaking with you. Click below to get your score and feedback.';
           addMsg(tyMsg3,'ai');
           document.getElementById('micControl').style.display='none';document.getElementById('endBtn').style.display='block';
@@ -800,15 +805,15 @@ function startTimer(){
         }
         else if(qCount>maxQ){
           /* Last question timed out — ask closing question */
-          _closingPhase=true;
+          _closingPhase=true;_closingAsked=false;
           _waitingForAI=true;setAvatar('thinking');dis(true);showTyping();
           var trimmedCT=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
           var sysCT="You are a professional NZ job interviewer wrapping up a "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. You have asked all your questions. Now briefly thank the candidate for their answers and ask if there is anything else they would like to add or any questions they have for you. Keep it short — 2 sentences max.";
           fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sysCT,messages:trimmedCT})}).then(function(r){return r.json();}).then(function(d){
             var t2=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
             if(!t2)throw new Error('empty');
-            msgs.push({role:'assistant',content:t2});hideTyping();addMsg(t2,'ai');_waitingForAI=false;speak(t2);dis(false);
-          }).catch(function(){_waitingForAI=false;hideTyping();addMsg('Is there anything else you would like to add or any questions for me?','ai');speak('Is there anything else you would like to add or any questions for me?');dis(false);});
+            _closingAsked=true;msgs.push({role:'assistant',content:t2});hideTyping();addMsg(t2,'ai');_waitingForAI=false;speak(t2);dis(false);
+          }).catch(function(){_closingAsked=true;_waitingForAI=false;hideTyping();addMsg('Is there anything else you would like to add or any questions for me?','ai');speak('Is there anything else you would like to add or any questions for me?');dis(false);});
         }
         else{_waitingForAI=true;setAvatar('thinking');dis(true);showTyping();
           var trimmed3=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
