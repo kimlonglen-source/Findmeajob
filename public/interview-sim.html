@@ -375,6 +375,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
       <textarea id="userInput" style="display:none" rows="1"></textarea>
       <div class="chat-actions" style="margin-top:.6rem">
         <button id="sendBtn" onclick="sendAnswer()" style="display:none;padding:.55rem 1.2rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:Inter,sans-serif;font-size:.78rem;font-weight:700;cursor:pointer">Send Answer</button>
+        <button id="keepTalkingBtn" onclick="toggleMic()" style="display:none;padding:.55rem 1.2rem;background:#fff;color:#E7515A;border:2px solid #E7515A;border-radius:999px;font-family:Inter,sans-serif;font-size:.78rem;font-weight:700;cursor:pointer">&#127908; Keep Talking</button>
         <button id="skipBtn" onclick="skipQuestion()" style="background:#f8fafc;color:#64748b;border:1px solid #e2e8f0;font-size:.72rem;border-radius:999px;padding:.5rem 1rem;font-family:Inter,sans-serif;cursor:pointer">Skip</button>
       </div>
     </div>
@@ -573,6 +574,8 @@ async function sendAnswer(){
   inp.value='';_accumulated='';inp.style.height='44px';
   document.getElementById('micTranscript').textContent='';document.getElementById('micTranscript').className='mic-transcript';
   var sc3=document.getElementById('silenceCountdown');if(sc3){sc3.className='silence-countdown';sc3.textContent='';}
+  document.getElementById('sendBtn').style.display='none';
+  document.getElementById('keepTalkingBtn').style.display='none';
   addMsg(ans,'user');countFillers(ans);updateMicUI('waiting','Processing your answer...');
   var lastAi='';for(var i=msgs.length-1;i>=0;i--){if(msgs[i].role==='assistant'){lastAi=msgs[i].content;break;}}
   iData.qa.push({q:lastAi,a:ans});msgs.push({role:'user',content:ans});qCount++;updC();
@@ -877,7 +880,10 @@ function toggleMic(quiet){
       updateMicUI('listening','Interviewer is listening — please speak now');
       document.getElementById('micTranscript').className='mic-transcript active';
       document.getElementById('micTranscript').textContent=_accumulated||'';
+    } else {
+      updateMicUI('listening','Interviewer is listening...');
     }
+    document.getElementById('keepTalkingBtn').style.display='none';
     document.getElementById('listenBar').style.display='block';
     document.getElementById('listenFill').style.width='0';
     var inp=document.getElementById('userInput');
@@ -944,14 +950,14 @@ function toggleMic(quiet){
     recog.onend=function(){recog=null;
       var inp2=document.getElementById('userInput');
       if(isMobile&&!_aiSpeaking&&!_waitingForAI&&!_sending&&!_interviewEnded){
-        /* Mobile: mic stopped after a phrase. Do NOT auto-send. */
+        /* Mobile: mic stopped after a phrase. Show buttons. */
         clearTimeout(silenceTimer);
+        document.getElementById('sendBtn').style.display='inline-block';
+        document.getElementById('keepTalkingBtn').style.display='inline-block';
         if(inp2.value.trim()){
-          /* User spoke — show Send button, let them tap mic to add more */
-          document.getElementById('sendBtn').style.display='inline-block';
-          updateMicUI(null,'Tap Send when done, or tap mic to keep talking');
+          updateMicUI(null,'Tap Send when done or Keep Talking to add more');
         } else {
-          updateMicUI(null,'Tap the mic button to start speaking');
+          updateMicUI(null,'Tap Keep Talking to start speaking');
         }
         return;
       }
