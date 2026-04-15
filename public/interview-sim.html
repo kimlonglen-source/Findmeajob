@@ -353,7 +353,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
       <div class="interview-stats">
         <div class="stat-item" id="qCounter">Q <strong>1</strong> / 5</div>
         <div class="stat-item" id="timerDisplay" style="display:none"><span id="timerText" style="color:#c7313a;font-weight:700">2:00</span></div>
-        <div class="stat-item" id="fillerStat" style="background:#f8fafc;padding:.2rem .55rem;border-radius:999px;border:1px solid #e2e8f0;font-size:.68rem">Pauses <strong id="fillerCount" style="color:#E7515A">0</strong></div>
+        <div class="stat-item" id="fillerStat" style="background:#f8fafc;padding:.2rem .55rem;border-radius:999px;border:1px solid #e2e8f0;font-size:.68rem">Hesitations <strong id="fillerCount" style="color:#E7515A">0</strong></div>
       </div>
     </div>
 
@@ -674,9 +674,8 @@ async function endInterview(){
   document.getElementById('micTranscript').className='mic-transcript';
   updateMicUI(null,'');
   document.getElementById('endBtn').textContent='Scoring...';document.getElementById('endBtn').disabled=true;
-  var fb=_fillerBreakdown;
-  var fillerDetail="Filler breakdown: "+fb.pauses+" hesitation pauses, "+fb.ums+" ums, "+fb.uhs+" uhs, "+fb.ahs+" ahs, "+fb.ers+" ers, "+fb.hmms+" hmms. Total: "+fillerWords+".";
-  var p="You conducted a "+iData.style+" interview for "+iData.role+" in NZ. Score the candidate.\n"+fillerDetail+"\nComment specifically on their filler sounds and hesitations in your feedback. Be specific about which types were most frequent.\n\n";
+  var totalPauses=_fillerBreakdown.pauses;
+  var p="You conducted a "+iData.style+" interview for "+iData.role+" in NZ. Score the candidate.\nThe candidate had "+totalPauses+" hesitation pauses (moments where they paused for over 1 second mid-answer, often indicating um/uh/ah filler sounds or thinking gaps). Comment on their fluency and confidence based on this. If pauses were high (5+), suggest they practise answering aloud. If low (0-2), praise their fluency.\n\n";
   iData.qa.forEach(function(x,i){var label=(i===iData.qa.length-1&&_closingPhase)?'Closing':'Q'+(i+1);p+=label+": "+x.q.substring(0,400)+"\nA"+(i+1)+": "+x.a.substring(0,400)+"\n\n";});
   if(_closingPhase){p+="The last entry is the candidate closing remarks when asked if they had anything to add. Factor this into your overall assessment — it shows initiative and communication skills.\n\n";}
   p+="Return ONLY valid JSON: {\"score\":number,\"grade\":\"A+ to D\",\"overall\":\"2-3 sentences\",\"feedback\":[{\"question\":\"short\",\"rating\":\"Good|Average|Needs Work\",\"comment\":\"1-2 sentences\"}]}";
@@ -697,23 +696,18 @@ function showScore(r){
   var elapsed=Math.round((Date.now()-_interviewStartTime)/1000);var eMin=Math.floor(elapsed/60);var eSec=elapsed%60;
   h+='<div style="margin-top:.75rem;display:flex;justify-content:center;gap:1.5rem;font-size:.78rem;color:#64748b;font-weight:600"><span>&#9201; '+eMin+'m '+eSec+'s</span><span>&#10003; '+maxQ+' questions</span></div>';
   h+='<p style="color:#64748b;font-size:.88rem;margin-top:1rem;line-height:1.6">'+esc(r.overall)+'</p></div>';
-  /* Filler breakdown card */
-  var fb2=_fillerBreakdown;var totalF=fillerWords;
-  var fColor=totalF>=5?'#ef4444':totalF>=3?'#f59e0b':'#E7515A';
+  /* Filler breakdown card — pauses only (honest) */
+  var totalP=_fillerBreakdown.pauses;
+  var pColor=totalP>=5?'#ef4444':totalP>=3?'#f59e0b':'#E7515A';
   h+='<div class="fb-item" style="animation-delay:0.1s;text-align:center;padding:1.25rem">';
-  h+='<div style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.5rem">Filler &amp; Hesitation Report</div>';
-  h+='<div style="font-size:2rem;font-weight:900;color:'+fColor+'">'+totalF+'</div>';
-  h+='<div style="font-size:.75rem;color:#64748b;margin-bottom:.75rem">total fillers detected</div>';
-  h+='<div style="display:flex;justify-content:center;gap:.5rem;flex-wrap:wrap">';
-  if(fb2.pauses>0)h+='<span style="background:#fef2f2;border:1px solid #fecaca;padding:.25rem .65rem;border-radius:999px;font-size:.72rem;font-weight:600;color:#c7313a">&#9208; Pauses: '+fb2.pauses+'</span>';
-  if(fb2.ums>0)h+='<span style="background:#fef2f2;border:1px solid #fecaca;padding:.25rem .65rem;border-radius:999px;font-size:.72rem;font-weight:600;color:#c7313a">Um: '+fb2.ums+'</span>';
-  if(fb2.uhs>0)h+='<span style="background:#fef2f2;border:1px solid #fecaca;padding:.25rem .65rem;border-radius:999px;font-size:.72rem;font-weight:600;color:#c7313a">Uh: '+fb2.uhs+'</span>';
-  if(fb2.ahs>0)h+='<span style="background:#fef2f2;border:1px solid #fecaca;padding:.25rem .65rem;border-radius:999px;font-size:.72rem;font-weight:600;color:#c7313a">Ah: '+fb2.ahs+'</span>';
-  if(fb2.ers>0)h+='<span style="background:#fef2f2;border:1px solid #fecaca;padding:.25rem .65rem;border-radius:999px;font-size:.72rem;font-weight:600;color:#c7313a">Er: '+fb2.ers+'</span>';
-  if(fb2.hmms>0)h+='<span style="background:#fef2f2;border:1px solid #fecaca;padding:.25rem .65rem;border-radius:999px;font-size:.72rem;font-weight:600;color:#c7313a">Hmm: '+fb2.hmms+'</span>';
-  if(totalF===0)h+='<span style="background:#f0fdf4;border:1px solid #bbf7d0;padding:.25rem .65rem;border-radius:999px;font-size:.72rem;font-weight:600;color:#16a34a">No fillers detected — great job!</span>';
-  h+='</div>';
-  h+='<div style="font-size:.68rem;color:#94a3b8;margin-top:.65rem;line-height:1.5">Pauses are hesitations longer than 1 second during your answer. Filler sounds (um, uh, ah) are counted when detected in your speech.</div>';
+  h+='<div style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.5rem">Hesitation Report</div>';
+  h+='<div style="font-size:2rem;font-weight:900;color:'+pColor+'">'+totalP+'</div>';
+  h+='<div style="font-size:.75rem;color:#64748b;margin-bottom:.75rem">hesitation pauses detected</div>';
+  if(totalP===0){h+='<div style="background:#f0fdf4;border:1px solid #bbf7d0;padding:.4rem .85rem;border-radius:999px;font-size:.78rem;font-weight:600;color:#16a34a;display:inline-block">No hesitations detected — great fluency!</div>';}
+  else if(totalP<=2){h+='<div style="background:#f0fdf4;border:1px solid #bbf7d0;padding:.4rem .85rem;border-radius:999px;font-size:.78rem;font-weight:600;color:#16a34a;display:inline-block">Minimal hesitations — good fluency</div>';}
+  else if(totalP<=5){h+='<div style="background:#fffbeb;border:1px solid #fde68a;padding:.4rem .85rem;border-radius:999px;font-size:.78rem;font-weight:600;color:#92400e;display:inline-block">Some hesitations — practice will help</div>';}
+  else{h+='<div style="background:#fef2f2;border:1px solid #fecaca;padding:.4rem .85rem;border-radius:999px;font-size:.78rem;font-weight:600;color:#c7313a;display:inline-block">Frequent hesitations — try practising your answers aloud</div>';}
+  h+='<div style="font-size:.68rem;color:#94a3b8;margin-top:.65rem;line-height:1.5">Hesitations are pauses longer than 1 second while answering. These often indicate filler sounds (um, uh, ah) or thinking gaps.</div>';
   h+='</div>';
   if(r.feedback&&r.feedback.length){r.feedback.forEach(function(f,fi){
     var fc=f.rating==='Good'?'#E7515A':f.rating==='Average'?'#f59e0b':'#ef4444';
