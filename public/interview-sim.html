@@ -420,6 +420,7 @@ var timedMode=false,answerTimer=null,timeLeft=0;
 var autoSend=true,silenceTimer=null,silenceDelay=5000;
 var fillerWords=0;
 var _interviewEnded=false;
+var _closingPhase=false;
 var fillerRegex=/\b(um+|umm+|uhm+|uh+|uhh+|ah+|ahh+|er+|err+|hmm+|hm+)\b/gi;
 
 var _prepRole='';
@@ -533,7 +534,7 @@ async function _doStart(role){
   var style=document.getElementById('simStyle').value;
   var jobDesc=iData.jobDesc||'';
   iData={role:role,company:company,style:style,jobDesc:jobDesc,qa:[]};
-  _interviewEnded=false;
+  _interviewEnded=false;_closingPhase=false;
   document.getElementById('pageHeader').style.display='none';
   document.getElementById('chatSection').style.display='block';
   var vg=document.getElementById('voiceGender').value;
@@ -565,13 +566,29 @@ async function sendAnswer(){
   inp.value='';inp.style.height='44px';addMsg(ans,'user');countFillers(ans);updateMicUI('waiting','Processing your answer...');
   var lastAi='';for(var i=msgs.length-1;i>=0;i--){if(msgs[i].role==='assistant'){lastAi=msgs[i].content;break;}}
   iData.qa.push({q:lastAi,a:ans});msgs.push({role:'user',content:ans});qCount++;updC();
-  /* If we have reached or passed the last question, stop — do not fetch another */
-  if(qCount>maxQ){
-    stopTimer();_waitingForAI=false;_sending=false;
-    var iName=document.getElementById('avatarName').textContent;
-    addMsg('Thank you for your time today. That was the last question. Click below to get your score and feedback.','ai');
+  /* Closing phase: user answered the closing question — end everything */
+  if(_closingPhase){
+    _interviewEnded=true;_sending=false;_waitingForAI=false;_aiSpeaking=false;
+    clearTimeout(_speakTimeout);stopTimer();
+    if(recog){try{recog.stop();}catch(e){}}recog=null;
+    try{window.speechSynthesis.cancel();}catch(e){}
+    addMsg('Thank you so much for your time today. It was great speaking with you. Click below to get your score and feedback.','ai');
     document.getElementById('micControl').style.display='none';
     document.getElementById('endBtn').style.display='block';
+    setOrb('thinking');
+    return;
+  }
+  /* Last question answered — ask a closing question */
+  if(qCount>maxQ){
+    _closingPhase=true;_sending=false;
+    setAvatar('thinking');dis(true);showTyping();
+    var trimmedC=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
+    var sysC="You are a professional NZ job interviewer wrapping up a "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. You have asked all your questions. Now briefly thank the candidate for their answers and ask if there is anything else they would like to add or any questions they have for you. Keep it short — 2 sentences max.";
+    fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sysC,messages:trimmedC})}).then(function(r){return r.json();}).then(function(d){
+      var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
+      if(!t)throw new Error('empty');
+      msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;speak(t);dis(false);
+    }).catch(function(){_waitingForAI=false;hideTyping();addMsg('Is there anything else you would like to add or any questions for me?','ai');_closingPhase=true;speak('Is there anything else you would like to add or any questions for me?');dis(false);});
     return;
   }
   setAvatar('thinking');dis(true);showTyping();
@@ -597,7 +614,31 @@ async function skipQuestion(){
   iData.qa.push({q:lastAi,a:'(skipped)'});
   msgs.push({role:'user',content:'(The candidate chose to skip this question. Move on to the next one.)'});
   qCount++;updC();
-  if(qCount>maxQ){_waitingForAI=false;addMsg('Thank you for your time today. That was the last question. Click below to get your score and feedback.','ai');document.getElementById('micControl').style.display='none';document.getElementById('endBtn').style.display='block';return;}
+  /* Closing phase: user skipped the closing question — end everything */
+  if(_closingPhase){
+    _interviewEnded=true;_waitingForAI=false;_aiSpeaking=false;
+    clearTimeout(_speakTimeout);stopTimer();
+    if(recog){try{recog.stop();}catch(e){}}recog=null;
+    try{window.speechSynthesis.cancel();}catch(e){}
+    addMsg('Thank you so much for your time today. It was great speaking with you. Click below to get your score and feedback.','ai');
+    document.getElementById('micControl').style.display='none';
+    document.getElementById('endBtn').style.display='block';
+    setOrb('thinking');
+    return;
+  }
+  /* Last question skipped — ask closing question */
+  if(qCount>maxQ){
+    _closingPhase=true;
+    setAvatar('thinking');dis(true);showTyping();
+    var trimmedC2=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
+    var sysC2="You are a professional NZ job interviewer wrapping up a "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. You have asked all your questions. Now briefly thank the candidate for their answers and ask if there is anything else they would like to add or any questions they have for you. Keep it short — 2 sentences max.";
+    fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sysC2,messages:trimmedC2})}).then(function(r){return r.json();}).then(function(d){
+      var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
+      if(!t)throw new Error('empty');
+      msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;speak(t);dis(false);
+    }).catch(function(){_waitingForAI=false;hideTyping();addMsg('Is there anything else you would like to add or any questions for me?','ai');speak('Is there anything else you would like to add or any questions for me?');dis(false);});
+    return;
+  }
   setAvatar('thinking');dis(true);showTyping();
   var trimmed2=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
   try{
@@ -718,7 +759,25 @@ function startTimer(){
         iData.qa.push({q:lastAi,a:'(no answer — timed out)'});
         msgs.push({role:'user',content:'(The candidate did not answer in time. Move on to the next question.)'});
         qCount++;updC();
-        if(qCount>maxQ){addMsg('Thank you for your time today. That was the last question. Click below to get your score and feedback.','ai');document.getElementById('micControl').style.display='none';document.getElementById('endBtn').style.display='block';}
+        /* Closing phase timeout — end everything */
+        if(_closingPhase){
+          _interviewEnded=true;_waitingForAI=false;_aiSpeaking=false;
+          clearTimeout(_speakTimeout);try{window.speechSynthesis.cancel();}catch(e){}
+          addMsg('Thank you so much for your time today. It was great speaking with you. Click below to get your score and feedback.','ai');
+          document.getElementById('micControl').style.display='none';document.getElementById('endBtn').style.display='block';setOrb('thinking');
+        }
+        else if(qCount>maxQ){
+          /* Last question timed out — ask closing question */
+          _closingPhase=true;
+          _waitingForAI=true;setAvatar('thinking');dis(true);showTyping();
+          var trimmedCT=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
+          var sysCT="You are a professional NZ job interviewer wrapping up a "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. You have asked all your questions. Now briefly thank the candidate for their answers and ask if there is anything else they would like to add or any questions they have for you. Keep it short — 2 sentences max.";
+          fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sysCT,messages:trimmedCT})}).then(function(r){return r.json();}).then(function(d){
+            var t2=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
+            if(!t2)throw new Error('empty');
+            msgs.push({role:'assistant',content:t2});hideTyping();addMsg(t2,'ai');_waitingForAI=false;speak(t2);dis(false);
+          }).catch(function(){_waitingForAI=false;hideTyping();addMsg('Is there anything else you would like to add or any questions for me?','ai');speak('Is there anything else you would like to add or any questions for me?');dis(false);});
+        }
         else{_waitingForAI=true;setAvatar('thinking');dis(true);showTyping();
           var trimmed3=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
           fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:"You are a professional NZ job interviewer. "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. Question "+qCount+" of "+maxQ+". The candidate did not answer the previous question. Acknowledge briefly and move on to your next question.",messages:trimmed3})}).then(function(r){return r.json();}).then(function(d){
