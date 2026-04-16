@@ -360,15 +360,26 @@ function showConfirm(action, id, title) {
 }
 
 async function doLogin(){
-  var p=document.getElementById("pw").value; if(!p)return;
+  var p=(document.getElementById("pw").value||"").trim(); if(!p)return;
+  var errEl=document.getElementById("login-err");
   try {
     var r=await fetch("/api/admin",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"list",password:p})});
-    if(r.status===401){document.getElementById("login-err").style.display="block";return;}
-    var d=await r.json();
-    if(d.jobs!==undefined){pw=p;document.getElementById("login").style.display="none";document.getElementById("app").style.display="block";document.getElementById("login-err").style.display="none";allJobs=d.jobs;updateStats();renderJobs();loadStats();refreshTimer=setInterval(function(){loadJobs();loadStats();},30000);document.getElementById("last-refresh").textContent="Refreshed just now";}
-    else{document.getElementById("login-err").style.display="block";}
+    var d={};try{d=await r.json();}catch(e){}
+    if(r.status===200&&d.jobs!==undefined){
+      pw=p;document.getElementById("login").style.display="none";document.getElementById("app").style.display="block";errEl.style.display="none";
+      allJobs=d.jobs;updateStats();renderJobs();loadStats();refreshTimer=setInterval(function(){loadJobs();loadStats();},30000);document.getElementById("last-refresh").textContent="Refreshed just now";
+      return;
+    }
+    var msg="Incorrect password";
+    if(r.status===401)msg="Incorrect password. Check case and extra spaces.";
+    else if(r.status===500&&d.error&&d.error.indexOf("ADMIN_PASSWORD")>=0)msg="Server is missing ADMIN_PASSWORD env var. Set it in Vercel → Settings → Environment Variables, then redeploy.";
+    else if(r.status===500&&d.error&&d.error.indexOf("Database")>=0)msg="Server is missing KV database env vars (KV_URL or UPSTASH_REDIS_REST_URL). Check Vercel env vars.";
+    else if(r.status===500)msg="Server error: "+(d.error||"unknown");
+    else if(r.status===429)msg="Too many attempts. Wait a minute and try again.";
+    else if(d.error)msg=d.error;
+    errEl.textContent=msg;errEl.style.display="block";
   } catch(e) {
-    showToast("Connection error. Please try again.", "error");
+    errEl.textContent="Connection error: "+(e.message||"check your network");errEl.style.display="block";
   }
 }
 
