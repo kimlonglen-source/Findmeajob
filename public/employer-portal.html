@@ -21,6 +21,7 @@ body.dark .auth-tab.active{color:#fff}
 body.dark .modal-box{background:#0f172a}
 body.dark nav,body.dark .portal-header{background:rgba(9,9,11,.95)}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{overflow-x:hidden}
 body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
 nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;background:rgba(255,255,255,.95);border-bottom:1px solid var(--border);backdrop-filter:blur(20px) saturate(180%)}
 .logo{display:flex;align-items:center;gap:.3rem;text-decoration:none;flex-shrink:0}.logo span{font-size:1.05rem;font-weight:800;color:var(--text);letter-spacing:-.5px}.logo em{background:linear-gradient(135deg,var(--em),var(--em2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal;letter-spacing:-.5px}
@@ -119,16 +120,46 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
 <body>
 <div class="toast" id="toast"></div>
 
-<nav style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 3rem;border-bottom:1px solid rgba(0,0,0,.06);background:rgba(255,255,255,.97);backdrop-filter:blur(12px)">
-  <a href="/" style="font-size:1.4rem;font-weight:900;color:#E7515A;text-decoration:none;letter-spacing:-.5px">FindMeAJob</a>
-  <div style="display:flex;align-items:center;gap:2rem">
-    <a href="/#tools" style="color:#64748b;font-size:.82rem;font-weight:600;text-decoration:none">Tools</a>
-    <a href="/blog" style="color:#64748b;font-size:.82rem;font-weight:600;text-decoration:none">Blog</a>
-    <a href="/match.html#account" style="color:#64748b;font-size:.82rem;font-weight:600;text-decoration:none">Job Seekers</a>
-    <a href="/employer-portal.html" style="color:#64748b;font-size:.82rem;font-weight:600;text-decoration:none">Employers</a>
-    <a href="/match.html" style="background:#E7515A;color:#fff;padding:.45rem 1.15rem;border-radius:999px;font-size:.78rem;font-weight:700;text-decoration:none">Find a Job</a>
+<style>
+.ep-nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 3rem;border-bottom:1px solid rgba(0,0,0,.06);position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);backdrop-filter:blur(12px)}
+.ep-nav-logo{font-size:1.4rem;font-weight:900;color:#E7515A;text-decoration:none;letter-spacing:-.5px}
+.ep-nav-links{display:flex;align-items:center;gap:1.5rem}
+.ep-nav-links a{color:#64748b;font-size:.82rem;font-weight:600;text-decoration:none}
+.ep-nav-links a:hover{color:#0f172a}
+.ep-nav-cta{background:#E7515A !important;color:#fff !important;padding:.45rem 1.15rem;border-radius:999px;font-size:.78rem;font-weight:700}
+.ep-hamburger{display:none;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#64748b;padding:.25rem}
+.ep-mob{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;backdrop-filter:blur(4px)}
+.ep-mob.open{display:flex;align-items:flex-start;justify-content:center;padding-top:0}
+.ep-mob-sheet{background:#fff;width:100%;border-radius:0 0 20px 20px;padding:1.5rem;display:flex;flex-direction:column;gap:.25rem;box-shadow:0 10px 40px rgba(0,0,0,.15)}
+.ep-mob-sheet a{display:block;padding:.85rem 0;border-bottom:1px solid rgba(0,0,0,.06);font-size:.95rem;font-weight:600;color:#0f172a;text-decoration:none}
+.ep-mob-sheet a:last-child{border:none}
+.ep-mob-sheet a.coral{color:#E7515A}
+@media(max-width:700px){
+  .ep-nav{padding:.75rem 1rem}
+  .ep-nav-links a:not(.ep-nav-cta){display:none}
+  .ep-hamburger{display:block}
+}
+</style>
+<nav class="ep-nav">
+  <a class="ep-nav-logo" href="/">FindMeAJob</a>
+  <div class="ep-nav-links">
+    <a href="/#tools">Tools</a>
+    <a href="/blog">Blog</a>
+    <a href="/match.html#account">Job Seekers</a>
+    <a href="/employer-portal.html">Employers</a>
+    <a href="/match.html" class="ep-nav-cta">Find a Job</a>
   </div>
+  <button class="ep-hamburger" onclick="document.getElementById('ep-mob').classList.add('open')">&#9776;</button>
 </nav>
+<div class="ep-mob" id="ep-mob" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="ep-mob-sheet">
+    <a href="/#tools" onclick="document.getElementById('ep-mob').classList.remove('open')">Tools</a>
+    <a href="/blog">Blog</a>
+    <a href="/match.html#account">Job Seekers</a>
+    <a href="/employer-portal.html">Employers</a>
+    <a href="/match.html" class="coral">Find a Job</a>
+  </div>
+</div>
 
 <div style="position:relative;height:200px;overflow:hidden;background:#1a1a2e">
   <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1400&q=80" alt="Employers" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.4">
