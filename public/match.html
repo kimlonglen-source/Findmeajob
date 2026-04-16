@@ -737,13 +737,12 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <!-- POST JOB -->
     <div id="emp-step-job" style="display:none">
       <div style="background:var(--em3);border:1px solid rgba(231,81,90,.2);border-radius:var(--r);padding:.75rem 1rem;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap">
-        <div style="font-size:.82rem;font-weight:700;color:var(--em)">&#10003; Signed in as <span id="emp-name-display"></span> &mdash; <span id="emp-plan-display" style="text-transform:uppercase;font-size:.7rem;font-weight:800"></span> plan</div>
+        <div style="font-size:.82rem;font-weight:700;color:var(--em)">&#10003; Signed in as <span id="emp-name-display"></span> &mdash; Free Plan (all features)</div><span id="emp-plan-display" style="display:none"></span>
         <div style="display:flex;gap:.75rem;align-items:center">
           <a href="/employer-portal.html" style="font-size:.72rem;font-weight:700;color:var(--em);text-decoration:none">My Listings &#8594;</a>
           <button style="background:none;border:none;color:var(--text3);font-size:.72rem;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;padding:0" id="btn-emp-signout" type="button">Sign out</button>
         </div>
       </div>
-      <div id="pro-ai-note" style="display:none;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:var(--r);padding:.75rem 1rem;margin-bottom:.75rem;font-size:.8rem;color:var(--gold);font-weight:600">&#11088; Pro plan: Your listing will be auto-featured and appear in AI job matching results.</div>
       <div class="card">
         <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:.85rem">Job details</div>
         <div class="field"><label class="form-label">Job title *</label><input type="text" id="e-title" placeholder="e.g. Senior Software Developer"></div>
@@ -757,10 +756,10 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <div class="field"><label class="form-label">Requirements <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--text3)">(optional)</span></label><textarea id="e-req" placeholder="e.g. 2+ years experience, full NZ drivers licence..." style="min-height:80px"></textarea></div>
         <div class="field"><label class="form-label">Why work here? <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--text3)">(optional)</span></label><textarea id="e-why" placeholder="What makes your company a great place to work?" style="min-height:70px"></textarea></div>
       </div>
-      <div class="card" id="company-profile-field" style="display:none">
+      <div class="card" id="company-profile-field">
         <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.85rem">
           <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3)">Company profile</div>
-          <span style="font-size:.62rem;background:rgba(231,81,90,.1);border:1px solid rgba(231,81,90,.2);color:var(--em);padding:.15rem .5rem;border-radius:999px;font-weight:700">Growth &amp; Pro</span>
+          <span style="font-size:.62rem;background:rgba(231,81,90,.1);border:1px solid rgba(231,81,90,.2);color:var(--em);padding:.15rem .5rem;border-radius:999px;font-weight:700">Free</span>
         </div>
         <div class="field"><label class="form-label">Company description</label><textarea id="e-company-profile" placeholder="Tell candidates about your company, culture, team and mission..." style="min-height:80px"></textarea></div>
         <div class="field" style="margin-bottom:0"><label class="form-label">Company logo URL <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--text3)">(optional)</span></label><input type="text" id="e-logo" placeholder="https://yourcompany.co.nz/logo.png"></div>
@@ -1851,18 +1850,10 @@ function selectPlan(plan){
   if(selEl){selEl.style.borderColor='var(--em)';selEl.style.background='rgba(231,81,90,.08)';}
   // Plan features note
   var noteEl=document.getElementById('plan-features-note');
-  var notes={
-    free:'Starter: 1 listing - 30 day visibility - Standard placement - Free forever',
-    basic:'Growth: 5 listings - 60 day visibility - Priority placement - Company profile + logo - Analytics',
-    pro:'Pro: Unlimited listings - 30 days - Auto-featured ⭐ - Company profile + logo - Weekly alerts - Application stats'
-  };
-  if(noteEl)noteEl.innerHTML=notes[plan]||'';
-  // Show company profile for Growth/Pro in job form
+  if(noteEl)noteEl.innerHTML='Free Plan: Unlimited listings - 30 day visibility - Company profile + logo - All features included';
+  // Always show company profile for all users
   var cpf=document.getElementById('company-profile-field');
-  if(cpf)cpf.style.display=(plan==='basic'||plan==='pro')?'block':'none';
-  // Pro note
-  var proNote=document.getElementById('pro-ai-note');
-  if(proNote)proNote.style.display=plan==='pro'?'block':'none';
+  if(cpf)cpf.style.display='block';
 }
 
 async function doRegister(){
@@ -1922,8 +1913,7 @@ async function submitJob(){
   okEl.scrollIntoView({behavior:'smooth'});toast('Job submitted for review!');
 }
     else if(d.limitReached){
-      err.textContent=d.error+' ';
-      err.innerHTML+=('<a href="#" onclick="showPage(\'pricing\');return false;" style="color:var(--em);font-weight:700">View upgrade options &#8594;</a>');
+      err.textContent=d.error;
       err.classList.add('show');btn.textContent='Submit Job Listing →';btn.disabled=false;
     }else{throw new Error(d.error||'Failed');}
   }catch(e){err.textContent='Submission failed: '+e.message;err.classList.add('show');btn.textContent='Submit Job Listing \u2192';btn.disabled=false;}
@@ -1985,11 +1975,9 @@ var legal={
   +'<strong style="color:var(--text);font-size:.9rem">4. Applications</strong><br><br>'
   +'When you apply for a job through FindMeAJob.co.nz, your application (cover letter, CV, and contact details) is sent directly to the employer via email. We act as a relay \u2014 we do not store your application content after sending. The employer is responsible for how they handle your application. We do not guarantee that employers will respond to applications.<br><br>'
   +'<strong style="color:var(--text);font-size:.9rem">5. Employer Accounts & Listings</strong><br><br>'
-  +'Employers are responsible for the accuracy and legality of their job listings. All listings are subject to admin review before going live. We reserve the right to reject, modify, or remove any listing at our discretion. Listing plans (Starter, Growth, Pro) are subject to the limits described on our pricing page.<br><br>'
-  +'<strong style="color:var(--text);font-size:.9rem">6. Plan Limits</strong><br><br>'
-  +'\u2022 <strong style="color:var(--text)">Starter (Free):</strong> 1 active listing, 30-day visibility<br>'
-  +'\u2022 <strong style="color:var(--text)">Free Plan:</strong> Unlimited listings, 30-day visibility, company profile, logo, priority placement. Free forever.<br>'
-  +'Active listings include both approved and pending-review listings. Plan changes take effect immediately.<br><br>'
+  +'Employers are responsible for the accuracy and legality of their job listings. All listings are subject to admin review before going live. We reserve the right to reject, modify, or remove any listing at our discretion.<br><br>'
+  +'<strong style="color:var(--text);font-size:.9rem">6. Free Plan</strong><br><br>'
+  +'All employer accounts include unlimited job listings, 30-day visibility, company profile, company logo, and all features. FindMeAJob.co.nz is 100% free for employers. No payment is ever required.<br><br>'
   +'<strong style="color:var(--text);font-size:.9rem">7. Acceptable Use</strong><br><br>'
   +'You agree not to:<br>'
   +'\u2022 Post fraudulent, misleading, or illegal job listings<br>'
@@ -2008,11 +1996,11 @@ var legal={
   +'\u2022 Not be for commission-only, multi-level marketing, or pyramid scheme roles<br>'
   +'\u2022 Not contain offensive, discriminatory, or misleading content<br>'
   +'\u2022 Not duplicate an existing active listing from the same employer<br><br>'
-  +'Listings that do not meet these guidelines may be rejected or removed. Company logos and company profiles are available on Growth and Pro plans only \u2014 Starter (free) listings include job details and standard placement.<br><br>'
+  +'Listings that do not meet these guidelines may be rejected or removed. All listings include company logo, company profile, job details, and standard placement.<br><br>'
   +'<strong style="color:var(--text);font-size:.9rem">9. Account Security</strong><br><br>'
   +'Passwords are hashed using scrypt cryptographic hashing and are never stored in plaintext. We cannot recover your password \u2014 only reset it. You are responsible for keeping your login credentials secure. If you suspect unauthorised access, change your password immediately and contact us.<br><br>'
   +'<strong style="color:var(--text);font-size:.9rem">10. Limitation of Liability</strong><br><br>'
-  +'FindMeAJob.co.nz is provided "as is" without warranties of any kind. We are not liable for any losses arising from your use of the service, including but not limited to: unsuccessful job applications, inaccurate AI suggestions, employer conduct, or service interruptions. Our maximum liability is limited to the fees you have paid us in the 12 months prior to the claim.<br><br>'
+  +'FindMeAJob.co.nz is provided "as is" without warranties of any kind. We are not liable for any losses arising from your use of the service, including but not limited to: unsuccessful job applications, inaccurate AI suggestions, employer conduct, or service interruptions. FindMeAJob.co.nz is a free service and our liability is limited to the fullest extent permitted by New Zealand law.<br><br>'
   +'<strong style="color:var(--text);font-size:.9rem">11. Governing Law</strong><br><br>'
   +'These terms are governed by the laws of New Zealand. Any disputes will be subject to the exclusive jurisdiction of the New Zealand courts.<br><br>'
   +'<strong style="color:var(--text);font-size:.9rem">12. Changes</strong><br><br>'
