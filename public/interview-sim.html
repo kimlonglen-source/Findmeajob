@@ -17,11 +17,11 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{overflow-x:hidden}
-body{background:#fff;color:#0f172a;font-family:'Inter',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
+body{background:#fff;color:#0f172a;font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
 a{color:#E7515A;text-decoration:none}a:hover{text-decoration:underline}
 .nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 3rem;border-bottom:1px solid rgba(0,0,0,.06);position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);backdrop-filter:blur(12px)}
 .nav-logo{font-size:1.4rem;font-weight:900;color:#E7515A;text-decoration:none;letter-spacing:-.5px}
@@ -44,10 +44,10 @@ h1 em{font-style:normal;color:#E7515A}
 .subtitle{color:#64748b;font-size:.95rem;margin-bottom:2rem}
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:1.75rem;margin-bottom:1rem}
 label{display:block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;margin-bottom:.4rem}
-input[type="text"],select{width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Inter',sans-serif;font-size:15px;color:#0f172a;outline:none}
+input[type="text"],select{width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;color:#0f172a;outline:none}
 input:focus,select:focus{border-color:#E7515A;box-shadow:0 0 0 3px rgba(231,81,90,.1)}
 .field{margin-bottom:1rem}
-.btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;background:#E7515A;color:#fff;padding:.85rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer}
+.btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;background:#E7515A;color:#fff;padding:.85rem;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer}
 .btn:hover{background:#c7313a}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 /* Chat */
@@ -107,7 +107,7 @@ body.dark .msg-typing::before{border-right-color:rgba(255,255,255,.08)}
 body.dark .msg-typing::after{border-right-color:rgba(255,255,255,.04)}
 .chat-bar{display:flex;flex-direction:column;align-items:center;gap:.5rem;padding:.75rem 0;border-top:1px solid #e2e8f0;margin-top:.5rem}
 .chat-bar textarea{display:none}
-.chat-bar button{padding:.65rem 1rem;background:#E7515A;color:#fff;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer}
+.chat-bar button{padding:.65rem 1rem;background:#E7515A;color:#fff;border:none;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer}
 .chat-bar button:disabled{opacity:.5}
 .mic-status-bar{display:flex;align-items:center;gap:.5rem;padding:.6rem 1rem;border-radius:999px;background:#f8fafc;border:1px solid #e2e8f0;width:100%}
 .mic-dot{width:10px;height:10px;border-radius:50%;background:#94a3b8;flex-shrink:0;transition:all .3s}
@@ -132,7 +132,7 @@ body.dark .mic-label{color:#94a3b8}
 @keyframes micGlow{0%,100%{box-shadow:0 0 0 0 rgba(231,81,90,.3);background:#fef2f2 !important}50%{box-shadow:0 0 0 10px rgba(231,81,90,0);background:#f8fafc !important}}
 .listening-bar{height:3px;background:#e2e8f0;border-radius:999px;margin-top:.35rem;overflow:hidden;display:none}
 .listening-fill{height:100%;background:#E7515A;border-radius:999px;width:0;transition:width .3s}
-.end-btn{display:none;width:100%;padding:.75rem;background:#0f172a;color:#fff;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:.5rem}
+.end-btn{display:none;width:100%;padding:.75rem;background:#0f172a;color:#fff;border:none;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:.5rem}
 .end-btn:hover{background:#1e293b}
 .end-btn:disabled{opacity:.5}
 .q-counter{font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px}
@@ -275,7 +275,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
         </div>
       </div>
       <div class="field"><label>Paste the job description (optional)</label>
-        <textarea id="simJD" rows="3" style="width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Inter',sans-serif;font-size:14px;color:#0f172a;outline:none;resize:vertical" placeholder="Paste the actual job ad for tailored questions about the specific requirements..."></textarea>
+        <textarea id="simJD" rows="3" style="width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:#0f172a;outline:none;resize:vertical" placeholder="Paste the actual job ad for tailored questions about the specific requirements..."></textarea>
       </div>
     </div>
     <button class="btn" onclick="goStep2()">Next — Set Up Audio</button>
@@ -307,7 +307,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
             <option value="off">Text only — no voice</option>
           </optgroup>
         </select>
-        <button type="button" id="previewBtn" onclick="previewVoice()" style="margin-top:.5rem;background:none;border:1px solid #e2e8f0;border-radius:999px;padding:.4rem 1rem;font-family:Inter,sans-serif;font-size:.78rem;font-weight:600;color:#64748b;cursor:pointer">&#9654; Preview voice</button>
+        <button type="button" id="previewBtn" onclick="previewVoice()" style="margin-top:.5rem;background:none;border:1px solid #e2e8f0;border-radius:999px;padding:.4rem 1rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:600;color:#64748b;cursor:pointer">&#9654; Preview voice</button>
       </div>
       <div style="display:flex;flex-direction:column;gap:.65rem;margin-top:.5rem">
         <label style="display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;font-size:.85rem;color:#475569;line-height:1.5"><input type="checkbox" id="autoSendMode" style="accent-color:#E7515A;width:18px;height:18px;margin-top:2px" checked> <span><strong style="color:#0f172a">Auto-send answers</strong><br><span style="font-size:.78rem;color:#94a3b8">When you stop talking for 5 seconds, your answer submits automatically</span></span></label>
@@ -343,7 +343,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
         <div class="countdown-check" id="micStatus">&#9675; Microphone</div>
       </div>
       <button class="btn" id="beginBtn" onclick="beginCountdown()" disabled style="max-width:320px;margin:0 auto">Setting up...</button>
-      <div style="text-align:center;margin-top:.5rem"><button onclick="document.getElementById('readyScreen').style.display='none';document.getElementById('step2').style.display='block'" style="background:none;border:none;color:#64748b;font-size:.78rem;cursor:pointer;font-family:Inter,sans-serif">Back to settings</button></div>
+      <div style="text-align:center;margin-top:.5rem"><button onclick="document.getElementById('readyScreen').style.display='none';document.getElementById('step2').style.display='block'" style="background:none;border:none;color:#64748b;font-size:.78rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Back to settings</button></div>
     </div>
   </div>
 
@@ -414,8 +414,8 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
     <div style="width:48px;height:48px;background:linear-gradient(135deg,#E7515A,#c7313a);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
     <div style="font-size:1.2rem;font-weight:800;color:#0f172a;margin-bottom:.35rem">Enter your email for unlimited access</div>
     <div style="font-size:.82rem;color:#64748b;margin-bottom:1.25rem">All 12 AI tools stay free forever. We will send you weekly NZ job matches.</div>
-    <input type="email" id="gate-email" placeholder="your@email.com" style="width:100%;padding:.75rem 1rem;border:1px solid #e2e8f0;border-radius:12px;font-family:Inter,sans-serif;font-size:15px;outline:none;margin-bottom:.75rem;color:#0f172a">
-    <button onclick="submitGateEmail()" id="gate-btn" style="width:100%;padding:.85rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:Inter,sans-serif;font-size:.9rem;font-weight:700;cursor:pointer">Continue</button>
+    <input type="email" id="gate-email" placeholder="your@email.com" style="width:100%;padding:.75rem 1rem;border:1px solid #e2e8f0;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;outline:none;margin-bottom:.75rem;color:#0f172a">
+    <button onclick="submitGateEmail()" id="gate-btn" style="width:100%;padding:.85rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer">Continue</button>
     <div style="font-size:.68rem;color:#94a3b8;margin-top:.75rem">No spam. Unsubscribe anytime.</div>
   </div>
 </div>
@@ -796,8 +796,8 @@ function showScore(r){
   }
   /* Actions */
   h+='<div class="ss" style="display:flex;gap:.5rem;margin-top:1.25rem;flex-wrap:wrap;animation-delay:'+(1.2+(r.feedback?r.feedback.length*.15:0))+'s">';
-  h+='<button onclick="practiceAgain()" style="flex:1;min-width:140px;padding:.85rem 1rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:Inter,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer">Practice again</button>';
-  h+='<button onclick="shareResults('+r.score+')" style="flex:1;min-width:140px;padding:.85rem 1rem;background:#fff;color:#0f172a;border:1px solid #e2e8f0;border-radius:999px;font-family:Inter,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer">Share results</button>';
+  h+='<button onclick="practiceAgain()" style="flex:1;min-width:140px;padding:.85rem 1rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer">Practice again</button>';
+  h+='<button onclick="shareResults('+r.score+')" style="flex:1;min-width:140px;padding:.85rem 1rem;background:#fff;color:#0f172a;border:1px solid #e2e8f0;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer">Share results</button>';
   h+='</div>';
   h+='<div class="cta-box ss" style="animation-delay:'+(1.5+(r.feedback?r.feedback.length*.15:0))+'s"><p>Ready to apply for real?</p><a href="/match.html">Apply for a Job</a></div>';
   stopCam();document.getElementById('chatSection').style.display='none';
