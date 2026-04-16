@@ -613,7 +613,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
           <div style="font-weight:700;color:var(--text);font-size:.85rem">Drop your CV here or click to browse</div>
           <div style="font-size:.72rem;color:var(--text3);margin-top:.2rem">PDF, Word (.docx), or text file</div>
         </div>
-        <div id="apply-file-name" style="display:none;background:var(--em3);border:1px solid rgba(231,81,90,.2);border-radius:var(--r);padding:.6rem 1rem;font-size:.82rem;font-weight:600;color:var(--em);margin-top:.5rem;text-align:center"></div>
+        <div id="apply-file-name" style="display:none;background:var(--em3);border:1px solid rgba(231,81,90,.2);border-radius:var(--r);padding:.6rem 1rem;font-size:.82rem;font-weight:600;color:var(--em);margin-top:.5rem;text-align:center;cursor:pointer" onclick="document.getElementById('apply-drop-zone').style.display='';this.style.display='none';document.getElementById('apply-cv-file').value='';document.getElementById('apply-gen-btn').disabled=true;" title="Click to remove and re-upload"></div>
       </div>
       <div class="card">
         <div style="font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.75rem">3. Your Details</div>
@@ -3138,7 +3138,7 @@ function initApp(){try{
   var _applyCvText='',_applyCvFileData=null;
   var applyDZ=document.getElementById('apply-drop-zone');
   var applyCvFile=document.getElementById('apply-cv-file');
-  applyDZ.addEventListener('click',function(){applyCvFile.click();});
+  applyDZ.addEventListener('click',function(e){if(e.target!==applyCvFile)applyCvFile.click();});
   applyCvFile.addEventListener('change',function(){if(this.files[0])handleApplyFile(this.files[0]);});
   applyDZ.addEventListener('dragover',function(e){e.preventDefault();this.style.borderColor='var(--em)';});
   applyDZ.addEventListener('dragleave',function(){this.style.borderColor='';});
