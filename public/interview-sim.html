@@ -454,18 +454,14 @@ var autoSend=true,silenceDelay=5000;
 var fillerWords=0;
 var fillerRegex=/\b(um+|uh+|ah+|er+|like|you know|basically|literally|sort of|kind of)\b/gi;
 var _prepRole='',_micStream=null;
-/* Deepgram audio state */
-var _mediaRec=null,_audioChunks=[],_audioCtx=null,_analyser=null,_audioStream=null;
-var _silenceStart=null,_recStart=null,_recTimer=null,_volFrame=null;
-var _totalWords=0,_totalSpeakDur=0;
-var _ttsPlayer=null;
+var _recStart=null;
 var _aiSpeaking=false,_speakTimeout=null,_waitingForAI=false;
 var _micRetries=0,_maxMicRetries=3;
 var _sending=false,_accumulated='',recog=null,_currentStarStage=-1;
 /* Voice maps */
 var voiceGenders={'aura-asteria-en':'female','aura-luna-en':'female','aura-stella-en':'female','aura-athena-en':'female','aura-hera-en':'female','aura-orion-en':'male','aura-arcas-en':'male','aura-perseus-en':'male','aura-angus-en':'male','aura-orpheus-en':'male','aura-helios-en':'male','aura-zeus-en':'male'};
 var voiceNames={'aura-asteria-en':'Asteria','aura-luna-en':'Luna','aura-stella-en':'Stella','aura-athena-en':'Athena','aura-hera-en':'Hera','aura-orion-en':'Orion','aura-arcas-en':'Arcas','aura-perseus-en':'Perseus','aura-angus-en':'Angus','aura-orpheus-en':'Orpheus','aura-helios-en':'Helios','aura-zeus-en':'Zeus'};
-function getRecMime(){if(typeof MediaRecorder==='undefined')return'audio/webm';var ts=['audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus','audio/mp4'];for(var i=0;i<ts.length;i++){if(MediaRecorder.isTypeSupported(ts[i]))return ts[i];}return'audio/webm';}
+
 function vGender(v){return voiceGenders[v]||'female';}
 function vName(v){return voiceNames[v]||'Interviewer';}
 
@@ -646,9 +642,10 @@ async function sendAnswer(){
   var inp=document.getElementById('userInput');var ans=inp.value.trim();
   if(!ans)return;
   _sending=true;
-  stopTimer();cancelSpeak();_waitingForAI=true;_aiSpeaking=false;
-  stopRecording(true);
-  inp.value='';addMsg(ans,'user');hideReviewButtons();updateMicUI('waiting','Processing your answer...');
+  stopTimer();clearTimeout(_speakTimeout);_waitingForAI=true;_aiSpeaking=false;
+  if(recog){recog.stop();recog=null;document.getElementById('listenBar').style.display='none';}
+  var sc=document.getElementById('starCoach');if(sc)sc.style.display='none';
+  inp.value='';addMsg(ans,'user');countFillers(ans);updateMicUI('waiting','Processing your answer...');
   var lastAi='';for(var i=msgs.length-1;i>=0;i--){if(msgs[i].role==='assistant'){lastAi=msgs[i].content;break;}}
   /* If the last AI message was a probe, merge this answer onto the existing Q/A pair */
   if(_lastWasProbe&&iData.qa.length){
@@ -672,8 +669,9 @@ async function sendAnswer(){
 }
 
 async function skipQuestion(){
-  stopTimer();cancelSpeak();_waitingForAI=true;_aiSpeaking=false;
-  stopRecording(true);
+  stopTimer();clearTimeout(_speakTimeout);_waitingForAI=true;_aiSpeaking=false;
+  if(recog){recog.stop();recog=null;document.getElementById('listenBar').style.display='none';}
+  try{window.speechSynthesis.cancel();}catch(e){}
   var inp=document.getElementById('userInput');
   if(inp.value.trim()){sendAnswer();return;}
   addMsg('(Skipped)','user');updateMicUI('waiting','Loading next question...');
@@ -695,7 +693,7 @@ async function skipQuestion(){
 }
 
 async function endInterview(){
-  _aiSpeaking=false;cancelSpeak();stopTimer();stopRecording(true);setAvatar('thinking');
+  _aiSpeaking=false;try{window.speechSynthesis.cancel();}catch(e){}stopTimer();if(recog){recog.stop();recog=null;}setAvatar('thinking');
   document.getElementById('endBtn').textContent='Scoring...';document.getElementById('endBtn').disabled=true;
   var wpmVal=_totalSpeakDur>0?Math.round(_totalWords/(_totalSpeakDur/60)):0;
   var answered=iData.qa.filter(function(x){return x.a!=='(skipped)'&&x.a.indexOf('(no answer')!==0;}).length;
@@ -854,38 +852,27 @@ function setAvatar(state,name){
   }
 }
 function updateMicUI(state,text){var dot=document.getElementById('micDot');var lbl=document.getElementById('micLabel');if(dot){dot.className='mic-dot';if(state)dot.classList.add(state);dot.style.transform='';dot.style.opacity='';}if(lbl){lbl.textContent=text||'';lbl.className=state==='listening'?'mic-label recording':'mic-label';}}
-function cancelSpeak(){clearTimeout(_speakTimeout);if(_ttsPlayer){try{_ttsPlayer.pause();_ttsPlayer.currentTime=0;}catch(e){}_ttsPlayer=null;}}
-function autoStartListening(){if(_aiSpeaking||_waitingForAI)return;document.getElementById('userInput').value='';updateMicUI('listening','Your turn — speak now');startTimer();setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!_mediaRec)startRecording();},800);}
+function autoStartListening(){if(_aiSpeaking||_waitingForAI)return;_micRetries=0;_accumulated='';document.getElementById('userInput').value='';updateMicUI('listening','Your turn \u2014 speak now');startTimer();setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog)toggleMic();},800);}
+var _accumulated='';
+var silenceTimer=null;
 
-/* Deepgram TTS */
-function speak(t){
-  _aiSpeaking=true;clearTimeout(_speakTimeout);setAvatar('speaking');updateMicUI('speaking','Interviewer speaking...');
-  if(!audioEnabled){var readTime=Math.max(3000,Math.min(t.length*60,15000));_speakTimeout=setTimeout(function(){_aiSpeaking=false;setAvatar('listening');autoStartListening();},readTime);return;}
-  _speakTimeout=setTimeout(function(){if(_aiSpeaking){_aiSpeaking=false;cancelSpeak();setAvatar('listening');autoStartListening();}},Math.max(60000,t.length*200));
-  stopRecording(true);
-  var vv=document.getElementById('voiceGender').value;
-  fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'tts',text:t,voice:vv})
-  }).then(function(r){return r.json();}).then(function(d){
-    if(!d.audio)throw new Error('no audio');
-    _ttsPlayer=new Audio('data:'+(d.content_type||'audio/mpeg')+';base64,'+d.audio);
-    _ttsPlayer.onended=function(){_aiSpeaking=false;clearTimeout(_speakTimeout);_currentAvatarState='';setAvatar('listening');autoStartListening();};
-    _ttsPlayer.onerror=function(){_aiSpeaking=false;clearTimeout(_speakTimeout);_currentAvatarState='';setAvatar('listening');autoStartListening();};
-    _ttsPlayer.play().catch(function(){_aiSpeaking=false;clearTimeout(_speakTimeout);_currentAvatarState='';setAvatar('listening');autoStartListening();});
-  }).catch(function(){
-    var readTime=Math.max(3000,Math.min(t.length*60,15000));clearTimeout(_speakTimeout);
-    _speakTimeout=setTimeout(function(){_aiSpeaking=false;setAvatar('listening');autoStartListening();},readTime);
-  });
-}
+/* Browser SpeechSynthesis TTS */
+function speak(t){_aiSpeaking=true;clearTimeout(_speakTimeout);setAvatar('speaking');updateMicUI('speaking','Interviewer speaking...');if(!audioEnabled||!window.speechSynthesis){var readTime=Math.max(3000,Math.min(t.length*60,15000));_speakTimeout=setTimeout(function(){_aiSpeaking=false;setAvatar('listening');autoStartListening();},readTime);return;}_speakTimeout=setTimeout(function(){if(_aiSpeaking){_aiSpeaking=false;try{window.speechSynthesis.cancel();}catch(e){}setAvatar('listening');autoStartListening();}},Math.max(60000,t.length*200));try{if(recog){recog.stop();recog=null;document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);}window.speechSynthesis.cancel();setTimeout(function(){_doSpeak(t);},150);}catch(e){}}
+function _doSpeak(t){try{var gender=vGender(document.getElementById('voiceGender').value);var voices=window.speechSynthesis.getVoices()||[];var match=null;var googleVoices=[];var nzAu=[];var enVoices=[];for(var i=0;i<voices.length;i++){var l=voices[i].lang.toLowerCase();var n=voices[i].name.toLowerCase();if(n.indexOf('google')>-1&&l.indexOf('en')===0)googleVoices.push(voices[i]);else if(l==='en-nz'||l==='en-au'||l.indexOf('en_nz')>-1||l.indexOf('en_au')>-1)nzAu.push(voices[i]);else if(l.indexOf('en')===0)enVoices.push(voices[i]);}var pool=googleVoices.length?googleVoices:(nzAu.length?nzAu:enVoices);for(var j=0;j<pool.length;j++){var vn=pool[j].name.toLowerCase();if(gender==='female'&&(vn.indexOf('female')>-1||vn.indexOf('fiona')>-1||vn.indexOf('karen')>-1||vn.indexOf('samantha')>-1||vn.indexOf('victoria')>-1||vn.indexOf('moira')>-1||vn.indexOf('tessa')>-1||vn.indexOf('google uk english female')>-1)){match=pool[j];break;}if(gender==='male'&&(vn.indexOf('male')>-1||vn.indexOf('daniel')>-1||vn.indexOf('james')>-1||vn.indexOf('lee')>-1||vn.indexOf('gordon')>-1||vn.indexOf('alex')>-1||vn.indexOf('google uk english male')>-1)){match=pool[j];break;}}if(!match&&pool.length){match=pool[0];}var u=new SpeechSynthesisUtterance(t);u.rate=0.95;u.lang='en-GB';if(match)u.voice=match;if(gender==='male'){u.pitch=0.9;}else{u.pitch=1.0;}u.onend=function(){_aiSpeaking=false;clearTimeout(_speakTimeout);_currentAvatarState='';setAvatar('listening');autoStartListening();};u.onerror=function(){_aiSpeaking=false;clearTimeout(_speakTimeout);_currentAvatarState='';setAvatar('listening');autoStartListening();};window.speechSynthesis.speak(u);}catch(e){_aiSpeaking=false;_currentAvatarState='';setAvatar('listening');}}
+window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
+setInterval(function(){if(window.speechSynthesis&&!window.speechSynthesis.speaking){window.speechSynthesis.cancel();}},10000);
 
-/* Preview voice in step 2 */
+/* Preview voice */
 function previewVoice(){
   var sel=document.getElementById('voiceGender');var v=sel.value;if(v==='off')return;
-  var btn=document.getElementById('previewBtn');btn.disabled=true;btn.textContent='Loading...';
-  fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'tts',text:'Hello! I will be your interviewer today. Let me know when you are ready to begin.',voice:v})
-  }).then(function(r){return r.json();}).then(function(d){
-    btn.disabled=false;btn.textContent='\u25B6 Preview voice';
-    if(d.audio){if(_ttsPlayer){try{_ttsPlayer.pause();}catch(e){}_ttsPlayer=null;}_ttsPlayer=new Audio('data:'+(d.content_type||'audio/mpeg')+';base64,'+d.audio);_ttsPlayer.play().catch(function(){});}
-  }).catch(function(){btn.disabled=false;btn.textContent='\u25B6 Preview voice';});
+  var gender=vGender(v);var text='Kia ora! I will be your interviewer today. Let me know when you are ready to begin.';
+  if(!window.speechSynthesis){return;}
+  window.speechSynthesis.cancel();
+  var voices=window.speechSynthesis.getVoices()||[];var match=null;
+  for(var i=0;i<voices.length;i++){var n=voices[i].name.toLowerCase();var l=voices[i].lang.toLowerCase();if(l.indexOf('en')!==0)continue;if(gender==='female'&&(n.indexOf('female')>-1||n.indexOf('fiona')>-1||n.indexOf('google uk english female')>-1)){match=voices[i];break;}if(gender==='male'&&(n.indexOf('male')>-1||n.indexOf('daniel')>-1||n.indexOf('google uk english male')>-1)){match=voices[i];break;}}
+  if(!match&&voices.length)match=voices[0];
+  var u=new SpeechSynthesisUtterance(text);u.rate=0.95;u.lang='en-GB';if(match)u.voice=match;u.pitch=gender==='male'?0.9:1.0;
+  window.speechSynthesis.speak(u);
 }
 
 /* Timer for real-life mode */
@@ -904,8 +891,8 @@ function startTimer(){
     updTimer();
     if(timeLeft<=30&&timeLeft>0){td.classList.add('timer-warn');td.style.color='#ef4444';td.style.background='#fef2f2';td.style.borderColor='#fecaca';}
     if(timeLeft<=0){stopTimer();
+      if(recog){recog.stop();recog=null;document.getElementById('listenBar').style.display='none';}
       var inp=document.getElementById('userInput');
-      if(_mediaRec&&_mediaRec.state==='recording'){finishRecording();return;}
       if(inp.value.trim()){sendAnswer();return;}
       addMsg('(No answer given)','user');
       var lastAi='';for(var ii=msgs.length-1;ii>=0;ii--){if(msgs[ii].role==='assistant'){lastAi=msgs[ii].content;break;}}
@@ -927,31 +914,38 @@ function startTimer(){
 }
 function stopTimer(){if(answerTimer){clearInterval(answerTimer);answerTimer=null;}}
 function updTimer(){var m=Math.floor(timeLeft/60);var s=timeLeft%60;document.getElementById('timerText').textContent=m+':'+(s<10?'0':'')+s;}
-/* Deepgram STT — MediaRecorder + silence detection */
-function startRecording(){
-  if(_mediaRec&&_mediaRec.state==='recording')return;
-  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){updateMicUI(null,'Microphone not supported');return;}
-  navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
-    _audioStream=stream;
-    try{_audioCtx=new(window.AudioContext||window.webkitAudioContext)();var src=_audioCtx.createMediaStreamSource(stream);_analyser=_audioCtx.createAnalyser();_analyser.fftSize=2048;src.connect(_analyser);}catch(e){}
-    _audioChunks=[];var mime=getRecMime();
-    try{_mediaRec=new MediaRecorder(stream,{mimeType:mime});}catch(e){_mediaRec=new MediaRecorder(stream);}
-    _mediaRec.ondataavailable=function(e){if(e.data.size>0)_audioChunks.push(e.data);};
-    _mediaRec.start(250);_recStart=Date.now();_silenceStart=null;
-    updateMicUI('listening','Your turn \u2014 speak now');
-    var wb=document.getElementById('waveBars');if(wb)wb.className='wave-bars active';
+/* Browser SpeechRecognition — live text as you speak */
+function toggleMic(){
+  if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){return;}
+  if(_aiSpeaking){_aiSpeaking=false;clearTimeout(_speakTimeout);try{window.speechSynthesis.cancel();}catch(e){}setAvatar('listening');}
+  if(recog){
+    recog.stop();recog=null;
+    document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);
+    updateMicUI('waiting','Processing...');
+    document.getElementById('micTranscript').className='mic-transcript';
+    var sc=document.getElementById('starCoach');if(sc)sc.style.display='none';
+    return;
+  }
+  try{
+    var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+    var isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    recog=new SR();recog.lang='en-NZ';
+    recog.continuous=!isMobile;
+    recog.interimResults=true;
+    _micRetries=0;_recStart=Date.now();_currentStarStage=-1;
+    updateMicUI('listening','Listening... speak now');
     document.getElementById('micTranscript').className='mic-transcript active';
-    document.getElementById('micTranscript').textContent='We can hear you \u2014 your answer will appear here when you finish speaking';
+    document.getElementById('micTranscript').textContent=_accumulated||'';
     document.getElementById('listenBar').style.display='block';
     document.getElementById('listenFill').style.width='0';
-    _currentStarStage=-1;var sc=document.getElementById('starCoach');if(sc)sc.style.display='none';
-    _recTimer=setInterval(function(){
-      var el=Math.floor((Date.now()-_recStart)/1000);var m=Math.floor(el/60);var s=el%60;var ts=m+':'+(s<10?'0':'')+s;
-      /* Style-aware coaching */
+    var inp=document.getElementById('userInput');
+    var lastResultTime=Date.now();
+    var _liveFillers=0;
+    /* STAR coaching timer */
+    var _starTimer=setInterval(function(){
+      var el=Math.floor((Date.now()-_recStart)/1000);
       var sty=iData.style||'Standard';
       var useStar=(sty==='Behavioural'||sty==='Values-based'||sty==='Competency'||sty==='Standard'||sty==='Panel');
-      var useTech=(sty==='Technical');
-      var hint='';
       if(useStar&&qCount>=2){
         var stages=[{at:0,l:'S',t:'Set the scene \u2014 what was the Situation?',h:'Where were you? What was happening?'},{at:12,l:'T',t:'What was your Task or responsibility?',h:'What did you need to achieve?'},{at:30,l:'A',t:'Describe the Action YOU took \u2014 be specific',h:'What did you personally do?'},{at:55,l:'R',t:'Share the Result \u2014 quantify if you can',h:'Numbers, impact, feedback received'}];
         var si=-1;for(var j=stages.length-1;j>=0;j--){if(el>=stages[j].at){si=j;break;}}
@@ -959,160 +953,73 @@ function startRecording(){
           _currentStarStage=si;var st=stages[si];
           var ct=document.getElementById('starCoachText');var sc2=document.getElementById('starCoach');
           if(ct&&sc2){sc2.style.display='block';ct.innerHTML='<strong>'+st.l+' \u2014 '+st.t+'</strong><br><span style="font-size:.72rem;color:#94a3b8;font-weight:400">'+st.h+'</span>';ct.style.animation='none';ct.offsetHeight;ct.style.animation='msgIn .35s ease';}
-          ['starS','starT','starA','starR'].forEach(function(id,idx){var d=document.getElementById(id);if(d){d.className='star-dot';if(idx<si)d.classList.add('done');else if(idx===si)d.classList.add('active');}});
+          ['starS','starT','starA','starR'].forEach(function(id,idx){var d2=document.getElementById(id);if(d2){d2.className='star-dot';if(idx<si)d2.classList.add('done');else if(idx===si)d2.classList.add('active');}});
         }
-        if(el>=75)hint=' \u2014 strong length, land your answer';
-        else if(el>=55)hint='';
-        else hint='';
-      }else if(useTech){
-        if(el<15)hint=' \u2014 state your approach';
-        else if(el<35)hint=' \u2014 walk through the steps';
-        else if(el<60)hint=' \u2014 explain trade-offs or decisions';
-        else if(el<90)hint=' \u2014 summarise the outcome';
-        else hint=' \u2014 consider wrapping up';
-      }else{
-        if(el<20)hint=' \u2014 start with context';
-        else if(el<45)hint=' \u2014 share a specific example';
-        else if(el<90)hint=' \u2014 good length, wrap with the outcome';
-        else hint=' \u2014 consider wrapping up';
       }
-      updateMicUI('listening','Recording '+ts+hint);
     },1000);
-    monitorVolume();
-  }).catch(function(){updateMicUI(null,'Microphone blocked — check settings');});
-}
-
-function monitorVolume(){
-  if(!_analyser||!_mediaRec||_mediaRec.state!=='recording')return;
-  var data=new Uint8Array(_analyser.fftSize);_analyser.getByteTimeDomainData(data);
-  var sum=0;for(var i=0;i<data.length;i++){var v=(data[i]-128)/128;sum+=v*v;}
-  var rms=Math.sqrt(sum/data.length);var vol=Math.min(rms*5,1);
-  var dot=document.getElementById('micDot');
-  if(dot){dot.style.transform='scale('+(1+vol*1.5)+')';dot.style.opacity=String(0.6+vol*0.4);}
-  /* Drive waveform bars */
-  var bars=document.getElementById('waveBars');
-  if(bars&&bars.classList.contains('active')){var fd=new Uint8Array(32);_analyser.getByteFrequencyData(fd);var bs=bars.children;for(var b=0;b<bs.length;b++){var fi=Math.floor(b*(fd.length/bs.length));bs[b].style.height=Math.max(3,fd[fi]/255*20)+'px';}}
-  if(vol<0.015){
-    if(!_silenceStart)_silenceStart=Date.now();
-    var silMs=Date.now()-_silenceStart;
-    if(autoSend&&_audioChunks.length>1){
-      var pct=Math.min((silMs/silenceDelay)*100,100);
-      document.getElementById('listenFill').style.width=pct+'%';
-      if(silMs>=silenceDelay){finishRecording();return;}
-    }
-  }else{_silenceStart=null;document.getElementById('listenFill').style.width='0';}
-  _volFrame=requestAnimationFrame(monitorVolume);
-}
-
-function stopRecording(discard){
-  clearInterval(_recTimer);_recTimer=null;
-  if(_volFrame){cancelAnimationFrame(_volFrame);_volFrame=null;}
-  if(_mediaRec){_mediaRec.onstop=function(){};if(_mediaRec.state==='recording'){try{_mediaRec.stop();}catch(e){}}}_mediaRec=null;
-  if(_audioStream){_audioStream.getTracks().forEach(function(t){t.stop();});_audioStream=null;}
-  if(_audioCtx){try{_audioCtx.close();}catch(e){}_audioCtx=null;}_analyser=null;
-  document.getElementById('listenBar').style.display='none';
-  var wb=document.getElementById('waveBars');if(wb)wb.className='wave-bars';
-  var sc=document.getElementById('starCoach');if(sc)sc.style.display='none';
-  if(discard){_audioChunks=[];document.getElementById('micTranscript').className='mic-transcript';}
-}
-
-function finishRecording(){
-  if(!_mediaRec||_mediaRec.state!=='recording')return;
-  clearInterval(_recTimer);_recTimer=null;
-  if(_volFrame){cancelAnimationFrame(_volFrame);_volFrame=null;}
-  var recDur=(Date.now()-_recStart)/1000;var mime=getRecMime().split(';')[0];
-  _mediaRec.onstop=function(){
-    var blob=new Blob(_audioChunks,{type:mime});_audioChunks=[];
-    if(_audioStream){_audioStream.getTracks().forEach(function(t){t.stop();});_audioStream=null;}
-    if(_audioCtx){try{_audioCtx.close();}catch(e){}_audioCtx=null;}_analyser=null;_mediaRec=null;
-    if(blob.size<1000){updateMicUI(null,'No speech detected — try again');document.getElementById('micTranscript').className='mic-transcript';setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!_sending)startRecording();},2000);return;}
-    updateMicUI('waiting','Transcribing your answer...');
-    document.getElementById('micTranscript').textContent='Transcribing...';document.getElementById('listenBar').style.display='none';
-    var reader=new FileReader();
-    reader.onload=function(){
-      var b64=reader.result.split(',')[1];
-      fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'stt',audio:b64,mimeType:mime})
-      }).then(function(r){return r.json();}).then(function(d){
-        if(_waitingForAI||_sending)return;
-        if(d.transcript&&d.transcript.trim()){
-          document.getElementById('userInput').value=d.transcript;
-          document.getElementById('micTranscript').textContent=d.transcript;
-          document.getElementById('micTranscript').className='mic-transcript active';
-          /* WPM + filler counting with fallback */
-          if(d.words&&d.words.length){
-            _totalWords+=d.words.length;_totalSpeakDur+=(d.duration||recDur);
-            var wpm=_totalSpeakDur>0?Math.round(_totalWords/(_totalSpeakDur/60)):0;
-            document.getElementById('wpmCount').textContent=wpm;
-            countDeepgramFillers(d.words);
-          }else{
-            var wc=d.transcript.trim().split(/\s+/).length;
-            _totalWords+=wc;_totalSpeakDur+=recDur;
-            var wpm2=_totalSpeakDur>0?Math.round(_totalWords/(_totalSpeakDur/60)):0;
-            document.getElementById('wpmCount').textContent=wpm2;
-            countFillers(d.transcript);
+    recog.onresult=function(e){
+      _micRetries=0;
+      var t='';var interim='';
+      if(isMobile){
+        for(var i=0;i<e.results.length;i++){
+          if(e.results[i].isFinal){var ft=e.results[i][0].transcript;if(_accumulated.indexOf(ft)===-1){_accumulated+=ft+' ';}}else{interim+=e.results[i][0].transcript;}
+        }
+        t=(_accumulated+interim).trim();
+      }else{
+        for(var i2=0;i2<e.results.length;i2++){t+=e.results[i2][0].transcript;}
+        t=t.trim();
+      }
+      inp.value=t;lastResultTime=Date.now();
+      updateMicUI('listening','Listening...');
+      var trEl=document.getElementById('micTranscript');trEl.className='mic-transcript active';trEl.textContent=t;trEl.scrollTop=trEl.scrollHeight;
+      var fm=t.match(fillerRegex);_liveFillers=fm?fm.length:0;
+      document.getElementById('fillerCount').textContent=fillerWords+_liveFillers;
+      if(fillerWords+_liveFillers>3)document.getElementById('fillerCount').style.color='#ef4444';
+      document.getElementById('listenFill').style.width='0';
+      clearTimeout(silenceTimer);
+      if(autoSend&&t.trim().length>1){
+        silenceTimer=setTimeout(function(){
+          if(inp.value.trim()&&Date.now()-lastResultTime>=silenceDelay-500){
+            if(recog){try{recog.stop();}catch(e2){}}recog=null;
+            clearInterval(_starTimer);
+            document.getElementById('listenBar').style.display='none';
+            document.getElementById('micTranscript').className='mic-transcript';
+            var sc3=document.getElementById('starCoach');if(sc3)sc3.style.display='none';
+            updateMicUI('waiting','Sending your answer...');
+            sendAnswer();
           }
-          /* Review window — show transcript for 3s before sending */
-          showReviewWindow(d.transcript);
-        }else{updateMicUI(null,'No speech detected \u2014 try again');document.getElementById('micTranscript').className='mic-transcript';setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!_sending)startRecording();},2000);}
-      }).catch(function(){updateMicUI(null,'Transcription error \u2014 retrying...');setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!_sending)startRecording();},2000);});
+        },silenceDelay);
+        var start=Date.now();var bar=document.getElementById('listenFill');
+        (function tick(){var p=Math.min(((Date.now()-start)/silenceDelay)*100,100);bar.style.width=p+'%';if(p<100&&recog)requestAnimationFrame(tick);})();
+      }
     };
-    reader.readAsDataURL(blob);
-  };
-  try{_mediaRec.stop();}catch(e){}
-}
-
-/* Review window — show transcript before sending */
-var _reviewTimer=null;
-function showReviewWindow(){
-  stopTimer();
-  var countdown=3;
-  updateMicUI(null,'Sending in '+countdown+'...');
-  document.getElementById('sendBtn').style.display='';
-  document.getElementById('sendBtn').textContent='Send now';
-  /* Add re-record button if not already there */
-  var actions=document.querySelector('.chat-actions');
-  if(!document.getElementById('rerecordBtn')){
-    var rb=document.createElement('button');rb.id='rerecordBtn';
-    rb.textContent='Re-record';rb.onclick=reRecord;
-    rb.style.cssText='background:#f8fafc;color:#64748b;border:1px solid #e2e8f0;font-size:.72rem;border-radius:999px;padding:.5rem 1rem;font-family:inherit;cursor:pointer';
-    actions.insertBefore(rb,actions.children[1]);
-  }else{document.getElementById('rerecordBtn').style.display='';}
-  document.getElementById('micTranscript').style.borderColor='#E7515A';
-  _reviewTimer=setInterval(function(){
-    countdown--;
-    if(countdown<=0){clearInterval(_reviewTimer);_reviewTimer=null;hideReviewButtons();sendAnswer();return;}
-    updateMicUI(null,'Sending in '+countdown+'...');
-  },1000);
-}
-function reRecord(){
-  if(_reviewTimer){clearInterval(_reviewTimer);_reviewTimer=null;}
-  hideReviewButtons();
-  document.getElementById('userInput').value='';
-  document.getElementById('micTranscript').textContent='';document.getElementById('micTranscript').style.borderColor='';
-  document.getElementById('micTranscript').className='mic-transcript';
-  startRecording();startTimer();
-}
-function hideReviewButtons(){
-  document.getElementById('sendBtn').style.display='none';
-  var rb=document.getElementById('rerecordBtn');if(rb)rb.style.display='none';
-  document.getElementById('micTranscript').style.borderColor='';
-}
-
-function countDeepgramFillers(words){
-  var dgF=['uh','um','ah','er','hm','hmm','mhm','mm'];var count=0;
-  words.forEach(function(w){var wl=w.word.toLowerCase().replace(/[^a-z]/g,'');if(dgF.indexOf(wl)>-1)count++;});
-  var transcript=words.map(function(w){return w.word;}).join(' ');
-  var mf=transcript.match(/\b(you know|sort of|kind of|basically|literally)\b/gi);
-  if(mf)count+=mf.length;
-  if(count>0){fillerWords+=count;var fc=document.getElementById('fillerCount');var fs=document.getElementById('fillerStat');fc.textContent=fillerWords;
-    if(fillerWords>=5){fc.style.color='#ef4444';fs.style.background='#fef2f2';fs.style.borderColor='#fecaca';}
-    else if(fillerWords>=3){fc.style.color='#f59e0b';fs.style.background='#fffbeb';fs.style.borderColor='#fde68a';}
-  }
-}
-
-function toggleMic(){
-  if(_aiSpeaking){_aiSpeaking=false;cancelSpeak();setAvatar('listening');}
-  if(_mediaRec&&_mediaRec.state==='recording'){finishRecording();}else{startRecording();}
+    recog.onend=function(){recog=null;clearInterval(_starTimer);
+      var sc4=document.getElementById('starCoach');if(sc4)sc4.style.display='none';
+      var inp2=document.getElementById('userInput');
+      if(isMobile&&!_aiSpeaking&&!_waitingForAI&&!_sending){
+        if(answerTimer){setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog&&!_sending)toggleMic();},400);}
+        else if(inp2.value.trim()){updateMicUI('waiting','Sending your answer...');sendAnswer();}
+        return;
+      }
+      clearTimeout(silenceTimer);
+      document.getElementById('listenBar').style.display='none';
+      document.getElementById('micTranscript').className='mic-transcript';
+      if(inp2.value.trim()){updateMicUI('waiting','Sending your answer...');sendAnswer();}
+      else if(!_aiSpeaking&&!_waitingForAI){
+        _micRetries++;
+        if(_micRetries<=_maxMicRetries){updateMicUI('listening','Mic restarting...');setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog)toggleMic();},500);}
+        else{_micRetries=0;updateMicUI(null,'Mic stopped \u2014 tap Skip to continue');}
+      }
+    };
+    recog.onerror=function(ev){
+      recog=null;clearInterval(_starTimer);document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);
+      var sc5=document.getElementById('starCoach');if(sc5)sc5.style.display='none';
+      if(ev.error==='not-allowed'){updateMicUI(null,'Mic blocked \u2014 check browser settings');}
+      else if(ev.error==='network'&&!_aiSpeaking&&!_waitingForAI){updateMicUI(null,'Network error \u2014 retrying...');setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI)toggleMic();},2000);}
+      else if(ev.error!=='aborted'&&!_aiSpeaking&&!_waitingForAI){updateMicUI(null,'Retrying...');setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI)toggleMic();},1000);}
+    };
+    recog.start();
+  }catch(err){recog=null;updateMicUI(null,'Speech recognition error');}
 }
 
 /* Camera */
@@ -1127,7 +1034,7 @@ function startCam(){
 function stopCam(){
   var vid=document.getElementById('camVideo');
   if(vid.srcObject){vid.srcObject.getTracks().forEach(function(t){t.stop();});vid.srcObject=null;}
-  stopRecording(true);_micStream=null;
+  if(recog){recog.stop();recog=null;}_micStream=null;
   document.getElementById('camWrap').style.display='none';
 }
 
