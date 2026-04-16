@@ -314,12 +314,23 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
       <div class="field"><label>What role are you interviewing for?</label><input type="text" id="simRole" placeholder="e.g. Pharmacist, Software Engineer, Teacher"></div>
       <div class="field"><label>Which company? (optional)</label><input type="text" id="simCompany" placeholder="e.g. Xero, Fisher &amp; Paykel, Countdown"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+        <div class="field"><label>Your experience level</label>
+          <select id="simLevel"><option value="Graduate / Entry-level">Graduate / Entry-level</option><option value="Mid-level (2-5 years)" selected>Mid-level (2-5 years)</option><option value="Senior (5+ years)">Senior (5+ years)</option><option value="Executive / Leadership">Executive / Leadership</option></select>
+        </div>
+        <div class="field"><label>Interview round</label>
+          <select id="simRound"><option value="Phone screen">Phone screen (15-20 min)</option><option value="First interview" selected>First interview</option><option value="Technical / Panel">Technical / Panel</option><option value="Final round">Final round</option></select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
         <div class="field"><label>Interview style</label>
           <select id="simStyle"><option value="Standard">Standard</option><option value="Behavioural">Behavioural (STAR method)</option><option value="Technical">Technical</option><option value="Casual">Casual / coffee chat</option></select>
         </div>
         <div class="field"><label>How many questions?</label>
           <select id="simCount"><option value="5">5 (10 min)</option><option value="8">8 (20 min)</option><option value="10">10 (30 min)</option></select>
         </div>
+      </div>
+      <div class="field"><label>Paste the job description (optional)</label>
+        <textarea id="simJD" rows="3" style="width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Inter',sans-serif;font-size:14px;color:#0f172a;outline:none;resize:vertical" placeholder="Paste the actual job ad for tailored questions about the specific requirements..."></textarea>
       </div>
     </div>
     <button class="btn" onclick="goStep2()">Next — Set Up Audio</button>
@@ -488,7 +499,8 @@ function checkGate(cb){if(localStorage.getItem('fmaj_email')||getCookie('fmaj_em
 function submitGateEmail(){var e=document.getElementById('gate-email').value.trim();if(!e||e.indexOf('@')===-1){document.getElementById('gate-email').style.borderColor='#ef4444';return;}document.getElementById('gate-btn').textContent='Saving...';document.getElementById('gate-btn').disabled=true;localStorage.setItem('fmaj_email',e);setCookie('fmaj_email',e,365);localStorage.setItem('fmaj_uses','999');setCookie('fmaj_uses','999',365);fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',email:e,password:'__tool_gate__',name:e.split('@')[0],emailAlerts:true})}).catch(function(){});document.getElementById('email-gate').style.display='none';if(_gateCallback){_gateCallback();_gateCallback=null;}}
 
 /* Interview state */
-var msgs=[],qCount=0,maxQ=5,iData={role:'',company:'',style:'',qa:[]},audioEnabled=false;
+var msgs=[],qCount=0,maxQ=5,iData={role:'',company:'',style:'',level:'',round:'',jd:'',qa:[]},audioEnabled=false;
+var _lastWasProbe=false,_probedThisQ=false;
 var timedMode=false,answerTimer=null,timeLeft=0;
 var autoSend=true,silenceDelay=5000;
 var fillerWords=0;
@@ -508,6 +520,41 @@ var voiceNames={'aura-asteria-en':'Asteria','aura-luna-en':'Luna','aura-stella-e
 function getRecMime(){if(typeof MediaRecorder==='undefined')return'audio/webm';var ts=['audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus','audio/mp4'];for(var i=0;i<ts.length;i++){if(MediaRecorder.isTypeSupported(ts[i]))return ts[i];}return'audio/webm';}
 function vGender(v){return voiceGenders[v]||'female';}
 function vName(v){return voiceNames[v]||'Interviewer';}
+
+/* Build competency-based interviewer system prompt */
+function buildSysPrompt(phase){
+  var vv=document.getElementById('voiceGender').value;
+  var iName=vName(vv);if(vv==='off')iName=document.getElementById('avatarName').textContent;
+  var s="You are "+iName+", a senior NZ interviewer conducting a "+iData.round+" ("+iData.style+" style) for a "+iData.level+" "+iData.role+" role"+(iData.company?" at "+iData.company:"")+".\n\n";
+  if(iData.jd){s+="JOB DESCRIPTION (tailor questions to these actual requirements):\n"+iData.jd.substring(0,1500)+"\n\n";}
+  s+="METHODOLOGY — follow modern competency-based interviewing best practice:\n";
+  s+="- Calibrate difficulty to "+iData.level+" seniority (don't over-question a graduate; don't under-question a senior)\n";
+  if(iData.style==='Behavioural')s+="- Frame every question to prompt a past-situation STAR answer (Situation, Task, Action, Result)\n";
+  if(iData.style==='Technical')s+="- Mix role-specific technical questions with behavioural/teamwork ones\n";
+  if(iData.style==='Casual')s+="- Keep tone conversational, like a coffee chat, but still gather signal\n";
+  s+="- ONE question at a time, keep it to 1-2 sentences\n";
+  s+="- Vary question types: background, competency (leadership/teamwork/problem-solving/adaptability), role-specific, situational\n";
+  s+="- Use NZ workplace context where relevant\n";
+  s+="- Be professional, warm, encouraging — never condescending\n\n";
+  if(phase==='start'){
+    s+="PHASE: Opening. Introduce yourself briefly as "+iName+", then ask a warmup question about their background and what drew them to this role. Keep the warmup welcoming.\n";
+  } else if(phase==='answer'){
+    s+="Question "+qCount+" of "+maxQ+". You just received the candidate's answer.\n\n";
+    s+="DECIDE:\n";
+    s+="(A) If their answer was vague, generic, hypothetical when a real example was asked, or missing the outcome/result → ask ONE brief follow-up probe (e.g. 'Can you walk me through a specific time?', 'What was the measurable outcome?', 'What was your role specifically?'). Start your response with [PROBE] so the system tracks it.\n";
+    s+="(B) If the answer had enough depth (OR you have already probed this topic once) → move on to your next question.\n\n";
+    if(_probedThisQ)s+="You have ALREADY probed this topic — do NOT probe again. Move on.\n";
+    if(qCount>=maxQ){s+="This is your FINAL question. Ask 'Do you have any questions for us about the role or the team?' — then when they respond, give a thoughtful, realistic answer (as if you actually work there) and close warmly.\n";}
+    else if(qCount>=maxQ-1){s+="For this question, ask a realistic situational/scenario question tied to the role ('What would you do if...').\n";}
+    else if(qCount===2){s+="This question should probe a core competency (leadership, teamwork, conflict, or problem-solving).\n";}
+  } else if(phase==='skip'){
+    s+="Question "+qCount+" of "+maxQ+". The candidate skipped. Move to your next question without commenting on the skip.\n";
+  } else if(phase==='timeout'){
+    s+="Question "+qCount+" of "+maxQ+". The candidate did not answer in time. Acknowledge briefly ('No worries, let's keep going') and move to your next question.\n";
+  }
+  s+="\nNever number your questions. Never wrap up the interview yourself — the candidate ends it via a button.";
+  return s;
+}
 
 function goStep2(){
   var role=document.getElementById('simRole').value.trim();
@@ -608,7 +655,11 @@ function startInterview(role){
 async function _doStart(role){
   var company=document.getElementById('simCompany').value.trim();
   var style=document.getElementById('simStyle').value;
-  iData={role:role,company:company,style:style,qa:[]};
+  var level=document.getElementById('simLevel').value;
+  var round=document.getElementById('simRound').value;
+  var jd=document.getElementById('simJD').value.trim();
+  iData={role:role,company:company,style:style,level:level,round:round,jd:jd,qa:[]};
+  _lastWasProbe=false;_probedThisQ=false;
   document.getElementById('pageHeader').style.display='none';
   document.getElementById('chatSection').style.display='block';
   var vv=document.getElementById('voiceGender').value;
@@ -618,10 +669,10 @@ async function _doStart(role){
   if(timedMode){document.getElementById('timerDisplay').style.display='flex';}
   document.getElementById('fillerCount').textContent='0';
   document.getElementById('wpmCount').textContent='\u2014';
-  msgs=[{role:'user',content:'Start the interview. Introduce yourself briefly and ask your first question.'}];
+  msgs=[{role:'user',content:'Start the interview now. Introduce yourself briefly and ask your opening question.'}];
   showTyping();dis(true);
   try{
-    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:"You are "+iName+", a professional NZ job interviewer conducting a "+style+" interview for a "+role+" position"+(company?" at "+company:"")+" in New Zealand. Your name is "+iName+". Introduce yourself as "+iName+" at the start. Ask ONE question at a time. Be professional and warm. Use NZ workplace context. Do not number questions.",messages:msgs})});
+    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:buildSysPrompt('start'),messages:msgs})});
     var d=await r.json();var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
     if(!t){throw new Error('empty');}
     msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');speak(t);qCount=1;updC();dis(false);startTimer();
@@ -637,15 +688,22 @@ async function sendAnswer(){
   stopRecording(true);
   inp.value='';addMsg(ans,'user');countFillers(ans);updateMicUI('waiting','Processing your answer...');
   var lastAi='';for(var i=msgs.length-1;i>=0;i--){if(msgs[i].role==='assistant'){lastAi=msgs[i].content;break;}}
-  iData.qa.push({q:lastAi,a:ans});msgs.push({role:'user',content:ans});qCount++;updC();setAvatar('thinking');dis(true);showTyping();
+  /* If the last AI message was a probe, merge this answer onto the existing Q/A pair */
+  if(_lastWasProbe&&iData.qa.length){
+    iData.qa[iData.qa.length-1].a+=' '+ans;
+  }else{
+    iData.qa.push({q:lastAi,a:ans});
+  }
+  msgs.push({role:'user',content:ans});qCount++;updC();setAvatar('thinking');dis(true);showTyping();
   var trimmed=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
   try{
-    var vv=document.getElementById('voiceGender').value;
-    var iName=vName(vv);if(vv==='off')iName=document.getElementById('avatarName').textContent;
-    var sys="You are "+iName+", a professional NZ job interviewer. "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. Question "+qCount+" of "+maxQ+". Ask ONE question. Do not say thank you or wrap up the interview. Just ask the question.";
-    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:trimmed})});
+    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:buildSysPrompt('answer'),messages:trimmed})});
     var d=await r.json();var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):(d.error||'');
     if(!t)throw new Error('empty');
+    /* Probe detection */
+    var isProbe=/^\s*\[PROBE\]/i.test(t);
+    if(isProbe){t=t.replace(/^\s*\[PROBE\]\s*/i,'');_lastWasProbe=true;_probedThisQ=true;qCount--;updC();}
+    else{_lastWasProbe=false;_probedThisQ=false;}
     msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;_sending=false;speak(t);dis(false);
     if(qCount>maxQ){stopTimer();document.getElementById('timerDisplay').style.display='none';setTimeout(function(){document.getElementById('endBtn').style.display='block';},1000);}
   }catch(e){_waitingForAI=false;_sending=false;hideTyping();addMsg('Connection issue — tap Skip to move on.','ai');dis(false);qCount--;updC();}
@@ -663,14 +721,13 @@ async function skipQuestion(){
   qCount++;updC();
   if(qCount>maxQ){_waitingForAI=false;document.getElementById('chatInput').style.display='none';document.getElementById('endBtn').style.display='block';document.getElementById('timerDisplay').style.display='none';return;}
   setAvatar('thinking');dis(true);showTyping();
+  _lastWasProbe=false;_probedThisQ=false;
   var trimmed2=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
   try{
-    var vv=document.getElementById('voiceGender').value;
-    var iName=vName(vv);if(vv==='off')iName=document.getElementById('avatarName').textContent;
-    var sys="You are "+iName+", a professional NZ job interviewer. "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. Question "+qCount+" of "+maxQ+". The candidate skipped the previous question. Move on to your next question without commenting on it.";
-    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:trimmed2})});
+    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:buildSysPrompt('skip'),messages:trimmed2})});
     var d=await r.json();var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
     if(!t)throw new Error('empty');
+    t=t.replace(/^\s*\[PROBE\]\s*/i,'');
     msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;speak(t);dis(false);
   }catch(e){_waitingForAI=false;hideTyping();addMsg('Connection issue — tap Skip to move on.','ai');dis(false);}
 }
@@ -678,14 +735,42 @@ async function skipQuestion(){
 async function endInterview(){
   _aiSpeaking=false;cancelSpeak();stopTimer();stopRecording(true);setAvatar('thinking');
   document.getElementById('endBtn').textContent='Scoring...';document.getElementById('endBtn').disabled=true;
-  var wpmVal=_totalSpeakDur>0?Math.round(_totalWords/(_totalSpeakDur/60)):'N/A';
+  var wpmVal=_totalSpeakDur>0?Math.round(_totalWords/(_totalSpeakDur/60)):0;
   var answered=iData.qa.filter(function(x){return x.a!=='(skipped)'&&x.a.indexOf('(no answer')!==0;}).length;
-  var p="You are a senior recruiter evaluating a job interview. Score this candidate.\n\n";
-  p+="CANDIDATE STATS:\n- Filler words used: "+fillerWords+" (um, uh, ah, er, like, you know, basically)\n- Speaking pace: "+wpmVal+" WPM (ideal: 130-160 WPM)\n- Questions answered: "+answered+" out of "+iData.qa.length+"\n\n";
-  p+="SCORING CATEGORIES (each 0-25 points):\n1. Communication (clarity, structure, articulation)\n2. Relevance (addressed the question, stayed on topic)\n3. Depth (specific examples, STAR method, concrete details)\n4. Confidence (professional tone, minimal fillers, appropriate pace)\n\n";
-  p+="INTERVIEW DATA:\n";
-  iData.qa.forEach(function(x,i){p+="Q"+(i+1)+": "+x.q.substring(0,400)+"\nA"+(i+1)+": "+x.a.substring(0,400)+"\n\n";});
-  p+='Return ONLY valid JSON: {"score":0,"grade":"A+ to D","categories":{"communication":{"score":0,"comment":"..."},"relevance":{"score":0,"comment":"..."},"depth":{"score":0,"comment":"..."},"confidence":{"score":0,"comment":"..."}},"overall":"2-3 sentences","strengths":["s1","s2","s3"],"improvements":["i1","i2","i3"],"goldenTip":"one actionable tip","feedback":[{"question":"short","rating":"Strong|Adequate|Needs Work","comment":"what they did well","tip":"specific improvement"}]}';
+  var p="You are a senior NZ recruiter evaluating this interview as if making a real hiring recommendation. Be rigorous but fair.\n\n";
+  p+="ROLE CONTEXT:\n- Position: "+iData.level+" "+iData.role+(iData.company?" at "+iData.company:"")+"\n- Round: "+iData.round+"\n- Style: "+iData.style+"\n";
+  if(iData.jd)p+="- Job description provided (tailor scoring to these requirements):\n"+iData.jd.substring(0,1200)+"\n";
+  p+="\nCANDIDATE SIGNALS:\n- Filler words: "+fillerWords+(fillerWords>=5?' (high — affecting polish)':fillerWords>=3?' (moderate)':' (good control)')+"\n- Speaking pace: "+wpmVal+" WPM "+(wpmVal&&(wpmVal<120||wpmVal>170)?'(outside the natural 130-160 range)':'(within natural range)')+"\n- Questions engaged: "+answered+" of "+iData.qa.length+"\n\n";
+  p+="SCORING FRAMEWORK (each category 0-25):\n1. Communication — clarity, structure, articulation, grammar, vocal polish\n2. Relevance — answered the actual question, stayed on topic, fit the role\n3. Depth — specific real examples, quantified outcomes, STAR structure, concrete detail\n4. Confidence — professional presence, minimal hedging/fillers, appropriate pace, conviction\n\nCompetency signals to watch for: self-awareness, ownership/accountability, outcome focus, collaboration, adaptability, role-specific expertise, culture fit, genuine interest in the role.\n\n";
+  p+="INTERVIEW TRANSCRIPT:\n";
+  iData.qa.forEach(function(x,i){p+="Q"+(i+1)+": "+x.q.substring(0,500)+"\nA"+(i+1)+": "+x.a.substring(0,600)+"\n\n";});
+  p+='Return ONLY valid JSON, no markdown:\n';
+  p+='{\n';
+  p+='  "score": <0-100>,\n';
+  p+='  "grade": "A+|A|A-|B+|B|B-|C+|C|C-|D",\n';
+  p+='  "recommendation": "Strong Hire | Hire | Maybe | No Hire",\n';
+  p+='  "categories": {\n';
+  p+='    "communication":{"score":<0-25>,"comment":"1 sentence"},\n';
+  p+='    "relevance":{"score":<0-25>,"comment":"1 sentence"},\n';
+  p+='    "depth":{"score":<0-25>,"comment":"1 sentence"},\n';
+  p+='    "confidence":{"score":<0-25>,"comment":"1 sentence"}\n';
+  p+='  },\n';
+  p+='  "overall": "3-4 sentence recruiter-style summary",\n';
+  p+='  "strengths": ["strength 1","strength 2","strength 3"],\n';
+  p+='  "improvements": ["improvement 1","improvement 2","improvement 3"],\n';
+  p+='  "goldenTip": "One specific, actionable change that would most move the needle next time",\n';
+  p+='  "pacingFeedback": "1 sentence about WPM and fillers",\n';
+  p+='  "feedback": [\n';
+  p+='    {\n';
+  p+='      "question": "short paraphrase of Q",\n';
+  p+='      "rating": "Strong|Adequate|Needs Work",\n';
+  p+='      "starUsage": "Strong|Partial|Missing",\n';
+  p+='      "comment": "what they did well (or missed)",\n';
+  p+='      "tip": "specific improvement tip",\n';
+  p+='      "modelAnswer": "2-3 sentence example of how a strong '+iData.level+' candidate would answer this using STAR and a concrete example"\n';
+  p+='    }\n';
+  p+='  ]\n';
+  p+='}';
   try{
     var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:p}]})});
     var d=await r.json();var t=d.content.map(function(b){return b.text||'';}).join('');
@@ -697,10 +782,12 @@ function showScore(r){
   var c=r.score>=80?'#E7515A':r.score>=60?'#f59e0b':'#ef4444';
   var bg=r.score>=80?'#fef2f2':r.score>=60?'#fffbeb':'#fef2f2';
   var wpm=_totalSpeakDur>0?Math.round(_totalWords/(_totalSpeakDur/60)):0;
+  var recColor=r.recommendation==='Strong Hire'?'#059669':r.recommendation==='Hire'?'#E7515A':r.recommendation==='Maybe'?'#f59e0b':'#ef4444';
   var h='<div class="card score-card" style="text-align:center;padding:2rem">';
   h+='<div style="font-size:.78rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px">Your Interview Score</div>';
   h+='<div class="score-big" id="score-num" style="color:'+c+'">0/100</div>';
   h+='<div style="display:inline-block;background:'+bg+';color:'+c+';padding:.3rem .85rem;border-radius:999px;font-size:.82rem;font-weight:700;border:1px solid '+c+'33">'+esc(r.grade)+'</div>';
+  if(r.recommendation){h+='<div style="margin-top:.5rem;display:inline-block;margin-left:.4rem;background:'+recColor+'14;color:'+recColor+';padding:.3rem .85rem;border-radius:999px;font-size:.78rem;font-weight:700;border:1px solid '+recColor+'33">Recruiter verdict: '+esc(r.recommendation)+'</div>';}
   h+='<p style="color:#64748b;font-size:.88rem;margin-top:1rem;line-height:1.6">'+esc(r.overall)+'</p>';
   /* Category breakdown */
   if(r.categories){
@@ -719,7 +806,9 @@ function showScore(r){
   h+='<div style="text-align:center"><div style="font-size:1.3rem;font-weight:800;color:#0f172a">'+(wpm||'\u2014')+'</div><div style="font-size:.65rem;font-weight:700;color:#94a3b8;text-transform:uppercase">WPM</div></div>';
   h+='<div style="text-align:center"><div style="font-size:1.3rem;font-weight:800;color:'+(fillerWords>=5?'#ef4444':fillerWords>=3?'#f59e0b':'#0f172a')+'">'+fillerWords+'</div><div style="font-size:.65rem;font-weight:700;color:#94a3b8;text-transform:uppercase">Filler Words</div></div>';
   h+='<div style="text-align:center"><div style="font-size:1.3rem;font-weight:800;color:#0f172a">'+iData.qa.length+'</div><div style="font-size:.65rem;font-weight:700;color:#94a3b8;text-transform:uppercase">Questions</div></div>';
-  h+='</div></div>';
+  h+='</div>';
+  if(r.pacingFeedback){h+='<div style="font-size:.78rem;color:#64748b;margin-top:.85rem;font-style:italic">'+esc(r.pacingFeedback)+'</div>';}
+  h+='</div>';
   /* Strengths */
   if(r.strengths&&r.strengths.length){
     h+='<div class="card" style="padding:1.25rem;margin-top:.75rem;text-align:left">';
@@ -741,14 +830,32 @@ function showScore(r){
     h+='<div style="font-size:.88rem;color:#0f172a;line-height:1.6;font-weight:500">'+esc(r.goldenTip)+'</div></div>';
   }
   /* Per-question feedback */
-  if(r.feedback&&r.feedback.length){r.feedback.forEach(function(f,fi){
-    var fc=f.rating==='Strong'?'#E7515A':f.rating==='Adequate'?'#f59e0b':'#ef4444';
-    h+='<div class="fb-item" style="animation-delay:'+(0.3+fi*0.15)+'s;text-align:left"><div class="fb-q">'+esc(f.question)+'</div>';
-    h+='<div style="font-size:.72rem;font-weight:700;color:'+fc+';margin-bottom:.3rem">'+esc(f.rating)+'</div>';
-    h+='<div class="fb-text">'+esc(f.comment)+'</div>';
-    if(f.tip){h+='<div style="font-size:.78rem;color:#E7515A;margin-top:.35rem;font-weight:600">Tip: '+esc(f.tip)+'</div>';}
-    h+='</div>';
-  });}
+  if(r.feedback&&r.feedback.length){
+    h+='<div style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin:1.25rem 0 .5rem;text-align:left">Question-by-question review</div>';
+    r.feedback.forEach(function(f,fi){
+      var fc=f.rating==='Strong'?'#E7515A':f.rating==='Adequate'?'#f59e0b':'#ef4444';
+      var sc=f.starUsage==='Strong'?'#059669':f.starUsage==='Partial'?'#f59e0b':'#94a3b8';
+      h+='<div class="fb-item" style="animation-delay:'+(0.3+fi*0.15)+'s;text-align:left"><div class="fb-q">'+esc(f.question)+'</div>';
+      h+='<div style="display:flex;gap:.4rem;align-items:center;margin-bottom:.4rem;flex-wrap:wrap">';
+      h+='<span style="font-size:.72rem;font-weight:700;color:'+fc+'">'+esc(f.rating)+'</span>';
+      if(f.starUsage){h+='<span style="font-size:.62rem;font-weight:700;color:'+sc+';background:'+sc+'14;padding:.15rem .5rem;border-radius:999px;border:1px solid '+sc+'33">STAR: '+esc(f.starUsage)+'</span>';}
+      h+='</div>';
+      h+='<div class="fb-text">'+esc(f.comment)+'</div>';
+      if(f.tip){h+='<div style="font-size:.78rem;color:#E7515A;margin-top:.35rem;font-weight:600">\u2192 Tip: '+esc(f.tip)+'</div>';}
+      if(f.modelAnswer){
+        h+='<details style="margin-top:.6rem;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:.5rem .75rem">';
+        h+='<summary style="font-size:.72rem;font-weight:700;color:#059669;cursor:pointer;text-transform:uppercase;letter-spacing:.5px">\u2728 Show strong-candidate answer</summary>';
+        h+='<div style="font-size:.8rem;color:#064e3b;margin-top:.5rem;line-height:1.55">'+esc(f.modelAnswer)+'</div>';
+        h+='</details>';
+      }
+      h+='</div>';
+    });
+  }
+  /* Action buttons */
+  h+='<div style="display:flex;gap:.5rem;margin-top:1.25rem;flex-wrap:wrap">';
+  h+='<button onclick="practiceAgain()" style="flex:1;min-width:140px;padding:.85rem 1rem;background:#0f172a;color:#fff;border:none;border-radius:999px;font-family:Inter,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer">\u21bb Practice again</button>';
+  h+='<button onclick="shareResults('+r.score+')" style="flex:1;min-width:140px;padding:.85rem 1rem;background:#fff;color:#0f172a;border:1px solid #e2e8f0;border-radius:999px;font-family:Inter,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer">Share results</button>';
+  h+='</div>';
   h+='<div class="cta-box"><p>Ready to apply for real?</p><a href="/match.html">Apply for a Job</a></div>';
   stopCam();document.getElementById('chatSection').style.display='none';
   document.getElementById('scoreSection').innerHTML=h;document.getElementById('scoreSection').style.display='block';
@@ -832,12 +939,12 @@ function startTimer(){
       msgs.push({role:'user',content:'(The candidate did not answer in time. Move on to the next question.)'});
       qCount++;updC();
       if(qCount>maxQ){document.getElementById('chatInput').style.display='none';document.getElementById('endBtn').style.display='block';document.getElementById('timerDisplay').style.display='none';}
-      else{_waitingForAI=true;setAvatar('thinking');dis(true);showTyping();
+      else{_waitingForAI=true;setAvatar('thinking');dis(true);showTyping();_lastWasProbe=false;_probedThisQ=false;
         var trimmed3=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
-        var vv=document.getElementById('voiceGender').value;var iName3=vName(vv);if(vv==='off')iName3=document.getElementById('avatarName').textContent;
-        fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:"You are "+iName3+", a professional NZ job interviewer. "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. Question "+qCount+" of "+maxQ+". The candidate did not answer the previous question. Acknowledge briefly and move on to your next question.",messages:trimmed3})}).then(function(r){return r.json();}).then(function(d){
+        fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:buildSysPrompt('timeout'),messages:trimmed3})}).then(function(r){return r.json();}).then(function(d){
           var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
           if(!t)throw new Error('empty');
+          t=t.replace(/^\s*\[PROBE\]\s*/i,'');
           msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;speak(t);dis(false);
         }).catch(function(){_waitingForAI=false;hideTyping();addMsg('Connection issue — tap Skip to move on.','ai');dis(false);});
       }
@@ -862,7 +969,16 @@ function startRecording(){
     document.getElementById('micTranscript').textContent='Listening...';
     document.getElementById('listenBar').style.display='block';
     document.getElementById('listenFill').style.width='0';
-    _recTimer=setInterval(function(){var el=Math.floor((Date.now()-_recStart)/1000);var m=Math.floor(el/60);var s=el%60;updateMicUI('listening','Recording... '+m+':'+(s<10?'0':'')+s);},1000);
+    _recTimer=setInterval(function(){
+      var el=Math.floor((Date.now()-_recStart)/1000);var m=Math.floor(el/60);var s=el%60;var ts=m+':'+(s<10?'0':'')+s;
+      var hint='';
+      if(el<20)hint=' \u2014 keep going, add a specific example';
+      else if(el<45)hint=' \u2014 building nicely';
+      else if(el<90)hint=' \u2014 good length, wrap with the outcome';
+      else if(el<120)hint=' \u2014 consider wrapping up';
+      else hint=' \u2014 try to land your answer';
+      updateMicUI('listening','Recording '+ts+hint);
+    },1000);
     monitorVolume();
   }).catch(function(){updateMicUI(null,'Microphone blocked — check settings');});
 }
@@ -977,6 +1093,25 @@ function esc(s){var d=document.createElement('div');d.textContent=s;return d.inn
 
 document.getElementById('userInput').addEventListener('input',function(){this.style.height='44px';this.style.height=Math.min(this.scrollHeight,100)+'px';});
 document.getElementById('userInput').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAnswer();}});
+
+function practiceAgain(){
+  document.getElementById('scoreSection').style.display='none';
+  document.getElementById('scoreSection').innerHTML='';
+  document.getElementById('pageHeader').style.display='';
+  document.getElementById('setupForm').style.display='block';
+  document.getElementById('chatMessages').innerHTML='';
+  msgs=[];qCount=0;fillerWords=0;_totalWords=0;_totalSpeakDur=0;
+  _lastWasProbe=false;_probedThisQ=false;
+  document.getElementById('fillerCount').textContent='0';document.getElementById('wpmCount').textContent='\u2014';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function shareResults(score){
+  var txt='I just practiced a '+iData.role+' interview on FindMeAJob and scored '+score+'/100. Try it free: https://www.findmeajob.co.nz/interview-sim';
+  if(navigator.share){navigator.share({title:'My interview score',text:txt}).catch(function(){});}
+  else if(navigator.clipboard){navigator.clipboard.writeText(txt).then(function(){alert('Copied to clipboard!');}).catch(function(){prompt('Copy this:',txt);});}
+  else{prompt('Copy this:',txt);}
+}
 
 function toggleTheme(){document.body.classList.toggle('dark');var d=document.body.classList.contains('dark');localStorage.setItem('theme',d?'dark':'light');document.getElementById('tbtn').innerHTML=d?'&#9790;':'&#9788;';}
 if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');var tb=document.getElementById('tbtn');if(tb)tb.innerHTML='&#9790;';}
