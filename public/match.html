@@ -261,7 +261,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <a class="mnavitem" href="/blog">Blog</a>
     <a class="mnavitem" href="/employer-portal.html">Post a Job</a>
     <a class="mnavitem" href="/employer-portal.html">Employer Login</a>
-    <a class="mnavitem" href="/match.html" style="color:#E7515A;font-weight:700">Get started free</a>
+    <a class="mnavitem" href="/match.html" style="color:#E7515A;font-weight:700">Find a Job</a>
     <button class="mnavitem" id="mm-apply" type="button">Apply for a Job</button>
     <button class="mnavitem" id="mm-home" type="button" style="display:none">Home</button>
     <button class="mnavitem" id="mm-find" type="button" style="display:none">Find a Job</button>
@@ -282,7 +282,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <button class="nl" id="h-browse" type="button" style="display:none">Browse Jobs</button>
     <button class="nl" id="h-account" type="button" style="display:none">My Account</button>
     <button class="nl" id="h-signin" type="button" style="display:none">My Jobs</button>
-    <button class="nl cta" id="h-apply" type="button" style="background:#1a1a2e;color:#fff">Get started free</button>
+    <button class="nl cta" id="h-apply" type="button" style="background:#1a1a2e;color:#fff">Find a Job</button>
   </div>
   <div class="nav-r">
     <button class="icon-btn" id="tbtn" type="button">&#9788;</button>
@@ -1534,7 +1534,7 @@ async function fetchLiveJobs(matches){
         (reason?'<div style="font-size:.75rem;color:var(--em);font-weight:600;margin:.35rem 0;padding:.4rem .65rem;background:var(--em3);border:1px solid rgba(231,81,90,.15);border-radius:6px;line-height:1.5">'+esc(reason)+'</div>':'')+
         '<div class="job-desc">'+esc(job.description)+'</div>'+
         (job.salary?'<div class="job-tags"><span class="tag tag-other">'+esc(job.salary)+'</span></div>':'')+
-        '<div class="job-links"><a href="'+esc(job.url)+'" target="_blank" rel="noopener" class="job-link apply">Apply Now &#8594;</a></div>'+
+        '<div class="job-links"><a href="'+esc(job.url)+'" target="_blank" rel="noopener" class="job-link apply">Apply Externally &#8594;</a></div>'+
         '</div>'+
         '<div class="match-col">'+
         (pct?'<div class="match-pct" style="color:'+pctColor+'">'+pct+'%</div><div class="match-lbl">AI match</div>':'<div style="color:var(--em);font-size:.65rem;font-weight:800;text-transform:uppercase">Live</div>')+
