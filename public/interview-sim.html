@@ -890,8 +890,6 @@ function toggleMic(quiet){
     document.getElementById('listenFill').style.width='0';
     var inp=document.getElementById('userInput');
     var lastResultTime=Date.now();
-    var _liveFillers=0;
-    var _seenInterimFillers={};
     var _lastSpeechTime=Date.now();
     _pauseFillersPending=0;
     recog.onresult=function(e){
@@ -921,7 +919,7 @@ function toggleMic(quiet){
       if(fillerWords+_liveFillers>3)document.getElementById('fillerCount').style.color='#ef4444';
       document.getElementById('listenFill').style.width='0';
       clearTimeout(silenceTimer);
-      if(autoSend&&t.trim().length>1){
+      if(autoSend&&fullText.length>1){
         silenceTimer=setTimeout(function(){
           if(inp.value.trim()&&Date.now()-lastResultTime>=silenceDelay-200){
             if(recog){try{recog.stop();}catch(e2){}}recog=null;
