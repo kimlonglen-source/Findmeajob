@@ -871,15 +871,14 @@ function toggleMic(quiet){
   }
   try{
     var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-    var isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     recog=new SR();recog.lang='en-NZ';
-    recog.continuous=true;/* Continuous on all — keeps mic open for full answers */
+    recog.continuous=true;
     recog.interimResults=true;
     if(!quiet){
       _micRetries=0;
       updateMicUI('listening','Interviewer is listening — please speak now');
       document.getElementById('micTranscript').className='mic-transcript active';
-      document.getElementById('micTranscript').textContent=_accumulated||'';
+      document.getElementById('micTranscript').textContent='';
     } else {
       updateMicUI('listening','Interviewer is listening...');
     }
@@ -898,25 +897,12 @@ function toggleMic(quiet){
       if(_lastSpeechTime&&now-_lastSpeechTime>1200&&inp.value.trim().length>0){_pauseFillersPending++;}
       _lastSpeechTime=now;
       _micRetries=0;
-      var t='';var interim='';var allInterim='';
-      if(isMobile){
-        for(var i=0;i<e.results.length;i++){
-          if(e.results[i].isFinal){
-            var ft=e.results[i][0].transcript;
-            if(_accumulated.indexOf(ft)===-1){_accumulated+=ft+' ';}
-          } else {
-            interim+=e.results[i][0].transcript;
-          }
-        }
-        t=(_accumulated+interim).trim();
-        allInterim=interim;
-      } else {
-        for(var i2=0;i2<e.results.length;i2++){
-          t+=e.results[i2][0].transcript;
-          if(!e.results[i2].isFinal){allInterim+=e.results[i2][0].transcript;}
-        }
-        t=t.trim();
+      var t='';var allInterim='';
+      for(var i=0;i<e.results.length;i++){
+        t+=e.results[i][0].transcript;
+        if(!e.results[i].isFinal){allInterim+=e.results[i][0].transcript;}
       }
+      t=t.trim();
       inp.value=t;lastResultTime=Date.now();
       updateMicUI('listening','Interviewer is listening...');
       var trEl=document.getElementById('micTranscript');
@@ -949,7 +935,8 @@ function toggleMic(quiet){
     };
     recog.onend=function(){recog=null;
       var inp2=document.getElementById('userInput');
-      if(isMobile&&!_aiSpeaking&&!_waitingForAI&&!_sending&&!_interviewEnded){
+      var _mob=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      if(_mob&&!_aiSpeaking&&!_waitingForAI&&!_sending&&!_interviewEnded){
         /* Mobile: mic stopped after a phrase. Show buttons. */
         clearTimeout(silenceTimer);
         document.getElementById('sendBtn').style.display='inline-block';
