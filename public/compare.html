@@ -16,10 +16,10 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#ffffff;color:#0f172a;font-family:'Inter',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
+body{background:#ffffff;color:#0f172a;font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
 a{color:#E7515A;text-decoration:none}a:hover{text-decoration:underline}
 
 .nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 3rem;border-bottom:1px solid rgba(0,0,0,.06);position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);backdrop-filter:blur(12px)}
@@ -42,7 +42,7 @@ h1 em{font-style:normal;color:#E7515A}
 .subtitle{color:#64748b;font-size:.95rem;margin-bottom:2rem}
 
 label{display:block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;margin-bottom:.4rem}
-textarea{width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Inter',sans-serif;font-size:14px;color:#0f172a;outline:none;transition:all .2s;resize:vertical;min-height:180px;line-height:1.6}
+textarea{width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:#0f172a;outline:none;transition:all .2s;resize:vertical;min-height:180px;line-height:1.6}
 textarea:focus{border-color:#E7515A;box-shadow:0 0 0 3px rgba(231,81,90,.1)}
 textarea::placeholder{color:#94a3b8}
 
@@ -52,7 +52,7 @@ textarea::placeholder{color:#94a3b8}
 .job-a-color{color:#3b82f6}
 .job-b-color{color:#8b5cf6}
 
-.btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;background:#E7515A;color:#fff;padding:.85rem 1.8rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 15px rgba(231,81,90,.2)}
+.btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;background:#E7515A;color:#fff;padding:.85rem 1.8rem;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 15px rgba(231,81,90,.2)}
 .btn:hover{background:#c7313a;transform:translateY(-2px);box-shadow:0 8px 25px rgba(231,81,90,.3)}
 .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
@@ -194,7 +194,7 @@ body.dark .grade-badge span{color:#f8fafc !important}
     <a href="/blog">Blog</a>
     <a href="/match.html#account">Job Seekers</a>
     <a href="/employer-portal.html">Employers</a>
-    <a href="/match.html" class="nav-cta">Get started free</a>
+    <a href="/match.html" class="nav-cta">Find a Job</a>
   </div>
 </nav>
 
@@ -447,21 +447,17 @@ function toggleTheme(){document.body.classList.toggle('dark');var d=document.bod
 if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');var tb=document.getElementById('tbtn');if(tb)tb.innerHTML='&#9790;';}
 </script>
 
-<section style="background:#E7515A;padding:0;margin:0">
-  <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;gap:3rem;padding:3.5rem 2rem">
+<section style="background:#E7515A;padding:0;margin-top:2rem">
+  <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;gap:3rem;padding:3rem 2rem">
     <div style="flex:1">
-      <h2 style="font-size:2.2rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:1rem">Start your career toolkit</h2>
-      <p style="color:rgba(255,255,255,.85);font-size:1rem;line-height:1.7;margin-bottom:2rem">Free forever. No payment. No credit card. Just upload your CV and let AI do the rest.</p>
-      <a href="/match.html" style="display:inline-block;padding:.85rem 2rem;border:2px solid #fff;color:#fff;border-radius:999px;font-size:.95rem;font-weight:700;text-decoration:none">Get started now</a>
+      <h2 style="font-size:1.8rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:.75rem">Start your career toolkit</h2>
+      <p style="color:rgba(255,255,255,.85);font-size:.9rem;line-height:1.6;margin-bottom:1.5rem">12 free AI tools. No payment required.</p>
+      <a href="/match.html" style="display:inline-block;padding:.75rem 1.75rem;border:2px solid #fff;color:#fff;border-radius:999px;font-size:.88rem;font-weight:700;text-decoration:none">Find a Job</a>
     </div>
-    <div style="flex-shrink:0;text-align:center">
-      <div style="font-size:4rem;font-weight:900;color:#fff;line-height:1">12</div>
-      <div style="font-size:1rem;color:rgba(255,255,255,.85);font-weight:600">free tools</div>
-      <div style="font-size:.82rem;color:rgba(255,255,255,.65);margin-top:.5rem">for NZ job seekers</div>
-    </div>
+    <div style="flex-shrink:0;text-align:center"><div style="font-size:3rem;font-weight:900;color:#fff;line-height:1">12</div><div style="font-size:.85rem;color:rgba(255,255,255,.85);font-weight:600">free tools</div></div>
   </div>
 </section>
-<section style="background:#f7f7f7;padding:3.5rem 2rem;text-align:center">
+<section style="background:#f7f7f7;padding:3rem 2rem;text-align:center">
   <h2 style="font-size:1.5rem;font-weight:800;color:#1a1a2e;margin-bottom:.5rem">Get weekly NZ job alerts</h2>
   <p style="color:#6b7280;font-size:.9rem;margin-bottom:1.25rem">Real jobs from Adzuna delivered every Monday. Free.</p>
   <div style="display:flex;gap:.5rem;max-width:420px;margin:0 auto">
@@ -471,36 +467,22 @@ if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');v
 </section>
 <footer style="background:#1B1B3A;padding:3rem 2rem 1.5rem">
   <div style="max-width:900px;margin:0 auto">
-    <div style="font-size:2.5rem;font-weight:900;color:#E7515A;margin-bottom:2rem;letter-spacing:-1px">FindMeAJob</div>
-    <div style="display:flex;gap:3rem;flex-wrap:wrap;margin-bottom:2rem">
-      <div>
-        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.75rem">Tools</div>
-        <a href="/match.html" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Apply for a Job</a>
-        <a href="/interview-sim" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Interview Simulator</a>
-        <a href="/match.html#apply" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">CV + Cover Letter</a>
-        <a href="/score" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">CV Score</a>
-        <a href="/salary" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Salary Calculator</a>
-      </div>
-      <div>
-        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.75rem">More Tools</div>
-        <a href="/interview" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Interview Questions</a>
-        <a href="/negotiate" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Negotiate Salary</a>
-        <a href="/compare" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Compare Jobs</a>
-        <a href="/decode" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Decode Job Ad</a>
-        <a href="/email" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Write This Email</a>
-      </div>
-      <div>
-        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.75rem">Company</div>
-        <a href="/blog" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Blog</a>
-        <a href="/employer-portal.html" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Post a Job</a>
-        <a href="/employer-portal.html" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Employer Login</a>
-      </div>
+    <div style="font-size:2rem;font-weight:900;color:#E7515A;margin-bottom:1.5rem;letter-spacing:-.5px">FindMeAJob</div>
+    <div style="display:flex;gap:2.5rem;flex-wrap:wrap;margin-bottom:1.5rem">
+      <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.6rem">Tools</div><a href="/match.html" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Apply for a Job</a><a href="/interview-sim" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Interview Simulator</a><a href="/match.html#apply" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">CV + Cover Letter</a><a href="/score" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">CV Score</a><a href="/salary" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Salary Calculator</a></div>
+      <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.6rem">More</div><a href="/interview" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Interview Questions</a><a href="/negotiate" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Negotiate Salary</a><a href="/compare" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Compare Jobs</a><a href="/decode" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Decode Job Ad</a><a href="/email" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Write This Email</a></div>
+      <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.6rem">Company</div><a href="/blog" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Blog</a><a href="/employer-portal.html" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Post a Job</a><a href="/terms" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Terms</a><a href="/privacy" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Privacy</a></div>
     </div>
-    <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:1.5rem;font-size:.68rem;color:rgba(255,255,255,.3);line-height:1.7">
-      <p>&copy; 2026 FindMeAJob.co.nz &mdash; AI-powered career tools for New Zealand</p>
-      <p style="margin-top:.5rem">AI Disclaimer: This platform uses artificial intelligence to analyse CVs, match jobs, estimate salaries, and generate content. Results are suggestions, not professional advice. Always verify independently.</p>
-    </div>
+    <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:1rem;font-size:.62rem;color:rgba(255,255,255,.3);line-height:1.6"><p>&copy; 2026 FindMeAJob Ltd. All rights reserved.</p><p style="margin-top:.25rem">AI results are suggestions, not professional advice.</p></div>
   </div>
 </footer>
+<script>
+function subscribeAlerts(){var e=document.getElementById('alert-email');if(!e||!e.value.trim()||e.value.indexOf('@')===-1)return;fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',email:e.value.trim(),password:'__alerts_only__',name:e.value.split('@')[0],emailAlerts:true})}).then(function(){e.value='';e.placeholder='Subscribed!';}).catch(function(){});}
+</script>
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1B1B3A;color:rgba(255,255,255,.85);padding:.85rem 2rem;font-size:.78rem;z-index:9999;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap">
+<span>This site uses cookies and local storage for basic functionality. See our <a href="/privacy" style="color:#E7515A;font-weight:600">Privacy Policy</a>.</span>
+<button onclick="document.getElementById('cookie-banner').style.display='none';localStorage.setItem('cookie-ok','1')" style="background:#E7515A;color:#fff;border:none;padding:.4rem 1rem;border-radius:999px;font-size:.75rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Got it</button>
+</div>
+<script>if(!localStorage.getItem('cookie-ok')){document.getElementById('cookie-banner').style.display='flex';}</script>
 </body>
 </html>

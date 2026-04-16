@@ -75,17 +75,6 @@ module.exports = async function handler(req, res) {
         return res.status(200).json({ success: true, employer: { name: emp2.name, company: emp2.company, email: emp2.email, plan: emp2.plan || "free" }, jobs: allJobs2 });
       }
 
-      // Upgrade plan (no jobId needed)
-      if (action === "upgrade") {
-        var newPlan = req.body.plan;
-        var validPlans = ["free", "basic", "pro"];
-        if (!newPlan || validPlans.indexOf(newPlan) === -1) return res.status(400).json({ error: "Invalid plan" });
-        emp2.plan = newPlan;
-        emp2.planChangedAt = new Date().toISOString();
-        await hset("employers", postEmail, emp2);
-        return res.status(200).json({ success: true, plan: newPlan });
-      }
-
       // Submit new job listing
       if (action === "submit") {
         var PLAN_DAYS = { free: 30, basic: 30, pro: 30 };
@@ -145,12 +134,11 @@ module.exports = async function handler(req, res) {
       if (action === "relist") {
         if (job.status !== "approved" && job.status !== "closed") return res.status(400).json({ error: "Only expired or closed listings can be relisted" });
         var currentPlan = emp2.plan || "free";
-        var planDaysMap = { free: 30, basic: 60, pro: 90 };
-        job.plan = currentPlan;
-        job.planDays = planDaysMap[currentPlan] || 30;
+        job.plan = "free";
+        job.planDays = 30;
         job.approvedAt = new Date().toISOString();
-        job.featured = currentPlan === "pro";
-        job.priority = currentPlan === "basic" || currentPlan === "pro";
+        job.featured = false;
+        job.priority = false;
         job.status = "pending";
         job.relistedAt = new Date().toISOString();
         await hset("jobs", jobId, job);

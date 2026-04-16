@@ -5,7 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Employer Portal — FindMeAJob.co.nz</title>
 <meta name="robots" content="noindex,nofollow">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/svg+xml" href="/logo-icon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f8fafc;--bg2:#ffffff;--bg3:rgba(0,0,0,.03);--text:#0f172a;--text2:#475569;--text3:#64748b;--em:#E7515A;--em2:#c7313a;--em3:rgba(231,81,90,.08);--gold:#b45309;--red:#ef4444;--border:rgba(0,0,0,.1);--border2:rgba(0,0,0,.15);--card:rgba(255,255,255,.9);--inp:rgba(0,0,0,.04);--r:12px;--rl:20px;--glow:0 4px 25px rgba(231,81,90,.15)}
 body.dark{--bg:#09090b;--bg2:#0f172a;--bg3:rgba(255,255,255,.04);--text:#f8fafc;--text2:#94a3b8;--text3:#64748b;--em:#E7515A;--em2:#14b8a6;--em3:rgba(231,81,90,.08);--gold:#f59e0b;--red:#ef4444;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--card:rgba(255,255,255,.03);--inp:rgba(255,255,255,.05);--glow:0 4px 25px rgba(231,81,90,.15)}
@@ -16,7 +21,8 @@ body.dark .auth-tab.active{color:#fff}
 body.dark .modal-box{background:#0f172a}
 body.dark nav,body.dark .portal-header{background:rgba(9,9,11,.95)}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
+html,body{overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
 nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;background:rgba(255,255,255,.95);border-bottom:1px solid var(--border);backdrop-filter:blur(20px) saturate(180%)}
 .logo{display:flex;align-items:center;gap:.3rem;text-decoration:none;flex-shrink:0}.logo span{font-size:1.05rem;font-weight:800;color:var(--text);letter-spacing:-.5px}.logo em{background:linear-gradient(135deg,var(--em),var(--em2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal;letter-spacing:-.5px}
 
@@ -25,17 +31,17 @@ nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:cente
 .nav-a:hover{color:var(--text2);background:var(--bg3)}
 .nav-a.cta{background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;font-weight:700;box-shadow:var(--glow)}
 .nav-a.cta:hover{box-shadow:0 4px 30px rgba(231,81,90,.3)}
-input,select,textarea{background:var(--inp);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;padding:.75rem 1rem;outline:none;width:100%;transition:all .2s;font-weight:500;-webkit-appearance:none;appearance:none}
+input,select,textarea{background:var(--inp);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;padding:.75rem 1rem;outline:none;width:100%;transition:all .2s;font-weight:500;-webkit-appearance:none;appearance:none}
 input:focus,select:focus,textarea:focus{border-color:var(--em);box-shadow:0 0 0 3px rgba(231,81,90,.1)}
 input::placeholder,textarea::placeholder{color:var(--text3)}
 select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2364748b' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .75rem center;padding-right:2.2rem;cursor:pointer}
 textarea{resize:vertical;min-height:80px}
 label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);display:block;margin-bottom:.35rem}
 .field{margin-bottom:.85rem}
-.btn{display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;padding:.85rem 1.5rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer;width:100%;transition:all .25s;box-shadow:var(--glow)}
+.btn{display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;padding:.85rem 1.5rem;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer;width:100%;transition:all .25s;box-shadow:var(--glow)}
 .btn:hover{transform:translateY(-2px);box-shadow:0 8px 35px rgba(231,81,90,.25)}.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .btn-sec{background:transparent;border:1px solid var(--border2);color:var(--text2);box-shadow:none}.btn-sec:hover{border-color:var(--text3);color:var(--text);transform:translateY(-1px)}
-.btn-sm{display:inline-flex;align-items:center;gap:.3rem;background:none;border:1px solid var(--border);color:var(--text3);padding:.38rem .8rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
+.btn-sm{display:inline-flex;align-items:center;gap:.3rem;background:none;border:1px solid var(--border);color:var(--text3);padding:.38rem .8rem;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
 .btn-sm:hover{border-color:var(--em);color:var(--em)}
 .btn-sm.green{border-color:rgba(231,81,90,.2);color:var(--em)}.btn-sm.green:hover{background:linear-gradient(135deg,var(--em),var(--em2));border-color:transparent;color:#fff}
 .btn-sm.red{border-color:rgba(239,68,68,.2);color:#fca5a5}.btn-sm.red:hover{background:var(--red);border-color:var(--red);color:#fff}
@@ -49,7 +55,7 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
 #auth-screen{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:calc(100vh - 56px);padding:2rem 1.25rem}
 .auth-box{width:100%;max-width:440px}
 .auth-tabs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--border);border-radius:999px;overflow:hidden;margin-bottom:1.5rem;padding:3px;background:var(--bg3)}
-.auth-tab{padding:.7rem;text-align:center;font-size:.85rem;font-weight:700;cursor:pointer;background:transparent;color:var(--text3);border:none;font-family:'Inter',sans-serif;transition:all .2s;border-radius:999px}
+.auth-tab{padding:.7rem;text-align:center;font-size:.85rem;font-weight:700;cursor:pointer;background:transparent;color:var(--text3);border:none;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;border-radius:999px}
 .auth-tab.active{background:linear-gradient(135deg,var(--em),var(--em2));color:#fff}
 /* Portal screen */
 #portal-screen{display:none}
@@ -95,9 +101,9 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
 .modal-title{font-size:1.1rem;font-weight:800;margin-bottom:.4rem}
 .modal-sub{font-size:.82rem;color:var(--text2);font-weight:500;margin-bottom:1.25rem;line-height:1.6}
 .modal-btns{display:flex;gap:.5rem}
-.modal-cancel{flex:1;background:transparent;border:1px solid var(--border2);color:var(--text2);padding:.72rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s}
+.modal-cancel{flex:1;background:transparent;border:1px solid var(--border2);color:var(--text2);padding:.72rem;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s}
 .modal-cancel:hover{border-color:var(--text3)}
-.modal-ok{flex:1;background:linear-gradient(135deg,var(--em),var(--em2));border:none;color:#fff;padding:.72rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s}
+.modal-ok{flex:1;background:linear-gradient(135deg,var(--em),var(--em2));border:none;color:#fff;padding:.72rem;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s}
 .modal-ok:hover{transform:translateY(-1px)}
 .modal-ok.red{background:var(--red)}
 /* Toast */
@@ -114,15 +120,46 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
 <body>
 <div class="toast" id="toast"></div>
 
-<nav style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 3rem;border-bottom:1px solid rgba(0,0,0,.06);background:rgba(255,255,255,.97);backdrop-filter:blur(12px)">
-  <a href="/" style="font-size:1.4rem;font-weight:900;color:#E7515A;text-decoration:none;letter-spacing:-.5px">FindMeAJob</a>
-  <div style="display:flex;align-items:center;gap:2rem">
-    <a href="/#tools" style="color:#1a1a2e;font-size:.88rem;font-weight:500;text-decoration:none">Tools</a>
-    <a href="/blog" style="color:#1a1a2e;font-size:.88rem;font-weight:500;text-decoration:none">Blog</a>
-    <a href="/match.html#account" style="color:#1a1a2e;font-size:.88rem;font-weight:500;text-decoration:none">Job Seekers</a>
-    <a href="/match.html" style="background:#1a1a2e;color:#fff;padding:.65rem 1.5rem;border-radius:999px;font-size:.85rem;font-weight:700;text-decoration:none">Get started free</a>
+<style>
+.ep-nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 3rem;border-bottom:1px solid rgba(0,0,0,.06);position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);backdrop-filter:blur(12px)}
+.ep-nav-logo{font-size:1.4rem;font-weight:900;color:#E7515A;text-decoration:none;letter-spacing:-.5px}
+.ep-nav-links{display:flex;align-items:center;gap:1.5rem}
+.ep-nav-links a{color:#64748b;font-size:.82rem;font-weight:600;text-decoration:none}
+.ep-nav-links a:hover{color:#0f172a}
+.ep-nav-cta{background:#E7515A !important;color:#fff !important;padding:.45rem 1.15rem;border-radius:999px;font-size:.78rem;font-weight:700}
+.ep-hamburger{display:none;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#64748b;padding:.25rem}
+.ep-mob{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;backdrop-filter:blur(4px)}
+.ep-mob.open{display:flex;align-items:flex-start;justify-content:center;padding-top:0}
+.ep-mob-sheet{background:#fff;width:100%;border-radius:0 0 20px 20px;padding:1.5rem;display:flex;flex-direction:column;gap:.25rem;box-shadow:0 10px 40px rgba(0,0,0,.15)}
+.ep-mob-sheet a{display:block;padding:.85rem 0;border-bottom:1px solid rgba(0,0,0,.06);font-size:.95rem;font-weight:600;color:#0f172a;text-decoration:none}
+.ep-mob-sheet a:last-child{border:none}
+.ep-mob-sheet a.coral{color:#E7515A}
+@media(max-width:700px){
+  .ep-nav{padding:.75rem 1rem}
+  .ep-nav-links a:not(.ep-nav-cta){display:none}
+  .ep-hamburger{display:block}
+}
+</style>
+<nav class="ep-nav">
+  <a class="ep-nav-logo" href="/">FindMeAJob</a>
+  <div class="ep-nav-links">
+    <a href="/#tools">Tools</a>
+    <a href="/blog">Blog</a>
+    <a href="/match.html#account">Job Seekers</a>
+    <a href="/employer-portal.html">Employers</a>
+    <a href="/match.html" class="ep-nav-cta">Find a Job</a>
   </div>
+  <button class="ep-hamburger" onclick="document.getElementById('ep-mob').classList.add('open')">&#9776;</button>
 </nav>
+<div class="ep-mob" id="ep-mob" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="ep-mob-sheet">
+    <a href="/#tools" onclick="document.getElementById('ep-mob').classList.remove('open')">Tools</a>
+    <a href="/blog">Blog</a>
+    <a href="/match.html#account">Job Seekers</a>
+    <a href="/employer-portal.html">Employers</a>
+    <a href="/match.html" class="coral">Find a Job</a>
+  </div>
+</div>
 
 <div style="position:relative;height:200px;overflow:hidden;background:#1a1a2e">
   <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1400&q=80" alt="Employers" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.4">
@@ -138,7 +175,7 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
   <div class="auth-box">
     <div style="text-align:center;margin-bottom:1.5rem">
       <div style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin-bottom:.3rem">Employer Portal</div>
-      <div style="font-family:'Inter',sans-serif;font-size:1.6rem;font-weight:800;color:var(--text)">Manage your listings</div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.6rem;font-weight:800;color:var(--text)">Manage your listings</div>
     </div>
     <div class="auth-tabs">
       <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Sign In</button>
@@ -152,15 +189,15 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
       <div class="err" id="login-err"></div>
       <button class="btn" id="btn-login" type="button" style="margin-top:.5rem">Sign In &#8594;</button>
       <div style="text-align:center;margin-top:.75rem">
-        <button onclick="showReset()" style="background:none;border:none;color:var(--em);font-family:'Inter',sans-serif;font-size:.78rem;cursor:pointer;font-weight:700;padding:0">Forgot password?</button>
+        <button onclick="showReset()" style="background:none;border:none;color:var(--em);font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;cursor:pointer;font-weight:700;padding:0">Forgot password?</button>
       </div>
       <div id="reset-box" style="display:none;margin-top:1rem;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--rl);padding:1rem">
         <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;color:var(--em);margin-bottom:.5rem">Reset Password</div>
-        <input type="email" id="reset-em" placeholder="Your registered email" style="background:var(--inp);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;padding:.65rem 1rem;outline:none;width:100%;margin-bottom:.5rem">
+        <input type="email" id="reset-em" placeholder="Your registered email" style="background:var(--inp);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;padding:.65rem 1rem;outline:none;width:100%;margin-bottom:.5rem">
         <div id="reset-msg" style="font-size:.78rem;font-weight:600;margin-bottom:.5rem;min-height:1rem"></div>
         <div style="display:flex;gap:.4rem">
-          <button id="btn-send-reset" onclick="doReset()" style="flex:1;background:var(--em);border:none;color:#fff;padding:.65rem;border-radius:var(--r);font-family:'Inter',sans-serif;font-size:.8rem;font-weight:800;cursor:pointer">Send Reset Link</button>
-          <button onclick="hideReset()" style="flex:1;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:.65rem;border-radius:var(--r);font-family:'Inter',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer">Cancel</button>
+          <button id="btn-send-reset" onclick="doReset()" style="flex:1;background:var(--em);border:none;color:#fff;padding:.65rem;border-radius:var(--r);font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;font-weight:800;cursor:pointer">Send Reset Link</button>
+          <button onclick="hideReset()" style="flex:1;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:.65rem;border-radius:var(--r);font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer">Cancel</button>
         </div>
       </div>
     </div>
@@ -174,7 +211,7 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
       <div class="field"><label>Password *</label><input type="password" id="r-password" placeholder="Min 6 characters" autocomplete="new-password"></div>
       <div class="err" id="reg-err"></div>
       <button class="btn" id="btn-register" type="button" style="margin-top:.5rem">Create Account &#8594;</button>
-      <div style="text-align:center;margin-top:.65rem;font-size:.72rem;color:var(--text3)">By registering you agree to our <a href="/?terms=1" style="color:var(--em);font-weight:600;text-decoration:none" target="_blank">Terms of Use</a> and <a href="/?privacy=1" style="color:var(--em);font-weight:600;text-decoration:none" target="_blank">Privacy Policy</a></div>
+      <div style="text-align:center;margin-top:.65rem;font-size:.72rem;color:var(--text3)">By registering you agree to our <a href="/terms" style="color:var(--em);font-weight:600;text-decoration:none" target="_blank">Terms</a> and <a href="/privacy" style="color:var(--em);font-weight:600;text-decoration:none" target="_blank">Privacy Policy</a></div>
     </div>
   </div>
 </div>
@@ -281,7 +318,7 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
         <div class="field" style="margin-bottom:0">
           <label>Company logo <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text3)">(optional)</span></label>
           <input type="file" id="logo-file" accept="image/png,image/jpeg,image/svg+xml,image/webp" style="display:none">
-          <button type="button" id="logo-upload-area" style="border:2px dashed var(--border);border-radius:var(--r);padding:1.25rem;text-align:center;cursor:pointer;transition:all .2s;width:100%;background:var(--bg3);display:block;font-family:'Inter',sans-serif">
+          <button type="button" id="logo-upload-area" style="border:2px dashed var(--border);border-radius:var(--r);padding:1.25rem;text-align:center;cursor:pointer;transition:all .2s;width:100%;background:var(--bg3);display:block;font-family:'Plus Jakarta Sans',sans-serif">
             <div id="logo-preview" style="display:none;margin-bottom:.5rem"><img id="logo-preview-img" style="max-width:80px;max-height:80px;object-fit:contain;border-radius:6px;border:1px solid var(--border)"></div>
             <div id="logo-prompt" style="font-size:.82rem;color:var(--em);font-weight:600">Click here to upload your logo</div>
             <div style="font-size:.68rem;color:var(--text3);font-weight:500;margin-top:.25rem">PNG, JPG, SVG or WebP (max 500KB). Transparent background recommended.</div>
@@ -886,21 +923,17 @@ if(saved&&!resetTok){
 }
 </script>
 
-<section style="background:#E7515A;padding:0;margin:0">
-  <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;gap:3rem;padding:3.5rem 2rem">
+<section style="background:#E7515A;padding:0;margin-top:2rem">
+  <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;gap:3rem;padding:3rem 2rem">
     <div style="flex:1">
-      <h2 style="font-size:2.2rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:1rem">Start your career toolkit</h2>
-      <p style="color:rgba(255,255,255,.85);font-size:1rem;line-height:1.7;margin-bottom:2rem">Free forever. No payment. No credit card. Just upload your CV and let AI do the rest.</p>
-      <a href="/match.html" style="display:inline-block;padding:.85rem 2rem;border:2px solid #fff;color:#fff;border-radius:999px;font-size:.95rem;font-weight:700;text-decoration:none">Get started now</a>
+      <h2 style="font-size:1.8rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:.75rem">Start your career toolkit</h2>
+      <p style="color:rgba(255,255,255,.85);font-size:.9rem;line-height:1.6;margin-bottom:1.5rem">12 free AI tools. No payment required.</p>
+      <a href="/match.html" style="display:inline-block;padding:.75rem 1.75rem;border:2px solid #fff;color:#fff;border-radius:999px;font-size:.88rem;font-weight:700;text-decoration:none">Find a Job</a>
     </div>
-    <div style="flex-shrink:0;text-align:center">
-      <div style="font-size:4rem;font-weight:900;color:#fff;line-height:1">12</div>
-      <div style="font-size:1rem;color:rgba(255,255,255,.85);font-weight:600">free tools</div>
-      <div style="font-size:.82rem;color:rgba(255,255,255,.65);margin-top:.5rem">for NZ job seekers</div>
-    </div>
+    <div style="flex-shrink:0;text-align:center"><div style="font-size:3rem;font-weight:900;color:#fff;line-height:1">12</div><div style="font-size:.85rem;color:rgba(255,255,255,.85);font-weight:600">free tools</div></div>
   </div>
 </section>
-<section style="background:#f7f7f7;padding:3.5rem 2rem;text-align:center">
+<section style="background:#f7f7f7;padding:3rem 2rem;text-align:center">
   <h2 style="font-size:1.5rem;font-weight:800;color:#1a1a2e;margin-bottom:.5rem">Get weekly NZ job alerts</h2>
   <p style="color:#6b7280;font-size:.9rem;margin-bottom:1.25rem">Real jobs from Adzuna delivered every Monday. Free.</p>
   <div style="display:flex;gap:.5rem;max-width:420px;margin:0 auto">
@@ -910,36 +943,22 @@ if(saved&&!resetTok){
 </section>
 <footer style="background:#1B1B3A;padding:3rem 2rem 1.5rem">
   <div style="max-width:900px;margin:0 auto">
-    <div style="font-size:2.5rem;font-weight:900;color:#E7515A;margin-bottom:2rem;letter-spacing:-1px">FindMeAJob</div>
-    <div style="display:flex;gap:3rem;flex-wrap:wrap;margin-bottom:2rem">
-      <div>
-        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.75rem">Tools</div>
-        <a href="/match.html" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Apply for a Job</a>
-        <a href="/interview-sim" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Interview Simulator</a>
-        <a href="/match.html#apply" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">CV + Cover Letter</a>
-        <a href="/score" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">CV Score</a>
-        <a href="/salary" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Salary Calculator</a>
-      </div>
-      <div>
-        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.75rem">More Tools</div>
-        <a href="/interview" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Interview Questions</a>
-        <a href="/negotiate" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Negotiate Salary</a>
-        <a href="/compare" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Compare Jobs</a>
-        <a href="/decode" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Decode Job Ad</a>
-        <a href="/email" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Write This Email</a>
-      </div>
-      <div>
-        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.75rem">Company</div>
-        <a href="/blog" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Blog</a>
-        <a href="/employer-portal.html" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Post a Job</a>
-        <a href="/employer-portal.html" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Employer Login</a>
-      </div>
+    <div style="font-size:2rem;font-weight:900;color:#E7515A;margin-bottom:1.5rem;letter-spacing:-.5px">FindMeAJob</div>
+    <div style="display:flex;gap:2.5rem;flex-wrap:wrap;margin-bottom:1.5rem">
+      <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.6rem">Tools</div><a href="/match.html" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Apply for a Job</a><a href="/interview-sim" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Interview Simulator</a><a href="/score" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">CV Score</a><a href="/salary" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Salary Calculator</a></div>
+      <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.6rem">More</div><a href="/interview" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Interview Questions</a><a href="/negotiate" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Negotiate Salary</a><a href="/compare" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Compare Jobs</a><a href="/decode" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Decode Job Ad</a></div>
+      <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.6rem">Company</div><a href="/blog" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Blog</a><a href="/employer-portal.html" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Post a Job</a><a href="/terms" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Terms</a><a href="/privacy" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Privacy</a></div>
     </div>
-    <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:1.5rem;font-size:.68rem;color:rgba(255,255,255,.3);line-height:1.7">
-      <p>&copy; 2026 FindMeAJob.co.nz &mdash; AI-powered career tools for New Zealand</p>
-      <p style="margin-top:.5rem">AI Disclaimer: This platform uses artificial intelligence to analyse CVs, match jobs, estimate salaries, and generate content. Results are suggestions, not professional advice. Always verify independently.</p>
-    </div>
+    <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:1rem;font-size:.62rem;color:rgba(255,255,255,.3)">&copy; 2026 FindMeAJob Ltd. All rights reserved.</div>
   </div>
 </footer>
+<script>
+function subscribeAlerts(){var e=document.getElementById('alert-email');if(!e||!e.value.trim()||e.value.indexOf('@')===-1)return;fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',email:e.value.trim(),password:'__alerts_only__',name:e.value.split('@')[0],emailAlerts:true})}).then(function(){e.value='';e.placeholder='Subscribed!';}).catch(function(){});}
+</script>
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1B1B3A;color:rgba(255,255,255,.85);padding:.85rem 2rem;font-size:.78rem;z-index:9999;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap">
+<span>This site uses cookies and local storage for basic functionality. See our <a href="/privacy" style="color:#E7515A;font-weight:600">Privacy Policy</a>.</span>
+<button onclick="document.getElementById('cookie-banner').style.display='none';localStorage.setItem('cookie-ok','1')" style="background:#E7515A;color:#fff;border:none;padding:.4rem 1rem;border-radius:999px;font-size:.75rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Got it</button>
+</div>
+<script>if(!localStorage.getItem('cookie-ok')){document.getElementById('cookie-banner').style.display='flex';}</script>
 </body>
 </html>
