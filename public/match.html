@@ -26,13 +26,13 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f8fafc;--bg2:#f1f5f9;--bg3:rgba(0,0,0,.03);--bg4:rgba(0,0,0,.04);--text:#0f172a;--text2:#475569;--text3:#94a3b8;--em:#E7515A;--em2:#c7313a;--em3:rgba(231,81,90,.08);--gold:#b45309;--purple:#8b5cf6;--border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.12);--card:rgba(255,255,255,.8);--inp:rgba(0,0,0,.04);--hdr:rgba(255,255,255,.95);--r:12px;--rl:20px;--glow:0 4px 25px rgba(231,81,90,.15)}
 body.dark{--bg:#09090b;--bg2:#0f172a;--bg3:rgba(255,255,255,.04);--text:#f8fafc;--text2:#b0b8c4;--text3:#8891a0;--em:#E7515A;--em2:#14b8a6;--em3:rgba(231,81,90,.08);--gold:#f59e0b;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--card:rgba(255,255,255,.03);--inp:rgba(255,255,255,.05);--hdr:rgba(9,9,11,.8)}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth;overflow-x:hidden}
-body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;line-height:1.6;font-size:15px}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;overflow-x:hidden;line-height:1.6;font-size:15px}
 nav{position:sticky;top:0;z-index:200;padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:var(--hdr);backdrop-filter:blur(20px) saturate(180%);gap:.5rem}
 .logo{display:flex;align-items:center;gap:.3rem;cursor:pointer;text-decoration:none;flex-shrink:0}
 
@@ -40,7 +40,7 @@ nav{position:sticky;top:0;z-index:200;padding:0 2rem;height:64px;display:flex;al
 .logo-text{font-size:1.05rem;font-weight:800;color:var(--text);letter-spacing:-.3px}
 .logo-text span{background:linear-gradient(135deg,var(--em),var(--em2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .navlinks{display:flex;align-items:center;gap:.15rem;background:var(--bg3);border:1px solid var(--border);border-radius:999px;padding:3px}
-.nl{background:none;border:none;color:var(--text3);font-size:.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;padding:.4rem .85rem;border-radius:999px;transition:all .2s;text-decoration:none}
+.nl{background:none;border:none;color:var(--text3);font-size:.8rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;padding:.4rem .85rem;border-radius:999px;transition:all .2s;text-decoration:none}
 .nl:hover{color:var(--text2)}
 .nl.active{background:var(--em3);color:var(--em)}
 .nl.cta{background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;padding:.45rem 1.1rem;margin-left:.5rem;font-weight:700;border-radius:999px;box-shadow:var(--glow)}
@@ -52,7 +52,7 @@ nav{position:sticky;top:0;z-index:200;padding:0 2rem;height:64px;display:flex;al
 .moverlay.open{display:flex;align-items:flex-start}
 .msheet{background:var(--bg2);border-radius:0 0 24px 24px;padding:1.5rem;width:100%;border-bottom:1px solid var(--border);margin-top:64px}
 .mhandle{width:40px;height:4px;background:var(--border2);border-radius:999px;margin:0 auto 1.5rem}
-.mnavitem{display:flex;align-items:center;padding:.85rem 0;border-bottom:1px solid var(--border);font-size:.95rem;font-weight:600;color:var(--text);cursor:pointer;background:none;border-left:none;border-right:none;border-top:none;font-family:'Inter',sans-serif;width:100%;text-decoration:none}
+.mnavitem{display:flex;align-items:center;padding:.85rem 0;border-bottom:1px solid var(--border);font-size:.95rem;font-weight:600;color:var(--text);cursor:pointer;background:none;border-left:none;border-right:none;border-top:none;font-family:'Plus Jakarta Sans',sans-serif;width:100%;text-decoration:none}
 .mnavitem:last-child{border-bottom:none}
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--text);color:var(--bg);padding:.5rem 1.2rem;border-radius:999px;font-size:.8rem;font-weight:700;z-index:99999;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,.3)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -65,7 +65,7 @@ nav{position:sticky;top:0;z-index:200;padding:0 2rem;height:64px;display:flex;al
 .card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.5rem;margin-bottom:.75rem;transition:border-color .2s}
 .card:hover{border-color:var(--border2)}
 .form-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);display:block;margin-bottom:.35rem}
-input,select,textarea{background:var(--inp);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;padding:.75rem 1rem;outline:none;width:100%;transition:all .2s;font-weight:500;-webkit-appearance:none;appearance:none}
+input,select,textarea{background:var(--inp);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;padding:.75rem 1rem;outline:none;width:100%;transition:all .2s;font-weight:500;-webkit-appearance:none;appearance:none}
 input[type="checkbox"]{-webkit-appearance:checkbox;appearance:checkbox;width:auto;padding:0;background:none;border:none;border-radius:0}
 input:focus,select:focus,textarea:focus{border-color:var(--em);box-shadow:0 0 0 3px rgba(231,81,90,.1)}
 input::placeholder,textarea::placeholder{color:var(--text3)}
@@ -75,12 +75,12 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-bottom:.65rem}
 .field{margin-bottom:.65rem}
 .field:last-child{margin-bottom:0}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;padding:.85rem 1.8rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;width:100%;box-shadow:var(--glow)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;padding:.85rem 1.8rem;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;width:100%;box-shadow:var(--glow)}
 .btn:hover{transform:translateY(-2px);box-shadow:0 8px 35px rgba(231,81,90,.25)}
 .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .btn-sec{background:transparent;border:1px solid var(--border2);color:var(--text2);box-shadow:none}
 .btn-sec:hover{border-color:var(--text3);color:var(--text);background:var(--bg3);transform:translateY(-1px)}
-.btn-sm{display:inline-flex;align-items:center;gap:.3rem;background:none;border:1px solid var(--border);color:var(--text3);padding:.4rem .85rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-sm{display:inline-flex;align-items:center;gap:.3rem;background:none;border:1px solid var(--border);color:var(--text3);padding:.4rem .85rem;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s}
 .btn-sm:hover{border-color:var(--em);color:var(--em)}
 .alert{padding:.7rem 1rem;border-radius:var(--r);font-size:.82rem;font-weight:600;margin:.75rem 0;display:none}
 .alert.show{display:block}
@@ -128,19 +128,19 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
 .insights p{font-size:.88rem;color:var(--text2);line-height:1.75;font-weight:500}
 .skill-tag{display:inline-flex;align-items:center;gap:.3rem;background:rgba(231,81,90,.08);border:1px solid rgba(231,81,90,.15);color:var(--em);padding:.35rem .8rem;border-radius:999px;font-size:.8rem;font-weight:600;margin:.2rem}
 .skill-tag button{background:none;border:none;color:var(--em);cursor:pointer;font-size:.85rem;line-height:1;padding:0;opacity:.7}
-.chip{background:var(--bg3);border:1px solid var(--border);color:var(--text3);padding:.32rem .75rem;border-radius:999px;font-size:.78rem;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;transition:all .2s;display:inline-flex;align-items:center;margin:.2rem}
+.chip{background:var(--bg3);border:1px solid var(--border);color:var(--text3);padding:.32rem .75rem;border-radius:999px;font-size:.78rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;transition:all .2s;display:inline-flex;align-items:center;margin:.2rem}
 .chip:hover{border-color:var(--em);color:var(--em);background:rgba(231,81,90,.04)}
 .upload-zone{border:2px dashed var(--border2);border-radius:var(--rl);padding:3rem 2rem;text-align:center;cursor:pointer;transition:all .3s}
 .upload-zone:hover,.upload-zone.over{border-color:var(--em);background:rgba(231,81,90,.03);box-shadow:0 0 30px rgba(231,81,90,.05)}
 .choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem}
-.choice{background:var(--card);border:2px solid var(--border);border-radius:var(--rl);padding:1.5rem;cursor:pointer;text-align:left;font-family:'Inter',sans-serif;width:100%;transition:all .3s}
+.choice{background:var(--card);border:2px solid var(--border);border-radius:var(--rl);padding:1.5rem;cursor:pointer;text-align:left;font-family:'Plus Jakarta Sans',sans-serif;width:100%;transition:all .3s}
 .choice:hover,.choice.sel{border-color:var(--em);background:rgba(231,81,90,.04)}
 .choice-badge{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:.5rem}
 .choice.sel .choice-badge{color:var(--em)}
 .choice-title{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:.25rem}
 .choice-desc{font-size:.78rem;color:var(--text2);line-height:1.5;font-weight:500}
 .plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:1.5rem}
-.plan{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:2rem 1.8rem 2.2rem;position:relative;cursor:pointer;text-align:left;font-family:'Inter',sans-serif;width:100%;transition:all .3s;display:flex;flex-direction:column}
+.plan{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:2rem 1.8rem 2.2rem;position:relative;cursor:pointer;text-align:left;font-family:'Plus Jakarta Sans',sans-serif;width:100%;transition:all .3s;display:flex;flex-direction:column}
 .plan:hover,.plan.sel{border-color:var(--em);transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.3)}
 .plan.popular{border-color:rgba(231,81,90,.3);background:linear-gradient(135deg,rgba(231,81,90,.06),rgba(20,184,166,.03));box-shadow:0 8px 30px rgba(231,81,90,.1)}
 .pop-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;font-size:.65rem;font-weight:800;padding:.35rem 1.2rem;border-radius:999px;white-space:nowrap;text-transform:uppercase;letter-spacing:.5px;box-shadow:0 4px 12px rgba(231,81,90,.3)}
@@ -163,9 +163,9 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
 @keyframes blink{50%{border-color:transparent}}
 .hero-sub{color:var(--text2);font-size:1.05rem;line-height:1.7;max-width:520px;margin:0 auto 1.5rem;font-weight:500}
 .hero-ctas{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem}
-.btn-hero{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;padding:.95rem 2rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.95rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 25px rgba(231,81,90,.25)}
+.btn-hero{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;padding:.95rem 2rem;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.95rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 25px rgba(231,81,90,.25)}
 .btn-hero:hover{transform:translateY(-2px);box-shadow:0 8px 35px rgba(231,81,90,.35)}
-.btn-hero-out{background:transparent;color:var(--text2);border:1px solid var(--border2);display:inline-flex;align-items:center;gap:.5rem;padding:.95rem 2rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;transition:all .25s}
+.btn-hero-out{background:transparent;color:var(--text2);border:1px solid var(--border2);display:inline-flex;align-items:center;gap:.5rem;padding:.95rem 2rem;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;transition:all .25s}
 .btn-hero-out:hover{border-color:var(--text3);color:var(--text);background:rgba(255,255,255,.03)}
 .how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:2.5rem}
 .how-step{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:2rem;transition:all .3s}
@@ -182,11 +182,11 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 .footer-logo em{background:linear-gradient(135deg,var(--em),var(--em2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
 .footer-sub{font-size:.75rem;color:var(--text3);font-weight:500;margin-top:.2rem}
 .footer-links{display:flex;gap:1.5rem;flex-wrap:wrap}
-.footer-links button,.footer-links a{color:var(--text3);font-size:.78rem;background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;padding:.2rem 0;text-decoration:none;font-weight:500;transition:color .15s}
+.footer-links button,.footer-links a{color:var(--text3);font-size:.78rem;background:none;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;padding:.2rem 0;text-decoration:none;font-weight:500;transition:color .15s}
 .footer-links button:hover,.footer-links a:hover{color:var(--em)}
 #db{position:fixed;bottom:0;left:0;right:0;background:rgba(9,9,11,.9);border-top:1px solid var(--border);padding:.7rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:.8rem;z-index:9998;backdrop-filter:blur(20px)}
 .btext{color:var(--text3);font-size:.75rem;font-weight:500;flex:1}
-.bbtn{background:linear-gradient(135deg,var(--em),var(--em2));border:none;color:#fff;padding:.4rem 1rem;border-radius:999px;font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif}
+.bbtn{background:linear-gradient(135deg,var(--em),var(--em2));border:none;color:#fff;padding:.4rem 1rem;border-radius:999px;font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Plus Jakarta Sans',sans-serif}
 #lm{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99999;overflow-y:auto;padding:1.5rem;backdrop-filter:blur(12px)}
 .mbox{background:var(--bg2);border:1px solid var(--border);border-radius:24px;padding:2rem;position:relative;width:100%;max-width:580px;margin:0 auto}
 .mbox-close{position:absolute;top:1rem;right:1rem;background:var(--bg3);border:1px solid var(--border);color:var(--text3);width:30px;height:30px;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
@@ -223,9 +223,9 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 .pivot-teaser-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.85rem;margin-bottom:2rem}
 .pivot-teaser-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.4rem 1.1rem;text-align:center;transition:all .4s;cursor:default;overflow:hidden}
 .pivot-teaser-card:hover{border-color:rgba(139,92,246,.3);transform:translateY(-5px);box-shadow:0 20px 40px rgba(139,92,246,.12)}
-.btn-horizon{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;padding:.95rem 2.2rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.95rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 25px rgba(139,92,246,.25)}
+.btn-horizon{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;padding:.95rem 2.2rem;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.95rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 25px rgba(139,92,246,.25)}
 .btn-horizon:hover{transform:translateY(-2px);box-shadow:0 8px 35px rgba(139,92,246,.35)}
-.results-tab{background:none;border:none;color:var(--text3);font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;padding:.5rem 1.1rem;border-radius:999px;transition:all .2s}
+.results-tab{background:none;border:none;color:var(--text3);font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;padding:.5rem 1.1rem;border-radius:999px;transition:all .2s}
 .results-tab.active{background:linear-gradient(135deg,var(--em),var(--em2));color:#fff}
 .results-tab:hover:not(.active){color:var(--text)}
 .results-tab.pivot-tab{background:linear-gradient(135deg,rgba(139,92,246,.1),rgba(236,72,153,.08));border:1px solid rgba(139,92,246,.2);color:var(--purple)}
@@ -459,7 +459,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       </div>
       <div class="alert alert-err" id="cv-err">Please upload your CV first.</div>
       <button class="btn" id="btn-analyze" type="button" style="margin-top:1rem">Analyse CV &amp; Find Matches</button>
-      <div style="text-align:center;margin-top:.75rem"><button style="background:none;border:none;color:var(--text3);font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif" id="btn-go-manual" type="button">No CV? Enter skills manually &#8594;</button></div>
+      <div style="text-align:center;margin-top:.75rem"><button style="background:none;border:none;color:var(--text3);font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif" id="btn-go-manual" type="button">No CV? Enter skills manually &#8594;</button></div>
     </div>
     <div id="step-manual" style="display:none">
       <div class="card">
@@ -467,7 +467,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <div id="skill-area" style="min-height:32px;margin-bottom:.75rem"></div>
         <div style="display:flex;gap:.5rem;margin-bottom:.75rem">
           <input type="text" id="ski" placeholder="Type a skill and press Enter..." maxlength="60" style="flex:1">
-          <button type="button" id="btn-add" style="background:var(--em3);border:1px solid rgba(231,81,90,.2);color:var(--em);padding:.72rem 1rem;border-radius:var(--r);cursor:pointer;font-size:.82rem;font-weight:700;white-space:nowrap;font-family:'Inter',sans-serif;flex-shrink:0">+ Add</button>
+          <button type="button" id="btn-add" style="background:var(--em3);border:1px solid rgba(231,81,90,.2);color:var(--em);padding:.72rem 1rem;border-radius:var(--r);cursor:pointer;font-size:.82rem;font-weight:700;white-space:nowrap;font-family:'Plus Jakarta Sans',sans-serif;flex-shrink:0">+ Add</button>
         </div>
         <div id="chips">
           <button class="chip" data-s="Customer service">Customer service</button>
@@ -683,7 +683,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <div id="emp-step-register" style="display:none">
       <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem">
         <button class="btn-sm" id="btn-reg-back" type="button">&#8592; Back</button>
-        <div><div class="page-eyebrow">Create Account</div><div style="font-family:'Inter',sans-serif;font-size:1.3rem;font-weight:800;color:var(--text)">Register your company</div></div>
+        <div><div class="page-eyebrow">Create Account</div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.3rem;font-weight:800;color:var(--text)">Register your company</div></div>
       </div>
       <div class="card" style="margin-bottom:.75rem">
         <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:.85rem">Select your plan</div>
@@ -706,8 +706,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <div class="alert alert-err" id="reg-err">Please fill in all required fields.</div>
       <button class="btn" id="btn-register" type="button" style="margin-top:.75rem">Create Account &amp; Continue &#8594;</button>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.75rem;flex-wrap:wrap;gap:.5rem">
-        <div style="font-size:.75rem;color:var(--text3);font-weight:500">Already have an account? <button style="background:none;border:none;color:var(--em);font-family:'Inter',sans-serif;font-size:.75rem;cursor:pointer;font-weight:700;padding:0" id="btn-login-instead" type="button">Sign in</button></div>
-        <div style="font-size:.72rem;color:var(--text3);font-weight:500">By registering you agree to our <button style="background:none;border:none;color:var(--em);font-family:'Inter',sans-serif;font-size:.72rem;cursor:pointer;font-weight:600;padding:0" id="reg-terms-btn" type="button">Terms</button></div>
+        <div style="font-size:.75rem;color:var(--text3);font-weight:500">Already have an account? <button style="background:none;border:none;color:var(--em);font-family:'Plus Jakarta Sans',sans-serif;font-size:.75rem;cursor:pointer;font-weight:700;padding:0" id="btn-login-instead" type="button">Sign in</button></div>
+        <div style="font-size:.72rem;color:var(--text3);font-weight:500">By registering you agree to our <button style="background:none;border:none;color:var(--em);font-family:'Plus Jakarta Sans',sans-serif;font-size:.72rem;cursor:pointer;font-weight:600;padding:0" id="reg-terms-btn" type="button">Terms</button></div>
       </div>
     </div>
 
@@ -715,7 +715,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <div id="emp-step-login" style="display:none">
       <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem">
         <button class="btn-sm" id="btn-login-back" type="button">&#8592; Back</button>
-        <div><div class="page-eyebrow">Employer Login</div><div style="font-family:'Inter',sans-serif;font-size:1.3rem;font-weight:800;color:var(--text)">Welcome back</div></div>
+        <div><div class="page-eyebrow">Employer Login</div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.3rem;font-weight:800;color:var(--text)">Welcome back</div></div>
       </div>
       <div class="card">
         <div class="field"><label class="form-label">Work email</label><input type="email" id="l-email" placeholder="jane@acme.co.nz" autocomplete="email"></div>
@@ -724,8 +724,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <div class="alert alert-err" id="login-err">Incorrect email or password.</div>
       <button class="btn" id="btn-login" type="button" style="margin-top:.75rem">Sign In &#8594;</button>
       <div style="display:flex;justify-content:space-between;margin-top:.75rem;flex-wrap:wrap;gap:.5rem">
-        <div style="font-size:.78rem;color:var(--text3);font-weight:500">No account? <button style="background:none;border:none;color:var(--em);font-family:'Inter',sans-serif;font-size:.78rem;cursor:pointer;font-weight:700;padding:0" id="btn-reg-instead" type="button">Register free</button></div>
-        <button style="background:none;border:none;color:var(--em);font-family:'Inter',sans-serif;font-size:.78rem;cursor:pointer;font-weight:700;padding:0" id="btn-forgot-pw" type="button">Forgot password?</button>
+        <div style="font-size:.78rem;color:var(--text3);font-weight:500">No account? <button style="background:none;border:none;color:var(--em);font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;cursor:pointer;font-weight:700;padding:0" id="btn-reg-instead" type="button">Register free</button></div>
+        <button style="background:none;border:none;color:var(--em);font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;cursor:pointer;font-weight:700;padding:0" id="btn-forgot-pw" type="button">Forgot password?</button>
       </div>
     </div>
 
@@ -733,7 +733,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <div id="emp-step-forgot" style="display:none">
       <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem">
         <button class="btn-sm" id="btn-forgot-back" type="button">&#8592; Back</button>
-        <div><div class="page-eyebrow">Reset Password</div><div style="font-family:'Inter',sans-serif;font-size:1.3rem;font-weight:800;color:var(--text)">Forgotten your password?</div></div>
+        <div><div class="page-eyebrow">Reset Password</div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.3rem;font-weight:800;color:var(--text)">Forgotten your password?</div></div>
       </div>
       <div class="card">
         <p style="color:var(--text2);font-size:.85rem;font-weight:500;line-height:1.7;margin-bottom:1rem">Enter your registered email and we will send you a reset link.</p>
@@ -746,13 +746,13 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 
     <!-- RESET (from link) -->
     <div id="emp-step-reset" style="display:none">
-      <div style="margin-bottom:1.5rem"><div class="page-eyebrow">Reset Password</div><div style="font-family:'Inter',sans-serif;font-size:1.3rem;font-weight:800;color:var(--text)">Choose a new password</div></div>
+      <div style="margin-bottom:1.5rem"><div class="page-eyebrow">Reset Password</div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.3rem;font-weight:800;color:var(--text)">Choose a new password</div></div>
       <div class="card">
         <div class="field"><label class="form-label">New password *</label><input type="password" id="new-password" placeholder="Min 8 chars, upper, lower, number, symbol" autocomplete="new-password"></div>
         <div class="field" style="margin-bottom:0"><label class="form-label">Confirm password *</label><input type="password" id="confirm-password" placeholder="Repeat your new password" autocomplete="new-password"></div>
       </div>
       <div class="alert alert-err" id="reset-err"></div>
-      <div class="alert alert-ok" id="reset-ok">Password updated! <button style="background:none;border:none;color:var(--em);font-family:'Inter',sans-serif;font-size:.82rem;cursor:pointer;font-weight:700;padding:0" id="btn-go-login-after-reset" type="button">Sign in now &#8594;</button></div>
+      <div class="alert alert-ok" id="reset-ok">Password updated! <button style="background:none;border:none;color:var(--em);font-family:'Plus Jakarta Sans',sans-serif;font-size:.82rem;cursor:pointer;font-weight:700;padding:0" id="btn-go-login-after-reset" type="button">Sign in now &#8594;</button></div>
       <button class="btn" id="btn-do-reset" type="button" style="margin-top:.75rem">Update Password &#8594;</button>
     </div>
 
@@ -762,7 +762,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <div style="font-size:.82rem;font-weight:700;color:var(--em)">&#10003; Signed in as <span id="emp-name-display"></span> &mdash; Free Plan (all features)</div><span id="emp-plan-display" style="display:none"></span>
         <div style="display:flex;gap:.75rem;align-items:center">
           <a href="/employer-portal.html" style="font-size:.72rem;font-weight:700;color:var(--em);text-decoration:none">My Listings &#8594;</a>
-          <button style="background:none;border:none;color:var(--text3);font-size:.72rem;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;padding:0" id="btn-emp-signout" type="button">Sign out</button>
+          <button style="background:none;border:none;color:var(--text3);font-size:.72rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;padding:0" id="btn-emp-signout" type="button">Sign out</button>
         </div>
       </div>
       <div class="card">
@@ -808,8 +808,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <div id="acct-auth">
       <div class="card" style="max-width:420px;margin:0 auto">
         <div style="display:flex;margin:-1.75rem -1.75rem 1.5rem;padding:0">
-          <button type="button" id="acct-tab-login" style="flex:1;padding:1rem;text-align:center;font-size:.85rem;font-weight:700;cursor:pointer;background:none;color:var(--em);border-top:none;border-left:none;border-right:none;border-bottom:2px solid var(--em);font-family:'Inter',sans-serif">Sign In</button>
-          <button type="button" id="acct-tab-reg" style="flex:1;padding:1rem;text-align:center;font-size:.85rem;font-weight:700;cursor:pointer;background:none;color:var(--text3);border-top:none;border-left:none;border-right:none;border-bottom:2px solid transparent;font-family:'Inter',sans-serif">Create Account</button>
+          <button type="button" id="acct-tab-login" style="flex:1;padding:1rem;text-align:center;font-size:.85rem;font-weight:700;cursor:pointer;background:none;color:var(--em);border-top:none;border-left:none;border-right:none;border-bottom:2px solid var(--em);font-family:'Plus Jakarta Sans',sans-serif">Sign In</button>
+          <button type="button" id="acct-tab-reg" style="flex:1;padding:1rem;text-align:center;font-size:.85rem;font-weight:700;cursor:pointer;background:none;color:var(--text3);border-top:none;border-left:none;border-right:none;border-bottom:2px solid transparent;font-family:'Plus Jakarta Sans',sans-serif">Create Account</button>
         </div>
         <div id="acct-login-pane">
           <div id="google-signin-btn" style="display:flex;justify-content:center;margin-bottom:1rem"></div>
@@ -819,7 +819,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
           <div class="alert alert-err" id="acct-l-err"></div>
           <button class="btn" id="acct-btn-login" type="button" style="margin-top:.75rem">Sign In</button>
           <div style="text-align:center;margin-top:.75rem">
-            <button type="button" id="acct-forgot-btn" style="background:none;border:none;color:var(--em);font-family:'Inter',sans-serif;font-size:.78rem;cursor:pointer;font-weight:600;padding:0">Forgot password?</button>
+            <button type="button" id="acct-forgot-btn" style="background:none;border:none;color:var(--em);font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;cursor:pointer;font-weight:600;padding:0">Forgot password?</button>
           </div>
           <div id="acct-forgot-box" style="display:none;margin-top:.75rem;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:1rem">
             <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;color:var(--em);margin-bottom:.5rem">Reset Password</div>
@@ -905,7 +905,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <div id="acct-cv-status"></div>
         <div id="acct-cv-upload" style="display:none;margin-top:.75rem;border-top:1px solid var(--border);padding-top:.75rem">
           <input type="file" id="acct-cv-file" accept=".pdf,.doc,.docx" style="display:none">
-          <button type="button" id="acct-cv-upload-btn" style="border:2px dashed var(--border);border-radius:var(--r);padding:1rem;text-align:center;cursor:pointer;width:100%;background:var(--bg3);display:block;font-family:'Inter',sans-serif">
+          <button type="button" id="acct-cv-upload-btn" style="border:2px dashed var(--border);border-radius:var(--r);padding:1rem;text-align:center;cursor:pointer;width:100%;background:var(--bg3);display:block;font-family:'Plus Jakarta Sans',sans-serif">
             <div id="acct-cv-upload-prompt" style="font-size:.82rem;color:var(--em);font-weight:600">Click to upload your CV</div>
             <div style="font-size:.68rem;color:var(--text3);margin-top:.2rem">PDF or Word document</div>
           </button>
@@ -978,7 +978,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
   </div>
 </footer>
 
-<div id="db"><p class="btext">AI suggestions only — not career advice. <button style="background:none;border:none;color:var(--em);font-size:.73rem;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;text-decoration:underline;padding:0" id="db-terms" type="button">Terms</button> &amp; <button style="background:none;border:none;color:var(--em);font-size:.73rem;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;text-decoration:underline;padding:0" id="db-privacy" type="button">Privacy</button></p><button class="bbtn" id="btn-dismiss" type="button">Got it</button></div>
+<div id="db"><p class="btext">AI suggestions only — not career advice. <button style="background:none;border:none;color:var(--em);font-size:.73rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;text-decoration:underline;padding:0" id="db-terms" type="button">Terms</button> &amp; <button style="background:none;border:none;color:var(--em);font-size:.73rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;text-decoration:underline;padding:0" id="db-privacy" type="button">Privacy</button></p><button class="bbtn" id="btn-dismiss" type="button">Got it</button></div>
 <div id="lm"><div class="mbox"><button class="mbox-close" id="modal-close" type="button">&#215;</button><div id="modal-body"></div></div></div>
 
 <!-- AI Apply Modal -->
@@ -1049,7 +1049,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <div class="field">
         <label class="form-label">Your CV (PDF or Word) *</label>
         <input type="file" id="app-cv-file" accept=".pdf,.doc,.docx" style="display:none">
-        <button type="button" id="app-cv-btn" style="border:2px dashed var(--border);border-radius:var(--r);padding:1rem;text-align:center;cursor:pointer;width:100%;background:var(--bg3);display:block;font-family:'Inter',sans-serif">
+        <button type="button" id="app-cv-btn" style="border:2px dashed var(--border);border-radius:var(--r);padding:1rem;text-align:center;cursor:pointer;width:100%;background:var(--bg3);display:block;font-family:'Plus Jakarta Sans',sans-serif">
           <div id="app-cv-prompt" style="font-size:.82rem;color:var(--em);font-weight:600">Click to upload your CV</div>
           <div style="font-size:.68rem;color:var(--text3);margin-top:.2rem">PDF or Word document</div>
         </button>
@@ -1074,7 +1074,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <div class="field"><label class="form-label">Your cover letter</label><textarea id="app-own-cl-text" placeholder="Type your cover letter here..." style="min-height:160px;line-height:1.7"></textarea></div>
         <div style="margin-bottom:.5rem">
           <input type="file" id="app-own-cl-file" accept=".pdf,.doc,.docx,.txt" style="display:none">
-          <button type="button" id="app-own-cl-upload" style="background:none;border:none;color:var(--em);font-size:.75rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;padding:0;text-decoration:underline">Or upload a cover letter file (PDF/Word)</button>
+          <button type="button" id="app-own-cl-upload" style="background:none;border:none;color:var(--em);font-size:.75rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;padding:0;text-decoration:underline">Or upload a cover letter file (PDF/Word)</button>
           <span id="app-own-cl-file-name" style="display:none;font-size:.72rem;color:var(--em);font-weight:600;margin-left:.5rem"></span>
         </div>
       </div>
@@ -1106,11 +1106,11 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.75rem">
         <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.75rem;text-align:center">
           <input type="file" id="app-cv-swap" accept=".pdf,.doc,.docx" style="display:none">
-          <button type="button" id="app-cv-swap-btn" style="background:none;border:none;color:var(--em);font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;padding:0">Upload a different CV</button>
+          <button type="button" id="app-cv-swap-btn" style="background:none;border:none;color:var(--em);font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;padding:0">Upload a different CV</button>
           <span id="app-cv-swap-name" style="display:none;font-size:.72rem;color:var(--em);font-weight:600;margin-top:.25rem"></span>
         </div>
         <div style="background:linear-gradient(135deg,rgba(139,92,246,.06),rgba(236,72,153,.04));border:1px solid rgba(139,92,246,.15);border-radius:var(--r);padding:.75rem;text-align:center">
-          <button type="button" id="app-tailor-cv-btn" style="background:none;border:none;color:var(--purple);font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;padding:0">Rewrite CV for this role</button>
+          <button type="button" id="app-tailor-cv-btn" style="background:none;border:none;color:var(--purple);font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;padding:0">Rewrite CV for this role</button>
         </div>
       </div>
       <div>
