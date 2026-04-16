@@ -232,15 +232,30 @@ module.exports = async function handler(req, res) {
   // GET ?sitemap=1 — dynamic sitemap with blog posts
   if (req.query && req.query.sitemap === "1") {
     var smPosts = await getBlogPosts();
+    var smToday = new Date().toISOString().split("T")[0];
     var smXml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/blog</loc><changefreq>daily</changefreq><priority>0.8</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/challenge</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/employer-portal.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>';
+    smXml += '<url><loc>https://www.findmeajob.co.nz/</loc><lastmod>'+smToday+'</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>';
+    smXml += '<url><loc>https://www.findmeajob.co.nz/match.html</loc><lastmod>'+smToday+'</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>';
+    smXml += '<url><loc>https://www.findmeajob.co.nz/interview-sim</loc><lastmod>'+smToday+'</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>';
+    smXml += '<url><loc>https://www.findmeajob.co.nz/blog</loc><lastmod>'+smToday+'</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>';
+    smXml += '<url><loc>https://www.findmeajob.co.nz/score</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>';
+    smXml += '<url><loc>https://www.findmeajob.co.nz/salary</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>';
+    smXml += '<url><loc>https://www.findmeajob.co.nz/interview</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>';
+    smXml += '<url><loc>https://www.findmeajob.co.nz/negotiate</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>';
+    smXml += '<url><loc>https://www.findmeajob.co.nz/decode</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>';
+    smXml += '<url><loc>https://www.findmeajob.co.nz/compare</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>';
+    smXml += '<url><loc>https://www.findmeajob.co.nz/decide</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>';
+    smXml += '<url><loc>https://www.findmeajob.co.nz/email</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>';
+    smXml += '<url><loc>https://www.findmeajob.co.nz/challenge</loc><lastmod>'+smToday+'</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>';
+    smXml += '<url><loc>https://www.findmeajob.co.nz/employer-portal.html</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>';
+    smXml += '<url><loc>https://www.findmeajob.co.nz/terms</loc><lastmod>2026-04-16</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>';
+    smXml += '<url><loc>https://www.findmeajob.co.nz/privacy</loc><lastmod>2026-04-16</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>';
     smPosts.forEach(function(p) {
       var s = makeSlug(p.title);
-      var lm = p.date || new Date().toISOString().split("T")[0];
-      smXml += '<url><loc>https://www.findmeajob.co.nz/blog/'+xmlEsc(s)+'</loc><lastmod>'+xmlEsc(lm)+'</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>';
+      /* Convert human date "16 April 2026" to ISO "2026-04-16" */
+      var lm = smToday;
+      try { var pd = new Date(p.date); if (!isNaN(pd.getTime())) lm = pd.toISOString().split("T")[0]; } catch(e) {}
+      smXml += '<url><loc>https://www.findmeajob.co.nz/blog/'+xmlEsc(s)+'</loc><lastmod>'+lm+'</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>';
     });
     smXml += '</urlset>';
     res.setHeader("Content-Type", "application/xml; charset=utf-8");
