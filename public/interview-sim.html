@@ -353,7 +353,6 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
       <div class="interview-stats">
         <div class="stat-item" id="qCounter">Q <strong>1</strong> / 5</div>
         <div class="stat-item" id="timerDisplay" style="display:none"><span id="timerText" style="color:#c7313a;font-weight:700">2:00</span></div>
-        <div class="stat-item" id="fillerStat" style="background:#f8fafc;padding:.2rem .55rem;border-radius:999px;border:1px solid #e2e8f0;font-size:.68rem">Hesitations <strong id="fillerCount" style="color:#E7515A">0</strong></div>
       </div>
     </div>
 
@@ -420,14 +419,10 @@ function submitGateEmail(){var e=document.getElementById('gate-email').value.tri
 var msgs=[],qCount=0,maxQ=5,iData={role:'',company:'',style:'',jobDesc:'',qa:[]},audioEnabled=false,recog=null;
 var timedMode=false,answerTimer=null,timeLeft=0;
 var autoSend=true,silenceTimer=null,silenceDelay=4000;
-var fillerWords=0;
-var _pauseFillersPending=0;
-var _fillerBreakdown={pauses:0,ums:0,uhs:0,ahs:0,ers:0,hmms:0,likes:0,other:0};
 var _interviewEnded=false;
 var _closingPhase=false;
 var _closingAsked=false;
 var _interviewStartTime=0;
-var fillerRegex=/\b(um+|umm+|uhm+|uh+|uhh+|ah+|ahh+|er+|err+|hmm+|hm+)\b/gi;
 
 var _prepRole='';
 var _micStream=null;
@@ -485,7 +480,6 @@ function _doPrep(){
   timedMode=true;
   autoSend=document.getElementById('autoSendMode').checked;
   maxQ=parseInt(document.getElementById('simCount').value)||5;
-  fillerWords=0;
   iData.jobDesc=(document.getElementById('simJobDesc').value||'').trim();
 
   document.getElementById('step2').style.display='none';
@@ -541,7 +535,6 @@ async function _doStart(role){
   var jobDesc=iData.jobDesc||'';
   iData={role:role,company:company,style:style,jobDesc:jobDesc,qa:[]};
   _interviewEnded=false;_closingPhase=false;_closingAsked=false;_interviewStartTime=Date.now();
-  _fillerBreakdown={pauses:0,ums:0,uhs:0,ahs:0,ers:0,hmms:0,likes:0,other:0};
   document.getElementById('pageHeader').style.display='none';
   document.getElementById('chatSection').style.display='block';
   var vg=document.getElementById('voiceGender').value;
@@ -549,7 +542,6 @@ async function _doStart(role){
   document.getElementById('avatarName').textContent=iName;
   setOrb('thinking');
   if(timedMode){document.getElementById('timerDisplay').style.display='flex';}
-  document.getElementById('fillerCount').textContent='0';
   msgs=[{role:'user',content:'Start the interview. Introduce yourself briefly and ask your first question.'}];
   showTyping();dis(true);
   try{
@@ -576,7 +568,7 @@ async function sendAnswer(){
   var sc3=document.getElementById('silenceCountdown');if(sc3){sc3.className='silence-countdown';sc3.textContent='';}
   document.getElementById('sendBtn').style.display='none';
   document.getElementById('keepTalkingBtn').style.display='none';
-  addMsg(ans,'user');countFillers(ans);updateMicUI('waiting','Processing your answer...');
+  addMsg(ans,'user');updateMicUI('waiting','Processing your answer...');
   var lastAi='';for(var i=msgs.length-1;i>=0;i--){if(msgs[i].role==='assistant'){lastAi=msgs[i].content;break;}}
   iData.qa.push({q:lastAi,a:ans});msgs.push({role:'user',content:ans});qCount++;updC();
   /* Closing phase: user answered the closing question — end everything */
@@ -686,8 +678,7 @@ async function endInterview(){
   document.getElementById('micTranscript').className='mic-transcript';
   updateMicUI(null,'');
   document.getElementById('endBtn').textContent='Scoring...';document.getElementById('endBtn').disabled=true;
-  var totalPauses=_fillerBreakdown.pauses;
-  var p="You conducted a "+iData.style+" interview for "+iData.role+" in NZ. Score the candidate.\nThe candidate had "+totalPauses+" hesitation pauses (moments where they paused for over 1 second mid-answer, often indicating um/uh/ah filler sounds or thinking gaps). Comment on their fluency and confidence based on this. If pauses were high (5+), suggest they practise answering aloud. If low (0-2), praise their fluency.\n\n";
+  var p="You conducted a "+iData.style+" interview for "+iData.role+" in NZ. Score the candidate based on their answers. Comment on their communication, content quality, and confidence.\n\n";
   iData.qa.forEach(function(x,i){var label=(i===iData.qa.length-1&&_closingPhase)?'Closing':'Q'+(i+1);p+=label+": "+x.q.substring(0,400)+"\nA"+(i+1)+": "+x.a.substring(0,400)+"\n\n";});
   if(_closingPhase){p+="The last entry is the candidate closing remarks when asked if they had anything to add. Factor this into your overall assessment — it shows initiative and communication skills.\n\n";}
   p+="Return ONLY valid JSON: {\"score\":number,\"grade\":\"A+ to D\",\"overall\":\"2-3 sentences\",\"feedback\":[{\"question\":\"short\",\"rating\":\"Good|Average|Needs Work\",\"comment\":\"1-2 sentences\"}]}";
@@ -708,19 +699,6 @@ function showScore(r){
   var elapsed=Math.round((Date.now()-_interviewStartTime)/1000);var eMin=Math.floor(elapsed/60);var eSec=elapsed%60;
   h+='<div style="margin-top:.75rem;display:flex;justify-content:center;gap:1.5rem;font-size:.78rem;color:#64748b;font-weight:600"><span>&#9201; '+eMin+'m '+eSec+'s</span><span>&#10003; '+maxQ+' questions</span></div>';
   h+='<p style="color:#64748b;font-size:.88rem;margin-top:1rem;line-height:1.6">'+esc(r.overall)+'</p></div>';
-  /* Filler breakdown card — pauses only (honest) */
-  var totalP=_fillerBreakdown.pauses;
-  var pColor=totalP>=5?'#ef4444':totalP>=3?'#f59e0b':'#E7515A';
-  h+='<div class="fb-item" style="animation-delay:0.1s;text-align:center;padding:1.25rem">';
-  h+='<div style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.5rem">Hesitation Report</div>';
-  h+='<div style="font-size:2rem;font-weight:900;color:'+pColor+'">'+totalP+'</div>';
-  h+='<div style="font-size:.75rem;color:#64748b;margin-bottom:.75rem">hesitation pauses detected</div>';
-  if(totalP===0){h+='<div style="background:#f0fdf4;border:1px solid #bbf7d0;padding:.4rem .85rem;border-radius:999px;font-size:.78rem;font-weight:600;color:#16a34a;display:inline-block">No hesitations detected — great fluency!</div>';}
-  else if(totalP<=2){h+='<div style="background:#f0fdf4;border:1px solid #bbf7d0;padding:.4rem .85rem;border-radius:999px;font-size:.78rem;font-weight:600;color:#16a34a;display:inline-block">Minimal hesitations — good fluency</div>';}
-  else if(totalP<=5){h+='<div style="background:#fffbeb;border:1px solid #fde68a;padding:.4rem .85rem;border-radius:999px;font-size:.78rem;font-weight:600;color:#92400e;display:inline-block">Some hesitations — practice will help</div>';}
-  else{h+='<div style="background:#fef2f2;border:1px solid #fecaca;padding:.4rem .85rem;border-radius:999px;font-size:.78rem;font-weight:600;color:#c7313a;display:inline-block">Frequent hesitations — try practising your answers aloud</div>';}
-  h+='<div style="font-size:.68rem;color:#94a3b8;margin-top:.65rem;line-height:1.5">Hesitations are pauses longer than 1 second while answering. These often indicate filler sounds (um, uh, ah) or thinking gaps.</div>';
-  h+='</div>';
   if(r.feedback&&r.feedback.length){r.feedback.forEach(function(f,fi){
     var fc=f.rating==='Good'?'#E7515A':f.rating==='Average'?'#f59e0b':'#ef4444';
     h+='<div class="fb-item" style="animation-delay:'+(0.3+fi*0.15)+'s"><div class="fb-q">'+esc(f.question)+'</div>';
@@ -891,14 +869,8 @@ function toggleMic(quiet){
     document.getElementById('listenFill').style.width='0';
     var inp=document.getElementById('userInput');
     var lastResultTime=Date.now();
-    var _lastSpeechTime=Date.now();
-    _pauseFillersPending=0;
     recog.onresult=function(e){
-      var now=Date.now();
-      if(_lastSpeechTime&&now-_lastSpeechTime>1200&&inp.value.trim().length>0){_pauseFillersPending++;}
-      _lastSpeechTime=now;
       _micRetries=0;
-      /* Read all results from this session — combine with _accumulated from previous sessions */
       var sessionText='';
       for(var i=0;i<e.results.length;i++){
         sessionText+=e.results[i][0].transcript;
@@ -906,12 +878,8 @@ function toggleMic(quiet){
       var fullText=(_accumulated+sessionText).trim();
       inp.value=fullText;lastResultTime=Date.now();
       updateMicUI('listening','Interviewer is listening...');
-      var trEl=document.getElementById('micTranscript');
-      trEl.className='mic-transcript active';
-      trEl.textContent=fullText;
-      trEl.scrollTop=trEl.scrollHeight;
-      var fm=fullText.match(fillerRegex);
-      document.getElementById('fillerCount').textContent=fillerWords+(fm?fm.length:0)+_pauseFillersPending;
+      document.getElementById('micTranscript').textContent=fullText;
+      document.getElementById('micTranscript').scrollTop=document.getElementById('micTranscript').scrollHeight;
       document.getElementById('listenFill').style.width='0';
       clearTimeout(silenceTimer);
       if(autoSend&&fullText.length>1){
@@ -983,12 +951,6 @@ function addMsg(t,type){var c=document.getElementById('chatMessages');var w=docu
 function showTyping(){var c=document.getElementById('chatMessages');var w=document.createElement('div');w.className='msg-typing-wrap';w.id='typing';var av=document.createElement('div');av.className='msg-avatar msg-avatar-ai';var iName=document.getElementById('avatarName');av.textContent=(iName?iName.textContent:'S').charAt(0);var d=document.createElement('div');d.className='msg msg-typing';d.innerHTML='<i></i><i></i><i></i>';w.appendChild(av);w.appendChild(d);c.appendChild(w);setTimeout(function(){w.scrollIntoView({behavior:'smooth',block:'start'});},100);}
 function hideTyping(){var el=document.getElementById('typing');if(el)el.remove();}
 function updC(){document.getElementById('qCounter').innerHTML='Q <strong>'+Math.min(qCount,maxQ)+'</strong> / '+maxQ;}
-function countFillers(text){
-  var m=text.match(fillerRegex);
-  if(m){for(var fi=0;fi<m.length;fi++){var w=m[fi].toLowerCase();if(/^um/.test(w))_fillerBreakdown.ums++;else if(/^uh/.test(w))_fillerBreakdown.uhs++;else if(/^ah/.test(w))_fillerBreakdown.ahs++;else if(/^er/.test(w))_fillerBreakdown.ers++;else if(/^hm/.test(w))_fillerBreakdown.hmms++;else _fillerBreakdown.other++;}}
-  _fillerBreakdown.pauses+=_pauseFillersPending;
-  var count=(m?m.length:0)+_pauseFillersPending;_pauseFillersPending=0;
-  if(count){fillerWords+=count;var fc=document.getElementById('fillerCount');var fs=document.getElementById('fillerStat');fc.textContent=fillerWords;if(fillerWords>=5){fc.style.color='#ef4444';fs.style.background='#fef2f2';fs.style.borderColor='#fecaca';}else if(fillerWords>=3){fc.style.color='#f59e0b';fs.style.background='#fffbeb';fs.style.borderColor='#fde68a';}}}
 function dis(v){document.getElementById('sendBtn').disabled=v;document.getElementById('userInput').disabled=v;}
 function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 
