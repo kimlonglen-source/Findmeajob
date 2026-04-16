@@ -262,7 +262,8 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
       <div style="font-size:1.1rem;font-weight:800;color:#0f172a;margin-bottom:.25rem">Tell us about your interview</div>
       <div style="font-size:.82rem;color:#64748b;margin-bottom:1.25rem;line-height:1.5">The more detail you give, the more realistic your practice will be.</div>
 
-      <div class="field"><label>Job title</label><input type="text" id="simRole" placeholder="e.g. Pharmacist, Software Engineer, Teacher"></div>
+      <div class="field"><label>Job title <span style="color:#E7515A">*</span></label><input type="text" id="simRole" placeholder="e.g. Pharmacist, Software Engineer, Teacher">
+        <div id="roleError" style="display:none;font-size:.72rem;color:#ef4444;margin-top:.25rem;font-weight:600">Please enter the job title you're interviewing for</div></div>
       <div class="field"><label>Company (optional)</label><input type="text" id="simCompany" placeholder="e.g. Xero, Fisher &amp; Paykel, Countdown"></div>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
@@ -515,10 +516,12 @@ function buildSysPrompt(phase){
 
 function goStep2(){
   var role=document.getElementById('simRole').value.trim();
-  if(!role){alert('Please enter the job title you are interviewing for.');return;}
+  var errEl=document.getElementById('roleError');
+  var inp=document.getElementById('simRole');
+  if(!role){errEl.style.display='block';inp.style.borderColor='#ef4444';inp.focus();return;}
+  errEl.style.display='none';inp.style.borderColor='';
   document.getElementById('setupForm').style.display='none';
   document.getElementById('step2').style.display='block';
-  // Request mic permission immediately when step 2 appears
   requestMicEarly();
 }
 
