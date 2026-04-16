@@ -771,7 +771,7 @@ var _waitingForAI=false;
 var _micRetries=0;
 var _maxMicRetries=3;
 function updateMicUI(state,text){var dot=document.getElementById('micDot');var lbl=document.getElementById('micLabel');var bars=document.getElementById('audioBars');var sc=document.getElementById('silenceCountdown');if(dot){dot.className='mic-dot';if(state)dot.classList.add(state);}if(lbl){lbl.textContent=text||'';lbl.className=state==='listening'?'mic-label recording':'mic-label';}if(bars){bars.classList.toggle('active',state==='listening');}if(sc&&state!=='listening'){sc.className='silence-countdown';sc.textContent='';}}
-function autoStartListening(){if(_interviewEnded||_aiSpeaking||_waitingForAI)return;_micRetries=0;_accumulated='';document.getElementById('userInput').value='';updateMicUI('listening','Interviewer is listening — please speak now');var mob=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);if(mob)document.getElementById('sendBtn').style.display='inline-block';startTimer();setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog)toggleMic();},200);}
+function autoStartListening(){if(_interviewEnded||_aiSpeaking||_waitingForAI)return;_micRetries=0;_accumulated='';document.getElementById('userInput').value='';updateMicUI('listening','Interviewer is listening — please speak now');document.getElementById('sendBtn').style.display='inline-block';document.getElementById('keepTalkingBtn').style.display='none';startTimer();setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog)toggleMic();},200);}
 var _accumulated='';
 function speak(t){if(_interviewEnded)return;_aiSpeaking=true;clearTimeout(_speakTimeout);setAvatar('speaking');updateMicUI('speaking','Interviewer speaking...');if(!audioEnabled||!window.speechSynthesis){var readTime=Math.max(3000,Math.min(t.length*60,15000));_speakTimeout=setTimeout(function(){_aiSpeaking=false;setAvatar('listening');autoStartListening();},readTime);return;}_speakTimeout=setTimeout(function(){if(_aiSpeaking){_aiSpeaking=false;try{window.speechSynthesis.cancel();}catch(e){}setAvatar('listening');autoStartListening();}},Math.max(60000,t.length*200));try{if(recog){recog.stop();recog=null;document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);}window.speechSynthesis.cancel();setTimeout(function(){_doSpeak(t);},50);}catch(e){}}
 function _doSpeak(t){try{var gender=document.getElementById('voiceGender').value;var voices=window.speechSynthesis.getVoices()||[];var match=null;var googleVoices=[];var nzAu=[];var enVoices=[];for(var i=0;i<voices.length;i++){var l=voices[i].lang.toLowerCase();var n=voices[i].name.toLowerCase();if(n.indexOf('google')>-1&&l.indexOf('en')===0)googleVoices.push(voices[i]);else if(l==='en-nz'||l==='en-au'||l.indexOf('en_nz')>-1||l.indexOf('en_au')>-1)nzAu.push(voices[i]);else if(l.indexOf('en')===0)enVoices.push(voices[i]);}var pool=googleVoices.length?googleVoices:(nzAu.length?nzAu:enVoices);for(var j=0;j<pool.length;j++){var vn=pool[j].name.toLowerCase();if(gender==='female'&&(vn.indexOf('female')>-1||vn.indexOf('fiona')>-1||vn.indexOf('karen')>-1||vn.indexOf('samantha')>-1||vn.indexOf('victoria')>-1||vn.indexOf('moira')>-1||vn.indexOf('tessa')>-1||vn.indexOf('google uk english female')>-1)){match=pool[j];break;}if(gender==='male'&&(vn.indexOf('male')>-1||vn.indexOf('daniel')>-1||vn.indexOf('james')>-1||vn.indexOf('lee')>-1||vn.indexOf('gordon')>-1||vn.indexOf('alex')>-1||vn.indexOf('google uk english male')>-1)){match=pool[j];break;}}if(!match&&pool.length){match=pool[0];}var u=new SpeechSynthesisUtterance(t);u.rate=0.92;u.lang='en-GB';if(match)u.voice=match;if(gender==='male'){u.pitch=0.9;}else{u.pitch=1.0;}u.onend=function(){if(_interviewEnded)return;_aiSpeaking=false;clearTimeout(_speakTimeout);_currentOrbState='';setAvatar('listening');autoStartListening();};u.onerror=function(){if(_interviewEnded)return;_aiSpeaking=false;clearTimeout(_speakTimeout);_currentOrbState='';setAvatar('listening');autoStartListening();};window.speechSynthesis.speak(u);}catch(e){_aiSpeaking=false;_currentOrbState='';setAvatar('listening');}}
@@ -940,27 +940,19 @@ function toggleMic(quiet){
     };
     recog.onend=function(){recog=null;
       var inp2=document.getElementById('userInput');
-      var _mob=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-      if(_mob&&!_aiSpeaking&&!_waitingForAI&&!_sending&&!_interviewEnded){
-        /* Mobile: mic stopped. Show Send + Keep Talking. No auto-restart. */
-        clearTimeout(silenceTimer);
+      if(_aiSpeaking||_waitingForAI||_sending||_interviewEnded)return;
+      clearTimeout(silenceTimer);
+      if(inp2.value.trim()){
+        /* User spoke — show Send + Keep Talking so they control when to submit */
         document.getElementById('sendBtn').style.display='inline-block';
         document.getElementById('keepTalkingBtn').style.display='inline-block';
-        if(inp2.value.trim()){
-          updateMicUI(null,'Tap Send when done, or Keep Talking to add more');
-        } else {
-          updateMicUI(null,'Tap Keep Talking to speak your answer');
-        }
-        return;
-      }
-      clearTimeout(silenceTimer);
-      document.getElementById('listenBar').style.display='none';
-      document.getElementById('micTranscript').className='mic-transcript';
-      if(inp2.value.trim()){updateMicUI('waiting','Sending your answer...');sendAnswer();}
-      else if(!_aiSpeaking&&!_waitingForAI){
+        document.getElementById('listenBar').style.display='none';
+        updateMicUI(null,'Tap Send when done, or Keep Talking to add more');
+      } else {
+        /* No text — mic failed to capture, auto-retry */
         _micRetries++;
-        if(_micRetries<=_maxMicRetries){updateMicUI('listening','Mic restarting...');setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog)toggleMic();},500);}
-        else{_micRetries=0;updateMicUI(null,'Mic stopped — tap Skip to continue');}
+        if(_micRetries<=_maxMicRetries){setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog&&!_interviewEnded)toggleMic();},500);}
+        else{_micRetries=0;document.getElementById('keepTalkingBtn').style.display='inline-block';updateMicUI(null,'Tap Keep Talking to try again');}
       }
     };
     recog.onerror=function(ev){
