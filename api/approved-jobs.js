@@ -173,7 +173,7 @@ module.exports = async function handler(req, res) {
     singlePage += '<meta name="twitter:title" content="'+t+'">';
     singlePage += '<meta name="twitter:description" content="'+ex+'">';
     singlePage += '<meta name="twitter:image" content="'+imgUrl+'">';
-    singlePage += '<link rel="icon" type="image/svg+xml" href="/logo-icon.svg"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png">';
+    singlePage += '<link rel="icon" type="image/x-icon" href="/favicon.ico"><link rel="icon" type="image/svg+xml" href="/logo-icon.svg"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"><link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">';
     singlePage += '<link rel="alternate" type="application/rss+xml" title="FindMeAJob.co.nz Blog" href="/blog/rss">';
     singlePage += '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">';
     singlePage += '<script type="application/ld+json">'+schemaPost+'<\/script>';
@@ -293,7 +293,7 @@ module.exports = async function handler(req, res) {
     page += '<meta property="og:type" content="website"><meta property="og:url" content="https://www.findmeajob.co.nz/blog"><meta property="og:title" content="NZ Job Market Blog — FindMeAJob.co.nz"><meta property="og:description" content="Daily insights on the NZ job market for job seekers and employers."><meta property="og:image" content="'+ogImg+'"><meta property="og:site_name" content="FindMeAJob.co.nz">';
     page += '<meta name="twitter:card" content="summary_large_image">';
     page += '<link rel="alternate" type="application/rss+xml" title="FindMeAJob.co.nz Blog" href="/blog/rss">';
-    page += '<link rel="icon" type="image/svg+xml" href="/logo-icon.svg"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png">';
+    page += '<link rel="icon" type="image/x-icon" href="/favicon.ico"><link rel="icon" type="image/svg+xml" href="/logo-icon.svg"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"><link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">';
     page += '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">';
     page += '<script type="application/ld+json">'+schemaJson+'<\/script>';
     page += '<style>'+BLOG_CSS+'</style></head><body>';
