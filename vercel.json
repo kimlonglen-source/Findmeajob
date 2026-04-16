@@ -133,6 +133,14 @@
       "headers": { "Location": "/match.html#apply" }
     },
     {
+      "src": "/terms",
+      "dest": "/public/terms.html"
+    },
+    {
+      "src": "/privacy",
+      "dest": "/public/privacy.html"
+    },
+    {
       "src": "/salary",
       "dest": "/public/salary.html"
     },
