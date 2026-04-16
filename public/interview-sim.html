@@ -873,7 +873,7 @@ function toggleMic(quiet){
     var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
     var isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     recog=new SR();recog.lang='en-NZ';
-    recog.continuous=!isMobile;/* Desktop: continuous. Mobile: stops after phrase (no beeps) */
+    recog.continuous=true;/* Continuous on all — keeps mic open for full answers */
     recog.interimResults=true;
     if(!quiet){
       _micRetries=0;
