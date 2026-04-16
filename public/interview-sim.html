@@ -120,6 +120,9 @@ body.dark .msg-typing::after{border-right-color:rgba(255,255,255,.04)}
 .mic-label.recording{color:#ef4444}
 .wave-bars{display:none;align-items:center;gap:2px;height:20px;margin-left:auto}
 .wave-bars.active{display:flex}
+.star-dot{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;font-size:.65rem;font-weight:800;border:2px solid #e2e8f0;color:#94a3b8;transition:all .3s}
+.star-dot.active{border-color:#E7515A;color:#E7515A;background:#fef2f2;transform:scale(1.15)}
+.star-dot.done{border-color:#059669;color:#059669;background:#f0fdf4}
 .wave-bars span{display:block;width:3px;min-height:3px;height:3px;background:#ef4444;border-radius:999px;transition:height .08s}
 .mic-transcript{display:none;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-size:.82rem;color:#0f172a;line-height:1.6;min-height:44px;max-height:200px;overflow-y:auto;text-align:left;width:100%;word-wrap:break-word}
 .mic-transcript.active{display:block}
@@ -268,7 +271,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
         <div class="field"><label>Interview style</label>
-          <select id="simStyle"><option value="Standard">Standard</option><option value="Behavioural">Behavioural (STAR method)</option><option value="Technical">Technical</option><option value="Casual">Casual / coffee chat</option></select>
+          <select id="simStyle"><option value="Standard">Standard</option><option value="Behavioural">Behavioural (STAR method)</option><option value="Values-based">Values-based (NZ public sector)</option><option value="Panel">Panel (multiple interviewers)</option><option value="Technical">Technical</option><option value="Competency">Competency-based</option><option value="Casual">Casual / coffee chat</option></select>
         </div>
         <div class="field"><label>How many questions?</label>
           <select id="simCount"><option value="5">5 (10 min)</option><option value="8">8 (20 min)</option><option value="10">10 (30 min)</option></select>
@@ -383,6 +386,12 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
             <div class="mic-label" id="micLabel">Interviewer speaking...</div>
             <div class="wave-bars" id="waveBars"><span></span><span></span><span></span><span></span><span></span></div>
           </div>
+          <div id="starCoach" style="display:none;background:linear-gradient(135deg,#fef2f2,#fff7ed);border:1px solid #fed7aa;border-radius:12px;padding:.6rem 1rem;width:100%;animation:msgIn .35s ease">
+            <div id="starCoachText" style="font-size:.78rem;font-weight:600;color:#c7313a;line-height:1.4"></div>
+            <div style="display:flex;gap:.35rem;margin-top:.4rem">
+              <span class="star-dot" id="starS">S</span><span class="star-dot" id="starT">T</span><span class="star-dot" id="starA">A</span><span class="star-dot" id="starR">R</span>
+            </div>
+          </div>
           <div class="mic-transcript" id="micTranscript"></div>
           <div class="chat-actions">
             <button id="sendBtn" onclick="sendAnswer()" style="display:none">Send</button>
@@ -443,7 +452,7 @@ var _totalWords=0,_totalSpeakDur=0;
 var _ttsPlayer=null;
 var _aiSpeaking=false,_speakTimeout=null,_waitingForAI=false;
 var _micRetries=0,_maxMicRetries=3;
-var _sending=false,_accumulated='',recog=null;
+var _sending=false,_accumulated='',recog=null,_currentStarStage=-1;
 /* Voice maps */
 var voiceGenders={'aura-asteria-en':'female','aura-luna-en':'female','aura-stella-en':'female','aura-athena-en':'female','aura-hera-en':'female','aura-orion-en':'male','aura-arcas-en':'male','aura-perseus-en':'male','aura-angus-en':'male','aura-orpheus-en':'male','aura-helios-en':'male','aura-zeus-en':'male'};
 var voiceNames={'aura-asteria-en':'Asteria','aura-luna-en':'Luna','aura-stella-en':'Stella','aura-athena-en':'Athena','aura-hera-en':'Hera','aura-orion-en':'Orion','aura-arcas-en':'Arcas','aura-perseus-en':'Perseus','aura-angus-en':'Angus','aura-orpheus-en':'Orpheus','aura-helios-en':'Helios','aura-zeus-en':'Zeus'};
@@ -461,14 +470,21 @@ function buildSysPrompt(phase){
   s+="- Calibrate difficulty to "+iData.level+" seniority (don't over-question a graduate; don't under-question a senior)\n";
   if(iData.style==='Behavioural')s+="- Frame every question to prompt a past-situation STAR answer (Situation, Task, Action, Result)\n";
   if(iData.style==='Technical')s+="- Mix role-specific technical questions with behavioural/teamwork ones\n";
+  if(iData.style==='Values-based'){s+="- VALUES-BASED style (dominant in NZ public sector: government, DHBs, councils, universities)\n";s+="- Frame questions around organisational values: integrity, manaakitanga (service/care), respect, equity, innovation\n";s+="- Include at least one question on Te Tiriti o Waitangi awareness (partnership, participation, protection) for public sector roles\n";s+="- Probe for cultural competence, community impact, and commitment to equitable outcomes\n";}
+  if(iData.style==='Panel'){s+="- PANEL style: you are the lead interviewer joined by 2 colleagues. Occasionally say 'My colleague from the team would like to ask...' to simulate panel dynamic\n";s+="- Mix perspectives: one person asks behavioural, another asks technical/role-specific, another asks values/culture fit\n";s+="- NZ panels are thorough but warm \u2014 not adversarial\n";}
+  if(iData.style==='Competency')s+="- COMPETENCY-BASED: each question targets a specific competency (leadership, communication, problem-solving, teamwork, adaptability, stakeholder management). Ask for past examples demonstrating each\n";
   if(iData.style==='Casual')s+="- Keep tone conversational, like a coffee chat, but still gather signal\n";
   s+="- ONE question at a time, keep it to 1-2 sentences\n";
   s+="- Vary question types: background, competency (leadership/teamwork/problem-solving/adaptability), role-specific, situational\n";
-  s+="- Use NZ workplace context where relevant\n";
-  s+="- Be professional, warm, encouraging — never condescending\n\n";
-  s+="- Open with 'Kia ora' \u2014 you are based in New Zealand\n";
+  s+="- Be professional, warm, encouraging \u2014 never condescending\n\n";
+  s+="NZ CULTURAL CONTEXT:\n";
+  s+="- Open with 'Kia ora' \u2014 you are based in Aotearoa New Zealand\n";
   s+="- Reference NZ workplace culture naturally: flat hierarchy, team-first, work-life balance, whanaungatanga (relationship-building)\n";
-  s+="- Use NZ English (e.g. 'keen', 'sweet as', 'sorted') sparingly and naturally\n\n";
+  s+="- NZ values humility \u2014 if a candidate undersells themselves, probe gently ('Can you tell me more about your specific role?') rather than penalising modesty\n";
+  s+="- Cultural fit and team contribution matter as much as individual capability in NZ workplaces\n";
+  s+="- Use NZ English sparingly and naturally ('keen', 'sweet as', 'sorted', 'mahi')\n";
+  if(iData.level==='Senior (5+ years)'||iData.level==='Executive / Leadership')s+="- For senior roles, reference the NZ Leadership Success Profile (LSP) competencies where relevant\n";
+  s+="\n";
   if(phase==='start'){
     s+="PHASE: Opening. Greet with 'Kia ora' and introduce yourself as "+iName+". Ask a warm opening question about their background and what drew them to this role.\n";
   } else if(phase==='answer'){
@@ -619,7 +635,7 @@ async function sendAnswer(){
   _sending=true;
   stopTimer();cancelSpeak();_waitingForAI=true;_aiSpeaking=false;
   stopRecording(true);
-  inp.value='';addMsg(ans,'user');countFillers(ans);updateMicUI('waiting','Processing your answer...');
+  inp.value='';addMsg(ans,'user');hideReviewButtons();updateMicUI('waiting','Processing your answer...');
   var lastAi='';for(var i=msgs.length-1;i>=0;i--){if(msgs[i].role==='assistant'){lastAi=msgs[i].content;break;}}
   /* If the last AI message was a probe, merge this answer onto the existing Q/A pair */
   if(_lastWasProbe&&iData.qa.length){
@@ -915,14 +931,38 @@ function startRecording(){
     document.getElementById('micTranscript').textContent='We can hear you \u2014 your answer will appear here when you finish speaking';
     document.getElementById('listenBar').style.display='block';
     document.getElementById('listenFill').style.width='0';
+    _currentStarStage=-1;var sc=document.getElementById('starCoach');if(sc)sc.style.display='none';
     _recTimer=setInterval(function(){
       var el=Math.floor((Date.now()-_recStart)/1000);var m=Math.floor(el/60);var s=el%60;var ts=m+':'+(s<10?'0':'')+s;
+      /* Style-aware coaching */
+      var sty=iData.style||'Standard';
+      var useStar=(sty==='Behavioural'||sty==='Values-based'||sty==='Competency'||sty==='Standard'||sty==='Panel');
+      var useTech=(sty==='Technical');
       var hint='';
-      if(el<20)hint=' \u2014 keep going, add a specific example';
-      else if(el<45)hint=' \u2014 building nicely';
-      else if(el<90)hint=' \u2014 good length, wrap with the outcome';
-      else if(el<120)hint=' \u2014 consider wrapping up';
-      else hint=' \u2014 try to land your answer';
+      if(useStar&&qCount>=2){
+        var stages=[{at:0,l:'S',t:'Set the scene \u2014 what was the Situation?',h:'Where were you? What was happening?'},{at:12,l:'T',t:'What was your Task or responsibility?',h:'What did you need to achieve?'},{at:30,l:'A',t:'Describe the Action YOU took \u2014 be specific',h:'What did you personally do?'},{at:55,l:'R',t:'Share the Result \u2014 quantify if you can',h:'Numbers, impact, feedback received'}];
+        var si=-1;for(var j=stages.length-1;j>=0;j--){if(el>=stages[j].at){si=j;break;}}
+        if(si>=0&&si!==_currentStarStage){
+          _currentStarStage=si;var st=stages[si];
+          var ct=document.getElementById('starCoachText');var sc2=document.getElementById('starCoach');
+          if(ct&&sc2){sc2.style.display='block';ct.innerHTML='<strong>'+st.l+' \u2014 '+st.t+'</strong><br><span style="font-size:.72rem;color:#94a3b8;font-weight:400">'+st.h+'</span>';ct.style.animation='none';ct.offsetHeight;ct.style.animation='msgIn .35s ease';}
+          ['starS','starT','starA','starR'].forEach(function(id,idx){var d=document.getElementById(id);if(d){d.className='star-dot';if(idx<si)d.classList.add('done');else if(idx===si)d.classList.add('active');}});
+        }
+        if(el>=75)hint=' \u2014 strong length, land your answer';
+        else if(el>=55)hint='';
+        else hint='';
+      }else if(useTech){
+        if(el<15)hint=' \u2014 state your approach';
+        else if(el<35)hint=' \u2014 walk through the steps';
+        else if(el<60)hint=' \u2014 explain trade-offs or decisions';
+        else if(el<90)hint=' \u2014 summarise the outcome';
+        else hint=' \u2014 consider wrapping up';
+      }else{
+        if(el<20)hint=' \u2014 start with context';
+        else if(el<45)hint=' \u2014 share a specific example';
+        else if(el<90)hint=' \u2014 good length, wrap with the outcome';
+        else hint=' \u2014 consider wrapping up';
+      }
       updateMicUI('listening','Recording '+ts+hint);
     },1000);
     monitorVolume();
@@ -959,6 +999,7 @@ function stopRecording(discard){
   if(_audioCtx){try{_audioCtx.close();}catch(e){}_audioCtx=null;}_analyser=null;
   document.getElementById('listenBar').style.display='none';
   var wb=document.getElementById('waveBars');if(wb)wb.className='wave-bars';
+  var sc=document.getElementById('starCoach');if(sc)sc.style.display='none';
   if(discard){_audioChunks=[];document.getElementById('micTranscript').className='mic-transcript';}
 }
 
@@ -984,19 +1025,64 @@ function finishRecording(){
           document.getElementById('userInput').value=d.transcript;
           document.getElementById('micTranscript').textContent=d.transcript;
           document.getElementById('micTranscript').className='mic-transcript active';
+          /* WPM + filler counting with fallback */
           if(d.words&&d.words.length){
             _totalWords+=d.words.length;_totalSpeakDur+=(d.duration||recDur);
             var wpm=_totalSpeakDur>0?Math.round(_totalWords/(_totalSpeakDur/60)):0;
             document.getElementById('wpmCount').textContent=wpm;
             countDeepgramFillers(d.words);
+          }else{
+            var wc=d.transcript.trim().split(/\s+/).length;
+            _totalWords+=wc;_totalSpeakDur+=recDur;
+            var wpm2=_totalSpeakDur>0?Math.round(_totalWords/(_totalSpeakDur/60)):0;
+            document.getElementById('wpmCount').textContent=wpm2;
+            countFillers(d.transcript);
           }
-          sendAnswer();
-        }else{updateMicUI(null,'No speech detected — try again');document.getElementById('micTranscript').className='mic-transcript';setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!_sending)startRecording();},2000);}
-      }).catch(function(){updateMicUI(null,'Transcription error — retrying...');setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!_sending)startRecording();},2000);});
+          /* Review window — show transcript for 3s before sending */
+          showReviewWindow(d.transcript);
+        }else{updateMicUI(null,'No speech detected \u2014 try again');document.getElementById('micTranscript').className='mic-transcript';setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!_sending)startRecording();},2000);}
+      }).catch(function(){updateMicUI(null,'Transcription error \u2014 retrying...');setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!_sending)startRecording();},2000);});
     };
     reader.readAsDataURL(blob);
   };
   try{_mediaRec.stop();}catch(e){}
+}
+
+/* Review window — show transcript before sending */
+var _reviewTimer=null;
+function showReviewWindow(){
+  stopTimer();
+  var countdown=3;
+  updateMicUI(null,'Sending in '+countdown+'...');
+  document.getElementById('sendBtn').style.display='';
+  document.getElementById('sendBtn').textContent='Send now';
+  /* Add re-record button if not already there */
+  var actions=document.querySelector('.chat-actions');
+  if(!document.getElementById('rerecordBtn')){
+    var rb=document.createElement('button');rb.id='rerecordBtn';
+    rb.textContent='Re-record';rb.onclick=reRecord;
+    rb.style.cssText='background:#f8fafc;color:#64748b;border:1px solid #e2e8f0;font-size:.72rem;border-radius:999px;padding:.5rem 1rem;font-family:inherit;cursor:pointer';
+    actions.insertBefore(rb,actions.children[1]);
+  }else{document.getElementById('rerecordBtn').style.display='';}
+  document.getElementById('micTranscript').style.borderColor='#E7515A';
+  _reviewTimer=setInterval(function(){
+    countdown--;
+    if(countdown<=0){clearInterval(_reviewTimer);_reviewTimer=null;hideReviewButtons();sendAnswer();return;}
+    updateMicUI(null,'Sending in '+countdown+'...');
+  },1000);
+}
+function reRecord(){
+  if(_reviewTimer){clearInterval(_reviewTimer);_reviewTimer=null;}
+  hideReviewButtons();
+  document.getElementById('userInput').value='';
+  document.getElementById('micTranscript').textContent='';document.getElementById('micTranscript').style.borderColor='';
+  document.getElementById('micTranscript').className='mic-transcript';
+  startRecording();startTimer();
+}
+function hideReviewButtons(){
+  document.getElementById('sendBtn').style.display='none';
+  var rb=document.getElementById('rerecordBtn');if(rb)rb.style.display='none';
+  document.getElementById('micTranscript').style.borderColor='';
 }
 
 function countDeepgramFillers(words){
