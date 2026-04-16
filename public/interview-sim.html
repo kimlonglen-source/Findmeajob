@@ -876,13 +876,12 @@ function toggleMic(quiet){
     recog.interimResults=true;
     if(!quiet){
       _micRetries=0;
-      _accumulated='';/* Fresh start — no prior text */
+      _accumulated='';
       updateMicUI('listening','Interviewer is listening — please speak now');
       document.getElementById('micTranscript').className='mic-transcript active';
       document.getElementById('micTranscript').textContent='';
     } else {
-      /* Keep Talking — preserve text from previous recording */
-      _accumulated=document.getElementById('userInput').value.trim();
+      /* Keep Talking — _accumulated already has all previous final text */
       updateMicUI('listening','Interviewer is listening...');
       document.getElementById('micTranscript').className='mic-transcript active';
     }
@@ -896,28 +895,28 @@ function toggleMic(quiet){
     var _lastSpeechTime=Date.now();
     _pauseFillersPending=0;
     recog.onresult=function(e){
-      /* Detect hesitation pauses (>1.2s gap between speech) as filler/hesitation */
       var now=Date.now();
       if(_lastSpeechTime&&now-_lastSpeechTime>1200&&inp.value.trim().length>0){_pauseFillersPending++;}
       _lastSpeechTime=now;
       _micRetries=0;
-      var t='';var allInterim='';
-      for(var i=0;i<e.results.length;i++){
-        t+=e.results[i][0].transcript;
-        if(!e.results[i].isFinal){allInterim+=e.results[i][0].transcript;}
+      /* Standard Google pattern: use resultIndex, separate final/interim */
+      var interimText='';
+      for(var i=e.resultIndex;i<e.results.length;i++){
+        if(e.results[i].isFinal){
+          _accumulated+=e.results[i][0].transcript;
+        } else {
+          interimText+=e.results[i][0].transcript;
+        }
       }
-      t=t.trim();
-      var fullText=(_accumulated?_accumulated+' ':'')+t;
-      inp.value=fullText.trim();lastResultTime=Date.now();
+      var fullText=(_accumulated+interimText).trim();
+      inp.value=fullText;lastResultTime=Date.now();
       updateMicUI('listening','Interviewer is listening...');
       var trEl=document.getElementById('micTranscript');
       trEl.className='mic-transcript active';
-      trEl.textContent=fullText.trim();
+      trEl.textContent=fullText;
       trEl.scrollTop=trEl.scrollHeight;
-      /* Count fillers from both final text AND interim (speech recognition strips fillers from finals) */
-      var fm=t.match(fillerRegex);
+      var fm=fullText.match(fillerRegex);
       _liveFillers=fm?fm.length:0;
-      if(allInterim){var ifm=allInterim.match(fillerRegex);if(ifm){for(var fi=0;fi<ifm.length;fi++){var key=ifm[fi].toLowerCase()+'_'+Math.floor(Date.now()/2000);if(!_seenInterimFillers[key]){_seenInterimFillers[key]=true;_liveFillers++;}}}}
       document.getElementById('fillerCount').textContent=fillerWords+_liveFillers+_pauseFillersPending;
       if(fillerWords+_liveFillers>3)document.getElementById('fillerCount').style.color='#ef4444';
       document.getElementById('listenFill').style.width='0';
