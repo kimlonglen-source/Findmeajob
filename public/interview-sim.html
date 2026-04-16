@@ -876,11 +876,15 @@ function toggleMic(quiet){
     recog.interimResults=true;
     if(!quiet){
       _micRetries=0;
+      _accumulated='';/* Fresh start — no prior text */
       updateMicUI('listening','Interviewer is listening — please speak now');
       document.getElementById('micTranscript').className='mic-transcript active';
       document.getElementById('micTranscript').textContent='';
     } else {
+      /* Keep Talking — preserve text from previous recording */
+      _accumulated=document.getElementById('userInput').value.trim();
       updateMicUI('listening','Interviewer is listening...');
+      document.getElementById('micTranscript').className='mic-transcript active';
     }
     document.getElementById('keepTalkingBtn').style.display='none';
     document.getElementById('listenBar').style.display='block';
@@ -903,11 +907,12 @@ function toggleMic(quiet){
         if(!e.results[i].isFinal){allInterim+=e.results[i][0].transcript;}
       }
       t=t.trim();
-      inp.value=t;lastResultTime=Date.now();
+      var fullText=(_accumulated?_accumulated+' ':'')+t;
+      inp.value=fullText.trim();lastResultTime=Date.now();
       updateMicUI('listening','Interviewer is listening...');
       var trEl=document.getElementById('micTranscript');
       trEl.className='mic-transcript active';
-      trEl.textContent=t;
+      trEl.textContent=fullText.trim();
       trEl.scrollTop=trEl.scrollHeight;
       /* Count fillers from both final text AND interim (speech recognition strips fillers from finals) */
       var fm=t.match(fillerRegex);
