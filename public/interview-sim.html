@@ -823,8 +823,8 @@ function showScore(r){
   }
   /* Actions */
   h+='<div class="ss" style="display:flex;gap:.5rem;margin-top:1.25rem;flex-wrap:wrap;animation-delay:'+(1.2+(r.feedback?r.feedback.length*.15:0))+'s">';
-  h+='<button onclick="practiceAgain()" style="flex:1;min-width:140px;padding:.85rem 1rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer">Practice again</button>';
-  h+='<button onclick="shareResults('+r.score+')" style="flex:1;min-width:140px;padding:.85rem 1rem;background:#fff;color:#0f172a;border:1px solid #e2e8f0;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer">Share results</button>';
+  h+='<button onclick="practiceAgain()" style="flex:1;min-width:140px;padding:.85rem 1rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:inherit;font-size:.88rem;font-weight:700;cursor:pointer">Practice again</button>';
+  h+='<button onclick="shareResults('+r.score+')" style="flex:1;min-width:140px;padding:.85rem 1rem;background:#fff;color:#0f172a;border:1px solid #e2e8f0;border-radius:999px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer">Share results</button>';
   h+='</div>';
   h+='<div class="cta-box ss" style="animation-delay:'+(1.5+(r.feedback?r.feedback.length*.15:0))+'s"><p>Ready to apply for real?</p><a href="/match.html">Apply for a Job</a></div>';
   stopCam();document.getElementById('chatSection').style.display='none';
