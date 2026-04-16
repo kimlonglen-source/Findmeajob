@@ -258,27 +258,37 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
   <!-- STEP 1: What role -->
   <div id="setupForm">
     <div class="card">
-      <div style="font-size:.72rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:1px;margin-bottom:.75rem">Step 1 of 3 — Your Interview</div>
-      <div class="field"><label>What role are you interviewing for?</label><input type="text" id="simRole" placeholder="e.g. Pharmacist, Software Engineer, Teacher"></div>
-      <div class="field"><label>Which company? (optional)</label><input type="text" id="simCompany" placeholder="e.g. Xero, Fisher &amp; Paykel, Countdown"></div>
+      <div style="font-size:.72rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:1px;margin-bottom:.5rem">Step 1 of 3</div>
+      <div style="font-size:1.1rem;font-weight:800;color:#0f172a;margin-bottom:.25rem">Tell us about your interview</div>
+      <div style="font-size:.82rem;color:#64748b;margin-bottom:1.25rem;line-height:1.5">The more detail you give, the more realistic your practice will be.</div>
+
+      <div class="field"><label>Job title</label><input type="text" id="simRole" placeholder="e.g. Pharmacist, Software Engineer, Teacher"></div>
+      <div class="field"><label>Company (optional)</label><input type="text" id="simCompany" placeholder="e.g. Xero, Fisher &amp; Paykel, Countdown"></div>
+
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
-        <div class="field"><label>Your experience level</label>
+        <div class="field"><label>Your level</label>
           <select id="simLevel"><option value="Graduate / Entry-level">Graduate / Entry-level</option><option value="Mid-level (2-5 years)" selected>Mid-level (2-5 years)</option><option value="Senior (5+ years)">Senior (5+ years)</option><option value="Executive / Leadership">Executive / Leadership</option></select>
+          <div style="font-size:.68rem;color:#94a3b8;margin-top:.25rem">Questions match your experience</div>
         </div>
-        <div class="field"><label>Interview round</label>
-          <select id="simRound"><option value="Phone screen">Phone screen (15-20 min)</option><option value="First interview" selected>First interview</option><option value="Technical / Panel">Technical / Panel</option><option value="Final round">Final round</option></select>
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
         <div class="field"><label>Interview style</label>
           <select id="simStyle"><option value="Standard">Standard</option><option value="Behavioural">Behavioural (STAR method)</option><option value="Values-based">Values-based (NZ public sector)</option><option value="Panel">Panel (multiple interviewers)</option><option value="Technical">Technical</option><option value="Competency">Competency-based</option><option value="Casual">Casual / coffee chat</option></select>
-        </div>
-        <div class="field"><label>How many questions?</label>
-          <select id="simCount"><option value="5">5 (10 min)</option><option value="8">8 (20 min)</option><option value="10">10 (30 min)</option></select>
+          <div style="font-size:.68rem;color:#94a3b8;margin-top:.25rem">Not sure? Standard works for most</div>
         </div>
       </div>
-      <div class="field"><label>Paste the job description (optional)</label>
-        <textarea id="simJD" rows="3" style="width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:#0f172a;outline:none;resize:vertical" placeholder="Paste the actual job ad for tailored questions about the specific requirements..."></textarea>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+        <div class="field"><label>Interview round</label>
+          <select id="simRound"><option value="Phone screen">Phone screen</option><option value="First interview" selected>First interview</option><option value="Technical / Panel">Technical / Panel</option><option value="Final round">Final round</option></select>
+        </div>
+        <div class="field"><label>Questions</label>
+          <select id="simCount"><option value="5">5 questions (~10 min)</option><option value="8">8 questions (~20 min)</option><option value="10">10 questions (~30 min)</option></select>
+        </div>
+      </div>
+
+      <div class="field" style="margin-top:.25rem">
+        <label style="display:flex;align-items:center;gap:.35rem">Paste the job ad <span style="font-size:.62rem;font-weight:600;color:#E7515A;background:#fef2f2;padding:.15rem .45rem;border-radius:999px">recommended</span></label>
+        <textarea id="simJD" rows="3" style="width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:#0f172a;outline:none;resize:vertical" placeholder="Paste the job listing here and the interviewer will ask about the actual requirements, responsibilities, and skills they're looking for..."></textarea>
+        <div style="font-size:.68rem;color:#94a3b8;margin-top:.25rem">This makes the biggest difference — questions will match the real job</div>
       </div>
     </div>
     <button class="btn" onclick="goStep2()">Next — Set Up Audio</button>
@@ -326,23 +336,21 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
   <!-- STEP 3: Ready screen -->
   <div id="readyScreen" style="display:none">
     <div class="card" style="padding:2rem">
-      <div style="font-size:.72rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem">Step 3 of 3 — Ready?</div>
+      <div style="font-size:.72rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:1px;margin-bottom:.5rem">Step 3 of 3</div>
+      <div style="font-size:1.15rem;font-weight:800;color:#0f172a;margin-bottom:.25rem">You're about to start</div>
+      <div style="font-size:.82rem;color:#64748b;margin-bottom:1.25rem">The interviewer will ask questions one at a time. Speak naturally — your mic is on automatically. You'll review your answer before it sends.</div>
 
-      <div style="font-size:1.1rem;font-weight:800;color:#0f172a;margin-bottom:1.25rem">Here is how your interview will work:</div>
-
-      <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem">
-        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#fef2f2;border:1px solid #fecaca;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#c7313a">1</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">AI asks you a question</div><div style="font-size:.78rem;color:#64748b">The interviewer will introduce themselves, then ask questions one at a time.</div></div></div>
-
-        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#fef2f2;border:1px solid #fecaca;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#c7313a">2</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">You answer</div><div style="font-size:.78rem;color:#64748b">The microphone starts automatically. Just speak your answer naturally.</div></div></div>
-
-        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#fef2f2;border:1px solid #fecaca;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#c7313a">3</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">Submit your answer</div><div style="font-size:.78rem;color:#64748b">When you stop speaking for 5 seconds, your answer submits automatically.</div></div></div>
-
-        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#fef2f2;border:1px solid #fecaca;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#c7313a">4</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">Skip or finish anytime</div><div style="font-size:.78rem;color:#64748b">Click <strong>Skip</strong> to move on. Click <strong>End Interview</strong> when you have answered enough.</div></div></div>
-
-        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#fef2f2;border:1px solid #fecaca;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#c7313a">5</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">Get your score</div><div style="font-size:.78rem;color:#64748b">AI scores you out of 100 with feedback on every answer. Learn what to improve.</div></div></div>
+      <div style="font-size:.72rem;font-weight:700;color:#0f172a;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.6rem">Quick tips from recruiters</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:1.25rem">
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem"><div style="font-size:.78rem;font-weight:700;color:#0f172a">Sit up straight</div><div style="font-size:.68rem;color:#64748b">Good posture projects confidence, even over the phone</div></div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem"><div style="font-size:.78rem;font-weight:700;color:#0f172a">Eye contact</div><div style="font-size:.68rem;color:#64748b">Look at the camera or screen, not down at your notes</div></div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem"><div style="font-size:.78rem;font-weight:700;color:#0f172a">Slow down</div><div style="font-size:.68rem;color:#64748b">Pause before answering. 130-150 words per minute is ideal</div></div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem"><div style="font-size:.78rem;font-weight:700;color:#0f172a">Use examples</div><div style="font-size:.68rem;color:#64748b">Specific real stories beat generic answers every time</div></div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem"><div style="font-size:.78rem;font-weight:700;color:#0f172a">Avoid fillers</div><div style="font-size:.68rem;color:#64748b">Replace "um" and "like" with a brief pause instead</div></div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem"><div style="font-size:.78rem;font-weight:700;color:#0f172a">Smile</div><div style="font-size:.68rem;color:#64748b">It comes through in your voice and sets a warm tone</div></div>
       </div>
 
-      <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1.25rem;flex-wrap:wrap">
+      <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1rem;flex-wrap:wrap">
         <div class="countdown-check" id="micStatus">&#9675; Microphone</div>
       </div>
       <button class="btn" id="beginBtn" onclick="beginCountdown()" disabled style="max-width:320px;margin:0 auto">Setting up...</button>
