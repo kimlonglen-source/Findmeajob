@@ -940,6 +940,14 @@ function toggleMic(quiet){
       document.getElementById('sendBtn').style.display='inline-block';
       if(inp2.value.trim()){
         /* User spoke — auto-restart mic so they can keep talking */
+        /* Also set fallback auto-send: if no new speech within silenceDelay, send */
+        silenceTimer=setTimeout(function(){
+          if(!_sending&&!_interviewEnded&&inp2.value.trim()){
+            if(recog){try{recog.stop();}catch(e3){}}recog=null;
+            updateMicUI('waiting','Sending your answer...');
+            sendAnswer();
+          }
+        },silenceDelay);
         setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog&&!_sending&&!_interviewEnded)toggleMic(true);},300);
       } else {
         /* No text — mic failed, retry */
