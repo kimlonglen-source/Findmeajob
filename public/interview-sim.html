@@ -871,8 +871,9 @@ function toggleMic(quiet){
   }
   try{
     var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+    var isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     recog=new SR();recog.lang='en-NZ';
-    recog.continuous=true;
+    recog.continuous=!isMobile;/* Desktop: continuous. Mobile: per-phrase (more reliable) */
     recog.interimResults=true;
     if(!quiet){
       _micRetries=0;
@@ -897,13 +898,12 @@ function toggleMic(quiet){
       if(_lastSpeechTime&&now-_lastSpeechTime>1200&&inp.value.trim().length>0){_pauseFillersPending++;}
       _lastSpeechTime=now;
       _micRetries=0;
-      /* Read all results fresh — no +=, no accumulation inside onresult */
-      var final='',interim='';
+      /* Read all results from this session — combine with _accumulated from previous sessions */
+      var sessionText='';
       for(var i=0;i<e.results.length;i++){
-        if(e.results[i].isFinal) final+=e.results[i][0].transcript;
-        else interim+=e.results[i][0].transcript;
+        sessionText+=e.results[i][0].transcript;
       }
-      var fullText=(_accumulated+final+interim).trim();
+      var fullText=(_accumulated+sessionText).trim();
       inp.value=fullText;lastResultTime=Date.now();
       updateMicUI('listening','Interviewer is listening...');
       var trEl=document.getElementById('micTranscript');
@@ -937,14 +937,12 @@ function toggleMic(quiet){
       /* Save full text so Keep Talking can append to it */
       _accumulated=inp2.value.trim();
       if(_accumulated)_accumulated+=' ';
+      document.getElementById('sendBtn').style.display='inline-block';
       if(inp2.value.trim()){
-        /* User spoke — show Send + Keep Talking so they control when to submit */
-        document.getElementById('sendBtn').style.display='inline-block';
-        document.getElementById('keepTalkingBtn').style.display='inline-block';
-        document.getElementById('listenBar').style.display='none';
-        updateMicUI(null,'Tap Send when done, or Keep Talking to add more');
+        /* User spoke — auto-restart mic so they can keep talking */
+        setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog&&!_sending&&!_interviewEnded)toggleMic(true);},300);
       } else {
-        /* No text — mic failed to capture, auto-retry */
+        /* No text — mic failed, retry */
         _micRetries++;
         if(_micRetries<=_maxMicRetries){setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog&&!_interviewEnded)toggleMic();},500);}
         else{_micRetries=0;document.getElementById('keepTalkingBtn').style.display='inline-block';updateMicUI(null,'Tap Keep Talking to try again');}
