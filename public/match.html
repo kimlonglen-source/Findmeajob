@@ -233,18 +233,18 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 @keyframes subtleGlow{0%,100%{opacity:.4}50%{opacity:.8}}
 @keyframes pivotPulse{0%{box-shadow:0 0 0 0 rgba(139,92,246,.5)}70%{box-shadow:0 0 0 8px rgba(139,92,246,0)}100%{box-shadow:0 0 0 0 rgba(139,92,246,0)}}
 @keyframes cardReveal{0%{opacity:0;transform:translateY(12px)}100%{opacity:1;transform:translateY(0)}}
-.results-hero{position:relative;background:linear-gradient(135deg,rgba(231,81,90,.08),rgba(139,92,246,.05));border:1px solid rgba(231,81,90,.2);border-radius:var(--rl);padding:1.75rem 1.5rem;margin-bottom:1.25rem;text-align:center;overflow:hidden;animation:resultsReveal .6s ease-out both}
-.results-hero-glow{position:absolute;top:-50%;left:50%;transform:translateX(-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(231,81,90,.1) 0%,transparent 60%);pointer-events:none;animation:subtleGlow 3s ease-in-out infinite}
-.results-hero-stats{display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-top:1rem}
+.results-hero{position:relative;background:#1a1a2e;border-radius:24px;padding:2.5rem 2rem;margin-bottom:1.5rem;text-align:center;overflow:hidden;animation:resultsReveal .6s ease-out both}
+.results-hero-glow{position:absolute;top:-50%;left:50%;transform:translateX(-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(231,81,90,.15) 0%,transparent 60%);pointer-events:none;animation:subtleGlow 3s ease-in-out infinite}
+.results-hero-stats{display:flex;align-items:center;justify-content:center;gap:2rem;margin-top:1.25rem}
 .rh-stat{animation:statPop .5s ease-out both}
 .rh-stat:nth-child(1){animation-delay:.3s}.rh-stat:nth-child(3){animation-delay:.5s}.rh-stat:nth-child(5){animation-delay:.7s}
-.rh-val{font-size:2rem;font-weight:900;line-height:1;background:linear-gradient(135deg,var(--em),var(--em2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.rh-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-top:.2rem}
-.rh-divider{width:1px;height:36px;background:var(--border2)}
-.rh-tier{font-size:1rem;font-weight:800;padding:.3rem .8rem;border-radius:999px;line-height:1.2}
-.tier-excellent{background:rgba(231,81,90,.12);color:var(--em);border:1px solid rgba(231,81,90,.25)}
-.tier-good{background:rgba(52,211,153,.1);color:#34d399;border:1px solid rgba(52,211,153,.2)}
-.tier-fair{background:rgba(251,191,36,.1);color:#fbbf24;border:1px solid rgba(251,191,36,.2)}
+.rh-val{font-size:2.2rem;font-weight:900;line-height:1;color:#fff}
+.rh-lbl{font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.5);margin-top:.3rem}
+.rh-divider{width:1px;height:40px;background:rgba(255,255,255,.15)}
+.rh-tier{font-size:1rem;font-weight:800;padding:.35rem .85rem;border-radius:999px;line-height:1.2}
+.tier-excellent{background:rgba(231,81,90,.2);color:#E7515A;border:1px solid rgba(231,81,90,.3)}
+.tier-good{background:rgba(52,211,153,.15);color:#34d399;border:1px solid rgba(52,211,153,.25)}
+.tier-fair{background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.25)}
 .pivot-badge{position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;background:linear-gradient(135deg,var(--purple),#ec4899);color:#fff;font-size:.55rem;font-weight:800;border-radius:999px;display:flex;align-items:center;justify-content:center;padding:0 4px;animation:pivotPulse 2s ease-out infinite}
 .results-tab{position:relative}
 .pivot-glow{box-shadow:0 0 12px rgba(139,92,246,.3);border-color:rgba(139,92,246,.3)!important}
@@ -509,8 +509,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <div id="results-hero" style="display:none">
         <div class="results-hero">
           <div class="results-hero-glow"></div>
-          <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--em);margin-bottom:.5rem">Analysis Complete</div>
-          <div style="font-size:1.3rem;font-weight:800;color:var(--text)">We found your matches</div>
+          <div style="display:inline-block;background:rgba(231,81,90,.15);border:1px solid rgba(231,81,90,.3);padding:.25rem .75rem;border-radius:999px;font-size:.62rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.65rem">Analysis Complete</div>
+          <div style="font-size:1.5rem;font-weight:900;color:#fff;letter-spacing:-.5px">We found your matches</div>
           <div class="results-hero-stats">
             <div class="rh-stat"><div class="rh-val" id="rh-jobs">0</div><div class="rh-lbl">Jobs Found</div></div>
             <div class="rh-divider"></div>
