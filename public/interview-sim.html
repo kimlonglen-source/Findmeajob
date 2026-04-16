@@ -942,10 +942,15 @@ function toggleMic(quiet){
       var inp2=document.getElementById('userInput');
       var _mob=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
       if(_mob&&!_aiSpeaking&&!_waitingForAI&&!_sending&&!_interviewEnded){
-        /* Mobile: mic stopped mid-answer. Auto-restart silently to keep recording. */
+        /* Mobile: mic stopped. Show Send + Keep Talking. No auto-restart. */
         clearTimeout(silenceTimer);
         document.getElementById('sendBtn').style.display='inline-block';
-        setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog&&!_sending&&!_interviewEnded)toggleMic(true);},150);
+        document.getElementById('keepTalkingBtn').style.display='inline-block';
+        if(inp2.value.trim()){
+          updateMicUI(null,'Tap Send when done, or Keep Talking to add more');
+        } else {
+          updateMicUI(null,'Tap Keep Talking to speak your answer');
+        }
         return;
       }
       clearTimeout(silenceTimer);
