@@ -16,11 +16,11 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{overflow-x:hidden}
-body{background:#fff;color:#0f172a;font-family:'Inter',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
+body{background:#fff;color:#0f172a;font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
 a{color:#E7515A;text-decoration:none}a:hover{text-decoration:underline}
 .nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 3rem;border-bottom:1px solid rgba(0,0,0,.06);position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);backdrop-filter:blur(12px)}
 .nav-logo{font-size:1.4rem;font-weight:900;color:#E7515A;text-decoration:none;letter-spacing:-.5px}
@@ -43,10 +43,10 @@ h1 em{font-style:normal;color:#E7515A}
 .subtitle{color:#64748b;font-size:.95rem;margin-bottom:2rem}
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:1.75rem;margin-bottom:1rem}
 label{display:block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;margin-bottom:.4rem}
-input[type="text"],select{width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Inter',sans-serif;font-size:15px;color:#0f172a;outline:none}
+input[type="text"],select{width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;color:#0f172a;outline:none}
 input:focus,select:focus,textarea:focus{border-color:#E7515A;box-shadow:0 0 0 3px rgba(231,81,90,.1)}
 .field{margin-bottom:1rem}
-.btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;background:#E7515A;color:#fff;padding:.85rem;border-radius:999px;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer}
+.btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;background:#E7515A;color:#fff;padding:.85rem;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer}
 .btn:hover{background:#c7313a}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 /* Chat */
@@ -148,7 +148,7 @@ body.dark .silence-countdown{color:#fca5a5}
 @keyframes micGlow{0%,100%{box-shadow:0 0 0 0 rgba(231,81,90,.3);background:#fef2f2 !important}50%{box-shadow:0 0 0 10px rgba(231,81,90,0);background:#f8fafc !important}}
 .listening-bar{height:3px;background:#e2e8f0;border-radius:999px;margin-top:.35rem;overflow:hidden;display:none}
 .listening-fill{height:100%;background:#E7515A;border-radius:999px;width:0;transition:width .3s}
-.end-btn{display:none;width:100%;padding:.75rem;background:#0f172a;color:#fff;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:.5rem}
+.end-btn{display:none;width:100%;padding:.75rem;background:#0f172a;color:#fff;border:none;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:.5rem}
 .end-btn:hover{background:#1e293b}
 .end-btn:disabled{opacity:.5}
 .q-counter{font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px}
@@ -274,7 +274,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
       <div style="font-size:.72rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:1px;margin-bottom:.75rem">Step 1 of 3 — Your Interview</div>
       <div class="field"><label>What role are you interviewing for?</label><input type="text" id="simRole" placeholder="e.g. Pharmacist, Software Engineer, Teacher"></div>
       <div class="field"><label>Which company? (optional)</label><input type="text" id="simCompany" placeholder="e.g. Xero, Fisher &amp; Paykel, Countdown"></div>
-      <div class="field"><label>Paste the job ad description (optional — for more relevant questions)</label><textarea id="simJobDesc" placeholder="Copy and paste the full job advertisement here. The AI will ask questions tailored to the specific role requirements..." rows="4" style="width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Inter',sans-serif;font-size:14px;color:#0f172a;outline:none;resize:vertical;line-height:1.6"></textarea></div>
+      <div class="field"><label>Paste the job ad description (optional — for more relevant questions)</label><textarea id="simJobDesc" placeholder="Copy and paste the full job advertisement here. The AI will ask questions tailored to the specific role requirements..." rows="4" style="width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:#0f172a;outline:none;resize:vertical;line-height:1.6"></textarea></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
         <div class="field"><label>Interview style</label>
           <select id="simStyle"><option value="Standard">Standard</option><option value="Behavioural">Behavioural (STAR method)</option><option value="Technical">Technical</option><option value="Casual">Casual / coffee chat</option></select>

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin — FindMeAJob.co.nz</title>
 <meta name="robots" content="noindex,nofollow">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f8fafc;--bg2:#ffffff;--bg3:rgba(0,0,0,.03);--text:#0f172a;--text2:#475569;--text3:#64748b;--em:#E7515A;--em2:#c7313a;--gold:#b45309;--purple:#7c3aed;--red:#ef4444;--border:rgba(0,0,0,.1);--border2:rgba(0,0,0,.15);--card:rgba(255,255,255,.9);--r:12px;--rl:16px}
 body.dark{--bg:#09090b;--bg2:rgba(255,255,255,.03);--bg3:rgba(255,255,255,.06);--text:#f4f4f5;--text2:#a1a1aa;--text3:#71717a;--em:#E7515A;--em2:#c7313a;--gold:#f59e0b;--purple:#8b5cf6;--red:#ef4444;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.08);--card:rgba(255,255,255,.03)}
@@ -16,7 +16,7 @@ body.dark .confirm-box{background:#0f172a}
 body.dark .job-row{background:rgba(255,255,255,.03)}
 body.dark .hlogo em{color:var(--em)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
 
 /* Toast */
 #toast-container{position:fixed;top:1.5rem;right:1.5rem;z-index:99999;display:flex;flex-direction:column;gap:.5rem}
@@ -34,9 +34,9 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-s
 .login-logo em{background:linear-gradient(135deg,var(--em),var(--em2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
 .login-sub{font-size:.85rem;color:var(--text3);font-weight:600;margin-bottom:2rem}
 label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);display:block;margin-bottom:.5rem}
-input{background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;padding:.85rem 1.15rem;outline:none;width:100%;margin-bottom:1rem;transition:border-color .2s}
+input{background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:15px;padding:.85rem 1.15rem;outline:none;width:100%;margin-bottom:1rem;transition:border-color .2s}
 input:focus{border-color:var(--em);box-shadow:0 0 0 3px rgba(231,81,90,.1)}
-.btn{display:flex;align-items:center;justify-content:center;background:var(--em);color:#fff;padding:.85rem;border-radius:999px;font-family:'Inter',system-ui,sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer;width:100%;transition:all .2s}
+.btn{display:flex;align-items:center;justify-content:center;background:var(--em);color:#fff;padding:.85rem;border-radius:999px;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer;width:100%;transition:all .2s}
 .btn:hover{background:var(--em2);transform:translateY(-1px);box-shadow:0 4px 20px rgba(231,81,90,.3)}
 .err{color:#fca5a5;font-size:.82rem;font-weight:600;margin-top:.65rem;display:none}
 
@@ -47,7 +47,7 @@ header{background:var(--hdr,rgba(9,9,11,.8));border-bottom:1px solid var(--borde
 
 .hright{display:flex;align-items:center;gap:1rem}
 .badge{background:rgba(231,81,90,.08);border:1px solid rgba(231,81,90,.2);color:var(--em);font-size:.72rem;font-weight:700;padding:.3rem .75rem;border-radius:999px}
-.signout{background:none;border:1px solid var(--border2);color:var(--text3);padding:.45rem 1rem;border-radius:999px;cursor:pointer;font-family:'Inter',system-ui,sans-serif;font-size:.78rem;font-weight:600;transition:all .2s}
+.signout{background:none;border:1px solid var(--border2);color:var(--text3);padding:.45rem 1rem;border-radius:999px;cursor:pointer;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.78rem;font-weight:600;transition:all .2s}
 .signout:hover{color:var(--text);border-color:var(--text3)}
 
 main{padding:2rem;max-width:1200px;margin:0 auto}
@@ -61,14 +61,14 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
 
 /* Tabs */
 .tabs{display:flex;gap:.35rem;margin-bottom:1.5rem;flex-wrap:wrap}
-.tab{background:none;border:1px solid var(--border2);color:var(--text3);padding:.5rem 1.15rem;border-radius:999px;cursor:pointer;font-family:'Inter',system-ui,sans-serif;font-size:.82rem;font-weight:600;transition:all .2s}
+.tab{background:none;border:1px solid var(--border2);color:var(--text3);padding:.5rem 1.15rem;border-radius:999px;cursor:pointer;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.82rem;font-weight:600;transition:all .2s}
 .tab.active{background:var(--em);color:#fff;border-color:var(--em)}
 .tab:hover:not(.active){border-color:var(--text3);color:var(--text)}
 
 /* Refresh */
 .refresh-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.75rem}
 .refresh-txt{font-size:.78rem;color:var(--text3);font-weight:500}
-.rbtn{background:var(--bg2);border:1px solid var(--border2);color:var(--text2);padding:.45rem 1rem;border-radius:999px;cursor:pointer;font-family:'Inter',system-ui,sans-serif;font-size:.78rem;font-weight:600;transition:all .2s}
+.rbtn{background:var(--bg2);border:1px solid var(--border2);color:var(--text2);padding:.45rem 1rem;border-radius:999px;cursor:pointer;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.78rem;font-weight:600;transition:all .2s}
 .rbtn:hover{border-color:var(--em);color:var(--em)}
 
 /* Job list */
@@ -100,7 +100,7 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
 .sp-expired{background:var(--bg3);border:1px solid var(--border2);color:var(--text3)}
 .actions{display:flex;flex-direction:column;gap:.4rem;flex-shrink:0;align-items:flex-end}
 .action-row{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:flex-end}
-.abtn{border:none;padding:.4rem .85rem;border-radius:999px;font-family:'Inter',system-ui,sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
+.abtn{border:none;padding:.4rem .85rem;border-radius:999px;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
 .abtn:hover{transform:translateY(-1px)}
 .abtn-ok{background:rgba(231,81,90,.1);border:1px solid rgba(231,81,90,.25);color:var(--em)}
 .abtn-ok:hover{background:var(--em);color:#fff;box-shadow:0 4px 16px rgba(231,81,90,.3)}
@@ -114,7 +114,7 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
 .abtn-del:hover{background:rgba(239,68,68,.1);border-color:var(--red);color:#fca5a5}
 .jr-desc{font-size:.82rem;color:var(--text2);line-height:1.7;margin-bottom:.6rem;white-space:pre-line}
 .jr-desc.collapsed{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.desc-toggle{background:none;border:none;color:var(--purple);font-family:'Inter',system-ui,sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;padding:0;margin-bottom:.5rem;transition:color .2s}
+.desc-toggle{background:none;border:none;color:var(--purple);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;padding:0;margin-bottom:.5rem;transition:color .2s}
 .desc-toggle:hover{color:var(--em)}
 .jr-extra{font-size:.78rem;color:var(--text3);margin-bottom:.35rem;margin-top:.35rem;line-height:1.7}
 .jr-extra strong{color:var(--text2)}
@@ -128,8 +128,8 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
 .confirm-title{font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:.6rem}
 .confirm-sub{font-size:.85rem;color:var(--text3);margin-bottom:1.75rem;line-height:1.7;font-weight:500}
 .confirm-btns{display:flex;gap:.6rem}
-.confirm-cancel{flex:1;padding:.85rem;border-radius:999px;font-family:'Inter',system-ui,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);transition:all .2s}
-.confirm-ok{flex:1;padding:.85rem;border-radius:999px;font-family:'Inter',system-ui,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;border:none;color:#fff;transition:all .2s}
+.confirm-cancel{flex:1;padding:.85rem;border-radius:999px;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);transition:all .2s}
+.confirm-ok{flex:1;padding:.85rem;border-radius:999px;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;border:none;color:#fff;transition:all .2s}
 .confirm-ok.action-delete{background:var(--red)}
 .confirm-ok.action-delete:hover{background:#dc2626}
 .confirm-ok.action-approve{background:var(--em)}
@@ -274,7 +274,7 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
     <label>Subject</label>
     <input type="text" id="email-subject" placeholder="Subject line" style="margin-bottom:.75rem">
     <label>Message</label>
-    <textarea id="email-body" placeholder="Type your message..." style="background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;padding:.85rem 1.15rem;outline:none;width:100%;min-height:120px;resize:vertical;margin-bottom:1rem"></textarea>
+    <textarea id="email-body" placeholder="Type your message..." style="background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:15px;padding:.85rem 1.15rem;outline:none;width:100%;min-height:120px;resize:vertical;margin-bottom:1rem"></textarea>
     <div class="confirm-btns">
       <button class="confirm-cancel" onclick="document.getElementById('email-modal').style.display='none'" type="button">Cancel</button>
       <button class="confirm-ok action-approve" id="email-send-btn" type="button">Send Email</button>

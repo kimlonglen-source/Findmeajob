@@ -99,16 +99,16 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
 .step.active .step-dot{background:var(--em);box-shadow:0 0 0 3px rgba(231,81,90,.2)}
 .step.done .step-dot{background:var(--text3)}
 .step-dash{flex:1;height:1px;background:var(--border);max-width:40px}
-.job-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;display:grid;grid-template-columns:1fr auto;gap:1rem;margin-bottom:.85rem;position:relative;overflow:hidden;transition:all .25s}
-.job-card:hover{border-color:rgba(231,81,90,.2);transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,0,0,.1)}
+.job-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:1.75rem;display:grid;grid-template-columns:1fr auto;gap:1.25rem;margin-bottom:1rem;position:relative;overflow:hidden;transition:all .25s}
+.job-card:hover{border-color:rgba(231,81,90,.15);transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,0,0,.06)}
 .job-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:#E7515A;transform:scaleY(0);transform-origin:bottom;transition:transform .25s}
 .job-card:hover::before{transform:scaleY(1)}
-.job-card.featured{border-color:rgba(245,158,11,.2);background:linear-gradient(135deg,var(--card),rgba(245,158,11,.03))}
+.job-card.featured{border-color:rgba(245,158,11,.15);background:linear-gradient(135deg,var(--card),rgba(245,158,11,.02))}
 .job-card.featured::before{background:#f59e0b;transform:scaleY(1)}
 
-.job-title{font-size:1.08rem;font-weight:700;color:var(--text);margin-bottom:.25rem;line-height:1.3}
-.job-co{font-size:.8rem;font-weight:600;color:var(--em);margin-bottom:.2rem}
-.job-loc{font-size:.75rem;color:var(--text3);font-weight:500;margin-bottom:.5rem}
+.job-title{font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:.3rem;line-height:1.3}
+.job-co{font-size:.82rem;font-weight:700;color:var(--em);margin-bottom:.2rem}
+.job-loc{font-size:.78rem;color:var(--text3);font-weight:500;margin-bottom:.5rem}
 .job-desc{font-size:.85rem;color:var(--text2);line-height:1.65;font-weight:500}
 .job-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.7rem}
 .tag{padding:.22rem .7rem;border-radius:999px;font-size:.7rem;font-weight:600}
@@ -121,10 +121,10 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
 .job-link.apply{background:linear-gradient(135deg,var(--em),var(--em2));border-color:transparent;color:#fff;box-shadow:0 2px 10px rgba(231,81,90,.2)}
 .job-link.apply:hover{box-shadow:0 4px 15px rgba(231,81,90,.3);transform:translateY(-1px)}
 .match-col{text-align:right;flex-shrink:0}
-.match-pct{font-size:2rem;font-weight:800;background:linear-gradient(135deg,var(--em),var(--em2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
-.match-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text3)}
-.insights{background:linear-gradient(135deg,rgba(231,81,90,.06),rgba(139,92,246,.03));border:1px solid rgba(231,81,90,.1);border-radius:var(--rl);padding:1.5rem;margin:.75rem 0}
-.insights h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;background:linear-gradient(135deg,var(--em),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.6rem}
+.match-pct{font-size:2.2rem;font-weight:800;color:#E7515A;line-height:1}
+.match-lbl{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text3)}
+.insights{background:#f0fdf4;border:1px solid rgba(16,185,129,.15);border-radius:20px;padding:1.75rem;margin:1rem 0}
+.insights h4{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#10b981;margin-bottom:.6rem}
 .insights p{font-size:.88rem;color:var(--text2);line-height:1.75;font-weight:500}
 .skill-tag{display:inline-flex;align-items:center;gap:.3rem;background:rgba(231,81,90,.08);border:1px solid rgba(231,81,90,.15);color:var(--em);padding:.35rem .8rem;border-radius:999px;font-size:.8rem;font-weight:600;margin:.2rem}
 .skill-tag button{background:none;border:none;color:var(--em);cursor:pointer;font-size:.85rem;line-height:1;padding:0;opacity:.7}
@@ -237,7 +237,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 @keyframes subtleGlow{0%,100%{opacity:.4}50%{opacity:.8}}
 @keyframes pivotPulse{0%{box-shadow:0 0 0 0 rgba(139,92,246,.5)}70%{box-shadow:0 0 0 8px rgba(139,92,246,0)}100%{box-shadow:0 0 0 0 rgba(139,92,246,0)}}
 @keyframes cardReveal{0%{opacity:0;transform:translateY(12px)}100%{opacity:1;transform:translateY(0)}}
-.results-hero{position:relative;background:#1a1a2e;border-radius:24px;padding:2.5rem 2rem;margin-bottom:1.5rem;text-align:center;overflow:hidden;animation:resultsReveal .6s ease-out both}
+.results-hero{position:relative;background:#1a1a2e;border-radius:20px;padding:2.5rem 2.5rem;margin-bottom:1.5rem;text-align:center;overflow:hidden;animation:resultsReveal .6s ease-out both}
 .results-hero-glow{position:absolute;top:-50%;left:50%;transform:translateX(-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(231,81,90,.15) 0%,transparent 60%);pointer-events:none;animation:subtleGlow 3s ease-in-out infinite}
 .results-hero-stats{display:flex;align-items:center;justify-content:center;gap:2rem;margin-top:1.25rem}
 .rh-stat{animation:statPop .5s ease-out both}
@@ -276,7 +276,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 </div>
 
 <nav>
-  <a class="logo" id="logo-home" href="/" style="font-size:1.4rem;font-weight:900;color:#E7515A;text-decoration:none;letter-spacing:-.5px">FindMeAJob</a>
+  <a class="logo" id="logo-home" href="/" style="font-size:1.4rem;font-weight:900;color:#E7515A;text-decoration:none;letter-spacing:-.5px;font-family:'Plus Jakarta Sans',sans-serif">FindMeAJob</a>
   <div class="navlinks">
     <a class="nl" href="/">Tools</a>
     <a class="nl" href="/blog">Blog</a>
@@ -286,7 +286,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <button class="nl" id="h-browse" type="button" style="display:none">Browse Jobs</button>
     <button class="nl" id="h-account" type="button" style="display:none">My Account</button>
     <button class="nl" id="h-signin" type="button" style="display:none">My Jobs</button>
-    <button class="nl cta" id="h-apply" type="button" style="background:#E7515A;color:#fff">Find a Job</button>
+    <button class="nl cta" id="h-apply" type="button" style="background:#1a1a2e;color:#fff">Find a Job</button>
   </div>
   <div class="nav-r">
     <button class="icon-btn" id="tbtn" type="button">&#9788;</button>
