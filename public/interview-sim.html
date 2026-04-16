@@ -897,16 +897,13 @@ function toggleMic(quiet){
       if(_lastSpeechTime&&now-_lastSpeechTime>1200&&inp.value.trim().length>0){_pauseFillersPending++;}
       _lastSpeechTime=now;
       _micRetries=0;
-      /* Standard Google pattern: use resultIndex, separate final/interim */
-      var interimText='';
-      for(var i=e.resultIndex;i<e.results.length;i++){
-        if(e.results[i].isFinal){
-          _accumulated+=e.results[i][0].transcript;
-        } else {
-          interimText+=e.results[i][0].transcript;
-        }
+      /* Read all results fresh — no +=, no accumulation inside onresult */
+      var final='',interim='';
+      for(var i=0;i<e.results.length;i++){
+        if(e.results[i].isFinal) final+=e.results[i][0].transcript;
+        else interim+=e.results[i][0].transcript;
       }
-      var fullText=(_accumulated+interimText).trim();
+      var fullText=(_accumulated+final+interim).trim();
       inp.value=fullText;lastResultTime=Date.now();
       updateMicUI('listening','Interviewer is listening...');
       var trEl=document.getElementById('micTranscript');
@@ -914,9 +911,7 @@ function toggleMic(quiet){
       trEl.textContent=fullText;
       trEl.scrollTop=trEl.scrollHeight;
       var fm=fullText.match(fillerRegex);
-      _liveFillers=fm?fm.length:0;
-      document.getElementById('fillerCount').textContent=fillerWords+_liveFillers+_pauseFillersPending;
-      if(fillerWords+_liveFillers>3)document.getElementById('fillerCount').style.color='#ef4444';
+      document.getElementById('fillerCount').textContent=fillerWords+(fm?fm.length:0)+_pauseFillersPending;
       document.getElementById('listenFill').style.width='0';
       clearTimeout(silenceTimer);
       if(autoSend&&fullText.length>1){
@@ -939,6 +934,9 @@ function toggleMic(quiet){
       var inp2=document.getElementById('userInput');
       if(_aiSpeaking||_waitingForAI||_sending||_interviewEnded)return;
       clearTimeout(silenceTimer);
+      /* Save full text so Keep Talking can append to it */
+      _accumulated=inp2.value.trim();
+      if(_accumulated)_accumulated+=' ';
       if(inp2.value.trim()){
         /* User spoke — show Send + Keep Talking so they control when to submit */
         document.getElementById('sendBtn').style.display='inline-block';
