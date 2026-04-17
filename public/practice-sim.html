@@ -42,7 +42,11 @@ input:focus,select:focus,textarea:focus{border-color:#E7515A;box-shadow:0 0 0 3p
 .scn-card{background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:1rem .85rem;cursor:pointer;transition:all .2s;text-align:left;font-family:inherit}
 .scn-card:hover{border-color:#E7515A;background:#fef2f2}
 .scn-card.selected{border-color:#E7515A;background:#fef2f2;box-shadow:0 0 0 3px rgba(231,81,90,.1)}
-.scn-icon{font-size:1.5rem;margin-bottom:.35rem;display:block}
+.scn-icon{margin-bottom:.5rem;display:flex;align-items:center;justify-content:flex-start;color:#E7515A}
+.scn-icon svg{width:24px;height:24px;display:block}
+.icn-sm{display:inline-block;vertical-align:-3px;margin-right:.4rem}
+.icn-sm svg{width:14px;height:14px;display:block}
+.scn-card.selected .scn-icon{color:#c7313a}
 .scn-title{font-size:.88rem;font-weight:800;color:#0f172a;line-height:1.2;margin-bottom:.25rem}
 .scn-desc{font-size:.7rem;color:#64748b;line-height:1.4}
 @media(max-width:640px){.nav{padding:.75rem 1rem}.nav-links a:not(.nav-cta){display:none}.container{padding:1rem .85rem 2rem}.scn-grid{grid-template-columns:1fr}.card{padding:1.25rem}}
@@ -129,7 +133,7 @@ input:focus,select:focus,textarea:focus{border-color:#E7515A;box-shadow:0 0 0 3p
       </div>
 
       <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1.25rem;flex-wrap:wrap">
-        <div id="micStatus" style="font-size:.78rem;font-weight:600;color:#94a3b8">&#9675; Microphone</div>
+        <div id="micStatus" style="font-size:.78rem;font-weight:600;color:#94a3b8;display:flex;align-items:center;gap:.4rem;justify-content:center"><span class="icn-sm" id="micStatusIcon"></span><span id="micStatusText">Microphone</span></div>
       </div>
       <button class="btn" id="beginBtn" onclick="beginCountdown()" disabled style="max-width:320px;margin:0 auto">Setting up...</button>
       <div style="text-align:center;margin-top:.5rem"><button onclick="document.getElementById('readyScreen').style.display='none';document.getElementById('step2').style.display='block';window.scrollTo({top:0,behavior:'smooth'})" style="background:none;border:none;color:#64748b;font-size:.78rem;cursor:pointer;font-family:inherit">Back to settings</button></div>
@@ -168,7 +172,7 @@ input:focus,select:focus,textarea:focus{border-color:#E7515A;box-shadow:0 0 0 3p
       <textarea id="userInput" style="display:none" rows="1"></textarea>
       <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-top:.6rem">
         <button id="sendBtn" onclick="sendAnswer()" style="display:none;padding:.55rem 1.2rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:inherit;font-size:.78rem;font-weight:700;cursor:pointer">Send Reply</button>
-        <button id="keepTalkingBtn" onclick="toggleMic()" style="display:none;padding:.55rem 1.2rem;background:#fff;color:#E7515A;border:2px solid #E7515A;border-radius:999px;font-family:inherit;font-size:.78rem;font-weight:700;cursor:pointer">&#127908; Keep Talking</button>
+        <button id="keepTalkingBtn" onclick="toggleMic()" style="display:none;padding:.55rem 1.2rem;background:#fff;color:#E7515A;border:2px solid #E7515A;border-radius:999px;font-family:inherit;font-size:.78rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem"><span class="icn-sm" id="keepTalkingIcon"></span>Keep Talking</button>
       </div>
     </div>
     <button id="endBtn" onclick="endSim()" style="display:none;width:100%;padding:.75rem;background:#0f172a;color:#fff;border:none;border-radius:999px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:.5rem">End Practice &amp; Get Score</button>
@@ -179,9 +183,21 @@ input:focus,select:focus,textarea:focus{border-color:#E7515A;box-shadow:0 0 0 3p
 
 <script>
 var selectedScenario='salary';
+var ICONS={
+  salary:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+  payrise:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',
+  resign:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>',
+  decline:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+  flexible:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
+  concern:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+  mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+  cross:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+  circle:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>'
+};
 var SCENARIOS={
   salary:{
-    icon:'\ud83d\udcb0',
+    icon:ICONS.salary,
     title:'Negotiate a Salary Offer',
     desc:'You\u2019ve been offered a job. AI plays the hiring manager pushing back.',
     aiName:'Sarah (Hiring Manager)',
@@ -192,7 +208,7 @@ var SCENARIOS={
     goal:'The candidate should advocate for their target salary using market data, value they bring, and specifics. Score how well they negotiated.'
   },
   payrise:{
-    icon:'\ud83d\udcc8',
+    icon:ICONS.payrise,
     title:'Ask for a Pay Rise',
     desc:'Rehearse the talk with your current boss. AI plays the skeptical manager.',
     aiName:'Mike (Your Manager)',
@@ -203,7 +219,7 @@ var SCENARIOS={
     goal:'The employee should make a clear, evidence-backed case for a specific increase. Score how well they framed value and handled pushback.'
   },
   resign:{
-    icon:'\ud83d\udeaa',
+    icon:ICONS.resign,
     title:'Resign With Grace',
     desc:'Tell your boss you\u2019re leaving. AI plays surprised, possibly counter-offers.',
     aiName:'Mike (Your Manager)',
@@ -214,7 +230,7 @@ var SCENARIOS={
     goal:'The employee should resign clearly, stay professional, and not get talked out of it. Score their clarity, tact, and firmness.'
   },
   decline:{
-    icon:'\ud83d\udeab',
+    icon:ICONS.decline,
     title:'Decline a Job Offer',
     desc:'Turn down an offer politely. AI plays the recruiter trying to persuade you.',
     aiName:'Aroha (Recruiter)',
@@ -225,7 +241,7 @@ var SCENARIOS={
     goal:'The candidate should decline clearly, stay warm, and keep the door open for future roles. Score tact and professionalism.'
   },
   flexible:{
-    icon:'\ud83c\udfe0',
+    icon:ICONS.flexible,
     title:'Request Flexible or Remote Work',
     desc:'Ask for WFH, compressed hours, or remote. AI plays a skeptical boss.',
     aiName:'Mike (Your Manager)',
@@ -236,7 +252,7 @@ var SCENARIOS={
     goal:'The employee should make a strong business case, propose a trial, and address concerns. Score how persuasive and professional they were.'
   },
   concern:{
-    icon:'\u26a0\ufe0f',
+    icon:ICONS.concern,
     title:'Raise a Concern With Your Boss',
     desc:'Difficult feedback \u2014 workload, conflict, culture. AI plays your boss.',
     aiName:'Mike (Your Manager)',
@@ -260,7 +276,7 @@ function renderScenarioGrid(){
     gridHtml+='<div class="scn-title">'+s.title+'</div>';
     gridHtml+='<div class="scn-desc">'+s.desc+'</div>';
     gridHtml+='</div>';
-    selHtml+='<option value="'+k+'"'+(isSel?' selected':'')+'>'+s.icon+'  '+s.title+'</option>';
+    selHtml+='<option value="'+k+'"'+(isSel?' selected':'')+'>'+s.title+'</option>';
   });
   grid.innerHTML=gridHtml;
   if(sel)sel.innerHTML=selHtml;
@@ -291,6 +307,9 @@ function selectScenario(key){
   if(s&&SCENARIOS[s])selectedScenario=s;
   renderScenarioGrid();
   selectScenario(selectedScenario);
+  /* Seed initial SVGs that aren't conditional */
+  var msi=document.getElementById('micStatusIcon');if(msi)msi.innerHTML=ICONS.circle;
+  var kti=document.getElementById('keepTalkingIcon');if(kti)kti.innerHTML=ICONS.mic;
 })();
 
 /* Sim state */
@@ -317,14 +336,14 @@ function requestMicEarly(){
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){statusEl.style.display='none';return;}
   statusEl.style.display='block';
   statusEl.style.background='#fef2f2';statusEl.style.color='#c7313a';statusEl.style.border='1px solid #fecaca';
-  statusEl.innerHTML='\ud83c\udfa4 Requesting microphone access...';
+  statusEl.innerHTML='<span class="icn-sm" style="color:#c7313a">'+ICONS.mic+'</span> Requesting microphone access...';
   navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
     s.getTracks().forEach(function(t){t.stop();});
     _micStream=true;
-    statusEl.innerHTML='\u2713 Microphone allowed \u2014 you can speak your replies';
+    statusEl.innerHTML='<span class="icn-sm" style="color:#059669">'+ICONS.check+'</span> Microphone allowed &mdash; you can speak your replies';
   }).catch(function(){
     statusEl.style.color='#dc2626';
-    statusEl.innerHTML='\u2717 Microphone blocked \u2014 open in an Incognito tab, or go to Chrome Settings \u2192 Site settings \u2192 Microphone \u2192 Allow findmeajob.co.nz';
+    statusEl.innerHTML='<span class="icn-sm" style="color:#dc2626">'+ICONS.cross+'</span> Microphone blocked &mdash; open in an Incognito tab, or go to Chrome Settings &rarr; Site settings &rarr; Microphone &rarr; Allow findmeajob.co.nz';
   });
 }
 
@@ -354,11 +373,12 @@ function prepSim(){
 
   var micEl=document.getElementById('micStatus');
   var beginBtn=document.getElementById('beginBtn');
-  if(_micStream){micEl.style.color='#059669';micEl.innerHTML='\u2713 Microphone ready';}
+  function micHtml(color,iconKey,text){return '<span class="icn-sm" style="color:'+color+'">'+ICONS[iconKey]+'</span><span>'+text+'</span>';}
+  if(_micStream){micEl.style.color='#059669';micEl.innerHTML=micHtml('#059669','check','Microphone ready');}
   else{
     var hasSR=!!(window.SpeechRecognition||window.webkitSpeechRecognition);
-    if(hasSR){micEl.innerHTML='\ud83c\udfa4 Microphone not enabled \u2014 enable in Step 2';}
-    else{micEl.innerHTML='\u2717 Voice not supported \u2014 please use Chrome';}
+    if(hasSR){micEl.style.color='#94a3b8';micEl.innerHTML=micHtml('#c7313a','mic','Microphone not enabled \u2014 enable in Step 2');}
+    else{micEl.style.color='#dc2626';micEl.innerHTML=micHtml('#dc2626','cross','Voice not supported \u2014 please use Chrome');}
   }
   beginBtn.disabled=false;beginBtn.textContent='Begin Practice';
 }
@@ -678,7 +698,7 @@ function showScore(r){
   if(r.strengths&&r.strengths.length){
     h+='<div class="card" style="padding:1.25rem;margin-top:.75rem;text-align:left">';
     h+='<div style="font-size:.72rem;font-weight:700;color:#059669;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.6rem">What you did well</div>';
-    r.strengths.forEach(function(s){h+='<div style="display:flex;gap:.4rem;align-items:flex-start;margin-bottom:.4rem;font-size:.82rem;color:#0f172a;line-height:1.5"><span style="color:#059669;font-weight:700">\u2713</span> '+esc(s)+'</div>';});
+    r.strengths.forEach(function(s){h+='<div style="display:flex;gap:.4rem;align-items:flex-start;margin-bottom:.4rem;font-size:.82rem;color:#0f172a;line-height:1.5"><span class="icn-sm" style="color:#059669;flex-shrink:0;margin-top:3px">'+ICONS.check+'</span> '+esc(s)+'</div>';});
     h+='</div>';
   }
   if(r.improvements&&r.improvements.length){
