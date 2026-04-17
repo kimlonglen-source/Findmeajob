@@ -707,10 +707,15 @@ async function submitJob() {
     });
     var d = await r.json();
     if (d.success) {
-      ok.innerHTML = '&#10003; Listing submitted! We will review it within 24 hours. <button onclick="loadAndShowPortal()" style="background:none;border:none;color:var(--em);font-family:Inter,sans-serif;font-size:.82rem;cursor:pointer;font-weight:700;padding:0">View dashboard &#8594;</button>';
+      /* Paid plan — redirect to Stripe Checkout */
+      if (d.checkoutUrl) {
+        window.location.href = d.checkoutUrl;
+        return;
+      }
+      ok.innerHTML = '&#10003; Listing submitted! We will review it within 24 hours. <button onclick="loadAndShowPortal()" style="background:none;border:none;color:var(--em);font-family:inherit;font-size:.82rem;cursor:pointer;font-weight:700;padding:0">View dashboard &#8594;</button>';
       ok.style.display = 'block';
       btn.style.display = 'none';
-      // Clear form
+      _selectedPlan='free';
       ['e-title','e-desc','e-req','e-why','e-company-profile','e-logo','e-logo-url'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
       document.getElementById('logo-preview').style.display='none';document.getElementById('logo-name').style.display='none';document.getElementById('logo-prompt').textContent='Click here to upload your logo';document.getElementById('logo-upload-area').style.borderColor='';
     } else {

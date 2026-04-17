@@ -24,6 +24,26 @@ function notifyAdmin(subject, bodyHtml) {
   }).catch(function() {});
 }
 
+function encodeStripeBody(obj, prefix) {
+  var parts = [];
+  for (var key in obj) {
+    if (!obj.hasOwnProperty(key)) continue;
+    var fullKey = prefix ? prefix + "[" + key + "]" : key;
+    var val = obj[key];
+    if (val !== null && typeof val === "object" && !Array.isArray(val)) {
+      parts.push(encodeStripeBody(val, fullKey));
+    } else if (Array.isArray(val)) {
+      val.forEach(function(item, i) {
+        if (typeof item === "object") { parts.push(encodeStripeBody(item, fullKey + "[" + i + "]")); }
+        else { parts.push(encodeURIComponent(fullKey + "[" + i + "]") + "=" + encodeURIComponent(item)); }
+      });
+    } else {
+      parts.push(encodeURIComponent(fullKey) + "=" + encodeURIComponent(val));
+    }
+  }
+  return parts.join("&");
+}
+
 module.exports = async function handler(req, res) {
   if (!getKV()) return res.status(500).json({ error: "Database not configured." });
 
@@ -77,13 +97,15 @@ module.exports = async function handler(req, res) {
 
       // Submit new job listing
       if (action === "submit") {
-        var PLAN_DAYS = { free: 30, basic: 30, pro: 30 };
-        var planKey = "free";
+        var PLAN_DAYS = { free: 30, pro: 60, unlimited: 90 };
+        var planKey = req.body.plan || "free";
+        if (["free","pro","unlimited"].indexOf(planKey) === -1) planKey = "free";
         var sTitle = req.body.title;
         var sDesc = req.body.description;
         if (!sTitle || !sDesc) return res.status(400).json({ error: "Missing job title or description" });
         var jid = "job_" + Date.now() + "_" + Math.random().toString(36).substring(2, 8);
         var refNum = "FMJ-" + Date.now().toString(36).toUpperCase().slice(-4) + Math.random().toString(36).substring(2, 4).toUpperCase();
+        var isFeatured = planKey === "pro" || planKey === "unlimited";
         var newJob = {
           id: jid, ref: refNum, employerId: req.body.employerId || "", company: emp2.company || req.body.company, email: postEmail,
           title: sTitle, location: req.body.location || "New Zealand", category: req.body.category || "Other",
@@ -92,11 +114,53 @@ module.exports = async function handler(req, res) {
           companyProfile: req.body.companyProfile || "",
           website: req.body.website || "",
           logoUrl: req.body.logoUrl || "",
-          plan: "free", planDays: 30,
-          autoFeature: false, priority: true,
-          status: "pending", submitted: new Date().toISOString(), views: 0, applies: 0
+          plan: planKey, planDays: PLAN_DAYS[planKey] || 30,
+          featured: isFeatured, autoFeature: isFeatured, priority: true,
+          status: planKey === "free" ? "pending" : "pending-payment",
+          submitted: new Date().toISOString(), views: 0, applies: 0
         };
         await hset("jobs", jid, newJob);
+
+        /* Paid plans — create Stripe Checkout session */
+        if (planKey !== "free") {
+          var stripeKey = process.env.STRIPE_SECRET_KEY;
+          if (!stripeKey) {
+            /* No Stripe configured — submit as free instead */
+            newJob.plan = "free"; newJob.planDays = 30; newJob.featured = false; newJob.status = "pending";
+            await hset("jobs", jid, newJob);
+            notifyAdmin("New job submitted (free fallback): " + sTitle, "<strong>" + sTitle + "</strong> by " + (emp2.company || "") + " — Stripe not configured, submitted as free.");
+            return res.status(200).json({ success: true, id: jid });
+          }
+          var PRICES = { pro: 2900, unlimited: 9900 };
+          var NAMES = { pro: "Pro Listing — 60 days, featured", unlimited: "Unlimited Plan — monthly, all featured" };
+          var mode = planKey === "unlimited" ? "subscription" : "payment";
+          var lineItem = { price_data: { currency: "nzd", product_data: { name: NAMES[planKey] }, unit_amount: PRICES[planKey] }, quantity: 1 };
+          if (planKey === "unlimited") { lineItem.price_data.recurring = { interval: "month" }; }
+          var checkoutBody = {
+            mode: mode,
+            line_items: [lineItem],
+            success_url: "https://www.findmeajob.co.nz/employer-portal.html?paid=1&job=" + jid,
+            cancel_url: "https://www.findmeajob.co.nz/employer-portal.html?cancelled=1&job=" + jid,
+            customer_email: postEmail,
+            metadata: { jobId: jid, plan: planKey }
+          };
+          var stripeRes = await fetch("https://api.stripe.com/v1/checkout/sessions", {
+            method: "POST",
+            headers: { "Authorization": "Basic " + Buffer.from(stripeKey + ":").toString("base64"), "Content-Type": "application/x-www-form-urlencoded" },
+            body: encodeStripeBody(checkoutBody)
+          });
+          var stripeData = await stripeRes.json();
+          if (stripeData.url) {
+            return res.status(200).json({ success: true, id: jid, checkoutUrl: stripeData.url });
+          } else {
+            /* Stripe failed — submit as free */
+            newJob.plan = "free"; newJob.planDays = 30; newJob.featured = false; newJob.status = "pending";
+            await hset("jobs", jid, newJob);
+            notifyAdmin("New job submitted (Stripe error): " + sTitle, "<strong>" + sTitle + "</strong> — Stripe checkout failed: " + JSON.stringify(stripeData.error || {}));
+            return res.status(200).json({ success: true, id: jid, stripeError: true });
+          }
+        }
+
         notifyAdmin(
           "New job submitted: " + sTitle + " — " + (emp2.company || ""),
           "A new job listing needs your review:<br><br>"
