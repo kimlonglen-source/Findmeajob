@@ -476,7 +476,10 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       </div>
       <div class="alert alert-err" id="cv-err">Please upload your CV first (PDF, Word, or text file).</div>
       <button class="btn" id="btn-analyze" type="button" style="margin-top:1rem">Analyse CV &amp; Find Matches</button>
-      <div style="text-align:center;margin-top:.75rem"><button style="background:none;border:none;color:var(--text3);font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif" id="btn-go-manual" type="button">No CV? Enter skills manually &#8594;</button></div>
+      <div style="text-align:center;margin-top:.75rem;display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap">
+        <button style="background:none;border:none;color:var(--text3);font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif" id="btn-go-manual" type="button">No CV? Enter skills manually &#8594;</button>
+        <button style="background:none;border:none;color:var(--em);font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif" onclick="showPage('apply')" type="button">Build a CV from scratch &#8594;</button>
+      </div>
     </div>
     <div id="step-manual" style="display:none">
       <div class="card">
@@ -1287,7 +1290,7 @@ function stopSkelMessages(){
   if(p)p.style.width='100%';if(pc)pc.textContent='100%';if(cd)cd.textContent='0';
 }
 function goFind(){showPage('find');resetFind();}
-function resetFind(){['step-entry','step-cv','step-manual','skeleton','results'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display=id==='step-entry'?'block':'none';});setStep(1);cvFileData=null;cvFileName='';document.getElementById('cv-info').style.display='none';document.getElementById('drop-zone').style.borderColor='';var rp=document.getElementById('reg-prompt');if(rp)rp.style.display='none';}
+function resetFind(){['step-entry','step-cv','step-manual','skeleton','results'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display=id==='step-cv'?'block':'none';});setStep(1);cvFileData=null;cvFileName='';document.getElementById('cv-info').style.display='none';document.getElementById('drop-zone').style.borderColor='';var rp=document.getElementById('reg-prompt');if(rp)rp.style.display='none';}
 function showCV(){document.getElementById('step-entry').style.display='none';document.getElementById('step-cv').style.display='block';setStep(2);}
 function showManual(){document.getElementById('step-entry').style.display='none';document.getElementById('step-manual').style.display='block';setStep(2);}
 function renderSkills(){var h='';skills.forEach(function(s,i){h+='<span class="skill-tag">'+cap(s)+'<button data-i="'+i+'" type="button">&#215;</button></span>';});document.getElementById('skill-area').innerHTML=h;document.querySelectorAll('#skill-area button').forEach(function(b){b.addEventListener('click',function(){skills.splice(+this.dataset.i,1);renderSkills();if(!skills.length)setStep(2);});});}
