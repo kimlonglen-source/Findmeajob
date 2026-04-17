@@ -512,12 +512,17 @@ function showPortal(employer, jobs) {
   document.getElementById('emp-name').textContent = employer.name;
   document.getElementById('emp-meta').textContent = employer.company + ' \u00b7 ' + employer.email;
 
-  document.getElementById('plan-name-label').textContent = 'Free Plan';
-  document.getElementById('plan-name-label').style.color = 'var(--em)';
-  document.getElementById('plan-features-label').textContent = 'All features included \u2014 free forever';
+  /* Detect highest plan from jobs */
+  var empPlan='free';
+  if(jobs&&jobs.length){jobs.forEach(function(j){if(j.plan==='unlimited')empPlan='unlimited';else if(j.plan==='pro'&&empPlan!=='unlimited')empPlan='pro';});}
+  if(employer.plan==='unlimited')empPlan='unlimited';else if(employer.plan==='pro'&&empPlan!=='unlimited')empPlan='pro';
+  var planInfo={free:{name:'Free Plan',desc:'1 active listing, 30 days',color:'var(--text3)'},pro:{name:'Pro Plan',desc:'60 days, featured badge, priority matching',color:'var(--em)'},unlimited:{name:'Unlimited Plan',desc:'Unlimited listings, all featured, analytics',color:'var(--purple)'}};
+  var pi=planInfo[empPlan]||planInfo.free;
+  document.getElementById('plan-name-label').textContent=pi.name;
+  document.getElementById('plan-name-label').style.color=pi.color;
+  document.getElementById('plan-features-label').textContent=pi.desc;
 
-  // Set plan for post form
-  selectedPlan = 'free';
+  selectedPlan = empPlan;
 
   renderJobs(jobs);
 }
