@@ -249,6 +249,7 @@ module.exports = async function handler(req, res) {
     smXml += '<url><loc>https://www.findmeajob.co.nz/email</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>';
     smXml += '<url><loc>https://www.findmeajob.co.nz/challenge</loc><lastmod>'+smToday+'</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>';
     smXml += '<url><loc>https://www.findmeajob.co.nz/employer-portal.html</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>';
+    smXml += '<url><loc>https://www.findmeajob.co.nz/pricing</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>';
     smXml += '<url><loc>https://www.findmeajob.co.nz/terms</loc><lastmod>2026-04-16</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>';
     smXml += '<url><loc>https://www.findmeajob.co.nz/privacy</loc><lastmod>2026-04-16</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>';
     smPosts.forEach(function(p) {

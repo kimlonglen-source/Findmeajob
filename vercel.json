@@ -98,6 +98,10 @@
       "dest": "/public/decode.html"
     },
     {
+      "src": "/pricing",
+      "dest": "/public/pricing.html"
+    },
+    {
       "src": "/interview",
       "dest": "/public/interview.html"
     },
