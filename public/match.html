@@ -309,7 +309,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <div style="position:absolute;bottom:-20%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(139,92,246,.08) 0%,transparent 60%);pointer-events:none"></div>
       <style>@keyframes heroGlow{0%,100%{opacity:.6;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.1)}}</style>
       <div style="position:relative;z-index:2;padding:3.5rem 2rem;max-width:700px">
-        <h1 style="font-size:clamp(2.4rem,5vw,3.8rem);font-weight:900;color:#fff;line-height:1.05;margin-bottom:1rem;letter-spacing:-1.5px">Upload your CV.<br>Get matched <span class="typewriter" id="hero-typed" style="color:#E7515A">in 60 seconds</span>.</h1>
+        <h1 style="font-size:clamp(2.4rem,5vw,3.8rem);font-weight:900;color:#fff;line-height:1.05;margin-bottom:1rem;letter-spacing:-1.5px">Upload your CV.<br>Get matched in <span style="color:#E7515A">60 seconds</span>.</h1>
+        <div style="font-size:clamp(1rem,2.5vw,1.3rem);color:rgba(255,255,255,.5);font-weight:600;margin-bottom:.5rem;min-height:1.6em"><span class="typewriter" id="hero-typed" style="color:rgba(255,255,255,.5)">AI-powered NZ job matching</span></div>
         <p style="font-size:1.05rem;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:2rem;max-width:480px;margin-left:auto;margin-right:auto">AI reads your skills and finds the best NZ jobs for you. Free forever.</p>
         <button class="btn-hero" id="hero-try" type="button" style="background:#fff;color:#1a1a2e;border:none;padding:1rem 2.5rem;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 30px rgba(255,255,255,.15);transition:all .25s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 40px rgba(255,255,255,.2)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 30px rgba(255,255,255,.15)'">Upload your CV</button>
         <div style="margin-top:1.5rem;display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;font-size:.78rem;color:rgba(255,255,255,.35);font-weight:500">
@@ -1171,7 +1172,7 @@ function loadMammoth(cb){
 
 // Typewriter effect
 (function(){
-  var phrases=['in 60 seconds','with AI matching','or your next career','100% free','100% free','NZ jobs only','powered by AI'];
+  var phrases=['AI-powered NZ job matching','100% free, no sign-up','PDF or Word accepted','scored by match quality','powered by AI'];
   var el=document.getElementById('hero-typed');
   if(!el)return;
   var phraseIdx=0,charIdx=0,isDeleting=false;
