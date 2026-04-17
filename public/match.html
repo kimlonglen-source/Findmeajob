@@ -40,7 +40,7 @@ nav{position:sticky;top:0;z-index:200;padding:0 2rem;height:64px;display:flex;al
 .logo-text{font-size:1.05rem;font-weight:800;color:var(--text);letter-spacing:-.3px}
 .logo-text span{background:linear-gradient(135deg,var(--em),var(--em2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .navlinks{display:flex;align-items:center;gap:.15rem;background:var(--bg3);border:1px solid var(--border);border-radius:999px;padding:3px}
-.nl{background:none;border:none;color:var(--text3);font-size:.8rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;padding:.4rem .85rem;border-radius:999px;transition:all .2s;text-decoration:none}
+.nl{background:none;border:none;color:#1a1a2e;font-size:.82rem;font-weight:500;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;padding:.4rem .85rem;border-radius:999px;transition:all .2s;text-decoration:none}
 .nl:hover{color:var(--text2)}
 .nl.active{background:var(--em3);color:var(--em)}
 .nl.cta{background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;padding:.45rem 1.1rem;margin-left:.5rem;font-weight:700;border-radius:999px;box-shadow:var(--glow)}
@@ -291,7 +291,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <button class="nl cta" id="h-apply" type="button" style="background:#1a1a2e;color:#fff">Find a Job</button>
   </div>
   <div class="nav-r">
-    <button class="icon-btn" id="tbtn" type="button">&#9788;</button>
+    <button class="icon-btn" id="tbtn" type="button" style="display:none">&#9788;</button>
     <button class="icon-btn hmbg" id="hamburger" type="button">&#9776;</button>
   </div>
 </nav>
@@ -397,7 +397,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <div style="background:#E7515A;border-radius:20px;overflow:hidden;display:flex;align-items:center;flex-wrap:wrap;min-height:260px">
       <div style="flex:0 0 40%;min-height:260px;position:relative" class="emp-photo"><img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&q=80" alt="Employers" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;opacity:.5"></div>
       <div style="flex:1;padding:2.5rem 3rem;min-width:300px">
-        <h2 style="font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:.5rem">Post jobs for free</h2>
+        <h2 style="font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:.5rem">Post jobs from $0</h2>
         <p style="color:rgba(255,255,255,.8);font-size:.88rem;line-height:1.7;margin-bottom:1.25rem">Unlimited listings. Company profile and logo. Tailored applications. Free forever.</p>
         <a href="/employer-portal.html" style="display:inline-block;padding:.65rem 1.4rem;background:#fff;color:#E7515A;border-radius:999px;font-size:.82rem;font-weight:700;text-decoration:none">Post a Job Free</a>
       </div>
@@ -727,7 +727,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       <div style="text-align:center;max-width:540px;margin:0 auto 2rem">
         <div class="page-eyebrow">For Employers</div>
         <div class="page-title">Reach thousands of<br>active Kiwi job seekers</div>
-        <p style="color:var(--text2);font-size:.9rem;font-weight:500;line-height:1.7;margin-top:.5rem">Post your jobs for free. Unlimited listings. No credit card needed. Free forever.</p>
+        <p style="color:var(--text2);font-size:.9rem;font-weight:500;line-height:1.7;margin-top:.5rem">Free plan available. Pro listings from $29. Company profile and logo included.</p>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;max-width:500px;margin:0 auto 2.5rem">
         <button class="btn" id="btn-entry-register" type="button" style="padding:1rem;font-size:.88rem">Post a Job Free &#8594;</button>
@@ -2073,7 +2073,7 @@ var legal={
   +'<strong style="color:var(--text);font-size:.9rem">5. Employer Accounts & Listings</strong><br><br>'
   +'Employers are responsible for the accuracy and legality of their job listings. All listings are subject to admin review before going live. We reserve the right to reject, modify, or remove any listing at our discretion.<br><br>'
   +'<strong style="color:var(--text);font-size:.9rem">6. Free Plan</strong><br><br>'
-  +'All employer accounts include unlimited job listings, 30-day visibility, company profile, company logo, and all features. FindMeAJob.co.nz is 100% free for employers. No payment is ever required.<br><br>'
+  +'Employer accounts include job listings (free plan: 1 active listing, 30 days). Pro and Unlimited plans available for featured placement. See our <a href="/pricing" style="color:var(--em)">pricing page</a> for details.<br><br>'
   +'<strong style="color:var(--text);font-size:.9rem">7. Acceptable Use</strong><br><br>'
   +'You agree not to:<br>'
   +'\u2022 Post fraudulent, misleading, or illegal job listings<br>'
