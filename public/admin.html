@@ -586,13 +586,15 @@ async function suggestKeywords(){
   var prompt='You are an SEO strategist for FindMeAJob.co.nz, a free AI career toolkit for NZ job seekers.\n\n';
   prompt+='Current month: '+month+' '+yr+'.\n\n';
   prompt+='TASK: Suggest 12 blog post keywords that NZ job seekers are likely searching RIGHT NOW.\n\n';
+  prompt+='OUR 12 TOOLS (only reference these):\n1. AI Job Matching 2. CV + Cover Letter Writer 3. Interview Simulator 4. Interview Questions 5. CV Score 6. Salary Calculator 7. Negotiate Salary 8. Compare Jobs 9. Decode Job Ad 10. Should I Stay or Go 11. Write This Email 12. Career Roast\n\n';
   prompt+='STRATEGY:\n';
   prompt+='- Target long-tail keywords (4-8 words) that a small NZ site can realistically rank for\n';
   prompt+='- Avoid broad terms like "jobs NZ" (impossible to rank against Seek/TradeMe)\n';
   prompt+='- Consider SEASONAL factors for '+month+': graduation, financial year, performance reviews, redundancy cycles, immigration waves, industry hiring patterns\n';
   prompt+='- Consider TRENDING topics: AI impact on jobs, cost of living, remote work, skills shortages, immigration changes, minimum wage\n';
   prompt+='- Mix categories: interview prep, CV help, salary, career decisions, employment law, job search tactics\n';
-  prompt+='- Each keyword should map to one of our 12 tools (mention which tool)\n\n';
+  prompt+='- Each keyword MUST map to one of our 12 tools listed above — do NOT invent tools that do not exist\n';
+  prompt+='- Use NZ/British spelling: organise, recognise, analyse, optimise, behaviour, colour, favour\n\n';
   prompt+='For each keyword return:\n- keyword: the exact long-tail search phrase (4-8 words)\n- volume: estimated monthly NZ search volume (Low <100, Medium 100-500, High 500+)\n- difficulty: Easy/Medium/Hard to rank for\n- tool: which FindMeAJob tool this maps to\n- angle: one-sentence content angle\n\n';
   prompt+='Return ONLY valid JSON array:\n[{"keyword":"...","volume":"Low|Medium|High","difficulty":"Easy|Medium|Hard","tool":"...","angle":"..."}]';
   try{
