@@ -271,20 +271,36 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
   <!-- STEP 1: What role -->
   <div id="setupForm">
     <div class="card">
-      <div style="font-size:.72rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:1px;margin-bottom:.75rem">Step 1 of 3 — Your Interview</div>
-      <div class="field"><label>What role are you interviewing for?</label><input type="text" id="simRole" placeholder="e.g. Pharmacist, Software Engineer, Teacher"></div>
-      <div class="field"><label>Which company? (optional)</label><input type="text" id="simCompany" placeholder="e.g. Xero, Fisher &amp; Paykel, Countdown"></div>
-      <div class="field"><label>Paste the job ad description (optional — for more relevant questions)</label><textarea id="simJobDesc" placeholder="Copy and paste the full job advertisement here. The AI will ask questions tailored to the specific role requirements..." rows="4" style="width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:#0f172a;outline:none;resize:vertical;line-height:1.6"></textarea></div>
+      <div style="font-size:.72rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:1px;margin-bottom:.5rem">Step 1 of 3</div>
+      <div style="font-size:1.1rem;font-weight:800;color:#0f172a;margin-bottom:.25rem">Tell us about your interview</div>
+      <div style="font-size:.82rem;color:#64748b;margin-bottom:1.25rem;line-height:1.5">The more detail you give, the more realistic your practice will be.</div>
+      <div class="field"><label>Job title <span style="color:#E7515A">*</span></label><input type="text" id="simRole" placeholder="e.g. Pharmacist, Software Engineer, Teacher"></div>
+      <div class="field"><label>Company (optional)</label><input type="text" id="simCompany" placeholder="e.g. Xero, Fisher &amp; Paykel, Countdown"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
-        <div class="field"><label>Interview style</label>
-          <select id="simStyle"><option value="Standard">Standard</option><option value="Behavioural">Behavioural (STAR method)</option><option value="Technical">Technical</option><option value="Casual">Casual / coffee chat</option></select>
+        <div class="field"><label>Your level</label>
+          <select id="simLevel"><option value="Graduate / Entry-level">Graduate / Entry-level</option><option value="Mid-level (2-5 years)" selected>Mid-level (2-5 years)</option><option value="Senior (5+ years)">Senior (5+ years)</option><option value="Executive / Leadership">Executive / Leadership</option></select>
+          <div style="font-size:.68rem;color:#94a3b8;margin-top:.25rem">Questions match your experience</div>
         </div>
-        <div class="field"><label>How many questions?</label>
-          <select id="simCount"><option value="5">5 (10 min)</option><option value="8">8 (20 min)</option><option value="10">10 (30 min)</option></select>
+        <div class="field"><label>Interview round</label>
+          <select id="simRound"><option value="Phone screen">Phone screen</option><option value="First interview" selected>First interview</option><option value="Technical / Panel">Technical / Panel</option><option value="Final round">Final round</option></select>
         </div>
       </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+        <div class="field"><label>Interview style</label>
+          <select id="simStyle"><option value="Standard">Standard</option><option value="Behavioural">Behavioural (STAR method)</option><option value="Values-based">Values-based (NZ public sector)</option><option value="Panel">Panel (multiple interviewers)</option><option value="Technical">Technical</option><option value="Competency">Competency-based</option><option value="Casual">Casual / coffee chat</option></select>
+          <div style="font-size:.68rem;color:#94a3b8;margin-top:.25rem">Not sure? Standard works for most</div>
+        </div>
+        <div class="field"><label>Questions</label>
+          <select id="simCount"><option value="5">5 questions (~10 min)</option><option value="8">8 questions (~20 min)</option><option value="10">10 questions (~30 min)</option></select>
+        </div>
+      </div>
+      <div class="field" style="margin-top:.25rem">
+        <label style="display:flex;align-items:center;gap:.35rem">Paste the job ad <span style="font-size:.62rem;font-weight:600;color:#E7515A;background:#fef2f2;padding:.15rem .45rem;border-radius:999px">recommended</span></label>
+        <textarea id="simJobDesc" placeholder="Paste the job listing here and the interviewer will ask about the actual requirements, responsibilities, and skills they're looking for..." rows="3" style="width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:#0f172a;outline:none;resize:vertical;line-height:1.6"></textarea>
+        <div style="font-size:.68rem;color:#94a3b8;margin-top:.25rem">This makes the biggest difference \u2014 questions will match the real job</div>
+      </div>
     </div>
-    <button class="btn" onclick="goStep2()">Next — Set Up Audio</button>
+    <button class="btn" onclick="goStep2()">Next \u2014 Set Up Audio</button>
   </div>
 
   <!-- STEP 2: Audio -->
@@ -308,20 +324,18 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
   <!-- STEP 3: Ready screen -->
   <div id="readyScreen" style="display:none">
     <div class="card" style="padding:2rem">
-      <div style="font-size:.72rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem">Step 3 of 3 — Ready?</div>
+      <div style="font-size:.72rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:1px;margin-bottom:.5rem">Step 3 of 3</div>
+      <div style="font-size:1.15rem;font-weight:800;color:#0f172a;margin-bottom:.25rem">You're about to start</div>
+      <div style="font-size:.82rem;color:#64748b;margin-bottom:1.25rem">The interviewer will ask questions one at a time. Speak naturally \u2014 your mic is on automatically. Your words appear on screen as you talk.</div>
 
-      <div style="font-size:1.1rem;font-weight:800;color:#0f172a;margin-bottom:1.25rem">Here is how your interview will work:</div>
-
-      <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem">
-        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#fef2f2;border:1px solid #fecaca;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#c7313a">1</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">AI asks you a question</div><div style="font-size:.78rem;color:#64748b">The interviewer will introduce themselves, then ask questions one at a time.</div></div></div>
-
-        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#fef2f2;border:1px solid #fecaca;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#c7313a">2</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">You answer</div><div style="font-size:.78rem;color:#64748b">The microphone starts automatically. Just speak your answer naturally.</div></div></div>
-
-        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#fef2f2;border:1px solid #fecaca;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#c7313a">3</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">Submit your answer</div><div style="font-size:.78rem;color:#64748b">When you stop speaking for 5 seconds, your answer submits automatically.</div></div></div>
-
-        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#fef2f2;border:1px solid #fecaca;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#c7313a">4</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">Skip or finish anytime</div><div style="font-size:.78rem;color:#64748b">Click <strong>Skip</strong> to move on. Click <strong>End Interview</strong> when you have answered enough.</div></div></div>
-
-        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#fef2f2;border:1px solid #fecaca;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#c7313a">5</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">Get your score</div><div style="font-size:.78rem;color:#64748b">AI scores you out of 100 with feedback on every answer. Learn what to improve.</div></div></div>
+      <div style="font-size:.72rem;font-weight:700;color:#0f172a;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.6rem">Quick tips from recruiters</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:1.25rem">
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem"><div style="font-size:.78rem;font-weight:700;color:#0f172a">Sit up straight</div><div style="font-size:.68rem;color:#64748b">Good posture projects confidence, even over the phone</div></div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem"><div style="font-size:.78rem;font-weight:700;color:#0f172a">Eye contact</div><div style="font-size:.68rem;color:#64748b">Look at the camera or screen, not down at your notes</div></div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem"><div style="font-size:.78rem;font-weight:700;color:#0f172a">Slow down</div><div style="font-size:.68rem;color:#64748b">Pause before answering. 130\u2013150 words per minute is ideal</div></div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem"><div style="font-size:.78rem;font-weight:700;color:#0f172a">Use examples</div><div style="font-size:.68rem;color:#64748b">Specific real stories beat generic answers every time</div></div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem"><div style="font-size:.78rem;font-weight:700;color:#0f172a">Avoid fillers</div><div style="font-size:.68rem;color:#64748b">Replace "um" and "like" with a brief pause instead</div></div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem"><div style="font-size:.78rem;font-weight:700;color:#0f172a">Smile</div><div style="font-size:.68rem;color:#64748b">It comes through in your voice and sets a warm tone</div></div>
       </div>
 
       <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1.25rem;flex-wrap:wrap">
@@ -416,7 +430,8 @@ function checkGate(cb){if(localStorage.getItem('fmaj_email')||getCookie('fmaj_em
 function submitGateEmail(){var e=document.getElementById('gate-email').value.trim();if(!e||e.indexOf('@')===-1){document.getElementById('gate-email').style.borderColor='#ef4444';return;}document.getElementById('gate-btn').textContent='Saving...';document.getElementById('gate-btn').disabled=true;localStorage.setItem('fmaj_email',e);setCookie('fmaj_email',e,365);localStorage.setItem('fmaj_uses','999');setCookie('fmaj_uses','999',365);fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',email:e,password:'__tool_gate__',name:e.split('@')[0],emailAlerts:true})}).catch(function(){});document.getElementById('email-gate').style.display='none';if(_gateCallback){_gateCallback();_gateCallback=null;}}
 
 /* Interview state */
-var msgs=[],qCount=0,maxQ=5,iData={role:'',company:'',style:'',jobDesc:'',qa:[]},audioEnabled=false,recog=null;
+var msgs=[],qCount=0,maxQ=5,iData={role:'',company:'',style:'',jobDesc:'',level:'',round:'',qa:[]},audioEnabled=false,recog=null;
+var _lastWasProbe=false,_probedThisQ=false;
 var timedMode=false,answerTimer=null,timeLeft=0;
 var autoSend=true,silenceTimer=null,silenceDelay=4000;
 var _interviewEnded=false;
@@ -533,8 +548,11 @@ async function _doStart(role){
   var company=document.getElementById('simCompany').value.trim();
   var style=document.getElementById('simStyle').value;
   var jobDesc=iData.jobDesc||'';
-  iData={role:role,company:company,style:style,jobDesc:jobDesc,qa:[]};
+  var level=(document.getElementById('simLevel')||{}).value||'Mid-level (2-5 years)';
+  var round=(document.getElementById('simRound')||{}).value||'First interview';
+  iData={role:role,company:company,style:style,jobDesc:jobDesc,level:level,round:round,qa:[]};
   _interviewEnded=false;_closingPhase=false;_closingAsked=false;_interviewStartTime=Date.now();
+  _lastWasProbe=false;_probedThisQ=false;
   document.getElementById('pageHeader').style.display='none';
   document.getElementById('chatSection').style.display='block';
   var vg=document.getElementById('voiceGender').value;
@@ -545,8 +563,16 @@ async function _doStart(role){
   msgs=[{role:'user',content:'Start the interview. Introduce yourself briefly and ask your first question.'}];
   showTyping();dis(true);
   try{
-    var sysParts="You are "+iName+", a professional NZ job interviewer conducting a "+style+" interview for a "+role+" position"+(company?" at "+company:"")+" in New Zealand. Your name is "+iName+". Introduce yourself as "+iName+" at the start. Ask ONE question at a time. Be professional and warm. Use NZ workplace context. Do not number questions.";
-    if(jobDesc){sysParts+=" The candidate applied for this specific job listing. Here is the job ad: "+jobDesc.substring(0,2000)+". Ask questions that are specifically relevant to the responsibilities and requirements in this job ad.";}
+    var sysParts="You are "+iName+", a senior NZ interviewer conducting a "+round+" ("+style+" style) for a "+level+" "+role+" role"+(company?" at "+company:"")+".\n\n";
+    sysParts+="METHODOLOGY:\n- Calibrate difficulty to "+level+" seniority\n- ONE question at a time, 1-2 sentences\n- Be professional, warm, encouraging\n";
+    if(style==='Behavioural')sysParts+="- Frame every question to prompt a past-situation STAR answer\n";
+    if(style==='Technical')sysParts+="- Mix role-specific technical questions with behavioural ones\n";
+    if(style==='Values-based')sysParts+="- VALUES-BASED: focus on organisational values (integrity, manaakitanga, equity). Include at least one question on Te Tiriti o Waitangi awareness (partnership, participation, protection). Probe for cultural competence.\n";
+    if(style==='Panel')sysParts+="- PANEL: you are lead interviewer joined by 2 colleagues. Occasionally say 'My colleague would like to ask...'\n";
+    if(style==='Competency')sysParts+="- COMPETENCY-BASED: each question targets a specific competency (leadership, communication, problem-solving, teamwork, adaptability)\n";
+    if(style==='Casual')sysParts+="- Keep tone conversational like a coffee chat, but still gather signal\n";
+    sysParts+="\nNZ CULTURE:\n- Open with 'Kia ora' and introduce yourself as "+iName+"\n- Reference flat hierarchy, team-first, whanaungatanga naturally\n- NZ values humility \u2014 probe gently if someone undersells themselves\n- Use NZ English sparingly ('keen', 'sweet as', 'sorted')\n\nDo not number questions.\n";
+    if(jobDesc){sysParts+="\nJOB AD (tailor questions to these requirements):\n"+jobDesc.substring(0,2000)+"\n";}
     var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sysParts,messages:msgs})});
     var d=await r.json();var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
     if(!t){throw new Error('empty');}
@@ -603,11 +629,17 @@ async function sendAnswer(){
   setAvatar('thinking');dis(true);showTyping();
   var trimmed=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
   try{
-    var sys="You are a professional NZ job interviewer. "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. Question "+qCount+" of "+maxQ+". Ask ONE question. Do not say thank you or wrap up the interview. Just ask the question.";
-    if(iData.jobDesc){sys+=" Job ad context: "+iData.jobDesc.substring(0,1000)+". Ask questions relevant to this role.";}
+    var sys="You are a senior NZ interviewer. "+iData.style+" style, "+iData.level+" "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. Question "+qCount+" of "+maxQ+".\n";
+    sys+="DECIDE: If the candidate's answer was vague, generic, or missing a specific real example, ask ONE brief follow-up probe (e.g. 'Can you walk me through a specific time?'). Start your response with [PROBE]. Otherwise, move to your next question.\n";
+    if(_probedThisQ)sys+="You have ALREADY probed this topic \u2014 do NOT probe again. Move on.\n";
+    sys+="Ask ONE question. Do not say thank you or wrap up. Do not number questions.";
+    if(iData.jobDesc){sys+="\nJob ad context: "+iData.jobDesc.substring(0,1000);}
     var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:trimmed})});
     var d=await r.json();var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):(d.error||'');
     if(!t){throw new Error('empty');}
+    var isProbe=/^\s*\[PROBE\]/i.test(t);
+    if(isProbe){t=t.replace(/^\s*\[PROBE\]\s*/i,'');_lastWasProbe=true;_probedThisQ=true;qCount--;updC();}
+    else{_lastWasProbe=false;_probedThisQ=false;}
     msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;_sending=false;speak(t);dis(false);
   }catch(e){_waitingForAI=false;_sending=false;hideTyping();addMsg('Connection issue — tap Skip to move on.','ai');dis(false);qCount--;updC();}
 }
@@ -678,10 +710,16 @@ async function endInterview(){
   document.getElementById('micTranscript').className='mic-transcript';
   updateMicUI(null,'');
   document.getElementById('endBtn').textContent='Scoring...';document.getElementById('endBtn').disabled=true;
-  var p="You conducted a "+iData.style+" interview for "+iData.role+" in NZ. Score the candidate based on their answers. Comment on their communication, content quality, and confidence.\n\n";
-  iData.qa.forEach(function(x,i){var label=(i===iData.qa.length-1&&_closingPhase)?'Closing':'Q'+(i+1);p+=label+": "+x.q.substring(0,400)+"\nA"+(i+1)+": "+x.a.substring(0,400)+"\n\n";});
-  if(_closingPhase){p+="The last entry is the candidate closing remarks when asked if they had anything to add. Factor this into your overall assessment — it shows initiative and communication skills.\n\n";}
-  p+="Return ONLY valid JSON: {\"score\":number,\"grade\":\"A+ to D\",\"overall\":\"2-3 sentences\",\"feedback\":[{\"question\":\"short\",\"rating\":\"Good|Average|Needs Work\",\"comment\":\"1-2 sentences\"}]}";
+  var answered=iData.qa.filter(function(x){return x.a!=='(skipped)'&&x.a.indexOf('(no answer')!==0;}).length;
+  var p="You are a senior NZ recruiter evaluating this interview. Be rigorous but fair.\n\n";
+  p+="ROLE: "+iData.level+" "+iData.role+(iData.company?" at "+iData.company:"")+"\nSTYLE: "+iData.style+"\nROUND: "+iData.round+"\nQUESTIONS ANSWERED: "+answered+" of "+iData.qa.length+"\n\n";
+  if(iData.jobDesc)p+="JOB AD:\n"+iData.jobDesc.substring(0,1200)+"\n\n";
+  p+="TRANSCRIPT:\n";
+  iData.qa.forEach(function(x,i){var label=(i===iData.qa.length-1&&_closingPhase)?'Closing':'Q'+(i+1);p+=label+": "+x.q.substring(0,500)+"\nA"+(i+1)+": "+x.a.substring(0,600)+"\n\n";});
+  if(_closingPhase){p+="The last entry is the candidate's closing remarks. Factor initiative into your assessment.\n\n";}
+  p+="In NZ culture, humility is valued. Do not penalise understated confidence \u2014 distinguish between lack of confidence and Kiwi modesty.\n\n";
+  p+='Return ONLY valid JSON, no markdown:\n';
+  p+='{"score":0,"grade":"A+|A|B+|B|C+|C|D","recommendation":"Strong Hire|Hire|Maybe|No Hire","overall":"3 sentence recruiter summary","strengths":["s1","s2","s3"],"improvements":["i1","i2","i3"],"goldenTip":"one actionable tip","feedback":[{"question":"short","rating":"Strong|Adequate|Needs Work","comment":"what they did well or missed","tip":"specific improvement","modelAnswer":"2-3 sentence example of how a strong '+iData.level+' candidate would answer this"}]}';
   try{
     var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:p}]})});
     var d=await r.json();var t=d.content.map(function(b){return b.text||'';}).join('');
@@ -691,20 +729,65 @@ async function endInterview(){
 
 function showScore(r){
   var c=r.score>=80?'#E7515A':r.score>=60?'#f59e0b':'#ef4444';
-  var bg=r.score>=80?'#fef2f2':r.score>=60?'#fffbeb':'#fef2f2';
-  var h='<div class="card score-card" style="text-align:center;padding:2rem">';
-  h+='<div style="font-size:.78rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px">Your Interview Score</div>';
+  var cheer='';
+  if(r.score>=90)cheer='Outstanding! You absolutely nailed this.';
+  else if(r.score>=80)cheer='Excellent work \u2014 a hiring manager would be impressed.';
+  else if(r.score>=70)cheer='Solid interview. A few tweaks and you\u2019ll ace it.';
+  else if(r.score>=60)cheer='Good foundation \u2014 the tips below will level you up fast.';
+  else cheer='Every practice counts. Focus on the tips below and try again.';
+  var h='<div class="card score-card" style="text-align:center;padding:2.5rem 2rem">';
+  h+='<div style="font-size:1.15rem;font-weight:800;color:#0f172a;margin-bottom:.5rem">'+esc(cheer)+'</div>';
   h+='<div class="score-big" id="score-num" style="color:'+c+'">0/100</div>';
-  h+='<div style="display:inline-block;background:'+bg+';color:'+c+';padding:.3rem .85rem;border-radius:999px;font-size:.82rem;font-weight:700;border:1px solid '+c+'33">'+esc(r.grade)+'</div>';
+  h+='<div style="display:flex;justify-content:center;gap:.4rem;flex-wrap:wrap">';
+  h+='<span style="display:inline-block;background:'+c+'14;color:'+c+';padding:.3rem .85rem;border-radius:999px;font-size:.82rem;font-weight:700;border:1px solid '+c+'33">'+esc(r.grade)+'</span>';
+  if(r.recommendation){var rc=r.recommendation==='Strong Hire'?'#059669':r.recommendation==='Hire'?'#E7515A':r.recommendation==='Maybe'?'#f59e0b':'#ef4444';h+='<span style="display:inline-block;background:'+rc+'14;color:'+rc+';padding:.3rem .85rem;border-radius:999px;font-size:.78rem;font-weight:700;border:1px solid '+rc+'33">'+esc(r.recommendation)+'</span>';}
+  h+='</div>';
   var elapsed=Math.round((Date.now()-_interviewStartTime)/1000);var eMin=Math.floor(elapsed/60);var eSec=elapsed%60;
-  h+='<div style="margin-top:.75rem;display:flex;justify-content:center;gap:1.5rem;font-size:.78rem;color:#64748b;font-weight:600"><span>&#9201; '+eMin+'m '+eSec+'s</span><span>&#10003; '+maxQ+' questions</span></div>';
+  h+='<div style="margin-top:.75rem;display:flex;justify-content:center;gap:1.5rem;font-size:.78rem;color:#64748b;font-weight:600"><span>&#9201; '+eMin+'m '+eSec+'s</span><span>&#10003; '+iData.qa.length+' questions</span></div>';
   h+='<p style="color:#64748b;font-size:.88rem;margin-top:1rem;line-height:1.6">'+esc(r.overall)+'</p></div>';
-  if(r.feedback&&r.feedback.length){r.feedback.forEach(function(f,fi){
-    var fc=f.rating==='Good'?'#E7515A':f.rating==='Average'?'#f59e0b':'#ef4444';
-    h+='<div class="fb-item" style="animation-delay:'+(0.3+fi*0.15)+'s"><div class="fb-q">'+esc(f.question)+'</div>';
-    h+='<div style="font-size:.72rem;font-weight:700;color:'+fc+';margin-bottom:.3rem">'+esc(f.rating)+'</div>';
-    h+='<div class="fb-text">'+esc(f.comment)+'</div></div>';
-  });}
+  /* Strengths */
+  if(r.strengths&&r.strengths.length){
+    h+='<div class="card" style="padding:1.25rem;margin-top:.75rem;text-align:left">';
+    h+='<div style="font-size:.72rem;font-weight:700;color:#059669;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.6rem">What you did well</div>';
+    r.strengths.forEach(function(s){h+='<div style="display:flex;gap:.4rem;align-items:flex-start;margin-bottom:.4rem;font-size:.82rem;color:#0f172a;line-height:1.5"><span style="color:#059669;font-weight:700;flex-shrink:0">&#10003;</span> '+esc(s)+'</div>';});
+    h+='</div>';
+  }
+  /* Improvements */
+  if(r.improvements&&r.improvements.length){
+    h+='<div class="card" style="padding:1.25rem;margin-top:.5rem;text-align:left">';
+    h+='<div style="font-size:.72rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.6rem">Where to grow next</div>';
+    r.improvements.forEach(function(s){h+='<div style="display:flex;gap:.4rem;align-items:flex-start;margin-bottom:.4rem;font-size:.82rem;color:#0f172a;line-height:1.5"><span style="color:#E7515A;font-weight:700;flex-shrink:0">\u2192</span> '+esc(s)+'</div>';});
+    h+='</div>';
+  }
+  /* Golden tip */
+  if(r.goldenTip){
+    h+='<div style="background:linear-gradient(135deg,#fef2f2,#fff1f2);border:2px solid #fecaca;border-radius:16px;padding:1.25rem;margin-top:.75rem;text-align:left">';
+    h+='<div style="font-size:.72rem;font-weight:700;color:#c7313a;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem">Your #1 tip</div>';
+    h+='<div style="font-size:.92rem;color:#0f172a;line-height:1.6;font-weight:600">'+esc(r.goldenTip)+'</div></div>';
+  }
+  /* Per-question feedback */
+  if(r.feedback&&r.feedback.length){
+    h+='<div style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin:1.25rem 0 .5rem;text-align:left">Question-by-question review</div>';
+    r.feedback.forEach(function(f,fi){
+      var fc=f.rating==='Strong'?'#059669':f.rating==='Adequate'?'#f59e0b':'#ef4444';
+      h+='<div class="fb-item" style="animation-delay:'+(0.3+fi*0.15)+'s;text-align:left"><div class="fb-q">'+esc(f.question)+'</div>';
+      h+='<span style="font-size:.72rem;font-weight:700;color:'+fc+';background:'+fc+'14;padding:.15rem .5rem;border-radius:999px;border:1px solid '+fc+'33;display:inline-block;margin-bottom:.4rem">'+esc(f.rating)+'</span>';
+      h+='<div class="fb-text">'+esc(f.comment)+'</div>';
+      if(f.tip){h+='<div style="font-size:.78rem;color:#E7515A;margin-top:.35rem;font-weight:600">\u2192 '+esc(f.tip)+'</div>';}
+      if(f.modelAnswer){
+        h+='<details style="margin-top:.6rem;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:.5rem .75rem">';
+        h+='<summary style="font-size:.72rem;font-weight:700;color:#059669;cursor:pointer;text-transform:uppercase;letter-spacing:.5px">See a strong answer</summary>';
+        h+='<div style="font-size:.8rem;color:#064e3b;margin-top:.5rem;line-height:1.55">'+esc(f.modelAnswer)+'</div>';
+        h+='</details>';
+      }
+      h+='</div>';
+    });
+  }
+  /* Actions */
+  h+='<div style="display:flex;gap:.5rem;margin-top:1.25rem;flex-wrap:wrap">';
+  h+='<button onclick="location.reload()" style="flex:1;min-width:140px;padding:.85rem 1rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:inherit;font-size:.88rem;font-weight:700;cursor:pointer">Practice again</button>';
+  h+='<button onclick="shareResults('+r.score+')" style="flex:1;min-width:140px;padding:.85rem 1rem;background:#fff;color:#0f172a;border:1px solid #e2e8f0;border-radius:999px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer">Share results</button>';
+  h+='</div>';
   h+='<div class="cta-box"><p>Ready to apply for real?</p><a href="/match.html">Apply for a Job</a></div>';
   releaseMic();document.getElementById('interviewerBar').classList.remove('visible');document.getElementById('chatSection').style.display='none';
   document.getElementById('scoreSection').innerHTML=h;document.getElementById('scoreSection').style.display='block';
@@ -955,6 +1038,12 @@ function esc(s){var d=document.createElement('div');d.textContent=s;return d.inn
 document.getElementById('userInput').addEventListener('input',function(){this.style.height='44px';this.style.height=Math.min(this.scrollHeight,100)+'px';});
 document.getElementById('userInput').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAnswer();}});
 
+function shareResults(score){
+  var txt='I just practiced a '+iData.role+' interview on FindMeAJob and scored '+score+'/100. Try it free: https://www.findmeajob.co.nz/interview-sim';
+  if(navigator.share){navigator.share({title:'My interview score',text:txt}).catch(function(){});}
+  else if(navigator.clipboard){navigator.clipboard.writeText(txt).then(function(){alert('Copied to clipboard!');}).catch(function(){prompt('Copy this:',txt);});}
+  else{prompt('Copy this:',txt);}
+}
 function toggleTheme(){document.body.classList.toggle('dark');var d=document.body.classList.contains('dark');localStorage.setItem('theme',d?'dark':'light');document.getElementById('tbtn').innerHTML=d?'&#9790;':'&#9788;';}
 if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');var tb=document.getElementById('tbtn');if(tb)tb.innerHTML='&#9790;';}
 </script>
