@@ -128,7 +128,7 @@ module.exports = async function handler(req, res) {
     }
     var t = bEsc(post.title);
     var ex = bEsc(post.excerpt);
-    var bd = bEsc(post.body).replace(/\n\n/g,"</p><p>").replace(/\n/g,"<br>");
+    var bd = bEsc(post.body).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\n\n/g,"</p><p>").replace(/\n/g,"<br>");
     var dt = bEsc(post.date);
     var ic = (post.icon||"").replace(/</g,"&lt;");
     var tc = post.category||"market";
