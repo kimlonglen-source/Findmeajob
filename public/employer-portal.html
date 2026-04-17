@@ -978,7 +978,22 @@ if(saved&&!resetTok){
     (async function(){
       var r=await fetch('/api/employer-jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'list',email:session.email,password:session.password})});
       var d=await r.json();
-      if(d.success)showPortal(d.employer,d.jobs);
+      if(d.success){
+        showPortal(d.employer,d.jobs);
+        /* Handle return from Stripe Checkout */
+        var params=new URLSearchParams(window.location.search);
+        if(params.get('paid')==='1'&&params.get('job')){
+          var paidJobId=params.get('job');
+          fetch('/api/employer-jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'confirm-payment',email:session.email,password:session.password,jobId:paidJobId})}).then(function(r){return r.json();}).then(function(pd){
+            if(pd.success){toast('Payment confirmed! Your listing is now pending review.');loadAndShowPortal();}
+          }).catch(function(){});
+          history.replaceState(null,'','/employer-portal.html');
+        }
+        if(params.get('cancelled')==='1'){
+          toast('Payment cancelled. Your listing was not submitted.');
+          history.replaceState(null,'','/employer-portal.html');
+        }
+      }
       else{session=null;sessionStorage.removeItem('empPortal');}
     })();
   }catch(e){}

@@ -175,6 +175,22 @@ module.exports = async function handler(req, res) {
         return res.status(200).json({ success: true, id: jid });
       }
 
+      // Confirm payment — update job from pending-payment to pending
+      if (action === "confirm-payment") {
+        var cpJobId = req.body.jobId;
+        if (!cpJobId) return res.status(400).json({ error: "Missing jobId" });
+        var cpRaw = await hget("jobs", cpJobId);
+        if (!cpRaw) return res.status(404).json({ error: "Job not found" });
+        var cpJob = typeof cpRaw === "string" ? JSON.parse(cpRaw) : cpRaw;
+        if (cpJob.email !== postEmail) return res.status(403).json({ error: "Not your job" });
+        if (cpJob.status === "pending-payment") {
+          cpJob.status = "pending";
+          await hset("jobs", cpJobId, cpJob);
+          notifyAdmin("Paid job submitted: " + cpJob.title + " (" + cpJob.plan + ")", "<strong>" + cpJob.title + "</strong><br>Company: " + (cpJob.company || "") + "<br>Plan: " + cpJob.plan + "<br><br><a href='https://www.findmeajob.co.nz/admin.html' style='color:#c7313a;font-weight:700'>Review in admin</a>");
+        }
+        return res.status(200).json({ success: true });
+      }
+
       // All other actions require jobId
       if (!jobId) return res.status(400).json({ error: "Missing job ID" });
       var jobRaw = await hget("jobs", jobId);
