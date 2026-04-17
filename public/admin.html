@@ -192,6 +192,7 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
         <button class="tab" data-tab="employers" type="button" style="border-color:rgba(245,158,11,.2);color:var(--gold)">Employers</button>
         <button class="tab" data-tab="social" type="button" style="margin-left:.5rem;border-color:rgba(236,72,153,.2);color:#ec4899">Social Media</button>
         <button class="tab" data-tab="blog" type="button" style="border-color:rgba(231,81,90,.2);color:var(--em)">Blog</button>
+        <button class="tab" data-tab="outreach" type="button" style="border-color:rgba(16,185,129,.2);color:#10b981">Outreach</button>
       </div>
       <div style="display:flex;align-items:center;gap:.65rem">
         <span class="refresh-txt" id="last-refresh">Never refreshed</span>
@@ -261,6 +262,65 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
         <div id="social-output"></div>
       </div>
     </div>
+
+    <!-- OUTREACH — email businesses to post jobs -->
+    <div id="outreach-list" style="display:none">
+      <div style="padding:1.5rem 0">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:.75rem">
+          <div>
+            <div style="font-size:1.1rem;font-weight:800;color:var(--text)">Business Outreach</div>
+            <div style="font-size:.78rem;color:var(--text3);margin-top:.2rem">Email NZ businesses to invite them to post jobs on FindMeAJob.</div>
+          </div>
+          <button onclick="generateOutreachEmail()" id="btn-gen-outreach" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;border:none;padding:.55rem 1.25rem;border-radius:999px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Generate Email</button>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1rem">
+          <div>
+            <label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Business name</label>
+            <input type="text" id="outreach-company" placeholder="e.g. Hays Recruitment, Countdown, Xero" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.55rem .75rem;outline:none">
+          </div>
+          <div>
+            <label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Contact email</label>
+            <input type="email" id="outreach-email" placeholder="hr@company.co.nz" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.55rem .75rem;outline:none">
+          </div>
+        </div>
+        <div style="margin-bottom:1rem">
+          <label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Contact name (optional)</label>
+          <input type="text" id="outreach-name" placeholder="e.g. Sarah, the Hiring Manager" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.55rem .75rem;outline:none">
+        </div>
+        <div style="margin-bottom:1rem">
+          <label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Industry (optional)</label>
+          <select id="outreach-industry" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.55rem .75rem;outline:none">
+            <option value="">Any industry</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Technology">Technology</option>
+            <option value="Construction & Trades">Construction & Trades</option>
+            <option value="Hospitality & Tourism">Hospitality & Tourism</option>
+            <option value="Retail">Retail</option>
+            <option value="Education">Education</option>
+            <option value="Government & Public Sector">Government & Public Sector</option>
+            <option value="Agriculture">Agriculture</option>
+            <option value="Finance & Banking">Finance & Banking</option>
+            <option value="Recruitment Agency">Recruitment Agency</option>
+            <option value="Transport & Logistics">Transport & Logistics</option>
+            <option value="Manufacturing">Manufacturing</option>
+          </select>
+        </div>
+
+        <div id="outreach-output" style="display:none;margin-bottom:1rem">
+          <label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Subject line</label>
+          <input type="text" id="outreach-subject" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.88rem;font-weight:700;padding:.55rem .75rem;outline:none;margin-bottom:.75rem">
+          <label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Email body</label>
+          <textarea id="outreach-body" rows="12" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text2);font-family:inherit;font-size:.82rem;padding:.75rem;outline:none;resize:vertical;line-height:1.7"></textarea>
+          <div style="display:flex;gap:.5rem;margin-top:.75rem">
+            <button onclick="sendOutreachEmail()" id="btn-send-outreach" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;border:none;padding:.65rem 1.5rem;border-radius:999px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:inherit">Send Email</button>
+            <button onclick="copyOutreachEmail()" style="background:rgba(255,255,255,.06);border:1px solid var(--border2);color:var(--text2);padding:.65rem 1.25rem;border-radius:999px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit">Copy to clipboard</button>
+          </div>
+        </div>
+        <div id="outreach-status" style="display:none;padding:.75rem 1rem;border-radius:var(--r);font-size:.82rem;font-weight:600;margin-top:.75rem"></div>
+      </div>
+    </div>
+
   </main>
 </div>
 
@@ -294,6 +354,70 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
 <div id="plan-modal" style="display:none"></div>
 
 <script>
+/* Outreach email generator + sender */
+async function generateOutreachEmail(){
+  var company=document.getElementById('outreach-company').value.trim();
+  var contactName=document.getElementById('outreach-name').value.trim();
+  var industry=document.getElementById('outreach-industry').value;
+  if(!company){showToast('Please enter a business name.','error');return;}
+  var btn=document.getElementById('btn-gen-outreach');
+  btn.disabled=true;btn.textContent='Generating...';
+  var yr=new Date().getFullYear();
+  var prompt='Write a short, professional outreach email from FindMeAJob.co.nz inviting a NZ business to post their job listings for free on our platform.\n\n';
+  prompt+='BUSINESS: '+company+'\n';
+  if(contactName)prompt+='CONTACT: '+contactName+'\n';
+  if(industry)prompt+='INDUSTRY: '+industry+'\n';
+  prompt+='\nABOUT FINDMEAJOB.CO.NZ:\n- Free NZ job board with 12 AI career tools\n- Employers post unlimited listings for free\n- AI matches job seekers to listings using CV analysis\n- '+yr+' NZ-focused platform\n- Company profile, logo, applications sent directly to employer email\n- No payment, no contracts, no catch\n\nRULES:\n- Keep it SHORT: 4-6 sentences max\n- Professional but warm — Kiwi tone, not corporate American\n- Mention it is completely free — this is the key selling point\n- If industry is provided, reference NZ hiring trends in that industry\n- Personalise to the company name\n- End with a clear CTA: visit findmeajob.co.nz/employer-portal.html to post\n- Use NZ/British spelling\n- DO NOT be pushy or salesy\n\nReturn ONLY valid JSON:\n{"subject":"short email subject line","body":"email body text with \\n for line breaks"}';
+  try{
+    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:prompt}]})});
+    var d=await r.json();
+    var raw=d.content.map(function(b){return b.text||'';}).join('').trim();
+    raw=raw.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
+    var si=raw.indexOf('{'),ei=raw.lastIndexOf('}');
+    if(si===-1)throw new Error('No JSON');
+    var result=JSON.parse(raw.substring(si,ei+1));
+    document.getElementById('outreach-subject').value=result.subject||'';
+    document.getElementById('outreach-body').value=(result.body||'').replace(/\\n/g,'\n');
+    document.getElementById('outreach-output').style.display='block';
+  }catch(e){
+    showToast('Error generating email: '+e.message,'error');
+  }
+  btn.disabled=false;btn.textContent='Generate Email';
+}
+
+async function sendOutreachEmail(){
+  var email=document.getElementById('outreach-email').value.trim();
+  var subject=document.getElementById('outreach-subject').value.trim();
+  var body=document.getElementById('outreach-body').value.trim();
+  if(!email||email.indexOf('@')===-1){showToast('Please enter a valid email address.','error');return;}
+  if(!subject||!body){showToast('Please generate an email first.','error');return;}
+  var btn=document.getElementById('btn-send-outreach');
+  btn.disabled=true;btn.textContent='Sending...';
+  var statusEl=document.getElementById('outreach-status');
+  try{
+    var r=await fetch('/api/admin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'send-outreach',password:pw,email:email,subject:subject,body:body})});
+    var d=await r.json();
+    if(d.success){
+      statusEl.style.display='block';statusEl.style.background='rgba(16,185,129,.1)';statusEl.style.color='#10b981';statusEl.style.border='1px solid rgba(16,185,129,.2)';
+      statusEl.textContent='Email sent to '+email;
+      showToast('Email sent to '+email,'success');
+    }else{throw new Error(d.error||'Send failed');}
+  }catch(e){
+    statusEl.style.display='block';statusEl.style.background='rgba(239,68,68,.1)';statusEl.style.color='#ef4444';statusEl.style.border='1px solid rgba(239,68,68,.2)';
+    statusEl.textContent='Failed: '+e.message;
+    showToast('Failed to send: '+e.message,'error');
+  }
+  btn.disabled=false;btn.textContent='Send Email';
+}
+
+function copyOutreachEmail(){
+  var subject=document.getElementById('outreach-subject').value;
+  var body=document.getElementById('outreach-body').value;
+  var text='Subject: '+subject+'\n\n'+body;
+  if(navigator.clipboard){navigator.clipboard.writeText(text).then(function(){showToast('Copied to clipboard','success');});}
+  else{prompt('Copy this:',text);}
+}
+
 function toggleTheme(){document.body.classList.toggle('dark');var d=document.body.classList.contains('dark');localStorage.setItem('theme',d?'dark':'light');var icon=d?'&#9790;':'&#9788;';var t1=document.getElementById('tbtn');var t2=document.getElementById('tbtn-login');if(t1)t1.innerHTML=icon;if(t2)t2.innerHTML=icon;}
 if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');var icon2='&#9790;';var t1b=document.getElementById('tbtn');var t2b=document.getElementById('tbtn-login');if(t1b)t1b.innerHTML=icon2;if(t2b)t2b.innerHTML=icon2;}
 var pw="", allJobs=[], currentTab="pending", refreshTimer=null;
@@ -326,7 +450,7 @@ document.getElementById("pw").addEventListener("keydown",function(e){if(e.key===
 document.getElementById("btn-login").addEventListener("click",doLogin);
 document.getElementById("btn-signout").addEventListener("click",function(){pw="";document.getElementById("login").style.display="flex";document.getElementById("app").style.display="none";clearInterval(refreshTimer);});
 document.getElementById("btn-refresh").addEventListener("click",loadJobs);
-document.querySelectorAll(".tab").forEach(function(t){t.addEventListener("click",function(){document.querySelectorAll(".tab").forEach(function(x){x.classList.remove("active");});this.classList.add("active");currentTab=this.dataset.tab;document.getElementById("job-list").style.display="none";document.getElementById("people-list").style.display="none";document.getElementById("social-list").style.display="none";document.getElementById("blog-list").style.display="none";if(currentTab==="social"){document.getElementById("social-list").style.display="block";}else if(currentTab==="blog"){document.getElementById("blog-list").style.display="block";}else if(currentTab==="seekers"){loadPeople("seekers");}else if(currentTab==="employers"){loadPeople("employers");}else{document.getElementById("job-list").style.display="grid";renderJobs();}});});
+document.querySelectorAll(".tab").forEach(function(t){t.addEventListener("click",function(){document.querySelectorAll(".tab").forEach(function(x){x.classList.remove("active");});this.classList.add("active");currentTab=this.dataset.tab;document.getElementById("job-list").style.display="none";document.getElementById("people-list").style.display="none";document.getElementById("social-list").style.display="none";document.getElementById("blog-list").style.display="none";document.getElementById("outreach-list").style.display="none";if(currentTab==="outreach"){document.getElementById("outreach-list").style.display="block";}else if(currentTab==="social"){document.getElementById("social-list").style.display="block";}else if(currentTab==="blog"){document.getElementById("blog-list").style.display="block";}else if(currentTab==="seekers"){loadPeople("seekers");}else if(currentTab==="employers"){loadPeople("employers");}else{document.getElementById("job-list").style.display="grid";renderJobs();}});});
 document.getElementById("confirm-cancel").addEventListener("click",function(){document.getElementById("confirm-modal").classList.remove("show");pendingAction=null;pendingActionId=null;});
 document.getElementById("confirm-ok").addEventListener("click",function(){document.getElementById("confirm-modal").classList.remove("show");if(pendingAction&&pendingActionId){if(pendingAction==="delete-seeker"||pendingAction==="delete-employer"){execUserAction(pendingAction,pendingActionId);}else{execAction(pendingAction,pendingActionId);}pendingAction=null;pendingActionId=null;}});
 

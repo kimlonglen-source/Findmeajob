@@ -219,6 +219,30 @@ module.exports = async function handler(req, res) {
       }
       return res.status(200).json({ success: true });
     }
+    if (action === "send-outreach") {
+      var outEmail = params.email;
+      var outSubject = params.subject;
+      var outBody = params.body;
+      if (!outEmail || !outSubject || !outBody) return res.status(400).json({ error: "Missing email, subject, or body" });
+      var resendKey = process.env.RESEND_API_KEY;
+      if (!resendKey) return res.status(500).json({ error: "RESEND_API_KEY not configured" });
+      var htmlBody = '<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">'
+        + '<div style="background:#E7515A;color:#fff;padding:1rem 1.5rem;border-radius:12px 12px 0 0;font-size:16px;font-weight:700">FindMeAJob.co.nz</div>'
+        + '<div style="background:#f8f9fa;border:1px solid #e5e7eb;border-top:none;padding:1.5rem;border-radius:0 0 12px 12px">'
+        + '<div style="font-size:15px;line-height:1.7;color:#1a1a1a;white-space:pre-wrap">' + esc(outBody) + '</div>'
+        + '<div style="margin-top:1.5rem;text-align:center"><a href="https://www.findmeajob.co.nz/employer-portal.html" style="display:inline-block;background:#E7515A;color:#fff;padding:12px 24px;border-radius:24px;font-size:14px;font-weight:700;text-decoration:none">Post a Job Free</a></div>'
+        + '<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid #e5e7eb;font-size:12px;color:#9ca3af">Questions? Reply to this email or contact <a href="mailto:hello@findmeajob.co.nz" style="color:#c7313a">hello@findmeajob.co.nz</a></div>'
+        + '</div></div>';
+      try {
+        var sendRes = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": "Bearer " + resendKey },
+          body: JSON.stringify({ from: "FindMeAJob <hello@findmeajob.co.nz>", to: [outEmail], subject: outSubject, html: htmlBody })
+        });
+        if (!sendRes.ok) { var errBody = await sendRes.text(); return res.status(502).json({ error: "Resend error: " + errBody }); }
+        return res.status(200).json({ success: true });
+      } catch (e) { return res.status(500).json({ error: "Send failed: " + e.message }); }
+    }
     return res.status(400).json({ error: "Unknown action" });
   } catch (err) {
     return res.status(500).json({ error: err.message });
