@@ -363,11 +363,11 @@ async function generateOutreachEmail(){
   var btn=document.getElementById('btn-gen-outreach');
   btn.disabled=true;btn.textContent='Generating...';
   var yr=new Date().getFullYear();
-  var prompt='Write a short, professional outreach email from FindMeAJob.co.nz inviting a NZ business to post their job listings for free on our platform.\n\n';
+  var prompt='Write a short, professional outreach email from FindMeAJob.co.nz inviting a NZ business to post their job listings on our platform (free plan available, Pro from $29).\n\n';
   prompt+='BUSINESS: '+company+'\n';
   if(contactName)prompt+='CONTACT: '+contactName+'\n';
   if(industry)prompt+='INDUSTRY: '+industry+'\n';
-  prompt+='\nABOUT FINDMEAJOB.CO.NZ:\n- Free NZ job board with 12 AI career tools\n- Employers post unlimited listings for free\n- AI matches job seekers to listings using CV analysis\n- '+yr+' NZ-focused platform\n- Company profile, logo, applications sent directly to employer email\n- No payment, no contracts, no catch\n\nRULES:\n- Keep it SHORT: 4-6 sentences max\n- Professional but warm — Kiwi tone, not corporate American\n- Mention it is completely free — this is the key selling point\n- If industry is provided, reference NZ hiring trends in that industry\n- Personalise to the company name\n- End with a clear CTA: visit findmeajob.co.nz/employer-portal.html to post\n- Use NZ/British spelling\n- DO NOT be pushy or salesy\n\nReturn ONLY valid JSON:\n{"subject":"short email subject line","body":"email body text with \\n for line breaks"}';
+  prompt+='\nABOUT FINDMEAJOB.CO.NZ:\n- Free NZ job board with 12 AI career tools\n- Employers post from $0 (free plan), Pro $29/listing, Unlimited $99/month\n- AI matches job seekers to listings using CV analysis\n- '+yr+' NZ-focused platform\n- Company profile, logo, applications sent directly to employer email\n- Free plan available. Pro and Unlimited plans for featured placement\n\nRULES:\n- Keep it SHORT: 4-6 sentences max\n- Professional but warm — Kiwi tone, not corporate American\n- Mention the free plan as a starting point, with paid options for featured listings\n- If industry is provided, reference NZ hiring trends in that industry\n- Personalise to the company name\n- End with a clear CTA: visit findmeajob.co.nz/employer-portal.html to post\n- Use NZ/British spelling\n- DO NOT be pushy or salesy\n\nReturn ONLY valid JSON:\n{"subject":"short email subject line","body":"email body text with \\n for line breaks"}';
   try{
     var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:prompt}]})});
     var d=await r.json();
