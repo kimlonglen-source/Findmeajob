@@ -58,7 +58,7 @@ nav{position:sticky;top:0;z-index:200;padding:0 2rem;height:64px;display:flex;al
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .page{display:none;min-height:calc(100vh - 64px);overflow-x:hidden}
 .page.active{display:block}
-.wrap{max-width:720px;margin:0 auto;padding:3rem 1.5rem 5rem}
+.wrap{max-width:900px;margin:0 auto;padding:3rem 1.5rem 5rem}
 .wrap-wide{max-width:1000px;margin:0 auto;padding:3rem 1.5rem 5rem}
 .page-eyebrow{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#c7313a;margin-bottom:.5rem}
 .page-title{font-size:2.2rem;font-weight:900;color:var(--text);line-height:1.15;margin-bottom:.5rem;letter-spacing:-.3px}
@@ -253,6 +253,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 .results-tab{position:relative}
 .pivot-glow{box-shadow:0 0 12px rgba(139,92,246,.3);border-color:rgba(139,92,246,.3)!important}
 .job-card-animated{animation:cardReveal .4s ease-out both}
+.job-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:700px){.job-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -315,6 +317,24 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <button class="btn-hero" id="hero-try" type="button" style="background:#fff;color:#1a1a2e;border:none;padding:1rem 2.5rem;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 30px rgba(255,255,255,.15);transition:all .25s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 40px rgba(255,255,255,.2)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 30px rgba(255,255,255,.15)'">Upload your CV</button>
         <div style="margin-top:1.5rem;display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;font-size:.78rem;color:rgba(255,255,255,.35);font-weight:500">
           <span>Free forever</span><span style="color:rgba(255,255,255,.15)">|</span><span>No sign-up required</span><span style="color:rgba(255,255,255,.15)">|</span><span>Your CV is never stored</span>
+        </div>
+        <!-- Preview mockup — shows what results look like -->
+        <div style="margin-top:2.5rem;display:flex;justify-content:center;gap:.75rem;flex-wrap:wrap">
+          <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:.75rem 1.25rem;backdrop-filter:blur(8px);text-align:left;min-width:200px">
+            <div style="font-size:1.5rem;font-weight:900;color:#10b981;line-height:1">85%</div>
+            <div style="font-size:.78rem;font-weight:700;color:#fff;margin-top:.2rem">Software Developer</div>
+            <div style="font-size:.68rem;color:rgba(255,255,255,.5)">Auckland, NZ</div>
+          </div>
+          <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:.75rem 1.25rem;backdrop-filter:blur(8px);text-align:left;min-width:200px">
+            <div style="font-size:1.5rem;font-weight:900;color:#E7515A;line-height:1">72%</div>
+            <div style="font-size:.78rem;font-weight:700;color:#fff;margin-top:.2rem">Project Manager</div>
+            <div style="font-size:.68rem;color:rgba(255,255,255,.5)">Wellington, NZ</div>
+          </div>
+          <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:.75rem 1.25rem;backdrop-filter:blur(8px);text-align:left;min-width:200px">
+            <div style="font-size:1.5rem;font-weight:900;color:#f59e0b;line-height:1">68%</div>
+            <div style="font-size:.78rem;font-weight:700;color:#fff;margin-top:.2rem">Business Analyst</div>
+            <div style="font-size:.68rem;color:rgba(255,255,255,.5)">Christchurch, NZ</div>
+          </div>
         </div>
       </div>
     </div>
@@ -393,14 +413,17 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 <!-- FIND JOBS -->
 <div id="page-find" class="page">
   <div class="wrap">
-    <div style="margin-bottom:1.5rem;text-align:center"><div style="display:inline-block;background:rgba(231,81,90,.08);border:1px solid rgba(231,81,90,.2);padding:.3rem .85rem;border-radius:999px;font-size:.68rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.75rem">AI Job Matching</div><div style="font-size:1.8rem;font-weight:900;color:var(--text);letter-spacing:-.5px">Find your perfect NZ job</div></div>
-    <div class="steps">
+    <div style="margin-bottom:1.5rem;text-align:center">
+      <div style="font-size:1.6rem;font-weight:900;color:var(--text);letter-spacing:-.5px;margin-bottom:.35rem">Upload your CV to get matched</div>
+      <div style="font-size:.88rem;color:var(--text3);font-weight:500">AI reads your skills and matches you to live NZ jobs. Takes about 15 seconds.</div>
+    </div>
+    <div class="steps" style="display:none">
       <div class="step active" id="s1"><div class="step-dot"></div>Start</div><div class="step-dash"></div>
       <div class="step" id="s2"><div class="step-dot"></div>Skills</div><div class="step-dash"></div>
       <div class="step" id="s3"><div class="step-dot"></div>Preferences</div><div class="step-dash"></div>
       <div class="step" id="s4"><div class="step-dot"></div>Results</div>
     </div>
-    <div id="step-entry">
+    <div id="step-entry" style="display:none">
       <div class="choice-grid">
         <button class="choice sel" id="btn-cv" type="button">
           <div class="choice-badge">Recommended</div>
@@ -414,7 +437,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         </button>
       </div>
     </div>
-    <div id="step-cv" style="display:none">
+    <div id="step-cv">
       <div class="card">
         <label class="form-label">Upload your CV</label>
         <div class="upload-zone" id="drop-zone">
@@ -1172,7 +1195,7 @@ function loadMammoth(cb){
 
 // Typewriter effect
 (function(){
-  var phrases=['AI-powered NZ job matching','100% free, no sign-up','PDF or Word accepted','scored by match quality','powered by AI'];
+  var phrases=['matched to NZ jobs','scored by AI','free forever','no sign-up needed','results in 60 seconds'];
   var el=document.getElementById('hero-typed');
   if(!el)return;
   var phraseIdx=0,charIdx=0,isDeleting=false;
@@ -1553,6 +1576,8 @@ async function fetchLiveJobs(matches){
     lh.style.cssText='font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--em);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)';
     lh.innerHTML='Live NZ Job Listings <span style="font-size:.62rem;font-weight:600;color:var(--text3);text-transform:none;letter-spacing:0">— AI matched &amp; sorted by relevance</span>';
     list.appendChild(lh);
+    var grid=document.createElement('div');grid.className='job-grid';
+    list.appendChild(grid);
     live.forEach(function(job,idx){
       var pct=job.matchPct;
       var reason=job.matchReason||'';
@@ -1573,7 +1598,7 @@ async function fetchLiveJobs(matches){
         '<div class="match-col">'+
         (pct?'<div class="match-pct" style="color:'+pctColor+'">'+pct+'%</div><div class="match-lbl">AI match</div>':'<div style="color:var(--em);font-size:.65rem;font-weight:800;text-transform:uppercase">Live</div>')+
         '</div>';
-      list.appendChild(c);
+      grid.appendChild(c);
     });
     // Update scorecard
     countUp(document.getElementById('rh-jobs'),live.length,'',800);
