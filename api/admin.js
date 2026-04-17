@@ -52,9 +52,9 @@ module.exports = async function handler(req, res) {
 
   var params = req.body;
   var action = params.action;
-  var password = (params.password || "").trim();
+  var password = params.password;
   var id = params.id;
-  if (password !== PASS.trim()) return res.status(401).json({ error: "Unauthorised" });
+  if (password !== PASS) return res.status(401).json({ error: "Unauthorised" });
   if (!getKV()) return res.status(500).json({ error: "Database not configured." });
   try {
     if (action === "list") {

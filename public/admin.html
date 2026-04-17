@@ -5,11 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin — FindMeAJob.co.nz</title>
 <meta name="robots" content="noindex,nofollow">
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
-<link rel="icon" type="image/svg+xml" href="/logo-icon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f8fafc;--bg2:#ffffff;--bg3:rgba(0,0,0,.03);--text:#0f172a;--text2:#475569;--text3:#64748b;--em:#E7515A;--em2:#c7313a;--gold:#b45309;--purple:#7c3aed;--red:#ef4444;--border:rgba(0,0,0,.1);--border2:rgba(0,0,0,.15);--card:rgba(255,255,255,.9);--r:12px;--rl:16px}
@@ -371,26 +366,15 @@ function showConfirm(action, id, title) {
 }
 
 async function doLogin(){
-  var p=(document.getElementById("pw").value||"").trim(); if(!p)return;
-  var errEl=document.getElementById("login-err");
+  var p=document.getElementById("pw").value; if(!p)return;
   try {
     var r=await fetch("/api/admin",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"list",password:p})});
-    var d={};try{d=await r.json();}catch(e){}
-    if(r.status===200&&d.jobs!==undefined){
-      pw=p;document.getElementById("login").style.display="none";document.getElementById("app").style.display="block";errEl.style.display="none";
-      allJobs=d.jobs;updateStats();renderJobs();loadStats();refreshTimer=setInterval(function(){loadJobs();loadStats();},30000);document.getElementById("last-refresh").textContent="Refreshed just now";
-      return;
-    }
-    var msg="Incorrect password";
-    if(r.status===401)msg="Incorrect password. Check case and extra spaces.";
-    else if(r.status===500&&d.error&&d.error.indexOf("ADMIN_PASSWORD")>=0)msg="Server is missing ADMIN_PASSWORD env var. Set it in Vercel → Settings → Environment Variables, then redeploy.";
-    else if(r.status===500&&d.error&&d.error.indexOf("Database")>=0)msg="Server is missing KV database env vars (KV_URL or UPSTASH_REDIS_REST_URL). Check Vercel env vars.";
-    else if(r.status===500)msg="Server error: "+(d.error||"unknown");
-    else if(r.status===429)msg="Too many attempts. Wait a minute and try again.";
-    else if(d.error)msg=d.error;
-    errEl.textContent=msg;errEl.style.display="block";
+    if(r.status===401){document.getElementById("login-err").style.display="block";return;}
+    var d=await r.json();
+    if(d.jobs!==undefined){pw=p;document.getElementById("login").style.display="none";document.getElementById("app").style.display="block";document.getElementById("login-err").style.display="none";allJobs=d.jobs;updateStats();renderJobs();loadStats();refreshTimer=setInterval(function(){loadJobs();loadStats();},30000);document.getElementById("last-refresh").textContent="Refreshed just now";}
+    else{document.getElementById("login-err").style.display="block";}
   } catch(e) {
-    errEl.textContent="Connection error: "+(e.message||"check your network");errEl.style.display="block";
+    showToast("Connection error. Please try again.", "error");
   }
 }
 

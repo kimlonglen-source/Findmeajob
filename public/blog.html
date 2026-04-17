@@ -175,10 +175,5 @@ fetch('/api/approved-jobs?blog=1').then(function(r){return r.json();}).then(func
   document.getElementById('posts').innerHTML='<div class="empty-state">No posts yet. Check back soon!</div>';
 });
 </script>
-<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1B1B3A;color:rgba(255,255,255,.85);padding:.85rem 2rem;font-size:.78rem;z-index:9999;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap">
-<span>This site uses cookies and local storage for basic functionality. See our <a href="/privacy" style="color:#E7515A;font-weight:600">Privacy Policy</a>.</span>
-<button onclick="document.getElementById('cookie-banner').style.display='none';localStorage.setItem('cookie-ok','1')" style="background:#E7515A;color:#fff;border:none;padding:.4rem 1rem;border-radius:999px;font-size:.75rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Got it</button>
-</div>
-<script>if(!localStorage.getItem('cookie-ok')){document.getElementById('cookie-banner').style.display='flex';}</script>
 </body>
 </html>

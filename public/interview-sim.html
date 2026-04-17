@@ -13,7 +13,6 @@
 <meta property="og:image" content="https://www.findmeajob.co.nz/favicon-512.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
-<link rel="icon" type="image/svg+xml" href="/logo-icon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -45,7 +44,7 @@ h1 em{font-style:normal;color:#E7515A}
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:1.75rem;margin-bottom:1rem}
 label{display:block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;margin-bottom:.4rem}
 input[type="text"],select{width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;color:#0f172a;outline:none}
-input:focus,select:focus{border-color:#E7515A;box-shadow:0 0 0 3px rgba(231,81,90,.1)}
+input:focus,select:focus,textarea:focus{border-color:#E7515A;box-shadow:0 0 0 3px rgba(231,81,90,.1)}
 .field{margin-bottom:1rem}
 .btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;background:#E7515A;color:#fff;padding:.85rem;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer}
 .btn:hover{background:#c7313a}
@@ -56,25 +55,43 @@ input:focus,select:focus{border-color:#E7515A;box-shadow:0 0 0 3px rgba(231,81,9
 .stat-item{display:flex;align-items:center;gap:.3rem;color:#64748b}
 .stat-item strong{color:#0f172a}
 .stat-warn{color:#ef4444}
-.cam-wrap{position:sticky;top:80px;display:flex;flex-direction:column;align-items:center;padding:1rem .5rem;min-width:120px;max-width:140px;display:none;z-index:50;align-self:flex-start}
-.orb{width:80px;height:80px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#ff8a95,#E7515A,#c7313a);position:relative;transition:transform .5s,box-shadow .5s}
-.orb::before{content:'';position:absolute;inset:15%;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.35),transparent 70%)}
-.orb::after{content:'';position:absolute;inset:-8px;border-radius:50%;border:2px solid rgba(231,81,90,.15);transition:all .5s}
-.orb.speaking{animation:orbPulse 1.2s ease-in-out infinite;box-shadow:0 0 30px rgba(231,81,90,.4),0 0 60px rgba(231,81,90,.15)}
-.orb.speaking::after{animation:orbRing 2s ease-in-out infinite}
-.orb.listening{background:radial-gradient(circle at 35% 35%,#60a5fa,#3b82f6,#2563eb);animation:orbBreathe 2.5s ease-in-out infinite;box-shadow:0 0 25px rgba(59,130,246,.3)}
-.orb.listening::after{border-color:rgba(59,130,246,.2)}
-.orb.thinking{animation:orbThink 2s ease-in-out infinite;opacity:.6}
-@keyframes orbPulse{0%,100%{transform:scale(1)}30%{transform:scale(1.1)}60%{transform:scale(1.04)}}
-@keyframes orbBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
-@keyframes orbThink{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(.95);opacity:.4}}
-@keyframes orbRing{0%,100%{inset:-10px;opacity:.3}50%{inset:-22px;opacity:0}}
-.orb-name{font-size:.78rem;font-weight:700;color:#0f172a;margin-top:.5rem;text-align:center}
-.orb-status{font-size:.62rem;font-weight:600;text-align:center;transition:color .3s}
-body.dark .orb-name{color:#f8fafc}
-body.dark .cam-wrap{background:transparent}
+/* Interviewer bar + orb */
+.interviewer-bar{position:sticky;top:58px;z-index:40;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border:1px solid #e2e8f0;border-radius:16px;padding:.75rem 1.25rem;display:none;align-items:center;gap:1rem;margin-bottom:.75rem;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+.interviewer-bar.visible{display:flex}
+.orb-wrap{position:relative;width:48px;height:48px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.orb{width:48px;height:48px;border-radius:50%;background:#E7515A;position:relative;z-index:2;transition:all .3s}
+.orb::before,.orb::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px solid rgba(231,81,90,.3);opacity:0;pointer-events:none}
+.orb.speaking{animation:orbSpeak 1.2s ease-in-out infinite}
+.orb.speaking::before{animation:orbRing 1.2s ease-out infinite}
+.orb.speaking::after{animation:orbRing 1.2s ease-out infinite .4s}
+.orb.listening{animation:orbListen 2.5s ease-in-out infinite}
+.orb.thinking{animation:orbThink 2s ease-in-out infinite;opacity:.65}
+@keyframes orbSpeak{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(231,81,90,.4)}50%{transform:scale(1.12);box-shadow:0 0 24px 6px rgba(231,81,90,.15)}}
+@keyframes orbRing{0%{transform:scale(1);opacity:.5}100%{transform:scale(2.2);opacity:0}}
+@keyframes orbListen{0%,100%{box-shadow:0 0 0 0 rgba(231,81,90,.2)}50%{box-shadow:0 0 16px 6px rgba(231,81,90,.12)}}
+@keyframes orbThink{0%,100%{opacity:.5}50%{opacity:.85}}
+.interviewer-info{flex:1;min-width:0}
+.interviewer-name{font-size:.88rem;font-weight:700;color:#0f172a;line-height:1.2}
+.interviewer-status{font-size:.72rem;font-weight:600;color:#E7515A;margin-top:.1rem}
+.interviewer-status.status-listening{color:#f59e0b}
+.interviewer-status.status-thinking{color:#94a3b8}
+.interview-stats{display:flex;gap:.6rem;align-items:center;flex-shrink:0;flex-wrap:wrap}
+/* Audio bars animation for recording */
+.audio-bars{display:none;gap:2px;align-items:center;height:20px;margin-left:.25rem}
+.audio-bars.active{display:flex}
+.audio-bar{width:3px;background:#E7515A;border-radius:2px}
+.audio-bar:nth-child(1){height:8px;animation:aBar .6s ease-in-out infinite}
+.audio-bar:nth-child(2){height:14px;animation:aBar .6s ease-in-out infinite .1s}
+.audio-bar:nth-child(3){height:18px;animation:aBar .6s ease-in-out infinite .2s}
+.audio-bar:nth-child(4){height:10px;animation:aBar .6s ease-in-out infinite .15s}
+.audio-bar:nth-child(5){height:14px;animation:aBar .6s ease-in-out infinite .25s}
+@keyframes aBar{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+body.dark .interviewer-bar{background:rgba(15,23,42,.95);border-color:rgba(255,255,255,.08)}
+body.dark .interviewer-name{color:#f8fafc}
+body.dark .interviewer-status{color:#E7515A}
 .chat-msgs{min-height:100px;overflow-y:visible;padding:.5rem 0;display:flex;flex-direction:column;gap:.25rem}
-.msg-wrap{display:flex;gap:.5rem;animation:msgIn .35s ease}
+.msg-wrap{display:flex;gap:.5rem;animation:msgIn .35s ease;scroll-margin-top:140px}
+.msg-typing-wrap{scroll-margin-top:140px}
 .msg-wrap-ai{align-items:flex-start;flex-direction:row}
 .msg-wrap-user{align-items:flex-start;flex-direction:row-reverse}
 .msg-avatar{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;color:#fff;margin-top:.2rem}
@@ -105,32 +122,28 @@ body.dark .msg-ai::after{border-right-color:rgba(231,81,90,.08)}
 body.dark .msg-typing{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08)}
 body.dark .msg-typing::before{border-right-color:rgba(255,255,255,.08)}
 body.dark .msg-typing::after{border-right-color:rgba(255,255,255,.04)}
-.chat-bar{display:flex;flex-direction:column;align-items:center;gap:.5rem;padding:.75rem 0;border-top:1px solid #e2e8f0;margin-top:.5rem}
-.chat-bar textarea{display:none}
-.chat-bar button{padding:.65rem 1rem;background:#E7515A;color:#fff;border:none;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer}
-.chat-bar button:disabled{opacity:.5}
-.mic-status-bar{display:flex;align-items:center;gap:.5rem;padding:.6rem 1rem;border-radius:999px;background:#f8fafc;border:1px solid #e2e8f0;width:100%}
-.mic-dot{width:10px;height:10px;border-radius:50%;background:#94a3b8;flex-shrink:0;transition:all .3s}
-.mic-dot.speaking{background:#E7515A;animation:dotGreen 1.2s infinite}
-.mic-dot.listening{background:#ef4444;animation:dotRed .8s infinite}
+.chat-actions{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+.chat-actions button:disabled{opacity:.5}
+.mic-control{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:1rem;margin-top:.5rem;transition:all .3s}
+.mic-control.is-recording{border-color:#E7515A;background:#fef2f2}
+.mic-status-bar{display:flex;align-items:center;gap:.5rem;width:100%}
+.mic-dot{width:12px;height:12px;border-radius:50%;background:#94a3b8;flex-shrink:0;transition:all .3s}
+.mic-dot.speaking{background:#E7515A;animation:dotPulseSpeak 1.2s infinite}
+.mic-dot.listening{background:#E7515A;animation:dotPulseListen .8s infinite}
 .mic-dot.waiting{background:#f59e0b}
-@keyframes dotRed{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4)}50%{box-shadow:0 0 0 6px rgba(239,68,68,0)}}
-@keyframes dotGreen{0%,100%{box-shadow:0 0 0 0 rgba(231,81,90,.4)}50%{box-shadow:0 0 0 6px rgba(231,81,90,0)}}
-.mic-label{font-size:.78rem;font-weight:600;color:#64748b;flex:1}
-.mic-label.recording{color:#ef4444}
-.wave-bars{display:none;align-items:center;gap:2px;height:20px;margin-left:auto}
-.wave-bars.active{display:flex}
-.star-dot{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;font-size:.65rem;font-weight:800;border:2px solid #e2e8f0;color:#94a3b8;transition:all .3s}
-.star-dot.active{border-color:#E7515A;color:#E7515A;background:#fef2f2;transform:scale(1.15)}
-.star-dot.done{border-color:#059669;color:#059669;background:#f0fdf4}
-.wave-bars span{display:block;width:3px;min-height:3px;height:3px;background:#ef4444;border-radius:999px;transition:height .08s}
-.mic-transcript{display:none;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-size:.82rem;color:#0f172a;line-height:1.6;min-height:44px;max-height:200px;overflow-y:auto;text-align:left;width:100%;word-wrap:break-word}
+@keyframes dotPulseListen{0%,100%{box-shadow:0 0 0 0 rgba(231,81,90,.5)}50%{box-shadow:0 0 0 8px rgba(231,81,90,0)}}
+@keyframes dotPulseSpeak{0%,100%{box-shadow:0 0 0 0 rgba(231,81,90,.3)}50%{box-shadow:0 0 0 5px rgba(231,81,90,0)}}
+.mic-label{font-size:.82rem;font-weight:600;color:#64748b;flex:1}
+.mic-label.recording{color:#E7515A;font-weight:700}
+.mic-transcript{display:none;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-size:.85rem;color:#0f172a;line-height:1.6;min-height:44px;max-height:200px;overflow-y:auto;text-align:left;width:100%;word-wrap:break-word;margin-top:.5rem}
 .mic-transcript.active{display:block}
-body.dark .mic-status-bar{background:#0f172a;border-color:rgba(255,255,255,.1)}
-body.dark .mic-transcript{background:#0f172a;border-color:rgba(255,255,255,.1);color:#f8fafc}
+.silence-countdown{display:none;font-size:.72rem;font-weight:600;color:#E7515A;margin-top:.35rem;text-align:center}
+.silence-countdown.active{display:block}
+body.dark .mic-control{background:#0f172a;border-color:rgba(255,255,255,.08)}
+body.dark .mic-control.is-recording{background:rgba(231,81,90,.08);border-color:rgba(231,81,90,.3)}
+body.dark .mic-transcript{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);color:#f8fafc}
 body.dark .mic-label{color:#94a3b8}
-.chat-actions{display:flex;gap:.5rem;align-items:center}
-.chat-actions button{padding:.5rem 1rem;border-radius:999px;font-size:.75rem}
+body.dark .silence-countdown{color:#fca5a5}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.3)}50%{box-shadow:0 0 0 8px rgba(239,68,68,0)}}
 @keyframes micGlow{0%,100%{box-shadow:0 0 0 0 rgba(231,81,90,.3);background:#fef2f2 !important}50%{box-shadow:0 0 0 10px rgba(231,81,90,0);background:#f8fafc !important}}
 .listening-bar{height:3px;background:#e2e8f0;border-radius:999px;margin-top:.35rem;overflow:hidden;display:none}
@@ -178,17 +191,18 @@ body.dark .countdown-sub{color:#94a3b8}
   .container{padding:1rem .85rem 2rem}
   .subtitle{font-size:.85rem}
   .card{padding:1.25rem}
-  .chat-layout{flex-direction:column !important;padding-top:0}
-  .cam-wrap{position:sticky !important;top:60px !important;flex-direction:row !important;padding:.5rem .75rem !important;gap:.5rem !important;min-width:auto !important;max-width:100% !important;margin-bottom:.5rem;align-items:center !important}
-  .cam-wrap .orb{width:44px !important;height:44px !important}
-  .cam-wrap .orb-name{margin-top:0 !important;font-size:.72rem}
-  .cam-wrap .orb-status{font-size:.58rem}
+  .interviewer-bar{top:50px;padding:.6rem .85rem;gap:.65rem;border-radius:12px}
+  .orb-wrap{width:36px;height:36px}
+  .orb{width:36px;height:36px}
+  .interviewer-name{font-size:.78rem}
+  .interviewer-status{font-size:.65rem}
+  .interview-stats{gap:.4rem}
+  .mic-control{position:sticky;bottom:0;z-index:30;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);padding:.6rem;margin:0 -.85rem;border-top:1px solid #e2e8f0;border-radius:0}
   .msg{padding:.6rem .85rem;font-size:.8rem;line-height:1.55}
   .msg-content{max-width:78%}
   .msg-avatar{width:24px;height:24px;font-size:.6rem}
   .msg-label{font-size:.55rem}
-  .chat-bar{gap:.4rem;padding:.5rem 0}
-  .chat-bar button{padding:.45rem .65rem;font-size:.72rem}
+  .chat-actions button{font-size:.72rem}
   .mic-status-bar{padding:.45rem .75rem}
   .mic-label{font-size:.72rem}
   .mic-transcript{font-size:.78rem;padding:.6rem .85rem}
@@ -197,6 +211,7 @@ body.dark .countdown-sub{color:#94a3b8}
   .score-big{font-size:2.5rem}
   .fb-item{padding:.85rem}
   .fb-text{font-size:.78rem}
+  body.dark .mic-control{background:rgba(15,23,42,.97)}
 }
 body.dark{background:#09090b;color:#f8fafc}
 body.dark a{color:#E7515A}
@@ -205,17 +220,15 @@ body.dark .nav-logo span{color:#f8fafc}
 body.dark .nav-links a{color:#94a3b8}
 body.dark .card{background:#0f172a;border-color:rgba(255,255,255,.06)}
 body.dark label{color:#64748b}
-body.dark input[type="text"],body.dark select{background:#0f172a;border-color:rgba(255,255,255,.1);color:#f8fafc}
+body.dark input[type="text"],body.dark select,body.dark textarea{background:#0f172a;border-color:rgba(255,255,255,.1);color:#f8fafc}
 body.dark .page-badge{background:rgba(231,81,90,.1);border-color:rgba(231,81,90,.3);color:#E7515A}
 body.dark h1{color:#f8fafc}
 body.dark .subtitle{color:#94a3b8}
 body.dark .msg-ai{background:rgba(231,81,90,.1);border-color:rgba(231,81,90,.3);color:#f8fafc}
 body.dark .msg-typing{background:#0f172a;border-color:rgba(255,255,255,.1)}
-body.dark .chat-bar{border-color:rgba(255,255,255,.06)}
 body.dark .mic-label{color:#64748b}
 body.dark .mic-label.recording{color:#fca5a5}
 body.dark .end-btn{background:#f8fafc;color:#0f172a}
-body.dark #voiceSelect select{background:#0f172a;border-color:rgba(255,255,255,.1);color:#f8fafc}
 body.dark .listening-bar{background:rgba(255,255,255,.1)}
 body.dark #skipBtn{background:#0f172a;color:#94a3b8;border-color:rgba(255,255,255,.1)}
 body.dark .status-bar{background:#0f172a;border-color:rgba(255,255,255,.06)}
@@ -238,7 +251,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
     <a href="/blog">Blog</a>
     <a href="/match.html#account">Job Seekers</a>
     <a href="/employer-portal.html">Employers</a>
-    <a href="/match.html" class="nav-cta">Get started free</a>
+    <a href="/match.html" class="nav-cta">Find a Job</a>
   </div>
 </nav>
 
@@ -258,38 +271,17 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
   <!-- STEP 1: What role -->
   <div id="setupForm">
     <div class="card">
-      <div style="font-size:.72rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:1px;margin-bottom:.5rem">Step 1 of 3</div>
-      <div style="font-size:1.1rem;font-weight:800;color:#0f172a;margin-bottom:.25rem">Tell us about your interview</div>
-      <div style="font-size:.82rem;color:#64748b;margin-bottom:1.25rem;line-height:1.5">The more detail you give, the more realistic your practice will be.</div>
-
-      <div class="field"><label>Job title <span style="color:#E7515A">*</span></label><input type="text" id="simRole" placeholder="e.g. Pharmacist, Software Engineer, Teacher">
-        <div id="roleError" style="display:none;font-size:.72rem;color:#ef4444;margin-top:.25rem;font-weight:600">Please enter the job title you're interviewing for</div></div>
-      <div class="field"><label>Company (optional)</label><input type="text" id="simCompany" placeholder="e.g. Xero, Fisher &amp; Paykel, Countdown"></div>
-
+      <div style="font-size:.72rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:1px;margin-bottom:.75rem">Step 1 of 3 — Your Interview</div>
+      <div class="field"><label>What role are you interviewing for?</label><input type="text" id="simRole" placeholder="e.g. Pharmacist, Software Engineer, Teacher"></div>
+      <div class="field"><label>Which company? (optional)</label><input type="text" id="simCompany" placeholder="e.g. Xero, Fisher &amp; Paykel, Countdown"></div>
+      <div class="field"><label>Paste the job ad description (optional — for more relevant questions)</label><textarea id="simJobDesc" placeholder="Copy and paste the full job advertisement here. The AI will ask questions tailored to the specific role requirements..." rows="4" style="width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:#0f172a;outline:none;resize:vertical;line-height:1.6"></textarea></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
-        <div class="field"><label>Your level</label>
-          <select id="simLevel"><option value="Graduate / Entry-level">Graduate / Entry-level</option><option value="Mid-level (2-5 years)" selected>Mid-level (2-5 years)</option><option value="Senior (5+ years)">Senior (5+ years)</option><option value="Executive / Leadership">Executive / Leadership</option></select>
-          <div style="font-size:.68rem;color:#94a3b8;margin-top:.25rem">Questions match your experience</div>
-        </div>
         <div class="field"><label>Interview style</label>
-          <select id="simStyle"><option value="Standard">Standard</option><option value="Behavioural">Behavioural (STAR method)</option><option value="Values-based">Values-based (NZ public sector)</option><option value="Panel">Panel (multiple interviewers)</option><option value="Technical">Technical</option><option value="Competency">Competency-based</option><option value="Casual">Casual / coffee chat</option></select>
-          <div style="font-size:.68rem;color:#94a3b8;margin-top:.25rem">Not sure? Standard works for most</div>
+          <select id="simStyle"><option value="Standard">Standard</option><option value="Behavioural">Behavioural (STAR method)</option><option value="Technical">Technical</option><option value="Casual">Casual / coffee chat</option></select>
         </div>
-      </div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
-        <div class="field"><label>Interview round</label>
-          <select id="simRound"><option value="Phone screen">Phone screen</option><option value="First interview" selected>First interview</option><option value="Technical / Panel">Technical / Panel</option><option value="Final round">Final round</option></select>
+        <div class="field"><label>How many questions?</label>
+          <select id="simCount"><option value="5">5 (10 min)</option><option value="8">8 (20 min)</option><option value="10">10 (30 min)</option></select>
         </div>
-        <div class="field"><label>Questions</label>
-          <select id="simCount"><option value="5">5 questions (~10 min)</option><option value="8">8 questions (~20 min)</option><option value="10">10 questions (~30 min)</option></select>
-        </div>
-      </div>
-
-      <div class="field" style="margin-top:.25rem">
-        <label style="display:flex;align-items:center;gap:.35rem">Paste the job ad <span style="font-size:.62rem;font-weight:600;color:#E7515A;background:#fef2f2;padding:.15rem .45rem;border-radius:999px">recommended</span></label>
-        <textarea id="simJD" rows="3" style="width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:#0f172a;outline:none;resize:vertical" placeholder="Paste the job listing here and the interviewer will ask about the actual requirements, responsibilities, and skills they're looking for..."></textarea>
-        <div style="font-size:.68rem;color:#94a3b8;margin-top:.25rem">This makes the biggest difference — questions will match the real job</div>
       </div>
     </div>
     <button class="btn" onclick="goStep2()">Next — Set Up Audio</button>
@@ -300,36 +292,15 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
     <div class="card">
       <div style="font-size:.72rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:1px;margin-bottom:.75rem">Step 2 of 3 — Audio</div>
       <div class="field"><label>Choose your interviewer voice</label>
-        <select id="voiceGender">
-          <optgroup label="Female Voices">
-            <option value="aura-asteria-en">Asteria — Warm &amp; Professional</option>
-            <option value="aura-luna-en">Luna — Calm &amp; Friendly</option>
-            <option value="aura-stella-en">Stella — Clear &amp; Confident</option>
-            <option value="aura-athena-en">Athena — Authoritative</option>
-            <option value="aura-hera-en">Hera — Mature &amp; Composed</option>
-          </optgroup>
-          <optgroup label="Male Voices">
-            <option value="aura-orion-en">Orion — Deep &amp; Professional</option>
-            <option value="aura-arcas-en">Arcas — Warm &amp; Approachable</option>
-            <option value="aura-perseus-en">Perseus — Confident &amp; Clear</option>
-            <option value="aura-angus-en">Angus — Casual &amp; Friendly</option>
-            <option value="aura-orpheus-en">Orpheus — Natural &amp; Smooth</option>
-            <option value="aura-helios-en">Helios — Energetic</option>
-            <option value="aura-zeus-en">Zeus — Commanding</option>
-          </optgroup>
-          <optgroup label="No Voice">
-            <option value="off">Text only — no voice</option>
-          </optgroup>
-        </select>
-        <button type="button" id="previewBtn" onclick="previewVoice()" style="margin-top:.5rem;background:none;border:1px solid #e2e8f0;border-radius:999px;padding:.4rem 1rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:600;color:#64748b;cursor:pointer">&#9654; Preview voice</button>
+        <select id="voiceGender"><option value="female">Female interviewer (speaks questions aloud)</option><option value="male">Male interviewer (speaks questions aloud)</option><option value="off">No voice — text only</option></select>
       </div>
       <div style="display:flex;flex-direction:column;gap:.65rem;margin-top:.5rem">
-        <label style="display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;font-size:.85rem;color:#475569;line-height:1.5"><input type="checkbox" id="autoSendMode" style="accent-color:#E7515A;width:18px;height:18px;margin-top:2px" checked> <span><strong style="color:#0f172a">Auto-send answers</strong><br><span style="font-size:.78rem;color:#94a3b8">When you stop talking for 5 seconds, your answer submits automatically</span></span></label>
+        <label style="display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;font-size:.85rem;color:#475569;line-height:1.5"><input type="checkbox" id="autoSendMode" style="accent-color:#E7515A;width:18px;height:18px;margin-top:2px" checked> <span><strong style="color:#0f172a">Auto-send answers</strong><br><span style="font-size:.78rem;color:#94a3b8">When you stop talking for 4 seconds, your answer submits automatically</span></span></label>
       </div>
       <div id="step2MicStatus" style="margin-top:1rem;padding:.75rem;border-radius:12px;text-align:center;font-size:.82rem;font-weight:600;display:none"></div>
     </div>
     <div style="display:flex;gap:.5rem">
-      <button class="btn" onclick="document.getElementById('step2').style.display='none';document.getElementById('setupForm').style.display='block';window.scrollTo({top:0,behavior:'smooth'})" style="background:#f8fafc;color:#64748b;border:1px solid #e2e8f0;box-shadow:none;flex:0 0 auto;width:auto;padding:.85rem 1.5rem">Back</button>
+      <button class="btn" onclick="document.getElementById('step2').style.display='none';document.getElementById('setupForm').style.display='block'" style="background:#f8fafc;color:#64748b;border:1px solid #e2e8f0;box-shadow:none;flex:0 0 auto;width:auto;padding:.85rem 1.5rem">Back</button>
       <button class="btn" onclick="prepInterview()" style="flex:1">Next — Review</button>
     </div>
   </div>
@@ -337,25 +308,27 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
   <!-- STEP 3: Ready screen -->
   <div id="readyScreen" style="display:none">
     <div class="card" style="padding:2rem">
-      <div style="font-size:.72rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:1px;margin-bottom:.5rem">Step 3 of 3</div>
-      <div style="font-size:1.15rem;font-weight:800;color:#0f172a;margin-bottom:.25rem">You're about to start</div>
-      <div style="font-size:.82rem;color:#64748b;margin-bottom:1.25rem">The interviewer will ask questions one at a time. Speak naturally — your mic is on automatically. You'll review your answer before it sends.</div>
+      <div style="font-size:.72rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem">Step 3 of 3 — Ready?</div>
 
-      <div style="font-size:.72rem;font-weight:700;color:#0f172a;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.6rem">Quick tips from recruiters</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:1.25rem">
-        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem"><div style="font-size:.78rem;font-weight:700;color:#0f172a">Sit up straight</div><div style="font-size:.68rem;color:#64748b">Good posture projects confidence, even over the phone</div></div>
-        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem"><div style="font-size:.78rem;font-weight:700;color:#0f172a">Eye contact</div><div style="font-size:.68rem;color:#64748b">Look at the camera or screen, not down at your notes</div></div>
-        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem"><div style="font-size:.78rem;font-weight:700;color:#0f172a">Slow down</div><div style="font-size:.68rem;color:#64748b">Pause before answering. 130-150 words per minute is ideal</div></div>
-        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem"><div style="font-size:.78rem;font-weight:700;color:#0f172a">Use examples</div><div style="font-size:.68rem;color:#64748b">Specific real stories beat generic answers every time</div></div>
-        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem"><div style="font-size:.78rem;font-weight:700;color:#0f172a">Avoid fillers</div><div style="font-size:.68rem;color:#64748b">Replace "um" and "like" with a brief pause instead</div></div>
-        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem"><div style="font-size:.78rem;font-weight:700;color:#0f172a">Smile</div><div style="font-size:.68rem;color:#64748b">It comes through in your voice and sets a warm tone</div></div>
+      <div style="font-size:1.1rem;font-weight:800;color:#0f172a;margin-bottom:1.25rem">Here is how your interview will work:</div>
+
+      <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem">
+        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#fef2f2;border:1px solid #fecaca;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#c7313a">1</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">AI asks you a question</div><div style="font-size:.78rem;color:#64748b">The interviewer will introduce themselves, then ask questions one at a time.</div></div></div>
+
+        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#fef2f2;border:1px solid #fecaca;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#c7313a">2</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">You answer</div><div style="font-size:.78rem;color:#64748b">The microphone starts automatically. Just speak your answer naturally.</div></div></div>
+
+        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#fef2f2;border:1px solid #fecaca;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#c7313a">3</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">Submit your answer</div><div style="font-size:.78rem;color:#64748b">When you stop speaking for 5 seconds, your answer submits automatically.</div></div></div>
+
+        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#fef2f2;border:1px solid #fecaca;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#c7313a">4</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">Skip or finish anytime</div><div style="font-size:.78rem;color:#64748b">Click <strong>Skip</strong> to move on. Click <strong>End Interview</strong> when you have answered enough.</div></div></div>
+
+        <div style="display:flex;gap:.75rem;align-items:flex-start"><div style="min-width:28px;height:28px;background:#fef2f2;border:1px solid #fecaca;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#c7313a">5</div><div><div style="font-size:.88rem;font-weight:700;color:#0f172a">Get your score</div><div style="font-size:.78rem;color:#64748b">AI scores you out of 100 with feedback on every answer. Learn what to improve.</div></div></div>
       </div>
 
-      <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1rem;flex-wrap:wrap">
+      <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1.25rem;flex-wrap:wrap">
         <div class="countdown-check" id="micStatus">&#9675; Microphone</div>
       </div>
       <button class="btn" id="beginBtn" onclick="beginCountdown()" disabled style="max-width:320px;margin:0 auto">Setting up...</button>
-      <div style="text-align:center;margin-top:.5rem"><button onclick="document.getElementById('readyScreen').style.display='none';document.getElementById('step2').style.display='block';window.scrollTo({top:0,behavior:'smooth'})" style="background:none;border:none;color:#64748b;font-size:.78rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Back to settings</button></div>
+      <div style="text-align:center;margin-top:.5rem"><button onclick="document.getElementById('readyScreen').style.display='none';document.getElementById('step2').style.display='block'" style="background:none;border:none;color:#64748b;font-size:.78rem;cursor:pointer;font-family:Inter,sans-serif">Back to settings</button></div>
     </div>
   </div>
 
@@ -368,45 +341,41 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
   <div id="chatSection" style="display:none">
     <input type="hidden" id="audioToggle" value="1">
 
-    <!-- Status bar: question, timer, filler count — always visible -->
-    <div class="status-bar">
-      <div class="stat-item" id="qCounter">Q <strong>1</strong> / 5</div>
-      <div class="stat-item" id="timerDisplay" style="display:none"><span id="timerText">2:00</span></div>
-      <div class="stat-item" id="wpmStat" style="background:#f8fafc;padding:.25rem .6rem;border-radius:999px;border:1px solid #e2e8f0">WPM: <strong id="wpmCount" style="color:#0f172a">&mdash;</strong></div>
-      <div class="stat-item" id="fillerStat" style="background:#f8fafc;padding:.25rem .6rem;border-radius:999px;border:1px solid #e2e8f0">Fillers: <strong id="fillerCount" style="color:#E7515A">0</strong></div>
+    <!-- Sticky interviewer bar with orb — always visible -->
+    <div class="interviewer-bar" id="interviewerBar">
+      <div class="orb-wrap">
+        <div class="orb thinking" id="orb"></div>
+      </div>
+      <div class="interviewer-info">
+        <div class="interviewer-name" id="avatarName">Sarah</div>
+        <div class="interviewer-status status-thinking" id="avatarStatus">Ready</div>
+      </div>
+      <div class="interview-stats">
+        <div class="stat-item" id="qCounter">Q <strong>1</strong> / 5</div>
+        <div class="stat-item" id="timerDisplay" style="display:none"><span id="timerText" style="color:#c7313a;font-weight:700">2:00</span></div>
+      </div>
     </div>
 
-    <!-- Avatar + Chat side by side -->
-    <div class="chat-layout" style="display:flex;gap:.5rem;margin-top:.5rem;align-items:flex-start">
-      <div class="cam-wrap" id="camWrap">
-        <div class="orb" id="orbEl"></div>
-        <div class="orb-name" id="avatarName">Asteria</div>
-        <div class="orb-status" id="avatarStatus" style="color:#94a3b8">Ready</div>
+    <!-- Chat messages -->
+    <div class="card" style="padding:.75rem;margin:0">
+      <div class="chat-msgs" id="chatMessages"></div>
+    </div>
+
+    <!-- Mic control area -->
+    <div class="mic-control" id="micControl">
+      <div class="mic-status-bar" id="micStatusBar" onclick="if(!recog&&!_aiSpeaking&&!_sending)toggleMic()" style="cursor:pointer">
+        <div class="mic-dot" id="micDot" onclick="if(!recog&&!_aiSpeaking&&!_sending)toggleMic()" style="cursor:pointer"></div>
+        <div class="mic-label" id="micLabel">Interviewer speaking...</div>
+        <div class="audio-bars" id="audioBars"><div class="audio-bar"></div><div class="audio-bar"></div><div class="audio-bar"></div><div class="audio-bar"></div><div class="audio-bar"></div></div>
       </div>
-      <video id="camVideo" autoplay muted playsinline style="display:none"></video>
-      <div class="card" style="padding:.75rem;flex:1;margin:0">
-        <div class="chat-msgs" id="chatMessages"></div>
-        <div class="listening-bar" id="listenBar"><div class="listening-fill" id="listenFill"></div></div>
-        <div class="chat-bar" id="chatInput">
-          <textarea id="userInput" style="display:none" rows="1"></textarea>
-          <button id="micBtn" style="display:none"></button>
-          <div class="mic-status-bar" id="micStatusBar">
-            <div class="mic-dot" id="micDot"></div>
-            <div class="mic-label" id="micLabel">Interviewer speaking...</div>
-            <div class="wave-bars" id="waveBars"><span></span><span></span><span></span><span></span><span></span></div>
-          </div>
-          <div id="starCoach" style="display:none;background:linear-gradient(135deg,#fef2f2,#fff7ed);border:1px solid #fed7aa;border-radius:12px;padding:.6rem 1rem;width:100%;animation:msgIn .35s ease">
-            <div id="starCoachText" style="font-size:.78rem;font-weight:600;color:#c7313a;line-height:1.4"></div>
-            <div style="display:flex;gap:.35rem;margin-top:.4rem">
-              <span class="star-dot" id="starS">S</span><span class="star-dot" id="starT">T</span><span class="star-dot" id="starA">A</span><span class="star-dot" id="starR">R</span>
-            </div>
-          </div>
-          <div class="mic-transcript" id="micTranscript"></div>
-          <div class="chat-actions">
-            <button id="sendBtn" onclick="sendAnswer()" style="display:none">Send</button>
-            <button onclick="skipQuestion()" style="background:#f8fafc;color:#64748b;border:1px solid #e2e8f0;font-size:.72rem;border-radius:999px;padding:.5rem 1rem">Skip question</button>
-          </div>
-        </div>
+      <div class="mic-transcript" id="micTranscript"></div>
+      <div class="listening-bar" id="listenBar" style="display:none"><div class="listening-fill" id="listenFill"></div></div>
+      <div class="silence-countdown" id="silenceCountdown"></div>
+      <textarea id="userInput" style="display:none" rows="1"></textarea>
+      <div class="chat-actions" style="margin-top:.6rem">
+        <button id="sendBtn" onclick="sendAnswer()" style="display:none;padding:.55rem 1.2rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:Inter,sans-serif;font-size:.78rem;font-weight:700;cursor:pointer">Send Answer</button>
+        <button id="keepTalkingBtn" onclick="toggleMic()" style="display:none;padding:.55rem 1.2rem;background:#fff;color:#E7515A;border:2px solid #E7515A;border-radius:999px;font-family:Inter,sans-serif;font-size:.78rem;font-weight:700;cursor:pointer">&#127908; Keep Talking</button>
+        <button id="skipBtn" onclick="skipQuestion()" style="background:#f8fafc;color:#64748b;border:1px solid #e2e8f0;font-size:.72rem;border-radius:999px;padding:.5rem 1rem;font-family:Inter,sans-serif;cursor:pointer">Skip</button>
       </div>
     </div>
     <button class="end-btn" id="endBtn" onclick="endInterview()">End Interview &amp; Get Score</button>
@@ -432,8 +401,8 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
     <div style="width:48px;height:48px;background:linear-gradient(135deg,#E7515A,#c7313a);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
     <div style="font-size:1.2rem;font-weight:800;color:#0f172a;margin-bottom:.35rem">Enter your email for unlimited access</div>
     <div style="font-size:.82rem;color:#64748b;margin-bottom:1.25rem">All 12 AI tools stay free forever. We will send you weekly NZ job matches.</div>
-    <input type="email" id="gate-email" placeholder="your@email.com" style="width:100%;padding:.75rem 1rem;border:1px solid #e2e8f0;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;outline:none;margin-bottom:.75rem;color:#0f172a">
-    <button onclick="submitGateEmail()" id="gate-btn" style="width:100%;padding:.85rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer">Continue</button>
+    <input type="email" id="gate-email" placeholder="your@email.com" style="width:100%;padding:.75rem 1rem;border:1px solid #e2e8f0;border-radius:12px;font-family:Inter,sans-serif;font-size:15px;outline:none;margin-bottom:.75rem;color:#0f172a">
+    <button onclick="submitGateEmail()" id="gate-btn" style="width:100%;padding:.85rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:Inter,sans-serif;font-size:.9rem;font-weight:700;cursor:pointer">Continue</button>
     <div style="font-size:.68rem;color:#94a3b8;margin-top:.75rem">No spam. Unsubscribe anytime.</div>
   </div>
 </div>
@@ -447,78 +416,23 @@ function checkGate(cb){if(localStorage.getItem('fmaj_email')||getCookie('fmaj_em
 function submitGateEmail(){var e=document.getElementById('gate-email').value.trim();if(!e||e.indexOf('@')===-1){document.getElementById('gate-email').style.borderColor='#ef4444';return;}document.getElementById('gate-btn').textContent='Saving...';document.getElementById('gate-btn').disabled=true;localStorage.setItem('fmaj_email',e);setCookie('fmaj_email',e,365);localStorage.setItem('fmaj_uses','999');setCookie('fmaj_uses','999',365);fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',email:e,password:'__tool_gate__',name:e.split('@')[0],emailAlerts:true})}).catch(function(){});document.getElementById('email-gate').style.display='none';if(_gateCallback){_gateCallback();_gateCallback=null;}}
 
 /* Interview state */
-var msgs=[],qCount=0,maxQ=5,iData={role:'',company:'',style:'',level:'',round:'',jd:'',qa:[]},audioEnabled=false;
-var _lastWasProbe=false,_probedThisQ=false;
+var msgs=[],qCount=0,maxQ=5,iData={role:'',company:'',style:'',jobDesc:'',qa:[]},audioEnabled=false,recog=null;
 var timedMode=false,answerTimer=null,timeLeft=0;
-var autoSend=true,silenceDelay=5000;
-var fillerWords=0;
-var fillerRegex=/\b(um+|uh+|ah+|er+|like|you know|basically|literally|sort of|kind of)\b/gi;
-var _prepRole='',_micStream=null;
-var _recStart=null;
-var _aiSpeaking=false,_speakTimeout=null,_waitingForAI=false;
-var _micRetries=0,_maxMicRetries=3;
-var _sending=false,_accumulated='',recog=null,_currentStarStage=-1;
-/* Voice maps */
-var voiceGenders={'aura-asteria-en':'female','aura-luna-en':'female','aura-stella-en':'female','aura-athena-en':'female','aura-hera-en':'female','aura-orion-en':'male','aura-arcas-en':'male','aura-perseus-en':'male','aura-angus-en':'male','aura-orpheus-en':'male','aura-helios-en':'male','aura-zeus-en':'male'};
-var voiceNames={'aura-asteria-en':'Asteria','aura-luna-en':'Luna','aura-stella-en':'Stella','aura-athena-en':'Athena','aura-hera-en':'Hera','aura-orion-en':'Orion','aura-arcas-en':'Arcas','aura-perseus-en':'Perseus','aura-angus-en':'Angus','aura-orpheus-en':'Orpheus','aura-helios-en':'Helios','aura-zeus-en':'Zeus'};
+var autoSend=true,silenceTimer=null,silenceDelay=4000;
+var _interviewEnded=false;
+var _closingPhase=false;
+var _closingAsked=false;
+var _interviewStartTime=0;
 
-function vGender(v){return voiceGenders[v]||'female';}
-function vName(v){return voiceNames[v]||'Interviewer';}
-
-/* Build competency-based interviewer system prompt */
-function buildSysPrompt(phase){
-  var vv=document.getElementById('voiceGender').value;
-  var iName=vName(vv);if(vv==='off')iName=document.getElementById('avatarName').textContent;
-  var s="You are "+iName+", a senior NZ interviewer conducting a "+iData.round+" ("+iData.style+" style) for a "+iData.level+" "+iData.role+" role"+(iData.company?" at "+iData.company:"")+".\n\n";
-  if(iData.jd){s+="JOB DESCRIPTION (tailor questions to these actual requirements):\n"+iData.jd.substring(0,1500)+"\n\n";}
-  s+="METHODOLOGY — follow modern competency-based interviewing best practice:\n";
-  s+="- Calibrate difficulty to "+iData.level+" seniority (don't over-question a graduate; don't under-question a senior)\n";
-  if(iData.style==='Behavioural')s+="- Frame every question to prompt a past-situation STAR answer (Situation, Task, Action, Result)\n";
-  if(iData.style==='Technical')s+="- Mix role-specific technical questions with behavioural/teamwork ones\n";
-  if(iData.style==='Values-based'){s+="- VALUES-BASED style (dominant in NZ public sector: government, DHBs, councils, universities)\n";s+="- Frame questions around organisational values: integrity, manaakitanga (service/care), respect, equity, innovation\n";s+="- Include at least one question on Te Tiriti o Waitangi awareness (partnership, participation, protection) for public sector roles\n";s+="- Probe for cultural competence, community impact, and commitment to equitable outcomes\n";}
-  if(iData.style==='Panel'){s+="- PANEL style: you are the lead interviewer joined by 2 colleagues. Occasionally say 'My colleague from the team would like to ask...' to simulate panel dynamic\n";s+="- Mix perspectives: one person asks behavioural, another asks technical/role-specific, another asks values/culture fit\n";s+="- NZ panels are thorough but warm \u2014 not adversarial\n";}
-  if(iData.style==='Competency')s+="- COMPETENCY-BASED: each question targets a specific competency (leadership, communication, problem-solving, teamwork, adaptability, stakeholder management). Ask for past examples demonstrating each\n";
-  if(iData.style==='Casual')s+="- Keep tone conversational, like a coffee chat, but still gather signal\n";
-  s+="- ONE question at a time, keep it to 1-2 sentences\n";
-  s+="- Vary question types: background, competency (leadership/teamwork/problem-solving/adaptability), role-specific, situational\n";
-  s+="- Be professional, warm, encouraging \u2014 never condescending\n\n";
-  s+="NZ CULTURAL CONTEXT:\n";
-  s+="- Open with 'Kia ora' \u2014 you are based in Aotearoa New Zealand\n";
-  s+="- Reference NZ workplace culture naturally: flat hierarchy, team-first, work-life balance, whanaungatanga (relationship-building)\n";
-  s+="- NZ values humility \u2014 if a candidate undersells themselves, probe gently ('Can you tell me more about your specific role?') rather than penalising modesty\n";
-  s+="- Cultural fit and team contribution matter as much as individual capability in NZ workplaces\n";
-  s+="- Use NZ English sparingly and naturally ('keen', 'sweet as', 'sorted', 'mahi')\n";
-  if(iData.level==='Senior (5+ years)'||iData.level==='Executive / Leadership')s+="- For senior roles, reference the NZ Leadership Success Profile (LSP) competencies where relevant\n";
-  s+="\n";
-  if(phase==='start'){
-    s+="PHASE: Opening. Greet with 'Kia ora' and introduce yourself as "+iName+". Ask a warm opening question about their background and what drew them to this role.\n";
-  } else if(phase==='answer'){
-    s+="Question "+qCount+" of "+maxQ+". You just received the candidate's answer.\n\n";
-    s+="DECIDE:\n";
-    s+="(A) If their answer was vague, generic, hypothetical when a real example was asked, or missing the outcome/result → ask ONE brief follow-up probe (e.g. 'Can you walk me through a specific time?', 'What was the measurable outcome?', 'What was your role specifically?'). Start your response with [PROBE] so the system tracks it.\n";
-    s+="(B) If the answer had enough depth (OR you have already probed this topic once) → move on to your next question.\n\n";
-    if(_probedThisQ)s+="You have ALREADY probed this topic — do NOT probe again. Move on.\n";
-    if(qCount>=maxQ){s+="This is your FINAL question. Ask 'Do you have any questions for us about the role or the team?' — then when they respond, give a thoughtful, realistic answer (as if you actually work there) and close warmly.\n";}
-    else if(qCount>=maxQ-1){s+="For this question, ask a realistic situational/scenario question tied to the role ('What would you do if...').\n";}
-    else if(qCount===2){s+="This question should probe a core competency (leadership, teamwork, conflict, or problem-solving).\n";}
-  } else if(phase==='skip'){
-    s+="Question "+qCount+" of "+maxQ+". The candidate skipped. Move to your next question without commenting on the skip.\n";
-  } else if(phase==='timeout'){
-    s+="Question "+qCount+" of "+maxQ+". The candidate did not answer in time. Acknowledge briefly ('No worries, let's keep going') and move to your next question.\n";
-  }
-  s+="\nNever number your questions. Never wrap up the interview yourself — the candidate ends it via a button.";
-  return s;
-}
+var _prepRole='';
+var _micStream=null;
 
 function goStep2(){
   var role=document.getElementById('simRole').value.trim();
-  var errEl=document.getElementById('roleError');
-  var inp=document.getElementById('simRole');
-  if(!role){errEl.style.display='block';inp.style.borderColor='#ef4444';inp.focus();return;}
-  errEl.style.display='none';inp.style.borderColor='';
+  if(!role){alert('Please enter the job title you are interviewing for.');return;}
   document.getElementById('setupForm').style.display='none';
   document.getElementById('step2').style.display='block';
-  window.scrollTo({top:0,behavior:'smooth'});
+  // Request mic permission immediately when step 2 appears
   requestMicEarly();
 }
 
@@ -566,11 +480,10 @@ function _doPrep(){
   timedMode=true;
   autoSend=document.getElementById('autoSendMode').checked;
   maxQ=parseInt(document.getElementById('simCount').value)||5;
-  fillerWords=0;_totalWords=0;_totalSpeakDur=0;
+  iData.jobDesc=(document.getElementById('simJobDesc').value||'').trim();
 
   document.getElementById('step2').style.display='none';
   document.getElementById('readyScreen').style.display='block';
-  window.scrollTo({top:0,behavior:'smooth'});
 
   var micEl=document.getElementById('micStatus');
   var beginBtn=document.getElementById('beginBtn');
@@ -578,7 +491,12 @@ function _doPrep(){
   if(_micStream){
     micEl.className='countdown-check ok';micEl.innerHTML='&#10003; Microphone ready';
   } else {
-    micEl.className='countdown-check wait';micEl.innerHTML='&#127908; Microphone not enabled — enable in Step 2';
+    var hasSR=!!(window.SpeechRecognition||window.webkitSpeechRecognition);
+    if(hasSR){
+      micEl.className='countdown-check wait';micEl.innerHTML='&#127908; Microphone not enabled — enable in Step 2';
+    } else {
+      micEl.className='countdown-check wait';micEl.innerHTML='&#10007; Voice not supported on this browser — please use Chrome';
+    }
   }
   beginBtn.disabled=false;beginBtn.textContent='Begin Interview';
 }
@@ -595,8 +513,9 @@ function beginCountdown(){
     numEl.style.animation='none';numEl.offsetHeight;numEl.style.animation='countPop .5s ease';
     if(count<=0){
       document.getElementById('countdownScreen').style.display='none';
-      var cw=document.getElementById('camWrap');cw.style.display=window.innerWidth<=640?'flex':'block';
+      document.getElementById('interviewerBar').classList.add('visible');
       startInterview(_prepRole);
+      setTimeout(function(){document.getElementById('interviewerBar').scrollIntoView({behavior:'smooth',block:'start'});},300);
       return;
     }
     count--;
@@ -613,124 +532,156 @@ function startInterview(role){
 async function _doStart(role){
   var company=document.getElementById('simCompany').value.trim();
   var style=document.getElementById('simStyle').value;
-  var level=document.getElementById('simLevel').value;
-  var round=document.getElementById('simRound').value;
-  var jd=document.getElementById('simJD').value.trim();
-  iData={role:role,company:company,style:style,level:level,round:round,jd:jd,qa:[]};
-  _lastWasProbe=false;_probedThisQ=false;
+  var jobDesc=iData.jobDesc||'';
+  iData={role:role,company:company,style:style,jobDesc:jobDesc,qa:[]};
+  _interviewEnded=false;_closingPhase=false;_closingAsked=false;_interviewStartTime=Date.now();
   document.getElementById('pageHeader').style.display='none';
   document.getElementById('chatSection').style.display='block';
-  var vv=document.getElementById('voiceGender').value;
-  var vg=vGender(vv);var iName=vName(vv);
-  if(vv==='off'){iName=(Math.random()>0.5?'James':'Sarah');vg=(iName==='James'?'male':'female');}
+  var vg=document.getElementById('voiceGender').value;
+  var iName=(vg==='male'?'James':'Sarah');
   document.getElementById('avatarName').textContent=iName;
+  setOrb('thinking');
   if(timedMode){document.getElementById('timerDisplay').style.display='flex';}
-  document.getElementById('fillerCount').textContent='0';
-  document.getElementById('wpmCount').textContent='\u2014';
-  msgs=[{role:'user',content:'Start the interview now. Introduce yourself briefly and ask your opening question.'}];
+  msgs=[{role:'user',content:'Start the interview. Introduce yourself briefly and ask your first question.'}];
   showTyping();dis(true);
   try{
-    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:buildSysPrompt('start'),messages:msgs})});
+    var sysParts="You are "+iName+", a professional NZ job interviewer conducting a "+style+" interview for a "+role+" position"+(company?" at "+company:"")+" in New Zealand. Your name is "+iName+". Introduce yourself as "+iName+" at the start. Ask ONE question at a time. Be professional and warm. Use NZ workplace context. Do not number questions.";
+    if(jobDesc){sysParts+=" The candidate applied for this specific job listing. Here is the job ad: "+jobDesc.substring(0,2000)+". Ask questions that are specifically relevant to the responsibilities and requirements in this job ad.";}
+    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sysParts,messages:msgs})});
     var d=await r.json();var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
     if(!t){throw new Error('empty');}
     msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');speak(t);qCount=1;updC();dis(false);startTimer();
   }catch(e){hideTyping();addMsg('Could not connect — please refresh and try again.','ai');dis(false);}
 }
 
+var _sending=false;
 async function sendAnswer(){
-  if(_sending)return;
+  if(_sending||_interviewEnded)return;
   var inp=document.getElementById('userInput');var ans=inp.value.trim();
-  if(!ans)return;
+  if(!ans){return;}
   _sending=true;
   stopTimer();clearTimeout(_speakTimeout);_waitingForAI=true;_aiSpeaking=false;
+  clearTimeout(silenceTimer);
   if(recog){recog.stop();recog=null;document.getElementById('listenBar').style.display='none';}
-  var sc=document.getElementById('starCoach');if(sc)sc.style.display='none';
-  inp.value='';addMsg(ans,'user');countFillers(ans);updateMicUI('waiting','Processing your answer...');
+  inp.value='';_accumulated='';inp.style.height='44px';
+  document.getElementById('micTranscript').textContent='';document.getElementById('micTranscript').className='mic-transcript';
+  var sc3=document.getElementById('silenceCountdown');if(sc3){sc3.className='silence-countdown';sc3.textContent='';}
+  document.getElementById('sendBtn').style.display='none';
+  document.getElementById('keepTalkingBtn').style.display='none';
+  addMsg(ans,'user');updateMicUI('waiting','Processing your answer...');
   var lastAi='';for(var i=msgs.length-1;i>=0;i--){if(msgs[i].role==='assistant'){lastAi=msgs[i].content;break;}}
-  /* If the last AI message was a probe, merge this answer onto the existing Q/A pair */
-  if(_lastWasProbe&&iData.qa.length){
-    iData.qa[iData.qa.length-1].a+=' '+ans;
-  }else{
-    iData.qa.push({q:lastAi,a:ans});
+  iData.qa.push({q:lastAi,a:ans});msgs.push({role:'user',content:ans});qCount++;updC();
+  /* Closing phase: user answered the closing question — end everything */
+  if(_closingPhase&&_closingAsked){
+    _interviewEnded=true;_sending=false;_waitingForAI=false;_aiSpeaking=false;
+    clearTimeout(_speakTimeout);stopTimer();
+    releaseMic();
+    try{window.speechSynthesis.cancel();}catch(e){}
+    var tyMsg='Thank you so much for your time today. It was great speaking with you. Click below to get your score and feedback.';
+    addMsg(tyMsg,'ai');
+    document.getElementById('micControl').style.display='none';
+    document.getElementById('endBtn').style.display='block';
+    setOrb('speaking');speakFinal(tyMsg);
+    return;
   }
-  msgs.push({role:'user',content:ans});qCount++;updC();setAvatar('thinking');dis(true);showTyping();
+  /* Last question answered — ask a closing question */
+  if(qCount>maxQ&&!_closingPhase){
+    _closingPhase=true;_closingAsked=false;_sending=false;
+    stopTimer();clearTimeout(silenceTimer);
+    setAvatar('thinking');dis(true);showTyping();
+    var trimmedC=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
+    var sysC="You are a professional NZ job interviewer wrapping up a "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. You have asked all your questions. Now briefly thank the candidate for their answers and ask if there is anything else they would like to add or any questions they have for you. Keep it short — 2 sentences max.";
+    fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sysC,messages:trimmedC})}).then(function(r){return r.json();}).then(function(d){
+      if(_interviewEnded)return;
+      var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
+      if(!t)throw new Error('empty');
+      _closingAsked=true;
+      msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;speak(t);dis(false);
+    }).catch(function(){if(_interviewEnded)return;_closingAsked=true;_waitingForAI=false;hideTyping();addMsg('Is there anything else you would like to add or any questions for me?','ai');speak('Is there anything else you would like to add or any questions for me?');dis(false);});
+    return;
+  }
+  setAvatar('thinking');dis(true);showTyping();
   var trimmed=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
   try{
-    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:buildSysPrompt('answer'),messages:trimmed})});
+    var sys="You are a professional NZ job interviewer. "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. Question "+qCount+" of "+maxQ+". Ask ONE question. Do not say thank you or wrap up the interview. Just ask the question.";
+    if(iData.jobDesc){sys+=" Job ad context: "+iData.jobDesc.substring(0,1000)+". Ask questions relevant to this role.";}
+    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:trimmed})});
     var d=await r.json();var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):(d.error||'');
-    if(!t)throw new Error('empty');
-    /* Probe detection */
-    var isProbe=/^\s*\[PROBE\]/i.test(t);
-    if(isProbe){t=t.replace(/^\s*\[PROBE\]\s*/i,'');_lastWasProbe=true;_probedThisQ=true;qCount--;updC();}
-    else{_lastWasProbe=false;_probedThisQ=false;}
+    if(!t){throw new Error('empty');}
     msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;_sending=false;speak(t);dis(false);
-    if(qCount>maxQ){stopTimer();document.getElementById('timerDisplay').style.display='none';setTimeout(function(){document.getElementById('endBtn').style.display='block';},1000);}
   }catch(e){_waitingForAI=false;_sending=false;hideTyping();addMsg('Connection issue — tap Skip to move on.','ai');dis(false);qCount--;updC();}
 }
 
 async function skipQuestion(){
-  stopTimer();clearTimeout(_speakTimeout);_waitingForAI=true;_aiSpeaking=false;
+  if(_interviewEnded)return;
+  /* Block skip if closing question is loading or playing */
+  if(_closingPhase&&!_closingAsked)return;
+  stopTimer();clearTimeout(_speakTimeout);clearTimeout(silenceTimer);_waitingForAI=true;_aiSpeaking=false;_sending=false;
   if(recog){recog.stop();recog=null;document.getElementById('listenBar').style.display='none';}
   try{window.speechSynthesis.cancel();}catch(e){}
   var inp=document.getElementById('userInput');
-  if(inp.value.trim()){sendAnswer();return;}
+  inp.value='';
   addMsg('(Skipped)','user');updateMicUI('waiting','Loading next question...');
   var lastAi='';for(var i=msgs.length-1;i>=0;i--){if(msgs[i].role==='assistant'){lastAi=msgs[i].content;break;}}
   iData.qa.push({q:lastAi,a:'(skipped)'});
   msgs.push({role:'user',content:'(The candidate chose to skip this question. Move on to the next one.)'});
   qCount++;updC();
-  if(qCount>maxQ){_waitingForAI=false;document.getElementById('chatInput').style.display='none';document.getElementById('endBtn').style.display='block';document.getElementById('timerDisplay').style.display='none';return;}
+  /* Closing phase: user skipped the closing question — end everything */
+  if(_closingPhase&&_closingAsked){
+    _interviewEnded=true;_waitingForAI=false;_aiSpeaking=false;
+    clearTimeout(_speakTimeout);stopTimer();
+    releaseMic();
+    try{window.speechSynthesis.cancel();}catch(e){}
+    var tyMsg2='Thank you so much for your time today. It was great speaking with you. Click below to get your score and feedback.';
+    addMsg(tyMsg2,'ai');
+    document.getElementById('micControl').style.display='none';
+    document.getElementById('endBtn').style.display='block';
+    setOrb('speaking');speakFinal(tyMsg2);
+    return;
+  }
+  /* Last question skipped — ask closing question */
+  if(qCount>maxQ&&!_closingPhase){
+    _closingPhase=true;_closingAsked=false;
+    stopTimer();clearTimeout(silenceTimer);/* Kill all timers while closing loads */
+    setAvatar('thinking');dis(true);showTyping();
+    var trimmedC2=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
+    var sysC2="You are a professional NZ job interviewer wrapping up a "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. You have asked all your questions. Now briefly thank the candidate for their answers and ask if there is anything else they would like to add or any questions they have for you. Keep it short — 2 sentences max.";
+    fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sysC2,messages:trimmedC2})}).then(function(r){return r.json();}).then(function(d){
+      if(_interviewEnded)return;
+      var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
+      if(!t)throw new Error('empty');
+      _closingAsked=true;
+      msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;speak(t);dis(false);
+    }).catch(function(){if(_interviewEnded)return;_closingAsked=true;_waitingForAI=false;hideTyping();addMsg('Is there anything else you would like to add or any questions for me?','ai');speak('Is there anything else you would like to add or any questions for me?');dis(false);});
+    return;
+  }
   setAvatar('thinking');dis(true);showTyping();
-  _lastWasProbe=false;_probedThisQ=false;
   var trimmed2=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
   try{
-    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:buildSysPrompt('skip'),messages:trimmed2})});
+    var sys="You are a professional NZ job interviewer. "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. Question "+qCount+" of "+maxQ+". The candidate skipped the previous question. Move on to your next question without commenting on it.";
+    if(iData.jobDesc){sys+=" Job ad context: "+iData.jobDesc.substring(0,1000);}
+    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:trimmed2})});
     var d=await r.json();var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
-    if(!t)throw new Error('empty');
-    t=t.replace(/^\s*\[PROBE\]\s*/i,'');
+    if(!t){throw new Error('empty');}
     msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;speak(t);dis(false);
   }catch(e){_waitingForAI=false;hideTyping();addMsg('Connection issue — tap Skip to move on.','ai');dis(false);}
 }
 
 async function endInterview(){
-  _aiSpeaking=false;try{window.speechSynthesis.cancel();}catch(e){}stopTimer();if(recog){recog.stop();recog=null;}setAvatar('thinking');
+  _interviewEnded=true;_aiSpeaking=false;_waitingForAI=false;
+  clearTimeout(_speakTimeout);clearTimeout(silenceTimer);
+  releaseMic();
+  try{window.speechSynthesis.cancel();}catch(e){}
+  stopTimer();setOrb('thinking');
+  document.getElementById('micControl').style.display='none';
+  document.getElementById('listenBar').style.display='none';
+  document.getElementById('micTranscript').className='mic-transcript';
+  updateMicUI(null,'');
   document.getElementById('endBtn').textContent='Scoring...';document.getElementById('endBtn').disabled=true;
-  var wpmVal=_totalSpeakDur>0?Math.round(_totalWords/(_totalSpeakDur/60)):0;
-  var answered=iData.qa.filter(function(x){return x.a!=='(skipped)'&&x.a.indexOf('(no answer')!==0;}).length;
-  var p="You are a senior NZ recruiter evaluating this interview as if making a real hiring recommendation. Be rigorous but fair.\n\n";
-  p+="ROLE CONTEXT:\n- Position: "+iData.level+" "+iData.role+(iData.company?" at "+iData.company:"")+"\n- Round: "+iData.round+"\n- Style: "+iData.style+"\n";
-  if(iData.jd)p+="- Job description provided (tailor scoring to these requirements):\n"+iData.jd.substring(0,1200)+"\n";
-  p+="\nCANDIDATE SIGNALS:\n- Filler words: "+fillerWords+(fillerWords>=5?' (high — affecting polish)':fillerWords>=3?' (moderate)':' (good control)')+"\n- Speaking pace: "+wpmVal+" WPM "+(wpmVal&&(wpmVal<120||wpmVal>170)?'(outside the natural 130-160 range)':'(within natural range)')+"\n- Questions engaged: "+answered+" of "+iData.qa.length+"\n\n";
-  p+="SCORING FRAMEWORK (each category 0-25):\n1. Communication — clarity, structure, articulation, grammar, vocal polish\n2. Relevance — answered the actual question, stayed on topic, fit the role\n3. Depth — specific real examples, quantified outcomes, STAR structure, concrete detail\n4. Confidence — professional presence, minimal hedging/fillers, appropriate pace, conviction\n\nCompetency signals to watch for: self-awareness, ownership/accountability, outcome focus, collaboration, adaptability, role-specific expertise, culture fit, genuine interest in the role.\n\n";
-  p+="INTERVIEW TRANSCRIPT:\n";
-  iData.qa.forEach(function(x,i){p+="Q"+(i+1)+": "+x.q.substring(0,500)+"\nA"+(i+1)+": "+x.a.substring(0,600)+"\n\n";});
-  p+='Return ONLY valid JSON, no markdown:\n';
-  p+='{\n';
-  p+='  "score": <0-100>,\n';
-  p+='  "grade": "A+|A|A-|B+|B|B-|C+|C|C-|D",\n';
-  p+='  "recommendation": "Strong Hire | Hire | Maybe | No Hire",\n';
-  p+='  "categories": {\n';
-  p+='    "communication":{"score":<0-25>,"comment":"1 sentence"},\n';
-  p+='    "relevance":{"score":<0-25>,"comment":"1 sentence"},\n';
-  p+='    "depth":{"score":<0-25>,"comment":"1 sentence"},\n';
-  p+='    "confidence":{"score":<0-25>,"comment":"1 sentence"}\n';
-  p+='  },\n';
-  p+='  "overall": "3-4 sentence recruiter-style summary",\n';
-  p+='  "strengths": ["strength 1","strength 2","strength 3"],\n';
-  p+='  "improvements": ["improvement 1","improvement 2","improvement 3"],\n';
-  p+='  "goldenTip": "One specific, actionable change that would most move the needle next time",\n';
-  p+='  "pacingFeedback": "1 sentence about WPM and fillers",\n';
-  p+='  "feedback": [\n';
-  p+='    {\n';
-  p+='      "question": "short paraphrase of Q",\n';
-  p+='      "rating": "Strong|Adequate|Needs Work",\n';
-  p+='      "starUsage": "Strong|Partial|Missing",\n';
-  p+='      "comment": "what they did well (or missed)",\n';
-  p+='      "tip": "specific improvement tip",\n';
-  p+='      "modelAnswer": "2-3 sentence example of how a strong '+iData.level+' candidate would answer this using STAR and a concrete example"\n';
-  p+='    }\n';
-  p+='  ]\n';
-  p+='}';
+  var p="You conducted a "+iData.style+" interview for "+iData.role+" in NZ. Score the candidate based on their answers. Comment on their communication, content quality, and confidence.\n\n";
+  iData.qa.forEach(function(x,i){var label=(i===iData.qa.length-1&&_closingPhase)?'Closing':'Q'+(i+1);p+=label+": "+x.q.substring(0,400)+"\nA"+(i+1)+": "+x.a.substring(0,400)+"\n\n";});
+  if(_closingPhase){p+="The last entry is the candidate closing remarks when asked if they had anything to add. Factor this into your overall assessment — it shows initiative and communication skills.\n\n";}
+  p+="Return ONLY valid JSON: {\"score\":number,\"grade\":\"A+ to D\",\"overall\":\"2-3 sentences\",\"feedback\":[{\"question\":\"short\",\"rating\":\"Good|Average|Needs Work\",\"comment\":\"1-2 sentences\"}]}";
   try{
     var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:p}]})});
     var d=await r.json();var t=d.content.map(function(b){return b.text||'';}).join('');
@@ -740,139 +691,88 @@ async function endInterview(){
 
 function showScore(r){
   var c=r.score>=80?'#E7515A':r.score>=60?'#f59e0b':'#ef4444';
-  var wpm=_totalSpeakDur>0?Math.round(_totalWords/(_totalSpeakDur/60)):0;
-  /* Encouraging opener based on score */
-  var cheer='';
-  if(r.score>=90)cheer='Outstanding! You absolutely nailed this.';
-  else if(r.score>=80)cheer='Excellent work \u2014 a hiring manager would be impressed.';
-  else if(r.score>=70)cheer='Solid interview. A few tweaks and you\u2019ll ace it.';
-  else if(r.score>=60)cheer='Good foundation \u2014 the tips below will level you up fast.';
-  else cheer='Every practice counts. Focus on the tips below and try again \u2014 you\u2019ll improve.';
-  var ss='opacity:0;transform:translateY(15px);animation:scoreSlideIn .5s ease forwards;animation-delay:';
-  var h='<style>.ss{opacity:0;transform:translateY(15px);animation:scoreSlideIn .5s ease forwards}@keyframes scoreSlideIn{to{opacity:1;transform:translateY(0)}}</style>';
-  /* Hero section */
-  h+='<div class="card score-card ss" style="text-align:center;padding:2.5rem 2rem;animation-delay:0s">';
-  h+='<div style="font-size:1.15rem;font-weight:800;color:#0f172a;margin-bottom:.5rem">'+esc(cheer)+'</div>';
-  h+='<div class="score-big" id="score-num" style="color:'+c+';margin:.25rem 0">0/100</div>';
-  h+='<div style="display:flex;justify-content:center;gap:.4rem;flex-wrap:wrap">';
-  h+='<span style="display:inline-block;background:'+c+'14;color:'+c+';padding:.3rem .85rem;border-radius:999px;font-size:.82rem;font-weight:700;border:1px solid '+c+'33">'+esc(r.grade)+'</span>';
-  if(r.recommendation){var rc=r.recommendation==='Strong Hire'?'#059669':r.recommendation==='Hire'?'#E7515A':r.recommendation==='Maybe'?'#f59e0b':'#ef4444';h+='<span style="display:inline-block;background:'+rc+'14;color:'+rc+';padding:.3rem .85rem;border-radius:999px;font-size:.78rem;font-weight:700;border:1px solid '+rc+'33">'+esc(r.recommendation)+'</span>';}
-  h+='</div>';
-  h+='<p style="color:#64748b;font-size:.88rem;margin-top:1rem;line-height:1.6">'+esc(r.overall)+'</p>';
-  /* Stats */
-  h+='<div style="display:flex;justify-content:center;gap:2rem;margin-top:1.25rem;flex-wrap:wrap">';
-  h+='<div style="text-align:center"><div style="font-size:1.5rem;font-weight:900;color:#0f172a">'+(wpm||'\u2014')+'</div><div style="font-size:.62rem;font-weight:700;color:#94a3b8;text-transform:uppercase">WPM</div></div>';
-  h+='<div style="text-align:center"><div style="font-size:1.5rem;font-weight:900;color:'+(fillerWords>=5?'#ef4444':fillerWords>=3?'#f59e0b':'#0f172a')+'">'+fillerWords+'</div><div style="font-size:.62rem;font-weight:700;color:#94a3b8;text-transform:uppercase">Fillers</div></div>';
-  h+='<div style="text-align:center"><div style="font-size:1.5rem;font-weight:900;color:#0f172a">'+iData.qa.length+'</div><div style="font-size:.62rem;font-weight:700;color:#94a3b8;text-transform:uppercase">Questions</div></div>';
-  h+='</div>';
-  if(r.pacingFeedback){h+='<div style="font-size:.78rem;color:#94a3b8;margin-top:.75rem;font-style:italic">'+esc(r.pacingFeedback)+'</div>';}
-  h+='</div>';
-  /* Category breakdown */
-  if(r.categories){
-    h+='<div class="card ss" style="padding:1.5rem;margin-top:.75rem;text-align:left;animation-delay:.25s">';
-    h+='<div style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.75rem">Score Breakdown</div>';
-    var cats=[['communication','Communication'],['relevance','Relevance'],['depth','Depth & Examples'],['confidence','Confidence']];
-    cats.forEach(function(cat,ci){var cd=r.categories[cat[0]];if(!cd)return;var pct=(cd.score/25)*100;var cc=cd.score>=20?'#E7515A':cd.score>=15?'#f59e0b':'#ef4444';
-      h+='<div style="margin-bottom:.75rem"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.25rem"><span style="font-size:.78rem;font-weight:600;color:#0f172a">'+cat[1]+'</span><span style="font-size:.78rem;font-weight:700;color:'+cc+'">'+cd.score+'/25</span></div>';
-      h+='<div style="height:6px;background:#e2e8f0;border-radius:999px;overflow:hidden"><div style="height:100%;width:0;background:'+cc+';border-radius:999px;transition:width 1s ease .'+String(4+ci*2)+'s" data-w="'+pct+'%"></div></div>';
-      h+='<div style="font-size:.72rem;color:#64748b;margin-top:.2rem">'+esc(cd.comment)+'</div></div>';
-    });
-    h+='</div>';
-  }
-  /* What you did well */
-  if(r.strengths&&r.strengths.length){
-    h+='<div class="card ss" style="padding:1.25rem;margin-top:.5rem;text-align:left;animation-delay:.45s">';
-    h+='<div style="font-size:.72rem;font-weight:700;color:#059669;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.6rem">What you did well</div>';
-    r.strengths.forEach(function(s){h+='<div style="display:flex;gap:.4rem;align-items:flex-start;margin-bottom:.4rem;font-size:.82rem;color:#0f172a;line-height:1.5"><span style="color:#059669;font-weight:700;flex-shrink:0">&#10003;</span> '+esc(s)+'</div>';});
-    h+='</div>';
-  }
-  /* Where to grow */
-  if(r.improvements&&r.improvements.length){
-    h+='<div class="card ss" style="padding:1.25rem;margin-top:.5rem;text-align:left;animation-delay:.6s">';
-    h+='<div style="font-size:.72rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.6rem">Where to grow next</div>';
-    r.improvements.forEach(function(s){h+='<div style="display:flex;gap:.4rem;align-items:flex-start;margin-bottom:.4rem;font-size:.82rem;color:#0f172a;line-height:1.5"><span style="color:#E7515A;font-weight:700;flex-shrink:0">\u2192</span> '+esc(s)+'</div>';});
-    h+='</div>';
-  }
-  /* Golden tip */
-  if(r.goldenTip){
-    h+='<div class="ss" style="background:linear-gradient(135deg,#fef2f2,#fff1f2);border:2px solid #fecaca;border-radius:16px;padding:1.25rem;margin-top:.75rem;text-align:left;animation-delay:.75s">';
-    h+='<div style="font-size:.72rem;font-weight:700;color:#c7313a;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem">Your #1 tip</div>';
-    h+='<div style="font-size:.92rem;color:#0f172a;line-height:1.6;font-weight:600">'+esc(r.goldenTip)+'</div></div>';
-  }
-  /* Per-question review */
-  if(r.feedback&&r.feedback.length){
-    h+='<div class="ss" style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin:1.25rem 0 .5rem;text-align:left;animation-delay:.9s">Question-by-question review</div>';
-    r.feedback.forEach(function(f,fi){
-      var fc=f.rating==='Strong'?'#059669':f.rating==='Adequate'?'#f59e0b':'#ef4444';
-      var sc=f.starUsage==='Strong'?'#059669':f.starUsage==='Partial'?'#f59e0b':'#94a3b8';
-      h+='<div class="fb-item ss" style="animation-delay:'+(1+fi*0.15)+'s;text-align:left"><div class="fb-q">'+esc(f.question)+'</div>';
-      h+='<div style="display:flex;gap:.4rem;align-items:center;margin-bottom:.4rem;flex-wrap:wrap">';
-      h+='<span style="font-size:.72rem;font-weight:700;color:'+fc+';background:'+fc+'14;padding:.15rem .5rem;border-radius:999px;border:1px solid '+fc+'33">'+esc(f.rating)+'</span>';
-      if(f.starUsage){h+='<span style="font-size:.62rem;font-weight:700;color:'+sc+';background:'+sc+'14;padding:.15rem .5rem;border-radius:999px;border:1px solid '+sc+'33">STAR: '+esc(f.starUsage)+'</span>';}
-      h+='</div>';
-      h+='<div class="fb-text">'+esc(f.comment)+'</div>';
-      if(f.tip){h+='<div style="font-size:.78rem;color:#E7515A;margin-top:.35rem;font-weight:600">\u2192 '+esc(f.tip)+'</div>';}
-      if(f.modelAnswer){
-        h+='<details style="margin-top:.6rem;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:.5rem .75rem">';
-        h+='<summary style="font-size:.72rem;font-weight:700;color:#059669;cursor:pointer;text-transform:uppercase;letter-spacing:.5px">Show a strong answer example</summary>';
-        h+='<div style="font-size:.8rem;color:#064e3b;margin-top:.5rem;line-height:1.55">'+esc(f.modelAnswer)+'</div>';
-        h+='</details>';
-      }
-      h+='</div>';
-    });
-  }
-  /* Actions */
-  h+='<div class="ss" style="display:flex;gap:.5rem;margin-top:1.25rem;flex-wrap:wrap;animation-delay:'+(1.2+(r.feedback?r.feedback.length*.15:0))+'s">';
-  h+='<button onclick="practiceAgain()" style="flex:1;min-width:140px;padding:.85rem 1rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:inherit;font-size:.88rem;font-weight:700;cursor:pointer">Practice again</button>';
-  h+='<button onclick="shareResults('+r.score+')" style="flex:1;min-width:140px;padding:.85rem 1rem;background:#fff;color:#0f172a;border:1px solid #e2e8f0;border-radius:999px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer">Share results</button>';
-  h+='</div>';
-  h+='<div class="cta-box ss" style="animation-delay:'+(1.5+(r.feedback?r.feedback.length*.15:0))+'s"><p>Ready to apply for real?</p><a href="/match.html">Apply for a Job</a></div>';
-  stopCam();document.getElementById('chatSection').style.display='none';
+  var bg=r.score>=80?'#fef2f2':r.score>=60?'#fffbeb':'#fef2f2';
+  var h='<div class="card score-card" style="text-align:center;padding:2rem">';
+  h+='<div style="font-size:.78rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px">Your Interview Score</div>';
+  h+='<div class="score-big" id="score-num" style="color:'+c+'">0/100</div>';
+  h+='<div style="display:inline-block;background:'+bg+';color:'+c+';padding:.3rem .85rem;border-radius:999px;font-size:.82rem;font-weight:700;border:1px solid '+c+'33">'+esc(r.grade)+'</div>';
+  var elapsed=Math.round((Date.now()-_interviewStartTime)/1000);var eMin=Math.floor(elapsed/60);var eSec=elapsed%60;
+  h+='<div style="margin-top:.75rem;display:flex;justify-content:center;gap:1.5rem;font-size:.78rem;color:#64748b;font-weight:600"><span>&#9201; '+eMin+'m '+eSec+'s</span><span>&#10003; '+maxQ+' questions</span></div>';
+  h+='<p style="color:#64748b;font-size:.88rem;margin-top:1rem;line-height:1.6">'+esc(r.overall)+'</p></div>';
+  if(r.feedback&&r.feedback.length){r.feedback.forEach(function(f,fi){
+    var fc=f.rating==='Good'?'#E7515A':f.rating==='Average'?'#f59e0b':'#ef4444';
+    h+='<div class="fb-item" style="animation-delay:'+(0.3+fi*0.15)+'s"><div class="fb-q">'+esc(f.question)+'</div>';
+    h+='<div style="font-size:.72rem;font-weight:700;color:'+fc+';margin-bottom:.3rem">'+esc(f.rating)+'</div>';
+    h+='<div class="fb-text">'+esc(f.comment)+'</div></div>';
+  });}
+  h+='<div class="cta-box"><p>Ready to apply for real?</p><a href="/match.html">Apply for a Job</a></div>';
+  releaseMic();document.getElementById('interviewerBar').classList.remove('visible');document.getElementById('chatSection').style.display='none';
   document.getElementById('scoreSection').innerHTML=h;document.getElementById('scoreSection').style.display='block';
   window.scrollTo({top:0,behavior:'smooth'});
-  /* Animate category bars after render */
-  setTimeout(function(){var bars=document.querySelectorAll('#scoreSection [data-w]');bars.forEach(function(b){b.style.width=b.getAttribute('data-w');});},100);
   var target=r.score;var cur=0;var numEl=document.getElementById('score-num');
   var step=Math.max(1,Math.floor(target/40));
   var countUp=setInterval(function(){cur+=step;if(cur>=target){cur=target;clearInterval(countUp);}numEl.textContent=cur+'/100';},30);
   if(r.score>=80){setTimeout(function(){var emojis=['&#11088;','&#127881;','&#128079;','&#129395;','&#128293;'];for(var si=0;si<12;si++){var sp=document.createElement('div');sp.className='sparkle';sp.innerHTML=emojis[si%emojis.length];sp.style.left=Math.random()*80+10+'%';sp.style.top=Math.random()*30+20+'%';document.body.appendChild(sp);setTimeout(function(el){el.remove();},(si*100)+1600,sp);}},500);}
 }
 
-/* Orb + Avatar state */
-var _currentAvatarState='';
-function setAvatar(state,name){
-  var orb=document.getElementById('orbEl');var status=document.getElementById('avatarStatus');
-  if(name)document.getElementById('avatarName').textContent=name;
-  if(_currentAvatarState===state)return;_currentAvatarState=state;
-  if(orb){orb.className='orb';if(state)orb.classList.add(state);}
-  if(status){
-    if(state==='speaking'){status.textContent='Speaking';status.style.color='#c7313a';}
-    else if(state==='listening'){status.textContent='Listening';status.style.color='#3b82f6';}
-    else{status.textContent='Thinking';status.style.color='#94a3b8';}
+/* Orb control */
+var _currentOrbState='';
+function setOrb(state){
+  var orb=document.getElementById('orb');
+  var status=document.getElementById('avatarStatus');
+  var micCtrl=document.getElementById('micControl');
+  var bars=document.getElementById('audioBars');
+  if(_currentOrbState===state)return;
+  _currentOrbState=state;
+  orb.className='orb';
+  status.className='interviewer-status';
+  if(micCtrl)micCtrl.classList.remove('is-recording');
+  if(bars)bars.classList.remove('active');
+  if(state==='speaking'){
+    orb.classList.add('speaking');
+    status.classList.add('status-speaking');status.textContent='Speaking';
+  } else if(state==='listening'){
+    orb.classList.add('listening');
+    status.classList.add('status-listening');status.textContent='Interviewer is listening — please speak now';
+    if(micCtrl)micCtrl.classList.add('is-recording');
+    if(bars)bars.classList.add('active');
+  } else {
+    orb.classList.add('thinking');
+    status.classList.add('status-thinking');status.textContent='Thinking...';
   }
 }
-function updateMicUI(state,text){var dot=document.getElementById('micDot');var lbl=document.getElementById('micLabel');if(dot){dot.className='mic-dot';if(state)dot.classList.add(state);dot.style.transform='';dot.style.opacity='';}if(lbl){lbl.textContent=text||'';lbl.className=state==='listening'?'mic-label recording':'mic-label';}}
-function autoStartListening(){if(_aiSpeaking||_waitingForAI)return;_micRetries=0;_accumulated='';document.getElementById('userInput').value='';updateMicUI('listening','Your turn \u2014 speak now');startTimer();setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog)toggleMic();},800);}
+/* Alias for backward compat */
+function setAvatar(state){setOrb(state);}
+var _aiSpeaking=false;
+var _speakTimeout=null;
+var _waitingForAI=false;
+var _micRetries=0;
+var _maxMicRetries=3;
+function updateMicUI(state,text){var dot=document.getElementById('micDot');var lbl=document.getElementById('micLabel');var bars=document.getElementById('audioBars');var sc=document.getElementById('silenceCountdown');if(dot){dot.className='mic-dot';if(state)dot.classList.add(state);}if(lbl){lbl.textContent=text||'';lbl.className=state==='listening'?'mic-label recording':'mic-label';}if(bars){bars.classList.toggle('active',state==='listening');}if(sc&&state!=='listening'){sc.className='silence-countdown';sc.textContent='';}}
+function autoStartListening(){if(_interviewEnded||_aiSpeaking||_waitingForAI)return;_micRetries=0;_accumulated='';document.getElementById('userInput').value='';updateMicUI('listening','Interviewer is listening — please speak now');document.getElementById('sendBtn').style.display='inline-block';document.getElementById('keepTalkingBtn').style.display='none';startTimer();setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog)toggleMic();},200);}
 var _accumulated='';
-var silenceTimer=null;
-
-/* Browser SpeechSynthesis TTS */
-function speak(t){_aiSpeaking=true;clearTimeout(_speakTimeout);setAvatar('speaking');updateMicUI('speaking','Interviewer speaking...');if(!audioEnabled||!window.speechSynthesis){var readTime=Math.max(3000,Math.min(t.length*60,15000));_speakTimeout=setTimeout(function(){_aiSpeaking=false;setAvatar('listening');autoStartListening();},readTime);return;}_speakTimeout=setTimeout(function(){if(_aiSpeaking){_aiSpeaking=false;try{window.speechSynthesis.cancel();}catch(e){}setAvatar('listening');autoStartListening();}},Math.max(60000,t.length*200));try{if(recog){recog.stop();recog=null;document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);}window.speechSynthesis.cancel();setTimeout(function(){_doSpeak(t);},150);}catch(e){}}
-function _doSpeak(t){try{var gender=vGender(document.getElementById('voiceGender').value);var voices=window.speechSynthesis.getVoices()||[];var match=null;var googleVoices=[];var nzAu=[];var enVoices=[];for(var i=0;i<voices.length;i++){var l=voices[i].lang.toLowerCase();var n=voices[i].name.toLowerCase();if(n.indexOf('google')>-1&&l.indexOf('en')===0)googleVoices.push(voices[i]);else if(l==='en-nz'||l==='en-au'||l.indexOf('en_nz')>-1||l.indexOf('en_au')>-1)nzAu.push(voices[i]);else if(l.indexOf('en')===0)enVoices.push(voices[i]);}var pool=googleVoices.length?googleVoices:(nzAu.length?nzAu:enVoices);for(var j=0;j<pool.length;j++){var vn=pool[j].name.toLowerCase();if(gender==='female'&&(vn.indexOf('female')>-1||vn.indexOf('fiona')>-1||vn.indexOf('karen')>-1||vn.indexOf('samantha')>-1||vn.indexOf('victoria')>-1||vn.indexOf('moira')>-1||vn.indexOf('tessa')>-1||vn.indexOf('google uk english female')>-1)){match=pool[j];break;}if(gender==='male'&&(vn.indexOf('male')>-1||vn.indexOf('daniel')>-1||vn.indexOf('james')>-1||vn.indexOf('lee')>-1||vn.indexOf('gordon')>-1||vn.indexOf('alex')>-1||vn.indexOf('google uk english male')>-1)){match=pool[j];break;}}if(!match&&pool.length){match=pool[0];}var u=new SpeechSynthesisUtterance(t);u.rate=0.95;u.lang='en-GB';if(match)u.voice=match;if(gender==='male'){u.pitch=0.9;}else{u.pitch=1.0;}u.onend=function(){_aiSpeaking=false;clearTimeout(_speakTimeout);_currentAvatarState='';setAvatar('listening');autoStartListening();};u.onerror=function(){_aiSpeaking=false;clearTimeout(_speakTimeout);_currentAvatarState='';setAvatar('listening');autoStartListening();};window.speechSynthesis.speak(u);}catch(e){_aiSpeaking=false;_currentAvatarState='';setAvatar('listening');}}
+function speak(t){if(_interviewEnded)return;_aiSpeaking=true;clearTimeout(_speakTimeout);setAvatar('speaking');updateMicUI('speaking','Interviewer speaking...');if(!audioEnabled||!window.speechSynthesis){var readTime=Math.max(3000,Math.min(t.length*60,15000));_speakTimeout=setTimeout(function(){_aiSpeaking=false;setAvatar('listening');autoStartListening();},readTime);return;}_speakTimeout=setTimeout(function(){if(_aiSpeaking){_aiSpeaking=false;try{window.speechSynthesis.cancel();}catch(e){}setAvatar('listening');autoStartListening();}},Math.max(60000,t.length*200));try{if(recog){recog.stop();recog=null;document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);}window.speechSynthesis.cancel();setTimeout(function(){_doSpeak(t);},50);}catch(e){}}
+function _doSpeak(t){try{var gender=document.getElementById('voiceGender').value;var voices=window.speechSynthesis.getVoices()||[];var match=null;var googleVoices=[];var nzAu=[];var enVoices=[];for(var i=0;i<voices.length;i++){var l=voices[i].lang.toLowerCase();var n=voices[i].name.toLowerCase();if(n.indexOf('google')>-1&&l.indexOf('en')===0)googleVoices.push(voices[i]);else if(l==='en-nz'||l==='en-au'||l.indexOf('en_nz')>-1||l.indexOf('en_au')>-1)nzAu.push(voices[i]);else if(l.indexOf('en')===0)enVoices.push(voices[i]);}var pool=googleVoices.length?googleVoices:(nzAu.length?nzAu:enVoices);for(var j=0;j<pool.length;j++){var vn=pool[j].name.toLowerCase();if(gender==='female'&&(vn.indexOf('female')>-1||vn.indexOf('fiona')>-1||vn.indexOf('karen')>-1||vn.indexOf('samantha')>-1||vn.indexOf('victoria')>-1||vn.indexOf('moira')>-1||vn.indexOf('tessa')>-1||vn.indexOf('google uk english female')>-1)){match=pool[j];break;}if(gender==='male'&&(vn.indexOf('male')>-1||vn.indexOf('daniel')>-1||vn.indexOf('james')>-1||vn.indexOf('lee')>-1||vn.indexOf('gordon')>-1||vn.indexOf('alex')>-1||vn.indexOf('google uk english male')>-1)){match=pool[j];break;}}if(!match&&pool.length){match=pool[0];}var u=new SpeechSynthesisUtterance(t);u.rate=0.92;u.lang='en-GB';if(match)u.voice=match;if(gender==='male'){u.pitch=0.9;}else{u.pitch=1.0;}u.onend=function(){if(_interviewEnded)return;_aiSpeaking=false;clearTimeout(_speakTimeout);_currentOrbState='';setAvatar('listening');autoStartListening();};u.onerror=function(){if(_interviewEnded)return;_aiSpeaking=false;clearTimeout(_speakTimeout);_currentOrbState='';setAvatar('listening');autoStartListening();};window.speechSynthesis.speak(u);}catch(e){_aiSpeaking=false;_currentOrbState='';setAvatar('listening');}}
 window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
-setInterval(function(){if(window.speechSynthesis&&!window.speechSynthesis.speaking){window.speechSynthesis.cancel();}},10000);
-
-/* Preview voice */
-function previewVoice(){
-  var sel=document.getElementById('voiceGender');var v=sel.value;if(v==='off')return;
-  var gender=vGender(v);var text='Kia ora! I will be your interviewer today. Let me know when you are ready to begin.';
-  if(!window.speechSynthesis){return;}
-  window.speechSynthesis.cancel();
-  var voices=window.speechSynthesis.getVoices()||[];var match=null;
-  for(var i=0;i<voices.length;i++){var n=voices[i].name.toLowerCase();var l=voices[i].lang.toLowerCase();if(l.indexOf('en')!==0)continue;if(gender==='female'&&(n.indexOf('female')>-1||n.indexOf('fiona')>-1||n.indexOf('google uk english female')>-1)){match=voices[i];break;}if(gender==='male'&&(n.indexOf('male')>-1||n.indexOf('daniel')>-1||n.indexOf('google uk english male')>-1)){match=voices[i];break;}}
-  if(!match&&voices.length)match=voices[0];
-  var u=new SpeechSynthesisUtterance(text);u.rate=0.95;u.lang='en-GB';if(match)u.voice=match;u.pitch=gender==='male'?0.9:1.0;
-  window.speechSynthesis.speak(u);
+/* Chrome TTS keepalive — prevents speechSynthesis from dying on longer sessions */
+setInterval(function(){if(window.speechSynthesis&&!window.speechSynthesis.speaking&&!_interviewEnded){window.speechSynthesis.cancel();}},10000);
+/* Speak final thank you — same voice as _doSpeak but does NOT auto-listen afterward */
+function speakFinal(t){
+  if(!audioEnabled||!window.speechSynthesis){_interviewEnded=true;setOrb('thinking');return;}
+  try{
+    window.speechSynthesis.cancel();
+    var gender=document.getElementById('voiceGender').value;
+    var voices=window.speechSynthesis.getVoices()||[];var match=null;
+    var googleVoices=[];var nzAu=[];var enVoices=[];
+    for(var i=0;i<voices.length;i++){var l=voices[i].lang.toLowerCase();var n=voices[i].name.toLowerCase();if(n.indexOf('google')>-1&&l.indexOf('en')===0)googleVoices.push(voices[i]);else if(l==='en-nz'||l==='en-au'||l.indexOf('en_nz')>-1||l.indexOf('en_au')>-1)nzAu.push(voices[i]);else if(l.indexOf('en')===0)enVoices.push(voices[i]);}
+    var pool=googleVoices.length?googleVoices:(nzAu.length?nzAu:enVoices);
+    for(var j=0;j<pool.length;j++){var vn=pool[j].name.toLowerCase();if(gender==='female'&&(vn.indexOf('female')>-1||vn.indexOf('fiona')>-1||vn.indexOf('karen')>-1||vn.indexOf('samantha')>-1||vn.indexOf('victoria')>-1||vn.indexOf('moira')>-1||vn.indexOf('tessa')>-1||vn.indexOf('google uk english female')>-1)){match=pool[j];break;}if(gender==='male'&&(vn.indexOf('male')>-1||vn.indexOf('daniel')>-1||vn.indexOf('james')>-1||vn.indexOf('lee')>-1||vn.indexOf('gordon')>-1||vn.indexOf('alex')>-1||vn.indexOf('google uk english male')>-1)){match=pool[j];break;}}
+    if(!match&&pool.length)match=pool[0];
+    var u=new SpeechSynthesisUtterance(t);u.rate=0.92;u.lang='en-GB';if(match)u.voice=match;if(gender==='male'){u.pitch=0.9;}else{u.pitch=1.0;}
+    u.onend=function(){_interviewEnded=true;setOrb('thinking');};
+    u.onerror=function(){_interviewEnded=true;setOrb('thinking');};
+    setTimeout(function(){window.speechSynthesis.speak(u);},50);
+  }catch(e){_interviewEnded=true;setOrb('thinking');}
 }
 
 /* Timer for real-life mode */
@@ -882,40 +782,62 @@ function startTimer(){
   timeLeft=120;
   var td=document.getElementById('timerDisplay');
   var tt=document.getElementById('timerText');
-  td.style.display='block';
+  td.style.display='flex';
   td.classList.remove('timer-warn');
-  td.style.color='#c7313a';td.style.background='#fef2f2';td.style.borderColor='#fecaca';
+  tt.style.color='#c7313a';
   updTimer();
   answerTimer=setInterval(function(){
     timeLeft--;
     updTimer();
-    if(timeLeft<=30&&timeLeft>0){td.classList.add('timer-warn');td.style.color='#ef4444';td.style.background='#fef2f2';td.style.borderColor='#fecaca';}
+    if(timeLeft<=30&&timeLeft>0){td.classList.add('timer-warn');tt.style.color='#ef4444';}
     if(timeLeft<=0){stopTimer();
       if(recog){recog.stop();recog=null;document.getElementById('listenBar').style.display='none';}
       var inp=document.getElementById('userInput');
-      if(inp.value.trim()){sendAnswer();return;}
-      addMsg('(No answer given)','user');
-      var lastAi='';for(var ii=msgs.length-1;ii>=0;ii--){if(msgs[ii].role==='assistant'){lastAi=msgs[ii].content;break;}}
-      iData.qa.push({q:lastAi,a:'(no answer — timed out)'});
-      msgs.push({role:'user',content:'(The candidate did not answer in time. Move on to the next question.)'});
-      qCount++;updC();
-      if(qCount>maxQ){document.getElementById('chatInput').style.display='none';document.getElementById('endBtn').style.display='block';document.getElementById('timerDisplay').style.display='none';}
-      else{_waitingForAI=true;setAvatar('thinking');dis(true);showTyping();_lastWasProbe=false;_probedThisQ=false;
-        var trimmed3=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
-        fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:buildSysPrompt('timeout'),messages:trimmed3})}).then(function(r){return r.json();}).then(function(d){
-          var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
-          if(!t)throw new Error('empty');
-          t=t.replace(/^\s*\[PROBE\]\s*/i,'');
-          msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;speak(t);dis(false);
-        }).catch(function(){_waitingForAI=false;hideTyping();addMsg('Connection issue — tap Skip to move on.','ai');dis(false);});
+      if(inp.value.trim()){sendAnswer();}
+      else{
+        addMsg('(No answer given)','user');
+        var lastAi='';for(var ii=msgs.length-1;ii>=0;ii--){if(msgs[ii].role==='assistant'){lastAi=msgs[ii].content;break;}}
+        iData.qa.push({q:lastAi,a:'(no answer — timed out)'});
+        msgs.push({role:'user',content:'(The candidate did not answer in time. Move on to the next question.)'});
+        qCount++;updC();
+        /* Closing phase timeout — end everything */
+        if(_closingPhase&&_closingAsked){
+          _interviewEnded=true;_waitingForAI=false;_aiSpeaking=false;
+          clearTimeout(_speakTimeout);releaseMic();try{window.speechSynthesis.cancel();}catch(e){}
+          var tyMsg3='Thank you so much for your time today. It was great speaking with you. Click below to get your score and feedback.';
+          addMsg(tyMsg3,'ai');
+          document.getElementById('micControl').style.display='none';document.getElementById('endBtn').style.display='block';
+          setOrb('speaking');speakFinal(tyMsg3);
+        }
+        else if(qCount>maxQ&&!_closingPhase){
+          /* Last question timed out — ask closing question */
+          _closingPhase=true;_closingAsked=false;
+          clearTimeout(silenceTimer);
+          _waitingForAI=true;setAvatar('thinking');dis(true);showTyping();
+          var trimmedCT=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
+          var sysCT="You are a professional NZ job interviewer wrapping up a "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. You have asked all your questions. Now briefly thank the candidate for their answers and ask if there is anything else they would like to add or any questions they have for you. Keep it short — 2 sentences max.";
+          fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sysCT,messages:trimmedCT})}).then(function(r){return r.json();}).then(function(d){
+            if(_interviewEnded)return;
+            var t2=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
+            if(!t2)throw new Error('empty');
+            _closingAsked=true;msgs.push({role:'assistant',content:t2});hideTyping();addMsg(t2,'ai');_waitingForAI=false;speak(t2);dis(false);
+          }).catch(function(){if(_interviewEnded)return;_closingAsked=true;_waitingForAI=false;hideTyping();addMsg('Is there anything else you would like to add or any questions for me?','ai');speak('Is there anything else you would like to add or any questions for me?');dis(false);});
+        }
+        else{_waitingForAI=true;setAvatar('thinking');dis(true);showTyping();
+          var trimmed3=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
+          fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:"You are a professional NZ job interviewer. "+iData.style+" interview for "+iData.role+(iData.company?" at "+iData.company:"")+" in NZ. Question "+qCount+" of "+maxQ+". The candidate did not answer the previous question. Acknowledge briefly and move on to your next question.",messages:trimmed3})}).then(function(r){return r.json();}).then(function(d){
+            var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
+            if(!t)throw new Error('empty');
+            msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;speak(t);dis(false);
+          }).catch(function(){_waitingForAI=false;hideTyping();addMsg('Connection issue — tap Skip to move on.','ai');dis(false);});
+        }
       }
     }
   },1000);
 }
 function stopTimer(){if(answerTimer){clearInterval(answerTimer);answerTimer=null;}}
 function updTimer(){var m=Math.floor(timeLeft/60);var s=timeLeft%60;document.getElementById('timerText').textContent=m+':'+(s<10?'0':'')+s;}
-/* Browser SpeechRecognition — live text as you speak */
-function toggleMic(){
+function toggleMic(quiet){
   if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){return;}
   if(_aiSpeaking){_aiSpeaking=false;clearTimeout(_speakTimeout);try{window.speechSynthesis.cancel();}catch(e){}setAvatar('listening');}
   if(recog){
@@ -923,172 +845,133 @@ function toggleMic(){
     document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);
     updateMicUI('waiting','Processing...');
     document.getElementById('micTranscript').className='mic-transcript';
-    var sc=document.getElementById('starCoach');if(sc)sc.style.display='none';
     return;
   }
   try{
     var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
     var isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     recog=new SR();recog.lang='en-NZ';
-    recog.continuous=!isMobile;
+    recog.continuous=!isMobile;/* Desktop: continuous. Mobile: per-phrase (more reliable) */
     recog.interimResults=true;
-    _micRetries=0;_recStart=Date.now();_currentStarStage=-1;
-    updateMicUI('listening','Listening... speak now');
-    document.getElementById('micTranscript').className='mic-transcript active';
-    document.getElementById('micTranscript').textContent=_accumulated||'';
+    if(!quiet){
+      _micRetries=0;
+      _accumulated='';
+      updateMicUI('listening','Interviewer is listening — please speak now');
+      document.getElementById('micTranscript').className='mic-transcript active';
+      document.getElementById('micTranscript').textContent='';
+    } else {
+      /* Keep Talking — _accumulated already has all previous final text */
+      updateMicUI('listening','Interviewer is listening...');
+      document.getElementById('micTranscript').className='mic-transcript active';
+    }
+    document.getElementById('keepTalkingBtn').style.display='none';
     document.getElementById('listenBar').style.display='block';
     document.getElementById('listenFill').style.width='0';
     var inp=document.getElementById('userInput');
     var lastResultTime=Date.now();
-    var _liveFillers=0;
-    /* STAR coaching timer */
-    var _starTimer=setInterval(function(){
-      var el=Math.floor((Date.now()-_recStart)/1000);
-      var sty=iData.style||'Standard';
-      var useStar=(sty==='Behavioural'||sty==='Values-based'||sty==='Competency'||sty==='Standard'||sty==='Panel');
-      if(useStar&&qCount>=2){
-        var stages=[{at:0,l:'S',t:'Set the scene \u2014 what was the Situation?',h:'Where were you? What was happening?'},{at:12,l:'T',t:'What was your Task or responsibility?',h:'What did you need to achieve?'},{at:30,l:'A',t:'Describe the Action YOU took \u2014 be specific',h:'What did you personally do?'},{at:55,l:'R',t:'Share the Result \u2014 quantify if you can',h:'Numbers, impact, feedback received'}];
-        var si=-1;for(var j=stages.length-1;j>=0;j--){if(el>=stages[j].at){si=j;break;}}
-        if(si>=0&&si!==_currentStarStage){
-          _currentStarStage=si;var st=stages[si];
-          var ct=document.getElementById('starCoachText');var sc2=document.getElementById('starCoach');
-          if(ct&&sc2){sc2.style.display='block';ct.innerHTML='<strong>'+st.l+' \u2014 '+st.t+'</strong><br><span style="font-size:.72rem;color:#94a3b8;font-weight:400">'+st.h+'</span>';ct.style.animation='none';ct.offsetHeight;ct.style.animation='msgIn .35s ease';}
-          ['starS','starT','starA','starR'].forEach(function(id,idx){var d2=document.getElementById(id);if(d2){d2.className='star-dot';if(idx<si)d2.classList.add('done');else if(idx===si)d2.classList.add('active');}});
-        }
-      }
-    },1000);
     recog.onresult=function(e){
       _micRetries=0;
-      var t='';var interim='';
-      if(isMobile){
-        for(var i=0;i<e.results.length;i++){
-          if(e.results[i].isFinal){var ft=e.results[i][0].transcript;if(_accumulated.indexOf(ft)===-1){_accumulated+=ft+' ';}}else{interim+=e.results[i][0].transcript;}
-        }
-        t=(_accumulated+interim).trim();
-      }else{
-        for(var i2=0;i2<e.results.length;i2++){t+=e.results[i2][0].transcript;}
-        t=t.trim();
+      var sessionText='';
+      for(var i=0;i<e.results.length;i++){
+        sessionText+=e.results[i][0].transcript;
       }
-      inp.value=t;lastResultTime=Date.now();
-      updateMicUI('listening','Listening...');
-      var trEl=document.getElementById('micTranscript');trEl.className='mic-transcript active';trEl.textContent=t;trEl.scrollTop=trEl.scrollHeight;
-      var fm=t.match(fillerRegex);_liveFillers=fm?fm.length:0;
-      document.getElementById('fillerCount').textContent=fillerWords+_liveFillers;
-      if(fillerWords+_liveFillers>3)document.getElementById('fillerCount').style.color='#ef4444';
+      var fullText=(_accumulated+sessionText).trim();
+      inp.value=fullText;lastResultTime=Date.now();
+      updateMicUI('listening','Interviewer is listening...');
+      document.getElementById('micTranscript').textContent=fullText;
+      document.getElementById('micTranscript').scrollTop=document.getElementById('micTranscript').scrollHeight;
       document.getElementById('listenFill').style.width='0';
       clearTimeout(silenceTimer);
-      if(autoSend&&t.trim().length>1){
+      if(autoSend&&fullText.length>1){
         silenceTimer=setTimeout(function(){
-          if(inp.value.trim()&&Date.now()-lastResultTime>=silenceDelay-500){
+          if(inp.value.trim()&&Date.now()-lastResultTime>=silenceDelay-200){
             if(recog){try{recog.stop();}catch(e2){}}recog=null;
-            clearInterval(_starTimer);
             document.getElementById('listenBar').style.display='none';
             document.getElementById('micTranscript').className='mic-transcript';
-            var sc3=document.getElementById('starCoach');if(sc3)sc3.style.display='none';
+            var sc2=document.getElementById('silenceCountdown');if(sc2){sc2.className='silence-countdown';sc2.textContent='';}
             updateMicUI('waiting','Sending your answer...');
             sendAnswer();
           }
         },silenceDelay);
-        var start=Date.now();var bar=document.getElementById('listenFill');
-        (function tick(){var p=Math.min(((Date.now()-start)/silenceDelay)*100,100);bar.style.width=p+'%';if(p<100&&recog)requestAnimationFrame(tick);})();
+        var start=Date.now();var bar=document.getElementById('listenFill');var scEl=document.getElementById('silenceCountdown');
+        if(scEl){scEl.className='silence-countdown active';}
+        (function tick(){var elapsed=Date.now()-start;var p=Math.min((elapsed/silenceDelay)*100,100);bar.style.width=p+'%';var secsLeft=Math.ceil((silenceDelay-elapsed)/1000);if(scEl&&secsLeft>0){scEl.textContent='Auto-sending in '+secsLeft+'s...';}if(p<100)requestAnimationFrame(tick);})();
       }
     };
-    recog.onend=function(){recog=null;clearInterval(_starTimer);
-      var sc4=document.getElementById('starCoach');if(sc4)sc4.style.display='none';
+    recog.onend=function(){recog=null;
       var inp2=document.getElementById('userInput');
-      if(isMobile&&!_aiSpeaking&&!_waitingForAI&&!_sending){
-        if(answerTimer){setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog&&!_sending)toggleMic();},400);}
-        else if(inp2.value.trim()){updateMicUI('waiting','Sending your answer...');sendAnswer();}
-        return;
-      }
+      if(_aiSpeaking||_waitingForAI||_sending||_interviewEnded)return;
       clearTimeout(silenceTimer);
-      document.getElementById('listenBar').style.display='none';
-      document.getElementById('micTranscript').className='mic-transcript';
-      if(inp2.value.trim()){updateMicUI('waiting','Sending your answer...');sendAnswer();}
-      else if(!_aiSpeaking&&!_waitingForAI){
+      /* Save full text so Keep Talking can append to it */
+      _accumulated=inp2.value.trim();
+      if(_accumulated)_accumulated+=' ';
+      document.getElementById('sendBtn').style.display='inline-block';
+      if(inp2.value.trim()){
+        /* User spoke — auto-restart mic so they can keep talking */
+        /* Also set fallback auto-send: if no new speech within silenceDelay, send */
+        silenceTimer=setTimeout(function(){
+          if(!_sending&&!_interviewEnded&&inp2.value.trim()){
+            if(recog){try{recog.stop();}catch(e3){}}recog=null;
+            updateMicUI('waiting','Sending your answer...');
+            sendAnswer();
+          }
+        },silenceDelay);
+        setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog&&!_sending&&!_interviewEnded)toggleMic(true);},300);
+      } else {
+        /* No text — mic failed, retry */
         _micRetries++;
-        if(_micRetries<=_maxMicRetries){updateMicUI('listening','Mic restarting...');setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog)toggleMic();},500);}
-        else{_micRetries=0;updateMicUI(null,'Mic stopped \u2014 tap Skip to continue');}
+        if(_micRetries<=_maxMicRetries){setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI&&!recog&&!_interviewEnded)toggleMic();},500);}
+        else{_micRetries=0;document.getElementById('keepTalkingBtn').style.display='inline-block';updateMicUI(null,'Tap Keep Talking to try again');}
       }
     };
     recog.onerror=function(ev){
-      recog=null;clearInterval(_starTimer);document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);
-      var sc5=document.getElementById('starCoach');if(sc5)sc5.style.display='none';
-      if(ev.error==='not-allowed'){updateMicUI(null,'Mic blocked \u2014 check browser settings');}
-      else if(ev.error==='network'&&!_aiSpeaking&&!_waitingForAI){updateMicUI(null,'Network error \u2014 retrying...');setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI)toggleMic();},2000);}
+      recog=null;document.getElementById('listenBar').style.display='none';clearTimeout(silenceTimer);
+      if(ev.error==='not-allowed'){updateMicUI(null,'Mic blocked — check browser settings');}
+      else if(ev.error==='network'&&!_aiSpeaking&&!_waitingForAI){updateMicUI(null,'Network error — retrying...');setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI)toggleMic();},2000);}
       else if(ev.error!=='aborted'&&!_aiSpeaking&&!_waitingForAI){updateMicUI(null,'Retrying...');setTimeout(function(){if(!_aiSpeaking&&!_waitingForAI)toggleMic();},1000);}
     };
     recog.start();
-  }catch(err){recog=null;updateMicUI(null,'Speech recognition error');}
+  }catch(err){
+    recog=null;updateMicUI(null,'Speech recognition error');
+  }
 }
 
-/* Camera */
-function startCam(){
-  var wrap=document.getElementById('camWrap');
-  var vid=document.getElementById('camVideo');
-  wrap.style.display='block';
-  navigator.mediaDevices.getUserMedia({video:true,audio:false}).then(function(stream){
-    vid.srcObject=stream;
-  }).catch(function(){wrap.style.display='none';});
+/* Cleanup — release mic so browser tab indicator goes away */
+function releaseMic(){
+  if(recog){try{recog.abort();}catch(e){try{recog.stop();}catch(e2){}}}recog=null;
+  clearTimeout(silenceTimer);
 }
 function stopCam(){
-  var vid=document.getElementById('camVideo');
-  if(vid.srcObject){vid.srcObject.getTracks().forEach(function(t){t.stop();});vid.srcObject=null;}
-  if(recog){recog.stop();recog=null;}_micStream=null;
-  document.getElementById('camWrap').style.display='none';
+  releaseMic();
+  document.getElementById('interviewerBar').classList.remove('visible');
 }
 
 /* Helpers */
-function scrollChat(){var el=document.getElementById('chatSection');if(el){el.scrollIntoView({behavior:'smooth',block:'start'});}}
-function addMsg(t,type){var c=document.getElementById('chatMessages');var w=document.createElement('div');w.className='msg-wrap msg-wrap-'+type;var av=document.createElement('div');av.className='msg-avatar msg-avatar-'+type;var iName=document.getElementById('avatarName');if(type==='ai'){av.textContent=(iName?iName.textContent:'S').charAt(0);}else{av.textContent='Y';}var ct=document.createElement('div');ct.className='msg-content';var lbl=document.createElement('div');lbl.className='msg-label msg-label-'+type;lbl.textContent=type==='ai'?(iName?iName.textContent:'Interviewer'):'You';var d=document.createElement('div');d.className='msg msg-'+type;d.textContent=t;ct.appendChild(lbl);ct.appendChild(d);w.appendChild(av);w.appendChild(ct);c.appendChild(w);setTimeout(scrollChat,150);}
-function showTyping(){var c=document.getElementById('chatMessages');var w=document.createElement('div');w.className='msg-typing-wrap';w.id='typing';var av=document.createElement('div');av.className='msg-avatar msg-avatar-ai';var iName=document.getElementById('avatarName');av.textContent=(iName?iName.textContent:'S').charAt(0);var d=document.createElement('div');d.className='msg msg-typing';d.innerHTML='<i></i><i></i><i></i>';w.appendChild(av);w.appendChild(d);c.appendChild(w);setTimeout(scrollChat,100);}
+function addMsg(t,type){var c=document.getElementById('chatMessages');var w=document.createElement('div');w.className='msg-wrap msg-wrap-'+type;var av=document.createElement('div');av.className='msg-avatar msg-avatar-'+type;var iName=document.getElementById('avatarName');if(type==='ai'){av.textContent=(iName?iName.textContent:'S').charAt(0);}else{av.textContent='Y';}var ct=document.createElement('div');ct.className='msg-content';var lbl=document.createElement('div');lbl.className='msg-label msg-label-'+type;lbl.textContent=type==='ai'?(iName?iName.textContent:'Interviewer'):'You';var d=document.createElement('div');d.className='msg msg-'+type;d.textContent=t;ct.appendChild(lbl);ct.appendChild(d);w.appendChild(av);w.appendChild(ct);c.appendChild(w);setTimeout(function(){w.scrollIntoView({behavior:'smooth',block:'start'});},150);}
+function showTyping(){var c=document.getElementById('chatMessages');var w=document.createElement('div');w.className='msg-typing-wrap';w.id='typing';var av=document.createElement('div');av.className='msg-avatar msg-avatar-ai';var iName=document.getElementById('avatarName');av.textContent=(iName?iName.textContent:'S').charAt(0);var d=document.createElement('div');d.className='msg msg-typing';d.innerHTML='<i></i><i></i><i></i>';w.appendChild(av);w.appendChild(d);c.appendChild(w);setTimeout(function(){w.scrollIntoView({behavior:'smooth',block:'start'});},100);}
 function hideTyping(){var el=document.getElementById('typing');if(el)el.remove();}
 function updC(){document.getElementById('qCounter').innerHTML='Q <strong>'+Math.min(qCount,maxQ)+'</strong> / '+maxQ;}
-function countFillers(text){var m=text.match(fillerRegex);if(m){fillerWords+=m.length;var fc=document.getElementById('fillerCount');var fs=document.getElementById('fillerStat');fc.textContent=fillerWords;if(fillerWords>=5){fc.style.color='#ef4444';fs.style.background='#fef2f2';fs.style.borderColor='#fecaca';}else if(fillerWords>=3){fc.style.color='#f59e0b';fs.style.background='#fffbeb';fs.style.borderColor='#fde68a';}}}
 function dis(v){document.getElementById('sendBtn').disabled=v;document.getElementById('userInput').disabled=v;}
 function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 
 document.getElementById('userInput').addEventListener('input',function(){this.style.height='44px';this.style.height=Math.min(this.scrollHeight,100)+'px';});
 document.getElementById('userInput').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAnswer();}});
 
-function practiceAgain(){
-  document.getElementById('scoreSection').style.display='none';
-  document.getElementById('scoreSection').innerHTML='';
-  document.getElementById('pageHeader').style.display='';
-  document.getElementById('setupForm').style.display='block';
-  document.getElementById('chatMessages').innerHTML='';
-  msgs=[];qCount=0;fillerWords=0;_totalWords=0;_totalSpeakDur=0;
-  _lastWasProbe=false;_probedThisQ=false;
-  document.getElementById('fillerCount').textContent='0';document.getElementById('wpmCount').textContent='\u2014';
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-function shareResults(score){
-  var txt='I just practiced a '+iData.role+' interview on FindMeAJob and scored '+score+'/100. Try it free: https://www.findmeajob.co.nz/interview-sim';
-  if(navigator.share){navigator.share({title:'My interview score',text:txt}).catch(function(){});}
-  else if(navigator.clipboard){navigator.clipboard.writeText(txt).then(function(){alert('Copied to clipboard!');}).catch(function(){prompt('Copy this:',txt);});}
-  else{prompt('Copy this:',txt);}
-}
-
 function toggleTheme(){document.body.classList.toggle('dark');var d=document.body.classList.contains('dark');localStorage.setItem('theme',d?'dark':'light');document.getElementById('tbtn').innerHTML=d?'&#9790;':'&#9788;';}
 if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');var tb=document.getElementById('tbtn');if(tb)tb.innerHTML='&#9790;';}
 </script>
 
-<section style="background:#E7515A;padding:0;margin:0">
-  <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;gap:3rem;padding:3.5rem 2rem">
+<section style="background:#E7515A;padding:0;margin-top:2rem">
+  <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;gap:3rem;padding:3rem 2rem">
     <div style="flex:1">
-      <h2 style="font-size:2.2rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:1rem">Start your career toolkit</h2>
-      <p style="color:rgba(255,255,255,.85);font-size:1rem;line-height:1.7;margin-bottom:2rem">Free forever. No payment. No credit card. Just upload your CV and let AI do the rest.</p>
-      <a href="/match.html" style="display:inline-block;padding:.85rem 2rem;border:2px solid #fff;color:#fff;border-radius:999px;font-size:.95rem;font-weight:700;text-decoration:none">Get started now</a>
+      <h2 style="font-size:1.8rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:.75rem">Start your career toolkit</h2>
+      <p style="color:rgba(255,255,255,.85);font-size:.9rem;line-height:1.6;margin-bottom:1.5rem">12 free AI tools. No payment required.</p>
+      <a href="/match.html" style="display:inline-block;padding:.75rem 1.75rem;border:2px solid #fff;color:#fff;border-radius:999px;font-size:.88rem;font-weight:700;text-decoration:none">Find a Job</a>
     </div>
-    <div style="flex-shrink:0;text-align:center">
-      <div style="font-size:4rem;font-weight:900;color:#fff;line-height:1">12</div>
-      <div style="font-size:1rem;color:rgba(255,255,255,.85);font-weight:600">free tools</div>
-      <div style="font-size:.82rem;color:rgba(255,255,255,.65);margin-top:.5rem">for NZ job seekers</div>
-    </div>
+    <div style="flex-shrink:0;text-align:center"><div style="font-size:3rem;font-weight:900;color:#fff;line-height:1">12</div><div style="font-size:.85rem;color:rgba(255,255,255,.85);font-weight:600">free tools</div></div>
   </div>
 </section>
-<section style="background:#f7f7f7;padding:3.5rem 2rem;text-align:center">
+<section style="background:#f7f7f7;padding:3rem 2rem;text-align:center">
   <h2 style="font-size:1.5rem;font-weight:800;color:#1a1a2e;margin-bottom:.5rem">Get weekly NZ job alerts</h2>
   <p style="color:#6b7280;font-size:.9rem;margin-bottom:1.25rem">Real jobs from Adzuna delivered every Monday. Free.</p>
   <div style="display:flex;gap:.5rem;max-width:420px;margin:0 auto">
@@ -1098,36 +981,17 @@ if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');v
 </section>
 <footer style="background:#1B1B3A;padding:3rem 2rem 1.5rem">
   <div style="max-width:900px;margin:0 auto">
-    <div style="font-size:2.5rem;font-weight:900;color:#E7515A;margin-bottom:2rem;letter-spacing:-1px">FindMeAJob</div>
-    <div style="display:flex;gap:3rem;flex-wrap:wrap;margin-bottom:2rem">
-      <div>
-        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.75rem">Tools</div>
-        <a href="/match.html" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Apply for a Job</a>
-        <a href="/interview-sim" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Interview Simulator</a>
-        <a href="/match.html#apply" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">CV + Cover Letter</a>
-        <a href="/score" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">CV Score</a>
-        <a href="/salary" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Salary Calculator</a>
-      </div>
-      <div>
-        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.75rem">More Tools</div>
-        <a href="/interview" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Interview Questions</a>
-        <a href="/negotiate" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Negotiate Salary</a>
-        <a href="/compare" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Compare Jobs</a>
-        <a href="/decode" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Decode Job Ad</a>
-        <a href="/email" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Write This Email</a>
-      </div>
-      <div>
-        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.75rem">Company</div>
-        <a href="/blog" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Blog</a>
-        <a href="/employer-portal.html" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Post a Job</a>
-        <a href="/employer-portal.html" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Employer Login</a>
-      </div>
+    <div style="font-size:2rem;font-weight:900;color:#E7515A;margin-bottom:1.5rem;letter-spacing:-.5px">FindMeAJob</div>
+    <div style="display:flex;gap:2.5rem;flex-wrap:wrap;margin-bottom:1.5rem">
+      <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.6rem">Tools</div><a href="/match.html" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Apply for a Job</a><a href="/interview-sim" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Interview Simulator</a><a href="/match.html#apply" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">CV + Cover Letter</a><a href="/score" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">CV Score</a><a href="/salary" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Salary Calculator</a></div>
+      <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.6rem">More</div><a href="/interview" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Interview Questions</a><a href="/negotiate" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Negotiate Salary</a><a href="/compare" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Compare Jobs</a><a href="/decode" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Decode Job Ad</a><a href="/email" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Write This Email</a></div>
+      <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.6rem">Company</div><a href="/blog" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Blog</a><a href="/employer-portal.html" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Post a Job</a><a href="/terms" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Terms</a><a href="/privacy" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Privacy</a></div>
     </div>
-    <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:1.5rem;font-size:.68rem;color:rgba(255,255,255,.3);line-height:1.7">
-      <p>&copy; 2026 FindMeAJob.co.nz &mdash; AI-powered career tools for New Zealand</p>
-      <p style="margin-top:.5rem">AI Disclaimer: This platform uses artificial intelligence to analyse CVs, match jobs, estimate salaries, and generate content. Results are suggestions, not professional advice. Always verify independently.</p>
-    </div>
+    <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:1rem;font-size:.62rem;color:rgba(255,255,255,.3);line-height:1.6"><p>&copy; 2026 FindMeAJob Ltd. All rights reserved.</p><p style="margin-top:.25rem">AI results are suggestions, not professional advice.</p></div>
   </div>
 </footer>
+<script>
+function subscribeAlerts(){var e=document.getElementById('alert-email');if(!e||!e.value.trim()||e.value.indexOf('@')===-1)return;fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',email:e.value.trim(),password:'__alerts_only__',name:e.value.split('@')[0],emailAlerts:true})}).then(function(){e.value='';e.placeholder='Subscribed!';}).catch(function(){});}
+</script>
 </body>
 </html>

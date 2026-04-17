@@ -13,7 +13,6 @@
 <meta property="og:image" content="https://www.findmeajob.co.nz/favicon-512.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
-<link rel="icon" type="image/svg+xml" href="/logo-icon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -392,10 +391,5 @@ if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');v
 <script>
 function subscribeAlerts(){var e=document.getElementById('alert-email');if(!e||!e.value.trim()||e.value.indexOf('@')===-1)return;fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',email:e.value.trim(),password:'__alerts_only__',name:e.value.split('@')[0],emailAlerts:true})}).then(function(){e.value='';e.placeholder='Subscribed!';}).catch(function(){});}
 </script>
-<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1B1B3A;color:rgba(255,255,255,.85);padding:.85rem 2rem;font-size:.78rem;z-index:9999;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap">
-<span>This site uses cookies and local storage for basic functionality. See our <a href="/privacy" style="color:#E7515A;font-weight:600">Privacy Policy</a>.</span>
-<button onclick="document.getElementById('cookie-banner').style.display='none';localStorage.setItem('cookie-ok','1')" style="background:#E7515A;color:#fff;border:none;padding:.4rem 1rem;border-radius:999px;font-size:.75rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Got it</button>
-</div>
-<script>if(!localStorage.getItem('cookie-ok')){document.getElementById('cookie-banner').style.display='flex';}</script>
 </body>
 </html>
