@@ -556,6 +556,8 @@ function _doSpeak(t){
       if(gender==='male'&&isMal)sc+=10;
       if(n.indexOf('enhanced')>-1||n.indexOf('premium')>-1||n.indexOf('natural')>-1||n.indexOf('neural')>-1)sc+=50;
       if(n.indexOf('microsoft')>-1)sc+=30;
+      if(n.indexOf('aria')>-1||n.indexOf('jenny')>-1||n.indexOf('guy')>-1)sc+=20;
+      if(n.indexOf('samantha')>-1||n.indexOf('karen')>-1||n.indexOf('daniel')>-1||n.indexOf('moira')>-1)sc+=25;
       if(l==='en-nz'||l==='en-au')sc+=15;
       if(l==='en-gb')sc+=10;
       if(n.indexOf('google')>-1)sc+=5;
@@ -563,9 +565,9 @@ function _doSpeak(t){
     }
     candidates.sort(function(a,b){return b.score-a.score;});
     var match=candidates.length?candidates[0].voice:null;
-    var u=new SpeechSynthesisUtterance(t);u.rate=0.95;u.lang='en-NZ';
+    var u=new SpeechSynthesisUtterance(t);u.rate=0.92;u.lang='en-NZ';
     if(match)u.voice=match;
-    if(gender==='male'){u.pitch=0.8;u.rate=0.92;}else{u.pitch=1.0;}
+    if(gender==='male'){u.pitch=0.75;u.rate=0.9;}else{u.pitch=1.0;}
     u.onend=function(){if(_simEnded)return;_aiSpeaking=false;clearTimeout(_speakTimeout);setOrb('listening');autoStartListening();};
     u.onerror=function(){if(_simEnded)return;_aiSpeaking=false;clearTimeout(_speakTimeout);setOrb('listening');autoStartListening();};
     window.speechSynthesis.speak(u);
@@ -578,7 +580,32 @@ function speakFinal(t){
   if(!audioEnabled||!window.speechSynthesis){_simEnded=true;setOrb('thinking');return;}
   try{
     window.speechSynthesis.cancel();
-    var u=new SpeechSynthesisUtterance(t);u.rate=0.95;u.lang='en-NZ';
+    var gender=document.getElementById('voiceGender').value;
+    var voices=window.speechSynthesis.getVoices()||[];var candidates=[];
+    for(var i=0;i<voices.length;i++){
+      var v=voices[i];var l=v.lang.toLowerCase();var n=v.name.toLowerCase();
+      if(l.indexOf('en')!==0)continue;
+      var sc=0;
+      var isFem=n.indexOf('female')>-1||n.indexOf('fiona')>-1||n.indexOf('karen')>-1||n.indexOf('samantha')>-1||n.indexOf('victoria')>-1||n.indexOf('moira')>-1||n.indexOf('tessa')>-1||n.indexOf('zira')>-1||n.indexOf('aria')>-1||n.indexOf('jenny')>-1;
+      var isMal=n.indexOf('male')>-1||n.indexOf('daniel')>-1||n.indexOf('james')>-1||n.indexOf('lee')>-1||n.indexOf('gordon')>-1||n.indexOf('alex')>-1||n.indexOf('david')>-1||n.indexOf('guy')>-1||n.indexOf('mark')>-1;
+      if(gender==='female'&&!isFem&&isMal)continue;
+      if(gender==='male'&&!isMal&&isFem)continue;
+      if(gender==='female'&&isFem)sc+=10;
+      if(gender==='male'&&isMal)sc+=10;
+      if(n.indexOf('enhanced')>-1||n.indexOf('premium')>-1||n.indexOf('natural')>-1||n.indexOf('neural')>-1)sc+=50;
+      if(n.indexOf('microsoft')>-1)sc+=30;
+      if(n.indexOf('aria')>-1||n.indexOf('jenny')>-1||n.indexOf('guy')>-1)sc+=20;
+      if(n.indexOf('samantha')>-1||n.indexOf('karen')>-1||n.indexOf('daniel')>-1||n.indexOf('moira')>-1)sc+=25;
+      if(l==='en-nz'||l==='en-au')sc+=15;
+      if(l==='en-gb')sc+=10;
+      if(n.indexOf('google')>-1)sc+=5;
+      candidates.push({voice:v,score:sc});
+    }
+    candidates.sort(function(a,b){return b.score-a.score;});
+    var match=candidates.length?candidates[0].voice:null;
+    var u=new SpeechSynthesisUtterance(t);u.rate=0.92;u.lang='en-NZ';
+    if(match)u.voice=match;
+    if(gender==='male'){u.pitch=0.75;u.rate=0.9;}else{u.pitch=1.0;}
     u.onend=function(){_simEnded=true;setOrb('thinking');};
     u.onerror=function(){_simEnded=true;setOrb('thinking');};
     setTimeout(function(){window.speechSynthesis.speak(u);},50);
