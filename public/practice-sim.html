@@ -79,6 +79,11 @@ input:focus,select:focus,textarea:focus{border-color:#E7515A;box-shadow:0 0 0 3p
       <div style="font-size:1.1rem;font-weight:800;color:#0f172a;margin-bottom:.25rem">Pick a scenario to practice</div>
       <div style="font-size:.82rem;color:#64748b;margin-bottom:1.25rem;line-height:1.5">Choose the conversation you want to rehearse. You'll speak aloud and the AI will push back like a real hiring manager or boss.</div>
 
+      <div class="field" style="margin-bottom:.75rem">
+        <label>Quick pick (or tap a card below)</label>
+        <select id="scenarioSelect" onchange="selectScenario(this.value)"></select>
+      </div>
+
       <div class="scn-grid" id="scenarioGrid"></div>
 
       <div class="field"><label>Your role / job title <span style="color:#E7515A">*</span></label><input type="text" id="simRole" placeholder="e.g. Pharmacist, Software Engineer, Teacher"></div>
@@ -96,7 +101,7 @@ input:focus,select:focus,textarea:focus{border-color:#E7515A;box-shadow:0 0 0 3p
     <div class="card">
       <div style="font-size:.72rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:1px;margin-bottom:.75rem">Step 2 of 3 &mdash; Audio</div>
       <div class="field"><label>Choose the other person's voice</label>
-        <select id="voiceGender"><option value="female">Female voice (speaks aloud)</option><option value="male">Male voice (speaks aloud)</option><option value="off">No voice \u2014 text only</option></select>
+        <select id="voiceGender"><option value="female">Female voice (speaks aloud)</option><option value="male">Male voice (speaks aloud)</option><option value="off">No voice &mdash; text only</option></select>
       </div>
       <div style="display:flex;flex-direction:column;gap:.65rem;margin-top:.5rem">
         <label style="display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;font-size:.85rem;color:#475569;line-height:1.5"><input type="checkbox" id="autoSendMode" style="accent-color:#E7515A;width:18px;height:18px;margin-top:2px" checked> <span><strong style="color:#0f172a">Auto-send replies</strong><br><span style="font-size:.78rem;color:#94a3b8">When you stop talking for 4 seconds, your reply sends automatically</span></span></label>
@@ -117,14 +122,14 @@ input:focus,select:focus,textarea:focus{border-color:#E7515A;box-shadow:0 0 0 3p
 
       <div style="font-size:.72rem;font-weight:700;color:#0f172a;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.6rem">Quick tips</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:1.25rem">
-        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem"><div style="font-size:.78rem;font-weight:700;color:#0f172a">Speak clearly</div><div style="font-size:.68rem;color:#64748b">Pause before replying \u2014 it shows composure</div></div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem"><div style="font-size:.78rem;font-weight:700;color:#0f172a">Speak clearly</div><div style="font-size:.68rem;color:#64748b">Pause before replying &mdash; it shows composure</div></div>
         <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem"><div style="font-size:.78rem;font-weight:700;color:#0f172a">Use specifics</div><div style="font-size:.68rem;color:#64748b">Numbers and examples beat vague statements</div></div>
         <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem"><div style="font-size:.78rem;font-weight:700;color:#0f172a">Stay warm</div><div style="font-size:.68rem;color:#64748b">Firm and friendly beats defensive every time</div></div>
         <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem"><div style="font-size:.78rem;font-weight:700;color:#0f172a">Don't cave</div><div style="font-size:.68rem;color:#64748b">Hold your ground if pushback isn't convincing</div></div>
       </div>
 
       <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1.25rem;flex-wrap:wrap">
-        <div id="micStatus" style="font-size:.78rem;font-weight:600;color:#94a3b8">\u25cb Microphone</div>
+        <div id="micStatus" style="font-size:.78rem;font-weight:600;color:#94a3b8">&#9675; Microphone</div>
       </div>
       <button class="btn" id="beginBtn" onclick="beginCountdown()" disabled style="max-width:320px;margin:0 auto">Setting up...</button>
       <div style="text-align:center;margin-top:.5rem"><button onclick="document.getElementById('readyScreen').style.display='none';document.getElementById('step2').style.display='block';window.scrollTo({top:0,behavior:'smooth'})" style="background:none;border:none;color:#64748b;font-size:.78rem;cursor:pointer;font-family:inherit">Back to settings</button></div>
@@ -163,7 +168,7 @@ input:focus,select:focus,textarea:focus{border-color:#E7515A;box-shadow:0 0 0 3p
       <textarea id="userInput" style="display:none" rows="1"></textarea>
       <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-top:.6rem">
         <button id="sendBtn" onclick="sendAnswer()" style="display:none;padding:.55rem 1.2rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:inherit;font-size:.78rem;font-weight:700;cursor:pointer">Send Reply</button>
-        <button id="keepTalkingBtn" onclick="toggleMic()" style="display:none;padding:.55rem 1.2rem;background:#fff;color:#E7515A;border:2px solid #E7515A;border-radius:999px;font-family:inherit;font-size:.78rem;font-weight:700;cursor:pointer">\ud83c\udfa4 Keep Talking</button>
+        <button id="keepTalkingBtn" onclick="toggleMic()" style="display:none;padding:.55rem 1.2rem;background:#fff;color:#E7515A;border:2px solid #E7515A;border-radius:999px;font-family:inherit;font-size:.78rem;font-weight:700;cursor:pointer">&#127908; Keep Talking</button>
       </div>
     </div>
     <button id="endBtn" onclick="endSim()" style="display:none;width:100%;padding:.75rem;background:#0f172a;color:#fff;border:none;border-radius:999px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:.5rem">End Practice &amp; Get Score</button>
@@ -173,6 +178,7 @@ input:focus,select:focus,textarea:focus{border-color:#E7515A;box-shadow:0 0 0 3p
 </div>
 
 <script>
+var selectedScenario='salary';
 var SCENARIOS={
   salary:{
     icon:'\ud83d\udcb0',
@@ -244,17 +250,20 @@ var SCENARIOS={
 
 function renderScenarioGrid(){
   var grid=document.getElementById('scenarioGrid');
-  var html='';
+  var sel=document.getElementById('scenarioSelect');
+  var gridHtml='';var selHtml='';
   Object.keys(SCENARIOS).forEach(function(k){
     var s=SCENARIOS[k];
-    var sel=k===selectedScenario?' selected':'';
-    html+='<div class="scn-card'+sel+'" data-key="'+k+'" onclick="selectScenario(\''+k+'\')">';
-    html+='<span class="scn-icon">'+s.icon+'</span>';
-    html+='<div class="scn-title">'+s.title+'</div>';
-    html+='<div class="scn-desc">'+s.desc+'</div>';
-    html+='</div>';
+    var isSel=k===selectedScenario;
+    gridHtml+='<div class="scn-card'+(isSel?' selected':'')+'" data-key="'+k+'" onclick="selectScenario(\''+k+'\')">';
+    gridHtml+='<span class="scn-icon">'+s.icon+'</span>';
+    gridHtml+='<div class="scn-title">'+s.title+'</div>';
+    gridHtml+='<div class="scn-desc">'+s.desc+'</div>';
+    gridHtml+='</div>';
+    selHtml+='<option value="'+k+'"'+(isSel?' selected':'')+'>'+s.icon+'  '+s.title+'</option>';
   });
-  grid.innerHTML=html;
+  grid.innerHTML=gridHtml;
+  if(sel)sel.innerHTML=selHtml;
 }
 
 function selectScenario(key){
@@ -262,6 +271,8 @@ function selectScenario(key){
   selectedScenario=key;
   var cards=document.querySelectorAll('.scn-card');
   for(var i=0;i<cards.length;i++){cards[i].classList.toggle('selected',cards[i].getAttribute('data-key')===key);}
+  var sel=document.getElementById('scenarioSelect');
+  if(sel&&sel.value!==key)sel.value=key;
   var s=SCENARIOS[key];
   document.getElementById('contextLabel').textContent=s.ctxLabel;
   document.getElementById('contextHint').textContent=s.ctxHint;
@@ -318,20 +329,28 @@ function requestMicEarly(){
 }
 
 function prepSim(){
-  var voiceVal=document.getElementById('voiceGender').value;
-  audioEnabled=(voiceVal!=='off');
-  autoSend=document.getElementById('autoSendMode').checked;
+  try{
+    var voiceVal=document.getElementById('voiceGender').value;
+    audioEnabled=(voiceVal!=='off');
+    autoSend=document.getElementById('autoSendMode').checked;
 
-  var s=SCENARIOS[selectedScenario];
-  var role=document.getElementById('simRole').value.trim();
-  var company=document.getElementById('simCompany').value.trim()||'your company';
-  iData={scenario:selectedScenario,role:role,company:company,context:document.getElementById('simContext').value.trim(),qa:[]};
+    if(!SCENARIOS[selectedScenario])selectedScenario='salary';
+    var s=SCENARIOS[selectedScenario];
+    var role=document.getElementById('simRole').value.trim();
+    var company=document.getElementById('simCompany').value.trim()||'your company';
+    iData={scenario:selectedScenario,role:role,company:company,context:document.getElementById('simContext').value.trim(),qa:[]};
 
-  document.getElementById('readySummary').innerHTML='You\u2019re practicing: <strong style="color:#0f172a">'+esc(s.title)+'</strong>. The AI plays <strong>'+esc(s.aiName)+'</strong> and will push back realistically over 3-5 exchanges.';
+    document.getElementById('readySummary').innerHTML='You\u2019re practicing: <strong style="color:#0f172a">'+esc(s.title)+'</strong>. The AI plays <strong>'+esc(s.aiName)+'</strong> and will push back realistically over 3-5 exchanges.';
 
-  document.getElementById('step2').style.display='none';
-  document.getElementById('readyScreen').style.display='block';
-  window.scrollTo({top:0,behavior:'smooth'});
+    document.getElementById('step2').style.display='none';
+    var rs=document.getElementById('readyScreen');
+    rs.style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+    setTimeout(function(){try{rs.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){}},150);
+  }catch(err){
+    alert('Could not load review step: '+(err&&err.message?err.message:err)+'. Please refresh and try again.');
+    return;
+  }
 
   var micEl=document.getElementById('micStatus');
   var beginBtn=document.getElementById('beginBtn');
