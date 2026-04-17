@@ -87,7 +87,16 @@
     },
     {
       "src": "/challenge",
-      "dest": "/public/challenge.html"
+      "status": 301,
+      "headers": { "Location": "/practice-sim" }
+    },
+    {
+      "src": "/practice-sim",
+      "dest": "/public/practice-sim.html"
+    },
+    {
+      "src": "/practice/([a-z]+)",
+      "dest": "/public/practice-sim.html?s=$1"
     },
     {
       "src": "/decide",
