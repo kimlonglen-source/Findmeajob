@@ -574,7 +574,7 @@ async function _doStart(role){
     if(style==='Panel')sysParts+="- PANEL: you are lead interviewer joined by 2 colleagues. Occasionally say 'My colleague would like to ask...'\n";
     if(style==='Competency')sysParts+="- COMPETENCY-BASED: each question targets a specific competency (leadership, communication, problem-solving, teamwork, adaptability)\n";
     if(style==='Casual')sysParts+="- Keep tone conversational like a coffee chat, but still gather signal\n";
-    sysParts+="\nNZ CULTURE:\n- Open with 'Kia ora' and introduce yourself as "+iName+"\n- Reference flat hierarchy, team-first, whanaungatanga naturally\n- NZ values humility \u2014 probe gently if someone undersells themselves\n- Use NZ English sparingly ('keen', 'sweet as', 'sorted')\n\nDo not number questions.\n";
+    sysParts+="\nNZ CULTURE:\n- Open with 'Kia ora' and introduce yourself as "+iName+"\n- Reference flat hierarchy, team-first, whanaungatanga naturally\n- NZ values humility \u2014 probe gently if someone undersells themselves\n- Use NZ English sparingly ('keen', 'sweet as', 'sorted')\n- ALWAYS use NZ/British spelling: organise, recognise, analyse, behaviour, colour, favour, programme, centre\n\nDo not number questions.\n";
     if(jobDesc){sysParts+="\nJOB AD (tailor questions to these requirements):\n"+jobDesc.substring(0,2000)+"\n";}
     var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sysParts,messages:msgs})});
     var d=await r.json();var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
@@ -720,7 +720,7 @@ async function endInterview(){
   p+="TRANSCRIPT:\n";
   iData.qa.forEach(function(x,i){var label=(i===iData.qa.length-1&&_closingPhase)?'Closing':'Q'+(i+1);p+=label+": "+x.q.substring(0,500)+"\nA"+(i+1)+": "+x.a.substring(0,600)+"\n\n";});
   if(_closingPhase){p+="The last entry is the candidate's closing remarks. Factor initiative into your assessment.\n\n";}
-  p+="In NZ culture, humility is valued. Do not penalise understated confidence \u2014 distinguish between lack of confidence and Kiwi modesty.\n\n";
+  p+="In NZ culture, humility is valued. Do not penalise understated confidence \u2014 distinguish between lack of confidence and Kiwi modesty.\nUse NZ/British spelling throughout: organise, recognise, behaviour, colour, favour, centre.\n\n";
   p+='Return ONLY valid JSON, no markdown:\n';
   p+='{"score":0,"grade":"A+|A|B+|B|C+|C|D","recommendation":"Strong Hire|Hire|Maybe|No Hire","overall":"3 sentence recruiter summary","strengths":["s1","s2","s3"],"improvements":["i1","i2","i3"],"goldenTip":"one actionable tip","feedback":[{"question":"short","rating":"Strong|Adequate|Needs Work","comment":"what they did well or missed","tip":"specific improvement","modelAnswer":"2-3 sentence example of how a strong '+iData.level+' candidate would answer this"}]}';
   try{
