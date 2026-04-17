@@ -302,69 +302,70 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 <div id="page-home" class="page active">
   <section class="hero">
 
-  <!-- HERO — Full width like Monzo -->
+  <!-- HERO — Full-bleed dark cinematic -->
   <section style="padding:.5rem 3rem 0">
-    <div style="position:relative;border-radius:20px;overflow:hidden;min-height:85vh;display:flex;align-items:flex-end;background:#1a1a2e">
-      <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1600&q=80" alt="Find NZ Jobs" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.45">
-      <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.6) 0%,rgba(0,0,0,.1) 50%,transparent 100%)"></div>
-      <div style="position:relative;z-index:2;padding:3.5rem;max-width:650px">
-        <h1 style="font-size:clamp(2.4rem,5vw,3.5rem);font-weight:800;color:#fff;line-height:1.05;margin-bottom:.75rem;letter-spacing:-1px">Upload your CV.<br>Get matched in <span style="color:#E7515A">60 seconds</span>.</h1>
-        <p style="font-size:1.05rem;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:1.5rem">AI reads your skills and finds the best NZ jobs for you. Free forever.</p>
-        <button class="btn-hero" id="hero-try" type="button" style="background:#fff;color:#1a1a2e;border:none;padding:.8rem 1.75rem;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer">Upload your CV</button>
-      </div>
-      <div style="position:absolute;bottom:2rem;right:3rem;z-index:2" id="job-count-badge"><span style="background:rgba(255,255,255,.15);backdrop-filter:blur(8px);color:#fff;padding:.4rem 1rem;border-radius:999px;font-size:.75rem;font-weight:600">1000+ live NZ jobs</span></div>
-    </div>
-  </section>
-
-  <!-- 1-2-3 STEPS with colored backgrounds -->
-  <section style="padding:3rem 3rem 0">
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
-      <div style="background:#fef2f2;border-radius:20px;padding:2.5rem 2rem">
-        <div style="font-size:3rem;font-weight:800;color:#E7515A;line-height:1;margin-bottom:1rem">1</div>
-        <h3 style="font-size:1.15rem;font-weight:800;color:#1a1a2e;margin-bottom:.4rem">Upload your CV</h3>
-        <p style="color:#64748b;font-size:.85rem;line-height:1.65">PDF or Word. AI reads your skills and experience in seconds. Or enter skills manually.</p>
-      </div>
-      <div style="background:#f0fdf4;border-radius:20px;padding:2.5rem 2rem">
-        <div style="font-size:3rem;font-weight:800;color:#10b981;line-height:1;margin-bottom:1rem">2</div>
-        <h3 style="font-size:1.15rem;font-weight:800;color:#1a1a2e;margin-bottom:.4rem">Get matched</h3>
-        <p style="color:#64748b;font-size:.85rem;line-height:1.65">We compare you against thousands of live NZ jobs and rank them by how well you fit.</p>
-      </div>
-      <div style="background:#eff6ff;border-radius:20px;padding:2.5rem 2rem">
-        <div style="font-size:3rem;font-weight:800;color:#3b82f6;line-height:1;margin-bottom:1rem">3</div>
-        <h3 style="font-size:1.15rem;font-weight:800;color:#1a1a2e;margin-bottom:.4rem">Apply with AI</h3>
-        <p style="color:#64748b;font-size:.85rem;line-height:1.65">Get a tailored CV and cover letter for every role. Download free.</p>
+    <div style="position:relative;border-radius:20px;overflow:hidden;min-height:85vh;display:flex;align-items:center;justify-content:center;text-align:center;background:linear-gradient(135deg,#0f172a,#1a1a2e)">
+      <div style="position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(231,81,90,.12) 0%,transparent 60%);pointer-events:none;animation:heroGlow 8s ease-in-out infinite"></div>
+      <div style="position:absolute;bottom:-20%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(139,92,246,.08) 0%,transparent 60%);pointer-events:none"></div>
+      <style>@keyframes heroGlow{0%,100%{opacity:.6;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.1)}}</style>
+      <div style="position:relative;z-index:2;padding:3.5rem 2rem;max-width:700px">
+        <h1 style="font-size:clamp(2.4rem,5vw,3.8rem);font-weight:900;color:#fff;line-height:1.05;margin-bottom:1rem;letter-spacing:-1.5px">Upload your CV.<br>Get matched in <span style="color:#E7515A">60 seconds</span>.</h1>
+        <p style="font-size:1.05rem;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:2rem;max-width:480px;margin-left:auto;margin-right:auto">AI reads your skills and finds the best NZ jobs for you. Free forever.</p>
+        <button class="btn-hero" id="hero-try" type="button" style="background:#fff;color:#1a1a2e;border:none;padding:1rem 2.5rem;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 30px rgba(255,255,255,.15);transition:all .25s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 40px rgba(255,255,255,.2)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 30px rgba(255,255,255,.15)'">Upload your CV</button>
+        <div style="margin-top:1.5rem;display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;font-size:.78rem;color:rgba(255,255,255,.35);font-weight:500">
+          <span>Free forever</span><span style="color:rgba(255,255,255,.15)">|</span><span>No sign-up required</span><span style="color:rgba(255,255,255,.15)">|</span><span>Your CV is never stored</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- 3 TOOL CARDS — Colorful like Monzo feature cards -->
-  <section style="padding:1rem 3rem 0">
+  <!-- 1-2-3 STEPS — connected horizontal bar -->
+  <section style="padding:3.5rem 3rem 0">
+    <div style="display:flex;align-items:flex-start;justify-content:center;gap:0;max-width:700px;margin:0 auto;position:relative">
+      <div style="position:absolute;top:24px;left:calc(16.7% + 24px);right:calc(16.7% + 24px);height:2px;background:linear-gradient(90deg,#E7515A,#10b981,#3b82f6)"></div>
+      <div style="flex:1;text-align:center;position:relative;z-index:1">
+        <div style="width:48px;height:48px;background:#fef2f2;border:2px solid #E7515A;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto .75rem;font-size:1.1rem;font-weight:900;color:#E7515A">1</div>
+        <div style="font-size:.95rem;font-weight:800;color:var(--text);margin-bottom:.25rem">Upload</div>
+        <div style="font-size:.78rem;color:var(--text3);line-height:1.5;font-weight:500">Drop your CV. PDF or Word.</div>
+      </div>
+      <div style="flex:1;text-align:center;position:relative;z-index:1">
+        <div style="width:48px;height:48px;background:#f0fdf4;border:2px solid #10b981;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto .75rem;font-size:1.1rem;font-weight:900;color:#10b981">2</div>
+        <div style="font-size:.95rem;font-weight:800;color:var(--text);margin-bottom:.25rem">Match</div>
+        <div style="font-size:.78rem;color:var(--text3);line-height:1.5;font-weight:500">AI reads your skills and finds NZ jobs.</div>
+      </div>
+      <div style="flex:1;text-align:center;position:relative;z-index:1">
+        <div style="width:48px;height:48px;background:#eff6ff;border:2px solid #3b82f6;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto .75rem;font-size:1.1rem;font-weight:900;color:#3b82f6">3</div>
+        <div style="font-size:.95rem;font-weight:800;color:var(--text);margin-bottom:.25rem">Apply</div>
+        <div style="font-size:.78rem;color:var(--text3);line-height:1.5;font-weight:500">Get a tailored CV and cover letter.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 TOOL CARDS — gradient backgrounds, no stock photos -->
+  <section style="padding:2rem 3rem 0">
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
-      <div style="position:relative;border-radius:20px;overflow:hidden;height:320px;background:#E7515A;cursor:pointer;transition:transform .3s" onclick="document.getElementById('hero-try').click()" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''">
-        <img src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=400&q=80" alt="CV matching" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.35">
-        <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.4) 0%,transparent 50%)"></div>
-        <div style="position:absolute;top:1rem;right:1rem;width:32px;height:32px;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.9rem">&#8594;</div>
-        <div style="position:absolute;bottom:1.5rem;left:1.5rem;right:1.5rem;z-index:2">
-          <h3 style="font-size:1.15rem;font-weight:800;color:#fff;line-height:1.2;margin-bottom:.3rem">AI job matching</h3>
-          <p style="font-size:.75rem;color:rgba(255,255,255,.8);line-height:1.5">Upload your CV and get matched to real NZ jobs instantly.</p>
+      <div style="position:relative;border-radius:24px;overflow:hidden;height:300px;background:linear-gradient(135deg,#E7515A,#c7313a);cursor:pointer;transition:all .3s" onclick="document.getElementById('hero-try').click()" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 20px 40px rgba(231,81,90,.2)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <div style="position:absolute;top:-30%;right:-20%;width:300px;height:300px;background:radial-gradient(circle,rgba(255,255,255,.1) 0%,transparent 60%)"></div>
+        <div style="position:absolute;top:1.25rem;right:1.25rem;font-size:.82rem;color:rgba(255,255,255,.6)">&#8594;</div>
+        <div style="position:absolute;bottom:2rem;left:2rem;right:2rem;z-index:2">
+          <h3 style="font-size:1.3rem;font-weight:800;color:#fff;line-height:1.2;margin-bottom:.4rem">AI job matching</h3>
+          <p style="font-size:.82rem;color:rgba(255,255,255,.75);line-height:1.6">Upload your CV and get matched to real NZ jobs instantly.</p>
         </div>
       </div>
-      <div style="position:relative;border-radius:20px;overflow:hidden;height:320px;background:#1B1B3A;cursor:pointer;transition:transform .3s" onclick="showPage('apply')" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''">
-        <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=400&q=80" alt="CV Writer" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.3">
-        <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.4) 0%,transparent 50%)"></div>
-        <div style="position:absolute;top:1rem;right:1rem;width:32px;height:32px;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.9rem">&#8594;</div>
-        <div style="position:absolute;bottom:1.5rem;left:1.5rem;right:1.5rem;z-index:2">
-          <h3 style="font-size:1.15rem;font-weight:800;color:#fff;line-height:1.2;margin-bottom:.3rem">CV + Cover Letter</h3>
-          <p style="font-size:.75rem;color:rgba(255,255,255,.8);line-height:1.5">AI tailors your CV and writes a cover letter for any job ad.</p>
+      <div style="position:relative;border-radius:24px;overflow:hidden;height:300px;background:linear-gradient(135deg,#1a1a2e,#0f172a);cursor:pointer;transition:all .3s" onclick="showPage('apply')" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 20px 40px rgba(0,0,0,.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <div style="position:absolute;top:-30%;right:-20%;width:300px;height:300px;background:radial-gradient(circle,rgba(139,92,246,.1) 0%,transparent 60%)"></div>
+        <div style="position:absolute;top:1.25rem;right:1.25rem;font-size:.82rem;color:rgba(255,255,255,.6)">&#8594;</div>
+        <div style="position:absolute;bottom:2rem;left:2rem;right:2rem;z-index:2">
+          <h3 style="font-size:1.3rem;font-weight:800;color:#fff;line-height:1.2;margin-bottom:.4rem">CV + Cover Letter</h3>
+          <p style="font-size:.82rem;color:rgba(255,255,255,.6);line-height:1.6">AI tailors your CV and writes a cover letter for any job ad.</p>
         </div>
       </div>
-      <div style="position:relative;border-radius:20px;overflow:hidden;height:320px;background:#E7515A;cursor:pointer;transition:transform .3s" onclick="window.location.href='/interview-sim'" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''">
-        <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=400&q=80" alt="Interview Sim" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.35">
-        <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.4) 0%,transparent 50%)"></div>
-        <div style="position:absolute;top:1rem;right:1rem;width:32px;height:32px;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.9rem">&#8594;</div>
-        <div style="position:absolute;bottom:1.5rem;left:1.5rem;right:1.5rem;z-index:2">
-          <h3 style="font-size:1.15rem;font-weight:800;color:#fff;line-height:1.2;margin-bottom:.3rem">Interview Simulator</h3>
-          <p style="font-size:.75rem;color:rgba(255,255,255,.8);line-height:1.5">Practice with AI. Get scored out of 100 with feedback.</p>
+      <div style="position:relative;border-radius:24px;overflow:hidden;height:300px;background:linear-gradient(135deg,#8b5cf6,#6d28d9);cursor:pointer;transition:all .3s" onclick="window.location.href='/interview-sim'" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 20px 40px rgba(139,92,246,.2)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <div style="position:absolute;top:-30%;right:-20%;width:300px;height:300px;background:radial-gradient(circle,rgba(255,255,255,.08) 0%,transparent 60%)"></div>
+        <div style="position:absolute;top:1.25rem;right:1.25rem;font-size:.82rem;color:rgba(255,255,255,.6)">&#8594;</div>
+        <div style="position:absolute;bottom:2rem;left:2rem;right:2rem;z-index:2">
+          <h3 style="font-size:1.3rem;font-weight:800;color:#fff;line-height:1.2;margin-bottom:.4rem">Interview Simulator</h3>
+          <p style="font-size:.82rem;color:rgba(255,255,255,.6);line-height:1.6">Practice with AI. Get scored out of 100 with feedback.</p>
         </div>
       </div>
     </div>
