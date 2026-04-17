@@ -449,7 +449,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
           <option value="Northland">Whangarei</option>
         </select>
       </div>
-      <div class="alert alert-err" id="cv-err">Please upload your CV first.</div>
+      <div class="alert alert-err" id="cv-err">Please upload your CV first (PDF, Word, or text file).</div>
       <button class="btn" id="btn-analyze" type="button" style="margin-top:1rem">Analyse CV &amp; Find Matches</button>
       <div style="text-align:center;margin-top:.75rem"><button style="background:none;border:none;color:var(--text3);font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif" id="btn-go-manual" type="button">No CV? Enter skills manually &#8594;</button></div>
     </div>
@@ -1160,11 +1160,11 @@ function arrayBufferToBase64(buf){if(typeof buf==='string')return buf;var bytes=
 var currentPage='home',skills=[],cvFileData=null,cvFileName='',darkMode=false,empSession=null,selectedPlan='free',seekerSession=null;
 
 function loadMammoth(cb){
-  if(typeof mammoth!=="undefined")return cb();
+  if(typeof mammoth!=="undefined")return cb(true);
   var s=document.createElement("script");
   s.src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js";
-  s.onload=cb;
-  s.onerror=cb;
+  s.onload=function(){cb(true);};
+  s.onerror=function(){cb(false);};
   document.head.appendChild(s);
 }
 
@@ -1269,12 +1269,22 @@ function renderSkills(){var h='';skills.forEach(function(s,i){h+='<span class="s
 function addSkill(){var inp=document.getElementById('ski');var v=inp.value.trim();if(!v||skills.includes(v.toLowerCase())){inp.value='';return;}skills.push(v.toLowerCase());renderSkills();inp.value='';setStep(3);toast(cap(v)+' added');}
 
 function handleFile(file){
-  if(!file)return;cvFileName=file.name;
+  if(!file)return;
+  /* File size check — 20MB max */
+  if(file.size>20*1024*1024){toast('File too large \u2014 maximum 20MB. Try a smaller CV.');return;}
+  /* File type check */
   var ext=file.name.toLowerCase().split('.').pop();
-  function done(data){cvFileData=data;document.getElementById('cv-info').style.display='flex';document.getElementById('cv-name').textContent=cvFileName;document.getElementById('drop-zone').style.borderColor='rgba(231,81,90,.5)';setStep(3);toast('CV loaded');}
-  if(ext==='pdf'){var r=new FileReader();r.onload=function(e){done(e.target.result);};r.readAsDataURL(file);}
-  else if(ext==='doc'||ext==='docx'){var r2=new FileReader();r2.onload=function(e){var buf=e.target.result;loadMammoth(function(){if(typeof mammoth!=='undefined'){mammoth.extractRawText({arrayBuffer:buf}).then(function(res){if(res.value.trim().length>50){done(res.value.trim());}else{var r3=new FileReader();r3.onload=function(e2){done(e2.target.result);};r3.readAsDataURL(new Blob([buf]));}}).catch(function(){var r3=new FileReader();r3.onload=function(e2){done(e2.target.result);};r3.readAsDataURL(new Blob([buf]));});}else{var r3=new FileReader();r3.onload=function(e2){done(e2.target.result);};r3.readAsDataURL(new Blob([buf]));}});};r2.readAsArrayBuffer(file);}
-  else{var r4=new FileReader();r4.onload=function(e){done(e.target.result);};r4.readAsText(file);}
+  if(['pdf','doc','docx','txt'].indexOf(ext)===-1){toast('Please upload a PDF, Word (.docx), or text file.');return;}
+  cvFileName=file.name;
+  /* Show progress */
+  var dz=document.getElementById('drop-zone');
+  if(dz)dz.style.borderColor='rgba(231,81,90,.5)';
+  toast('Reading CV...');
+  function done(data){cvFileData=data;document.getElementById('cv-info').style.display='flex';document.getElementById('cv-name').textContent=cvFileName;setStep(3);toast('CV loaded');}
+  function fail(msg){toast(msg||'Could not read this file. Try uploading as PDF.');if(dz)dz.style.borderColor='';}
+  if(ext==='pdf'){var r=new FileReader();r.onload=function(e){done(e.target.result);};r.onerror=function(){fail('PDF could not be read.');};r.readAsDataURL(file);}
+  else if(ext==='doc'||ext==='docx'){var r2=new FileReader();r2.onload=function(e){var buf=e.target.result;loadMammoth(function(ok){if(ok&&typeof mammoth!=='undefined'){mammoth.extractRawText({arrayBuffer:buf}).then(function(res){if(res.value.trim().length>50){done(res.value.trim());}else{var r3=new FileReader();r3.onload=function(e2){done(e2.target.result);};r3.readAsDataURL(new Blob([buf]));}}).catch(function(){fail('Could not extract text from this Word file. Try saving as PDF and uploading that instead.');});}else{fail('Word file reader could not load. Please save your CV as PDF and try again.');}});};r2.onerror=function(){fail('Could not read this file.');};r2.readAsArrayBuffer(file);}
+  else{var r4=new FileReader();r4.onload=function(e){if(!e.target.result||e.target.result.trim().length<20){fail('File appears to be empty.');}else{done(e.target.result);}};r4.onerror=function(){fail('Could not read this file.');};r4.readAsText(file);}
 }
 
 async function analyzeCV(){
