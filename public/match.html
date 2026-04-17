@@ -3351,8 +3351,8 @@ function initApp(){try{
     h+='<button type="button" class="apply-out-tab" onclick="switchApplyTab(\'cl\',this)" style="flex:1;padding:.75rem;text-align:center;font-size:.85rem;font-weight:700;cursor:pointer;background:none;border:none;border-bottom:2px solid transparent;color:var(--text3);font-family:Inter,sans-serif">Cover Letter</button>';
     h+='</div>';
     h+='<div style="padding:1.25rem">';
-    h+='<div id="apply-tab-cv"><div id="apply-cv-text" style="width:100%;min-height:300px;background:var(--inp);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;font-family:Inter,monospace;font-size:.82rem;color:var(--text);line-height:1.7;white-space:pre-wrap;word-wrap:break-word">'+esc(cv)+'</div><button type="button" onclick="copyApplyText(\'apply-cv-text\',this)" style="width:100%;padding:.75rem;background:var(--text);color:var(--bg);border:none;border-radius:999px;font-family:Inter,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:.75rem">Copy CV</button></div>';
-    h+='<div id="apply-tab-cl" style="display:none"><div id="apply-cl-text" style="width:100%;min-height:300px;background:var(--inp);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;font-family:Inter,monospace;font-size:.82rem;color:var(--text);line-height:1.7;white-space:pre-wrap;word-wrap:break-word">'+esc(cl)+'</div><button type="button" onclick="copyApplyText(\'apply-cl-text\',this)" style="width:100%;padding:.75rem;background:var(--text);color:var(--bg);border:none;border-radius:999px;font-family:Inter,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:.75rem">Copy Cover Letter</button></div>';
+    h+='<div id="apply-tab-cv"><div id="apply-cv-text" style="width:100%;min-height:300px;background:var(--inp);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;font-family:Inter,monospace;font-size:.82rem;color:var(--text);line-height:1.7;white-space:pre-wrap;word-wrap:break-word">'+esc(cv)+'</div><div style="display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap"><button type="button" onclick="copyApplyText(\'apply-cv-text\',this)" style="flex:1;min-width:120px;padding:.75rem;background:var(--text);color:var(--bg);border:none;border-radius:999px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer">Copy CV</button><button type="button" onclick="downloadAsWord(\'apply-cv-text\',\'CV\')" style="flex:1;min-width:120px;padding:.75rem;background:var(--bg3);color:var(--text);border:1px solid var(--border);border-radius:999px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer">Download Word</button><button type="button" onclick="printText(\'apply-cv-text\')" style="flex:1;min-width:120px;padding:.75rem;background:var(--bg3);color:var(--text);border:1px solid var(--border);border-radius:999px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer">Print</button></div></div>';
+    h+='<div id="apply-tab-cl" style="display:none"><div id="apply-cl-text" style="width:100%;min-height:300px;background:var(--inp);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;font-family:Inter,monospace;font-size:.82rem;color:var(--text);line-height:1.7;white-space:pre-wrap;word-wrap:break-word">'+esc(cl)+'</div><div style="display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap"><button type="button" onclick="copyApplyText(\'apply-cl-text\',this)" style="flex:1;min-width:120px;padding:.75rem;background:var(--text);color:var(--bg);border:none;border-radius:999px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer">Copy Letter</button><button type="button" onclick="downloadAsWord(\'apply-cl-text\',\'Cover-Letter\')" style="flex:1;min-width:120px;padding:.75rem;background:var(--bg3);color:var(--text);border:1px solid var(--border);border-radius:999px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer">Download Word</button><button type="button" onclick="printText(\'apply-cl-text\')" style="flex:1;min-width:120px;padding:.75rem;background:var(--bg3);color:var(--text);border:1px solid var(--border);border-radius:999px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer">Print</button></div></div>';
     h+='</div></div>';
     h+='<div style="background:var(--em3);border:1px solid rgba(231,81,90,.15);border-radius:var(--rl);padding:1.25rem;text-align:center;margin-top:1rem">';
     h+='<p style="font-size:.88rem;color:var(--text);font-weight:600;margin-bottom:.65rem">Ready to find more jobs matched to your skills?</p>';
@@ -3379,6 +3379,27 @@ function initApp(){try{
       var orig=btn.textContent;btn.textContent='Copied!';
       setTimeout(function(){btn.textContent=orig;},2000);
     });
+  };
+
+  window.downloadAsWord=function(id,filename){
+    var text=document.getElementById(id).innerText;
+    var html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><style>body{font-family:Calibri,sans-serif;font-size:11pt;line-height:1.6;color:#222;max-width:700px;margin:0 auto;padding:2cm 2.5cm}h1,h2,h3{margin:1em 0 .3em;font-size:13pt}</style></head><body><pre style="white-space:pre-wrap;font-family:Calibri,sans-serif;font-size:11pt;line-height:1.6">'+text.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</pre></body></html>';
+    var blob=new Blob([html],{type:'application/msword'});
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download=(filename||'Document')+'.doc';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast('Downloaded as '+a.download);
+  };
+
+  window.printText=function(id){
+    var text=document.getElementById(id).innerText;
+    var w=window.open('','_blank');
+    w.document.write('<html><head><title>Print</title><style>body{font-family:Calibri,sans-serif;font-size:11pt;line-height:1.6;color:#222;max-width:700px;margin:0 auto;padding:2cm}pre{white-space:pre-wrap;font-family:Calibri,sans-serif;font-size:11pt;line-height:1.6}</style></head><body><pre>'+text.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</pre></body></html>');
+    w.document.close();
+    w.focus();
+    setTimeout(function(){w.print();},300);
   };
 
   window.resetApply=function(){
