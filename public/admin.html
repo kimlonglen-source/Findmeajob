@@ -587,15 +587,19 @@ async function suggestKeywords(){
   prompt+='Current month: '+month+' '+yr+'.\n\n';
   prompt+='TASK: Suggest 12 blog post keywords that NZ job seekers are likely searching RIGHT NOW.\n\n';
   prompt+='OUR 12 TOOLS (only reference these):\n1. AI Job Matching 2. CV + Cover Letter Writer 3. Interview Simulator 4. Interview Questions 5. CV Score 6. Salary Calculator 7. Negotiate Salary 8. Compare Jobs 9. Decode Job Ad 10. Should I Stay or Go 11. Write This Email 12. Career Roast\n\n';
+  prompt+='PROVEN HIGH-VALUE KEYWORDS FOR NZ JOB SEEKERS (include at least 4 from this list, adapted for '+month+' '+yr+'):\n';
+  prompt+='- how to write a cv nz\n- cv template nz free\n- cover letter examples nz\n- interview questions and answers nz\n- how to answer tell me about yourself\n- salary for [role] nz\n- how to negotiate salary nz\n- behavioural interview questions nz\n- star method examples nz\n- how to get a job in nz\n- best jobs in nz right now\n- resignation letter nz template\n- 90 day trial nz rights\n- redundancy nz what to do\n- work from home jobs nz\n- career change nz\n- kiwisaver when changing jobs\n- holiday pay nz how it works\n- personal grievance nz\n- minimum wage nz\n- how to ace a panel interview\n- what to wear to an interview nz\n- cv gaps how to explain\n- questions to ask at end of interview\n- linkedin profile tips nz\n\n';
   prompt+='STRATEGY:\n';
+  prompt+='- Pick 4-6 from the proven list above AND 6-8 fresh seasonal/trending keywords\n';
   prompt+='- Target long-tail keywords (4-8 words) that a small NZ site can realistically rank for\n';
-  prompt+='- Avoid broad terms like "jobs NZ" (impossible to rank against Seek/TradeMe)\n';
+  prompt+='- Avoid broad terms like "jobs NZ" or "nz jobs" (impossible to rank against Seek/TradeMe)\n';
+  prompt+='- PRIORITISE keywords with Easy or Medium difficulty — these are quick wins\n';
   prompt+='- Consider SEASONAL factors for '+month+': graduation, financial year, performance reviews, redundancy cycles, immigration waves, industry hiring patterns\n';
   prompt+='- Consider TRENDING topics: AI impact on jobs, cost of living, remote work, skills shortages, immigration changes, minimum wage\n';
   prompt+='- Mix categories: interview prep, CV help, salary, career decisions, employment law, job search tactics\n';
   prompt+='- Each keyword MUST map to one of our 12 tools listed above — do NOT invent tools that do not exist\n';
   prompt+='- Use NZ/British spelling: organise, recognise, analyse, optimise, behaviour, colour, favour\n\n';
-  prompt+='For each keyword return:\n- keyword: the exact long-tail search phrase (4-8 words)\n- volume: estimated monthly NZ search volume (Low <100, Medium 100-500, High 500+)\n- difficulty: Easy/Medium/Hard to rank for\n- tool: which FindMeAJob tool this maps to\n- angle: one-sentence content angle\n\n';
+  prompt+='For each keyword return:\n- keyword: the exact long-tail search phrase (4-8 words)\n- volume: estimated monthly NZ search volume (Low <100, Medium 100-500, High 500+)\n- difficulty: Easy/Medium/Hard to rank for\n- tool: which FindMeAJob tool this maps to\n- angle: one-sentence content angle that would win a Google featured snippet\n\n';
   prompt+='Return ONLY valid JSON array:\n[{"keyword":"...","volume":"Low|Medium|High","difficulty":"Easy|Medium|Hard","tool":"...","angle":"..."}]';
   try{
     var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:prompt}]})});
