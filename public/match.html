@@ -623,7 +623,47 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 <!-- APPLY / CV + COVER LETTER WRITER -->
 <div id="page-apply" class="page">
   <div class="wrap">
-    <div style="margin-bottom:1.5rem"><div class="page-eyebrow">CV and Cover Letter Writer</div><div class="page-title">CV and <em style="font-style:normal;color:var(--em)">Cover Letter</em> Writer</div><div style="color:var(--text2);font-size:.88rem;margin-top:.4rem">Paste a job ad and upload your CV. AI tailors both your CV and cover letter to the role.</div></div>
+    <div style="margin-bottom:1rem"><div class="page-eyebrow">CV and Cover Letter Writer</div><div class="page-title">CV and <em style="font-style:normal;color:var(--em)">Cover Letter</em> Writer</div><div style="color:var(--text2);font-size:.88rem;margin-top:.4rem">AI writes a professional CV and cover letter tailored to any job.</div></div>
+    <!-- Tab switcher -->
+    <div style="display:flex;gap:.35rem;background:var(--bg3);border:1px solid var(--border);border-radius:999px;padding:3px;margin-bottom:1.5rem;max-width:400px">
+      <button type="button" class="results-tab active" id="apply-tab-tailor" onclick="document.getElementById('apply-form-section').style.display='block';document.getElementById('apply-scratch-section').style.display='none';this.classList.add('active');document.getElementById('apply-tab-scratch').classList.remove('active')">Tailor existing CV</button>
+      <button type="button" class="results-tab" id="apply-tab-scratch" onclick="document.getElementById('apply-scratch-section').style.display='block';document.getElementById('apply-form-section').style.display='none';this.classList.add('active');document.getElementById('apply-tab-tailor').classList.remove('active')">Build from scratch</button>
+    </div>
+
+    <!-- BUILD FROM SCRATCH -->
+    <div id="apply-scratch-section" style="display:none">
+      <div class="card">
+        <div style="font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.35rem">Your details</div>
+        <div style="font-size:.78rem;color:var(--text3);margin-bottom:1rem">Fill in what you can. AI will format everything into a professional NZ CV.</div>
+        <div class="g2">
+          <div class="field"><label class="form-label">Full name *</label><input type="text" id="scratch-name" placeholder="e.g. Sarah Johnson"></div>
+          <div class="field"><label class="form-label">Email</label><input type="text" id="scratch-email" placeholder="sarah@email.co.nz"></div>
+          <div class="field"><label class="form-label">Phone</label><input type="text" id="scratch-phone" placeholder="021 123 4567"></div>
+          <div class="field"><label class="form-label">Location</label><input type="text" id="scratch-location" placeholder="Auckland, NZ"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.35rem">Work experience</div>
+        <div style="font-size:.78rem;color:var(--text3);margin-bottom:1rem">List your roles, most recent first. Include what you did and any achievements.</div>
+        <div class="field"><textarea id="scratch-experience" rows="6" placeholder="e.g.&#10;Retail Manager, Countdown, Auckland (2022-present)&#10;- Managed team of 12 staff&#10;- Increased sales by 15%&#10;- Trained new team members&#10;&#10;Sales Assistant, The Warehouse (2019-2022)&#10;- Customer service, stock management" style="min-height:120px"></textarea></div>
+      </div>
+      <div class="card">
+        <div style="font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.35rem">Education and qualifications</div>
+        <div class="field"><textarea id="scratch-education" rows="3" placeholder="e.g. Bachelor of Commerce, University of Auckland (2019)&#10;NCEA Level 3, Rangitoto College (2015)" style="min-height:70px"></textarea></div>
+      </div>
+      <div class="card">
+        <div style="font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.35rem">Skills</div>
+        <div class="field"><input type="text" id="scratch-skills" placeholder="e.g. team leadership, customer service, Microsoft Office, budgeting"></div>
+      </div>
+      <div class="card">
+        <div style="font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.35rem">What role are you applying for? (optional)</div>
+        <div style="font-size:.78rem;color:var(--text3);margin-bottom:.75rem">Paste a job ad or describe the role. AI will tailor your CV to match.</div>
+        <div class="field"><textarea id="scratch-job-ad" rows="4" placeholder="Paste the job ad here, or just type the role and company..." style="min-height:80px"></textarea></div>
+      </div>
+      <button class="btn" id="scratch-gen-btn" type="button" onclick="generateScratchCV()" style="margin-top:.5rem">Generate My CV</button>
+    </div>
+
+    <!-- TAILOR EXISTING CV -->
     <div id="apply-form-section">
       <div class="card">
         <div style="font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.75rem">1. Paste the Job Ad</div>
@@ -3191,6 +3231,66 @@ function initApp(){try{
     else if(name.endsWith('.docx')||name.endsWith('.doc')){var r2=new FileReader();r2.onload=function(e){loadMammoth(function(){if(typeof mammoth!=='undefined'){mammoth.extractRawText({arrayBuffer:e.target.result}).then(function(res){_applyCvText=res.value;_applyCvFileData=null;}).catch(function(){_applyCvText='CV file: '+file.name;});}});};r2.readAsArrayBuffer(file);}
     else if(name.endsWith('.pdf')){var r3=new FileReader();r3.onload=function(e){var b64=btoa(new Uint8Array(e.target.result).reduce(function(d,byte){return d+String.fromCharCode(byte);},''));_applyCvFileData='data:application/pdf;base64,'+b64;_applyCvText='';};r3.readAsArrayBuffer(file);}
   }
+
+  /* Build CV from scratch */
+  window.generateScratchCV=async function(){
+    var name=document.getElementById('scratch-name').value.trim();
+    var email=document.getElementById('scratch-email').value.trim();
+    var phone=document.getElementById('scratch-phone').value.trim();
+    var location=document.getElementById('scratch-location').value.trim();
+    var experience=document.getElementById('scratch-experience').value.trim();
+    var education=document.getElementById('scratch-education').value.trim();
+    var skills=document.getElementById('scratch-skills').value.trim();
+    var jobAd=document.getElementById('scratch-job-ad').value.trim();
+    if(!name){toast('Please enter your name');return;}
+    if(!experience&&!skills){toast('Please enter your work experience or skills');return;}
+    var btn=document.getElementById('scratch-gen-btn');
+    btn.disabled=true;btn.textContent='Generating...';
+    document.getElementById('apply-scratch-section').style.display='none';
+    document.getElementById('apply-loading').style.display='block';
+    document.getElementById('apply-result').style.display='none';
+
+    var info='Name: '+name+'\n';
+    if(email)info+='Email: '+email+'\n';
+    if(phone)info+='Phone: '+phone+'\n';
+    if(location)info+='Location: '+location+'\n';
+    if(experience)info+='\nWork Experience:\n'+experience+'\n';
+    if(education)info+='\nEducation:\n'+education+'\n';
+    if(skills)info+='\nSkills: '+skills+'\n';
+
+    var cvPrompt='You are a professional NZ CV writer. Build a complete, polished CV from these details. Use NZ English and NZ CV format (2-3 pages, reverse chronological). Add a professional personal profile summary. Expand bullet points to sound professional. Use action verbs. DO NOT invent qualifications or experience — only use what the person provided. Plain text only, no markdown. Clear headings: PERSONAL PROFILE, KEY SKILLS, WORK EXPERIENCE, EDUCATION, REFERENCES (Available on request).\n\n';
+    if(jobAd)cvPrompt+='TARGET ROLE (tailor the CV to match this):\n'+jobAd.substring(0,2000)+'\n\n';
+    cvPrompt+='PERSON DETAILS:\n'+info+'\n\nReturn ONLY the CV text.';
+
+    var tailoredCV='';
+    try{
+      document.getElementById('apply-load-msg').textContent='Building your CV...';
+      var r1=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:cvPrompt}]})});
+      var d1=await r1.json();
+      tailoredCV=(d1.content&&Array.isArray(d1.content))?d1.content.map(function(b){return b.text||'';}).join(''):'';
+      tailoredCV=tailoredCV.replace(/```\s*/g,'').replace(/\*\*/g,'').replace(/\*/g,'').trim();
+    }catch(e){
+      document.getElementById('apply-loading').style.display='none';
+      document.getElementById('apply-scratch-section').style.display='block';
+      btn.disabled=false;btn.textContent='Generate My CV';
+      toast('Error generating CV. Please try again.');return;
+    }
+
+    var coverLetter='';
+    if(jobAd){
+      try{
+        document.getElementById('apply-load-msg').textContent='Writing your cover letter...';
+        var clPrompt='You are a NZ cover letter expert. Write a professional cover letter. Warm, genuine, NZ English.\n\nApplicant: '+name+'\nJob: '+jobAd.substring(0,2000)+'\nCV Summary: '+tailoredCV.substring(0,2000)+'\n\n3-4 paragraphs. Start with "Dear Hiring Manager" and end with "Kind regards,\\n'+name+'". Return ONLY the letter text.';
+        var r2=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:clPrompt}]})});
+        var d2=await r2.json();
+        coverLetter=(d2.content&&Array.isArray(d2.content))?d2.content.map(function(b){return b.text||'';}).join(''):'';
+        coverLetter=coverLetter.replace(/```\s*/g,'').trim();
+      }catch(e){}
+    }
+
+    btn.disabled=false;btn.textContent='Generate My CV';
+    showApplyResult(tailoredCV,coverLetter||'No job ad provided \u2014 paste a job ad above to get a tailored cover letter.');
+  };
 
   document.getElementById('apply-gen-btn').addEventListener('click',function(){
     var jobAd=document.getElementById('apply-job-ad').value.trim();
