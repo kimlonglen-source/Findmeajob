@@ -95,6 +95,15 @@ footer{background:#1B1B3A;padding:3.5rem 3rem}
   .tcards,.blog-row{grid-template-columns:1fr}
   footer{padding:2.5rem 1.5rem}.foot-cols{flex-direction:column;gap:1.5rem}
 }
+.role-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:2rem}
+.role-photo{position:relative;border-radius:16px;overflow:hidden;height:180px;display:block;text-decoration:none;background-size:cover;background-position:center;transition:transform .3s,box-shadow .3s}
+.role-photo:hover{transform:translateY(-4px);box-shadow:0 12px 26px rgba(0,0,0,.18);text-decoration:none}
+.role-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.82) 0%,rgba(0,0,0,.2) 55%,transparent 100%)}
+.role-photo-arrow{position:absolute;top:1rem;right:1rem;width:30px;height:30px;background:#E7515A;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.85rem;z-index:2;transition:transform .2s}
+.role-photo:hover .role-photo-arrow{transform:translateX(3px)}
+.role-photo-text{position:absolute;bottom:1rem;left:1.1rem;right:1rem;z-index:2}
+.role-photo-title{font-size:1rem;font-weight:800;color:#fff;margin-bottom:.15rem;letter-spacing:-.2px}
+.role-photo-desc{font-size:.72rem;color:rgba(255,255,255,.82);line-height:1.4}
 </style>
 </head>
 <body>
@@ -154,12 +163,12 @@ footer{background:#1B1B3A;padding:3.5rem 3rem}
     <h2>Browse by your <em>trade</em></h2>
     <p class="sec-sub">Pay, CV and interview tips for your specific trade &mdash; with real NZ numbers.</p>
   </div>
-  <div class="tcards" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem">
-    <a href="/trades/builder" class="tcard" style="min-height:140px;padding:1.25rem"><h3 style="margin-bottom:.2rem">Builders</h3><p style="font-size:.78rem;margin-bottom:.5rem">Carpenters &amp; LBPs</p><span class="tcard-go">View <span>&rarr;</span></span></a>
-    <a href="/trades/electrician" class="tcard" style="min-height:140px;padding:1.25rem"><h3 style="margin-bottom:.2rem">Electricians</h3><p style="font-size:.78rem;margin-bottom:.5rem">Sparkies, EWRB</p><span class="tcard-go">View <span>&rarr;</span></span></a>
-    <a href="/trades/plumber" class="tcard" style="min-height:140px;padding:1.25rem"><h3 style="margin-bottom:.2rem">Plumbers</h3><p style="font-size:.78rem;margin-bottom:.5rem">PGDB, gasfitters</p><span class="tcard-go">View <span>&rarr;</span></span></a>
-    <a href="/trades/mechanic" class="tcard" style="min-height:140px;padding:1.25rem"><h3 style="margin-bottom:.2rem">Mechanics</h3><p style="font-size:.78rem;margin-bottom:.5rem">Auto, diesel, heavy</p><span class="tcard-go">View <span>&rarr;</span></span></a>
-    <a href="/trades/apprentice" class="tcard" style="min-height:140px;padding:1.25rem"><h3 style="margin-bottom:.2rem">Apprentices</h3><p style="font-size:.78rem;margin-bottom:.5rem">Start a trade</p><span class="tcard-go">View <span>&rarr;</span></span></a>
+  <div class="role-grid">
+    <a href="/trades/builder" class="role-photo" style="background-image:url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=500&q=80')"><div class="role-photo-arrow">&rarr;</div><div class="role-photo-text"><div class="role-photo-title">Builders</div><div class="role-photo-desc">Carpenters &amp; LBPs</div></div></a>
+    <a href="/trades/electrician" class="role-photo" style="background-image:url('https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=500&q=80')"><div class="role-photo-arrow">&rarr;</div><div class="role-photo-text"><div class="role-photo-title">Electricians</div><div class="role-photo-desc">Sparkies, EWRB</div></div></a>
+    <a href="/trades/plumber" class="role-photo" style="background-image:url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=500&q=80')"><div class="role-photo-arrow">&rarr;</div><div class="role-photo-text"><div class="role-photo-title">Plumbers</div><div class="role-photo-desc">PGDB, gasfitters</div></div></a>
+    <a href="/trades/mechanic" class="role-photo" style="background-image:url('https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=500&q=80')"><div class="role-photo-arrow">&rarr;</div><div class="role-photo-text"><div class="role-photo-title">Mechanics</div><div class="role-photo-desc">Auto, diesel, heavy</div></div></a>
+    <a href="/trades/apprentice" class="role-photo" style="background-image:url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=500&q=80')"><div class="role-photo-arrow">&rarr;</div><div class="role-photo-text"><div class="role-photo-title">Apprentices</div><div class="role-photo-desc">Start a trade that pays</div></div></a>
   </div>
 </section>
 

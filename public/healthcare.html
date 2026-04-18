@@ -93,6 +93,15 @@ footer{background:#1B1B3A;padding:3.5rem 3rem}
   .tcards,.blog-row{grid-template-columns:1fr}
   footer{padding:2.5rem 1.5rem}.foot-cols{flex-direction:column;gap:1.5rem}
 }
+.role-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:2rem}
+.role-photo{position:relative;border-radius:16px;overflow:hidden;height:180px;display:block;text-decoration:none;background-size:cover;background-position:center;transition:transform .3s,box-shadow .3s}
+.role-photo:hover{transform:translateY(-4px);box-shadow:0 12px 26px rgba(0,0,0,.18);text-decoration:none}
+.role-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.82) 0%,rgba(0,0,0,.2) 55%,transparent 100%)}
+.role-photo-arrow{position:absolute;top:1rem;right:1rem;width:30px;height:30px;background:#E7515A;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.85rem;z-index:2;transition:transform .2s}
+.role-photo:hover .role-photo-arrow{transform:translateX(3px)}
+.role-photo-text{position:absolute;bottom:1rem;left:1.1rem;right:1rem;z-index:2}
+.role-photo-title{font-size:1rem;font-weight:800;color:#fff;margin-bottom:.15rem;letter-spacing:-.2px}
+.role-photo-desc{font-size:.72rem;color:rgba(255,255,255,.82);line-height:1.4}
 </style>
 </head>
 <body>
@@ -152,11 +161,11 @@ footer{background:#1B1B3A;padding:3.5rem 3rem}
     <h2>Browse by your <em>role</em></h2>
     <p class="sec-sub">Pay, CV and interview tips for your specific healthcare role.</p>
   </div>
-  <div class="tcards" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem">
-    <a href="/healthcare/rn" class="tcard" style="min-height:140px;padding:1.25rem"><h3 style="margin-bottom:.2rem">Registered Nurses</h3><p style="font-size:.78rem;margin-bottom:.5rem">Te Whatu Ora pay steps</p><span class="tcard-go">View <span>&rarr;</span></span></a>
-    <a href="/healthcare/hca" class="tcard" style="min-height:140px;padding:1.25rem"><h3 style="margin-bottom:.2rem">Healthcare Assistants</h3><p style="font-size:.78rem;margin-bottom:.5rem">HCAs &amp; carers</p><span class="tcard-go">View <span>&rarr;</span></span></a>
-    <a href="/healthcare/midwife" class="tcard" style="min-height:140px;padding:1.25rem"><h3 style="margin-bottom:.2rem">Midwives</h3><p style="font-size:.78rem;margin-bottom:.5rem">LMC, core, hospital</p><span class="tcard-go">View <span>&rarr;</span></span></a>
-    <a href="/healthcare/allied-health" class="tcard" style="min-height:140px;padding:1.25rem"><h3 style="margin-bottom:.2rem">Allied Health</h3><p style="font-size:.78rem;margin-bottom:.5rem">Physio, OT, SLT</p><span class="tcard-go">View <span>&rarr;</span></span></a>
+  <div class="role-grid">
+    <a href="/healthcare/rn" class="role-photo" style="background-image:url('https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=500&q=80')"><div class="role-photo-arrow">&rarr;</div><div class="role-photo-text"><div class="role-photo-title">Registered Nurses</div><div class="role-photo-desc">Te Whatu Ora pay steps</div></div></a>
+    <a href="/healthcare/hca" class="role-photo" style="background-image:url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=500&q=80')"><div class="role-photo-arrow">&rarr;</div><div class="role-photo-text"><div class="role-photo-title">Healthcare Assistants</div><div class="role-photo-desc">HCAs &amp; carers</div></div></a>
+    <a href="/healthcare/midwife" class="role-photo" style="background-image:url('https://images.unsplash.com/photo-1519340241574-2cec6aef0c01?w=500&q=80')"><div class="role-photo-arrow">&rarr;</div><div class="role-photo-text"><div class="role-photo-title">Midwives</div><div class="role-photo-desc">LMC, core, hospital</div></div></a>
+    <a href="/healthcare/allied-health" class="role-photo" style="background-image:url('https://images.unsplash.com/photo-1588776814546-ec7b6f7e6a12?w=500&q=80')"><div class="role-photo-arrow">&rarr;</div><div class="role-photo-text"><div class="role-photo-title">Allied Health</div><div class="role-photo-desc">Physio, OT, SLT</div></div></a>
   </div>
 </section>
 
