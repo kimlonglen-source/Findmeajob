@@ -185,8 +185,13 @@ input:focus,select:focus,textarea:focus{border-color:#E7515A;box-shadow:0 0 0 3p
   <div id="step2" style="display:none">
     <div class="card">
       <div style="font-size:.72rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:1px;margin-bottom:.75rem">Step 2 of 3 &mdash; Audio</div>
-      <div class="field"><label>Choose the other person's voice</label>
-        <select id="voiceGender"><option value="female">Female voice (speaks aloud)</option><option value="male">Male voice (speaks aloud)</option><option value="off">No voice &mdash; text only</option></select>
+      <div class="field"><label>Voice output</label>
+        <select id="voiceGender"><option value="on">On &mdash; the AI speaks its replies aloud</option><option value="off">Off &mdash; text only</option></select>
+        <div style="font-size:.68rem;color:#94a3b8;margin-top:.25rem">The AI's voice matches the character in your chosen scenario.</div>
+      </div>
+      <div class="field"><label>Conversation depth</label>
+        <select id="simDepth"><option value="4">Quick &mdash; 4 exchanges (~3 min)</option><option value="6" selected>Standard &mdash; 6 exchanges (~5 min)</option><option value="8">Deep &mdash; 8 exchanges (~8 min)</option></select>
+        <div style="font-size:.68rem;color:#94a3b8;margin-top:.25rem">More exchanges give the conversation room to reach a real resolution.</div>
       </div>
       <div style="display:flex;flex-direction:column;gap:.65rem;margin-top:.5rem">
         <label style="display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;font-size:.85rem;color:#475569;line-height:1.5"><input type="checkbox" id="autoSendMode" style="accent-color:#E7515A;width:18px;height:18px;margin-top:2px" checked> <span><strong style="color:#0f172a">Auto-send replies</strong><br><span style="font-size:.78rem;color:#94a3b8">When you stop talking for 4 seconds, your reply sends automatically</span></span></label>
@@ -256,7 +261,7 @@ input:focus,select:focus,textarea:focus{border-color:#E7515A;box-shadow:0 0 0 3p
         <button id="keepTalkingBtn" onclick="toggleMic()" style="display:none;padding:.55rem 1.2rem;background:#fff;color:#E7515A;border:2px solid #E7515A;border-radius:999px;font-family:inherit;font-size:.78rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem"><span class="icn-sm" id="keepTalkingIcon"></span>Keep Talking</button>
       </div>
     </div>
-    <button id="endBtn" onclick="endSim()" style="display:none;width:100%;padding:.75rem;background:#0f172a;color:#fff;border:none;border-radius:999px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:.5rem">End Practice &amp; Get Score</button>
+    <button id="endBtn" onclick="endSim()" style="width:100%;padding:.7rem;background:#fff;color:#0f172a;border:1.5px solid #e2e8f0;border-radius:999px;font-family:inherit;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:all .2s" onmouseover="this.style.background='#0f172a';this.style.color='#fff';this.style.borderColor='#0f172a'" onmouseout="this.style.background='#fff';this.style.color='#0f172a';this.style.borderColor='#e2e8f0'">Finish now &amp; get my score</button>
   </div>
 
   <div id="scoreSection" style="display:none"></div>
@@ -303,6 +308,7 @@ var SCENARIOS={
     title:'Negotiate a Salary Offer',
     desc:'You\u2019ve been offered a job. AI plays the hiring manager pushing back.',
     aiName:'Sarah (Hiring Manager)',
+    aiGender:'female',
     ctxLabel:'The offer details',
     ctxHint:'e.g. "Offered $85k, I want $95k. Market rate is $90-100k."',
     opener:'You are Sarah, a hiring manager at {company}. You have just offered the candidate a {role} role. They are about to negotiate. Open the conversation briefly \u2014 greet them warmly by phone, confirm the offer figure from their notes, then ask how they feel about it. Keep it short (2-3 sentences). Use NZ English.',
@@ -314,6 +320,7 @@ var SCENARIOS={
     title:'Ask for a Pay Rise',
     desc:'Rehearse the talk with your current boss. AI plays the skeptical manager.',
     aiName:'Mike (Your Manager)',
+    aiGender:'male',
     ctxLabel:'Your situation',
     ctxHint:'e.g. "On $70k. Been here 2 years. Want $80k. Took on team lead duties last quarter."',
     opener:'You are Mike, the employee\u2019s direct manager at {company}. The employee ({role}) has just asked for a quick catch-up. You sense they want something. Greet them briefly and ask what\u2019s on their mind. One sentence. NZ English.',
@@ -325,6 +332,7 @@ var SCENARIOS={
     title:'Resign With Grace',
     desc:'Tell your boss you\u2019re leaving. AI plays surprised, possibly counter-offers.',
     aiName:'Mike (Your Manager)',
+    aiGender:'male',
     ctxLabel:'Why you\u2019re leaving',
     ctxHint:'e.g. "New role at Xero, 20% pay bump. 4 weeks notice. Want to leave on good terms."',
     opener:'You are Mike, the employee\u2019s manager at {company}. They asked for a private chat. You don\u2019t yet know what it\u2019s about. Greet them warmly and ask what\u2019s up. One sentence. NZ English.',
@@ -336,6 +344,7 @@ var SCENARIOS={
     title:'Decline a Job Offer',
     desc:'Turn down an offer politely. AI plays the recruiter trying to persuade you.',
     aiName:'Aroha (Recruiter)',
+    aiGender:'female',
     ctxLabel:'Why you\u2019re declining',
     ctxHint:'e.g. "Better offer elsewhere. Or: the role isn\u2019t quite right. Want to keep the door open."',
     opener:'You are Aroha, a NZ recruiter. You offered the candidate a {role} role at {company}. They\u2019ve asked to speak. You\u2019re hopeful they\u2019re accepting. Greet them warmly and ask for their answer. One sentence. NZ English.',
@@ -347,6 +356,7 @@ var SCENARIOS={
     title:'Request Flexible or Remote Work',
     desc:'Ask for WFH, compressed hours, or remote. AI plays a skeptical boss.',
     aiName:'Mike (Your Manager)',
+    aiGender:'male',
     ctxLabel:'What you\u2019re asking for',
     ctxHint:'e.g. "Want 2 days WFH. Role is fully desk-based. Team is in-office 5 days."',
     opener:'You are Mike, a NZ manager at {company}. Your direct report ({role}) has asked for a catch-up. You don\u2019t yet know what it\u2019s about. Greet them briefly and ask what\u2019s on their mind. One sentence. NZ English.',
@@ -358,6 +368,7 @@ var SCENARIOS={
     title:'Raise a Concern With Your Boss',
     desc:'Difficult feedback \u2014 workload, conflict, culture. AI plays your boss.',
     aiName:'Mike (Your Manager)',
+    aiGender:'male',
     ctxLabel:'The concern you want to raise',
     ctxHint:'e.g. "Workload unsustainable" / "Colleague is rude" / "Felt undermined in a meeting"',
     opener:'You are Mike, a NZ manager at {company}. Your direct report ({role}) asked to speak privately. You don\u2019t know what about. Greet them warmly and invite them to share what\u2019s going on. One sentence. NZ English.',
@@ -415,7 +426,7 @@ function selectScenario(key){
 })();
 
 /* Sim state */
-var msgs=[],turnCount=0,maxTurns=5,iData={scenario:'',role:'',company:'',context:'',qa:[]};
+var msgs=[],turnCount=0,maxTurns=6,iData={scenario:'',role:'',company:'',context:'',qa:[]};
 var audioEnabled=false,recog=null;
 var autoSend=true,silenceTimer=null,silenceDelay=4000;
 var _simEnded=false,_interviewStartTime=0,_micStream=null,_sending=false;
@@ -459,6 +470,8 @@ function _doPrepSim(){
     var voiceVal=document.getElementById('voiceGender').value;
     audioEnabled=(voiceVal!=='off');
     autoSend=document.getElementById('autoSendMode').checked;
+    var depthSel=document.getElementById('simDepth');
+    maxTurns=(depthSel && parseInt(depthSel.value))||6;
 
     if(!SCENARIOS[selectedScenario])selectedScenario='salary';
     var s=SCENARIOS[selectedScenario];
@@ -466,7 +479,7 @@ function _doPrepSim(){
     var company=document.getElementById('simCompany').value.trim()||'your company';
     iData={scenario:selectedScenario,role:role,company:company,context:document.getElementById('simContext').value.trim(),qa:[]};
 
-    document.getElementById('readySummary').innerHTML='You\u2019re practicing: <strong style="color:#0f172a">'+esc(s.title)+'</strong>. The AI plays <strong>'+esc(s.aiName)+'</strong> and will push back realistically over 3-5 exchanges.';
+    document.getElementById('readySummary').innerHTML='You\u2019re practicing: <strong style="color:#0f172a">'+esc(s.title)+'</strong>. The AI plays <strong>'+esc(s.aiName)+'</strong> and will push back realistically across '+maxTurns+' exchanges.';
 
     document.getElementById('step2').style.display='none';
     var rs=document.getElementById('readyScreen');
@@ -648,7 +661,7 @@ function speak(t){
 
 function _doSpeak(t){
   try{
-    var gender=document.getElementById('voiceGender').value;
+    var gender=(SCENARIOS[selectedScenario]&&SCENARIOS[selectedScenario].aiGender)||'female';
     var voices=window.speechSynthesis.getVoices()||[];var candidates=[];
     for(var i=0;i<voices.length;i++){
       var v=voices[i];var l=v.lang.toLowerCase();var n=v.name.toLowerCase();
@@ -686,7 +699,7 @@ function speakFinal(t){
   if(!audioEnabled||!window.speechSynthesis){_simEnded=true;setOrb('thinking');return;}
   try{
     window.speechSynthesis.cancel();
-    var gender=document.getElementById('voiceGender').value;
+    var gender=(SCENARIOS[selectedScenario]&&SCENARIOS[selectedScenario].aiGender)||'female';
     var voices=window.speechSynthesis.getVoices()||[];var candidates=[];
     for(var i=0;i<voices.length;i++){
       var v=voices[i];var l=v.lang.toLowerCase();var n=v.name.toLowerCase();
@@ -788,6 +801,12 @@ function releaseMic(){if(recog){try{recog.abort();}catch(e){try{recog.stop();}ca
 document.getElementById('userInput').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAnswer();}});
 
 async function endSim(){
+  /* Guard: if user presses Finish before at least one full exchange, require confirmation */
+  if(!_simEnded && iData.qa.length < 1){
+    if(!confirm('You haven\u2019t made a reply yet. End this practice anyway? You won\u2019t get a meaningful score.')) return;
+  } else if(!_simEnded && iData.qa.length < Math.max(2, maxTurns-1)){
+    if(!confirm('End this practice now? You\u2019ve had '+iData.qa.length+' exchange(s) so far. You\u2019ll still get a score based on what you\u2019ve said.')) return;
+  }
   _simEnded=true;_aiSpeaking=false;_waitingForAI=false;
   clearTimeout(_speakTimeout);clearTimeout(silenceTimer);
   releaseMic();try{window.speechSynthesis.cancel();}catch(e){}
