@@ -398,7 +398,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
       <div id="step2MicStatus" style="margin-top:1rem;padding:.75rem;border-radius:12px;text-align:center;font-size:.82rem;font-weight:600;display:none"></div>
     </div>
     <div style="display:flex;gap:.5rem">
-      <button class="btn" onclick="document.getElementById('step2').style.display='none';document.getElementById('setupForm').style.display='block';window.scrollTo({top:0,behavior:'smooth'})" style="background:#f8fafc;color:#64748b;border:1px solid #e2e8f0;box-shadow:none;flex:0 0 auto;width:auto;padding:.85rem 1.5rem">Back</button>
+      <button class="btn" onclick="document.getElementById('step2').style.display='none';document.getElementById('setupForm').style.display='block';setTimeout(function(){document.getElementById('setupForm').scrollIntoView({behavior:'smooth',block:'start'});},50)" style="background:#f8fafc;color:#64748b;border:1px solid #e2e8f0;box-shadow:none;flex:0 0 auto;width:auto;padding:.85rem 1.5rem">Back</button>
       <button class="btn" onclick="prepInterview()" style="flex:1">Next — Review</button>
     </div>
   </div>
@@ -424,7 +424,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
         <div class="countdown-check" id="micStatus">&#9675; Microphone</div>
       </div>
       <button class="btn" id="beginBtn" onclick="beginCountdown()" disabled style="max-width:320px;margin:0 auto">Setting up...</button>
-      <div style="text-align:center;margin-top:.5rem"><button onclick="document.getElementById('readyScreen').style.display='none';document.getElementById('step2').style.display='block';window.scrollTo({top:0,behavior:'smooth'})" style="background:none;border:none;color:#64748b;font-size:.78rem;cursor:pointer;font-family:Inter,sans-serif">Back to settings</button></div>
+      <div style="text-align:center;margin-top:.5rem"><button onclick="document.getElementById('readyScreen').style.display='none';document.getElementById('step2').style.display='block';setTimeout(function(){document.getElementById('step2').scrollIntoView({behavior:'smooth',block:'start'});},50)" style="background:none;border:none;color:#64748b;font-size:.78rem;cursor:pointer;font-family:Inter,sans-serif">Back to settings</button></div>
     </div>
   </div>
 
@@ -528,8 +528,9 @@ function goStep2(){
   var role=document.getElementById('simRole').value.trim();
   if(!role){alert('Please enter the job title you are interviewing for.');return;}
   document.getElementById('setupForm').style.display='none';
-  document.getElementById('step2').style.display='block';
-  window.scrollTo({top:0,behavior:'smooth'});
+  var s2_=document.getElementById('step2');
+  s2_.style.display='block';
+  setTimeout(function(){try{s2_.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){}},50);
   // Request mic permission immediately when step 2 appears
   requestMicEarly();
 }
@@ -581,8 +582,9 @@ function _doPrep(){
   iData.jobDesc=(document.getElementById('simJobDesc').value||'').trim();
 
   document.getElementById('step2').style.display='none';
-  document.getElementById('readyScreen').style.display='block';
-  window.scrollTo({top:0,behavior:'smooth'});
+  var rs_=document.getElementById('readyScreen');
+  rs_.style.display='block';
+  setTimeout(function(){try{rs_.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){}},50);
 
   var micEl=document.getElementById('micStatus');
   var beginBtn=document.getElementById('beginBtn');
@@ -874,8 +876,9 @@ function showScore(r){
   h+='</div>';
   h+='<div class="cta-box"><p>Ready to apply for real?</p><a href="/match.html">Apply for a Job</a></div>';
   releaseMic();document.getElementById('interviewerBar').classList.remove('visible');document.getElementById('chatSection').style.display='none';
-  document.getElementById('scoreSection').innerHTML=h;document.getElementById('scoreSection').style.display='block';
-  window.scrollTo({top:0,behavior:'smooth'});
+  var ss_=document.getElementById('scoreSection');
+  ss_.innerHTML=h;ss_.style.display='block';
+  setTimeout(function(){try{ss_.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){}},50);
   var target=r.score;var cur=0;var numEl=document.getElementById('score-num');
   var step=Math.max(1,Math.floor(target/40));
   var countUp=setInterval(function(){cur+=step;if(cur>=target){cur=target;clearInterval(countUp);}numEl.textContent=cur+'/100';},30);
