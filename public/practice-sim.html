@@ -194,7 +194,7 @@ input:focus,select:focus,textarea:focus{border-color:#E7515A;box-shadow:0 0 0 3p
       <div id="step2MicStatus" style="margin-top:1rem;padding:.75rem;border-radius:12px;text-align:center;font-size:.82rem;font-weight:600;display:none"></div>
     </div>
     <div style="display:flex;gap:.5rem">
-      <button class="btn" onclick="document.getElementById('step2').style.display='none';document.getElementById('setupForm').style.display='block';window.scrollTo({top:0,behavior:'smooth'})" style="background:#f8fafc;color:#64748b;border:1px solid #e2e8f0;box-shadow:none;flex:0 0 auto;width:auto;padding:.85rem 1.5rem">Back</button>
+      <button class="btn" onclick="document.getElementById('step2').style.display='none';document.getElementById('setupForm').style.display='block';setTimeout(function(){document.getElementById('setupForm').scrollIntoView({behavior:'smooth',block:'start'});},50)" style="background:#f8fafc;color:#64748b;border:1px solid #e2e8f0;box-shadow:none;flex:0 0 auto;width:auto;padding:.85rem 1.5rem">Back</button>
       <button class="btn" onclick="prepSim()" style="flex:1">Next &mdash; Review</button>
     </div>
   </div>
@@ -217,7 +217,7 @@ input:focus,select:focus,textarea:focus{border-color:#E7515A;box-shadow:0 0 0 3p
         <div id="micStatus" style="font-size:.78rem;font-weight:600;color:#94a3b8;display:flex;align-items:center;gap:.4rem;justify-content:center"><span class="icn-sm" id="micStatusIcon"></span><span id="micStatusText">Microphone</span></div>
       </div>
       <button class="btn" id="beginBtn" onclick="beginCountdown()" disabled style="max-width:320px;margin:0 auto">Setting up...</button>
-      <div style="text-align:center;margin-top:.5rem"><button onclick="document.getElementById('readyScreen').style.display='none';document.getElementById('step2').style.display='block';window.scrollTo({top:0,behavior:'smooth'})" style="background:none;border:none;color:#64748b;font-size:.78rem;cursor:pointer;font-family:inherit">Back to settings</button></div>
+      <div style="text-align:center;margin-top:.5rem"><button onclick="document.getElementById('readyScreen').style.display='none';document.getElementById('step2').style.display='block';setTimeout(function(){document.getElementById('step2').scrollIntoView({behavior:'smooth',block:'start'});},50)" style="background:none;border:none;color:#64748b;font-size:.78rem;cursor:pointer;font-family:inherit">Back to settings</button></div>
     </div>
   </div>
 
@@ -428,8 +428,9 @@ function goStep2(){
   var role=document.getElementById('simRole').value.trim();
   if(!role){alert('Please enter your role / job title.');return;}
   document.getElementById('setupForm').style.display='none';
-  document.getElementById('step2').style.display='block';
-  window.scrollTo({top:0,behavior:'smooth'});
+  var s2=document.getElementById('step2');
+  s2.style.display='block';
+  setTimeout(function(){try{s2.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){}},50);
   requestMicEarly();
 }
 
@@ -470,8 +471,7 @@ function _doPrepSim(){
     document.getElementById('step2').style.display='none';
     var rs=document.getElementById('readyScreen');
     rs.style.display='block';
-    window.scrollTo({top:0,behavior:'smooth'});
-    setTimeout(function(){try{rs.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){}},150);
+    setTimeout(function(){try{rs.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){}},50);
   }catch(err){
     alert('Could not load review step: '+(err&&err.message?err.message:err)+'. Please refresh and try again.');
     return;
@@ -872,9 +872,10 @@ function showScore(r){
   releaseMic();
   document.getElementById('interviewerBar').style.display='none';
   document.getElementById('chatSection').style.display='none';
-  document.getElementById('scoreSection').innerHTML=h;
-  document.getElementById('scoreSection').style.display='block';
-  window.scrollTo({top:0,behavior:'smooth'});
+  var ss=document.getElementById('scoreSection');
+  ss.innerHTML=h;
+  ss.style.display='block';
+  setTimeout(function(){try{ss.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){}},50);
 }
 </script>
 
