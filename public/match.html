@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>/* Run before body renders so the correct page shows without flicker when the URL has a hash like #apply */(function(){var h=(location.hash||'').replace('#','');if(['apply','browse','find','pricing','about','account','employer'].indexOf(h)>-1)document.documentElement.dataset.startPage=h;})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FindMeAJob.co.nz — AI Job Matching for New Zealand</title>
@@ -58,6 +59,15 @@ nav{position:sticky;top:0;z-index:200;padding:0 2rem;height:64px;display:flex;al
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .page{display:none;min-height:calc(100vh - 64px);overflow-x:hidden}
 .page.active{display:block}
+/* Prevent the home page from flashing before JS routes to a hash page (#apply, #browse, etc.) */
+html[data-start-page] #page-home.page.active{display:none}
+html[data-start-page="apply"] #page-apply{display:block}
+html[data-start-page="browse"] #page-browse{display:block}
+html[data-start-page="find"] #page-find{display:block}
+html[data-start-page="pricing"] #page-pricing{display:block}
+html[data-start-page="about"] #page-about{display:block}
+html[data-start-page="account"] #page-account{display:block}
+html[data-start-page="employer"] #page-employer{display:block}
 .wrap{max-width:900px;margin:0 auto;padding:3rem 1.5rem 5rem}
 .wrap-wide{max-width:1000px;margin:0 auto;padding:3rem 1.5rem 5rem}
 .page-eyebrow{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#c7313a;margin-bottom:.5rem}
@@ -2855,7 +2865,7 @@ function initApp(){try{
   if(bgar)bgar.addEventListener('click',function(){showEmpStep('emp-step-login');});
   document.getElementById('btn-emp-signout').addEventListener('click',function(){empSession=null;sessionStorage.removeItem('empSession');showEmpStep('emp-step-entry');toast('Signed out');});
   document.getElementById('btn-submit').addEventListener('click',submitJob);
-  document.getElementById('reg-terms-btn').addEventListener('click',function(){openModal('terms');});
+  _on('reg-terms-btn','click',function(){openModal('terms');});
   var saved=sessionStorage.getItem('empSession');
   if(saved){empSession=JSON.parse(saved);}
 
