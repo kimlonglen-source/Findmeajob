@@ -425,7 +425,7 @@ function selectScenario(key){
 var msgs=[],turnCount=0,maxTurns=6,iData={scenario:'',role:'',company:'',context:'',qa:[]};
 var audioEnabled=false,recog=null;
 var autoSend=true,silenceTimer=null,silenceDelay=4000;
-var _simEnded=false,_interviewStartTime=0,_micStream=null,_sending=false,_replyStartTime=0;
+var _simEnded=false,_interviewStartTime=0,_micStream=null,_sending=false,_replyStartTime=0,_lastSentText='',_lastSentAt=0;
 var _aiSpeaking=false,_speakTimeout=null,_waitingForAI=false,_accumulated='';
 var _micRetries=0,_maxMicRetries=3;
 
@@ -613,6 +613,10 @@ async function sendAnswer(){
   if(_sending||_simEnded)return;
   var inp=document.getElementById('userInput');var ans=inp.value.trim();
   if(!ans)return;
+  /* Dedupe: if the same text was just sent within the last 2s, swallow it (protects against
+     racing onresult/onend silence timers both calling sendAnswer) */
+  if(ans===_lastSentText && (Date.now()-_lastSentAt)<2000) return;
+  _lastSentText=ans;_lastSentAt=Date.now();
   _sending=true;_waitingForAI=true;_aiSpeaking=false;
   clearTimeout(silenceTimer);clearTimeout(_speakTimeout);
   if(recog){try{recog.stop();}catch(e){}recog=null;}
@@ -627,19 +631,9 @@ async function sendAnswer(){
   iData.qa.push({q:lastAi,a:ans,meta:meta});msgs.push({role:'user',content:ans});
   turnCount++;updTurns();
 
-  /* After maxTurns, wrap up and offer scoring */
-  if(turnCount>=maxTurns){
-    /* Fully shut down so no stale recognition can re-fire and duplicate the wrap message */
-    _sending=false;_simEnded=true;_aiSpeaking=true;_waitingForAI=false;
-    clearTimeout(_speakTimeout);clearTimeout(silenceTimer);
-    releaseMic();
-    var wrap='Thanks for your time \u2014 that\u2019s a good place to pause. Click below to see your score and feedback.';
-    hideTyping();addMsg(wrap,'ai');
-    document.getElementById('micControl').style.display='none';
-    document.getElementById('endBtn').style.display='block';
-    setOrb('speaking');speakFinal(wrap);
-    return;
-  }
+  /* On the FINAL turn, we still call the AI — but with a prompt that forces it to produce the
+     resolution itself (offer/decision/refusal + short thank-you). No more hardcoded wrap. */
+  var isFinalTurn=(turnCount>=maxTurns);
 
   setOrb('thinking');showTyping();
   var s=SCENARIOS[selectedScenario];
@@ -647,12 +641,12 @@ async function sendAnswer(){
   if(iData.context)loopSys+='\n\nContext from the candidate: '+iData.context.substring(0,800);
   /* Pacing guidance so the conversation actually resolves rather than just looping pushback */
   loopSys+='\n\nPACING (turn '+turnCount+' of '+maxTurns+'):';
-  if(turnCount<=Math.ceil(maxTurns/2)){
+  if(isFinalTurn){
+    loopSys+=' FINAL TURN \u2014 this is your LAST reply. You MUST do all of these: (1) land a clear, concrete outcome based on what the candidate has said \u2014 a specific final offer, a yes/no decision, an agreed next step, or a polite refusal. (2) briefly thank the candidate. (3) close the conversation. 3-4 sentences total. Do NOT ask another open-ended question. Do NOT defer to email/a later meeting unless the candidate has given you no usable information.';
+  } else if(turnCount<=Math.ceil(maxTurns/2)){
     loopSys+=' Early phase \u2014 push back, probe, ask for justification.';
-  } else if(turnCount<maxTurns-1){
-    loopSys+=' Middle phase \u2014 start narrowing toward a position. Concede on minor points if the candidate has earned it.';
   } else {
-    loopSys+=' FINAL phase \u2014 you MUST land on a clear outcome in this reply: a specific final offer, a yes/no decision, an agreed next step, or a polite refusal. Do not ask another open-ended question. Wrap the conversation up cleanly in 2-3 sentences.';
+    loopSys+=' Middle phase \u2014 start narrowing toward a position. Concede on minor points if the candidate has earned it.';
   }
   var trimmed=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
   try{
@@ -660,8 +654,26 @@ async function sendAnswer(){
     var d=await r.json();
     var t=(d.content&&Array.isArray(d.content))?d.content.map(function(b){return b.text||'';}).join(''):'';
     if(!t)throw new Error('empty');
-    msgs.push({role:'assistant',content:t});hideTyping();addMsg(t,'ai');_waitingForAI=false;_sending=false;speak(t);
-  }catch(e){_waitingForAI=false;_sending=false;hideTyping();addMsg('Connection issue \u2014 tap End to wrap up.','ai');document.getElementById('endBtn').style.display='block';}
+    msgs.push({role:'assistant',content:t});
+    hideTyping();addMsg(t,'ai');
+    if(isFinalTurn){
+      /* Lock everything down \u2014 no more user replies possible after the AI has closed. */
+      _sending=false;_simEnded=true;_aiSpeaking=true;_waitingForAI=false;
+      clearTimeout(_speakTimeout);clearTimeout(silenceTimer);
+      releaseMic();
+      document.getElementById('micControl').style.display='none';
+      document.getElementById('endBtn').style.display='block';
+      document.getElementById('endBtn').textContent='Get my score';
+      setOrb('speaking');speakFinal(t);
+      return;
+    }
+    _waitingForAI=false;_sending=false;speak(t);
+  }catch(e){
+    _waitingForAI=false;_sending=false;hideTyping();
+    addMsg(isFinalTurn?'Let\u2019s leave it there for now \u2014 click below to see your score.':'Connection issue \u2014 tap End to wrap up.','ai');
+    if(isFinalTurn){_simEnded=true;releaseMic();document.getElementById('micControl').style.display='none';}
+    document.getElementById('endBtn').style.display='block';
+  }
 }
 
 function autoStartListening(){
