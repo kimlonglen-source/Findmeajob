@@ -128,7 +128,18 @@ module.exports = async function handler(req, res) {
     }
     var t = bEsc(post.title);
     var ex = bEsc(post.excerpt);
-    var bd = bEsc(post.body).replace(/\*\*(.+?)\*\*/g,"<h2>$1</h2>").replace(/\n\n/g,"</p><p>").replace(/\n/g,"<br>").replace(/(https?:\/\/findmeajob\.co\.nz\/[^\s<,)"]+)/g,'<a href="$1">$1</a>');
+    var bd = bEsc(post.body)
+      .replace(/\*\*(.+?)\*\*/g, "<h2>$1</h2>")
+      .replace(/\[([^\]]+)\]\(((?:https?:\/\/|\/)[^)]+)\)/g, function(m, txt, url) {
+        var ext = /^https?:/.test(url) && url.indexOf("findmeajob.co.nz") === -1;
+        return '<a href="' + url + '"' + (ext ? ' target="_blank" rel="noopener"' : "") + '>' + txt + "</a>";
+      })
+      .replace(/(?<!href=")(https?:\/\/[^\s<,)"]+)/g, function(url) {
+        var internal = url.indexOf("findmeajob.co.nz") > -1;
+        return '<a href="' + url + '"' + (internal ? "" : ' target="_blank" rel="noopener"') + ">" + url + "</a>";
+      })
+      .replace(/\n\n/g, "</p><p>")
+      .replace(/\n/g, "<br>");
     var dt = bEsc(post.date);
     var ic = (post.icon||"").replace(/</g,"&lt;");
     var tc = post.category||"market";
