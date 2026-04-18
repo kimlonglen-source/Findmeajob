@@ -129,8 +129,13 @@ img{max-width:100%;display:block}
 }
 
 /* Featured Voice Simulators - Monzo light */
-.fsims-wrap{background:linear-gradient(180deg,#FFF4F1 0%,#FFF 100%);border-top:1px solid #FCE4E0;border-bottom:1px solid #FCE4E0}
-.fsims{max-width:1100px;margin:0 auto;padding:4rem 2rem 3rem}
+.fsims-wrap{background:#1B1B3A;position:relative;overflow:hidden}
+.fsims-wrap::before{content:'';position:absolute;top:-15%;left:-10%;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.22) 0%,transparent 65%);pointer-events:none;z-index:1}
+.fsims-wrap::after{content:'';position:absolute;bottom:-20%;right:-8%;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.15) 0%,transparent 70%);pointer-events:none;z-index:1}
+.fsims{max-width:1100px;margin:0 auto;padding:4.5rem 2rem 4rem;position:relative;z-index:2}
+.fsims-wrap .fsims-head h2{color:#fff}
+.fsims-wrap .fsims-head p{color:rgba(255,255,255,.72)}
+.fsims-wrap .fsims-eyebrow{background:rgba(231,81,90,.18);border:1px solid rgba(231,81,90,.45);color:#fff}
 .fsim-chat-embed{position:relative;z-index:2;background:#fafafa;border:1px solid #eee;border-radius:14px;padding:1rem 1.1rem;margin-bottom:1.25rem;min-height:220px;display:flex;flex-direction:column}
 .fsim-chat-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
 .fsim-chat-dot{width:8px;height:8px;background:#E7515A;border-radius:50%;box-shadow:0 0 0 0 rgba(231,81,90,.6);animation:fsimChatPulse 1.8s ease-out infinite}
