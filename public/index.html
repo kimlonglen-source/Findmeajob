@@ -129,7 +129,20 @@ img{max-width:100%;display:block}
 }
 
 /* Featured Voice Simulators - Monzo light */
+.fsims-wrap{background:linear-gradient(180deg,#FFF4F1 0%,#FFF 100%);border-top:1px solid #FCE4E0;border-bottom:1px solid #FCE4E0}
 .fsims{max-width:1100px;margin:0 auto;padding:4rem 2rem 3rem}
+.fsim-chat-embed{position:relative;z-index:2;background:#fafafa;border:1px solid #eee;border-radius:14px;padding:1rem 1.1rem;margin-bottom:1.25rem;min-height:220px;display:flex;flex-direction:column}
+.fsim-chat-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
+.fsim-chat-dot{width:8px;height:8px;background:#E7515A;border-radius:50%;box-shadow:0 0 0 0 rgba(231,81,90,.6);animation:fsimChatPulse 1.8s ease-out infinite}
+@keyframes fsimChatPulse{0%{box-shadow:0 0 0 0 rgba(231,81,90,.5)}70%{box-shadow:0 0 0 8px rgba(231,81,90,0)}100%{box-shadow:0 0 0 0 rgba(231,81,90,0)}}
+.fsim-chat-status{font-size:.72rem;color:#64748b;font-weight:600}
+.fsim-chat-label{font-size:.58rem;color:#c7313a;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;background:#fef2f2;border:1px solid #fecaca;padding:.18rem .5rem;border-radius:999px}
+.fsim-chat-msgs{display:flex;flex-direction:column;gap:.5rem;flex:1;min-height:140px}
+.fsim-chat-score{text-align:center;padding:.75rem 0;display:none;flex:1;justify-content:center;flex-direction:column}
+.fsim-score-label{font-size:.55rem;color:#94a3b8;text-transform:uppercase;font-weight:700;letter-spacing:.5px;margin-bottom:.25rem}
+.fsim-score-num{font-size:2.4rem;font-weight:900;color:#E7515A;line-height:1}
+.fsim-score-denom{font-size:.85rem;color:#94a3b8;font-weight:600}
+.fsim-score-note{font-size:.62rem;color:#10b981;font-weight:600;margin-top:.25rem}
 .fsims-head{text-align:center;margin-bottom:2rem}
 .fsims-eyebrow{display:inline-block;background:#fef2f2;color:#c7313a;padding:.3rem .85rem;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:.85rem;border:1px solid #fecaca}
 .fsims-head h2{font-size:2.2rem;font-weight:900;color:#1a1a2e;line-height:1.15;margin-bottom:.5rem;letter-spacing:-.5px}
@@ -249,30 +262,15 @@ img{max-width:100%;display:block}
   </div>
 </section>
 
-<!-- FEATURED: Voice Simulators (with live animated demo) -->
+<!-- FEATURED: Voice Simulators (live demo embedded in card 1) -->
+<section class="fsims-wrap">
 <section class="fsims">
   <div class="fsims-head">
-    <div class="fsims-eyebrow">New &bull; Voice practice</div>
-    <h2>Practice the conversations that <em>change everything</em></h2>
-    <p>Speak out loud. AI plays the real person. Get scored out of 100 with detailed feedback.</p>
+    <div class="fsims-eyebrow">For job seekers &bull; Voice AI &bull; Free</div>
+    <h2>For when it&rsquo;s your turn to <em>speak</em></h2>
+    <p>You&rsquo;ve got the CV. Now rehearse the conversations that actually land the job &mdash; and the pay rise. Speak out loud. AI pushes back. You walk in ready.</p>
   </div>
 
-  <!-- Live animated interview demo (watch it work) -->
-  <div class="fsim-demo-wrap">
-    <div id="demoChat" style="background:#fff;border-radius:20px;padding:1.5rem;border:1px solid #e8e8e8;min-height:300px;cursor:pointer;max-width:520px;margin:0 auto;box-shadow:0 12px 32px rgba(15,23,42,.06)" onclick="window.location.href='/interview-sim'">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
-        <div style="display:flex;align-items:center;gap:.5rem"><div id="demoDot" style="width:8px;height:8px;background:#E7515A;border-radius:50%"></div><span id="demoStatus" style="font-size:.72rem;color:#94a3b8;font-weight:600">Starting interview...</span></div>
-        <div style="font-size:.62rem;color:#64748b;font-weight:600">Live demo</div>
-      </div>
-      <div id="demoMsgs" style="display:flex;flex-direction:column;gap:.5rem;min-height:180px"></div>
-      <div id="demoScore" style="text-align:center;padding:.75rem 0;display:none">
-        <div style="font-size:.55rem;color:#94a3b8;text-transform:uppercase;font-weight:700;letter-spacing:.5px;margin-bottom:.25rem">Interview Score</div>
-        <span id="demoScoreNum" style="font-size:2.4rem;font-weight:900;color:#E7515A;line-height:1">0</span><span style="font-size:.85rem;color:#94a3b8;font-weight:600">/100</span>
-        <div style="font-size:.62rem;color:#10b981;font-weight:600;margin-top:.25rem">Great performance!</div>
-      </div>
-    </div>
-    <div style="text-align:center;font-size:.68rem;color:#94a3b8;margin-top:.75rem;font-weight:500">&uarr; Tap to try it yourself</div>
-  </div>
   <div class="fsims-grid">
 
     <a href="/interview-sim" class="fsim-card">
@@ -283,15 +281,23 @@ img{max-width:100%;display:block}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
         </div>
       </div>
-      <div class="fsim-tag">Interview simulator</div>
-      <div class="fsim-title">Your AI interview coach that never gets tired</div>
-      <div class="fsim-desc">Real questions for your role and level. Speak your answers. Get a recruiter-style score with model answers.</div>
-      <div class="fsim-feats">
-        <div class="fsim-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>Voice</div>
-        <div class="fsim-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15.09 8.26 22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>Scored /100</div>
-        <div class="fsim-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/></svg>Model answers</div>
+      <div class="fsim-tag">Interview Simulator</div>
+      <div class="fsim-title">Rehearse the interview. Out loud.</div>
+      <div class="fsim-desc">AI asks real questions for your role. You speak your answers. Recruiter-style score out of 100 with model answers.</div>
+
+      <div id="demoChat" class="fsim-chat-embed">
+        <div class="fsim-chat-head">
+          <div style="display:flex;align-items:center;gap:.5rem"><div id="demoDot" class="fsim-chat-dot"></div><span id="demoStatus" class="fsim-chat-status">Starting interview&hellip;</span></div>
+          <div class="fsim-chat-label">Live demo</div>
+        </div>
+        <div id="demoMsgs" class="fsim-chat-msgs"></div>
+        <div id="demoScore" class="fsim-chat-score">
+          <div class="fsim-score-label">Interview Score</div>
+          <div><span id="demoScoreNum" class="fsim-score-num">0</span><span class="fsim-score-denom">/100</span></div>
+          <div class="fsim-score-note">Great performance!</div>
+        </div>
       </div>
-      <div class="fsim-bubble">Tell me about a time you led a difficult project&hellip;</div>
+
       <span class="fsim-cta">Start practising <span class="arr">&rarr;</span></span>
     </a>
 
@@ -317,6 +323,7 @@ img{max-width:100%;display:block}
     </a>
 
   </div>
+</section>
 </section>
 
 <!-- All 12 Tools - Monzo photo card style -->
