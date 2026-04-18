@@ -241,5 +241,29 @@ function subscribeAlerts(){
 function showToast(m){var t=document.getElementById("toast");t.textContent=m;t.style.display="block";setTimeout(function(){t.style.display="none";},3000);}
 </script>
 
+
+<script>
+(function(){
+  var KW = ["graduate", "grad ", "first job", "entry-level", "entry level", "universit", "intern", "student", "school leaver"];
+  fetch('/api/approved-jobs?blog=1').then(function(r){return r.json();}).then(function(d){
+    var posts = (d && d.posts) || [];
+    if (!posts.length) return;
+    function slug(t){return (t||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').substring(0,60);}
+    function hit(p){var s=((p.title||'')+' '+(p.excerpt||'')).toLowerCase();return KW.some(function(k){return s.indexOf(k)>-1;});}
+    var matched = posts.filter(hit);
+    var rest = posts.filter(function(p){return matched.indexOf(p)===-1;});
+    var pick = matched.concat(rest).slice(0,3);
+    if (!pick.length) return;
+    var row = document.querySelector('.blog-row');
+    if (!row) return;
+    function esc(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+    row.innerHTML = pick.map(function(p){
+      var tag = p.categoryLabel || p.category || 'Read';
+      return '<a href="/blog/'+slug(p.title)+'" class="blog-card"><div class="blog-tag">'+esc(tag)+'</div><h4>'+esc(p.title)+'</h4><p>'+esc(p.excerpt||'')+'</p></a>';
+    }).join('');
+  }).catch(function(){});
+})();
+</script>
+
 </body>
 </html>
