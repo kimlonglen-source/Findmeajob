@@ -2802,12 +2802,17 @@ function initApp(){try{
   document.getElementById('f-type').addEventListener('change',loadBrowse);
   document.getElementById('f-search-btn').addEventListener('click',loadBrowse);
   document.getElementById('f-keyword').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();loadBrowse();}});
-  document.getElementById('fl-find').addEventListener('click',goFind);
-  document.getElementById('fl-browse').addEventListener('click',function(){showPage('browse');loadBrowse();});
-  document.getElementById('fl-privacy').addEventListener('click',function(){openModal('privacy');});
-  document.getElementById('fl-terms').addEventListener('click',function(){openModal('terms');});
-  document.getElementById('db-terms').addEventListener('click',function(){openModal('terms');});
-  document.getElementById('db-privacy').addEventListener('click',function(){openModal('privacy');});
+  /* Null-safe listeners for legacy footer/drawer buttons that may or
+     may not be rendered on this page. Previously these threw on null
+     and aborted the rest of initApp via the surrounding try/catch
+     (which silently broke the CV file upload listener further down). */
+  function _on(id,ev,fn){var el=document.getElementById(id);if(el)el.addEventListener(ev,fn);}
+  _on('fl-find','click',goFind);
+  _on('fl-browse','click',function(){showPage('browse');loadBrowse();});
+  _on('fl-privacy','click',function(){openModal('privacy');});
+  _on('fl-terms','click',function(){openModal('terms');});
+  _on('db-terms','click',function(){openModal('terms');});
+  _on('db-privacy','click',function(){openModal('privacy');});
   document.getElementById('btn-dismiss').addEventListener('click',function(){localStorage.setItem('bok','1');document.getElementById('db').style.display='none';});
   if(localStorage.getItem('bok'))document.getElementById('db').style.display='none';
   document.getElementById('modal-close').addEventListener('click',closeModal);
