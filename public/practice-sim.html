@@ -429,7 +429,7 @@ function selectScenario(key){
 var msgs=[],turnCount=0,maxTurns=6,iData={scenario:'',role:'',company:'',context:'',qa:[]};
 var audioEnabled=false,recog=null;
 var autoSend=true,silenceTimer=null,silenceDelay=4000;
-var _simEnded=false,_interviewStartTime=0,_micStream=null,_sending=false;
+var _simEnded=false,_interviewStartTime=0,_micStream=null,_sending=false,_replyStartTime=0;
 var _aiSpeaking=false,_speakTimeout=null,_waitingForAI=false,_accumulated='';
 var _micRetries=0,_maxMicRetries=3;
 
@@ -544,7 +544,24 @@ async function startSim(){
   }catch(e){hideTyping();addMsg('Could not connect \u2014 please refresh and try again.','ai');}
 }
 
-function addMsg(t,type){
+function _metricsFor(text){
+  if(!_replyStartTime||!audioEnabled)return null;
+  var dur=Math.max(0.5,(Date.now()-_replyStartTime)/1000);
+  var words=(text||'').trim().split(/\s+/).filter(Boolean).length;
+  if(dur<0.8||words<3)return null;
+  var wpm=Math.round(words/dur*60);
+  return {words:words,dur:Math.round(dur),wpm:wpm};
+}
+function _metricsHint(m){
+  if(!m)return '';
+  var hint='';
+  if(m.words<15)hint=' \u00b7 a touch brief';
+  else if(m.words>140)hint=' \u00b7 quite long';
+  else if(m.wpm>180)hint=' \u00b7 a bit fast';
+  else if(m.wpm<90)hint=' \u00b7 measured pace';
+  return m.words+' words \u00b7 '+m.dur+'s \u00b7 '+m.wpm+' wpm'+hint;
+}
+function addMsg(t,type,meta){
   var c=document.getElementById('chatMessages');
   var w=document.createElement('div');
   w.style.cssText='display:flex;gap:.5rem;'+(type==='user'?'flex-direction:row-reverse;':'');
@@ -560,7 +577,14 @@ function addMsg(t,type){
   var d=document.createElement('div');
   d.style.cssText='padding:.7rem 1rem;font-size:.84rem;line-height:1.65;word-wrap:break-word;'+(type==='ai'?'background:#fef2f2;border:1px solid #fecaca;color:#0f172a;border-radius:4px 16px 16px 16px;':'background:linear-gradient(135deg,#E7515A,#c7313a);color:#fff;border-radius:16px 4px 16px 16px;');
   d.textContent=t;
-  ct.appendChild(lbl);ct.appendChild(d);w.appendChild(av);w.appendChild(ct);c.appendChild(w);
+  ct.appendChild(lbl);ct.appendChild(d);
+  if(type==='user'&&meta){
+    var mt=document.createElement('div');
+    mt.style.cssText='font-size:.62rem;color:#94a3b8;margin-top:.2rem;padding:0 .2rem;text-align:right;font-weight:500;letter-spacing:.2px';
+    mt.textContent=_metricsHint(meta);
+    ct.appendChild(mt);
+  }
+  w.appendChild(av);w.appendChild(ct);c.appendChild(w);
   setTimeout(function(){w.scrollIntoView({behavior:'smooth',block:'center'});},120);
 }
 
@@ -601,9 +625,11 @@ async function sendAnswer(){
   inp.value='';_accumulated='';
   document.getElementById('micTranscript').style.display='none';document.getElementById('micTranscript').textContent='';
   document.getElementById('sendBtn').style.display='none';document.getElementById('keepTalkingBtn').style.display='none';
-  addMsg(ans,'user');updateMicUI('waiting','Sending reply...');
+  var meta=_metricsFor(ans);
+  _replyStartTime=0;
+  addMsg(ans,'user',meta);updateMicUI('waiting','Sending reply...');
   var lastAi='';for(var i=msgs.length-1;i>=0;i--){if(msgs[i].role==='assistant'){lastAi=msgs[i].content;break;}}
-  iData.qa.push({q:lastAi,a:ans});msgs.push({role:'user',content:ans});
+  iData.qa.push({q:lastAi,a:ans,meta:meta});msgs.push({role:'user',content:ans});
   turnCount++;updTurns();
 
   /* After maxTurns, wrap up and offer scoring */
@@ -635,6 +661,7 @@ function autoStartListening(){
   if(_simEnded||_aiSpeaking||_waitingForAI)return;
   _micRetries=0;_accumulated='';
   document.getElementById('userInput').value='';
+  _replyStartTime=Date.now();
   updateMicUI('listening','Listening \u2014 please speak now');
   document.getElementById('sendBtn').style.display='inline-block';
   document.getElementById('keepTalkingBtn').style.display='none';
