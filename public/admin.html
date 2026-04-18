@@ -7,63 +7,82 @@
 <meta name="robots" content="noindex,nofollow">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f8fafc;--bg2:#ffffff;--bg3:rgba(0,0,0,.03);--text:#0f172a;--text2:#475569;--text3:#64748b;--em:#E7515A;--em2:#c7313a;--gold:#b45309;--purple:#7c3aed;--red:#ef4444;--border:rgba(0,0,0,.1);--border2:rgba(0,0,0,.15);--card:rgba(255,255,255,.9);--r:12px;--rl:16px}
-body.dark{--bg:#09090b;--bg2:rgba(255,255,255,.03);--bg3:rgba(255,255,255,.06);--text:#f4f4f5;--text2:#a1a1aa;--text3:#71717a;--em:#E7515A;--em2:#c7313a;--gold:#f59e0b;--purple:#8b5cf6;--red:#ef4444;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.08);--card:rgba(255,255,255,.03)}
-body.dark .login-box{background:#0f172a}
-body.dark input{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1)}
-body.dark .toast{background:rgba(15,23,42,.95);color:#f4f4f5;box-shadow:0 8px 32px rgba(0,0,0,.3)}
-body.dark .confirm-box{background:#0f172a}
-body.dark .job-row{background:rgba(255,255,255,.03)}
-body.dark .hlogo em{color:var(--em)}
+:root{
+  --bg:#f6f7fb;
+  --bg2:#ffffff;
+  --bg3:#f1f3f8;
+  --text:#0f172a;
+  --text2:#475569;
+  --text3:#64748b;
+  --em:#E7515A;
+  --em2:#c7313a;
+  --gold:#b45309;
+  --purple:#7c3aed;
+  --red:#ef4444;
+  --green:#059669;
+  --border:#e5e7eb;
+  --border2:#d1d5db;
+  --card:#ffffff;
+  --shadow:0 1px 3px rgba(15,23,42,.04),0 1px 2px rgba(15,23,42,.06);
+  --shadow-lg:0 8px 24px rgba(15,23,42,.06),0 2px 6px rgba(15,23,42,.04);
+  --r:12px;
+  --rl:16px;
+}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
 
 /* Toast */
 #toast-container{position:fixed;top:1.5rem;right:1.5rem;z-index:99999;display:flex;flex-direction:column;gap:.5rem}
-.toast{background:rgba(24,24,27,.95);border:1px solid var(--border2);backdrop-filter:blur(12px);border-radius:var(--r);padding:.85rem 1.25rem;font-size:.85rem;font-weight:600;color:var(--text);box-shadow:0 8px 32px rgba(0,0,0,.4);animation:toastIn .3s ease;display:flex;align-items:center;gap:.6rem;max-width:360px}
-.toast.success{border-color:rgba(231,81,90,.3);color:var(--em)}
-.toast.error{border-color:rgba(239,68,68,.3);color:#fca5a5}
+.toast{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:.85rem 1.25rem;font-size:.85rem;font-weight:600;color:var(--text);box-shadow:var(--shadow-lg);animation:toastIn .3s ease;display:flex;align-items:center;gap:.6rem;max-width:360px}
+.toast.success{border-color:#fecaca;color:var(--em);background:#fef2f2}
+.toast.error{border-color:#fecaca;color:var(--red);background:#fef2f2}
 .toast.out{animation:toastOut .3s ease forwards}
 @keyframes toastIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
 @keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(30px)}}
 
 /* Login */
-#login{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1.5rem}
-.login-box{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2.5rem;width:100%;max-width:400px;backdrop-filter:blur(20px)}
+#login{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1.5rem;background:linear-gradient(180deg,#fef2f2 0%,var(--bg) 60%)}
+.login-box{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2.5rem;width:100%;max-width:400px;box-shadow:var(--shadow-lg)}
 .login-logo{font-size:1.3rem;font-weight:800;color:var(--text);margin-bottom:.35rem;display:flex;align-items:center;gap:.5rem;justify-content:center}
-.login-logo em{background:linear-gradient(135deg,var(--em),var(--em2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
-.login-sub{font-size:.85rem;color:var(--text3);font-weight:600;margin-bottom:2rem}
+.login-logo em{color:var(--em);font-style:normal}
+.login-sub{font-size:.85rem;color:var(--text3);font-weight:600;margin-bottom:2rem;text-align:center}
 label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);display:block;margin-bottom:.5rem}
-input{background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:15px;padding:.85rem 1.15rem;outline:none;width:100%;margin-bottom:1rem;transition:border-color .2s}
-input:focus{border-color:var(--em);box-shadow:0 0 0 3px rgba(231,81,90,.1)}
+input{background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:15px;padding:.85rem 1.15rem;outline:none;width:100%;margin-bottom:1rem;transition:all .15s}
+input:focus{border-color:var(--em);box-shadow:0 0 0 3px rgba(231,81,90,.12)}
 .btn{display:flex;align-items:center;justify-content:center;background:var(--em);color:#fff;padding:.85rem;border-radius:999px;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer;width:100%;transition:all .2s}
-.btn:hover{background:var(--em2);transform:translateY(-1px);box-shadow:0 4px 20px rgba(231,81,90,.3)}
-.err{color:#fca5a5;font-size:.82rem;font-weight:600;margin-top:.65rem;display:none}
+.btn:hover{background:var(--em2);transform:translateY(-1px);box-shadow:0 6px 18px rgba(231,81,90,.25)}
+.err{color:var(--red);font-size:.82rem;font-weight:600;margin-top:.65rem;display:none}
 
 /* App */
 #app{display:none;min-height:100vh}
-header{background:var(--hdr,rgba(9,9,11,.8));border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
-.hlogo{display:flex;align-items:center;gap:.3rem;font-size:1.05rem;font-weight:800}.hlogo em{background:linear-gradient(135deg,var(--em),var(--em2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
-
-.hright{display:flex;align-items:center;gap:1rem}
-.badge{background:rgba(231,81,90,.08);border:1px solid rgba(231,81,90,.2);color:var(--em);font-size:.72rem;font-weight:700;padding:.3rem .75rem;border-radius:999px}
-.signout{background:none;border:1px solid var(--border2);color:var(--text3);padding:.45rem 1rem;border-radius:999px;cursor:pointer;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.78rem;font-weight:600;transition:all .2s}
-.signout:hover{color:var(--text);border-color:var(--text3)}
+header{background:#fff;border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;box-shadow:0 1px 0 rgba(15,23,42,.02)}
+.hlogo{display:flex;align-items:center;gap:.3rem;font-size:1.05rem;font-weight:800}
+.hlogo em{color:var(--em);font-style:normal}
+.hright{display:flex;align-items:center;gap:.75rem}
+.badge{background:#fef2f2;border:1px solid #fecaca;color:var(--em);font-size:.72rem;font-weight:700;padding:.3rem .75rem;border-radius:999px}
+.signout{background:#fff;border:1px solid var(--border2);color:var(--text2);padding:.45rem 1rem;border-radius:999px;cursor:pointer;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.78rem;font-weight:600;transition:all .15s}
+.signout:hover{color:var(--text);border-color:var(--text3);background:var(--bg3)}
 
 main{padding:2rem;max-width:1200px;margin:0 auto}
 
+/* Section headers */
+.section-hd{display:flex;align-items:flex-end;justify-content:space-between;margin:2.25rem 0 1rem;gap:1rem;flex-wrap:wrap}
+.section-hd:first-of-type{margin-top:0}
+.section-hd-title{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3)}
+.section-hd-sub{font-size:.78rem;color:var(--text3);font-weight:500}
+
 /* Stats */
-.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:.85rem;margin-bottom:1.75rem}
-.stat{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem 1.5rem;transition:all .25s}
-.stat:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:.85rem;margin-bottom:1.25rem}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem 1.5rem;box-shadow:var(--shadow);transition:all .2s}
+.stat:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);border-color:var(--border2)}
 .stat-n{font-size:2rem;font-weight:900;color:var(--text);line-height:1}
 .stat-l{font-size:.72rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-top:.4rem}
 
 /* Tabs */
 .tabs{display:flex;gap:.35rem;margin-bottom:1.5rem;flex-wrap:wrap}
-.tab{background:none;border:1px solid var(--border2);color:var(--text3);padding:.5rem 1.15rem;border-radius:999px;cursor:pointer;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.82rem;font-weight:600;transition:all .2s}
-.tab.active{background:var(--em);color:#fff;border-color:var(--em)}
-.tab:hover:not(.active){border-color:var(--text3);color:var(--text)}
+.tab{background:#fff;border:1px solid var(--border);color:var(--text2);padding:.5rem 1.15rem;border-radius:999px;cursor:pointer;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.82rem;font-weight:600;transition:all .15s}
+.tab.active{background:var(--em);color:#fff;border-color:var(--em);box-shadow:0 4px 12px rgba(231,81,90,.2)}
+.tab:hover:not(.active){border-color:var(--text3);color:var(--text);background:var(--bg3)}
 
 /* Refresh */
 .refresh-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.75rem}
@@ -90,12 +109,12 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
 .jr-date.approved-date{background:rgba(231,81,90,.08);border:1px solid rgba(231,81,90,.2);color:var(--em)}
 .jr-date.expires-ok{background:rgba(231,81,90,.06);border:1px solid rgba(231,81,90,.15);color:var(--em)}
 .jr-date.expires-soon{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);color:var(--gold)}
-.jr-date.expires-now{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#fca5a5}
+.jr-date.expires-now{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#ef4444}
 .pills{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.6rem}
 .status-pill{display:inline-flex;align-items:center;padding:.22rem .65rem;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
 .sp-pending{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);color:var(--gold)}
 .sp-approved{background:rgba(231,81,90,.08);border:1px solid rgba(231,81,90,.2);color:var(--em)}
-.sp-rejected{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#fca5a5}
+.sp-rejected{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#ef4444}
 .sp-featured{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:var(--gold)}
 .sp-expired{background:var(--bg3);border:1px solid var(--border2);color:var(--text3)}
 .actions{display:flex;flex-direction:column;gap:.4rem;flex-shrink:0;align-items:flex-end}
@@ -104,14 +123,14 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
 .abtn:hover{transform:translateY(-1px)}
 .abtn-ok{background:rgba(231,81,90,.1);border:1px solid rgba(231,81,90,.25);color:var(--em)}
 .abtn-ok:hover{background:var(--em);color:#fff;box-shadow:0 4px 16px rgba(231,81,90,.3)}
-.abtn-rej{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#fca5a5}
+.abtn-rej{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#ef4444}
 .abtn-rej:hover{background:var(--red);color:#fff;box-shadow:0 4px 16px rgba(239,68,68,.3)}
 .abtn-feat{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);color:var(--gold)}
 .abtn-feat:hover{background:var(--gold);color:#000;box-shadow:0 4px 16px rgba(245,158,11,.3)}
 .abtn-relist{background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);color:var(--purple)}
 .abtn-relist:hover{background:var(--purple);color:#fff;box-shadow:0 4px 16px rgba(139,92,246,.3)}
 .abtn-del{background:var(--bg3);border:1px solid var(--border2);color:var(--text3)}
-.abtn-del:hover{background:rgba(239,68,68,.1);border-color:var(--red);color:#fca5a5}
+.abtn-del:hover{background:rgba(239,68,68,.1);border-color:var(--red);color:#ef4444}
 .jr-desc{font-size:.82rem;color:var(--text2);line-height:1.7;margin-bottom:.6rem;white-space:pre-line}
 .jr-desc.collapsed{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .desc-toggle{background:none;border:none;color:var(--purple);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;padding:0;margin-bottom:.5rem;transition:color .2s}
@@ -121,9 +140,9 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
 .empty{text-align:center;padding:4rem;color:var(--text3);font-size:.9rem;font-weight:600}
 
 /* Modal */
-#confirm-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(8px)}
+#confirm-modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:9999;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(6px)}
 #confirm-modal.show{display:flex}
-.confirm-box{background:rgba(24,24,27,.98);border:1px solid var(--border);border-radius:20px;padding:2rem;width:100%;max-width:420px;text-align:center;backdrop-filter:blur(20px)}
+.confirm-box{background:#fff;border:1px solid var(--border);border-radius:20px;padding:2rem;width:100%;max-width:420px;text-align:center;box-shadow:0 20px 50px rgba(15,23,42,.18)}
 .confirm-icon{font-size:2.5rem;margin-bottom:1rem}
 .confirm-title{font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:.6rem}
 .confirm-sub{font-size:.85rem;color:var(--text3);margin-bottom:1.75rem;line-height:1.7;font-weight:500}
@@ -147,7 +166,6 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
 <div id="toast-container"></div>
 
 <div id="login">
-  <div style="position:absolute;top:1.5rem;right:1.5rem"><button id="tbtn-login" onclick="toggleTheme()" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text3);width:34px;height:34px;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem">&#9788;</button></div>
   <div class="login-box">
     <div class="login-logo" style="font-size:1.8rem;font-weight:900;color:#E7515A;letter-spacing:-.5px">FindMeAJob</div>
     <div class="login-sub">Admin Panel</div>
@@ -163,11 +181,13 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
     <div class="hlogo" style="font-size:1.2rem;font-weight:900;color:#E7515A;letter-spacing:-.5px">FindMeAJob <span style="color:#94a3b8;font-weight:600">Admin</span></div>
     <div class="hright">
       <span class="badge" id="pending-badge">0 pending</span>
-      <button id="tbtn" onclick="toggleTheme()" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text3);width:34px;height:34px;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem">&#9788;</button>
       <button class="signout" id="btn-signout" type="button">Sign out</button>
     </div>
   </header>
   <main>
+    <div class="section-hd">
+      <div><div class="section-hd-title">Listings Overview</div><div class="section-hd-sub">Live status of every employer job on the board</div></div>
+    </div>
     <div class="stats">
       <div class="stat"><div class="stat-n" id="st-total">0</div><div class="stat-l">Total listings</div></div>
       <div class="stat"><div class="stat-n" id="st-pending" style="color:var(--gold)">0</div><div class="stat-l">Pending review</div></div>
@@ -175,11 +195,17 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
       <div class="stat"><div class="stat-n" id="st-rejected" style="color:var(--red)">0</div><div class="stat-l">Rejected</div></div>
       <div class="stat"><div class="stat-n" id="st-expired" style="color:var(--text3)">0</div><div class="stat-l">Expired</div></div>
     </div>
+    <div class="section-hd">
+      <div><div class="section-hd-title">User &amp; Application Activity</div><div class="section-hd-sub">Who&rsquo;s using the platform right now</div></div>
+    </div>
     <div class="stats" style="grid-template-columns:repeat(4,1fr);margin-bottom:1.75rem">
       <div class="stat" style="border-left:3px solid var(--purple)"><div class="stat-n" id="st-seekers" style="color:var(--purple)">0</div><div class="stat-l">Job Seekers</div></div>
       <div class="stat" style="border-left:3px solid var(--gold)"><div class="stat-n" id="st-employers" style="color:var(--gold)">0</div><div class="stat-l">Employers</div></div>
       <div class="stat" style="border-left:3px solid var(--em)"><div class="stat-n" id="st-apps" style="color:var(--em)">0</div><div class="stat-l">Applications</div></div>
       <div class="stat" style="border-left:3px solid #06b6d4"><div class="stat-n" id="st-cvs" style="color:#06b6d4">0</div><div class="stat-l">CV Uploads</div></div>
+    </div>
+    <div class="section-hd">
+      <div><div class="section-hd-title">Workspace</div><div class="section-hd-sub">Review jobs, review people, and generate content</div></div>
     </div>
     <div class="refresh-bar">
       <div class="tabs">
@@ -211,14 +237,14 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
           <div style="display:flex;gap:.5rem;flex-wrap:wrap">
             <button onclick="suggestKeywords()" id="btn-suggest" style="background:linear-gradient(135deg,#7c3aed,#8b5cf6);color:#fff;border:none;padding:.55rem 1.25rem;border-radius:999px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">1. Research Keywords</button>
             <button onclick="generateBlog()" id="btn-gen-blog" style="background:linear-gradient(135deg,var(--em),#14b8a6);color:#fff;border:none;padding:.55rem 1.25rem;border-radius:999px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">2. Generate Posts</button>
-            <button onclick="loadExistingBlog()" style="background:rgba(255,255,255,.06);border:1px solid var(--border2);color:var(--text2);padding:.55rem 1rem;border-radius:999px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">View Published</button>
+            <button onclick="loadExistingBlog()" style="background:#fff;border:1px solid var(--border2);color:var(--text2);padding:.55rem 1rem;border-radius:999px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">View Published</button>
             <button onclick="reciteAllPosts()" id="btn-recite" style="background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff;border:none;padding:.55rem 1.25rem;border-radius:999px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Re-cite All Posts</button>
           </div>
         </div>
         <!-- Keyword research output -->
         <div id="keyword-output" style="display:none;margin-bottom:1rem"></div>
         <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem">
-          <select id="blog-count" style="background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.45rem .75rem;outline:none">
+          <select id="blog-count" style="background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.45rem .75rem;outline:none">
             <option value="3">3 posts</option>
             <option value="5">5 posts</option>
             <option value="7">7 posts (weekly batch)</option>
@@ -237,7 +263,7 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
           <button onclick="generateSocial()" id="btn-gen-social" style="background:linear-gradient(135deg,#ec4899,var(--purple));color:#fff;border:none;padding:.55rem 1.25rem;border-radius:999px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Generate Posts</button>
         </div>
         <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem">
-          <select id="social-tone" style="background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.45rem .75rem;outline:none">
+          <select id="social-tone" style="background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.45rem .75rem;outline:none">
             <option value="funny">Funny / Roast</option>
             <option value="professional">Professional</option>
             <option value="hype">Hype / Excited</option>
@@ -245,7 +271,7 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
             <option value="inspirational">Inspirational</option>
             <option value="controversial">Hot Take / Controversial</option>
           </select>
-          <select id="social-focus" style="background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.45rem .75rem;outline:none">
+          <select id="social-focus" style="background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.45rem .75rem;outline:none">
             <option value="cv-matching">AI CV Matching (hero feature)</option>
             <option value="interview-sim">Interview Simulator</option>
             <option value="cv-writer">CV + Cover Letter Writer</option>
@@ -278,20 +304,20 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1rem">
           <div>
             <label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Business name</label>
-            <input type="text" id="outreach-company" placeholder="e.g. Hays Recruitment, Countdown, Xero" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.55rem .75rem;outline:none">
+            <input type="text" id="outreach-company" placeholder="e.g. Hays Recruitment, Countdown, Xero" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.55rem .75rem;outline:none">
           </div>
           <div>
             <label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Contact email</label>
-            <input type="email" id="outreach-email" placeholder="hr@company.co.nz" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.55rem .75rem;outline:none">
+            <input type="email" id="outreach-email" placeholder="hr@company.co.nz" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.55rem .75rem;outline:none">
           </div>
         </div>
         <div style="margin-bottom:1rem">
           <label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Contact name (optional)</label>
-          <input type="text" id="outreach-name" placeholder="e.g. Sarah, the Hiring Manager" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.55rem .75rem;outline:none">
+          <input type="text" id="outreach-name" placeholder="e.g. Sarah, the Hiring Manager" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.55rem .75rem;outline:none">
         </div>
         <div style="margin-bottom:1rem">
           <label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Industry (optional)</label>
-          <select id="outreach-industry" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.55rem .75rem;outline:none">
+          <select id="outreach-industry" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.55rem .75rem;outline:none">
             <option value="">Any industry</option>
             <option value="Healthcare">Healthcare</option>
             <option value="Technology">Technology</option>
@@ -310,12 +336,12 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
 
         <div id="outreach-output" style="display:none;margin-bottom:1rem">
           <label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Subject line</label>
-          <input type="text" id="outreach-subject" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.88rem;font-weight:700;padding:.55rem .75rem;outline:none;margin-bottom:.75rem">
+          <input type="text" id="outreach-subject" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.88rem;font-weight:700;padding:.55rem .75rem;outline:none;margin-bottom:.75rem">
           <label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Email body</label>
-          <textarea id="outreach-body" rows="12" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text2);font-family:inherit;font-size:.82rem;padding:.75rem;outline:none;resize:vertical;line-height:1.7"></textarea>
+          <textarea id="outreach-body" rows="12" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text2);font-family:inherit;font-size:.82rem;padding:.75rem;outline:none;resize:vertical;line-height:1.7"></textarea>
           <div style="display:flex;gap:.5rem;margin-top:.75rem">
             <button onclick="sendOutreachEmail()" id="btn-send-outreach" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;border:none;padding:.65rem 1.5rem;border-radius:999px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:inherit">Send Email</button>
-            <button onclick="copyOutreachEmail()" style="background:rgba(255,255,255,.06);border:1px solid var(--border2);color:var(--text2);padding:.65rem 1.25rem;border-radius:999px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit">Copy to clipboard</button>
+            <button onclick="copyOutreachEmail()" style="background:#fff;border:1px solid var(--border2);color:var(--text2);padding:.65rem 1.25rem;border-radius:999px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit">Copy to clipboard</button>
           </div>
         </div>
         <div id="outreach-status" style="display:none;padding:.75rem 1rem;border-radius:var(--r);font-size:.82rem;font-weight:600;margin-top:.75rem"></div>
@@ -344,7 +370,7 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
     <label>Subject</label>
     <input type="text" id="email-subject" placeholder="Subject line" style="margin-bottom:.75rem">
     <label>Message</label>
-    <textarea id="email-body" placeholder="Type your message..." style="background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:15px;padding:.85rem 1.15rem;outline:none;width:100%;min-height:120px;resize:vertical;margin-bottom:1rem"></textarea>
+    <textarea id="email-body" placeholder="Type your message..." style="background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:15px;padding:.85rem 1.15rem;outline:none;width:100%;min-height:120px;resize:vertical;margin-bottom:1rem"></textarea>
     <div class="confirm-btns">
       <button class="confirm-cancel" onclick="document.getElementById('email-modal').style.display='none'" type="button">Cancel</button>
       <button class="confirm-ok action-approve" id="email-send-btn" type="button">Send Email</button>
@@ -419,8 +445,6 @@ function copyOutreachEmail(){
   else{prompt('Copy this:',text);}
 }
 
-function toggleTheme(){document.body.classList.toggle('dark');var d=document.body.classList.contains('dark');localStorage.setItem('theme',d?'dark':'light');var icon=d?'&#9790;':'&#9788;';var t1=document.getElementById('tbtn');var t2=document.getElementById('tbtn-login');if(t1)t1.innerHTML=icon;if(t2)t2.innerHTML=icon;}
-if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');var icon2='&#9790;';var t1b=document.getElementById('tbtn');var t2b=document.getElementById('tbtn-login');if(t1b)t1b.innerHTML=icon2;if(t2b)t2b.innerHTML=icon2;}
 var pw="", allJobs=[], currentTab="pending", refreshTimer=null;
 var pendingAction=null, pendingActionId=null;
 var PLAN_DAYS = { free:30, basic:60, pro:90 };
@@ -684,7 +708,7 @@ async function loadPeople(type) {
       el.innerHTML = h2;
     }
   } catch(e) {
-    el.innerHTML = '<div style="text-align:center;padding:2rem;color:#fca5a5">Failed to load. Please try again.</div>';
+    el.innerHTML = '<div style="text-align:center;padding:2rem;color:#ef4444">Failed to load. Please try again.</div>';
   }
 }
 
@@ -751,7 +775,7 @@ async function suggestKeywords(){
     keywords.forEach(function(k,i){
       var volColor=k.volume==='High'?'#059669':k.volume==='Medium'?'#f59e0b':'#94a3b8';
       var diffColor=k.difficulty==='Easy'?'#059669':k.difficulty==='Medium'?'#f59e0b':'#ef4444';
-      h+='<label style="display:flex;gap:.5rem;align-items:flex-start;padding:.6rem .75rem;background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:10px;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor=\'var(--em)\'" onmouseout="this.style.borderColor=\'var(--border2)\'">';
+      h+='<label style="display:flex;gap:.5rem;align-items:flex-start;padding:.6rem .75rem;background:#fafafa;border:1px solid var(--border2);border-radius:10px;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor=\'var(--em)\'" onmouseout="this.style.borderColor=\'var(--border2)\'">';
       h+='<input type="checkbox" data-kw-idx="'+i+'" onchange="toggleKeyword('+i+')" style="accent-color:var(--em);margin-top:2px;width:16px;height:16px;flex-shrink:0">';
       h+='<div style="flex:1;min-width:0">';
       h+='<div style="font-size:.82rem;font-weight:700;color:var(--text)">'+esc(k.keyword)+'</div>';
@@ -828,7 +852,7 @@ async function generateBlog() {
       var tagColors = {seeker:"var(--em)",employer:"var(--gold)",market:"var(--purple)",tips:"#ec4899"};
       var grad = gradients[p.category] || gradients.market;
       var imgId = p.imageId || (i * 37 + 100);
-      h += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--rl);padding:0;margin-bottom:.75rem;overflow:hidden" data-blog-idx="'+i+'">';
+      h += '<div style="background:#fafafa;border:1px solid var(--border2);border-radius:var(--rl);padding:0;margin-bottom:.75rem;overflow:hidden" data-blog-idx="'+i+'">';
       h += '<div style="position:relative;height:140px;background:'+grad+';display:flex;align-items:flex-end;overflow:hidden"><img src="https://picsum.photos/seed/'+imgId+'/800/300" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\'">';
       h += '<div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.7) 0%,transparent 60%)"></div>';
       h += '<div style="position:relative;padding:1rem 1.15rem;display:flex;align-items:center;gap:.65rem;width:100%">';
@@ -840,11 +864,11 @@ async function generateBlog() {
       // Editable fields
       h += '<div style="padding:1.15rem">';
       h += '<label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Title</label>';
-      h += '<input type="text" data-field="title" data-idx="'+i+'" value="'+esc(p.title).replace(/"/g,'&quot;')+'" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;font-size:.88rem;font-weight:700;padding:.45rem .65rem;outline:none;margin-bottom:.6rem">';
+      h += '<input type="text" data-field="title" data-idx="'+i+'" value="'+esc(p.title).replace(/"/g,'&quot;')+'" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;font-size:.88rem;font-weight:700;padding:.45rem .65rem;outline:none;margin-bottom:.6rem">';
       h += '<label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Excerpt</label>';
-      h += '<input type="text" data-field="excerpt" data-idx="'+i+'" value="'+esc(p.excerpt).replace(/"/g,'&quot;')+'" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.45rem .65rem;outline:none;margin-bottom:.6rem;font-style:italic">';
+      h += '<input type="text" data-field="excerpt" data-idx="'+i+'" value="'+esc(p.excerpt).replace(/"/g,'&quot;')+'" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.45rem .65rem;outline:none;margin-bottom:.6rem;font-style:italic">';
       h += '<label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Body</label>';
-      h += '<textarea data-field="body" data-idx="'+i+'" style="width:100%;min-height:120px;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.55rem .65rem;outline:none;resize:vertical;line-height:1.7">'+esc(p.body)+'</textarea>';
+      h += '<textarea data-field="body" data-idx="'+i+'" style="width:100%;min-height:120px;background:#fff;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.55rem .65rem;outline:none;resize:vertical;line-height:1.7">'+esc(p.body)+'</textarea>';
       h += '</div></div>';
     });
 
@@ -864,7 +888,7 @@ async function generateBlog() {
       });
     });
   } catch(e) {
-    out.innerHTML = '<div style="text-align:center;padding:2rem;color:#fca5a5;font-size:.85rem">Failed to generate. Try again.</div>';
+    out.innerHTML = '<div style="text-align:center;padding:2rem;color:#ef4444;font-size:.85rem">Failed to generate. Try again.</div>';
   }
   btn.disabled = false;
   btn.textContent = "Generate Posts";
@@ -886,7 +910,7 @@ function removePendingPost(idx) {
   posts.forEach(function(p, i) {
     var grad = gradients[p.category] || gradients.market;
     var imgId = p.imageId || (i * 37 + 100);
-    h += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--rl);padding:0;margin-bottom:.75rem;overflow:hidden">';
+    h += '<div style="background:#fafafa;border:1px solid var(--border2);border-radius:var(--rl);padding:0;margin-bottom:.75rem;overflow:hidden">';
     h += '<div style="position:relative;height:140px;background:'+grad+';display:flex;align-items:flex-end;overflow:hidden"><img src="https://picsum.photos/seed/'+imgId+'/800/300" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\'">';
     h += '<div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.7) 0%,transparent 60%)"></div>';
     h += '<div style="position:relative;padding:1rem 1.15rem;display:flex;align-items:center;gap:.65rem;width:100%">';
@@ -896,11 +920,11 @@ function removePendingPost(idx) {
     h += '<button onclick="removePendingPost('+i+')" style="position:absolute;top:.5rem;right:.65rem;background:rgba(0,0,0,.5);border:none;color:rgba(255,255,255,.8);width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:.75rem;display:flex;align-items:center;justify-content:center">&times;</button>';
     h += '</div><div style="padding:1.15rem">';
     h += '<label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Title</label>';
-    h += '<input type="text" data-field="title" data-idx="'+i+'" value="'+esc(p.title).replace(/"/g,'&quot;')+'" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;font-size:.88rem;font-weight:700;padding:.45rem .65rem;outline:none;margin-bottom:.6rem">';
+    h += '<input type="text" data-field="title" data-idx="'+i+'" value="'+esc(p.title).replace(/"/g,'&quot;')+'" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;font-size:.88rem;font-weight:700;padding:.45rem .65rem;outline:none;margin-bottom:.6rem">';
     h += '<label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Excerpt</label>';
-    h += '<input type="text" data-field="excerpt" data-idx="'+i+'" value="'+esc(p.excerpt).replace(/"/g,'&quot;')+'" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.45rem .65rem;outline:none;margin-bottom:.6rem;font-style:italic">';
+    h += '<input type="text" data-field="excerpt" data-idx="'+i+'" value="'+esc(p.excerpt).replace(/"/g,'&quot;')+'" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.45rem .65rem;outline:none;margin-bottom:.6rem;font-style:italic">';
     h += '<label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Body</label>';
-    h += '<textarea data-field="body" data-idx="'+i+'" style="width:100%;min-height:120px;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.55rem .65rem;outline:none;resize:vertical;line-height:1.7">'+esc(p.body)+'</textarea>';
+    h += '<textarea data-field="body" data-idx="'+i+'" style="width:100%;min-height:120px;background:#fff;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.55rem .65rem;outline:none;resize:vertical;line-height:1.7">'+esc(p.body)+'</textarea>';
     h += '</div></div>';
   });
   h += '<button onclick="publishBlog()" id="btn-publish-blog" style="width:100%;margin-top:.5rem;padding:.75rem;background:linear-gradient(135deg,var(--em),#14b8a6);color:#fff;border:none;border-radius:999px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:inherit">Publish '+posts.length+' Posts to Blog</button>';
@@ -936,7 +960,7 @@ async function publishBlog() {
     } else {
       btn.textContent = "Failed — try again";
       btn.style.background = "rgba(239,68,68,.15)";
-      btn.style.color = "#fca5a5";
+      btn.style.color = "#ef4444";
     }
   } catch(e) {
     btn.textContent = "Failed — try again";
@@ -959,22 +983,22 @@ async function loadExistingBlog() {
     var h = '<div style="font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:.75rem">'+posts.length+' published posts</div>';
     posts.forEach(function(p, i) {
       var grad = gradients[p.category] || gradients.market;
-      h += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--rl);margin-bottom:.6rem;overflow:hidden" id="pub-post-'+i+'">';
+      h += '<div style="background:#fafafa;border:1px solid var(--border2);border-radius:var(--rl);margin-bottom:.6rem;overflow:hidden" id="pub-post-'+i+'">';
       h += '<div style="background:'+grad+';padding:.65rem .85rem;display:flex;align-items:center;gap:.5rem;cursor:pointer" onclick="toggleEditPost('+i+')">';
       h += '<span style="font-size:1.2rem">'+(p.icon||'')+'</span>';
       h += '<span style="font-size:.72rem;font-weight:700;color:rgba(255,255,255,.85);flex:1">'+esc(p.title)+'</span>';
       h += '<span style="font-size:.6rem;color:rgba(255,255,255,.5)">'+esc(p.date)+'</span>';
       h += '<span style="font-size:.55rem;color:rgba(255,255,255,.4);margin-left:.25rem">&#9998; Edit</span>';
-      h += '<button onclick="event.stopPropagation();deletePublishedPost('+i+')" style="background:rgba(0,0,0,.3);border:none;color:rgba(255,255,255,.6);width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:.7rem;margin-left:.35rem">&times;</button>';
+      h += '<button onclick="event.stopPropagation();deletePublishedPost('+i+')" style="background:rgba(15,23,42,.08);border:none;color:rgba(255,255,255,.6);width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:.7rem;margin-left:.35rem">&times;</button>';
       h += '</div>';
       // Collapsible edit section
       h += '<div id="edit-section-'+i+'" style="display:none;padding:1rem">';
       h += '<label style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.2rem">Title</label>';
-      h += '<input type="text" data-pub-field="title" data-pub-idx="'+i+'" value="'+esc(p.title).replace(/"/g,'&quot;')+'" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;font-size:.85rem;font-weight:700;padding:.4rem .6rem;outline:none;margin-bottom:.5rem">';
+      h += '<input type="text" data-pub-field="title" data-pub-idx="'+i+'" value="'+esc(p.title).replace(/"/g,'&quot;')+'" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;font-size:.85rem;font-weight:700;padding:.4rem .6rem;outline:none;margin-bottom:.5rem">';
       h += '<label style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.2rem">Excerpt</label>';
-      h += '<input type="text" data-pub-field="excerpt" data-pub-idx="'+i+'" value="'+esc(p.excerpt).replace(/"/g,'&quot;')+'" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.4rem .6rem;outline:none;margin-bottom:.5rem;font-style:italic">';
+      h += '<input type="text" data-pub-field="excerpt" data-pub-idx="'+i+'" value="'+esc(p.excerpt).replace(/"/g,'&quot;')+'" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.4rem .6rem;outline:none;margin-bottom:.5rem;font-style:italic">';
       h += '<label style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.2rem">Body</label>';
-      h += '<textarea data-pub-field="body" data-pub-idx="'+i+'" style="width:100%;min-height:150px;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.5rem .6rem;outline:none;resize:vertical;line-height:1.7">'+esc(p.body)+'</textarea>';
+      h += '<textarea data-pub-field="body" data-pub-idx="'+i+'" style="width:100%;min-height:150px;background:#fff;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.5rem .6rem;outline:none;resize:vertical;line-height:1.7">'+esc(p.body)+'</textarea>';
       h += '<button onclick="saveEditedPost('+i+')" style="margin-top:.5rem;padding:.45rem 1.2rem;background:var(--em);color:#fff;border:none;border-radius:999px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit">Save Changes</button>';
       h += '</div></div>';
     });
@@ -988,7 +1012,7 @@ async function loadExistingBlog() {
       });
     });
   } catch(e) {
-    out.innerHTML = '<div style="text-align:center;padding:2rem;color:#fca5a5;font-size:.85rem">Failed to load posts.</div>';
+    out.innerHTML = '<div style="text-align:center;padding:2rem;color:#ef4444;font-size:.85rem">Failed to load posts.</div>';
   }
 }
 
@@ -1050,7 +1074,7 @@ async function reciteAllPosts() {
 
   btn.disabled = true;
   var origLabel = btn.textContent;
-  out.innerHTML = '<div id="recite-progress" style="background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.25);border-radius:var(--rl);padding:1.25rem;margin-bottom:1rem"><div style="font-size:.85rem;font-weight:700;color:var(--gold);margin-bottom:.5rem">Re-citing posts...</div><div id="recite-status" style="font-size:.78rem;color:var(--text2)">Starting...</div><div style="margin-top:.75rem;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden"><div id="recite-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#d97706,#f59e0b);transition:width .3s"></div></div></div>';
+  out.innerHTML = '<div id="recite-progress" style="background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.25);border-radius:var(--rl);padding:1.25rem;margin-bottom:1rem"><div style="font-size:.85rem;font-weight:700;color:var(--gold);margin-bottom:.5rem">Re-citing posts...</div><div id="recite-status" style="font-size:.78rem;color:var(--text2)">Starting...</div><div style="margin-top:.75rem;height:6px;background:#fff;border-radius:3px;overflow:hidden"><div id="recite-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#d97706,#f59e0b);transition:width .3s"></div></div></div>';
 
   var systemPrompt = "You are rewriting a New Zealand blog post to fix incorrect figures and add clean end-of-paragraph source citations. Preserve the writing voice, structure, and section order. Produce SEO-optimised markdown.\n\nFORMATTING RULES (strict):\n- Use '## Heading' markdown for section headings. DO NOT use '**bold**' for headings.\n- DO NOT start the body with a '# Title' heading. The article title is rendered separately above the body.\n- Use **bold** only for emphasis inside a sentence.\n- Use '- item' bullets on their own paragraph for lists.\n- Paragraphs separated by ONE blank line. Keep paragraphs 2-4 sentences.\n- DO NOT put links in the middle of sentences. Keep body text clean and un-linked.\n\nCITATION FORMAT:\n- Immediately after ANY paragraph that contains a specific number / dollar figure / percentage / date / quoted law, insert a NEW paragraph starting with 'Source: ' followed by ONE markdown link from the VERIFIED URL LIST below.\n- Format: Source: [Readable label](https://full-url-from-list)\n- One link per Source paragraph, ONE line.\n- DO NOT add a separate 'Sources' section at the end. The inline Source paragraphs ARE the citations. Remove any existing '**Sources**' section.\n\nVERIFIED URL LIST (use ONLY these — do NOT invent deeper paths):\nWages: https://www.employment.govt.nz/pay-and-hours/pay-and-wages/minimum-wage/ | https://www.employment.govt.nz/pay-and-hours/pay-and-wages/minimum-wage/types-of-minimum-wage/ | https://www.employment.govt.nz/pay-and-hours/pay-and-wages/\nLeave: https://www.employment.govt.nz/leave-and-holidays/annual-holidays/ | https://www.employment.govt.nz/leave-and-holidays/public-holidays/ | https://www.employment.govt.nz/leave-and-holidays/sick-leave/ | https://www.employment.govt.nz/leave-and-holidays/parental-leave/ | https://www.employment.govt.nz/leave-and-holidays/bereavement-leave/\nLaw & agreements: https://www.employment.govt.nz/starting-employment/trial-and-probationary-periods/trial-periods/ | https://www.employment.govt.nz/starting-employment/employment-agreements/ | https://www.legislation.govt.nz/act/public/2000/0024/latest/DLM58317.html | https://www.legislation.govt.nz/act/public/2003/0129/latest/DLM236387.html\nProblems & endings: https://www.employment.govt.nz/resolving-problems/types-of-problems/personal-grievances/ | https://www.employment.govt.nz/ending-employment/redundancy/ | https://www.employment.govt.nz/ending-employment/resignation/\nKiwiSaver & tax: https://www.ird.govt.nz/kiwisaver/kiwisaver-employers | https://www.ird.govt.nz/kiwisaver/kiwisaver-employers/making-employer-contributions | https://www.kiwisaver.govt.nz/\nLabour market: https://www.stats.govt.nz/topics/wages | https://www.stats.govt.nz/topics/employment-and-unemployment | https://www.mbie.govt.nz/business-and-employment/employment-and-skills/labour-market-reports-data-and-analysis/\nCareers: https://www.careers.govt.nz/ | https://www.business.govt.nz/people-and-employment/\n\nVERIFIED NZ FACTS (April 2026) — USE to replace any incorrect figures:\n- Adult minimum wage: $23.95/hour\n- Starting-out / training minimum wage: $19.16/hour (80% of adult)\n- KiwiSaver employer minimum contribution: 3%\n- 90-day trial: only for employers with fewer than 20 employees\n- Annual leave: 4 weeks after 12 months continuous employment\n- Sick leave: 10 days per year after 6 months\n\nIf a specific figure is in the post but NOT in the verified list above and you cannot confirm it, REMOVE the specific number and replace with a phrase like 'check the current rate at Employment NZ' with a Source: line pointing to the relevant verified URL. DO NOT invent figures.\n\nSEO:\n- Keep the primary keyword in at least one ## heading and in the first paragraph.\n- Convert 1-2 section headings to question form (e.g. '## What does the 90-day trial cover?') to win featured snippets.\n- Include at least one bulleted list of 4-8 items where appropriate.\n- Add a final '## Key takeaways' H2 with a 3-5 item bulleted summary if the post doesn't already have one.\n- Strip any stray '##' or '**' that shouldn't be there.\n\nReturn ONLY the rewritten markdown body — no JSON, no explanations, no code fences.";
 
@@ -1157,12 +1181,12 @@ async function generateSocial() {
     platforms.forEach(function(p) {
       var text = posts[p.key] || "";
       if (!text) return;
-      h += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--rl);padding:1.25rem;margin-bottom:.75rem;transition:border-color .2s" onmouseover="this.style.borderColor=\''+p.color+'33\'" onmouseout="this.style.borderColor=\'\'">';
+      h += '<div style="background:#fafafa;border:1px solid var(--border2);border-radius:var(--rl);padding:1.25rem;margin-bottom:.75rem;transition:border-color .2s" onmouseover="this.style.borderColor=\''+p.color+'33\'" onmouseout="this.style.borderColor=\'\'">';
       h += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.85rem">';
       h += '<div style="display:flex;align-items:center;gap:.5rem"><div style="width:28px;height:28px;background:'+p.color+';border-radius:8px;display:flex;align-items:center;justify-content:center"><span style="font-size:.85rem;filter:brightness(10)">'+p.icon+'</span></div><span style="font-size:.88rem;font-weight:700;color:var(--text)">'+p.name+'</span></div>';
       h += '<div style="display:flex;gap:.4rem">';
-      h += '<button onclick="downloadPostImage(this)" data-text="'+text.replace(/"/g,'&quot;').replace(/\n/g,'&#10;')+'" data-platform="'+p.name+'" data-color="'+p.color+'" style="background:rgba(255,255,255,.06);border:1px solid var(--border2);color:var(--text2);padding:.35rem .85rem;border-radius:999px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s">Image</button>';
-      h += '<button onclick="copyPost(this)" data-text="'+text.replace(/"/g,'&quot;').replace(/\n/g,'&#10;')+'" style="background:rgba(255,255,255,.06);border:1px solid var(--border2);color:var(--text2);padding:.35rem .85rem;border-radius:999px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s">Copy</button>';
+      h += '<button onclick="downloadPostImage(this)" data-text="'+text.replace(/"/g,'&quot;').replace(/\n/g,'&#10;')+'" data-platform="'+p.name+'" data-color="'+p.color+'" style="background:#fff;border:1px solid var(--border2);color:var(--text2);padding:.35rem .85rem;border-radius:999px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s">Image</button>';
+      h += '<button onclick="copyPost(this)" data-text="'+text.replace(/"/g,'&quot;').replace(/\n/g,'&#10;')+'" style="background:#fff;border:1px solid var(--border2);color:var(--text2);padding:.35rem .85rem;border-radius:999px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s">Copy</button>';
       h += '</div>';
       h += '</div>';
       h += '<div style="font-size:.82rem;color:var(--text);line-height:1.7;white-space:pre-wrap">'+text.replace(/</g,"&lt;").replace(/>/g,"&gt;")+'</div>';
@@ -1171,7 +1195,7 @@ async function generateSocial() {
 
     out.innerHTML = h;
   } catch(e) {
-    out.innerHTML = '<div style="text-align:center;padding:2rem;color:#fca5a5;font-size:.85rem">Failed to generate. Try again.</div>';
+    out.innerHTML = '<div style="text-align:center;padding:2rem;color:#ef4444;font-size:.85rem">Failed to generate. Try again.</div>';
   }
   btn.disabled = false;
   btn.textContent = "Generate Posts";
