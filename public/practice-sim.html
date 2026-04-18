@@ -123,7 +123,7 @@ input:focus,select:focus,textarea:focus{border-color:#E7515A;box-shadow:0 0 0 3p
 <section class="aw-hero">
   <div class="aw-inner">
     <div class="aw-text">
-      <div class="aw-badge">Free &bull; NZ &bull; No sign-up</div>
+      <div class="aw-badge">Free &bull; NZ &bull; No payment</div>
       <h1>Rehearse the <em>conversations</em> that change your career</h1>
       <p class="aw-sub">Salary negotiations, resignations, pay rise asks, flexible work requests &mdash; speak aloud and the AI pushes back like a real boss or recruiter. Then you get scored.</p>
       <div class="aw-feats">
@@ -261,6 +261,27 @@ input:focus,select:focus,textarea:focus{border-color:#E7515A;box-shadow:0 0 0 3p
 
   <div id="scoreSection" style="display:none"></div>
 </div>
+
+<div id="email-gate" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(4px)">
+  <div style="background:#fff;border-radius:20px;padding:2rem;max-width:400px;width:100%;text-align:center;box-shadow:0 25px 60px rgba(0,0,0,.15);position:relative">
+    <button onclick="document.getElementById('email-gate').style.display='none'" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.2rem;color:#94a3b8;cursor:pointer;padding:.25rem">&#10005;</button>
+    <div style="width:48px;height:48px;background:linear-gradient(135deg,#E7515A,#c7313a);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+    <div style="font-size:1.2rem;font-weight:800;color:#0f172a;margin-bottom:.35rem">Enter your email for unlimited access</div>
+    <div style="font-size:.82rem;color:#64748b;margin-bottom:1.25rem">All 12 AI tools stay free forever. We'll send you weekly NZ job matches.</div>
+    <input type="email" id="gate-email" placeholder="your@email.com" style="width:100%;padding:.75rem 1rem;border:1px solid #e2e8f0;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;outline:none;margin-bottom:.75rem;color:#0f172a">
+    <button onclick="submitGateEmail()" id="gate-btn" style="width:100%;padding:.85rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer">Continue</button>
+    <div style="font-size:.68rem;color:#94a3b8;margin-top:.75rem">No spam. Unsubscribe anytime.</div>
+  </div>
+</div>
+
+<script>
+/* Email gate — first use free, email required on 2nd+ use */
+var _gateCallback=null;
+function setCookie(n,v,d){var e=new Date();e.setTime(e.getTime()+(d*864e5));document.cookie=n+"="+v+";expires="+e.toUTCString()+";path=/;SameSite=Lax";}
+function getCookie(n){var c=document.cookie.split(";");for(var i=0;i<c.length;i++){var p=c[i].trim();if(p.indexOf(n+"=")==0)return p.substring(n.length+1);}return"";}
+function checkGate(cb){if(localStorage.getItem('fmaj_email')||getCookie('fmaj_email')){cb();return;}var u=parseInt(localStorage.getItem('fmaj_uses')||getCookie('fmaj_uses')||'0');if(u<1){localStorage.setItem('fmaj_uses',String(u+1));setCookie('fmaj_uses',String(u+1),365);cb();return;}_gateCallback=cb;document.getElementById('email-gate').style.display='flex';}
+function submitGateEmail(){var e=document.getElementById('gate-email').value.trim();if(!e||e.indexOf('@')===-1){document.getElementById('gate-email').style.borderColor='#ef4444';return;}document.getElementById('gate-btn').textContent='Saving...';document.getElementById('gate-btn').disabled=true;localStorage.setItem('fmaj_email',e);setCookie('fmaj_email',e,365);localStorage.setItem('fmaj_uses','999');setCookie('fmaj_uses','999',365);fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',email:e,password:'__tool_gate__',name:e.split('@')[0],emailAlerts:true})}).catch(function(){});document.getElementById('email-gate').style.display='none';if(_gateCallback){_gateCallback();_gateCallback=null;}}
+</script>
 
 <script>
 var selectedScenario='salary';
@@ -429,6 +450,10 @@ function requestMicEarly(){
 }
 
 function prepSim(){
+  checkGate(function(){_doPrepSim();});
+}
+
+function _doPrepSim(){
   try{
     var voiceVal=document.getElementById('voiceGender').value;
     audioEnabled=(voiceVal!=='off');
