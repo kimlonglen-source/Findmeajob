@@ -189,10 +189,6 @@ input:focus,select:focus,textarea:focus{border-color:#E7515A;box-shadow:0 0 0 3p
         <select id="voiceGender"><option value="on">On &mdash; the AI speaks its replies aloud</option><option value="off">Off &mdash; text only</option></select>
         <div style="font-size:.68rem;color:#94a3b8;margin-top:.25rem">The AI's voice matches the character in your chosen scenario.</div>
       </div>
-      <div class="field"><label>Conversation depth</label>
-        <select id="simDepth"><option value="4">Quick &mdash; 4 exchanges (~3 min)</option><option value="6" selected>Standard &mdash; 6 exchanges (~5 min)</option><option value="8">Deep &mdash; 8 exchanges (~8 min)</option></select>
-        <div style="font-size:.68rem;color:#94a3b8;margin-top:.25rem">More exchanges give the conversation room to reach a real resolution.</div>
-      </div>
       <div style="display:flex;flex-direction:column;gap:.65rem;margin-top:.5rem">
         <label style="display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;font-size:.85rem;color:#475569;line-height:1.5"><input type="checkbox" id="autoSendMode" style="accent-color:#E7515A;width:18px;height:18px;margin-top:2px" checked> <span><strong style="color:#0f172a">Auto-send replies</strong><br><span style="font-size:.78rem;color:#94a3b8">When you stop talking for 4 seconds, your reply sends automatically</span></span></label>
       </div>
@@ -470,8 +466,7 @@ function _doPrepSim(){
     var voiceVal=document.getElementById('voiceGender').value;
     audioEnabled=(voiceVal!=='off');
     autoSend=document.getElementById('autoSendMode').checked;
-    var depthSel=document.getElementById('simDepth');
-    maxTurns=(depthSel && parseInt(depthSel.value))||6;
+    maxTurns=6;
 
     if(!SCENARIOS[selectedScenario])selectedScenario='salary';
     var s=SCENARIOS[selectedScenario];
@@ -479,7 +474,7 @@ function _doPrepSim(){
     var company=document.getElementById('simCompany').value.trim()||'your company';
     iData={scenario:selectedScenario,role:role,company:company,context:document.getElementById('simContext').value.trim(),qa:[]};
 
-    document.getElementById('readySummary').innerHTML='You\u2019re practicing: <strong style="color:#0f172a">'+esc(s.title)+'</strong>. The AI plays <strong>'+esc(s.aiName)+'</strong> and will push back realistically across '+maxTurns+' exchanges.';
+    document.getElementById('readySummary').innerHTML='You\u2019re practicing: <strong style="color:#0f172a">'+esc(s.title)+'</strong>. The AI plays <strong>'+esc(s.aiName)+'</strong>, pushes back realistically, and will close the conversation with a clear outcome.';
 
     document.getElementById('step2').style.display='none';
     var rs=document.getElementById('readyScreen');
@@ -634,7 +629,10 @@ async function sendAnswer(){
 
   /* After maxTurns, wrap up and offer scoring */
   if(turnCount>=maxTurns){
-    _sending=false;
+    /* Fully shut down so no stale recognition can re-fire and duplicate the wrap message */
+    _sending=false;_simEnded=true;_aiSpeaking=true;_waitingForAI=false;
+    clearTimeout(_speakTimeout);clearTimeout(silenceTimer);
+    releaseMic();
     var wrap='Thanks for your time \u2014 that\u2019s a good place to pause. Click below to see your score and feedback.';
     hideTyping();addMsg(wrap,'ai');
     document.getElementById('micControl').style.display='none';
@@ -647,6 +645,15 @@ async function sendAnswer(){
   var s=SCENARIOS[selectedScenario];
   var loopSys=s.loop.replace(/\{role\}/g,iData.role).replace(/\{company\}/g,iData.company);
   if(iData.context)loopSys+='\n\nContext from the candidate: '+iData.context.substring(0,800);
+  /* Pacing guidance so the conversation actually resolves rather than just looping pushback */
+  loopSys+='\n\nPACING (turn '+turnCount+' of '+maxTurns+'):';
+  if(turnCount<=Math.ceil(maxTurns/2)){
+    loopSys+=' Early phase \u2014 push back, probe, ask for justification.';
+  } else if(turnCount<maxTurns-1){
+    loopSys+=' Middle phase \u2014 start narrowing toward a position. Concede on minor points if the candidate has earned it.';
+  } else {
+    loopSys+=' FINAL phase \u2014 you MUST land on a clear outcome in this reply: a specific final offer, a yes/no decision, an agreed next step, or a polite refusal. Do not ask another open-ended question. Wrap the conversation up cleanly in 2-3 sentences.';
+  }
   var trimmed=msgs.length>8?msgs.slice(0,2).concat(msgs.slice(-6)):msgs;
   try{
     var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:loopSys,messages:trimmed})});
