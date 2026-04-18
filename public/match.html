@@ -3223,13 +3223,61 @@ function initApp(){try{
 
   function handleApplyFile(file){
     var name=file.name.toLowerCase();
-    document.getElementById('apply-file-name').textContent=file.name;
-    document.getElementById('apply-file-name').style.display='block';
+    var nameEl=document.getElementById('apply-file-name');
+    var genBtn=document.getElementById('apply-gen-btn');
+    /* Keep the Generate button DISABLED until the async file read completes,
+       otherwise a quick click hits empty CV vars and the user sees a misleading
+       "Please upload your CV" toast even though they just uploaded one. */
+    nameEl.textContent=file.name+' \u2014 reading...';
+    nameEl.style.display='block';
     applyDZ.style.display='none';
-    document.getElementById('apply-gen-btn').disabled=false;
-    if(name.endsWith('.txt')){var r=new FileReader();r.onload=function(e){_applyCvText=e.target.result;_applyCvFileData=null;};r.readAsText(file);}
-    else if(name.endsWith('.docx')||name.endsWith('.doc')){var r2=new FileReader();r2.onload=function(e){loadMammoth(function(){if(typeof mammoth!=='undefined'){mammoth.extractRawText({arrayBuffer:e.target.result}).then(function(res){_applyCvText=res.value;_applyCvFileData=null;}).catch(function(){_applyCvText='CV file: '+file.name;});}});};r2.readAsArrayBuffer(file);}
-    else if(name.endsWith('.pdf')){var r3=new FileReader();r3.onload=function(e){var b64=btoa(new Uint8Array(e.target.result).reduce(function(d,byte){return d+String.fromCharCode(byte);},''));_applyCvFileData='data:application/pdf;base64,'+b64;_applyCvText='';};r3.readAsArrayBuffer(file);}
+    genBtn.disabled=true;
+    _applyCvText='';_applyCvFileData=null;
+    function ready(){
+      nameEl.textContent=file.name;
+      genBtn.disabled=false;
+    }
+    function fail(msg){
+      nameEl.textContent=file.name+' \u2014 could not read ('+msg+'). Tap to remove and try again.';
+      genBtn.disabled=true;
+    }
+    if(name.endsWith('.txt')){
+      var r=new FileReader();
+      r.onload=function(e){_applyCvText=e.target.result||'';_applyCvFileData=null;ready();};
+      r.onerror=function(){fail('read error');};
+      r.readAsText(file);
+    }
+    else if(name.endsWith('.docx')||name.endsWith('.doc')){
+      var r2=new FileReader();
+      r2.onload=function(e){
+        var buf=e.target.result;
+        loadMammoth(function(){
+          if(typeof mammoth==='undefined'){fail('docx parser unavailable');return;}
+          mammoth.extractRawText({arrayBuffer:buf}).then(function(res){
+            _applyCvText=(res&&res.value?res.value:'').trim();
+            if(!_applyCvText){fail('empty document');return;}
+            _applyCvFileData=null;ready();
+          }).catch(function(){fail('docx parse failed');});
+        });
+      };
+      r2.onerror=function(){fail('read error');};
+      r2.readAsArrayBuffer(file);
+    }
+    else if(name.endsWith('.pdf')){
+      var r3=new FileReader();
+      r3.onload=function(e){
+        try{
+          var bytes=new Uint8Array(e.target.result);
+          var binary='';
+          for(var i=0;i<bytes.length;i++){binary+=String.fromCharCode(bytes[i]);}
+          _applyCvFileData='data:application/pdf;base64,'+btoa(binary);
+          _applyCvText='';ready();
+        }catch(err){fail('pdf encode failed');}
+      };
+      r3.onerror=function(){fail('read error');};
+      r3.readAsArrayBuffer(file);
+    }
+    else{fail('unsupported file type');}
   }
 
   /* Build CV from scratch */
