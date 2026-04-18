@@ -26,7 +26,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{overflow-x:hidden}
+html,body{overflow-x:hidden;width:100%;position:relative}
 body{background:#fff;color:#1a1a2e;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:16px;line-height:1.6}
 a{color:#E7515A;text-decoration:none}
 a:hover{text-decoration:underline}
@@ -178,7 +178,9 @@ img{max-width:100%;display:block}
 .fsim-bubble{position:absolute;bottom:1.5rem;right:1.5rem;background:#1a1a2e;color:#fff;padding:.6rem .85rem;border-radius:12px;font-size:.72rem;font-weight:600;line-height:1.4;max-width:170px;box-shadow:0 10px 24px rgba(0,0,0,.12);z-index:3;border-bottom-right-radius:4px}
 .fsim-bubble::before{content:'AI';position:absolute;top:-8px;left:10px;background:#E7515A;color:#fff;font-size:.52rem;font-weight:800;padding:.12rem .4rem;border-radius:999px;letter-spacing:.5px}
 @media(max-width:860px){
-  .fsims{padding:3rem 1.25rem 2rem}
+  .fsims{padding:3rem 1.25rem 2rem;max-width:100%}
+  .fsims-wrap::before{width:280px;height:280px;left:-15%;top:-8%}
+  .fsims-wrap::after{width:240px;height:240px;right:-15%;bottom:-10%}
   .fsims-head h2{font-size:1.75rem}
   .fsims-grid{grid-template-columns:1fr}
   .fsim-card{min-height:300px;padding:1.5rem}
