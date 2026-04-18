@@ -212,6 +212,7 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
             <button onclick="suggestKeywords()" id="btn-suggest" style="background:linear-gradient(135deg,#7c3aed,#8b5cf6);color:#fff;border:none;padding:.55rem 1.25rem;border-radius:999px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">1. Research Keywords</button>
             <button onclick="generateBlog()" id="btn-gen-blog" style="background:linear-gradient(135deg,var(--em),#14b8a6);color:#fff;border:none;padding:.55rem 1.25rem;border-radius:999px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">2. Generate Posts</button>
             <button onclick="loadExistingBlog()" style="background:rgba(255,255,255,.06);border:1px solid var(--border2);color:var(--text2);padding:.55rem 1rem;border-radius:999px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">View Published</button>
+            <button onclick="reciteAllPosts()" id="btn-recite" style="background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff;border:none;padding:.55rem 1.25rem;border-radius:999px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Re-cite All Posts</button>
           </div>
         </div>
         <!-- Keyword research output -->
@@ -1023,6 +1024,76 @@ async function deletePublishedPost(idx) {
       loadExistingBlog();
     }
   } catch(e) { showToast("Failed to delete", "error"); }
+}
+
+async function reciteAllPosts() {
+  if (!pw) { showToast("Enter admin password first", "error"); return; }
+  var btn = document.getElementById("btn-recite");
+  var out = document.getElementById("blog-output");
+  // Load posts if not already loaded
+  if (!window._publishedBlogPosts || !window._publishedBlogPosts.length) {
+    try {
+      var rl = await fetch("/api/approved-jobs?blog=1");
+      var dl = await rl.json();
+      window._publishedBlogPosts = dl.posts || [];
+    } catch(e) { showToast("Failed to load posts", "error"); return; }
+  }
+  var posts = window._publishedBlogPosts;
+  if (!posts.length) { showToast("No posts to re-cite", "error"); return; }
+  if (!confirm("Re-cite ALL "+posts.length+" published posts? This will rewrite each post body to add inline source citations and fix any invented figures. Roughly "+Math.ceil(posts.length*8/60)+" minutes. Continue?")) return;
+
+  btn.disabled = true;
+  var origLabel = btn.textContent;
+  out.innerHTML = '<div id="recite-progress" style="background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.25);border-radius:var(--rl);padding:1.25rem;margin-bottom:1rem"><div style="font-size:.85rem;font-weight:700;color:var(--gold);margin-bottom:.5rem">Re-citing posts...</div><div id="recite-status" style="font-size:.78rem;color:var(--text2)">Starting...</div><div style="margin-top:.75rem;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden"><div id="recite-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#d97706,#f59e0b);transition:width .3s"></div></div></div>';
+
+  var systemPrompt = "You are a meticulous fact-checker rewriting a New Zealand blog post about jobs/careers/employment law. Your job: add inline markdown citations [anchor text](https://full-url) for every specific number, statistic, dollar figure, percentage, date, or law section. Fix any obviously incorrect figures using the verified facts below. Do NOT change the writing style, voice, structure, headings, paragraph order, or NZ-specific framing — only add citations and correct factual errors.\n\nVERIFIED NZ FACTS (April 2026) — use these to fix incorrect numbers:\n- Adult minimum wage: $23.95/hour\n- Starting-out / training minimum wage: $19.16/hour (80% of adult)\n- KiwiSaver employer minimum contribution: 3%\n- 90-day trial period: only applies to employers with fewer than 20 employees\n- Annual leave entitlement: 4 weeks after 12 months continuous employment\n- Public holidays: 11 nationally observed days plus regional anniversary day\n- Sick leave: 10 days per year after 6 months continuous employment\n\nALLOWED SOURCES (use only these — do NOT invent URLs):\n- https://www.employment.govt.nz (wages, leave, ER law, 90-day trial, personal grievance)\n- https://www.mbie.govt.nz (immigration, business, sector reports)\n- https://www.stats.govt.nz (labour force, wage growth, regional data)\n- https://www.ird.govt.nz (PAYE, KiwiSaver, tax)\n- https://www.kiwisaver.govt.nz\n- https://www.beehive.govt.nz (gov announcements, minimum wage updates)\n- https://www.business.govt.nz\n- https://www.careers.govt.nz\n- https://www.legislation.govt.nz (Holidays Act 2003, ER Act 2000, etc.)\n\nIf a specific number is cited in the post but you cannot verify it AND it is not in the verified facts list above, REPLACE it with a phrase like 'check the current rate at [Employment NZ](https://www.employment.govt.nz/...)'. Do NOT invent figures.\n\nEnd the rewritten post with a '**Sources**' section listing the cited URLs as a bulleted markdown list (one per line, prefixed with '- '). Preserve the existing CTA and tool mentions.\n\nReturn ONLY the rewritten body text — no JSON, no explanations, no markdown code fences.";
+
+  var ok = 0, fail = 0;
+  for (var i = 0; i < posts.length; i++) {
+    var p = posts[i];
+    document.getElementById("recite-status").textContent = "Re-citing "+(i+1)+" of "+posts.length+": "+(p.title||"").substring(0,60);
+    document.getElementById("recite-bar").style.width = ((i/posts.length)*100)+"%";
+    var userMsg = "Title: "+(p.title||"")+"\nExcerpt: "+(p.excerpt||"")+"\n\nOriginal body:\n"+(p.body||"");
+    try {
+      var r = await fetch("/api/chat", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({system: systemPrompt, messages: [{role:"user", content: userMsg}], maxTokens: 3000})
+      });
+      var d = await r.json();
+      var t = (d.content && Array.isArray(d.content)) ? d.content.map(function(b){return b.text||"";}).join("").trim() : "";
+      if (!t || t.length < 100) { fail++; continue; }
+      // Strip any code fences that might wrap the body
+      t = t.replace(/^```[a-z]*\s*/i, "").replace(/\s*```\s*$/, "").trim();
+      posts[i].body = t;
+      ok++;
+    } catch(e) { fail++; }
+  }
+  document.getElementById("recite-bar").style.width = "100%";
+  document.getElementById("recite-status").textContent = "Saving "+ok+" updated posts to KV...";
+
+  try {
+    var sr = await fetch("/api/approved-jobs", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({type:"replace-blog", password:pw, posts: posts})
+    });
+    var sd = await sr.json();
+    if (sd.ok) {
+      document.getElementById("recite-status").innerHTML = "<strong style='color:#10b981'>&#10003; Done.</strong> "+ok+" posts re-cited"+(fail?", "+fail+" failed":"")+". Reload /blog to see the new citations.";
+      showToast("Re-cited "+ok+" posts", "success");
+      // Reload the published list
+      setTimeout(loadExistingBlog, 1500);
+    } else {
+      document.getElementById("recite-status").innerHTML = "<strong style='color:#ef4444'>Failed to save</strong> &mdash; check admin password.";
+      showToast("Save failed", "error");
+    }
+  } catch(e) {
+    document.getElementById("recite-status").innerHTML = "<strong style='color:#ef4444'>Network error during save.</strong>";
+    showToast("Network error", "error");
+  }
+  btn.disabled = false;
+  btn.textContent = origLabel;
 }
 
 async function generateSocial() {
