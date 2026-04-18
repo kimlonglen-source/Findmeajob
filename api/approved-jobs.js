@@ -81,11 +81,13 @@ function renderBlogBody(raw) {
     var p = blocks[i].trim();
     if (!p) { flushList(); continue; }
 
-    // ## Heading / ### Subheading
+    // ## Heading / ### Subheading / # (treat single # as h2 since article title is already h1)
     var h3 = p.match(/^###\s+(.+)$/s);
     if (h3) { flushList(); out.push("<h3>" + _inlineBlogMarkup(h3[1].trim()) + "</h3>"); continue; }
     var h2 = p.match(/^##\s+(.+)$/s);
     if (h2) { flushList(); out.push("<h2>" + _inlineBlogMarkup(h2[1].trim()) + "</h2>"); continue; }
+    var h1 = p.match(/^#\s+(.+)$/s);
+    if (h1) { flushList(); out.push("<h2>" + _inlineBlogMarkup(h1[1].trim()) + "</h2>"); continue; }
 
     // **Whole-paragraph bold** = legacy H2 (for old posts)
     var legacyH2 = p.match(/^\*\*([^*]+)\*\*$/);
