@@ -8,7 +8,7 @@ var PLAN_DAYS = { free: 30, basic: 60, pro: 90 };
 
 var statsCache = { data: null, expires: 0 };
 
-var BLOG_CSS = ':root{--bg:#ffffff;--bg2:#f8fafc;--text:#0f172a;--text2:#475569;--text3:#94a3b8;--em:#E7515A;--purple:#7c3aed;--pink:#ec4899;--gold:#b45309;--border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.12);--r:12px;--rl:20px}body.dark{--bg:#09090b;--bg2:#0f172a;--text:#f8fafc;--text2:#b0b8c4;--text3:#8891a0;--em:#E7515A;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1)}*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:"Plus Jakarta Sans",system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}a{color:var(--em);text-decoration:none}a:hover{text-decoration:underline}.top-bar{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);background:var(--bg);backdrop-filter:blur(12px)}.top-logo{display:flex;align-items:center;gap:.3rem;font-size:1.05rem;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-.5px}.top-logo em{background:linear-gradient(135deg,#E7515A,#c7313a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}.logo-mark{width:30px;height:30px;background:linear-gradient(135deg,#E7515A,#c7313a);border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(231,81,90,.2)}.logo-mark svg{width:15px;height:15px;color:#fff}.top-logo:hover{text-decoration:none}.top-links{display:flex;gap:1.5rem;align-items:center;font-size:.82rem;font-weight:600}.top-links a{color:var(--text3);text-decoration:none}.top-links a:hover{color:var(--text)}.top-cta{background:#E7515A;color:#fff !important;padding:.45rem 1.15rem;border-radius:999px;font-size:.78rem;font-weight:700;transition:all .2s}.top-cta:hover{background:#c7313a;text-decoration:none !important}.tbtn{background:none;border:1px solid var(--border2);color:var(--text3);width:30px;height:30px;border-radius:999px;cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center}.blog-header{text-align:center;padding:3.5rem 2rem 2rem;background:linear-gradient(135deg,#1a1a2e,#0f172a);border-radius:0 0 32px 32px;margin-bottom:1rem}.blog-header h1{font-size:2rem;font-weight:900;margin-bottom:.35rem;color:#fff}.blog-header p{color:rgba(255,255,255,.7);font-size:.9rem;max-width:500px;margin:0 auto}.blog-header input{background:rgba(255,255,255,.08) !important;border-color:rgba(255,255,255,.15) !important;color:#fff !important}.blog-header input::placeholder{color:rgba(255,255,255,.4) !important}.blog-tab{color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.15)}.blog-tab:hover,.blog-tab.active{background:rgba(231,81,90,.15);border-color:rgba(231,81,90,.4);color:#E7515A}.posts{max-width:720px;margin:0 auto;padding:0 1.5rem 3rem}.post-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.25rem}.post-card{border:1px solid var(--border2);border-radius:var(--rl);padding:1.5rem;background:var(--bg);display:block;text-decoration:none;color:inherit;transition:border-color .2s,transform .2s}a.post-card:hover{border-color:var(--em);transform:translateY(-2px);text-decoration:none}.post-card.featured{grid-column:1/-1}.post-card.featured .post-title{font-size:1.4rem}@media(max-width:600px){.post-grid{grid-template-columns:1fr}}.post-tag{display:inline-block;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:.2rem .6rem;border-radius:999px;margin-bottom:.6rem}.post-tag.seeker{background:rgba(231,81,90,.08);border:1px solid rgba(231,81,90,.2);color:#c7313a}.post-tag.employer{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);color:var(--gold)}.post-tag.market{background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);color:var(--purple)}.post-tag.tips{background:rgba(236,72,153,.08);border:1px solid rgba(236,72,153,.2);color:var(--pink)}.post-title{font-size:1.15rem;font-weight:800;color:var(--text);margin-bottom:.35rem;line-height:1.3}.post-date{font-size:.72rem;color:var(--text3);font-weight:500;display:block;margin-bottom:.65rem}.empty-state{text-align:center;padding:4rem 2rem;color:var(--text3);font-size:.9rem}.blog-cta{text-align:center;padding:2rem;margin-top:1rem}.blog-cta a{display:inline-block;padding:.6rem 1.5rem;background:#E7515A;color:#fff;border-radius:999px;font-size:.85rem;font-weight:700;text-decoration:none}.blog-tab{padding:.35rem .85rem;border-radius:999px;font-size:.75rem;font-weight:600;border:1px solid var(--border2);background:none;color:var(--text3);cursor:pointer;font-family:inherit;transition:all .2s}.blog-tab:hover,.blog-tab.active{background:rgba(231,81,90,.08);border-color:rgba(231,81,90,.2);color:#c7313a}.breadcrumb{font-size:.78rem;color:var(--text3);margin-bottom:1rem}.breadcrumb a{color:var(--text3)}.breadcrumb a:hover{color:var(--em)}.single-body{font-size:.95rem;color:var(--text2);line-height:1.9}.single-body p{margin-bottom:1.25rem}.single-body h2{font-size:1.2rem;font-weight:800;color:var(--text);margin:2rem 0 .75rem;line-height:1.3}.single-body h3{font-size:1.05rem;font-weight:700;color:var(--text);margin:1.5rem 0 .5rem}.single-body a{color:var(--em);font-weight:600;text-decoration:underline}.single-body a:hover{color:#c7313a}.single-body ul,.single-body ol{margin:0 0 1.25rem 1.5rem}.single-body li{margin-bottom:.4rem}.related-posts{margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border)}.related-posts h3{font-size:.88rem;font-weight:700;color:var(--text3);margin-bottom:.75rem;text-transform:uppercase;letter-spacing:.5px}.related-card{display:block;padding:.75rem 1rem;border:1px solid var(--border2);border-radius:var(--r);margin-bottom:.5rem;text-decoration:none;color:var(--text);transition:border-color .2s}.related-card:hover{border-color:var(--em);text-decoration:none}.related-card h4{font-size:.85rem;font-weight:700;margin-bottom:.15rem}.related-card span{font-size:.72rem;color:var(--text3)}.footer{text-align:center;padding:2rem;border-top:1px solid var(--border);background:var(--bg2)}.footer p{font-size:.72rem;color:var(--text3)}.footer a{color:var(--text3)}.footer a:hover{color:#E7515A}@media(max-width:600px){.top-bar{padding:.75rem 1rem}.top-links a:not(.top-cta):not(.tbtn){display:none}.blog-header{padding:2rem 1rem 1.5rem}.blog-header h1{font-size:1.4rem}.posts{padding:0 1rem 2rem}.post-card{padding:1.15rem}}';
+var BLOG_CSS = ':root{--bg:#ffffff;--bg2:#f8fafc;--text:#0f172a;--text2:#475569;--text3:#94a3b8;--em:#E7515A;--purple:#7c3aed;--pink:#ec4899;--gold:#b45309;--border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.12);--r:12px;--rl:20px}body.dark{--bg:#09090b;--bg2:#0f172a;--text:#f8fafc;--text2:#b0b8c4;--text3:#8891a0;--em:#E7515A;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1)}*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:"Plus Jakarta Sans",system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}a{color:var(--em);text-decoration:none}a:hover{text-decoration:underline}.top-bar{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);background:var(--bg);backdrop-filter:blur(12px)}.top-logo{display:flex;align-items:center;gap:.3rem;font-size:1.05rem;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-.5px}.top-logo em{background:linear-gradient(135deg,#E7515A,#c7313a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}.logo-mark{width:30px;height:30px;background:linear-gradient(135deg,#E7515A,#c7313a);border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(231,81,90,.2)}.logo-mark svg{width:15px;height:15px;color:#fff}.top-logo:hover{text-decoration:none}.top-links{display:flex;gap:1.5rem;align-items:center;font-size:.82rem;font-weight:600}.top-links a{color:var(--text3);text-decoration:none}.top-links a:hover{color:var(--text)}.top-cta{background:#E7515A;color:#fff !important;padding:.45rem 1.15rem;border-radius:999px;font-size:.78rem;font-weight:700;transition:all .2s}.top-cta:hover{background:#c7313a;text-decoration:none !important}.tbtn{background:none;border:1px solid var(--border2);color:var(--text3);width:30px;height:30px;border-radius:999px;cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center}.blog-header{text-align:center;padding:3.5rem 2rem 2rem;background:linear-gradient(135deg,#1a1a2e,#0f172a);border-radius:0 0 32px 32px;margin-bottom:1rem}.blog-header h1{font-size:2rem;font-weight:900;margin-bottom:.35rem;color:#fff}.blog-header p{color:rgba(255,255,255,.7);font-size:.9rem;max-width:500px;margin:0 auto}.blog-header input{background:rgba(255,255,255,.08) !important;border-color:rgba(255,255,255,.15) !important;color:#fff !important}.blog-header input::placeholder{color:rgba(255,255,255,.4) !important}.blog-tab{color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.15)}.blog-tab:hover,.blog-tab.active{background:rgba(231,81,90,.15);border-color:rgba(231,81,90,.4);color:#E7515A}.posts{max-width:720px;margin:0 auto;padding:0 1.5rem 3rem}.post-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.25rem}.post-card{border:1px solid var(--border2);border-radius:var(--rl);padding:1.5rem;background:var(--bg);display:block;text-decoration:none;color:inherit;transition:border-color .2s,transform .2s}a.post-card:hover{border-color:var(--em);transform:translateY(-2px);text-decoration:none}.post-card.featured{grid-column:1/-1}.post-card.featured .post-title{font-size:1.4rem}@media(max-width:600px){.post-grid{grid-template-columns:1fr}}.post-tag{display:inline-block;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:.2rem .6rem;border-radius:999px;margin-bottom:.6rem}.post-tag.seeker{background:rgba(231,81,90,.08);border:1px solid rgba(231,81,90,.2);color:#c7313a}.post-tag.employer{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);color:var(--gold)}.post-tag.market{background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);color:var(--purple)}.post-tag.tips{background:rgba(236,72,153,.08);border:1px solid rgba(236,72,153,.2);color:var(--pink)}.post-title{font-size:1.15rem;font-weight:800;color:var(--text);margin-bottom:.35rem;line-height:1.3}.post-date{font-size:.72rem;color:var(--text3);font-weight:500;display:block;margin-bottom:.65rem}.empty-state{text-align:center;padding:4rem 2rem;color:var(--text3);font-size:.9rem}.blog-cta{text-align:center;padding:2rem;margin-top:1rem}.blog-cta a{display:inline-block;padding:.6rem 1.5rem;background:#E7515A;color:#fff;border-radius:999px;font-size:.85rem;font-weight:700;text-decoration:none}.blog-tab{padding:.35rem .85rem;border-radius:999px;font-size:.75rem;font-weight:600;border:1px solid var(--border2);background:none;color:var(--text3);cursor:pointer;font-family:inherit;transition:all .2s}.blog-tab:hover,.blog-tab.active{background:rgba(231,81,90,.08);border-color:rgba(231,81,90,.2);color:#c7313a}.breadcrumb{font-size:.78rem;color:var(--text3);margin-bottom:1rem}.breadcrumb a{color:var(--text3)}.breadcrumb a:hover{color:var(--em)}.single-body{font-size:.95rem;color:var(--text2);line-height:1.9}.single-body p{margin-bottom:1.25rem}.single-body h2{font-size:1.35rem;font-weight:800;color:var(--text);margin:2.25rem 0 .75rem;line-height:1.3;letter-spacing:-.2px}.single-body h3{font-size:1.05rem;font-weight:700;color:var(--text);margin:1.5rem 0 .5rem}.single-body a{color:var(--em);font-weight:500;text-decoration:underline;text-underline-offset:2px}.single-body a:hover{color:#c7313a}.single-body ul,.single-body ol{margin:0 0 1.25rem 1.5rem}.single-body li{margin-bottom:.4rem}.single-body strong{color:var(--text);font-weight:700}.single-body em{color:var(--text2);font-style:italic}.single-body .source-cite{font-size:.78rem;color:var(--text3);font-style:normal;margin-top:-.75rem;margin-bottom:1.5rem;padding:.5rem .85rem;background:var(--bg2);border-left:3px solid var(--em);border-radius:0 var(--r) var(--r) 0;line-height:1.5}.single-body .source-cite .source-label{font-weight:700;color:var(--text2);text-transform:uppercase;font-size:.65rem;letter-spacing:.8px;margin-right:.35rem}.single-body .source-cite a{color:var(--em);font-weight:600;text-decoration:none}.single-body .source-cite a:hover{text-decoration:underline}.related-posts{margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border)}.related-posts h3{font-size:.88rem;font-weight:700;color:var(--text3);margin-bottom:.75rem;text-transform:uppercase;letter-spacing:.5px}.related-card{display:block;padding:.75rem 1rem;border:1px solid var(--border2);border-radius:var(--r);margin-bottom:.5rem;text-decoration:none;color:var(--text);transition:border-color .2s}.related-card:hover{border-color:var(--em);text-decoration:none}.related-card h4{font-size:.85rem;font-weight:700;margin-bottom:.15rem}.related-card span{font-size:.72rem;color:var(--text3)}.footer{text-align:center;padding:2rem;border-top:1px solid var(--border);background:var(--bg2)}.footer p{font-size:.72rem;color:var(--text3)}.footer a{color:var(--text3)}.footer a:hover{color:#E7515A}@media(max-width:600px){.top-bar{padding:.75rem 1rem}.top-links a:not(.top-cta):not(.tbtn){display:none}.blog-header{padding:2rem 1rem 1.5rem}.blog-header h1{font-size:1.4rem}.posts{padding:0 1rem 2rem}.post-card{padding:1.15rem}}';
 
 var BLOG_NAV = '<nav class="top-bar"><a class="top-logo" href="/" style="font-size:1.4rem;font-weight:900;color:#E7515A;text-decoration:none;letter-spacing:-.5px">FindMeAJob</a><div class="top-links"><a href="/">Tools</a><a href="/blog">Blog</a><a href="/match.html#account">Job Seekers</a><a href="/employer-portal.html">Employers</a><a href="/pricing">Pricing</a><a class="top-cta" href="/match.html" style="background:#1a1a2e">Find a Job</a></div></nav>';
 
@@ -16,6 +16,79 @@ var BLOG_FOOTER = '<section style="background:#E7515A;padding:0;margin-top:2rem"
 var BLOG_THEME_JS = '<script>function toggleTheme(){document.body.classList.toggle("dark");var d=document.body.classList.contains("dark");localStorage.setItem("theme",d?"dark":"light");var b=document.getElementById("tbtn");if(b)b.innerHTML=d?"\\u263E":"\\u2606";}if(localStorage.getItem("theme")==="dark"){document.body.classList.add("dark");var _tb=document.getElementById("tbtn");if(_tb)_tb.innerHTML="\\u263E";}<\/script>';
 
 function bEsc(s) { return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+function _inlineBlogMarkup(s) {
+  // Inline emphasis: **bold** -> <strong>, *italic* -> <em>
+  s = s.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>");
+  // Markdown links [text](url)
+  s = s.replace(/\[([^\]]+)\]\(((?:https?:\/\/|\/)[^)\s]+)\)/g, function(_m, txt, url) {
+    var ext = /^https?:/.test(url) && url.indexOf("findmeajob.co.nz") === -1;
+    return '<a href="' + url + '"' + (ext ? ' target="_blank" rel="noopener"' : "") + ">" + txt + "</a>";
+  });
+  // Bare URLs (not already inside href)
+  s = s.replace(/(?<!href=")(https?:\/\/[^\s<,)"']+)/g, function(url) {
+    var internal = url.indexOf("findmeajob.co.nz") > -1;
+    return '<a href="' + url + '"' + (internal ? "" : ' target="_blank" rel="noopener"') + ">" + url + "</a>";
+  });
+  return s;
+}
+
+function renderBlogBody(raw) {
+  if (!raw) return "";
+  // Escape HTML first, normalise line endings
+  var body = bEsc(raw).replace(/\r\n/g, "\n").trim();
+  // Split into blocks on blank lines
+  var blocks = body.split(/\n\s*\n+/);
+  var out = [];
+  var listBuffer = null; // accumulating bullet items
+  function flushList() {
+    if (listBuffer && listBuffer.length) {
+      out.push("<ul>" + listBuffer.map(function(li){return "<li>" + _inlineBlogMarkup(li) + "</li>";}).join("") + "</ul>");
+    }
+    listBuffer = null;
+  }
+  for (var i = 0; i < blocks.length; i++) {
+    var p = blocks[i].trim();
+    if (!p) { flushList(); continue; }
+
+    // ## Heading / ### Subheading
+    var h3 = p.match(/^###\s+(.+)$/s);
+    if (h3) { flushList(); out.push("<h3>" + _inlineBlogMarkup(h3[1].trim()) + "</h3>"); continue; }
+    var h2 = p.match(/^##\s+(.+)$/s);
+    if (h2) { flushList(); out.push("<h2>" + _inlineBlogMarkup(h2[1].trim()) + "</h2>"); continue; }
+
+    // **Whole-paragraph bold** = legacy H2 (for old posts)
+    var legacyH2 = p.match(/^\*\*([^*]+)\*\*$/);
+    if (legacyH2) { flushList(); out.push("<h2>" + _inlineBlogMarkup(legacyH2[1].trim()) + "</h2>"); continue; }
+
+    // Source: / Sources: citation line -> styled reference
+    var src = p.match(/^(Sources?|Further reading|Reference|References):\s*([\s\S]+)$/i);
+    if (src) {
+      flushList();
+      var inner = src[2].trim().replace(/\n/g, " &middot; ");
+      out.push('<p class="source-cite"><span class="source-label">' + bEsc(src[1]) + ':</span> ' + _inlineBlogMarkup(inner) + "</p>");
+      continue;
+    }
+
+    // Bulleted list: lines starting with - or *
+    var lines = p.split("\n");
+    var allBullets = lines.every(function(l){ return /^\s*[-*]\s+/.test(l); });
+    if (allBullets) {
+      flushList();
+      var items = lines.map(function(l){ return l.replace(/^\s*[-*]\s+/, "").trim(); });
+      out.push("<ul>" + items.map(function(li){return "<li>" + _inlineBlogMarkup(li) + "</li>";}).join("") + "</ul>");
+      continue;
+    }
+
+    // Normal paragraph — single newlines -> <br>
+    flushList();
+    var safe = _inlineBlogMarkup(p).replace(/\n/g, "<br>");
+    out.push("<p>" + safe + "</p>");
+  }
+  flushList();
+  return out.join("");
+}
 function makeSlug(title) { return (title||"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").substring(0,60); }
 function xmlEsc(s) { return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&apos;"); }
 
@@ -128,18 +201,7 @@ module.exports = async function handler(req, res) {
     }
     var t = bEsc(post.title);
     var ex = bEsc(post.excerpt);
-    var bd = bEsc(post.body)
-      .replace(/\*\*(.+?)\*\*/g, "<h2>$1</h2>")
-      .replace(/\[([^\]]+)\]\(((?:https?:\/\/|\/)[^)]+)\)/g, function(m, txt, url) {
-        var ext = /^https?:/.test(url) && url.indexOf("findmeajob.co.nz") === -1;
-        return '<a href="' + url + '"' + (ext ? ' target="_blank" rel="noopener"' : "") + '>' + txt + "</a>";
-      })
-      .replace(/(?<!href=")(https?:\/\/[^\s<,)"]+)/g, function(url) {
-        var internal = url.indexOf("findmeajob.co.nz") > -1;
-        return '<a href="' + url + '"' + (internal ? "" : ' target="_blank" rel="noopener"') + ">" + url + "</a>";
-      })
-      .replace(/\n\n/g, "</p><p>")
-      .replace(/\n/g, "<br>");
+    var bd = renderBlogBody(post.body);
     var dt = bEsc(post.date);
     var ic = (post.icon||"").replace(/</g,"&lt;");
     var tc = post.category||"market";
@@ -200,7 +262,7 @@ module.exports = async function handler(req, res) {
     singlePage += '<h1 itemprop="headline" style="font-size:1.6rem;font-weight:900;line-height:1.3;margin-bottom:.75rem">'+t+'</h1>';
     singlePage += '<div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem;font-size:.78rem;color:var(--text3);font-weight:500;flex-wrap:wrap"><span itemprop="author" itemscope itemtype="https://schema.org/Organization"><span itemprop="name">FindMeAJob.co.nz</span></span><span>&bull;</span><time itemprop="datePublished" datetime="'+dt+'">'+dt+'</time><span>&bull;</span><span>'+readMin+' min read</span></div>';
     singlePage += '<p itemprop="description" style="font-size:1.05rem;color:var(--text);line-height:1.7;margin-bottom:1.5rem;font-weight:500;border-left:3px solid var(--em);padding-left:1rem">'+ex+'</p>';
-    singlePage += '<div itemprop="articleBody" class="single-body"><p>'+bd+'</p></div>';
+    singlePage += '<div itemprop="articleBody" class="single-body">'+bd+'</div>';
     singlePage += '<div style="margin-top:2rem;padding:1rem 1.25rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);font-size:.72rem;color:var(--text3);line-height:1.6"><strong style="color:var(--text2)">Disclaimer:</strong> This article was generated using AI and is for general information only. It does not constitute professional legal, financial, or career advice. Employment law references are based on NZ legislation at time of writing and may change. Always verify with official sources such as <a href="https://www.employment.govt.nz" style="color:var(--em)">Employment New Zealand</a> or seek independent professional advice for your specific situation.</div>';
     singlePage += '<meta itemprop="publisher" content="FindMeAJob.co.nz">';
     singlePage += '</article>';
