@@ -162,6 +162,22 @@
       "dest": "/public/interview-sim.html"
     },
     {
+      "src": "/trades",
+      "dest": "/public/trades.html"
+    },
+    {
+      "src": "/healthcare",
+      "dest": "/public/healthcare.html"
+    },
+    {
+      "src": "/newcomers",
+      "dest": "/public/newcomers.html"
+    },
+    {
+      "src": "/graduates",
+      "dest": "/public/graduates.html"
+    },
+    {
       "src": "/sitemap.xml",
       "dest": "/api/approved-jobs.js?sitemap=1"
     },
