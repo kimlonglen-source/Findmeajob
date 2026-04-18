@@ -162,6 +162,58 @@
       "dest": "/public/interview-sim.html"
     },
     {
+      "src": "/trades",
+      "dest": "/public/trades.html"
+    },
+    {
+      "src": "/trades/builder",
+      "dest": "/public/trades/builder.html"
+    },
+    {
+      "src": "/trades/electrician",
+      "dest": "/public/trades/electrician.html"
+    },
+    {
+      "src": "/trades/plumber",
+      "dest": "/public/trades/plumber.html"
+    },
+    {
+      "src": "/trades/mechanic",
+      "dest": "/public/trades/mechanic.html"
+    },
+    {
+      "src": "/trades/apprentice",
+      "dest": "/public/trades/apprentice.html"
+    },
+    {
+      "src": "/healthcare",
+      "dest": "/public/healthcare.html"
+    },
+    {
+      "src": "/healthcare/rn",
+      "dest": "/public/healthcare/rn.html"
+    },
+    {
+      "src": "/healthcare/hca",
+      "dest": "/public/healthcare/hca.html"
+    },
+    {
+      "src": "/healthcare/midwife",
+      "dest": "/public/healthcare/midwife.html"
+    },
+    {
+      "src": "/healthcare/allied-health",
+      "dest": "/public/healthcare/allied-health.html"
+    },
+    {
+      "src": "/newcomers",
+      "dest": "/public/newcomers.html"
+    },
+    {
+      "src": "/graduates",
+      "dest": "/public/graduates.html"
+    },
+    {
       "src": "/sitemap.xml",
       "dest": "/api/approved-jobs.js?sitemap=1"
     },

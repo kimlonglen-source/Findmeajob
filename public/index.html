@@ -26,7 +26,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{overflow-x:hidden}
+html,body{overflow-x:hidden;width:100%;max-width:100%;position:relative}
+body>*{max-width:100vw;overflow-x:hidden}
 body{background:#fff;color:#1a1a2e;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:16px;line-height:1.6}
 a{color:#E7515A;text-decoration:none}
 a:hover{text-decoration:underline}
@@ -128,8 +129,26 @@ img{max-width:100%;display:block}
   .tphoto-arrow{width:24px;height:24px;font-size:.7rem;top:.75rem;right:.75rem}
 }
 
-/* Featured Voice Simulators (Monzo-themed) */
-.fsims{max-width:1100px;margin:0 auto;padding:4rem 2rem 3rem}
+/* Featured Voice Simulators - Monzo light */
+.fsims-wrap{background:#1B1B3A;position:relative;overflow:hidden}
+.fsims-wrap::before{content:'';position:absolute;top:-15%;left:-10%;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.22) 0%,transparent 65%);pointer-events:none;z-index:1}
+.fsims-wrap::after{content:'';position:absolute;bottom:-20%;right:-8%;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.15) 0%,transparent 70%);pointer-events:none;z-index:1}
+.fsims{max-width:1100px;margin:0 auto;padding:4.5rem 2rem 4rem;position:relative;z-index:2}
+.fsims-wrap .fsims-head h2{color:#fff}
+.fsims-wrap .fsims-head p{color:rgba(255,255,255,.72)}
+.fsims-wrap .fsims-eyebrow{background:rgba(231,81,90,.18);border:1px solid rgba(231,81,90,.45);color:#fff}
+.fsim-chat-embed{position:relative;z-index:2;background:#fafafa;border:1px solid #eee;border-radius:14px;padding:1rem 1.1rem;margin-bottom:1.25rem;min-height:220px;display:flex;flex-direction:column}
+.fsim-chat-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
+.fsim-chat-dot{width:8px;height:8px;background:#E7515A;border-radius:50%;box-shadow:0 0 0 0 rgba(231,81,90,.6);animation:fsimChatPulse 1.8s ease-out infinite}
+@keyframes fsimChatPulse{0%{box-shadow:0 0 0 0 rgba(231,81,90,.5)}70%{box-shadow:0 0 0 8px rgba(231,81,90,0)}100%{box-shadow:0 0 0 0 rgba(231,81,90,0)}}
+.fsim-chat-status{font-size:.72rem;color:#64748b;font-weight:600}
+.fsim-chat-label{font-size:.58rem;color:#c7313a;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;background:#fef2f2;border:1px solid #fecaca;padding:.18rem .5rem;border-radius:999px}
+.fsim-chat-msgs{display:flex;flex-direction:column;gap:.5rem;flex:1;min-height:140px}
+.fsim-chat-score{text-align:center;padding:.75rem 0;display:none;flex:1;justify-content:center;flex-direction:column}
+.fsim-score-label{font-size:.55rem;color:#94a3b8;text-transform:uppercase;font-weight:700;letter-spacing:.5px;margin-bottom:.25rem}
+.fsim-score-num{font-size:2.4rem;font-weight:900;color:#E7515A;line-height:1}
+.fsim-score-denom{font-size:.85rem;color:#94a3b8;font-weight:600}
+.fsim-score-note{font-size:.62rem;color:#10b981;font-weight:600;margin-top:.25rem}
 .fsims-head{text-align:center;margin-bottom:2rem}
 .fsims-eyebrow{display:inline-block;background:#fef2f2;color:#c7313a;padding:.3rem .85rem;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:.85rem;border:1px solid #fecaca}
 .fsims-head h2{font-size:2.2rem;font-weight:900;color:#1a1a2e;line-height:1.15;margin-bottom:.5rem;letter-spacing:-.5px}
@@ -137,36 +156,37 @@ img{max-width:100%;display:block}
 .fsims-head p{font-size:.95rem;color:#64748b;max-width:560px;margin:0 auto}
 .fsim-demo-wrap{margin:0 auto 2.5rem;max-width:560px}
 .fsims-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
-.fsim-card{position:relative;overflow:hidden;background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 55%,#1a1a2e 100%);border-radius:24px;padding:2rem;display:flex;flex-direction:column;color:#fff;text-decoration:none;min-height:360px;transition:transform .3s,box-shadow .3s}
-.fsim-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(231,81,90,.25);text-decoration:none}
-.fsim-card::before{content:'';position:absolute;top:-20%;right:-15%;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.22) 0%,transparent 65%);pointer-events:none}
-.fsim-card::after{content:'';position:absolute;bottom:-30%;left:-10%;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.15) 0%,transparent 65%);pointer-events:none}
-.fsim-tag{position:relative;z-index:2;display:inline-block;background:rgba(231,81,90,.18);border:1px solid rgba(231,81,90,.35);color:#fca5a5;padding:.28rem .75rem;border-radius:999px;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:.85rem;align-self:flex-start}
-.fsim-title{position:relative;z-index:2;font-size:1.55rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:.5rem;letter-spacing:-.3px}
-.fsim-desc{position:relative;z-index:2;font-size:.88rem;color:rgba(255,255,255,.78);line-height:1.55;margin-bottom:1.25rem;max-width:320px}
+.fsim-card{position:relative;overflow:hidden;background:#fff;border:1px solid #e8e8e8;border-radius:24px;padding:2rem;display:flex;flex-direction:column;color:#1a1a2e;text-decoration:none;min-height:360px;transition:all .3s}
+.fsim-card:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(231,81,90,.15);border-color:#E7515A;text-decoration:none}
+.fsim-card::before{content:'';position:absolute;top:-30%;right:-20%;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.09) 0%,transparent 70%);pointer-events:none}
+.fsim-card::after{content:'';position:absolute;bottom:-35%;left:-15%;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.05) 0%,transparent 70%);pointer-events:none}
+.fsim-tag{position:relative;z-index:2;display:inline-block;background:#fef2f2;border:1px solid #fecaca;color:#c7313a;padding:.28rem .75rem;border-radius:999px;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:.85rem;align-self:flex-start}
+.fsim-title{position:relative;z-index:2;font-size:1.55rem;font-weight:900;color:#1a1a2e;line-height:1.15;margin-bottom:.5rem;letter-spacing:-.3px;padding-right:96px}
+.fsim-desc{position:relative;z-index:2;font-size:.88rem;color:#64748b;line-height:1.55;margin-bottom:1.25rem;max-width:320px;padding-right:20px}
 .fsim-feats{position:relative;z-index:2;display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.25rem}
-.fsim-feat{display:inline-flex;align-items:center;gap:.3rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#fff;padding:.35rem .7rem;border-radius:999px;font-size:.7rem;font-weight:600;backdrop-filter:blur(6px)}
+.fsim-feat{display:inline-flex;align-items:center;gap:.3rem;background:#f7f7f7;border:1px solid #eee;color:#1a1a2e;padding:.35rem .7rem;border-radius:999px;font-size:.7rem;font-weight:600}
 .fsim-feat svg{width:11px;height:11px;color:#E7515A}
-.fsim-cta{position:relative;z-index:2;display:inline-flex;align-items:center;gap:.4rem;background:#E7515A;color:#fff;padding:.6rem 1.15rem;border-radius:999px;font-size:.82rem;font-weight:700;align-self:flex-start;margin-top:auto;transition:all .2s}
-.fsim-card:hover .fsim-cta{background:#fff;color:#E7515A}
+.fsim-cta{position:relative;z-index:2;display:inline-flex;align-items:center;gap:.4rem;background:#E7515A;color:#fff;padding:.7rem 1.3rem;border-radius:999px;font-size:.82rem;font-weight:700;align-self:flex-start;margin-top:auto;transition:all .2s}
+.fsim-card:hover .fsim-cta{background:#1a1a2e;color:#fff}
 .fsim-cta .arr{transition:transform .2s}
 .fsim-card:hover .fsim-cta .arr{transform:translateX(3px)}
-/* Mini orb widget bottom-right */
 .fsim-orb-wrap{position:absolute;right:1.5rem;top:1.5rem;width:72px;height:72px;z-index:1}
-.fsim-orb{position:absolute;inset:0;border-radius:50%;background:linear-gradient(135deg,#E7515A,#c7313a);display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 0 40px rgba(231,81,90,.5);animation:fsimBeat 2.5s ease-in-out infinite;z-index:3}
+.fsim-orb{position:absolute;inset:0;border-radius:50%;background:linear-gradient(135deg,#E7515A,#c7313a);display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 10px 26px rgba(231,81,90,.35);animation:fsimBeat 2.5s ease-in-out infinite;z-index:3}
 .fsim-orb svg{width:28px;height:28px}
-.fsim-pulse{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(231,81,90,.55);animation:fsimRing 2.4s ease-out infinite;pointer-events:none}
+.fsim-pulse{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(231,81,90,.4);animation:fsimRing 2.4s ease-out infinite;pointer-events:none}
 @keyframes fsimBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
-@keyframes fsimRing{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.2);opacity:0}}
-/* Chat bubble preview bottom-right */
-.fsim-bubble{position:absolute;bottom:1.5rem;right:1.5rem;background:rgba(255,255,255,.97);color:#0f172a;padding:.55rem .8rem;border-radius:12px;font-size:.72rem;font-weight:600;line-height:1.4;max-width:170px;box-shadow:0 10px 30px rgba(0,0,0,.35);z-index:3;border-bottom-right-radius:4px}
+@keyframes fsimRing{0%{transform:scale(1);opacity:.6}100%{transform:scale(2.2);opacity:0}}
+.fsim-bubble{position:absolute;bottom:1.5rem;right:1.5rem;background:#1a1a2e;color:#fff;padding:.6rem .85rem;border-radius:12px;font-size:.72rem;font-weight:600;line-height:1.4;max-width:170px;box-shadow:0 10px 24px rgba(0,0,0,.12);z-index:3;border-bottom-right-radius:4px}
 .fsim-bubble::before{content:'AI';position:absolute;top:-8px;left:10px;background:#E7515A;color:#fff;font-size:.52rem;font-weight:800;padding:.12rem .4rem;border-radius:999px;letter-spacing:.5px}
 @media(max-width:860px){
-  .fsims{padding:3rem 1.25rem 2rem}
+  .fsims{padding:3rem 1.25rem 2rem;max-width:100%}
+  .fsims-wrap::before{width:280px;height:280px;left:-15%;top:-8%}
+  .fsims-wrap::after{width:240px;height:240px;right:-15%;bottom:-10%}
   .fsims-head h2{font-size:1.75rem}
   .fsims-grid{grid-template-columns:1fr}
   .fsim-card{min-height:300px;padding:1.5rem}
-  .fsim-title{font-size:1.3rem}
+  .fsim-title{font-size:1.3rem;padding-right:78px}
+  .fsim-desc{padding-right:0}
   .fsim-orb-wrap{width:56px;height:56px;top:1.25rem;right:1.25rem}
   .fsim-orb svg{width:22px;height:22px}
   .fsim-bubble{max-width:140px;font-size:.68rem;right:1.25rem;bottom:1.25rem}
@@ -239,30 +259,27 @@ img{max-width:100%;display:block}
   </div>
 </section>
 
-<!-- FEATURED: Voice Simulators (with live animated demo) -->
+<!-- Built for (niche landing pages) -->
+<section class="sec-pad sec-wide" style="padding-top:0">
+  <h2 style="font-size:2rem;font-weight:900;color:#1a1a2e;margin-bottom:.5rem">Built for</h2>
+  <p style="color:#6b7280;font-size:1rem;margin-bottom:2rem">The Kiwis we tailor the toolkit for.</p>
+  <div class="tool-grid">
+    <a href="/trades" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Tradies</div><div class="tphoto-desc">Builders, sparkies, plumbers, mechanics, apprentices</div></div></a>
+    <a href="/healthcare" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Healthcare</div><div class="tphoto-desc">Nurses, carers, midwives, allied health</div></div></a>
+    <a href="/newcomers" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Newcomers to NZ</div><div class="tphoto-desc">Migrants and returning Kiwis finding their first role</div></div></a>
+    <a href="/graduates" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Graduates</div><div class="tphoto-desc">Your first job out of uni or a grad programme</div></div></a>
+  </div>
+</section>
+
+<!-- FEATURED: Voice Simulators (live demo embedded in card 1) -->
+<section class="fsims-wrap">
 <section class="fsims">
   <div class="fsims-head">
-    <div class="fsims-eyebrow">New &bull; Voice practice</div>
-    <h2>Practice the conversations that <em>change everything</em></h2>
-    <p>Speak out loud. AI plays the real person. Get scored out of 100 with detailed feedback.</p>
+    <div class="fsims-eyebrow">For job seekers &bull; Voice AI &bull; Free</div>
+    <h2>For when it&rsquo;s your turn to <em>speak</em></h2>
+    <p>You&rsquo;ve got the CV. Now rehearse the conversations that actually land the job &mdash; and the pay rise. Speak out loud. AI pushes back. You walk in ready.</p>
   </div>
 
-  <!-- Live animated interview demo (watch it work) -->
-  <div class="fsim-demo-wrap">
-    <div id="demoChat" style="background:#0f172a;border-radius:20px;padding:1.5rem;border:1px solid rgba(255,255,255,.1);min-height:300px;cursor:pointer;max-width:520px;margin:0 auto;box-shadow:0 25px 60px rgba(15,23,42,.25)" onclick="window.location.href='/interview-sim'">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
-        <div style="display:flex;align-items:center;gap:.5rem"><div id="demoDot" style="width:8px;height:8px;background:#E7515A;border-radius:50%"></div><span id="demoStatus" style="font-size:.72rem;color:#94a3b8;font-weight:600">Starting interview...</span></div>
-        <div style="font-size:.62rem;color:#64748b;font-weight:600">Live demo</div>
-      </div>
-      <div id="demoMsgs" style="display:flex;flex-direction:column;gap:.5rem;min-height:180px"></div>
-      <div id="demoScore" style="text-align:center;padding:.75rem 0;display:none">
-        <div style="font-size:.55rem;color:#94a3b8;text-transform:uppercase;font-weight:700;letter-spacing:.5px;margin-bottom:.25rem">Interview Score</div>
-        <span id="demoScoreNum" style="font-size:2.4rem;font-weight:900;color:#E7515A;line-height:1">0</span><span style="font-size:.85rem;color:#94a3b8;font-weight:600">/100</span>
-        <div style="font-size:.62rem;color:#10b981;font-weight:600;margin-top:.25rem">Great performance!</div>
-      </div>
-    </div>
-    <div style="text-align:center;font-size:.68rem;color:#94a3b8;margin-top:.75rem;font-weight:500">&uarr; Tap to try it yourself</div>
-  </div>
   <div class="fsims-grid">
 
     <a href="/interview-sim" class="fsim-card">
@@ -273,15 +290,23 @@ img{max-width:100%;display:block}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
         </div>
       </div>
-      <div class="fsim-tag">Interview simulator</div>
-      <div class="fsim-title">Your AI interview coach that never gets tired</div>
-      <div class="fsim-desc">Real questions for your role and level. Speak your answers. Get a recruiter-style score with model answers.</div>
-      <div class="fsim-feats">
-        <div class="fsim-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>Voice</div>
-        <div class="fsim-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15.09 8.26 22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>Scored /100</div>
-        <div class="fsim-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/></svg>Model answers</div>
+      <div class="fsim-tag">Interview Simulator</div>
+      <div class="fsim-title">Rehearse the interview. Out loud.</div>
+      <div class="fsim-desc">AI asks real questions for your role. You speak your answers. Recruiter-style score out of 100 with model answers.</div>
+
+      <div id="demoChat" class="fsim-chat-embed">
+        <div class="fsim-chat-head">
+          <div style="display:flex;align-items:center;gap:.5rem"><div id="demoDot" class="fsim-chat-dot"></div><span id="demoStatus" class="fsim-chat-status">Starting interview&hellip;</span></div>
+          <div class="fsim-chat-label">Live demo</div>
+        </div>
+        <div id="demoMsgs" class="fsim-chat-msgs"></div>
+        <div id="demoScore" class="fsim-chat-score">
+          <div class="fsim-score-label">Interview Score</div>
+          <div><span id="demoScoreNum" class="fsim-score-num">0</span><span class="fsim-score-denom">/100</span></div>
+          <div class="fsim-score-note">Great performance!</div>
+        </div>
       </div>
-      <div class="fsim-bubble">Tell me about a time you led a difficult project&hellip;</div>
+
       <span class="fsim-cta">Start practising <span class="arr">&rarr;</span></span>
     </a>
 
@@ -308,9 +333,10 @@ img{max-width:100%;display:block}
 
   </div>
 </section>
+</section>
 
 <!-- All 12 Tools - Monzo photo card style -->
-<section id="tools" class="sec-pad sec-wide" style="padding-top:0">
+<section id="tools" class="sec-pad sec-wide">
   <h2 style="font-size:2rem;font-weight:900;color:#1a1a2e;margin-bottom:.5rem">12 tools. One career toolkit.</h2>
   <p style="color:#6b7280;font-size:1rem;margin-bottom:2rem">Everything you need to find, apply for, and land your next NZ job.</p>
   <div class="tool-grid">
@@ -375,6 +401,13 @@ img{max-width:100%;display:block}
         <a href="/compare" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Compare Jobs</a>
         <a href="/decode" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Decode Job Ad</a>
         <a href="/email" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Write This Email</a>
+      </div>
+      <div>
+        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.75rem">For</div>
+        <a href="/trades" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Tradies</a>
+        <a href="/healthcare" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Healthcare</a>
+        <a href="/newcomers" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Newcomers to NZ</a>
+        <a href="/graduates" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Graduates</a>
       </div>
       <div>
         <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.75rem">Company</div>
@@ -463,9 +496,9 @@ function runDemo(){
     totalDelay+=s.delay;
     setTimeout(function(){
       if(s.type==='status'){status.textContent=s.text;dot.style.background=s.dotColor;}
-      else if(s.type==='typing'){var d=document.createElement('div');d.style.cssText='background:rgba(231,81,90,.08);border:1px solid rgba(231,81,90,.15);border-radius:10px;padding:.5rem .75rem;font-size:.7rem;color:#94a3b8;border-bottom-left-radius:3px;max-width:85%';d.innerHTML='<span style="display:inline-flex;gap:3px"><i style="width:5px;height:5px;background:#94a3b8;border-radius:50%;animation:dot .8s infinite"></i><i style="width:5px;height:5px;background:#94a3b8;border-radius:50%;animation:dot .8s .15s infinite"></i><i style="width:5px;height:5px;background:#94a3b8;border-radius:50%;animation:dot .8s .3s infinite"></i></span>';d.id='demoTyping';msgs.appendChild(d);}
+      else if(s.type==='typing'){var d=document.createElement('div');d.style.cssText='background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:.5rem .75rem;font-size:.7rem;color:#94a3b8;border-bottom-left-radius:3px;max-width:85%';d.innerHTML='<span style="display:inline-flex;gap:3px"><i style="width:5px;height:5px;background:#c7313a;border-radius:50%;animation:dot .8s infinite"></i><i style="width:5px;height:5px;background:#c7313a;border-radius:50%;animation:dot .8s .15s infinite"></i><i style="width:5px;height:5px;background:#c7313a;border-radius:50%;animation:dot .8s .3s infinite"></i></span>';d.id='demoTyping';msgs.appendChild(d);}
       else if(s.type==='typing-user'){var d=document.createElement('div');d.style.cssText='background:rgba(231,81,90,.3);border-radius:10px;padding:.5rem .75rem;font-size:.7rem;color:#fca5a5;max-width:80%;margin-left:auto;border-bottom-right-radius:3px';d.innerHTML='<span style="display:inline-flex;gap:3px"><i style="width:5px;height:5px;background:#fca5a5;border-radius:50%;animation:dot .8s infinite"></i><i style="width:5px;height:5px;background:#fca5a5;border-radius:50%;animation:dot .8s .15s infinite"></i><i style="width:5px;height:5px;background:#fca5a5;border-radius:50%;animation:dot .8s .3s infinite"></i></span>';d.id='demoTyping';msgs.appendChild(d);}
-      else if(s.type==='ai'){var t=document.getElementById('demoTyping');if(t)t.remove();var d=document.createElement('div');d.style.cssText='background:rgba(231,81,90,.08);border:1px solid rgba(231,81,90,.2);border-radius:10px;padding:.6rem .85rem;font-size:.72rem;color:#fca5a5;border-bottom-left-radius:3px;max-width:90%;opacity:0;transform:translateY(5px);transition:all .3s';d.textContent=s.text;msgs.appendChild(d);requestAnimationFrame(function(){d.style.opacity='1';d.style.transform='translateY(0)';});}
+      else if(s.type==='ai'){var t=document.getElementById('demoTyping');if(t)t.remove();var d=document.createElement('div');d.style.cssText='background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:.6rem .85rem;font-size:.72rem;color:#1a1a2e;border-bottom-left-radius:3px;max-width:90%;opacity:0;transform:translateY(5px);transition:all .3s';d.textContent=s.text;msgs.appendChild(d);requestAnimationFrame(function(){d.style.opacity='1';d.style.transform='translateY(0)';});}
       else if(s.type==='user'){var t=document.getElementById('demoTyping');if(t)t.remove();var d=document.createElement('div');d.style.cssText='background:#E7515A;border-radius:10px;padding:.6rem .85rem;font-size:.72rem;color:#fff;margin-left:auto;max-width:85%;border-bottom-right-radius:3px;opacity:0;transform:translateY(5px);transition:all .3s';d.textContent=s.text;msgs.appendChild(d);requestAnimationFrame(function(){d.style.opacity='1';d.style.transform='translateY(0)';});}
       else if(s.type==='score'){msgs.style.display='none';scoreBox.style.display='block';var target=85;var cur=0;var si=setInterval(function(){cur+=3;if(cur>=target){cur=target;clearInterval(si);}scoreNum.textContent=cur;},20);}
     },totalDelay);

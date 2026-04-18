@@ -7,63 +7,82 @@
 <meta name="robots" content="noindex,nofollow">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f8fafc;--bg2:#ffffff;--bg3:rgba(0,0,0,.03);--text:#0f172a;--text2:#475569;--text3:#64748b;--em:#E7515A;--em2:#c7313a;--gold:#b45309;--purple:#7c3aed;--red:#ef4444;--border:rgba(0,0,0,.1);--border2:rgba(0,0,0,.15);--card:rgba(255,255,255,.9);--r:12px;--rl:16px}
-body.dark{--bg:#09090b;--bg2:rgba(255,255,255,.03);--bg3:rgba(255,255,255,.06);--text:#f4f4f5;--text2:#a1a1aa;--text3:#71717a;--em:#E7515A;--em2:#c7313a;--gold:#f59e0b;--purple:#8b5cf6;--red:#ef4444;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.08);--card:rgba(255,255,255,.03)}
-body.dark .login-box{background:#0f172a}
-body.dark input{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1)}
-body.dark .toast{background:rgba(15,23,42,.95);color:#f4f4f5;box-shadow:0 8px 32px rgba(0,0,0,.3)}
-body.dark .confirm-box{background:#0f172a}
-body.dark .job-row{background:rgba(255,255,255,.03)}
-body.dark .hlogo em{color:var(--em)}
+:root{
+  --bg:#f6f7fb;
+  --bg2:#ffffff;
+  --bg3:#f1f3f8;
+  --text:#0f172a;
+  --text2:#475569;
+  --text3:#64748b;
+  --em:#E7515A;
+  --em2:#c7313a;
+  --gold:#b45309;
+  --purple:#7c3aed;
+  --red:#ef4444;
+  --green:#059669;
+  --border:#e5e7eb;
+  --border2:#d1d5db;
+  --card:#ffffff;
+  --shadow:0 1px 3px rgba(15,23,42,.04),0 1px 2px rgba(15,23,42,.06);
+  --shadow-lg:0 8px 24px rgba(15,23,42,.06),0 2px 6px rgba(15,23,42,.04);
+  --r:12px;
+  --rl:16px;
+}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
 
 /* Toast */
 #toast-container{position:fixed;top:1.5rem;right:1.5rem;z-index:99999;display:flex;flex-direction:column;gap:.5rem}
-.toast{background:rgba(24,24,27,.95);border:1px solid var(--border2);backdrop-filter:blur(12px);border-radius:var(--r);padding:.85rem 1.25rem;font-size:.85rem;font-weight:600;color:var(--text);box-shadow:0 8px 32px rgba(0,0,0,.4);animation:toastIn .3s ease;display:flex;align-items:center;gap:.6rem;max-width:360px}
-.toast.success{border-color:rgba(231,81,90,.3);color:var(--em)}
-.toast.error{border-color:rgba(239,68,68,.3);color:#fca5a5}
+.toast{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:.85rem 1.25rem;font-size:.85rem;font-weight:600;color:var(--text);box-shadow:var(--shadow-lg);animation:toastIn .3s ease;display:flex;align-items:center;gap:.6rem;max-width:360px}
+.toast.success{border-color:#fecaca;color:var(--em);background:#fef2f2}
+.toast.error{border-color:#fecaca;color:var(--red);background:#fef2f2}
 .toast.out{animation:toastOut .3s ease forwards}
 @keyframes toastIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
 @keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(30px)}}
 
 /* Login */
-#login{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1.5rem}
-.login-box{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2.5rem;width:100%;max-width:400px;backdrop-filter:blur(20px)}
+#login{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1.5rem;background:linear-gradient(180deg,#fef2f2 0%,var(--bg) 60%)}
+.login-box{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2.5rem;width:100%;max-width:400px;box-shadow:var(--shadow-lg)}
 .login-logo{font-size:1.3rem;font-weight:800;color:var(--text);margin-bottom:.35rem;display:flex;align-items:center;gap:.5rem;justify-content:center}
-.login-logo em{background:linear-gradient(135deg,var(--em),var(--em2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
-.login-sub{font-size:.85rem;color:var(--text3);font-weight:600;margin-bottom:2rem}
+.login-logo em{color:var(--em);font-style:normal}
+.login-sub{font-size:.85rem;color:var(--text3);font-weight:600;margin-bottom:2rem;text-align:center}
 label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);display:block;margin-bottom:.5rem}
-input{background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:15px;padding:.85rem 1.15rem;outline:none;width:100%;margin-bottom:1rem;transition:border-color .2s}
-input:focus{border-color:var(--em);box-shadow:0 0 0 3px rgba(231,81,90,.1)}
+input{background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:15px;padding:.85rem 1.15rem;outline:none;width:100%;margin-bottom:1rem;transition:all .15s}
+input:focus{border-color:var(--em);box-shadow:0 0 0 3px rgba(231,81,90,.12)}
 .btn{display:flex;align-items:center;justify-content:center;background:var(--em);color:#fff;padding:.85rem;border-radius:999px;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer;width:100%;transition:all .2s}
-.btn:hover{background:var(--em2);transform:translateY(-1px);box-shadow:0 4px 20px rgba(231,81,90,.3)}
-.err{color:#fca5a5;font-size:.82rem;font-weight:600;margin-top:.65rem;display:none}
+.btn:hover{background:var(--em2);transform:translateY(-1px);box-shadow:0 6px 18px rgba(231,81,90,.25)}
+.err{color:var(--red);font-size:.82rem;font-weight:600;margin-top:.65rem;display:none}
 
 /* App */
 #app{display:none;min-height:100vh}
-header{background:var(--hdr,rgba(9,9,11,.8));border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
-.hlogo{display:flex;align-items:center;gap:.3rem;font-size:1.05rem;font-weight:800}.hlogo em{background:linear-gradient(135deg,var(--em),var(--em2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
-
-.hright{display:flex;align-items:center;gap:1rem}
-.badge{background:rgba(231,81,90,.08);border:1px solid rgba(231,81,90,.2);color:var(--em);font-size:.72rem;font-weight:700;padding:.3rem .75rem;border-radius:999px}
-.signout{background:none;border:1px solid var(--border2);color:var(--text3);padding:.45rem 1rem;border-radius:999px;cursor:pointer;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.78rem;font-weight:600;transition:all .2s}
-.signout:hover{color:var(--text);border-color:var(--text3)}
+header{background:#fff;border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;box-shadow:0 1px 0 rgba(15,23,42,.02)}
+.hlogo{display:flex;align-items:center;gap:.3rem;font-size:1.05rem;font-weight:800}
+.hlogo em{color:var(--em);font-style:normal}
+.hright{display:flex;align-items:center;gap:.75rem}
+.badge{background:#fef2f2;border:1px solid #fecaca;color:var(--em);font-size:.72rem;font-weight:700;padding:.3rem .75rem;border-radius:999px}
+.signout{background:#fff;border:1px solid var(--border2);color:var(--text2);padding:.45rem 1rem;border-radius:999px;cursor:pointer;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.78rem;font-weight:600;transition:all .15s}
+.signout:hover{color:var(--text);border-color:var(--text3);background:var(--bg3)}
 
 main{padding:2rem;max-width:1200px;margin:0 auto}
 
+/* Section headers */
+.section-hd{display:flex;align-items:flex-end;justify-content:space-between;margin:2.25rem 0 1rem;gap:1rem;flex-wrap:wrap}
+.section-hd:first-of-type{margin-top:0}
+.section-hd-title{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3)}
+.section-hd-sub{font-size:.78rem;color:var(--text3);font-weight:500}
+
 /* Stats */
-.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:.85rem;margin-bottom:1.75rem}
-.stat{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem 1.5rem;transition:all .25s}
-.stat:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:.85rem;margin-bottom:1.25rem}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem 1.5rem;box-shadow:var(--shadow);transition:all .2s}
+.stat:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);border-color:var(--border2)}
 .stat-n{font-size:2rem;font-weight:900;color:var(--text);line-height:1}
 .stat-l{font-size:.72rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-top:.4rem}
 
 /* Tabs */
 .tabs{display:flex;gap:.35rem;margin-bottom:1.5rem;flex-wrap:wrap}
-.tab{background:none;border:1px solid var(--border2);color:var(--text3);padding:.5rem 1.15rem;border-radius:999px;cursor:pointer;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.82rem;font-weight:600;transition:all .2s}
-.tab.active{background:var(--em);color:#fff;border-color:var(--em)}
-.tab:hover:not(.active){border-color:var(--text3);color:var(--text)}
+.tab{background:#fff;border:1px solid var(--border);color:var(--text2);padding:.5rem 1.15rem;border-radius:999px;cursor:pointer;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.82rem;font-weight:600;transition:all .15s}
+.tab.active{background:var(--em);color:#fff;border-color:var(--em);box-shadow:0 4px 12px rgba(231,81,90,.2)}
+.tab:hover:not(.active){border-color:var(--text3);color:var(--text);background:var(--bg3)}
 
 /* Refresh */
 .refresh-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.75rem}
@@ -90,12 +109,12 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
 .jr-date.approved-date{background:rgba(231,81,90,.08);border:1px solid rgba(231,81,90,.2);color:var(--em)}
 .jr-date.expires-ok{background:rgba(231,81,90,.06);border:1px solid rgba(231,81,90,.15);color:var(--em)}
 .jr-date.expires-soon{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);color:var(--gold)}
-.jr-date.expires-now{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#fca5a5}
+.jr-date.expires-now{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#ef4444}
 .pills{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.6rem}
 .status-pill{display:inline-flex;align-items:center;padding:.22rem .65rem;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
 .sp-pending{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);color:var(--gold)}
 .sp-approved{background:rgba(231,81,90,.08);border:1px solid rgba(231,81,90,.2);color:var(--em)}
-.sp-rejected{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#fca5a5}
+.sp-rejected{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#ef4444}
 .sp-featured{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:var(--gold)}
 .sp-expired{background:var(--bg3);border:1px solid var(--border2);color:var(--text3)}
 .actions{display:flex;flex-direction:column;gap:.4rem;flex-shrink:0;align-items:flex-end}
@@ -104,14 +123,14 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
 .abtn:hover{transform:translateY(-1px)}
 .abtn-ok{background:rgba(231,81,90,.1);border:1px solid rgba(231,81,90,.25);color:var(--em)}
 .abtn-ok:hover{background:var(--em);color:#fff;box-shadow:0 4px 16px rgba(231,81,90,.3)}
-.abtn-rej{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#fca5a5}
+.abtn-rej{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#ef4444}
 .abtn-rej:hover{background:var(--red);color:#fff;box-shadow:0 4px 16px rgba(239,68,68,.3)}
 .abtn-feat{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);color:var(--gold)}
 .abtn-feat:hover{background:var(--gold);color:#000;box-shadow:0 4px 16px rgba(245,158,11,.3)}
 .abtn-relist{background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);color:var(--purple)}
 .abtn-relist:hover{background:var(--purple);color:#fff;box-shadow:0 4px 16px rgba(139,92,246,.3)}
 .abtn-del{background:var(--bg3);border:1px solid var(--border2);color:var(--text3)}
-.abtn-del:hover{background:rgba(239,68,68,.1);border-color:var(--red);color:#fca5a5}
+.abtn-del:hover{background:rgba(239,68,68,.1);border-color:var(--red);color:#ef4444}
 .jr-desc{font-size:.82rem;color:var(--text2);line-height:1.7;margin-bottom:.6rem;white-space:pre-line}
 .jr-desc.collapsed{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .desc-toggle{background:none;border:none;color:var(--purple);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;padding:0;margin-bottom:.5rem;transition:color .2s}
@@ -121,9 +140,9 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
 .empty{text-align:center;padding:4rem;color:var(--text3);font-size:.9rem;font-weight:600}
 
 /* Modal */
-#confirm-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(8px)}
+#confirm-modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:9999;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(6px)}
 #confirm-modal.show{display:flex}
-.confirm-box{background:rgba(24,24,27,.98);border:1px solid var(--border);border-radius:20px;padding:2rem;width:100%;max-width:420px;text-align:center;backdrop-filter:blur(20px)}
+.confirm-box{background:#fff;border:1px solid var(--border);border-radius:20px;padding:2rem;width:100%;max-width:420px;text-align:center;box-shadow:0 20px 50px rgba(15,23,42,.18)}
 .confirm-icon{font-size:2.5rem;margin-bottom:1rem}
 .confirm-title{font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:.6rem}
 .confirm-sub{font-size:.85rem;color:var(--text3);margin-bottom:1.75rem;line-height:1.7;font-weight:500}
@@ -147,7 +166,6 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
 <div id="toast-container"></div>
 
 <div id="login">
-  <div style="position:absolute;top:1.5rem;right:1.5rem"><button id="tbtn-login" onclick="toggleTheme()" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text3);width:34px;height:34px;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem">&#9788;</button></div>
   <div class="login-box">
     <div class="login-logo" style="font-size:1.8rem;font-weight:900;color:#E7515A;letter-spacing:-.5px">FindMeAJob</div>
     <div class="login-sub">Admin Panel</div>
@@ -163,11 +181,13 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
     <div class="hlogo" style="font-size:1.2rem;font-weight:900;color:#E7515A;letter-spacing:-.5px">FindMeAJob <span style="color:#94a3b8;font-weight:600">Admin</span></div>
     <div class="hright">
       <span class="badge" id="pending-badge">0 pending</span>
-      <button id="tbtn" onclick="toggleTheme()" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text3);width:34px;height:34px;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem">&#9788;</button>
       <button class="signout" id="btn-signout" type="button">Sign out</button>
     </div>
   </header>
   <main>
+    <div class="section-hd">
+      <div><div class="section-hd-title">Listings Overview</div><div class="section-hd-sub">Live status of every employer job on the board</div></div>
+    </div>
     <div class="stats">
       <div class="stat"><div class="stat-n" id="st-total">0</div><div class="stat-l">Total listings</div></div>
       <div class="stat"><div class="stat-n" id="st-pending" style="color:var(--gold)">0</div><div class="stat-l">Pending review</div></div>
@@ -175,11 +195,17 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
       <div class="stat"><div class="stat-n" id="st-rejected" style="color:var(--red)">0</div><div class="stat-l">Rejected</div></div>
       <div class="stat"><div class="stat-n" id="st-expired" style="color:var(--text3)">0</div><div class="stat-l">Expired</div></div>
     </div>
+    <div class="section-hd">
+      <div><div class="section-hd-title">User &amp; Application Activity</div><div class="section-hd-sub">Who&rsquo;s using the platform right now</div></div>
+    </div>
     <div class="stats" style="grid-template-columns:repeat(4,1fr);margin-bottom:1.75rem">
       <div class="stat" style="border-left:3px solid var(--purple)"><div class="stat-n" id="st-seekers" style="color:var(--purple)">0</div><div class="stat-l">Job Seekers</div></div>
       <div class="stat" style="border-left:3px solid var(--gold)"><div class="stat-n" id="st-employers" style="color:var(--gold)">0</div><div class="stat-l">Employers</div></div>
       <div class="stat" style="border-left:3px solid var(--em)"><div class="stat-n" id="st-apps" style="color:var(--em)">0</div><div class="stat-l">Applications</div></div>
       <div class="stat" style="border-left:3px solid #06b6d4"><div class="stat-n" id="st-cvs" style="color:#06b6d4">0</div><div class="stat-l">CV Uploads</div></div>
+    </div>
+    <div class="section-hd">
+      <div><div class="section-hd-title">Workspace</div><div class="section-hd-sub">Review jobs, review people, and generate content</div></div>
     </div>
     <div class="refresh-bar">
       <div class="tabs">
@@ -211,14 +237,14 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
           <div style="display:flex;gap:.5rem;flex-wrap:wrap">
             <button onclick="suggestKeywords()" id="btn-suggest" style="background:linear-gradient(135deg,#7c3aed,#8b5cf6);color:#fff;border:none;padding:.55rem 1.25rem;border-radius:999px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">1. Research Keywords</button>
             <button onclick="generateBlog()" id="btn-gen-blog" style="background:linear-gradient(135deg,var(--em),#14b8a6);color:#fff;border:none;padding:.55rem 1.25rem;border-radius:999px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">2. Generate Posts</button>
-            <button onclick="loadExistingBlog()" style="background:rgba(255,255,255,.06);border:1px solid var(--border2);color:var(--text2);padding:.55rem 1rem;border-radius:999px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">View Published</button>
+            <button onclick="loadExistingBlog()" style="background:#fff;border:1px solid var(--border2);color:var(--text2);padding:.55rem 1rem;border-radius:999px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">View Published</button>
             <button onclick="reciteAllPosts()" id="btn-recite" style="background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff;border:none;padding:.55rem 1.25rem;border-radius:999px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Re-cite All Posts</button>
           </div>
         </div>
         <!-- Keyword research output -->
         <div id="keyword-output" style="display:none;margin-bottom:1rem"></div>
         <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem">
-          <select id="blog-count" style="background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.45rem .75rem;outline:none">
+          <select id="blog-count" style="background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.45rem .75rem;outline:none">
             <option value="3">3 posts</option>
             <option value="5">5 posts</option>
             <option value="7">7 posts (weekly batch)</option>
@@ -237,7 +263,7 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
           <button onclick="generateSocial()" id="btn-gen-social" style="background:linear-gradient(135deg,#ec4899,var(--purple));color:#fff;border:none;padding:.55rem 1.25rem;border-radius:999px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Generate Posts</button>
         </div>
         <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem">
-          <select id="social-tone" style="background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.45rem .75rem;outline:none">
+          <select id="social-tone" style="background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.45rem .75rem;outline:none">
             <option value="funny">Funny / Roast</option>
             <option value="professional">Professional</option>
             <option value="hype">Hype / Excited</option>
@@ -245,7 +271,7 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
             <option value="inspirational">Inspirational</option>
             <option value="controversial">Hot Take / Controversial</option>
           </select>
-          <select id="social-focus" style="background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.45rem .75rem;outline:none">
+          <select id="social-focus" style="background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.45rem .75rem;outline:none">
             <option value="cv-matching">AI CV Matching (hero feature)</option>
             <option value="interview-sim">Interview Simulator</option>
             <option value="cv-writer">CV + Cover Letter Writer</option>
@@ -278,20 +304,20 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1rem">
           <div>
             <label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Business name</label>
-            <input type="text" id="outreach-company" placeholder="e.g. Hays Recruitment, Countdown, Xero" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.55rem .75rem;outline:none">
+            <input type="text" id="outreach-company" placeholder="e.g. Hays Recruitment, Countdown, Xero" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.55rem .75rem;outline:none">
           </div>
           <div>
             <label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Contact email</label>
-            <input type="email" id="outreach-email" placeholder="hr@company.co.nz" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.55rem .75rem;outline:none">
+            <input type="email" id="outreach-email" placeholder="hr@company.co.nz" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.55rem .75rem;outline:none">
           </div>
         </div>
         <div style="margin-bottom:1rem">
           <label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Contact name (optional)</label>
-          <input type="text" id="outreach-name" placeholder="e.g. Sarah, the Hiring Manager" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.55rem .75rem;outline:none">
+          <input type="text" id="outreach-name" placeholder="e.g. Sarah, the Hiring Manager" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.55rem .75rem;outline:none">
         </div>
         <div style="margin-bottom:1rem">
           <label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Industry (optional)</label>
-          <select id="outreach-industry" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.55rem .75rem;outline:none">
+          <select id="outreach-industry" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.55rem .75rem;outline:none">
             <option value="">Any industry</option>
             <option value="Healthcare">Healthcare</option>
             <option value="Technology">Technology</option>
@@ -310,12 +336,12 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
 
         <div id="outreach-output" style="display:none;margin-bottom:1rem">
           <label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Subject line</label>
-          <input type="text" id="outreach-subject" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.88rem;font-weight:700;padding:.55rem .75rem;outline:none;margin-bottom:.75rem">
+          <input type="text" id="outreach-subject" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.88rem;font-weight:700;padding:.55rem .75rem;outline:none;margin-bottom:.75rem">
           <label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Email body</label>
-          <textarea id="outreach-body" rows="12" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text2);font-family:inherit;font-size:.82rem;padding:.75rem;outline:none;resize:vertical;line-height:1.7"></textarea>
+          <textarea id="outreach-body" rows="12" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text2);font-family:inherit;font-size:.82rem;padding:.75rem;outline:none;resize:vertical;line-height:1.7"></textarea>
           <div style="display:flex;gap:.5rem;margin-top:.75rem">
             <button onclick="sendOutreachEmail()" id="btn-send-outreach" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;border:none;padding:.65rem 1.5rem;border-radius:999px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:inherit">Send Email</button>
-            <button onclick="copyOutreachEmail()" style="background:rgba(255,255,255,.06);border:1px solid var(--border2);color:var(--text2);padding:.65rem 1.25rem;border-radius:999px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit">Copy to clipboard</button>
+            <button onclick="copyOutreachEmail()" style="background:#fff;border:1px solid var(--border2);color:var(--text2);padding:.65rem 1.25rem;border-radius:999px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit">Copy to clipboard</button>
           </div>
         </div>
         <div id="outreach-status" style="display:none;padding:.75rem 1rem;border-radius:var(--r);font-size:.82rem;font-weight:600;margin-top:.75rem"></div>
@@ -344,7 +370,7 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
     <label>Subject</label>
     <input type="text" id="email-subject" placeholder="Subject line" style="margin-bottom:.75rem">
     <label>Message</label>
-    <textarea id="email-body" placeholder="Type your message..." style="background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:15px;padding:.85rem 1.15rem;outline:none;width:100%;min-height:120px;resize:vertical;margin-bottom:1rem"></textarea>
+    <textarea id="email-body" placeholder="Type your message..." style="background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:15px;padding:.85rem 1.15rem;outline:none;width:100%;min-height:120px;resize:vertical;margin-bottom:1rem"></textarea>
     <div class="confirm-btns">
       <button class="confirm-cancel" onclick="document.getElementById('email-modal').style.display='none'" type="button">Cancel</button>
       <button class="confirm-ok action-approve" id="email-send-btn" type="button">Send Email</button>
@@ -419,8 +445,6 @@ function copyOutreachEmail(){
   else{prompt('Copy this:',text);}
 }
 
-function toggleTheme(){document.body.classList.toggle('dark');var d=document.body.classList.contains('dark');localStorage.setItem('theme',d?'dark':'light');var icon=d?'&#9790;':'&#9788;';var t1=document.getElementById('tbtn');var t2=document.getElementById('tbtn-login');if(t1)t1.innerHTML=icon;if(t2)t2.innerHTML=icon;}
-if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');var icon2='&#9790;';var t1b=document.getElementById('tbtn');var t2b=document.getElementById('tbtn-login');if(t1b)t1b.innerHTML=icon2;if(t2b)t2b.innerHTML=icon2;}
 var pw="", allJobs=[], currentTab="pending", refreshTimer=null;
 var pendingAction=null, pendingActionId=null;
 var PLAN_DAYS = { free:30, basic:60, pro:90 };
@@ -684,7 +708,7 @@ async function loadPeople(type) {
       el.innerHTML = h2;
     }
   } catch(e) {
-    el.innerHTML = '<div style="text-align:center;padding:2rem;color:#fca5a5">Failed to load. Please try again.</div>';
+    el.innerHTML = '<div style="text-align:center;padding:2rem;color:#ef4444">Failed to load. Please try again.</div>';
   }
 }
 
@@ -711,7 +735,7 @@ async function suggestKeywords(){
   var prompt='You are an SEO strategist for FindMeAJob.co.nz, a free AI career toolkit for NZ job seekers.\n\n';
   prompt+='Current month: '+month+' '+yr+'.\n\n';
   prompt+='TASK: Suggest 12 blog post keywords that NZ job seekers are likely searching RIGHT NOW.\n\n';
-  prompt+='OUR 12 TOOLS (only reference these):\n1. AI Job Matching 2. CV + Cover Letter Writer 3. Interview Simulator 4. Interview Questions 5. CV Score 6. Salary Calculator 7. Negotiate Salary 8. Compare Jobs 9. Decode Job Ad 10. Should I Stay or Go 11. Write This Email 12. Practice Simulator\n\n';
+  prompt+='OUR 12 TOOLS + 4 NICHE LANDING PAGES (only reference these in the "tool" field):\n1. AI Job Matching 2. CV + Cover Letter Writer 3. Interview Simulator 4. Interview Questions 5. CV Score 6. Salary Calculator 7. Negotiate Salary 8. Compare Jobs 9. Decode Job Ad 10. Should I Stay or Go 11. Write This Email 12. Practice Simulator 13. Tradies Toolkit (/trades) 14. Healthcare Toolkit (/healthcare) 15. Newcomers Toolkit (/newcomers) 16. Graduates Toolkit (/graduates)\n\n';
   prompt+='PROVEN HIGH-VALUE KEYWORDS FOR NZ JOB SEEKERS (include at least 4 from this list, adapted for '+month+' '+yr+'):\n\n';
   prompt+='CV & COVER LETTERS:\n- how to write a cv nz\n- cv template nz free\n- cover letter examples nz\n- cv gaps how to explain\n- cv format nz what employers want\n- how long should a cv be nz\n- skills based cv vs chronological nz\n- how to tailor cv for each job\n- referee on cv nz should you include\n- first job cv no experience nz\n\n';
   prompt+='INTERVIEW PREP:\n- interview questions and answers nz\n- how to answer tell me about yourself\n- behavioural interview questions nz\n- star method examples nz\n- how to ace a panel interview\n- what to wear to an interview nz\n- questions to ask at end of interview\n- competency based interview nz\n- how to calm interview nerves\n- second interview what to expect nz\n- video interview tips nz\n- group interview assessment centre nz\n- government job interview nz\n- retail hospitality interview tips nz\n- biggest weakness interview answer\n- why should we hire you answer nz\n- phone screen interview tips\n\n';
@@ -720,6 +744,10 @@ async function suggestKeywords(){
   prompt+='JOB SEARCH & CAREER:\n- work from home jobs nz\n- best jobs in nz right now\n- how to get a job in nz\n- resignation letter nz template\n- career change at 30 40 50 nz\n- linkedin profile tips nz\n- how to find hidden jobs nz\n- networking tips nz\n- job search depression nz\n- how long to find a job nz\n- red flags in job ads nz\n- apprenticeship nz how to start\n- best industries nz\n- trades shortage nz earn 100k\n\n';
   prompt+='WORKPLACE & WELLBEING:\n- toxic workplace signs nz\n- work life balance tips nz\n- imposter syndrome at work\n- starting a new job first week tips\n- how to deal with difficult boss nz\n- workplace culture nz what to expect\n- onboarding first day tips\n\n';
   prompt+='NZ-SPECIFIC:\n- working holiday visa nz jobs\n- immigrant job search nz tips\n- te reo in the workplace nz\n- public sector jobs nz how to apply\n- seasonal work nz where to find\n- auckland vs wellington jobs\n- christchurch job market\n- rural jobs nz opportunities\n\n';
+  prompt+='TRADIES (map to Tradies Toolkit /trades):\n- builder salary nz\n- electrician hourly rate nz\n- plumber salary nz\n- mechanic salary nz\n- apprentice wages nz\n- tradie cv template nz\n- how to become a builder nz\n- self employed tradie nz gst\n- trades shortage nz\n- site safe card nz cost\n\n';
+  prompt+='HEALTHCARE (map to Healthcare Toolkit /healthcare):\n- te whatu ora rn pay\n- enrolled nurse salary nz\n- healthcare assistant pay nz\n- nz nursing interview questions\n- overseas nurse to nz apc\n- aged care to hospital nurse nz\n- nursing cv nz template\n- midwife salary nz\n- allied health jobs nz\n- cultural safety interview question nz\n\n';
+  prompt+='NEWCOMERS TO NZ (map to Newcomers Toolkit /newcomers):\n- nz cv format for migrants\n- how to get a job in nz without kiwi experience\n- accredited employer work visa jobs nz\n- te tiriti interview questions nz\n- moving to nz job search checklist\n- best industries for migrants nz\n- nz cover letter for migrants\n- recruitment agencies nz for migrants\n- working holiday jobs nz admin\n- first 90 days nz job hunt\n\n';
+  prompt+='GRADUATES (map to Graduates Toolkit /graduates):\n- graduate cv nz template\n- nz graduate starting salary\n- when do nz graduate programmes open\n- big 4 grad programme interview nz\n- government grad programme nz\n- how to answer why us grad interview\n- grad programme case study interview\n- engineering graduate jobs nz\n- software graduate jobs nz\n- cover letter for graduates no experience nz\n\n';
   prompt+='STRATEGY:\n';
   prompt+='- Pick 4-6 from the proven list above AND 6-8 fresh seasonal/trending keywords\n';
   prompt+='- Target long-tail keywords (4-8 words) that a small NZ site can realistically rank for\n';
@@ -728,7 +756,9 @@ async function suggestKeywords(){
   prompt+='- Consider SEASONAL factors for '+month+': graduation, financial year, performance reviews, redundancy cycles, immigration waves, industry hiring patterns\n';
   prompt+='- Consider TRENDING topics: AI impact on jobs, cost of living, remote work, skills shortages, immigration changes, minimum wage\n';
   prompt+='- Mix categories: interview prep, CV help, salary, career decisions, employment law, job search tactics\n';
-  prompt+='- Each keyword MUST map to one of our 12 tools listed above — do NOT invent tools that do not exist\n';
+  prompt+='- REQUIRED: include at least 1 keyword from EACH of the 4 niches (Tradies, Healthcare, Newcomers, Graduates). That means at least 4 of the 12 suggestions cover niches. Map each niche keyword to the matching niche toolkit.\n';
+  prompt+='- Each keyword MUST map to one of the 16 tools/toolkits listed above — do NOT invent tools that do not exist\n';
+  prompt+='- GRAMMAR RULE: every keyword must read like a natural question or phrase a real person would type into Google. It must parse as English. DO NOT glue unrelated modifiers together. BAD: "salary negotiation tips nz cost of living" (two topics jammed together). GOOD: "how to negotiate salary during cost of living crisis nz" or "how to ask for a pay rise nz cost of living".\n';
   prompt+='- Use NZ/British spelling: organise, recognise, analyse, optimise, behaviour, colour, favour\n\n';
   prompt+='For each keyword return:\n- keyword: the exact long-tail search phrase (4-8 words)\n- volume: estimated monthly NZ search volume (Low <100, Medium 100-500, High 500+)\n- difficulty: Easy/Medium/Hard to rank for\n- tool: which FindMeAJob tool this maps to\n- angle: one-sentence content angle that would win a Google featured snippet\n\n';
   prompt+='Return ONLY valid JSON array:\n[{"keyword":"...","volume":"Low|Medium|High","difficulty":"Easy|Medium|Hard","tool":"...","angle":"..."}]';
@@ -745,7 +775,7 @@ async function suggestKeywords(){
     keywords.forEach(function(k,i){
       var volColor=k.volume==='High'?'#059669':k.volume==='Medium'?'#f59e0b':'#94a3b8';
       var diffColor=k.difficulty==='Easy'?'#059669':k.difficulty==='Medium'?'#f59e0b':'#ef4444';
-      h+='<label style="display:flex;gap:.5rem;align-items:flex-start;padding:.6rem .75rem;background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:10px;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor=\'var(--em)\'" onmouseout="this.style.borderColor=\'var(--border2)\'">';
+      h+='<label style="display:flex;gap:.5rem;align-items:flex-start;padding:.6rem .75rem;background:#fafafa;border:1px solid var(--border2);border-radius:10px;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor=\'var(--em)\'" onmouseout="this.style.borderColor=\'var(--border2)\'">';
       h+='<input type="checkbox" data-kw-idx="'+i+'" onchange="toggleKeyword('+i+')" style="accent-color:var(--em);margin-top:2px;width:16px;height:16px;flex-shrink:0">';
       h+='<div style="flex:1;min-width:0">';
       h+='<div style="font-size:.82rem;font-weight:700;color:var(--text)">'+esc(k.keyword)+'</div>';
@@ -795,7 +825,7 @@ async function generateBlog() {
   }
 
   var rndSeed = Math.floor(Math.random()*9999);
-  var prompt = 'You are an expert SEO content strategist for FindMeAJob.co.nz — a 100% FREE AI career toolkit for New Zealand with 12 tools. Entity: FindMeAJob Ltd.\n\nOUR TOOLS (use full URLs in posts):\n1. AI Job Matching (findmeajob.co.nz/match.html) — upload CV, matched in 60s\n2. Should I Stay or Go? (findmeajob.co.nz/decide) — career health check\n3. Decode Job Ad (findmeajob.co.nz/decode) — translate corporate jargon\n4. Interview Questions (findmeajob.co.nz/interview) — 10 Q&As for any role\n5. Negotiate Salary (findmeajob.co.nz/negotiate) — word-for-word NZ scripts\n6. Compare Jobs (findmeajob.co.nz/compare) — side-by-side comparison\n7. CV Score (findmeajob.co.nz/score) — scored /100 with fixes\n8. Write This Email (findmeajob.co.nz/email) — workplace emails\n9. CV + Cover Letter Writer (findmeajob.co.nz/match.html#apply) — AI tailors both\n10. Salary Calculator (findmeajob.co.nz/salary) — NZ salary data\n11. Interview Simulator (findmeajob.co.nz/interview-sim) — AI interviewer, voice, scored /100\n12. Practice Simulator (findmeajob.co.nz/practice-sim) — rehearse salary negotiation, resigning, pay rise, flexible work talks\n\nWrite exactly '+count+' blog posts. Date: '+today+'. Seed: '+rndSeed+'.\n\nSEO RULES:\n1. Each title targets a UNIQUE long-tail keyword Kiwis actually search\n2. Be SPECIFIC — not generic "interview tips" but "How to Answer Tell Me About Yourself in NZ"\n3. Each post references a DIFFERENT tool with its URL\n4. Include real NZ data: MBIE, Stats NZ, salary figures, industry stats\n5. Write for Google featured snippets — numbered lists, clear subheadings, direct answers\n6. 500-700 words. Short paragraphs. Subheadings with ** for bold.\n7. ALWAYS use NZ/British spelling: organise, recognise, analyse, behaviour, colour, favour, programme, centre.\n\nFORMATTING RULES (strict):\n- Use markdown "## Heading" (two hashes + space) for each section heading. Do NOT use "**bold**" for headings.\n- DO NOT start the body with a "# Title" heading. The article title is rendered separately above the body; a body-level H1 would be a duplicate.\n- Use **bold** only for emphasising a word inside a sentence, never to mark a section.\n- Use "- item" bullets on their own paragraph when listing things.\n- Paragraphs are separated by a single blank line. Keep paragraphs to 2-4 sentences each.\n\nCITATION FORMAT (THIS IS HOW REFERENCES MUST APPEAR):\n- DO NOT put links inline in the middle of sentences. Keep the body text clean and un-linked.\n- Immediately after ANY paragraph that contains a specific number / dollar figure / percentage / date / quoted law, add a NEW paragraph starting with "Source: " followed by ONE markdown link to an authoritative source from the VERIFIED URL LIST below.\n- Format: Source: [Readable source label](https://full-url-from-list)\n- The Source paragraph is ONE line, not multiple. One source per fact paragraph.\n- Do NOT add a separate "Sources" section at the end — the inline Source paragraphs are the citations.\n\nVERIFIED URL LIST (use ONLY these — do NOT invent deeper paths):\nEmployment & wages:\n- https://www.employment.govt.nz/pay-and-hours/pay-and-wages/minimum-wage/\n- https://www.employment.govt.nz/pay-and-hours/pay-and-wages/minimum-wage/types-of-minimum-wage/\n- https://www.employment.govt.nz/pay-and-hours/pay-and-wages/\nLeave & holidays:\n- https://www.employment.govt.nz/leave-and-holidays/annual-holidays/\n- https://www.employment.govt.nz/leave-and-holidays/public-holidays/\n- https://www.employment.govt.nz/leave-and-holidays/sick-leave/\n- https://www.employment.govt.nz/leave-and-holidays/parental-leave/\n- https://www.employment.govt.nz/leave-and-holidays/bereavement-leave/\n- https://www.legislation.govt.nz/act/public/2003/0129/latest/DLM236387.html\nAgreements, trials & law:\n- https://www.employment.govt.nz/starting-employment/trial-and-probationary-periods/trial-periods/\n- https://www.employment.govt.nz/starting-employment/employment-agreements/\n- https://www.legislation.govt.nz/act/public/2000/0024/latest/DLM58317.html\nProblems & endings:\n- https://www.employment.govt.nz/resolving-problems/types-of-problems/personal-grievances/\n- https://www.employment.govt.nz/ending-employment/redundancy/\n- https://www.employment.govt.nz/ending-employment/resignation/\n- https://www.employment.govt.nz/resolving-problems/\nKiwiSaver & tax:\n- https://www.ird.govt.nz/kiwisaver/kiwisaver-employers\n- https://www.ird.govt.nz/kiwisaver/kiwisaver-employers/making-employer-contributions\n- https://www.kiwisaver.govt.nz/\nLabour market data:\n- https://www.stats.govt.nz/topics/wages\n- https://www.stats.govt.nz/topics/employment-and-unemployment\n- https://www.mbie.govt.nz/business-and-employment/employment-and-skills/labour-market-reports-data-and-analysis/\nCareers & job info:\n- https://www.careers.govt.nz/\n- https://www.business.govt.nz/people-and-employment/\n\nVERIFIED NZ FACTS (April 2026) — use these specific figures; do NOT invent alternatives:\n- Adult minimum wage: $23.95 per hour\n- Starting-out / training minimum wage: $19.16 per hour (80% of adult)\n- KiwiSaver employer minimum contribution: 3%\n- 90-day trial period: only for employers with fewer than 20 employees\n- Annual leave: 4 weeks after 12 months continuous employment\n- Sick leave: 10 days per year after 6 months continuous employment\nIf a figure is NOT in this verified list and you are unsure, AVOID giving a specific number — link to the source page instead.\n\nSEO OPTIMISATION (CRITICAL for ranking):\n- Primary keyword MUST appear in: title, meta excerpt, first 100 words of body, and at least one ## heading.\n- 3-5 long-tail keyword variations sprinkled across H2 headings.\n- Use question-form H2/H3 headings for featured-snippet eligibility (e.g. "## What is the 90-day trial period?").\n- Front-load the answer: the first sentence under each question heading should directly answer it in plain language.\n- Include at least one bulleted list (5-8 items) — Google loves lists for snippets.\n- Internal linking: mention 1-2 FindMeAJob tools with full https://www.findmeajob.co.nz/... URLs in the body as inline markdown links.\n- Word count: 700-1000 words of body (excluding Source: lines).\n- Add a final "## Key takeaways" H2 with a 3-5 item bulleted summary.\n\nTOPIC CATEGORIES — pick from ALL of these, not just one:\n\nINTERVIEW STYLES & PREPARATION:\n- Behavioural interview questions NZ (STAR method examples)\n- Technical interview preparation for [specific NZ industry]\n- Panel interview tips — how to handle multiple interviewers\n- Phone interview vs video interview — NZ employer preferences\n- Group interview tips — assessment centre advice NZ\n- Competency-based interview questions with answers\n- Situational interview questions — how to answer "What would you do if..."\n- Second interview — what to expect and how to prepare\n- How to answer "Tell me about yourself" in NZ\n- How to answer "What is your biggest weakness" honestly\n- How to answer "Why should we hire you" in NZ\n- How to answer "Where do you see yourself in 5 years"\n- How to handle illegal interview questions in NZ\n- What to wear to an interview in NZ (casual vs corporate)\n- How to calm interview nerves — techniques that work\n- Questions to ask the interviewer at the end\n- How to follow up after an interview in NZ\n- Common interview mistakes Kiwis make\n- How to prepare for a government job interview NZ\n- How to ace a retail/hospitality interview in NZ\n- How to interview for a remote job in NZ\n\nCV & COVER LETTERS:\n- How to write a CV with no experience NZ '+yr+'\n- CV format NZ — what Kiwi employers actually want\n- How to explain gaps in your CV\n- How to write a cover letter NZ — with examples\n- Should you include referees on your NZ CV\n- How long should a CV be in NZ\n- Skills-based CV vs chronological — which works in NZ\n- How to tailor your CV for each job application\n\nSALARY & NEGOTIATION:\n- [Specific role] salary NZ '+yr+' — what you should earn\n- How to negotiate salary in NZ — exact scripts\n- When to ask for a pay rise in NZ\n- Salary expectations question — how to answer in NZ\n- NZ minimum wage '+yr+' — what it means for you\n- Gender pay gap NZ — how to check if you are underpaid\n\nCAREER CHANGES & DECISIONS:\n- How to change careers in NZ at 30/40/50\n- Signs you should quit your job NZ\n- How to resign professionally in NZ\n- Contracting vs permanent employment NZ\n- How to get a job in NZ as an immigrant '+yr+'\n- Best industries to work in NZ '+yr+'\n- NZ trades shortage — earn $100k without a degree\n\nWORKPLACE & EMPLOYMENT LAW:\n- NZ employment rights — what every worker should know\n- Redundancy in NZ — your rights and next steps\n- Trial periods NZ — 90 day trial explained\n- Mental health days at work NZ — your rights\n- KiwiSaver and job changes — what happens\n- Holiday pay NZ — how it actually works\n- Personal grievance NZ — when and how to raise one\n\nJOB SEARCH:\n- Best job sites NZ '+yr+' — where to actually find jobs\n- How to find hidden jobs in NZ (not advertised)\n- Networking in NZ — how Kiwis actually get jobs\n- LinkedIn profile tips for NZ job seekers\n- Red flags in NZ job ads — what to watch for\n- Work from home jobs NZ '+yr+' — what is available\n- Best jobs in [Auckland/Wellington/Christchurch] right now\n\nEMPLOYER:\n- How to write a job ad that attracts top NZ talent\n- Employee retention strategies NZ '+yr+'\n- Hiring mistakes NZ employers make\n- How to interview candidates effectively\n- Onboarding best practices for NZ businesses\n\nMARKET:\n- NZ job market outlook '+yr+'\n- AI replacing jobs in NZ — what is actually happening\n- Most in-demand skills NZ '+yr+'\n- Graduate employment NZ — which degrees lead to jobs\n\nDo NOT reuse titles from the list. Create ORIGINAL titles inspired by them. Vary the categories.\nIMPORTANT: Only include the year in titles where it adds value (salary data, market trends, law changes). Most titles should be EVERGREEN without the year.\n'+kwInstruction+'\nFor each post return:\n- category: "seeker", "employer", "market", or "tips"\n- categoryLabel: human readable\n- icon: single relevant emoji\n- imageId: unique random number 1-999\n- title: SEO headline (max 65 chars, include primary keyword)\n- excerpt: meta description (max 155 chars, include keyword)\n- body: 700-1000 words. Conversational + data-driven. Short paragraphs (2-4 sentences). Use "## Heading" markdown for sections (NOT **bold**). Use question-form headings where natural. Include one bulleted list and a final "## Key takeaways" H2. After every paragraph that states a specific number/stat/fact, add a new paragraph starting with "Source: [Label](verified-url-from-list)". Mention 1-2 FindMeAJob tools with full https URLs as inline markdown links. End with a clear CTA paragraph.\n- date: "'+today+'"\n\nReturn ONLY valid JSON array.\n[{"category":"seeker","categoryLabel":"Job Seekers","icon":"emoji","imageId":42,"title":"...","excerpt":"...","body":"...","date":"'+today+'"}]';
+  var prompt = 'You are an expert SEO content strategist for FindMeAJob.co.nz — a 100% FREE AI career toolkit for New Zealand with 12 tools. Entity: FindMeAJob Ltd.\n\nOUR TOOLS (use full URLs in posts):\n1. AI Job Matching (findmeajob.co.nz/match.html) — upload CV, matched in 60s\n2. Should I Stay or Go? (findmeajob.co.nz/decide) — career health check\n3. Decode Job Ad (findmeajob.co.nz/decode) — translate corporate jargon\n4. Interview Questions (findmeajob.co.nz/interview) — 10 Q&As for any role\n5. Negotiate Salary (findmeajob.co.nz/negotiate) — word-for-word NZ scripts\n6. Compare Jobs (findmeajob.co.nz/compare) — side-by-side comparison\n7. CV Score (findmeajob.co.nz/score) — scored /100 with fixes\n8. Write This Email (findmeajob.co.nz/email) — workplace emails\n9. CV + Cover Letter Writer (findmeajob.co.nz/match.html#apply) — AI tailors both\n10. Salary Calculator (findmeajob.co.nz/salary) — NZ salary data\n11. Interview Simulator (findmeajob.co.nz/interview-sim) — AI interviewer, voice, scored /100\n12. Practice Simulator (findmeajob.co.nz/practice-sim) — rehearse salary negotiation, resigning, pay rise, flexible work talks\n\nNICHE LANDING PAGES (link to these from relevant articles so readers land on the right niche toolkit):\n- Tradies (findmeajob.co.nz/trades) — CV, salary and job matching for builders, sparkies, plumbers, mechanics, labourers, apprentices\n- Healthcare (findmeajob.co.nz/healthcare) — CV, interview sim and pay for RNs, ENs, HCAs, midwives, allied health, aged care, Te Whatu Ora\n- Newcomers to NZ (findmeajob.co.nz/newcomers) — for migrants and returning Kiwis; rewriting overseas CVs, visa status, Kiwi experience, Te Tiriti\n- Graduates (findmeajob.co.nz/graduates) — for university leavers landing their first role or grad programme\n\nWrite exactly '+count+' blog posts. Date: '+today+'. Seed: '+rndSeed+'.\n\nSEO RULES:\n1. Each title targets a UNIQUE long-tail keyword Kiwis actually search\n2. Be SPECIFIC — not generic "interview tips" but "How to Answer Tell Me About Yourself in NZ"\n3. Each post references a DIFFERENT tool with its URL\n4. Include real NZ data: MBIE, Stats NZ, salary figures, industry stats\n5. Write for Google featured snippets — numbered lists, clear subheadings, direct answers\n6. 500-700 words. Short paragraphs. Subheadings with ** for bold.\n7. ALWAYS use NZ/British spelling: organise, recognise, analyse, behaviour, colour, favour, programme, centre.\n\nFORMATTING RULES (strict):\n- Use markdown "## Heading" (two hashes + space) for each section heading. Do NOT use "**bold**" for headings.\n- DO NOT start the body with a "# Title" heading. The article title is rendered separately above the body; a body-level H1 would be a duplicate.\n- Use **bold** only for emphasising a word inside a sentence, never to mark a section.\n- Use "- item" bullets on their own paragraph when listing things.\n- Paragraphs are separated by a single blank line. Keep paragraphs to 2-4 sentences each.\n\nCITATION FORMAT (THIS IS HOW REFERENCES MUST APPEAR):\n- DO NOT put links inline in the middle of sentences. Keep the body text clean and un-linked.\n- Immediately after ANY paragraph that contains a specific number / dollar figure / percentage / date / quoted law, add a NEW paragraph starting with "Source: " followed by ONE markdown link to an authoritative source from the VERIFIED URL LIST below.\n- Format: Source: [Readable source label](https://full-url-from-list)\n- The Source paragraph is ONE line, not multiple. One source per fact paragraph.\n- Do NOT add a separate "Sources" section at the end — the inline Source paragraphs are the citations.\n\nVERIFIED URL LIST (use ONLY these — do NOT invent deeper paths):\nEmployment & wages:\n- https://www.employment.govt.nz/pay-and-hours/pay-and-wages/minimum-wage/\n- https://www.employment.govt.nz/pay-and-hours/pay-and-wages/minimum-wage/types-of-minimum-wage/\n- https://www.employment.govt.nz/pay-and-hours/pay-and-wages/\nLeave & holidays:\n- https://www.employment.govt.nz/leave-and-holidays/annual-holidays/\n- https://www.employment.govt.nz/leave-and-holidays/public-holidays/\n- https://www.employment.govt.nz/leave-and-holidays/sick-leave/\n- https://www.employment.govt.nz/leave-and-holidays/parental-leave/\n- https://www.employment.govt.nz/leave-and-holidays/bereavement-leave/\n- https://www.legislation.govt.nz/act/public/2003/0129/latest/DLM236387.html\nAgreements, trials & law:\n- https://www.employment.govt.nz/starting-employment/trial-and-probationary-periods/trial-periods/\n- https://www.employment.govt.nz/starting-employment/employment-agreements/\n- https://www.legislation.govt.nz/act/public/2000/0024/latest/DLM58317.html\nProblems & endings:\n- https://www.employment.govt.nz/resolving-problems/types-of-problems/personal-grievances/\n- https://www.employment.govt.nz/ending-employment/redundancy/\n- https://www.employment.govt.nz/ending-employment/resignation/\n- https://www.employment.govt.nz/resolving-problems/\nKiwiSaver & tax:\n- https://www.ird.govt.nz/kiwisaver/kiwisaver-employers\n- https://www.ird.govt.nz/kiwisaver/kiwisaver-employers/making-employer-contributions\n- https://www.kiwisaver.govt.nz/\nLabour market data:\n- https://www.stats.govt.nz/topics/wages\n- https://www.stats.govt.nz/topics/employment-and-unemployment\n- https://www.mbie.govt.nz/business-and-employment/employment-and-skills/labour-market-reports-data-and-analysis/\nCareers & job info:\n- https://www.careers.govt.nz/\n- https://www.business.govt.nz/people-and-employment/\n\nVERIFIED NZ FACTS (April 2026) — use these specific figures; do NOT invent alternatives:\n- Adult minimum wage: $23.95 per hour\n- Starting-out / training minimum wage: $19.16 per hour (80% of adult)\n- KiwiSaver employer minimum contribution: 3%\n- 90-day trial period: only for employers with fewer than 20 employees\n- Annual leave: 4 weeks after 12 months continuous employment\n- Sick leave: 10 days per year after 6 months continuous employment\nIf a figure is NOT in this verified list and you are unsure, AVOID giving a specific number — link to the source page instead.\n\nSEO OPTIMISATION (CRITICAL for ranking):\n- Primary keyword MUST appear in: title, meta excerpt, first 100 words of body, and at least one ## heading.\n- 3-5 long-tail keyword variations sprinkled across H2 headings.\n- Use question-form H2/H3 headings for featured-snippet eligibility (e.g. "## What is the 90-day trial period?").\n- Front-load the answer: the first sentence under each question heading should directly answer it in plain language.\n- Include at least one bulleted list (5-8 items) — Google loves lists for snippets.\n- Internal linking: mention 1-2 FindMeAJob tools with full https://www.findmeajob.co.nz/... URLs in the body as inline markdown links.\n- Word count: 700-1000 words of body (excluding Source: lines).\n- Add a final "## Key takeaways" H2 with a 3-5 item bulleted summary.\n\nTOPIC CATEGORIES — pick from ALL of these, not just one:\n\nINTERVIEW STYLES & PREPARATION:\n- Behavioural interview questions NZ (STAR method examples)\n- Technical interview preparation for [specific NZ industry]\n- Panel interview tips — how to handle multiple interviewers\n- Phone interview vs video interview — NZ employer preferences\n- Group interview tips — assessment centre advice NZ\n- Competency-based interview questions with answers\n- Situational interview questions — how to answer "What would you do if..."\n- Second interview — what to expect and how to prepare\n- How to answer "Tell me about yourself" in NZ\n- How to answer "What is your biggest weakness" honestly\n- How to answer "Why should we hire you" in NZ\n- How to answer "Where do you see yourself in 5 years"\n- How to handle illegal interview questions in NZ\n- What to wear to an interview in NZ (casual vs corporate)\n- How to calm interview nerves — techniques that work\n- Questions to ask the interviewer at the end\n- How to follow up after an interview in NZ\n- Common interview mistakes Kiwis make\n- How to prepare for a government job interview NZ\n- How to ace a retail/hospitality interview in NZ\n- How to interview for a remote job in NZ\n\nCV & COVER LETTERS:\n- How to write a CV with no experience NZ '+yr+'\n- CV format NZ — what Kiwi employers actually want\n- How to explain gaps in your CV\n- How to write a cover letter NZ — with examples\n- Should you include referees on your NZ CV\n- How long should a CV be in NZ\n- Skills-based CV vs chronological — which works in NZ\n- How to tailor your CV for each job application\n\nSALARY & NEGOTIATION:\n- [Specific role] salary NZ '+yr+' — what you should earn\n- How to negotiate salary in NZ — exact scripts\n- When to ask for a pay rise in NZ\n- Salary expectations question — how to answer in NZ\n- NZ minimum wage '+yr+' — what it means for you\n- Gender pay gap NZ — how to check if you are underpaid\n\nCAREER CHANGES & DECISIONS:\n- How to change careers in NZ at 30/40/50\n- Signs you should quit your job NZ\n- How to resign professionally in NZ\n- Contracting vs permanent employment NZ\n- How to get a job in NZ as an immigrant '+yr+'\n- Best industries to work in NZ '+yr+'\n- NZ trades shortage — earn $100k without a degree\n\nWORKPLACE & EMPLOYMENT LAW:\n- NZ employment rights — what every worker should know\n- Redundancy in NZ — your rights and next steps\n- Trial periods NZ — 90 day trial explained\n- Mental health days at work NZ — your rights\n- KiwiSaver and job changes — what happens\n- Holiday pay NZ — how it actually works\n- Personal grievance NZ — when and how to raise one\n\nJOB SEARCH:\n- Best job sites NZ '+yr+' — where to actually find jobs\n- How to find hidden jobs in NZ (not advertised)\n- Networking in NZ — how Kiwis actually get jobs\n- LinkedIn profile tips for NZ job seekers\n- Red flags in NZ job ads — what to watch for\n- Work from home jobs NZ '+yr+' — what is available\n- Best jobs in [Auckland/Wellington/Christchurch] right now\n\nEMPLOYER:\n- How to write a job ad that attracts top NZ talent\n- Employee retention strategies NZ '+yr+'\n- Hiring mistakes NZ employers make\n- How to interview candidates effectively\n- Onboarding best practices for NZ businesses\n\nNICHE GUIDES (each topic is a long-tail keyword Kiwis search — optimise title, excerpt, H2s, and first 100 words around the primary keyword in brackets; include one inline markdown link to the mapped landing page):\n\nTRADIES (mapped landing page: https://www.findmeajob.co.nz/trades):\n- [builder salary NZ '+yr+'] — what builders actually earn by region and experience\n- [electrician hourly rate NZ '+yr+'] — sparkie pay bands by region\n- [plumber salary NZ '+yr+'] — plumber and gasfitter pay by experience\n- [mechanic salary NZ '+yr+'] — auto and diesel mechanic pay bands\n- [apprentice wages NZ '+yr+'] — first, second, third-year apprentice rates\n- [tradie CV template NZ] — one-page tradie CV with tickets up top\n- [how to become a builder NZ] — apprenticeship pathway step-by-step\n- [self-employed tradie NZ] — GST, invoicing, insurance for subbies\n- [trades shortage NZ '+yr+'] — which trades are in highest demand\n- [Site Safe card NZ] — what it costs and why employers want it\n\nHEALTHCARE (mapped landing page: https://www.findmeajob.co.nz/healthcare):\n- [Te Whatu Ora RN pay '+yr+'] — steps 1-7 explained\n- [enrolled nurse salary NZ '+yr+'] — EN pay bands public and private\n- [healthcare assistant pay NZ '+yr+'] — HCA and carer rates after pay equity\n- [NZ nursing interview questions] — 10 scenario questions with model answers\n- [overseas nurse to NZ] — APC, CV, interview plan for internationally qualified RNs\n- [aged care to hospital RN NZ] — how to make the move\n- [nursing CV NZ template] — what Kiwi recruiters look for first\n- [midwife salary NZ '+yr+'] — hospital, community and LMC pay\n- [allied health jobs NZ] — physio, OT, SLT salary and demand\n- [cultural safety interview question NZ] — how to answer well\n\nNEWCOMERS TO NZ (mapped landing page: https://www.findmeajob.co.nz/newcomers):\n- [NZ CV format for migrants] — what to cut from an overseas CV\n- [how to get a job in NZ without Kiwi experience] — the 3-step plan\n- [Accredited Employer Work Visa jobs NZ] — what roles qualify\n- [Te Tiriti interview questions NZ] — plain-English answers\n- [moving to NZ job search checklist] — week-by-week for the first 90 days\n- [best industries for migrants NZ '+yr+'] — where skilled migrants land\n- [NZ cover letter for migrants] — the 3-paragraph structure\n- [IELTS vs English test for NZ jobs] — what employers actually require\n- [recruitment agencies NZ for migrants] — where they place you\n- [working holiday visa jobs NZ] — hospo, farm, tourism, admin\n\nGRADUATES (mapped landing page: https://www.findmeajob.co.nz/graduates):\n- [graduate CV NZ template] — one-page grad CV with no experience\n- [NZ graduate starting salary '+yr+'] — pay by industry (finance, engineering, tech)\n- [when do NZ graduate programmes open] — calendar by employer\n- [Big-4 grad programme interview NZ] — Deloitte, PwC, KPMG, EY process\n- [government grad programme NZ] — MSD, MBIE, Treasury applications\n- [how to answer why us in a grad interview] — 3-ingredient framework\n- [grad programme case study NZ] — how to structure your answer\n- [best engineering graduate jobs NZ '+yr+'] — salary and demand\n- [software graduate jobs NZ] — tech grad roles and pay bands\n- [cover letter for graduates with no experience NZ] — what to write instead\n\nMARKET:\n- NZ job market outlook '+yr+'\n- AI replacing jobs in NZ — what is actually happening\n- Most in-demand skills NZ '+yr+'\n- Graduate employment NZ — which degrees lead to jobs\n\nDo NOT reuse titles from the list. Create ORIGINAL titles inspired by them. Vary the categories.\nIMPORTANT: Only include the year in titles where it adds value (salary data, market trends, law changes). Most titles should be EVERGREEN without the year.\n'+kwInstruction+'\nFor each post return:\n- category: "seeker", "employer", "market", or "tips"\n- categoryLabel: human readable\n- icon: single relevant emoji\n- imageId: unique random number 1-999\n- title: SEO headline (max 65 chars, include primary keyword)\n- excerpt: meta description (max 155 chars, include keyword)\n- body: 700-1000 words. Conversational + data-driven. Short paragraphs (2-4 sentences). Use "## Heading" markdown for sections (NOT **bold**). Use question-form headings where natural. Include one bulleted list and a final "## Key takeaways" H2. After every paragraph that states a specific number/stat/fact, add a new paragraph starting with "Source: [Label](verified-url-from-list)". Mention 1-2 FindMeAJob tools with full https URLs as inline markdown links. End with a clear CTA paragraph.\n- date: "'+today+'"\n\nReturn ONLY valid JSON array.\n[{"category":"seeker","categoryLabel":"Job Seekers","icon":"emoji","imageId":42,"title":"...","excerpt":"...","body":"...","date":"'+today+'"}]';
 
   try {
     /* Generate in batches of 2 to avoid token limit cutoff */
@@ -822,7 +852,7 @@ async function generateBlog() {
       var tagColors = {seeker:"var(--em)",employer:"var(--gold)",market:"var(--purple)",tips:"#ec4899"};
       var grad = gradients[p.category] || gradients.market;
       var imgId = p.imageId || (i * 37 + 100);
-      h += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--rl);padding:0;margin-bottom:.75rem;overflow:hidden" data-blog-idx="'+i+'">';
+      h += '<div style="background:#fafafa;border:1px solid var(--border2);border-radius:var(--rl);padding:0;margin-bottom:.75rem;overflow:hidden" data-blog-idx="'+i+'">';
       h += '<div style="position:relative;height:140px;background:'+grad+';display:flex;align-items:flex-end;overflow:hidden"><img src="https://picsum.photos/seed/'+imgId+'/800/300" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\'">';
       h += '<div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.7) 0%,transparent 60%)"></div>';
       h += '<div style="position:relative;padding:1rem 1.15rem;display:flex;align-items:center;gap:.65rem;width:100%">';
@@ -834,11 +864,11 @@ async function generateBlog() {
       // Editable fields
       h += '<div style="padding:1.15rem">';
       h += '<label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Title</label>';
-      h += '<input type="text" data-field="title" data-idx="'+i+'" value="'+esc(p.title).replace(/"/g,'&quot;')+'" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;font-size:.88rem;font-weight:700;padding:.45rem .65rem;outline:none;margin-bottom:.6rem">';
+      h += '<input type="text" data-field="title" data-idx="'+i+'" value="'+esc(p.title).replace(/"/g,'&quot;')+'" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;font-size:.88rem;font-weight:700;padding:.45rem .65rem;outline:none;margin-bottom:.6rem">';
       h += '<label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Excerpt</label>';
-      h += '<input type="text" data-field="excerpt" data-idx="'+i+'" value="'+esc(p.excerpt).replace(/"/g,'&quot;')+'" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.45rem .65rem;outline:none;margin-bottom:.6rem;font-style:italic">';
+      h += '<input type="text" data-field="excerpt" data-idx="'+i+'" value="'+esc(p.excerpt).replace(/"/g,'&quot;')+'" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.45rem .65rem;outline:none;margin-bottom:.6rem;font-style:italic">';
       h += '<label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Body</label>';
-      h += '<textarea data-field="body" data-idx="'+i+'" style="width:100%;min-height:120px;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.55rem .65rem;outline:none;resize:vertical;line-height:1.7">'+esc(p.body)+'</textarea>';
+      h += '<textarea data-field="body" data-idx="'+i+'" style="width:100%;min-height:120px;background:#fff;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.55rem .65rem;outline:none;resize:vertical;line-height:1.7">'+esc(p.body)+'</textarea>';
       h += '</div></div>';
     });
 
@@ -858,7 +888,7 @@ async function generateBlog() {
       });
     });
   } catch(e) {
-    out.innerHTML = '<div style="text-align:center;padding:2rem;color:#fca5a5;font-size:.85rem">Failed to generate. Try again.</div>';
+    out.innerHTML = '<div style="text-align:center;padding:2rem;color:#ef4444;font-size:.85rem">Failed to generate. Try again.</div>';
   }
   btn.disabled = false;
   btn.textContent = "Generate Posts";
@@ -880,7 +910,7 @@ function removePendingPost(idx) {
   posts.forEach(function(p, i) {
     var grad = gradients[p.category] || gradients.market;
     var imgId = p.imageId || (i * 37 + 100);
-    h += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--rl);padding:0;margin-bottom:.75rem;overflow:hidden">';
+    h += '<div style="background:#fafafa;border:1px solid var(--border2);border-radius:var(--rl);padding:0;margin-bottom:.75rem;overflow:hidden">';
     h += '<div style="position:relative;height:140px;background:'+grad+';display:flex;align-items:flex-end;overflow:hidden"><img src="https://picsum.photos/seed/'+imgId+'/800/300" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\'">';
     h += '<div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.7) 0%,transparent 60%)"></div>';
     h += '<div style="position:relative;padding:1rem 1.15rem;display:flex;align-items:center;gap:.65rem;width:100%">';
@@ -890,11 +920,11 @@ function removePendingPost(idx) {
     h += '<button onclick="removePendingPost('+i+')" style="position:absolute;top:.5rem;right:.65rem;background:rgba(0,0,0,.5);border:none;color:rgba(255,255,255,.8);width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:.75rem;display:flex;align-items:center;justify-content:center">&times;</button>';
     h += '</div><div style="padding:1.15rem">';
     h += '<label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Title</label>';
-    h += '<input type="text" data-field="title" data-idx="'+i+'" value="'+esc(p.title).replace(/"/g,'&quot;')+'" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;font-size:.88rem;font-weight:700;padding:.45rem .65rem;outline:none;margin-bottom:.6rem">';
+    h += '<input type="text" data-field="title" data-idx="'+i+'" value="'+esc(p.title).replace(/"/g,'&quot;')+'" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;font-size:.88rem;font-weight:700;padding:.45rem .65rem;outline:none;margin-bottom:.6rem">';
     h += '<label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Excerpt</label>';
-    h += '<input type="text" data-field="excerpt" data-idx="'+i+'" value="'+esc(p.excerpt).replace(/"/g,'&quot;')+'" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.45rem .65rem;outline:none;margin-bottom:.6rem;font-style:italic">';
+    h += '<input type="text" data-field="excerpt" data-idx="'+i+'" value="'+esc(p.excerpt).replace(/"/g,'&quot;')+'" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.45rem .65rem;outline:none;margin-bottom:.6rem;font-style:italic">';
     h += '<label style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.25rem">Body</label>';
-    h += '<textarea data-field="body" data-idx="'+i+'" style="width:100%;min-height:120px;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.55rem .65rem;outline:none;resize:vertical;line-height:1.7">'+esc(p.body)+'</textarea>';
+    h += '<textarea data-field="body" data-idx="'+i+'" style="width:100%;min-height:120px;background:#fff;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.55rem .65rem;outline:none;resize:vertical;line-height:1.7">'+esc(p.body)+'</textarea>';
     h += '</div></div>';
   });
   h += '<button onclick="publishBlog()" id="btn-publish-blog" style="width:100%;margin-top:.5rem;padding:.75rem;background:linear-gradient(135deg,var(--em),#14b8a6);color:#fff;border:none;border-radius:999px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:inherit">Publish '+posts.length+' Posts to Blog</button>';
@@ -930,7 +960,7 @@ async function publishBlog() {
     } else {
       btn.textContent = "Failed — try again";
       btn.style.background = "rgba(239,68,68,.15)";
-      btn.style.color = "#fca5a5";
+      btn.style.color = "#ef4444";
     }
   } catch(e) {
     btn.textContent = "Failed — try again";
@@ -953,22 +983,22 @@ async function loadExistingBlog() {
     var h = '<div style="font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:.75rem">'+posts.length+' published posts</div>';
     posts.forEach(function(p, i) {
       var grad = gradients[p.category] || gradients.market;
-      h += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--rl);margin-bottom:.6rem;overflow:hidden" id="pub-post-'+i+'">';
+      h += '<div style="background:#fafafa;border:1px solid var(--border2);border-radius:var(--rl);margin-bottom:.6rem;overflow:hidden" id="pub-post-'+i+'">';
       h += '<div style="background:'+grad+';padding:.65rem .85rem;display:flex;align-items:center;gap:.5rem;cursor:pointer" onclick="toggleEditPost('+i+')">';
       h += '<span style="font-size:1.2rem">'+(p.icon||'')+'</span>';
       h += '<span style="font-size:.72rem;font-weight:700;color:rgba(255,255,255,.85);flex:1">'+esc(p.title)+'</span>';
       h += '<span style="font-size:.6rem;color:rgba(255,255,255,.5)">'+esc(p.date)+'</span>';
       h += '<span style="font-size:.55rem;color:rgba(255,255,255,.4);margin-left:.25rem">&#9998; Edit</span>';
-      h += '<button onclick="event.stopPropagation();deletePublishedPost('+i+')" style="background:rgba(0,0,0,.3);border:none;color:rgba(255,255,255,.6);width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:.7rem;margin-left:.35rem">&times;</button>';
+      h += '<button onclick="event.stopPropagation();deletePublishedPost('+i+')" style="background:rgba(15,23,42,.08);border:none;color:rgba(255,255,255,.6);width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:.7rem;margin-left:.35rem">&times;</button>';
       h += '</div>';
       // Collapsible edit section
       h += '<div id="edit-section-'+i+'" style="display:none;padding:1rem">';
       h += '<label style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.2rem">Title</label>';
-      h += '<input type="text" data-pub-field="title" data-pub-idx="'+i+'" value="'+esc(p.title).replace(/"/g,'&quot;')+'" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;font-size:.85rem;font-weight:700;padding:.4rem .6rem;outline:none;margin-bottom:.5rem">';
+      h += '<input type="text" data-pub-field="title" data-pub-idx="'+i+'" value="'+esc(p.title).replace(/"/g,'&quot;')+'" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;font-size:.85rem;font-weight:700;padding:.4rem .6rem;outline:none;margin-bottom:.5rem">';
       h += '<label style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.2rem">Excerpt</label>';
-      h += '<input type="text" data-pub-field="excerpt" data-pub-idx="'+i+'" value="'+esc(p.excerpt).replace(/"/g,'&quot;')+'" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.4rem .6rem;outline:none;margin-bottom:.5rem;font-style:italic">';
+      h += '<input type="text" data-pub-field="excerpt" data-pub-idx="'+i+'" value="'+esc(p.excerpt).replace(/"/g,'&quot;')+'" style="width:100%;background:#fff;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.4rem .6rem;outline:none;margin-bottom:.5rem;font-style:italic">';
       h += '<label style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);display:block;margin-bottom:.2rem">Body</label>';
-      h += '<textarea data-pub-field="body" data-pub-idx="'+i+'" style="width:100%;min-height:150px;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.5rem .6rem;outline:none;resize:vertical;line-height:1.7">'+esc(p.body)+'</textarea>';
+      h += '<textarea data-pub-field="body" data-pub-idx="'+i+'" style="width:100%;min-height:150px;background:#fff;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:inherit;font-size:.8rem;padding:.5rem .6rem;outline:none;resize:vertical;line-height:1.7">'+esc(p.body)+'</textarea>';
       h += '<button onclick="saveEditedPost('+i+')" style="margin-top:.5rem;padding:.45rem 1.2rem;background:var(--em);color:#fff;border:none;border-radius:999px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit">Save Changes</button>';
       h += '</div></div>';
     });
@@ -982,7 +1012,7 @@ async function loadExistingBlog() {
       });
     });
   } catch(e) {
-    out.innerHTML = '<div style="text-align:center;padding:2rem;color:#fca5a5;font-size:.85rem">Failed to load posts.</div>';
+    out.innerHTML = '<div style="text-align:center;padding:2rem;color:#ef4444;font-size:.85rem">Failed to load posts.</div>';
   }
 }
 
@@ -1044,7 +1074,7 @@ async function reciteAllPosts() {
 
   btn.disabled = true;
   var origLabel = btn.textContent;
-  out.innerHTML = '<div id="recite-progress" style="background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.25);border-radius:var(--rl);padding:1.25rem;margin-bottom:1rem"><div style="font-size:.85rem;font-weight:700;color:var(--gold);margin-bottom:.5rem">Re-citing posts...</div><div id="recite-status" style="font-size:.78rem;color:var(--text2)">Starting...</div><div style="margin-top:.75rem;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden"><div id="recite-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#d97706,#f59e0b);transition:width .3s"></div></div></div>';
+  out.innerHTML = '<div id="recite-progress" style="background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.25);border-radius:var(--rl);padding:1.25rem;margin-bottom:1rem"><div style="font-size:.85rem;font-weight:700;color:var(--gold);margin-bottom:.5rem">Re-citing posts...</div><div id="recite-status" style="font-size:.78rem;color:var(--text2)">Starting...</div><div style="margin-top:.75rem;height:6px;background:#fff;border-radius:3px;overflow:hidden"><div id="recite-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#d97706,#f59e0b);transition:width .3s"></div></div></div>';
 
   var systemPrompt = "You are rewriting a New Zealand blog post to fix incorrect figures and add clean end-of-paragraph source citations. Preserve the writing voice, structure, and section order. Produce SEO-optimised markdown.\n\nFORMATTING RULES (strict):\n- Use '## Heading' markdown for section headings. DO NOT use '**bold**' for headings.\n- DO NOT start the body with a '# Title' heading. The article title is rendered separately above the body.\n- Use **bold** only for emphasis inside a sentence.\n- Use '- item' bullets on their own paragraph for lists.\n- Paragraphs separated by ONE blank line. Keep paragraphs 2-4 sentences.\n- DO NOT put links in the middle of sentences. Keep body text clean and un-linked.\n\nCITATION FORMAT:\n- Immediately after ANY paragraph that contains a specific number / dollar figure / percentage / date / quoted law, insert a NEW paragraph starting with 'Source: ' followed by ONE markdown link from the VERIFIED URL LIST below.\n- Format: Source: [Readable label](https://full-url-from-list)\n- One link per Source paragraph, ONE line.\n- DO NOT add a separate 'Sources' section at the end. The inline Source paragraphs ARE the citations. Remove any existing '**Sources**' section.\n\nVERIFIED URL LIST (use ONLY these — do NOT invent deeper paths):\nWages: https://www.employment.govt.nz/pay-and-hours/pay-and-wages/minimum-wage/ | https://www.employment.govt.nz/pay-and-hours/pay-and-wages/minimum-wage/types-of-minimum-wage/ | https://www.employment.govt.nz/pay-and-hours/pay-and-wages/\nLeave: https://www.employment.govt.nz/leave-and-holidays/annual-holidays/ | https://www.employment.govt.nz/leave-and-holidays/public-holidays/ | https://www.employment.govt.nz/leave-and-holidays/sick-leave/ | https://www.employment.govt.nz/leave-and-holidays/parental-leave/ | https://www.employment.govt.nz/leave-and-holidays/bereavement-leave/\nLaw & agreements: https://www.employment.govt.nz/starting-employment/trial-and-probationary-periods/trial-periods/ | https://www.employment.govt.nz/starting-employment/employment-agreements/ | https://www.legislation.govt.nz/act/public/2000/0024/latest/DLM58317.html | https://www.legislation.govt.nz/act/public/2003/0129/latest/DLM236387.html\nProblems & endings: https://www.employment.govt.nz/resolving-problems/types-of-problems/personal-grievances/ | https://www.employment.govt.nz/ending-employment/redundancy/ | https://www.employment.govt.nz/ending-employment/resignation/\nKiwiSaver & tax: https://www.ird.govt.nz/kiwisaver/kiwisaver-employers | https://www.ird.govt.nz/kiwisaver/kiwisaver-employers/making-employer-contributions | https://www.kiwisaver.govt.nz/\nLabour market: https://www.stats.govt.nz/topics/wages | https://www.stats.govt.nz/topics/employment-and-unemployment | https://www.mbie.govt.nz/business-and-employment/employment-and-skills/labour-market-reports-data-and-analysis/\nCareers: https://www.careers.govt.nz/ | https://www.business.govt.nz/people-and-employment/\n\nVERIFIED NZ FACTS (April 2026) — USE to replace any incorrect figures:\n- Adult minimum wage: $23.95/hour\n- Starting-out / training minimum wage: $19.16/hour (80% of adult)\n- KiwiSaver employer minimum contribution: 3%\n- 90-day trial: only for employers with fewer than 20 employees\n- Annual leave: 4 weeks after 12 months continuous employment\n- Sick leave: 10 days per year after 6 months\n\nIf a specific figure is in the post but NOT in the verified list above and you cannot confirm it, REMOVE the specific number and replace with a phrase like 'check the current rate at Employment NZ' with a Source: line pointing to the relevant verified URL. DO NOT invent figures.\n\nSEO:\n- Keep the primary keyword in at least one ## heading and in the first paragraph.\n- Convert 1-2 section headings to question form (e.g. '## What does the 90-day trial cover?') to win featured snippets.\n- Include at least one bulleted list of 4-8 items where appropriate.\n- Add a final '## Key takeaways' H2 with a 3-5 item bulleted summary if the post doesn't already have one.\n- Strip any stray '##' or '**' that shouldn't be there.\n\nReturn ONLY the rewritten markdown body — no JSON, no explanations, no code fences.";
 
@@ -1151,12 +1181,12 @@ async function generateSocial() {
     platforms.forEach(function(p) {
       var text = posts[p.key] || "";
       if (!text) return;
-      h += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:var(--rl);padding:1.25rem;margin-bottom:.75rem;transition:border-color .2s" onmouseover="this.style.borderColor=\''+p.color+'33\'" onmouseout="this.style.borderColor=\'\'">';
+      h += '<div style="background:#fafafa;border:1px solid var(--border2);border-radius:var(--rl);padding:1.25rem;margin-bottom:.75rem;transition:border-color .2s" onmouseover="this.style.borderColor=\''+p.color+'33\'" onmouseout="this.style.borderColor=\'\'">';
       h += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.85rem">';
       h += '<div style="display:flex;align-items:center;gap:.5rem"><div style="width:28px;height:28px;background:'+p.color+';border-radius:8px;display:flex;align-items:center;justify-content:center"><span style="font-size:.85rem;filter:brightness(10)">'+p.icon+'</span></div><span style="font-size:.88rem;font-weight:700;color:var(--text)">'+p.name+'</span></div>';
       h += '<div style="display:flex;gap:.4rem">';
-      h += '<button onclick="downloadPostImage(this)" data-text="'+text.replace(/"/g,'&quot;').replace(/\n/g,'&#10;')+'" data-platform="'+p.name+'" data-color="'+p.color+'" style="background:rgba(255,255,255,.06);border:1px solid var(--border2);color:var(--text2);padding:.35rem .85rem;border-radius:999px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s">Image</button>';
-      h += '<button onclick="copyPost(this)" data-text="'+text.replace(/"/g,'&quot;').replace(/\n/g,'&#10;')+'" style="background:rgba(255,255,255,.06);border:1px solid var(--border2);color:var(--text2);padding:.35rem .85rem;border-radius:999px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s">Copy</button>';
+      h += '<button onclick="downloadPostImage(this)" data-text="'+text.replace(/"/g,'&quot;').replace(/\n/g,'&#10;')+'" data-platform="'+p.name+'" data-color="'+p.color+'" style="background:#fff;border:1px solid var(--border2);color:var(--text2);padding:.35rem .85rem;border-radius:999px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s">Image</button>';
+      h += '<button onclick="copyPost(this)" data-text="'+text.replace(/"/g,'&quot;').replace(/\n/g,'&#10;')+'" style="background:#fff;border:1px solid var(--border2);color:var(--text2);padding:.35rem .85rem;border-radius:999px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s">Copy</button>';
       h += '</div>';
       h += '</div>';
       h += '<div style="font-size:.82rem;color:var(--text);line-height:1.7;white-space:pre-wrap">'+text.replace(/</g,"&lt;").replace(/>/g,"&gt;")+'</div>';
@@ -1165,7 +1195,7 @@ async function generateSocial() {
 
     out.innerHTML = h;
   } catch(e) {
-    out.innerHTML = '<div style="text-align:center;padding:2rem;color:#fca5a5;font-size:.85rem">Failed to generate. Try again.</div>';
+    out.innerHTML = '<div style="text-align:center;padding:2rem;color:#ef4444;font-size:.85rem">Failed to generate. Try again.</div>';
   }
   btn.disabled = false;
   btn.textContent = "Generate Posts";

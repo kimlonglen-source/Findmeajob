@@ -3,6 +3,7 @@ var getKV = _kv.getKV;
 var hget = _kv.hget;
 var hgetall = _kv.hgetall;
 var hset = _kv.hset;
+var hdel = _kv.hdel;
 var verifyPassword = _kv.verifyPassword;
 var isHashed = _kv.isHashed;
 var hashPassword = _kv.hashPassword;
@@ -125,11 +126,13 @@ module.exports = async function handler(req, res) {
         if (planKey !== "free") {
           var stripeKey = process.env.STRIPE_SECRET_KEY;
           if (!stripeKey) {
-            /* No Stripe configured — submit as free instead */
-            newJob.plan = "free"; newJob.planDays = 30; newJob.featured = false; newJob.status = "pending";
-            await hset("jobs", jid, newJob);
-            notifyAdmin("New job submitted (free fallback): " + sTitle, "<strong>" + sTitle + "</strong> by " + (emp2.company || "") + " — Stripe not configured, submitted as free.");
-            return res.status(200).json({ success: true, id: jid });
+            /* Stripe not configured — don't silently demote to free. Delete the stub job and tell the employer. */
+            try { await hdel("jobs", jid); } catch(e) {}
+            notifyAdmin("Paid listing attempt but Stripe not configured", "Employer " + (emp2.company || emp2.email) + " tried to post a " + planKey + " listing (\"" + sTitle + "\") but STRIPE_SECRET_KEY is missing in env. The listing was NOT created. Configure Stripe in Vercel env vars and redeploy.");
+            return res.status(503).json({
+              error: "Payments are temporarily unavailable. Your listing hasn't been submitted. Please email hello@findmeajob.co.nz and we'll post it for you, or try again shortly.",
+              stripeUnavailable: true
+            });
           }
           var PRICES = { pro: 2900, unlimited: 9900 };
           var NAMES = { pro: "Pro Listing — 60 days, featured", unlimited: "Unlimited Plan — monthly, all featured" };
@@ -153,11 +156,13 @@ module.exports = async function handler(req, res) {
           if (stripeData.url) {
             return res.status(200).json({ success: true, id: jid, checkoutUrl: stripeData.url });
           } else {
-            /* Stripe failed — submit as free */
-            newJob.plan = "free"; newJob.planDays = 30; newJob.featured = false; newJob.status = "pending";
-            await hset("jobs", jid, newJob);
-            notifyAdmin("New job submitted (Stripe error): " + sTitle, "<strong>" + sTitle + "</strong> — Stripe checkout failed: " + JSON.stringify(stripeData.error || {}));
-            return res.status(200).json({ success: true, id: jid, stripeError: true });
+            /* Stripe checkout creation failed — clean up and surface the error */
+            try { await hdel("jobs", jid); } catch(e) {}
+            notifyAdmin("Stripe checkout creation FAILED: " + sTitle, "<strong>" + sTitle + "</strong> by " + (emp2.company || "") + "<br>Plan: " + planKey + "<br>Stripe error: " + JSON.stringify(stripeData.error || stripeData));
+            return res.status(502).json({
+              error: "We couldn't reach the payment provider. Your listing hasn't been submitted. Please try again in a minute, or email hello@findmeajob.co.nz.",
+              stripeError: true
+            });
           }
         }
 
