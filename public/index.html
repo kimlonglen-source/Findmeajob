@@ -135,6 +135,7 @@ img{max-width:100%;display:block}
 .fsims-head h2{font-size:2.2rem;font-weight:900;color:#1a1a2e;line-height:1.15;margin-bottom:.5rem;letter-spacing:-.5px}
 .fsims-head h2 em{font-style:normal;color:#E7515A}
 .fsims-head p{font-size:.95rem;color:#64748b;max-width:560px;margin:0 auto}
+.fsim-demo-wrap{margin:0 auto 2.5rem;max-width:560px}
 .fsims-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
 .fsim-card{position:relative;overflow:hidden;background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 55%,#1a1a2e 100%);border-radius:24px;padding:2rem;display:flex;flex-direction:column;color:#fff;text-decoration:none;min-height:360px;transition:transform .3s,box-shadow .3s}
 .fsim-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(231,81,90,.25);text-decoration:none}
@@ -237,44 +238,29 @@ img{max-width:100%;display:block}
   </div>
 </section>
 
-<!-- Interview Showcase - Dark rounded section like Monzo promo -->
-<section class="sec-pad sec-wide">
-  <div class="showcase-box">
-    <div style="flex:1">
-      <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#E7515A;margin-bottom:.75rem">Most popular tool</div>
-      <h2 style="font-size:2rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:1rem">Interviews that feel real</h2>
-      <p style="color:rgba(255,255,255,.7);font-size:.95rem;line-height:1.7;margin-bottom:1.5rem">Practice with an AI interviewer who speaks, listens, and scores you out of 100. The closest thing to a real interview — without the pressure.</p>
-      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem">
-        <span style="background:rgba(231,81,90,.15);color:#E7515A;padding:.35rem .85rem;border-radius:999px;font-size:.72rem;font-weight:700">Voice-powered</span>
-        <span style="background:rgba(231,81,90,.15);color:#E7515A;padding:.35rem .85rem;border-radius:999px;font-size:.72rem;font-weight:700">Scored /100</span>
-        <span style="background:rgba(231,81,90,.15);color:#E7515A;padding:.35rem .85rem;border-radius:999px;font-size:.72rem;font-weight:700">Filler word tracking</span>
-      </div>
-      <a href="/interview-sim" style="display:inline-block;padding:.75rem 1.75rem;border:2px solid #fff;color:#fff;border-radius:999px;font-size:.88rem;font-weight:700;text-decoration:none;transition:all .2s" onmouseover="this.style.background='#fff';this.style.color='#1B1B3A'" onmouseout="this.style.background='transparent';this.style.color='#fff'">Try the simulator</a>
-    </div>
-    <div style="flex:1;max-width:380px;flex-shrink:0">
-      <div id="demoChat" style="background:#0f172a;border-radius:16px;padding:1.25rem;border:1px solid rgba(255,255,255,.1);min-height:260px;cursor:pointer" onclick="window.location.href='/interview-sim'">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
-          <div style="display:flex;align-items:center;gap:.5rem"><div id="demoDot" style="width:8px;height:8px;background:#E7515A;border-radius:50%"></div><span id="demoStatus" style="font-size:.68rem;color:#94a3b8;font-weight:600">Starting interview...</span></div>
-          <div style="font-size:.6rem;color:#64748b;font-weight:600">Q1/5</div>
-        </div>
-        <div id="demoMsgs" style="display:flex;flex-direction:column;gap:.5rem;min-height:160px"></div>
-        <div id="demoScore" style="text-align:center;padding:.75rem 0;display:none">
-          <div style="font-size:.55rem;color:#94a3b8;text-transform:uppercase;font-weight:700;letter-spacing:.5px;margin-bottom:.25rem">Interview Score</div>
-          <span id="demoScoreNum" style="font-size:2.2rem;font-weight:900;color:#E7515A;line-height:1">0</span><span style="font-size:.85rem;color:#94a3b8;font-weight:600">/100</span>
-          <div style="font-size:.6rem;color:#10b981;font-weight:600;margin-top:.25rem">Great performance!</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- FEATURED: Voice Simulators -->
+<!-- FEATURED: Voice Simulators (with live animated demo) -->
 <section class="fsims">
   <div class="fsims-head">
     <div class="fsims-eyebrow">New &bull; Voice practice</div>
     <h2>Practice the conversations that <em>change everything</em></h2>
     <p>Speak out loud. AI plays the real person. Get scored out of 100 with detailed feedback.</p>
+  </div>
+
+  <!-- Live animated interview demo (watch it work) -->
+  <div class="fsim-demo-wrap">
+    <div id="demoChat" style="background:#0f172a;border-radius:20px;padding:1.5rem;border:1px solid rgba(255,255,255,.1);min-height:300px;cursor:pointer;max-width:520px;margin:0 auto;box-shadow:0 25px 60px rgba(15,23,42,.25)" onclick="window.location.href='/interview-sim'">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+        <div style="display:flex;align-items:center;gap:.5rem"><div id="demoDot" style="width:8px;height:8px;background:#E7515A;border-radius:50%"></div><span id="demoStatus" style="font-size:.72rem;color:#94a3b8;font-weight:600">Starting interview...</span></div>
+        <div style="font-size:.62rem;color:#64748b;font-weight:600">Live demo</div>
+      </div>
+      <div id="demoMsgs" style="display:flex;flex-direction:column;gap:.5rem;min-height:180px"></div>
+      <div id="demoScore" style="text-align:center;padding:.75rem 0;display:none">
+        <div style="font-size:.55rem;color:#94a3b8;text-transform:uppercase;font-weight:700;letter-spacing:.5px;margin-bottom:.25rem">Interview Score</div>
+        <span id="demoScoreNum" style="font-size:2.4rem;font-weight:900;color:#E7515A;line-height:1">0</span><span style="font-size:.85rem;color:#94a3b8;font-weight:600">/100</span>
+        <div style="font-size:.62rem;color:#10b981;font-weight:600;margin-top:.25rem">Great performance!</div>
+      </div>
+    </div>
+    <div style="text-align:center;font-size:.68rem;color:#94a3b8;margin-top:.75rem;font-weight:500">&uarr; Tap to try it yourself</div>
   </div>
   <div class="fsims-grid">
 
