@@ -702,8 +702,15 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 
 <!-- APPLY / CV + COVER LETTER WRITER -->
 <div id="page-apply" class="page">
+  <div style="position:relative;height:240px;overflow:hidden;background:#1a1a2e">
+    <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1400&q=80" alt="CV and Cover Letter Writer" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5">
+    <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.75) 0%,rgba(0,0,0,.2) 100%)"></div>
+    <div style="position:relative;z-index:2;max-width:700px;margin:0 auto;padding:3.5rem 2rem 2rem">
+      <h1 style="font-size:2.2rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:.5rem;letter-spacing:-.5px">Build a CV and cover letter</h1>
+      <p style="color:rgba(255,255,255,.85);font-size:.95rem;line-height:1.55">AI tailors a professional CV and writes a cover letter for any NZ job. Edit before you download.</p>
+    </div>
+  </div>
   <div class="wrap">
-    <div style="margin-bottom:1rem"><div class="page-eyebrow">CV and Cover Letter Writer</div><div class="page-title">CV and <em style="font-style:normal;color:var(--em)">Cover Letter</em> Writer</div><div style="color:var(--text2);font-size:.88rem;margin-top:.4rem">AI writes a professional CV and cover letter tailored to any job.</div></div>
     <!-- Tab switcher -->
     <div style="display:flex;gap:.35rem;background:var(--bg3);border:1px solid var(--border);border-radius:999px;padding:3px;margin-bottom:1.5rem;max-width:400px">
       <button type="button" class="results-tab active" id="apply-tab-tailor" onclick="document.getElementById('apply-form-section').style.display='block';document.getElementById('apply-scratch-section').style.display='none';this.classList.add('active');document.getElementById('apply-tab-scratch').classList.remove('active')">Tailor existing CV</button>
