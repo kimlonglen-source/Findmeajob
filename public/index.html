@@ -126,10 +126,10 @@ img{max-width:100%;display:block}
 }
 
 /* Homepage hero — full-bleed photo hero, human-first */
-.hero-photo{position:relative;min-height:620px;background:#0f172a;overflow:hidden;display:flex;align-items:flex-end}
-.hero-photo-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
-.hero-photo-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(15,23,42,.94) 0%,rgba(15,23,42,.6) 55%,rgba(15,23,42,.3) 100%)}
-.hero-photo-content{position:relative;z-index:2;max-width:680px;padding:3.5rem 3rem 4rem;color:#fff}
+.hero-photo{position:relative;min-height:640px;background:#0f172a;overflow:hidden;display:flex;align-items:stretch}
+.hero-photo-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.9}
+.hero-photo-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(15,23,42,.88) 0%,rgba(15,23,42,.72) 45%,rgba(15,23,42,.25) 100%)}
+.hero-photo-content{position:relative;z-index:2;max-width:620px;padding:5rem 3rem 4rem;color:#fff;display:flex;flex-direction:column;justify-content:center}
 .hero-photo-pill{position:absolute;top:2rem;right:2rem;z-index:3;display:inline-flex;align-items:center;gap:.6rem;background:rgba(15,23,42,.7);border:1px solid rgba(255,255,255,.15);color:#fff;padding:.6rem 1.1rem;border-radius:999px;font-size:.78rem;font-weight:600;backdrop-filter:blur(12px)}
 .hero-pill-dot{width:8px;height:8px;border-radius:50%;background:#10b981;box-shadow:0 0 10px rgba(16,185,129,.6);animation:heroPulse 2s ease-in-out infinite;flex-shrink:0}
 @keyframes heroPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
@@ -147,8 +147,9 @@ img{max-width:100%;display:block}
 .hm-cta-ghost{display:inline-block;background:transparent;color:#fff;padding:.8rem 1.6rem;border:1.5px solid rgba(255,255,255,.35);border-radius:999px;font-size:.9rem;font-weight:700;text-decoration:none;transition:all .25s}
 .hm-cta-ghost:hover{border-color:#fff;background:rgba(255,255,255,.08);text-decoration:none}
 @media(max-width:780px){
-  .hero-photo{min-height:500px}
-  .hero-photo-content{padding:2.25rem 1.5rem 2.5rem;max-width:100%}
+  .hero-photo{min-height:560px;align-items:flex-end}
+  .hero-photo-overlay{background:linear-gradient(0deg,rgba(15,23,42,.92) 0%,rgba(15,23,42,.55) 55%,rgba(15,23,42,.1) 100%)}
+  .hero-photo-content{padding:2.25rem 1.5rem 2.5rem;max-width:100%;justify-content:flex-end}
   .hm-text h1,.hm-text h2{font-size:1.75rem}
   .hm-ctas{justify-content:flex-start}
   .hm-text p{font-size:.9rem}
