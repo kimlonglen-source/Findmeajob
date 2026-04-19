@@ -123,6 +123,45 @@ img{max-width:100%;display:block}
   .sec-pad{padding:2rem 1.25rem}
   .showcase-box{padding:1.5rem;border-radius:14px}
   .want-link{font-size:1rem;padding:.75rem 0}
+}
+
+/* Homepage CV-match promo band — scaled-down /match.html hero */
+.hm-band{position:relative;background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 55%,#1a1a2e 100%);overflow:hidden;padding:3.5rem 2rem}
+.hm-band::before{content:'';position:absolute;top:-30%;right:-15%;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.22) 0%,transparent 65%);pointer-events:none}
+.hm-band::after{content:'';position:absolute;bottom:-40%;left:-10%;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.15) 0%,transparent 65%);pointer-events:none}
+.hm-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.15fr .85fr;gap:2.5rem;align-items:center;position:relative;z-index:2}
+.hm-text{color:#fff}
+.hm-badge{display:inline-block;background:rgba(231,81,90,.18);border:1px solid rgba(231,81,90,.35);color:#fca5a5;padding:.3rem .85rem;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:1rem}
+.hm-text h2{font-size:2.2rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:.65rem;letter-spacing:-.5px}
+.hm-text h2 em{font-style:normal;color:#E7515A}
+.hm-text p{font-size:1rem;color:rgba(255,255,255,.82);line-height:1.6;margin-bottom:1.25rem;max-width:460px}
+.hm-feats{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem}
+.hm-feat{display:inline-flex;align-items:center;gap:.45rem;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#fff;padding:.45rem .85rem;border-radius:999px;font-size:.76rem;font-weight:600}
+.hm-feat svg{width:13px;height:13px;color:#E7515A}
+.hm-cta{display:inline-block;background:#E7515A;color:#fff;padding:.85rem 1.75rem;border-radius:999px;font-size:.92rem;font-weight:700;text-decoration:none;box-shadow:0 8px 25px rgba(231,81,90,.35);transition:all .25s}
+.hm-cta:hover{background:#c7313a;transform:translateY(-2px);box-shadow:0 12px 35px rgba(231,81,90,.45);text-decoration:none}
+.hm-viz{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
+.hm-ring-wrap{position:relative;width:170px;height:170px}
+.hm-ring{width:100%;height:100%;transform:rotate(-90deg)}
+.hm-ring-bg{stroke:rgba(255,255,255,.1)}
+.hm-ring-fg{stroke:#E7515A;stroke-linecap:round;transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1),stroke 1.4s}
+.hm-ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2.4rem;font-weight:900;color:#fff;letter-spacing:-1px;text-shadow:0 2px 20px rgba(231,81,90,.4)}
+.hm-ring-glow{position:absolute;inset:-20px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.25) 0%,transparent 60%);animation:hmGlow 3s ease-in-out infinite;pointer-events:none}
+@keyframes hmGlow{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+.hm-role{text-align:center;min-height:46px;transition:opacity .4s}
+.hm-role-title{font-size:.95rem;font-weight:800;color:#fff;margin-bottom:.1rem}
+.hm-role-loc{font-size:.74rem;color:rgba(255,255,255,.6);font-weight:500}
+@media(max-width:780px){
+  .hm-band{padding:2.5rem 1.25rem}
+  .hm-inner{grid-template-columns:1fr;gap:1.5rem}
+  .hm-text h2{font-size:1.55rem}
+  .hm-text p{font-size:.9rem}
+  .hm-viz{order:-1}
+  .hm-ring-wrap{width:130px;height:130px}
+  .hm-ring-pct{font-size:1.85rem}
+  .hm-feat{font-size:.7rem;padding:.4rem .7rem}
+}
+@media(max-width:480px){
   .tool-grid{grid-template-columns:1fr 1fr}
   .tphoto{height:180px}
   .tphoto-title{font-size:.82rem}
@@ -244,6 +283,73 @@ img{max-width:100%;display:block}
   </div>
   <div class="hero-dots" id="heroDots"></div>
 </section>
+
+<!-- Persistent CV-upload promo band — mirrors /match.html hero -->
+<section class="hm-band">
+  <div class="hm-inner">
+    <div class="hm-text">
+      <div class="hm-badge">Free &bull; NZ &bull; No sign-up</div>
+      <h2>AI matches your CV to <em>real NZ jobs</em> in 60 seconds</h2>
+      <p>Upload your CV and AI reads every skill, then finds the live NZ roles you&rsquo;ll actually land. Tailored cover letters, free forever.</p>
+      <div class="hm-feats">
+        <div class="hm-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> PDF or Word</div>
+        <div class="hm-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 60-second match</div>
+        <div class="hm-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> CV never stored</div>
+      </div>
+      <a href="/match.html" class="hm-cta">Upload your CV &rarr;</a>
+    </div>
+    <div class="hm-viz">
+      <div class="hm-ring-wrap">
+        <div class="hm-ring-glow"></div>
+        <svg class="hm-ring" viewBox="0 0 180 180" aria-hidden="true">
+          <circle class="hm-ring-bg" cx="90" cy="90" r="76" fill="none" stroke-width="10"/>
+          <circle id="hm-ring-fg" class="hm-ring-fg" cx="90" cy="90" r="76" fill="none" stroke-width="10" stroke-dasharray="477.5" stroke-dashoffset="477.5"/>
+        </svg>
+        <div class="hm-ring-pct" id="hm-pct">0%</div>
+      </div>
+      <div class="hm-role" id="hm-role">
+        <div class="hm-role-title" id="hm-role-title">Scanning your CV&hellip;</div>
+        <div class="hm-role-loc" id="hm-role-loc">Matching to NZ jobs</div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var jobs=[
+    {pct:92,title:'Registered Nurse',loc:'Auckland \u2022 NZ',color:'#10b981'},
+    {pct:85,title:'Software Engineer',loc:'Wellington \u2022 NZ',color:'#E7515A'},
+    {pct:78,title:'Electrician',loc:'Hamilton \u2022 NZ',color:'#f59e0b'},
+    {pct:88,title:'Primary Teacher',loc:'Christchurch \u2022 NZ',color:'#3b82f6'},
+    {pct:81,title:'Allied Health',loc:'Dunedin \u2022 NZ',color:'#8b5cf6'}
+  ];
+  var CIRC=477.5,ring=document.getElementById('hm-ring-fg'),pctEl=document.getElementById('hm-pct'),titleEl=document.getElementById('hm-role-title'),locEl=document.getElementById('hm-role-loc'),roleEl=document.getElementById('hm-role');
+  if(!ring||!pctEl)return;
+  var i=0;
+  function cycle(){
+    var j=jobs[i%jobs.length];
+    roleEl.style.opacity='0';
+    setTimeout(function(){
+      ring.style.stroke=j.color;
+      ring.style.strokeDashoffset=CIRC-(j.pct/100)*CIRC;
+      titleEl.textContent=j.title;
+      locEl.textContent=j.loc;
+      var t0=performance.now(),dur=1200;
+      function step(t){
+        var p=Math.min(1,(t-t0)/dur);
+        var eased=1-Math.pow(1-p,3);
+        pctEl.textContent=Math.round(j.pct*eased)+'%';
+        if(p<1)requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+      roleEl.style.opacity='1';
+    },400);
+    i++;
+  }
+  cycle();
+  setInterval(cycle,3200);
+})();
+</script>
 
 <!-- "I want to..." section - Monzo style -->
 <section class="sec-pad sec-narrow">
