@@ -121,43 +121,50 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
 <div class="toast" id="toast"></div>
 
 <style>
-.ep-nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 3rem;border-bottom:1px solid rgba(0,0,0,.06);position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);backdrop-filter:blur(12px)}
-.ep-nav-logo{font-size:1.4rem;font-weight:900;color:#E7515A;text-decoration:none;letter-spacing:-.5px}
-.ep-nav-links{display:flex;align-items:center;gap:1.5rem}
-.ep-nav-links a{color:#64748b;font-size:.82rem;font-weight:600;text-decoration:none}
-.ep-nav-links a:hover{color:#0f172a}
-.ep-nav-cta{background:#E7515A !important;color:#fff !important;padding:.45rem 1.15rem;border-radius:999px;font-size:.78rem;font-weight:700}
-.ep-hamburger{display:none;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#64748b;padding:.25rem}
-.ep-mob{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;backdrop-filter:blur(4px)}
-.ep-mob.open{display:flex;align-items:flex-start;justify-content:center;padding-top:0}
-.ep-mob-sheet{background:#fff;width:100%;border-radius:0 0 20px 20px;padding:1.5rem;display:flex;flex-direction:column;gap:.25rem;box-shadow:0 10px 40px rgba(0,0,0,.15)}
-.ep-mob-sheet a{display:block;padding:.85rem 0;border-bottom:1px solid rgba(0,0,0,.06);font-size:.95rem;font-weight:600;color:#0f172a;text-decoration:none}
-.ep-mob-sheet a:last-child{border:none}
-.ep-mob-sheet a.coral{color:#E7515A}
-@media(max-width:700px){
-  .ep-nav{padding:.75rem 1rem}
-  .ep-nav-links a:not(.ep-nav-cta){display:none}
-  .ep-hamburger{display:block}
+/* Canonical nav — mirrors /index.html for cross-page consistency */
+nav.nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 3rem;position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,.06)}
+.nav-logo{font-size:1.4rem;font-weight:900;color:#E7515A;text-decoration:none;letter-spacing:-.5px}
+.nav-logo:hover{text-decoration:none}
+.nav-links{display:flex;align-items:center;gap:2rem}
+.nav-links a{color:#1a1a2e;font-size:.9rem;font-weight:600;text-decoration:none}
+.nav-links a:hover{color:#E7515A}
+.nav-cta{background:#1a1a2e!important;color:#fff!important;padding:.65rem 1.5rem;border-radius:999px;font-size:.85rem;font-weight:700;transition:all .2s;cursor:pointer}
+.nav-cta:hover{background:#E7515A!important}
+.hamburger{display:none;background:none;border:none;font-size:1.4rem;color:#1a1a2e;cursor:pointer}
+.mob-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;backdrop-filter:blur(6px)}
+.mob-overlay.open{display:block}
+.mob-sheet{background:#fff;padding:2rem;position:absolute;top:0;left:0;right:0;border-radius:0 0 20px 20px}
+.mob-sheet a{display:block;padding:1rem 0;font-size:1.1rem;font-weight:600;color:#1a1a2e;text-decoration:none;border-bottom:1px solid #f0f0f0}
+.mob-sheet a:last-child{border:none}
+.mob-sheet a.coral{color:#E7515A}
+@media(max-width:900px){
+  nav.nav{padding:1rem 1.25rem}
+  .nav-links{display:none}
+  .nav-cta{display:inline-block!important;font-size:.72rem!important;padding:.5rem 1rem!important}
+  .nav-links .nav-cta{display:inline-block!important}
+  .hamburger{display:block}
 }
 </style>
-<nav class="ep-nav">
-  <a class="ep-nav-logo" href="/">FindMeAJob</a>
-  <div class="ep-nav-links">
+<nav class="nav">
+  <a class="nav-logo" href="/">FindMeAJob</a>
+  <div class="nav-links">
     <a href="/#tools">Tools</a>
     <a href="/blog">Blog</a>
     <a href="/match.html#account">Job Seekers</a>
     <a href="/employer-portal.html">Employers</a>
-    <a href="/match.html" class="ep-nav-cta">Find a Job</a>
+    <a href="/pricing">Pricing</a>
+    <a href="#tab-register" class="nav-cta" onclick="var r=document.getElementById('tab-register');if(r){r.click();r.scrollIntoView({behavior:'smooth',block:'start'});}">Post a Job</a>
   </div>
-  <button class="ep-hamburger" onclick="document.getElementById('ep-mob').classList.add('open')">&#9776;</button>
+  <button class="hamburger" onclick="document.getElementById('ep-mob').classList.add('open')" aria-label="Menu">&#9776;</button>
 </nav>
-<div class="ep-mob" id="ep-mob" onclick="if(event.target===this)this.classList.remove('open')">
-  <div class="ep-mob-sheet">
+<div class="mob-overlay" id="ep-mob" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="mob-sheet">
     <a href="/#tools" onclick="document.getElementById('ep-mob').classList.remove('open')">Tools</a>
     <a href="/blog">Blog</a>
     <a href="/match.html#account">Job Seekers</a>
     <a href="/employer-portal.html">Employers</a>
-    <a href="/match.html" class="coral">Find a Job</a>
+    <a href="/pricing">Pricing</a>
+    <a href="#tab-register" class="coral" onclick="document.getElementById('ep-mob').classList.remove('open');var r=document.getElementById('tab-register');if(r){r.click();r.scrollIntoView({behavior:'smooth',block:'start'});}">Post a Job</a>
   </div>
 </div>
 
