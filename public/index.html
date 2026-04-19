@@ -125,11 +125,14 @@ img{max-width:100%;display:block}
   .want-link{font-size:1rem;padding:.75rem 0}
 }
 
-/* Homepage hero — single focused hero band (slideshow removed) */
-.hm-band{position:relative;background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 55%,#1a1a2e 100%);overflow:hidden;padding:5.5rem 2rem 5rem;min-height:72vh;display:flex;align-items:center}
-.hm-band::before{content:'';position:absolute;top:-30%;right:-15%;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.22) 0%,transparent 65%);pointer-events:none}
-.hm-band::after{content:'';position:absolute;bottom:-40%;left:-10%;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.15) 0%,transparent 65%);pointer-events:none}
-.hm-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.15fr .85fr;gap:2.5rem;align-items:center;position:relative;z-index:2}
+/* Homepage hero — full-bleed photo hero, human-first */
+.hero-photo{position:relative;min-height:620px;background:#0f172a;overflow:hidden;display:flex;align-items:flex-end}
+.hero-photo-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
+.hero-photo-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(15,23,42,.94) 0%,rgba(15,23,42,.6) 55%,rgba(15,23,42,.3) 100%)}
+.hero-photo-content{position:relative;z-index:2;max-width:680px;padding:3.5rem 3rem 4rem;color:#fff}
+.hero-photo-pill{position:absolute;top:2rem;right:2rem;z-index:3;display:inline-flex;align-items:center;gap:.6rem;background:rgba(15,23,42,.7);border:1px solid rgba(255,255,255,.15);color:#fff;padding:.6rem 1.1rem;border-radius:999px;font-size:.78rem;font-weight:600;backdrop-filter:blur(12px)}
+.hero-pill-dot{width:8px;height:8px;border-radius:50%;background:#10b981;box-shadow:0 0 10px rgba(16,185,129,.6);animation:heroPulse 2s ease-in-out infinite;flex-shrink:0}
+@keyframes heroPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
 .hm-text{color:#fff}
 .hm-badge{display:inline-block;background:rgba(231,81,90,.18);border:1px solid rgba(231,81,90,.35);color:#fca5a5;padding:.3rem .85rem;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:1rem}
 .hm-text h1,.hm-text h2{font-size:2.6rem;font-weight:900;color:#fff;line-height:1.1;margin-bottom:.75rem;letter-spacing:-.6px}
@@ -143,27 +146,14 @@ img{max-width:100%;display:block}
 .hm-cta:hover{background:#c7313a;transform:translateY(-2px);box-shadow:0 12px 35px rgba(231,81,90,.45);text-decoration:none}
 .hm-cta-ghost{display:inline-block;background:transparent;color:#fff;padding:.8rem 1.6rem;border:1.5px solid rgba(255,255,255,.35);border-radius:999px;font-size:.9rem;font-weight:700;text-decoration:none;transition:all .25s}
 .hm-cta-ghost:hover{border-color:#fff;background:rgba(255,255,255,.08);text-decoration:none}
-.hm-viz{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
-.hm-ring-wrap{position:relative;width:170px;height:170px}
-.hm-ring{width:100%;height:100%;transform:rotate(-90deg)}
-.hm-ring-bg{stroke:rgba(255,255,255,.1)}
-.hm-ring-fg{stroke:#E7515A;stroke-linecap:round;transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1),stroke 1.4s}
-.hm-ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2.4rem;font-weight:900;color:#fff;letter-spacing:-1px;text-shadow:0 2px 20px rgba(231,81,90,.4)}
-.hm-ring-glow{position:absolute;inset:-20px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.25) 0%,transparent 60%);animation:hmGlow 3s ease-in-out infinite;pointer-events:none}
-@keyframes hmGlow{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
-.hm-role{text-align:center;min-height:46px;transition:opacity .4s}
-.hm-role-title{font-size:.95rem;font-weight:800;color:#fff;margin-bottom:.1rem}
-.hm-role-loc{font-size:.74rem;color:rgba(255,255,255,.6);font-weight:500}
 @media(max-width:780px){
-  .hm-band{padding:3rem 1.25rem;min-height:0}
-  .hm-inner{grid-template-columns:1fr;gap:1.5rem}
+  .hero-photo{min-height:500px}
+  .hero-photo-content{padding:2.25rem 1.5rem 2.5rem;max-width:100%}
   .hm-text h1,.hm-text h2{font-size:1.75rem}
   .hm-ctas{justify-content:flex-start}
   .hm-text p{font-size:.9rem}
-  .hm-viz{order:-1}
-  .hm-ring-wrap{width:130px;height:130px}
-  .hm-ring-pct{font-size:1.85rem}
   .hm-feat{font-size:.7rem;padding:.4rem .7rem}
+  .hero-photo-pill{top:1rem;right:1rem;font-size:.68rem;padding:.45rem .75rem}
 }
 @media(max-width:480px){
   .tool-grid{grid-template-columns:1fr 1fr}
@@ -274,9 +264,12 @@ img{max-width:100%;display:block}
   </div>
 </div>
 
-<!-- Unified hero — replaces prior photo slideshow + duplicate CV promo -->
-<section class="hm-band">
-  <div class="hm-inner">
+<!-- Photo-first hero — human face of the brand -->
+<section class="hero-photo">
+  <img class="hero-photo-img" src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1600&q=80" alt="" aria-hidden="true">
+  <div class="hero-photo-overlay"></div>
+  <div class="hero-photo-pill"><span class="hero-pill-dot"></span><span>Live &middot; 2,847 NZ jobs matched today</span></div>
+  <div class="hero-photo-content">
     <div class="hm-text">
       <div class="hm-badge">Free &bull; NZ &bull; No sign-up</div>
       <h1>Your free AI <em>career toolkit</em> for New Zealand</h1>
@@ -292,58 +285,8 @@ img{max-width:100%;display:block}
         <a href="#tools" class="hm-cta-ghost">See all 12 tools</a>
       </div>
     </div>
-    <div class="hm-viz">
-      <div class="hm-ring-wrap">
-        <div class="hm-ring-glow"></div>
-        <svg class="hm-ring" viewBox="0 0 180 180" aria-hidden="true">
-          <circle class="hm-ring-bg" cx="90" cy="90" r="76" fill="none" stroke-width="10"/>
-          <circle id="hm-ring-fg" class="hm-ring-fg" cx="90" cy="90" r="76" fill="none" stroke-width="10" stroke-dasharray="477.5" stroke-dashoffset="477.5"/>
-        </svg>
-        <div class="hm-ring-pct" id="hm-pct">0%</div>
-      </div>
-      <div class="hm-role" id="hm-role">
-        <div class="hm-role-title" id="hm-role-title">Scanning your CV&hellip;</div>
-        <div class="hm-role-loc" id="hm-role-loc">Matching to NZ jobs</div>
-      </div>
-    </div>
   </div>
 </section>
-<script>
-(function(){
-  var jobs=[
-    {pct:92,title:'Registered Nurse',loc:'Auckland \u2022 NZ',color:'#10b981'},
-    {pct:85,title:'Software Engineer',loc:'Wellington \u2022 NZ',color:'#E7515A'},
-    {pct:78,title:'Electrician',loc:'Hamilton \u2022 NZ',color:'#f59e0b'},
-    {pct:88,title:'Primary Teacher',loc:'Christchurch \u2022 NZ',color:'#3b82f6'},
-    {pct:81,title:'Allied Health',loc:'Dunedin \u2022 NZ',color:'#8b5cf6'}
-  ];
-  var CIRC=477.5,ring=document.getElementById('hm-ring-fg'),pctEl=document.getElementById('hm-pct'),titleEl=document.getElementById('hm-role-title'),locEl=document.getElementById('hm-role-loc'),roleEl=document.getElementById('hm-role');
-  if(!ring||!pctEl)return;
-  var i=0;
-  function cycle(){
-    var j=jobs[i%jobs.length];
-    roleEl.style.opacity='0';
-    setTimeout(function(){
-      ring.style.stroke=j.color;
-      ring.style.strokeDashoffset=CIRC-(j.pct/100)*CIRC;
-      titleEl.textContent=j.title;
-      locEl.textContent=j.loc;
-      var t0=performance.now(),dur=1200;
-      function step(t){
-        var p=Math.min(1,(t-t0)/dur);
-        var eased=1-Math.pow(1-p,3);
-        pctEl.textContent=Math.round(j.pct*eased)+'%';
-        if(p<1)requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-      roleEl.style.opacity='1';
-    },400);
-    i++;
-  }
-  cycle();
-  setInterval(cycle,3200);
-})();
-</script>
 
 <!-- Built for (niche landing pages) -->
 <section class="sec-pad sec-wide">
@@ -364,6 +307,11 @@ img{max-width:100%;display:block}
     <div class="fsims-eyebrow">Interview prep &bull; Voice AI</div>
     <h2>The interview is where the <em>offer</em> is won or lost.</h2>
     <p>Most hiring decisions are shaped in the first interview. Preparation is the one variable you fully control &mdash; so rehearse with an AI that asks real questions and pushes back on your answers. Free and unlimited.</p>
+  </div>
+
+  <div style="position:relative;height:160px;overflow:hidden;border-radius:14px;margin:2rem 0 0">
+    <img src="https://images.unsplash.com/photo-1573497491208-6b1acb260507?w=1400&q=80" alt="" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55">
+    <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(27,27,58,.7) 0%,rgba(27,27,58,.3) 50%,rgba(27,27,58,.7) 100%)"></div>
   </div>
 
   <div class="fsim-stakes">
@@ -439,30 +387,26 @@ img{max-width:100%;display:block}
 
 <!-- All 12 Tools - Monzo photo card style -->
 <section id="tools" class="sec-pad sec-wide">
-  <h2 style="font-size:2rem;font-weight:900;color:#1a1a2e;margin-bottom:.5rem">12 tools. One career toolkit.</h2>
-  <p style="color:#6b7280;font-size:1rem;margin-bottom:2rem">Everything you need to find, apply for, and land your next NZ job.</p>
+  <h2 style="font-size:2rem;font-weight:900;color:#1a1a2e;margin-bottom:.5rem">Your toolkit</h2>
+  <p style="color:#6b7280;font-size:1rem;margin-bottom:2rem">Four core tools. Eight more for when you need them.</p>
   <div class="tool-grid">
     <a href="/match.html" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Apply for a Job</div><div class="tphoto-desc">AI matches your CV to NZ jobs in 60 seconds</div></div></a>
     <a href="/match.html#apply" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">CV + Cover Letter</div><div class="tphoto-desc">AI tailors both to any job ad</div></div></a>
-    <a href="/score" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">CV Score</div><div class="tphoto-desc">Score out of 100 with specific fixes</div></div></a>
     <a href="/interview-sim" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1553877522-43269d4ea984?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Interview Simulator</div><div class="tphoto-desc">Practice with AI. Get scored out of 100</div></div></a>
-    <a href="/interview" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Interview Questions</div><div class="tphoto-desc">10 likely questions with strong answers</div></div></a>
-    <a href="/decode" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Decode Job Ad</div><div class="tphoto-desc">Translate corporate buzzwords to plain English</div></div></a>
     <a href="/salary" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Salary Calculator</div><div class="tphoto-desc">Know what you should earn in NZ</div></div></a>
-    <a href="/negotiate" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Negotiate Salary</div><div class="tphoto-desc">Word-for-word negotiation scripts</div></div></a>
-    <a href="/compare" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Compare Jobs</div><div class="tphoto-desc">Side-by-side job comparison</div></div></a>
-    <a href="/decide" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Should I Stay or Go?</div><div class="tphoto-desc">AI career health check with salary insight</div></div></a>
-    <a href="/email" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Write This Email</div><div class="tphoto-desc">Professional emails written in seconds</div></div></a>
-    <a href="/practice-sim" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Practice Simulator</div><div class="tphoto-desc">Rehearse resigning, pay rises, negotiations</div></div></a>
   </div>
-</section>
-
-<!-- Simple coral CTA band — single centred action -->
-<section style="background:#E7515A;padding:4rem 2rem;text-align:center">
-  <div style="max-width:640px;margin:0 auto">
-    <h2 style="font-size:2.2rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:.75rem;letter-spacing:-.5px">Ready when you are.</h2>
-    <p style="color:rgba(255,255,255,.88);font-size:1rem;line-height:1.65;margin-bottom:1.75rem">Free forever. No payment. No credit card. Upload your CV and let AI do the rest.</p>
-    <a href="/match.html#match-flow-top" style="display:inline-block;padding:.95rem 2.25rem;background:#fff;color:#E7515A;border-radius:999px;font-size:.95rem;font-weight:700;text-decoration:none;transition:all .2s;box-shadow:0 8px 25px rgba(0,0,0,.12)" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">Upload your CV &rarr;</a>
+  <div style="margin-top:2rem;padding:1.5rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;text-align:center">
+    <div style="font-size:.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:.75rem">Also available</div>
+    <div style="display:flex;flex-wrap:wrap;gap:.5rem 1.25rem;justify-content:center;font-size:.88rem;font-weight:600">
+      <a href="/score" style="color:#1a1a2e;text-decoration:none">CV Score</a>
+      <a href="/interview" style="color:#1a1a2e;text-decoration:none">Interview Questions</a>
+      <a href="/decode" style="color:#1a1a2e;text-decoration:none">Decode Job Ad</a>
+      <a href="/negotiate" style="color:#1a1a2e;text-decoration:none">Negotiate Salary</a>
+      <a href="/compare" style="color:#1a1a2e;text-decoration:none">Compare Jobs</a>
+      <a href="/decide" style="color:#1a1a2e;text-decoration:none">Should I Stay or Go?</a>
+      <a href="/email" style="color:#1a1a2e;text-decoration:none">Write This Email</a>
+      <a href="/practice-sim" style="color:#1a1a2e;text-decoration:none">Practice Simulator</a>
+    </div>
   </div>
 </section>
 
