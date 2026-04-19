@@ -2777,7 +2777,7 @@ async function doResetWithToken(){
   var token=new URLSearchParams(window.location.search).get('reset')||window._resetToken||'';
   var errEl=document.getElementById('reset-err');var okEl=document.getElementById('reset-ok');
   errEl.classList.remove('show');okEl.classList.remove('show');
-  if(!np||np.length<6){errEl.textContent='Password must be at least 8 characters with uppercase, lowercase, number and special character.';errEl.classList.add('show');return;}
+  if(!np||np.length<8||!/[A-Z]/.test(np)||!/[a-z]/.test(np)||!/[0-9]/.test(np)||!/[^A-Za-z0-9]/.test(np)){errEl.textContent='Password must be at least 8 characters with uppercase, lowercase, number and special character.';errEl.classList.add('show');return;}
   if(np!==cp){errEl.textContent='Passwords do not match.';errEl.classList.add('show');return;}
   try{
     var r=await fetch('/api/reset-password',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,token:token,newPassword:np})});

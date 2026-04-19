@@ -213,7 +213,7 @@ nav.nav{display:flex;align-items:center;justify-content:space-between;padding:1.
       <div class="field"><label>Your name *</label><input type="text" id="r-name" placeholder="Jane Smith" autocomplete="name"></div>
       <div class="field"><label>Company name *</label><input type="text" id="r-company" placeholder="Acme Ltd" autocomplete="organization"></div>
       <div class="field"><label>Work email *</label><input type="email" id="r-email" placeholder="jane@acme.co.nz" autocomplete="email"></div>
-      <div class="field"><label>Password *</label><input type="password" id="r-password" placeholder="Min 6 characters" autocomplete="new-password"></div>
+      <div class="field"><label>Password *</label><input type="password" id="r-password" placeholder="Min 8 chars, letter + number + symbol" autocomplete="new-password"><div style="font-size:.7rem;color:var(--text3);margin-top:.35rem;font-weight:500">8+ characters, including an uppercase letter, a lowercase letter, a number and a symbol.</div></div>
       <div class="err" id="reg-err"></div>
       <button class="btn" id="btn-register" type="button" style="margin-top:.5rem">Create Account &#8594;</button>
       <div style="text-align:center;margin-top:.65rem;font-size:.72rem;color:var(--text3)">By registering you agree to our <a href="/terms" style="color:var(--em);font-weight:600;text-decoration:none" target="_blank">Terms</a> and <a href="/privacy" style="color:var(--em);font-weight:600;text-decoration:none" target="_blank">Privacy Policy</a></div>
@@ -492,7 +492,7 @@ async function doRegister() {
   var err = document.getElementById('reg-err');
   err.style.display = 'none';
   if (!name||!company||!email||!password) { err.textContent = 'Please fill in all required fields.'; err.style.display = 'block'; return; }
-  if (password.length<6) { err.textContent = 'Password must be at least 6 characters.'; err.style.display = 'block'; return; }
+  if (password.length<8||!/[A-Z]/.test(password)||!/[a-z]/.test(password)||!/[0-9]/.test(password)||!/[^A-Za-z0-9]/.test(password)) { err.textContent = 'Password needs 8+ chars with uppercase, lowercase, number and symbol.'; err.style.display = 'block'; return; }
   var btn = document.getElementById('btn-register');
   btn.textContent = 'Creating account...'; btn.disabled = true;
   try {
