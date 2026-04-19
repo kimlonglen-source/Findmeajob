@@ -344,46 +344,74 @@ module.exports = async function handler(req, res) {
   }
 
   // GET ?sitemap=1 — dynamic sitemap with blog posts
+  //
+  // Lastmod policy: hard-code real content-change dates for static pages so
+  // Google's recrawl scheduling means something. Only pages whose content
+  // genuinely refreshes (home, match, blog index) get today's date.
+  // Bump PAGES_UPDATED whenever you ship a content change to a static page.
   if (req.query && req.query.sitemap === "1") {
     var smPosts = await getBlogPosts();
     var smToday = new Date().toISOString().split("T")[0];
+    var PAGES_UPDATED = "2026-04-18";
+    var LEGAL_UPDATED = "2026-04-16";
+    var ORIGIN = "https://www.findmeajob.co.nz";
+
+    var urls = [
+      // Tier 1 — dynamic, truly fresh daily
+      { loc: "/",             mod: smToday,       freq: "daily",   pri: "1.0" },
+      { loc: "/match.html",   mod: smToday,       freq: "daily",   pri: "0.9" },
+      { loc: "/blog",         mod: smToday,       freq: "daily",   pri: "0.8" },
+
+      // Tier 2 — hero tools with evolving content
+      { loc: "/interview-sim", mod: PAGES_UPDATED, freq: "weekly",  pri: "0.8" },
+      { loc: "/practice-sim",  mod: PAGES_UPDATED, freq: "weekly",  pri: "0.8" },
+      { loc: "/pricing",       mod: PAGES_UPDATED, freq: "monthly", pri: "0.8" },
+
+      // Tier 3 — niche hubs
+      { loc: "/trades",     mod: PAGES_UPDATED, freq: "monthly", pri: "0.7" },
+      { loc: "/healthcare", mod: PAGES_UPDATED, freq: "monthly", pri: "0.7" },
+      { loc: "/newcomers",  mod: PAGES_UPDATED, freq: "monthly", pri: "0.7" },
+      { loc: "/graduates",  mod: PAGES_UPDATED, freq: "monthly", pri: "0.7" },
+
+      // Tier 4 — individual tool pages (stable, rarely change)
+      { loc: "/score",     mod: PAGES_UPDATED, freq: "yearly", pri: "0.5" },
+      { loc: "/salary",    mod: PAGES_UPDATED, freq: "yearly", pri: "0.5" },
+      { loc: "/interview", mod: PAGES_UPDATED, freq: "yearly", pri: "0.5" },
+      { loc: "/negotiate", mod: PAGES_UPDATED, freq: "yearly", pri: "0.5" },
+      { loc: "/decode",    mod: PAGES_UPDATED, freq: "yearly", pri: "0.5" },
+      { loc: "/compare",   mod: PAGES_UPDATED, freq: "yearly", pri: "0.5" },
+      { loc: "/decide",    mod: PAGES_UPDATED, freq: "yearly", pri: "0.5" },
+      { loc: "/email",     mod: PAGES_UPDATED, freq: "yearly", pri: "0.5" },
+
+      // Tier 4 — sub-niche pages
+      { loc: "/trades/builder",           mod: PAGES_UPDATED, freq: "yearly", pri: "0.5" },
+      { loc: "/trades/electrician",       mod: PAGES_UPDATED, freq: "yearly", pri: "0.5" },
+      { loc: "/trades/plumber",           mod: PAGES_UPDATED, freq: "yearly", pri: "0.5" },
+      { loc: "/trades/mechanic",          mod: PAGES_UPDATED, freq: "yearly", pri: "0.5" },
+      { loc: "/trades/apprentice",        mod: PAGES_UPDATED, freq: "yearly", pri: "0.5" },
+      { loc: "/healthcare/rn",            mod: PAGES_UPDATED, freq: "yearly", pri: "0.5" },
+      { loc: "/healthcare/hca",           mod: PAGES_UPDATED, freq: "yearly", pri: "0.5" },
+      { loc: "/healthcare/midwife",       mod: PAGES_UPDATED, freq: "yearly", pri: "0.5" },
+      { loc: "/healthcare/allied-health", mod: PAGES_UPDATED, freq: "yearly", pri: "0.5" },
+
+      // Employer side — lower priority on a seeker-first sitemap
+      { loc: "/employer-portal.html", mod: PAGES_UPDATED, freq: "monthly", pri: "0.5" },
+
+      // Legal
+      { loc: "/terms",   mod: LEGAL_UPDATED, freq: "yearly", pri: "0.3" },
+      { loc: "/privacy", mod: LEGAL_UPDATED, freq: "yearly", pri: "0.3" },
+    ];
+
     var smXml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/</loc><lastmod>'+smToday+'</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/match.html</loc><lastmod>'+smToday+'</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/interview-sim</loc><lastmod>'+smToday+'</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/blog</loc><lastmod>'+smToday+'</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/score</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/salary</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/interview</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/negotiate</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/decode</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/compare</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/decide</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/email</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/practice-sim</loc><lastmod>'+smToday+'</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/employer-portal.html</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/pricing</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/trades</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/trades/builder</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/trades/electrician</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/trades/plumber</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/trades/mechanic</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/trades/apprentice</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/healthcare</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/healthcare/rn</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/healthcare/hca</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/healthcare/midwife</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/healthcare/allied-health</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/newcomers</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/graduates</loc><lastmod>'+smToday+'</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/terms</loc><lastmod>2026-04-16</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>';
-    smXml += '<url><loc>https://www.findmeajob.co.nz/privacy</loc><lastmod>2026-04-16</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>';
+    urls.forEach(function(u) {
+      smXml += '<url><loc>'+ORIGIN+u.loc+'</loc><lastmod>'+u.mod+'</lastmod><changefreq>'+u.freq+'</changefreq><priority>'+u.pri+'</priority></url>';
+    });
     smPosts.forEach(function(p) {
       var s = makeSlug(p.title);
       /* Convert human date "16 April 2026" to ISO "2026-04-16" */
       var lm = smToday;
       try { var pd = new Date(p.date); if (!isNaN(pd.getTime())) lm = pd.toISOString().split("T")[0]; } catch(e) {}
-      smXml += '<url><loc>https://www.findmeajob.co.nz/blog/'+xmlEsc(s)+'</loc><lastmod>'+lm+'</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>';
+      smXml += '<url><loc>'+ORIGIN+'/blog/'+xmlEsc(s)+'</loc><lastmod>'+lm+'</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>';
     });
     smXml += '</urlset>';
     res.setHeader("Content-Type", "application/xml; charset=utf-8");
