@@ -310,45 +310,136 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 <style>
 .mz{max-width:100%;margin:0 auto;padding-left:3rem;padding-right:3rem}
 @media(max-width:700px){.mz{padding-left:1rem;padding-right:1rem}}
+
+/* Awesome animated hero — mirrors /interview-sim for brand consistency */
+.aw-hero{position:relative;background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 55%,#1a1a2e 100%);overflow:hidden;padding:3rem 2rem 3.5rem;border-radius:20px;margin:.5rem 3rem 0}
+.aw-hero::before{content:'';position:absolute;top:-30%;right:-15%;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.22) 0%,transparent 65%);pointer-events:none}
+.aw-hero::after{content:'';position:absolute;bottom:-40%;left:-10%;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.15) 0%,transparent 65%);pointer-events:none}
+.aw-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.15fr .85fr;gap:2.5rem;align-items:center;position:relative;z-index:2}
+.aw-text{color:#fff}
+.aw-badge{display:inline-block;background:rgba(231,81,90,.18);border:1px solid rgba(231,81,90,.35);color:#fca5a5;padding:.3rem .85rem;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:1rem}
+.aw-text h1{font-size:2.6rem;font-weight:900;color:#fff;line-height:1.1;margin-bottom:.65rem;letter-spacing:-.5px}
+.aw-text h1 em{font-style:normal;color:#E7515A}
+.aw-text .aw-sub{font-size:1.05rem;color:rgba(255,255,255,.82);line-height:1.6;margin-bottom:1.5rem;max-width:480px}
+.aw-feats{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem}
+.aw-feat{display:inline-flex;align-items:center;gap:.45rem;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#fff;padding:.5rem .9rem;border-radius:999px;font-size:.78rem;font-weight:600;backdrop-filter:blur(8px)}
+.aw-feat svg{width:14px;height:14px;color:#E7515A;flex-shrink:0}
+.aw-cta{display:inline-block;background:#E7515A;color:#fff;padding:.85rem 1.75rem;border-radius:999px;font-size:.92rem;font-weight:700;text-decoration:none;box-shadow:0 8px 25px rgba(231,81,90,.35);transition:all .25s;border:none;cursor:pointer;font-family:inherit}
+.aw-cta:hover{background:#c7313a;transform:translateY(-2px);box-shadow:0 12px 35px rgba(231,81,90,.45);text-decoration:none}
+.aw-trust{display:flex;gap:1.25rem;margin-top:1rem;flex-wrap:wrap;align-items:center}
+.aw-trust-item{display:inline-flex;align-items:center;gap:.35rem;font-size:.72rem;color:rgba(255,255,255,.65);font-weight:500}
+.aw-trust-item svg{width:12px;height:12px;color:#10b981}
+.aw-viz{position:relative;height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
+
+/* Percent-ring match animation */
+.mm-ring-wrap{position:relative;width:180px;height:180px}
+.mm-ring{width:100%;height:100%;transform:rotate(-90deg)}
+.mm-ring-bg{stroke:rgba(255,255,255,.1)}
+.mm-ring-fg{stroke:#E7515A;stroke-linecap:round;transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1),stroke 1.4s}
+.mm-ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2.6rem;font-weight:900;color:#fff;letter-spacing:-1px;text-shadow:0 2px 20px rgba(231,81,90,.4)}
+.mm-ring-glow{position:absolute;inset:-20px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.25) 0%,transparent 60%);animation:mmGlow 3s ease-in-out infinite;pointer-events:none}
+@keyframes mmGlow{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+.mm-role{text-align:center;min-height:56px;transition:opacity .4s}
+.mm-role-title{font-size:1rem;font-weight:800;color:#fff;margin-bottom:.15rem}
+.mm-role-loc{font-size:.78rem;color:rgba(255,255,255,.6);font-weight:500}
+.mm-match-pill{display:inline-block;background:rgba(16,185,129,.18);border:1px solid rgba(16,185,129,.35);color:#6ee7b7;padding:.2rem .7rem;border-radius:999px;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:.4rem}
+
+@media(max-width:780px){
+  .aw-hero{padding:2rem 1rem 2.5rem;margin:.5rem 1rem 0;border-radius:16px}
+  .aw-inner{grid-template-columns:1fr;gap:1.5rem}
+  .aw-text h1{font-size:1.85rem}
+  .aw-text .aw-sub{font-size:.92rem}
+  .aw-viz{height:240px;order:-1}
+  .mm-ring-wrap{width:140px;height:140px}
+  .mm-ring-pct{font-size:2rem}
+  .aw-feat{font-size:.72rem;padding:.4rem .75rem}
+}
 </style>
 <div id="page-home" class="page active">
-  <section class="hero">
 
-  <!-- HERO — Full-bleed dark cinematic -->
-  <section style="padding:.5rem 3rem 0">
-    <div style="position:relative;border-radius:20px;overflow:hidden;min-height:85vh;display:flex;align-items:center;justify-content:center;text-align:center;background:linear-gradient(135deg,#0f172a,#1a1a2e)">
-      <div style="position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(231,81,90,.12) 0%,transparent 60%);pointer-events:none;animation:heroGlow 8s ease-in-out infinite"></div>
-      <div style="position:absolute;bottom:-20%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(139,92,246,.08) 0%,transparent 60%);pointer-events:none"></div>
-      <style>@keyframes heroGlow{0%,100%{opacity:.6;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.1)}}</style>
-      <div style="position:relative;z-index:2;padding:3.5rem 2rem;max-width:700px">
-        <h1 style="font-size:clamp(2.4rem,5vw,3.8rem);font-weight:900;color:#fff;line-height:1.05;margin-bottom:1rem;letter-spacing:-1.5px">Upload your CV.<br>Get matched in <span style="color:#E7515A">60 seconds</span>.</h1>
-        <div style="font-size:clamp(1rem,2.5vw,1.3rem);color:rgba(255,255,255,.5);font-weight:600;margin-bottom:.5rem;min-height:1.6em"><span class="typewriter" id="hero-typed" style="color:rgba(255,255,255,.5)">AI-powered NZ job matching</span></div>
-        <p style="font-size:1.05rem;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:2rem;max-width:480px;margin-left:auto;margin-right:auto">AI reads your skills and finds the best NZ jobs for you. Free forever.</p>
-        <button class="btn-hero" id="hero-try" type="button" style="background:#fff;color:#1a1a2e;border:none;padding:1rem 2.5rem;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 30px rgba(255,255,255,.15);transition:all .25s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 40px rgba(255,255,255,.2)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 30px rgba(255,255,255,.15)'">Upload your CV</button>
-        <div style="margin-top:1.5rem;display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;font-size:.78rem;color:rgba(255,255,255,.35);font-weight:500">
-          <span>Free forever</span><span style="color:rgba(255,255,255,.15)">|</span><span>No sign-up required</span><span style="color:rgba(255,255,255,.15)">|</span><span>Your CV is never stored</span>
+  <!-- HERO — two-column, mirrors /interview-sim -->
+  <section class="aw-hero">
+    <div class="aw-inner">
+      <div class="aw-text">
+        <div class="aw-badge">Free &bull; NZ &bull; No sign-up</div>
+        <h1>Your CV matched to <em>real NZ jobs</em> in 60 seconds</h1>
+        <p class="aw-sub">Upload your CV &mdash; AI reads every skill and finds the NZ jobs you&rsquo;ll actually land. Live listings, tailored cover letters, no payment.</p>
+        <div class="aw-feats">
+          <div class="aw-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> PDF, Word or paste</div>
+          <div class="aw-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Matches in 60 seconds</div>
+          <div class="aw-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Live NZ job feed</div>
+          <div class="aw-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Free forever</div>
+          <div class="aw-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> CV never stored</div>
         </div>
-        <!-- Preview mockup — shows what results look like -->
-        <div style="margin-top:2.5rem;display:flex;justify-content:center;gap:.75rem;flex-wrap:wrap">
-          <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:.75rem 1.25rem;backdrop-filter:blur(8px);text-align:left;min-width:200px">
-            <div style="font-size:1.5rem;font-weight:900;color:#10b981;line-height:1">85%</div>
-            <div style="font-size:.78rem;font-weight:700;color:#fff;margin-top:.2rem">Software Developer</div>
-            <div style="font-size:.68rem;color:rgba(255,255,255,.5)">Auckland, NZ</div>
-          </div>
-          <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:.75rem 1.25rem;backdrop-filter:blur(8px);text-align:left;min-width:200px">
-            <div style="font-size:1.5rem;font-weight:900;color:#E7515A;line-height:1">72%</div>
-            <div style="font-size:.78rem;font-weight:700;color:#fff;margin-top:.2rem">Project Manager</div>
-            <div style="font-size:.68rem;color:rgba(255,255,255,.5)">Wellington, NZ</div>
-          </div>
-          <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:.75rem 1.25rem;backdrop-filter:blur(8px);text-align:left;min-width:200px">
-            <div style="font-size:1.5rem;font-weight:900;color:#f59e0b;line-height:1">68%</div>
-            <div style="font-size:.78rem;font-weight:700;color:#fff;margin-top:.2rem">Business Analyst</div>
-            <div style="font-size:.68rem;color:rgba(255,255,255,.5)">Christchurch, NZ</div>
-          </div>
+        <button class="aw-cta" id="hero-try" type="button">Upload your CV &rarr;</button>
+        <div class="aw-trust">
+          <div class="aw-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> No payment</div>
+          <div class="aw-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> No credit card</div>
+          <div class="aw-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Works on mobile</div>
+        </div>
+      </div>
+      <div class="aw-viz">
+        <div class="mm-ring-wrap">
+          <div class="mm-ring-glow"></div>
+          <svg class="mm-ring" viewBox="0 0 180 180" aria-hidden="true">
+            <circle class="mm-ring-bg" cx="90" cy="90" r="76" fill="none" stroke-width="10"/>
+            <circle id="mm-ring-fg" class="mm-ring-fg" cx="90" cy="90" r="76" fill="none" stroke-width="10" stroke-dasharray="477.5" stroke-dashoffset="477.5"/>
+          </svg>
+          <div class="mm-ring-pct" id="mm-pct">0%</div>
+        </div>
+        <div class="mm-role" id="mm-role">
+          <div class="mm-role-title" id="mm-role-title">Scanning your CV&hellip;</div>
+          <div class="mm-role-loc" id="mm-role-loc">Matching to NZ jobs</div>
+          <div class="mm-match-pill">Strong match</div>
         </div>
       </div>
     </div>
   </section>
+  <script>
+  /* Hero percent-ring match cycle */
+  (function(){
+    var jobs=[
+      {pct:92,title:'Registered Nurse',loc:'Auckland Hospital \u2022 NZ',color:'#10b981'},
+      {pct:85,title:'Software Engineer',loc:'Wellington \u2022 NZ',color:'#E7515A'},
+      {pct:78,title:'Electrician',loc:'Hamilton \u2022 NZ',color:'#f59e0b'},
+      {pct:88,title:'Primary Teacher',loc:'Christchurch \u2022 NZ',color:'#3b82f6'},
+      {pct:81,title:'Allied Health',loc:'Dunedin \u2022 NZ',color:'#8b5cf6'}
+    ];
+    var CIRC=477.5;
+    var ring=document.getElementById('mm-ring-fg');
+    var pctEl=document.getElementById('mm-pct');
+    var titleEl=document.getElementById('mm-role-title');
+    var locEl=document.getElementById('mm-role-loc');
+    var roleEl=document.getElementById('mm-role');
+    if(!ring||!pctEl)return;
+    var i=0;
+    function cycle(){
+      var j=jobs[i%jobs.length];
+      roleEl.style.opacity='0';
+      setTimeout(function(){
+        ring.style.stroke=j.color;
+        ring.style.strokeDashoffset=CIRC-(j.pct/100)*CIRC;
+        titleEl.textContent=j.title;
+        locEl.textContent=j.loc;
+        /* Count-up animation on the percent */
+        var start=0,target=j.pct,t0=performance.now(),dur=1200;
+        function step(t){
+          var p=Math.min(1,(t-t0)/dur);
+          var eased=1-Math.pow(1-p,3);
+          pctEl.textContent=Math.round(start+(target-start)*eased)+'%';
+          if(p<1)requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+        roleEl.style.opacity='1';
+      },400);
+      i++;
+    }
+    cycle();
+    setInterval(cycle,3200);
+  })();
+  </script>
+
+  <section class="hero">
 
   <!-- 1-2-3 STEPS — connected horizontal bar -->
   <section style="padding:3.5rem 3rem 0">
