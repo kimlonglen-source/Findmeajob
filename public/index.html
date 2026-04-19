@@ -196,7 +196,15 @@ img{max-width:100%;display:block}
 .fsims-eyebrow{display:inline-block;background:#fef2f2;color:#c7313a;padding:.3rem .85rem;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:.85rem;border:1px solid #fecaca}
 .fsims-head h2{font-size:2.2rem;font-weight:900;color:#1a1a2e;line-height:1.15;margin-bottom:.5rem;letter-spacing:-.5px}
 .fsims-head h2 em{font-style:normal;color:#E7515A}
-.fsims-head p{font-size:.95rem;color:#64748b;max-width:560px;margin:0 auto}
+.fsims-head p{font-size:.95rem;color:#64748b;max-width:620px;margin:0 auto}
+.fsim-stakes{display:grid;grid-template-columns:repeat(3,1fr);gap:1.75rem;max-width:900px;margin:2rem auto 2.5rem;padding:1.25rem 0;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08)}
+.fsim-stake{padding:0 .5rem;position:relative}
+.fsim-stake+.fsim-stake::before{content:'';position:absolute;left:0;top:20%;height:60%;width:1px;background:rgba(255,255,255,.08)}
+.fsim-stake-title{font-size:.92rem;font-weight:800;color:#fff;margin-bottom:.2rem;letter-spacing:-.2px}
+.fsim-stake-sub{font-size:.78rem;color:rgba(255,255,255,.58);line-height:1.5;font-weight:500}
+.fsim-card-primary{background:linear-gradient(160deg,#fff 0%,rgba(231,81,90,.05) 100%);border-color:rgba(231,81,90,.18)}
+.fsim-card-primary::before{background:radial-gradient(circle,rgba(231,81,90,.14) 0%,transparent 70%)}
+.fsim-followup{position:relative;z-index:2;font-size:.7rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:.6rem}
 .fsim-demo-wrap{margin:0 auto 2.5rem;max-width:560px}
 .fsims-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
 .fsim-card{position:relative;overflow:hidden;background:#fff;border:1px solid #e8e8e8;border-radius:24px;padding:2rem;display:flex;flex-direction:column;color:#1a1a2e;text-decoration:none;min-height:360px;transition:all .3s}
@@ -233,6 +241,10 @@ img{max-width:100%;display:block}
   .fsim-orb-wrap{width:56px;height:56px;top:1.25rem;right:1.25rem}
   .fsim-orb svg{width:22px;height:22px}
   .fsim-bubble{max-width:140px;font-size:.68rem;right:1.25rem;bottom:1.25rem}
+  .fsim-stakes{grid-template-columns:1fr;gap:.9rem;margin:1.5rem auto 1.75rem;padding:1rem 0}
+  .fsim-stake+.fsim-stake::before{display:none}
+  .fsim-stake{padding:.6rem 0;border-top:1px solid rgba(255,255,255,.06)}
+  .fsim-stake:first-child{border-top:0;padding-top:0}
 }
 </style>
 <!--NUNITO-LOGO--><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet"><style>.nav-logo,.top-logo,.ch-nav-logo,#logo-home,#h-logo,.logo-text,.fmj-wordmark,a[href="/"][style*="font-weight:900"],a[href="/"][style*="font-weight:800"]{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900;letter-spacing:-.02em}.nav-logo span,.top-logo span,.ch-nav-logo span,.fmj-wordmark span{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900}footer div[style*="#E7515A"][style*="font-weight:900"],footer span[style*="#E7515A"][style*="font-weight:900"]{font-family:"Nunito",system-ui,sans-serif!important;letter-spacing:-.02em}</style></head>
@@ -349,14 +361,29 @@ img{max-width:100%;display:block}
 <section class="fsims-wrap">
 <section class="fsims">
   <div class="fsims-head">
-    <div class="fsims-eyebrow">For job seekers &bull; Voice AI &bull; Free</div>
-    <h2>For when it&rsquo;s your turn to <em>speak</em></h2>
-    <p>You&rsquo;ve got the CV. Now rehearse the conversations that actually land the job &mdash; and the pay rise. Speak out loud. AI pushes back. You walk in ready.</p>
+    <div class="fsims-eyebrow">Interview prep &bull; Voice AI</div>
+    <h2>The interview is where the <em>offer</em> is won or lost.</h2>
+    <p>Most hiring decisions are shaped in the first interview. Preparation is the one variable you fully control &mdash; so rehearse with an AI that asks real questions and pushes back on your answers. Free and unlimited.</p>
+  </div>
+
+  <div class="fsim-stakes">
+    <div class="fsim-stake">
+      <div class="fsim-stake-title">First impressions stick</div>
+      <div class="fsim-stake-sub">Hiring decisions often form inside the first ten minutes of the interview.</div>
+    </div>
+    <div class="fsim-stake">
+      <div class="fsim-stake-title">Practice moves the needle</div>
+      <div class="fsim-stake-sub">Saying answers out loud &mdash; and hearing them &mdash; beats reading them silently.</div>
+    </div>
+    <div class="fsim-stake">
+      <div class="fsim-stake-title">You control the prep</div>
+      <div class="fsim-stake-sub">The interview is the one part of the hunt that&rsquo;s entirely up to you.</div>
+    </div>
   </div>
 
   <div class="fsims-grid">
 
-    <a href="/interview-sim" class="fsim-card">
+    <a href="/interview-sim" class="fsim-card fsim-card-primary">
       <div class="fsim-orb-wrap">
         <div class="fsim-pulse"></div>
         <div class="fsim-pulse" style="animation-delay:.8s"></div>
@@ -364,9 +391,9 @@ img{max-width:100%;display:block}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
         </div>
       </div>
-      <div class="fsim-tag">Interview Simulator</div>
-      <div class="fsim-title">Rehearse the interview. Out loud.</div>
-      <div class="fsim-desc">AI asks real questions for your role. You speak your answers. Recruiter-style score out of 100 with model answers.</div>
+      <div class="fsim-tag">Mock interview</div>
+      <div class="fsim-title">Rehearse the interview that decides your offer</div>
+      <div class="fsim-desc">AI asks real recruiter-style questions for your role. You speak answers out loud. Scored out of 100, with model answers and exactly where you lost points.</div>
 
       <div id="demoChat" class="fsim-chat-embed">
         <div class="fsim-chat-head">
@@ -381,7 +408,7 @@ img{max-width:100%;display:block}
         </div>
       </div>
 
-      <span class="fsim-cta">Start practising <span class="arr">&rarr;</span></span>
+      <span class="fsim-cta">Start a mock interview <span class="arr">&rarr;</span></span>
     </a>
 
     <a href="/practice-sim" class="fsim-card">
@@ -392,9 +419,10 @@ img{max-width:100%;display:block}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
         </div>
       </div>
-      <div class="fsim-tag">Practice simulator</div>
-      <div class="fsim-title">Rehearse the conversations that change your career</div>
-      <div class="fsim-desc">Salary, resigning, pay rise, flexible work, raising concerns. AI pushes back like a real boss. Lands on a real outcome.</div>
+      <div class="fsim-tag">Career conversations</div>
+      <div class="fsim-followup">And once you&rsquo;re in the job &mdash;</div>
+      <div class="fsim-title">Rehearse the conversations that shape your career</div>
+      <div class="fsim-desc">Salary, resigning, pay rises, flexible work, raising concerns. AI pushes back on your arguments so the real conversation lands the outcome you want.</div>
       <div class="fsim-feats">
         <div class="fsim-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Salary</div>
         <div class="fsim-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Resigning</div>
