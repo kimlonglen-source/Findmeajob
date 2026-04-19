@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>/* Run before body renders so the correct page shows without flicker when the URL has a hash like #apply */(function(){var h=(location.hash||'').replace('#','');if(['apply','browse','find','pricing','about','account','employer'].indexOf(h)>-1)document.documentElement.dataset.startPage=h;})();</script>
+<script>/* Run before body renders so the correct page shows without flicker when the URL has a hash like #apply */(function(){var h=(location.hash||'').replace('#','');if(['apply','browse','pricing','about','account','employer'].indexOf(h)>-1)document.documentElement.dataset.startPage=h;})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FindMeAJob.co.nz — AI Job Matching for New Zealand</title>
@@ -63,7 +63,6 @@ nav{position:sticky;top:0;z-index:200;padding:0 2rem;height:64px;display:flex;al
 html[data-start-page] #page-home.page.active{display:none}
 html[data-start-page="apply"] #page-apply{display:block}
 html[data-start-page="browse"] #page-browse{display:block}
-html[data-start-page="find"] #page-find{display:block}
 html[data-start-page="pricing"] #page-pricing{display:block}
 html[data-start-page="about"] #page-about{display:block}
 html[data-start-page="account"] #page-account{display:block}
@@ -439,82 +438,9 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
   })();
   </script>
 
-  <section class="hero">
-
-  <!-- 1-2-3 STEPS — connected horizontal bar -->
-  <section style="padding:3.5rem 3rem 0">
-    <div style="display:flex;align-items:flex-start;justify-content:center;gap:2rem;max-width:700px;margin:0 auto;position:relative">
-      <div style="position:absolute;top:24px;left:calc(16.7% + 30px);right:calc(16.7% + 30px);height:2px;background:linear-gradient(90deg,#E7515A,#10b981,#3b82f6)"></div>
-      <div style="flex:1;text-align:center;position:relative;z-index:1">
-        <div style="width:48px;height:48px;background:#fef2f2;border:2px solid #E7515A;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto .75rem;font-size:1.1rem;font-weight:900;color:#E7515A">1</div>
-        <div style="font-size:.95rem;font-weight:800;color:var(--text);margin-bottom:.25rem">Upload</div>
-        <div style="font-size:.78rem;color:var(--text3);line-height:1.5;font-weight:500">Drop your CV. PDF or Word.</div>
-      </div>
-      <div style="flex:1;text-align:center;position:relative;z-index:1">
-        <div style="width:48px;height:48px;background:#f0fdf4;border:2px solid #10b981;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto .75rem;font-size:1.1rem;font-weight:900;color:#10b981">2</div>
-        <div style="font-size:.95rem;font-weight:800;color:var(--text);margin-bottom:.25rem">Match</div>
-        <div style="font-size:.78rem;color:var(--text3);line-height:1.5;font-weight:500">AI reads your skills and finds NZ jobs.</div>
-      </div>
-      <div style="flex:1;text-align:center;position:relative;z-index:1">
-        <div style="width:48px;height:48px;background:#eff6ff;border:2px solid #3b82f6;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto .75rem;font-size:1.1rem;font-weight:900;color:#3b82f6">3</div>
-        <div style="font-size:.95rem;font-weight:800;color:var(--text);margin-bottom:.25rem">Apply</div>
-        <div style="font-size:.78rem;color:var(--text3);line-height:1.5;font-weight:500">Get a tailored CV and cover letter.</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 3 TOOL CARDS — gradient backgrounds, no stock photos -->
-  <section style="padding:2rem 3rem 0">
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
-      <div style="position:relative;border-radius:24px;overflow:hidden;height:300px;background:linear-gradient(135deg,#E7515A,#c7313a);cursor:pointer;transition:all .3s" onclick="document.getElementById('hero-try').click()" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 20px 40px rgba(231,81,90,.2)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-        <div style="position:absolute;top:-30%;right:-20%;width:300px;height:300px;background:radial-gradient(circle,rgba(255,255,255,.1) 0%,transparent 60%)"></div>
-        <div style="position:absolute;top:1.25rem;right:1.25rem;font-size:.82rem;color:rgba(255,255,255,.6)">&#8594;</div>
-        <div style="position:absolute;bottom:2rem;left:2rem;right:2rem;z-index:2">
-          <h3 style="font-size:1.3rem;font-weight:800;color:#fff;line-height:1.2;margin-bottom:.4rem">AI job matching</h3>
-          <p style="font-size:.82rem;color:rgba(255,255,255,.75);line-height:1.6">Upload your CV and get matched to real NZ jobs instantly.</p>
-        </div>
-      </div>
-      <div style="position:relative;border-radius:24px;overflow:hidden;height:300px;background:linear-gradient(135deg,#1a1a2e,#0f172a);cursor:pointer;transition:all .3s" onclick="showPage('apply')" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 20px 40px rgba(0,0,0,.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-        <div style="position:absolute;top:-30%;right:-20%;width:300px;height:300px;background:radial-gradient(circle,rgba(139,92,246,.1) 0%,transparent 60%)"></div>
-        <div style="position:absolute;top:1.25rem;right:1.25rem;font-size:.82rem;color:rgba(255,255,255,.6)">&#8594;</div>
-        <div style="position:absolute;bottom:2rem;left:2rem;right:2rem;z-index:2">
-          <h3 style="font-size:1.3rem;font-weight:800;color:#fff;line-height:1.2;margin-bottom:.4rem">CV + Cover Letter</h3>
-          <p style="font-size:.82rem;color:rgba(255,255,255,.6);line-height:1.6">AI tailors your CV and writes a cover letter for any job ad.</p>
-        </div>
-      </div>
-      <div style="position:relative;border-radius:24px;overflow:hidden;height:300px;background:linear-gradient(135deg,#8b5cf6,#6d28d9);cursor:pointer;transition:all .3s" onclick="window.location.href='/interview-sim'" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 20px 40px rgba(139,92,246,.2)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-        <div style="position:absolute;top:-30%;right:-20%;width:300px;height:300px;background:radial-gradient(circle,rgba(255,255,255,.08) 0%,transparent 60%)"></div>
-        <div style="position:absolute;top:1.25rem;right:1.25rem;font-size:.82rem;color:rgba(255,255,255,.6)">&#8594;</div>
-        <div style="position:absolute;bottom:2rem;left:2rem;right:2rem;z-index:2">
-          <h3 style="font-size:1.3rem;font-weight:800;color:#fff;line-height:1.2;margin-bottom:.4rem">Interview Simulator</h3>
-          <p style="font-size:.82rem;color:rgba(255,255,255,.6);line-height:1.6">Practice with AI. Get scored out of 100 with feedback.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- EMPLOYER — Coral card -->
-  <section style="padding:1rem 3rem 3rem">
-    <div style="background:#E7515A;border-radius:20px;overflow:hidden;display:flex;align-items:center;flex-wrap:wrap;min-height:260px">
-      <div style="flex:0 0 40%;min-height:260px;position:relative" class="emp-photo"><img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&q=80" alt="Employers" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;opacity:.5"></div>
-      <div style="flex:1;padding:2.5rem 3rem;min-width:300px">
-        <h2 style="font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:.5rem">Post jobs from $0</h2>
-        <p style="color:rgba(255,255,255,.8);font-size:.88rem;line-height:1.7;margin-bottom:1.25rem">Free plan available. Pro and Unlimited plans for featured listings. See pricing.</p>
-        <a href="/employer-portal.html" style="display:inline-block;padding:.65rem 1.4rem;background:#fff;color:#E7515A;border-radius:999px;font-size:.82rem;font-weight:700;text-decoration:none">Post a Job</a>
-      </div>
-    </div>
-  </section>
-
-  <button id="hero-browse" type="button" style="display:none"></button>
-  <button id="cta-find" type="button" style="display:none" onclick="document.getElementById('hero-try').click()"></button>
-  <a id="cta-employer" href="/employer-portal.html" style="display:none"></a>
-
-</div>
-
-<!-- FIND JOBS -->
-<div id="page-find" class="page">
-  <div class="wrap">
-    <div style="margin-bottom:1.5rem;text-align:center">
+  <!-- UPLOAD + MATCH FLOW — moved inline from former #page-find for single-scroll UX -->
+  <div class="wrap" style="padding-top:2.5rem">
+    <div id="match-flow-top" style="margin-bottom:1.5rem;text-align:center">
       <div style="font-size:1.6rem;font-weight:900;color:var(--text);letter-spacing:-.5px;margin-bottom:.35rem">Upload your CV to get matched</div>
       <div style="font-size:.88rem;color:var(--text3);font-weight:500">AI reads your skills and matches you to live NZ jobs. Takes about 15 seconds.</div>
     </div>
@@ -719,6 +645,10 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
       </div>
     </div>
   </div>
+
+  <button id="hero-browse" type="button" style="display:none"></button>
+  <button id="cta-find" type="button" style="display:none" onclick="document.getElementById('hero-try').click()"></button>
+  <a id="cta-employer" href="/employer-portal.html" style="display:none"></a>
 </div>
 
 <!-- APPLY / CV + COVER LETTER WRITER -->
@@ -1129,6 +1059,41 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <button onclick="subscribeAlerts()" style="padding:.75rem 1.5rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;white-space:nowrap">Subscribe</button>
   </div>
 </section>
+
+<!-- Try other tools — compact strip -->
+<section style="background:#fff;padding:2.5rem 2rem;border-top:1px solid #e2e8f0">
+  <div style="max-width:900px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:1.5rem">
+      <div style="font-size:.68rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:.35rem">Try other tools</div>
+      <div style="font-size:1.15rem;font-weight:800;color:#1a1a2e">While you&rsquo;re here</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem" class="tools-strip">
+      <a href="/interview-sim" style="display:block;padding:1rem 1.1rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;text-decoration:none;transition:all .2s" onmouseover="this.style.borderColor='#E7515A';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#e2e8f0';this.style.transform=''">
+        <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.35rem">
+          <div style="width:32px;height:32px;background:rgba(231,81,90,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E7515A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg></div>
+          <div style="font-size:.92rem;font-weight:800;color:#1a1a2e">Interview practice</div>
+        </div>
+        <div style="font-size:.75rem;color:#64748b;line-height:1.5;font-weight:500">Voice AI mock interviews scored out of 100.</div>
+      </a>
+      <a href="/match.html#apply" style="display:block;padding:1rem 1.1rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;text-decoration:none;transition:all .2s" onmouseover="this.style.borderColor='#E7515A';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#e2e8f0';this.style.transform=''">
+        <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.35rem">
+          <div style="width:32px;height:32px;background:rgba(231,81,90,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E7515A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/></svg></div>
+          <div style="font-size:.92rem;font-weight:800;color:#1a1a2e">CV + cover letter</div>
+        </div>
+        <div style="font-size:.75rem;color:#64748b;line-height:1.5;font-weight:500">AI tailors your CV and writes a cover letter.</div>
+      </a>
+      <a href="/employer-portal.html" style="display:block;padding:1rem 1.1rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;text-decoration:none;transition:all .2s" onmouseover="this.style.borderColor='#E7515A';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#e2e8f0';this.style.transform=''">
+        <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.35rem">
+          <div style="width:32px;height:32px;background:rgba(231,81,90,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E7515A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div style="font-size:.92rem;font-weight:800;color:#1a1a2e">Post a job</div>
+        </div>
+        <div style="font-size:.75rem;color:#64748b;line-height:1.5;font-weight:500">Free employer portal. Paid featured listings.</div>
+      </a>
+    </div>
+  </div>
+</section>
+<style>@media(max-width:700px){.tools-strip{grid-template-columns:1fr!important}}</style>
+
 <footer style="background:#1B1B3A;padding:3rem 2rem 1.5rem">
   <div style="max-width:900px;margin:0 auto">
     <div style="font-size:2rem;font-weight:900;color:#E7515A;margin-bottom:1.5rem;letter-spacing:-.5px">FindMeAJob</div>
@@ -1430,7 +1395,7 @@ function stopSkelMessages(){
   var p=document.getElementById('skel-progress');var pc=document.getElementById('skel-pct');var cd=document.getElementById('skel-countdown');
   if(p)p.style.width='100%';if(pc)pc.textContent='100%';if(cd)cd.textContent='0';
 }
-function goFind(){showPage('find');resetFind();}
+function goFind(){showPage('home');resetFind();var t=document.getElementById('match-flow-top');if(t)t.scrollIntoView({behavior:'smooth',block:'start'});}
 function resetFind(){['step-entry','step-cv','step-manual','skeleton','results'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display=id==='step-cv'?'block':'none';});setStep(1);cvFileData=null;cvFileName='';document.getElementById('cv-info').style.display='none';document.getElementById('drop-zone').style.borderColor='';var rp=document.getElementById('reg-prompt');if(rp)rp.style.display='none';}
 function showCV(){document.getElementById('step-entry').style.display='none';document.getElementById('step-cv').style.display='block';setStep(2);}
 function showManual(){document.getElementById('step-entry').style.display='none';document.getElementById('step-manual').style.display='block';setStep(2);}
