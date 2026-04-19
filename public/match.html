@@ -2876,7 +2876,7 @@ function initApp(){try{
   var hash = window.location.hash.replace('#','');
   if(hash === 'employer' || hash === 'post-a-job'){ window.location.href='/employer-portal.html'; }
   else if(hash === 'browse'){ showPage('browse'); loadBrowse(); }
-  else if(hash === 'find'){ goFind(); }
+  else if(hash === 'find' || hash === 'upload' || hash === 'match-flow-top'){ goFind(); }
   else if(hash === 'pricing'){ showPage('pricing'); }
   else if(hash === 'about'){ showPage('about'); }
   else if(hash === 'account'){ showPage('account'); }
