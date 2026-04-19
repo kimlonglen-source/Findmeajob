@@ -125,21 +125,24 @@ img{max-width:100%;display:block}
   .want-link{font-size:1rem;padding:.75rem 0}
 }
 
-/* Homepage CV-match promo band — scaled-down /match.html hero */
-.hm-band{position:relative;background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 55%,#1a1a2e 100%);overflow:hidden;padding:3.5rem 2rem}
+/* Homepage hero — single focused hero band (slideshow removed) */
+.hm-band{position:relative;background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 55%,#1a1a2e 100%);overflow:hidden;padding:5.5rem 2rem 5rem;min-height:72vh;display:flex;align-items:center}
 .hm-band::before{content:'';position:absolute;top:-30%;right:-15%;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.22) 0%,transparent 65%);pointer-events:none}
 .hm-band::after{content:'';position:absolute;bottom:-40%;left:-10%;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.15) 0%,transparent 65%);pointer-events:none}
 .hm-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.15fr .85fr;gap:2.5rem;align-items:center;position:relative;z-index:2}
 .hm-text{color:#fff}
 .hm-badge{display:inline-block;background:rgba(231,81,90,.18);border:1px solid rgba(231,81,90,.35);color:#fca5a5;padding:.3rem .85rem;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:1rem}
-.hm-text h2{font-size:2.2rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:.65rem;letter-spacing:-.5px}
-.hm-text h2 em{font-style:normal;color:#E7515A}
+.hm-text h1,.hm-text h2{font-size:2.6rem;font-weight:900;color:#fff;line-height:1.1;margin-bottom:.75rem;letter-spacing:-.6px}
+.hm-text h1 em,.hm-text h2 em{font-style:normal;color:#E7515A}
 .hm-text p{font-size:1rem;color:rgba(255,255,255,.82);line-height:1.6;margin-bottom:1.25rem;max-width:460px}
 .hm-feats{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem}
 .hm-feat{display:inline-flex;align-items:center;gap:.45rem;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#fff;padding:.45rem .85rem;border-radius:999px;font-size:.76rem;font-weight:600}
 .hm-feat svg{width:13px;height:13px;color:#E7515A}
+.hm-ctas{display:flex;flex-wrap:wrap;gap:.65rem;align-items:center}
 .hm-cta{display:inline-block;background:#E7515A;color:#fff;padding:.85rem 1.75rem;border-radius:999px;font-size:.92rem;font-weight:700;text-decoration:none;box-shadow:0 8px 25px rgba(231,81,90,.35);transition:all .25s}
 .hm-cta:hover{background:#c7313a;transform:translateY(-2px);box-shadow:0 12px 35px rgba(231,81,90,.45);text-decoration:none}
+.hm-cta-ghost{display:inline-block;background:transparent;color:#fff;padding:.8rem 1.6rem;border:1.5px solid rgba(255,255,255,.35);border-radius:999px;font-size:.9rem;font-weight:700;text-decoration:none;transition:all .25s}
+.hm-cta-ghost:hover{border-color:#fff;background:rgba(255,255,255,.08);text-decoration:none}
 .hm-viz{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
 .hm-ring-wrap{position:relative;width:170px;height:170px}
 .hm-ring{width:100%;height:100%;transform:rotate(-90deg)}
@@ -152,9 +155,10 @@ img{max-width:100%;display:block}
 .hm-role-title{font-size:.95rem;font-weight:800;color:#fff;margin-bottom:.1rem}
 .hm-role-loc{font-size:.74rem;color:rgba(255,255,255,.6);font-weight:500}
 @media(max-width:780px){
-  .hm-band{padding:2.5rem 1.25rem}
+  .hm-band{padding:3rem 1.25rem;min-height:0}
   .hm-inner{grid-template-columns:1fr;gap:1.5rem}
-  .hm-text h2{font-size:1.55rem}
+  .hm-text h1,.hm-text h2{font-size:1.75rem}
+  .hm-ctas{justify-content:flex-start}
   .hm-text p{font-size:.9rem}
   .hm-viz{order:-1}
   .hm-ring-wrap{width:130px;height:130px}
@@ -258,52 +262,23 @@ img{max-width:100%;display:block}
   </div>
 </div>
 
-<!-- Hero Slideshow -->
-<section class="hero">
-  <div class="hero-slide active" data-bg="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1400&q=80">
-    <div class="hero-content">
-      <h1>Upload your CV.<br>Get matched in 60 seconds.</h1>
-      <p>AI reads your CV and finds the best NZ jobs for you. No searching, no scrolling. Just results.</p>
-      <a href="/match.html" class="hero-btn">Upload CV — free</a>
-    </div>
-  </div>
-  <div class="hero-slide" data-bg="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1400&q=80">
-    <div class="hero-content">
-      <h1>Free CV and<br>cover letter writer.</h1>
-      <p>Paste the job ad and AI tailors your CV, then writes a cover letter that sounds like you. Takes 60 seconds.</p>
-      <a href="/match.html#apply" class="hero-btn">Write mine — free</a>
-    </div>
-  </div>
-  <div class="hero-slide" data-bg="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1400&q=80">
-    <div class="hero-content">
-      <h1>Practice interviews<br>with AI. Get scored.</h1>
-      <p>A voice-powered AI interviewer asks real questions, listens to your answers, and scores you out of 100.</p>
-      <a href="/interview-sim" class="hero-btn">Try the simulator — free</a>
-    </div>
-  </div>
-  <div class="hero-slide" data-bg="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1400&q=80">
-    <div class="hero-content">
-      <h1>Free for job seekers.<br>Simple pricing for employers.</h1>
-      <p>12 AI career tools for job seekers. Employers post from $0 — Pro and Unlimited plans available.</p>
-      <a href="/pricing" class="hero-btn">View pricing</a>
-    </div>
-  </div>
-  <div class="hero-dots" id="heroDots"></div>
-</section>
-
-<!-- Persistent CV-upload promo band — mirrors /match.html hero -->
+<!-- Unified hero — replaces prior photo slideshow + duplicate CV promo -->
 <section class="hm-band">
   <div class="hm-inner">
     <div class="hm-text">
       <div class="hm-badge">Free &bull; NZ &bull; No sign-up</div>
-      <h2>AI matches your CV to <em>real NZ jobs</em> in 60 seconds</h2>
-      <p>Upload your CV and AI reads every skill, then finds the live NZ roles you&rsquo;ll actually land. Tailored cover letters, free forever.</p>
+      <h1>Your free AI <em>career toolkit</em> for New Zealand</h1>
+      <p>Match your CV to live NZ jobs in 60 seconds. Practice interviews with an AI coach. Write tailored CVs and cover letters. Twelve free tools, built for Kiwis.</p>
       <div class="hm-feats">
-        <div class="hm-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> PDF or Word</div>
-        <div class="hm-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 60-second match</div>
-        <div class="hm-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> CV never stored</div>
+        <div class="hm-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> CV &rarr; live NZ jobs</div>
+        <div class="hm-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg> AI interview practice</div>
+        <div class="hm-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> CV + cover letter</div>
+        <div class="hm-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Free forever</div>
       </div>
-      <a href="/match.html" class="hm-cta">Upload your CV &rarr;</a>
+      <div class="hm-ctas">
+        <a href="/match.html" class="hm-cta">Upload your CV &rarr;</a>
+        <a href="#tools" class="hm-cta-ghost">Explore all tools</a>
+      </div>
     </div>
     <div class="hm-viz">
       <div class="hm-ring-wrap">
@@ -560,27 +535,6 @@ function subscribeAlerts(){
   }).catch(function(){showToast("Network error. Try again.");});
 }
 function showToast(msg){var t=document.getElementById("toast");t.textContent=msg;t.style.display="block";setTimeout(function(){t.style.display="none";},3000);}
-
-/* Hero slideshow */
-var slides=document.querySelectorAll('.hero-slide');
-var dotsBox=document.getElementById('heroDots');
-var currentSlide=0;
-slides.forEach(function(s,i){
-  var bg=s.getAttribute('data-bg');
-  if(bg)s.style.backgroundImage='url('+bg+')';
-  var dot=document.createElement('div');
-  dot.className='hero-dot'+(i===0?' active':'');
-  dot.onclick=function(){goSlide(i);};
-  dotsBox.appendChild(dot);
-});
-function goSlide(n){
-  slides[currentSlide].classList.remove('active');
-  dotsBox.children[currentSlide].classList.remove('active');
-  currentSlide=n;
-  slides[currentSlide].classList.add('active');
-  dotsBox.children[currentSlide].classList.add('active');
-}
-setInterval(function(){goSlide((currentSlide+1)%slides.length);},5000);
 
 /* Interview demo animation */
 function runDemo(){
