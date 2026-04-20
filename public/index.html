@@ -169,11 +169,13 @@ img{max-width:100%;display:block}
 .uc h2 em{font-style:normal;color:#E7515A}
 .uc-sub{color:#64748b;font-size:.95rem;max-width:560px;margin:0 auto 2rem}
 .uc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;text-align:left}
-.uc-card{position:relative;overflow:hidden;background:#fff;border:1px solid #e8e8e8;border-radius:24px;padding:1.75rem;display:flex;flex-direction:column;text-decoration:none;transition:all .3s}
+.uc-card{position:relative;overflow:hidden;background:#fff;border:1px solid #e8e8e8;border-radius:24px;padding:0 1.75rem 1.75rem;display:flex;flex-direction:column;text-decoration:none;transition:all .3s}
 .uc-card:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(231,81,90,.12);border-color:#E7515A;text-decoration:none}
-.uc-card::before{content:'';position:absolute;top:-30%;right:-20%;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.08) 0%,transparent 70%);pointer-events:none}
-.uc-icon{position:relative;z-index:1;width:44px;height:44px;border-radius:14px;background:#fef2f2;border:1px solid #fecaca;display:flex;align-items:center;justify-content:center;margin-bottom:1rem}
-.uc-icon svg{width:22px;height:22px;color:#c7313a}
+.uc-card:hover .uc-photo{transform:scale(1.04)}
+.uc-card::before{content:'';position:absolute;top:-20%;right:-20%;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.08) 0%,transparent 70%);pointer-events:none;z-index:0}
+.uc-photo-wrap{margin:0 -1.75rem 1.25rem;height:160px;overflow:hidden;border-top-left-radius:23px;border-top-right-radius:23px;position:relative}
+.uc-photo{position:absolute;inset:0;width:100%;height:100%;background-size:cover;background-position:center;transition:transform .4s ease}
+.uc-chip{position:absolute;top:.9rem;left:.9rem;z-index:2;display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.95);color:#c7313a;padding:.3rem .7rem;border-radius:999px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;backdrop-filter:blur(6px)}
 .uc-title{position:relative;z-index:1;font-size:1.1rem;font-weight:800;color:#1a1a2e;line-height:1.3;letter-spacing:-.3px;margin-bottom:.55rem}
 .uc-body{position:relative;z-index:1;font-size:.88rem;color:#64748b;line-height:1.55;margin-bottom:1rem;flex:1}
 .uc-link{position:relative;z-index:1;font-size:.82rem;font-weight:700;color:#E7515A;align-self:flex-start}
@@ -295,9 +297,9 @@ img{max-width:100%;display:block}
     </div>
     <div class="heroM-visual">
       <div class="heroM-photo">
-        <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=900&q=80" alt="">
+        <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=900&q=80" alt="">
       </div>
-      <div class="heroM-accent"><span class="heroM-accent-dot"></span>2,847 jobs matched today</div>
+      <div class="heroM-accent"><span class="heroM-accent-dot"></span>Live NZ jobs &middot; Updated daily</div>
       <div class="heroM-card">
         <div class="heroM-card-chip">92% match</div>
         <div class="heroM-card-title">Registered Nurse</div>
@@ -326,28 +328,27 @@ img{max-width:100%;display:block}
 </section>
 
 <!-- Use-case cards: "If this sounds like you..." -->
-<!-- TODO: when real user quotes come in, swap .uc-icon for a 48px .uc-photo, swap .uc-title for the quote, swap .uc-body for "Name · Role · City". -->
 <section class="uc">
   <div class="fsims-eyebrow">If this sounds like you</div>
   <h2>Built around the <em>actual</em> moments you need help.</h2>
   <p class="uc-sub">Not a generic job board. A toolkit sized to what Kiwis are actually up against.</p>
   <div class="uc-grid">
     <a href="/trades" class="uc-card">
-      <div class="uc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
-      <div class="uc-title">You&rsquo;re a sparky coming off a quiet site.</div>
-      <div class="uc-body">Match your ticket and experience to live NZ roles in 60 seconds, generate a cover letter that sounds like you, and practice the site-manager walkthrough before the real interview.</div>
+      <div class="uc-photo-wrap"><div class="uc-photo" style="background-image:url(https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=80)"></div><span class="uc-chip">For tradies</span></div>
+      <div class="uc-title">You&rsquo;re a sparky between sites.</div>
+      <div class="uc-body">Match your ticket to live NZ trades roles in 60 seconds. Get a cover letter that sounds like you. Practice the interview before it happens.</div>
       <div class="uc-link">Start here &rarr;</div>
     </a>
     <a href="/healthcare" class="uc-card">
-      <div class="uc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-      <div class="uc-title">You&rsquo;re a nurse eyeing a DHB move.</div>
-      <div class="uc-body">Line your scope and NZRN status up against live healthcare roles, tighten your CV for ward-specific language, and rehearse behavioural questions with an AI coach before you hand in notice.</div>
+      <div class="uc-photo-wrap"><div class="uc-photo" style="background-image:url(https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=600&q=80)"></div><span class="uc-chip">For healthcare</span></div>
+      <div class="uc-title">You&rsquo;re a nurse ready for a DHB move.</div>
+      <div class="uc-body">Match your scope and NZRN to live healthcare roles. Tighten your CV in the language hiring managers use. Rehearse the interview questions before you hand in notice.</div>
       <div class="uc-link">Start here &rarr;</div>
     </a>
     <a href="/newcomers" class="uc-card">
-      <div class="uc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg></div>
+      <div class="uc-photo-wrap"><div class="uc-photo" style="background-image:url(https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&q=80)"></div><span class="uc-chip">New to NZ</span></div>
       <div class="uc-title">You&rsquo;re new to NZ and the CV feels foreign.</div>
-      <div class="uc-body">Decode what Kiwi employers actually look for, rewrite your CV in the local format and tone, and practice your first interview with someone who won&rsquo;t judge the accent.</div>
+      <div class="uc-body">Learn what Kiwi employers actually look for. Rewrite your CV in the NZ format and tone. Practice your first NZ interview with an AI coach.</div>
       <div class="uc-link">Start here &rarr;</div>
     </a>
   </div>
