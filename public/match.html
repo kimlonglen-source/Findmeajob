@@ -234,14 +234,14 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 .horizon-title span{background:linear-gradient(135deg,#8b5cf6,#ec4899,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .pivot-teaser-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.85rem;margin-bottom:2rem}
 .pivot-teaser-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.4rem 1.1rem;text-align:center;transition:all .4s;cursor:default;overflow:hidden}
-.pivot-teaser-card:hover{border-color:rgba(139,92,246,.3);transform:translateY(-5px);box-shadow:0 20px 40px rgba(139,92,246,.12)}
+.pivot-teaser-card:hover{border-color:rgba(231,81,90,.35);transform:translateY(-5px);box-shadow:0 20px 40px rgba(231,81,90,.14)}
 .btn-horizon{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;padding:.95rem 2.2rem;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.95rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 25px rgba(139,92,246,.25)}
 .btn-horizon:hover{transform:translateY(-2px);box-shadow:0 8px 35px rgba(139,92,246,.35)}
 .results-tab{background:none;border:none;color:var(--text3);font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;padding:.5rem 1.1rem;border-radius:999px;transition:all .2s}
 .results-tab.active{background:linear-gradient(135deg,var(--em),var(--em2));color:#fff}
 .results-tab:hover:not(.active){color:var(--text)}
-.results-tab.pivot-tab{background:linear-gradient(135deg,rgba(139,92,246,.1),rgba(236,72,153,.08));border:1px solid rgba(139,92,246,.2);color:var(--purple)}
-.results-tab.pivot-tab.active{background:linear-gradient(135deg,var(--purple),#ec4899);color:#fff;border-color:transparent}
+.results-tab.pivot-tab{background:linear-gradient(135deg,rgba(231,81,90,.1),rgba(245,158,11,.08));border:1px solid rgba(231,81,90,.25);color:var(--em)}
+.results-tab.pivot-tab.active{background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;border-color:transparent}
 @media(max-width:400px){.pivot-teaser-grid{grid-template-columns:1fr!important}}
 @keyframes resultsReveal{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
 @keyframes statPop{0%{opacity:0;transform:scale(.8)}100%{opacity:1;transform:scale(1)}}
@@ -262,9 +262,9 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 .tier-excellent{background:rgba(231,81,90,.2);color:#E7515A;border:1px solid rgba(231,81,90,.3)}
 .tier-good{background:rgba(52,211,153,.15);color:#34d399;border:1px solid rgba(52,211,153,.25)}
 .tier-fair{background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.25)}
-.pivot-badge{position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;background:linear-gradient(135deg,var(--purple),#ec4899);color:#fff;font-size:.55rem;font-weight:800;border-radius:999px;display:flex;align-items:center;justify-content:center;padding:0 4px;animation:pivotPulse 2s ease-out infinite}
+.pivot-badge{position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;font-size:.55rem;font-weight:800;border-radius:999px;display:flex;align-items:center;justify-content:center;padding:0 4px;animation:pivotPulse 2s ease-out infinite}
 .results-tab{position:relative}
-.pivot-glow{box-shadow:0 0 12px rgba(139,92,246,.3);border-color:rgba(139,92,246,.3)!important}
+.pivot-glow{box-shadow:0 0 12px rgba(231,81,90,.35);border-color:rgba(231,81,90,.35)!important}
 .job-card-animated{animation:cardReveal .4s ease-out both}
 .job-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 @media(max-width:700px){.job-grid{grid-template-columns:1fr}}
@@ -723,13 +723,14 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <div id="job-list"></div>
         <div class="insights" id="insights" style="display:none"><h4>Career Insights</h4><p id="insights-text"></p></div>
         <div id="pivot-teaser" style="display:none">
-          <div style="background:linear-gradient(135deg,rgba(139,92,246,.06),rgba(236,72,153,.04));border:1px solid rgba(139,92,246,.15);border-radius:var(--rl);padding:1rem 1.25rem;margin:.75rem 0;cursor:pointer;transition:all .3s" id="pivot-teaser-card">
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem">
-              <div>
-                <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--purple);margin-bottom:.2rem">Career Pivots Discovered</div>
-                <div style="font-size:.85rem;font-weight:700;color:var(--text)">Your skills could take you somewhere unexpected</div>
+          <div style="background:linear-gradient(135deg,rgba(231,81,90,.08),rgba(245,158,11,.05));border:2px solid rgba(231,81,90,.25);border-radius:var(--rl);padding:1.5rem 1.4rem;margin:1rem 0;cursor:pointer;transition:all .3s;box-shadow:0 4px 20px rgba(231,81,90,.08)" id="pivot-teaser-card" onmouseenter="this.style.transform='translateY(-2px)';this.style.boxShadow='0 10px 30px rgba(231,81,90,.16)'" onmouseleave="this.style.transform='none';this.style.boxShadow='0 4px 20px rgba(231,81,90,.08)'">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+              <div style="flex:1;min-width:240px">
+                <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:1.4px;color:var(--em);margin-bottom:.35rem">&#10024; Not just matches &mdash; pivots too</div>
+                <div style="font-size:1.05rem;font-weight:800;color:var(--text);line-height:1.25;margin-bottom:.25rem">Your skills could unlock a whole new career</div>
+                <div style="font-size:.78rem;color:var(--text2);font-weight:500">AI found surprising roles your experience fits &mdash; with live NZ listings.</div>
               </div>
-              <div style="font-size:1.2rem;color:var(--purple);flex-shrink:0">&#8594;</div>
+              <button type="button" id="pivot-teaser-btn" style="background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;border:none;border-radius:999px;padding:.7rem 1.35rem;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap;box-shadow:0 4px 14px rgba(231,81,90,.25)">See pivots &rarr;</button>
             </div>
           </div>
         </div>
@@ -1637,7 +1638,7 @@ async function analyzeCV(){
   document.getElementById('step-cv').style.display='none';
   document.getElementById('skeleton').style.display='block';
   startSkelMessages();
-  window.scrollTo({top:0,behavior:'smooth'});
+  document.getElementById('skeleton').scrollIntoView({behavior:'smooth',block:'start'});
   setStep(4);
   var region=document.getElementById('cv-region').value;
   _selectedRegion=region;
@@ -1672,7 +1673,7 @@ async function findJobs(){
   var err=document.getElementById('find-err');
   if(!skills.length){err.textContent='Please add at least one skill.';err.classList.add('show');return;}
   err.classList.remove('show');
-  document.getElementById('step-manual').style.display='none';document.getElementById('skeleton').style.display='block';startSkelMessages();setStep(4);window.scrollTo({top:0,behavior:'smooth'});
+  document.getElementById('step-manual').style.display='none';document.getElementById('skeleton').style.display='block';startSkelMessages();setStep(4);document.getElementById('skeleton').scrollIntoView({behavior:'smooth',block:'start'});
   var region=document.getElementById('region').value;
   _selectedRegion=region;
   var prompt='This person has these skills: '+skills.join(', ')+'. Region: '+region+'. Work type: '+document.getElementById('wt').value+'. Experience: '+document.getElementById('exp').value+'. Salary: '+document.getElementById('sal').value+'. Context: '+(document.getElementById('ctx').value.trim()||'none')+'. ONLY suggest jobs that directly use these specific skills. If they have pharmacy skills, suggest pharmacy jobs. If they have coding skills, suggest tech jobs. The reason field must explain which of their listed skills applies to each role. Return ONLY valid JSON: [{"title":"Specific Job","company_type":"","location":"City in '+region+'","match_percent":85,"reason":"Your [specific skill] qualifies you for this","description":"2 sentences.","tags":["skill"],"category":"Industry","seek_query":"2 words"}]';
@@ -1991,7 +1992,7 @@ async function fetchCareerPivots(matches, list) {
 
   // Render into pivots tab
   var pivotSection = document.getElementById('results-pivots');
-  pivotSection.innerHTML = '<div style="text-align:center;padding:2rem 1rem"><div class="dots" style="font-size:1.2rem;color:var(--purple)"></div><div style="font-size:.78rem;color:var(--text3);margin-top:.5rem">Discovering career pivots...</div></div>';
+  pivotSection.innerHTML = '<div style="text-align:center;padding:2rem 1rem"><div class="dots" style="font-size:1.2rem;color:var(--em)"></div><div style="font-size:.78rem;color:var(--text3);margin-top:.5rem">Discovering career pivots...</div></div>';
 
   try {
     var r = await fetch('/api/chat', {
@@ -2019,16 +2020,16 @@ async function fetchCareerPivots(matches, list) {
     var pivotResults = await Promise.all(pivotFetches);
 
     var colors = [
-      {bg:'rgba(139,92,246,.08)',border:'rgba(139,92,246,.2)',accent:'#8b5cf6',glow:'rgba(139,92,246,.15)'},
-      {bg:'rgba(59,130,246,.08)',border:'rgba(59,130,246,.2)',accent:'#3b82f6',glow:'rgba(59,130,246,.15)'},
+      {bg:'rgba(231,81,90,.08)',border:'rgba(231,81,90,.22)',accent:'#E7515A',glow:'rgba(231,81,90,.16)'},
       {bg:'rgba(245,158,11,.08)',border:'rgba(245,158,11,.2)',accent:'#f59e0b',glow:'rgba(245,158,11,.15)'},
-      {bg:'rgba(236,72,153,.08)',border:'rgba(236,72,153,.2)',accent:'#ec4899',glow:'rgba(236,72,153,.15)'}
+      {bg:'rgba(20,184,166,.08)',border:'rgba(20,184,166,.2)',accent:'#14b8a6',glow:'rgba(20,184,166,.15)'},
+      {bg:'rgba(59,130,246,.08)',border:'rgba(59,130,246,.2)',accent:'#3b82f6',glow:'rgba(59,130,246,.15)'}
     ];
 
     var html = '<div style="position:relative;padding:2rem 0">';
     html += '<div style="text-align:center;margin-bottom:1.75rem">';
-    html += '<div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:2px;background:linear-gradient(135deg,var(--purple),#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.5rem">Beyond your horizon</div>';
-    html += '<div style="font-size:1.4rem;font-weight:800;color:var(--text);line-height:1.2">Your skills unlock<br><span style="background:linear-gradient(135deg,var(--purple),#ec4899,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent">unexpected doors</span></div>';
+    html += '<div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:var(--em);margin-bottom:.5rem">Beyond your horizon</div>';
+    html += '<div style="font-size:1.4rem;font-weight:800;color:var(--text);line-height:1.2">Your skills unlock<br><span style="background:linear-gradient(135deg,var(--em),var(--em2),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent">unexpected doors</span></div>';
     html += '<div style="font-size:.78rem;color:var(--text3);margin-top:.5rem;font-weight:500;max-width:400px;margin-left:auto;margin-right:auto">AI-discovered career pivots with live NZ job listings</div>';
     html += '</div>';
     html += '<div class="pivot-grid" style="display:grid;grid-template-columns:1fr;gap:.75rem">';
