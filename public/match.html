@@ -29,8 +29,8 @@
 <link rel="manifest" href="/site.webmanifest">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f8fafc;--bg2:#f1f5f9;--bg3:rgba(0,0,0,.03);--bg4:rgba(0,0,0,.04);--text:#0f172a;--text2:#475569;--text3:#94a3b8;--em:#FF4F40;--em2:#c7313a;--em3:rgba(231,81,90,.08);--gold:#b45309;--purple:#8b5cf6;--border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.12);--card:rgba(255,255,255,.8);--inp:rgba(0,0,0,.04);--hdr:rgba(255,255,255,.95);--r:12px;--rl:20px;--glow:0 4px 25px rgba(231,81,90,.15)}
-body.dark{--bg:#09090b;--bg2:#0f172a;--bg3:rgba(255,255,255,.04);--text:#f8fafc;--text2:#b0b8c4;--text3:#8891a0;--em:#FF4F40;--em2:#14b8a6;--em3:rgba(231,81,90,.08);--gold:#f59e0b;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--card:rgba(255,255,255,.03);--inp:rgba(255,255,255,.05);--hdr:rgba(9,9,11,.8)}
+:root{--bg:#f8fafc;--bg2:#f1f5f9;--bg3:rgba(0,0,0,.03);--bg4:rgba(0,0,0,.04);--text:#0f172a;--text2:#475569;--text3:#94a3b8;--em:#E7515A;--em2:#c7313a;--em3:rgba(231,81,90,.08);--gold:#b45309;--purple:#8b5cf6;--border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.12);--card:rgba(255,255,255,.8);--inp:rgba(0,0,0,.04);--hdr:rgba(255,255,255,.95);--r:12px;--rl:20px;--glow:0 4px 25px rgba(231,81,90,.15)}
+body.dark{--bg:#09090b;--bg2:#0f172a;--bg3:rgba(255,255,255,.04);--text:#f8fafc;--text2:#b0b8c4;--text3:#8891a0;--em:#E7515A;--em2:#14b8a6;--em3:rgba(231,81,90,.08);--gold:#f59e0b;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--card:rgba(255,255,255,.03);--inp:rgba(255,255,255,.05);--hdr:rgba(9,9,11,.8)}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth;overflow-x:hidden}
 body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;overflow-x:hidden;line-height:1.6;font-size:15px}
@@ -40,9 +40,9 @@ nav.nav{display:flex;align-items:center;justify-content:space-between;padding:1.
 .nav-logo:hover{text-decoration:none}
 .nav-links{display:flex;align-items:center;gap:2rem}
 .nav-links a,.nav-links button{color:#1a1a2e;font-size:.9rem;font-weight:600;text-decoration:none;background:none;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;padding:0}
-.nav-links a:hover,.nav-links button:hover{color:#FF4F40;text-decoration:none}
+.nav-links a:hover,.nav-links button:hover{color:#E7515A;text-decoration:none}
 .nav-cta{background:#1a1a2e!important;color:#fff!important;padding:.65rem 1.5rem!important;border-radius:999px!important;font-size:.85rem!important;font-weight:700!important;transition:all .2s}
-.nav-cta:hover{background:#FF4F40!important}
+.nav-cta:hover{background:#E7515A!important}
 .hamburger-btn{display:none;background:none;border:none;font-size:1.4rem;color:#1a1a2e;cursor:pointer}
 @media(max-width:900px){
   nav.nav{padding:1rem 1.25rem}
@@ -112,7 +112,7 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
 .step-dash{flex:1;height:1px;background:var(--border);max-width:40px}
 .job-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:1.75rem;display:grid;grid-template-columns:1fr auto;gap:1.25rem;margin-bottom:1rem;position:relative;overflow:hidden;transition:all .25s}
 .job-card:hover{border-color:rgba(231,81,90,.15);transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,0,0,.06)}
-.job-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:#FF4F40;transform:scaleY(0);transform-origin:bottom;transition:transform .25s}
+.job-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:#E7515A;transform:scaleY(0);transform-origin:bottom;transition:transform .25s}
 .job-card:hover::before{transform:scaleY(1)}
 .job-card.featured{border-color:rgba(245,158,11,.15);background:linear-gradient(135deg,var(--card),rgba(245,158,11,.02))}
 .job-card.featured::before{background:#f59e0b;transform:scaleY(1)}
@@ -132,7 +132,7 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
 .job-link.apply{background:linear-gradient(135deg,var(--em),var(--em2));border-color:transparent;color:#fff;box-shadow:0 2px 10px rgba(231,81,90,.2)}
 .job-link.apply:hover{box-shadow:0 4px 15px rgba(231,81,90,.3);transform:translateY(-1px)}
 .match-col{text-align:right;flex-shrink:0}
-.match-pct{font-size:2.2rem;font-weight:800;color:#FF4F40;line-height:1}
+.match-pct{font-size:2.2rem;font-weight:800;color:#E7515A;line-height:1}
 .match-lbl{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text3)}
 .insights{background:#f0fdf4;border:1px solid rgba(16,185,129,.15);border-radius:20px;padding:1.75rem;margin:1rem 0}
 .insights h4{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#10b981;margin-bottom:.6rem}
@@ -169,8 +169,8 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
 .dot{width:6px;height:6px;background:var(--em);border-radius:50%;animation:pulse 2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
 .hero h1{font-size:2.6rem;line-height:1.15;font-weight:900;letter-spacing:-.5px;margin-bottom:.75rem}
-.hero h1 em{font-style:normal;color:#FF4F40}
-.typewriter{display:inline;border-right:3px solid #FF4F40;animation:blink .6s step-end infinite;min-height:1.1em;min-width:1px;vertical-align:baseline;color:#FF4F40}
+.hero h1 em{font-style:normal;color:#E7515A}
+.typewriter{display:inline;border-right:3px solid #E7515A;animation:blink .6s step-end infinite;min-height:1.1em;min-width:1px;vertical-align:baseline;color:#E7515A}
 @keyframes blink{50%{border-color:transparent}}
 .hero-sub{color:var(--text2);font-size:1.05rem;line-height:1.7;max-width:520px;margin:0 auto 1.5rem;font-weight:500}
 .hero-ctas{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem}
@@ -259,7 +259,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 .rh-lbl{font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.5);margin-top:.3rem}
 .rh-divider{width:1px;height:40px;background:rgba(255,255,255,.15)}
 .rh-tier{font-size:1rem;font-weight:800;padding:.35rem .85rem;border-radius:999px;line-height:1.2}
-.tier-excellent{background:rgba(231,81,90,.2);color:#FF4F40;border:1px solid rgba(231,81,90,.3)}
+.tier-excellent{background:rgba(231,81,90,.2);color:#E7515A;border:1px solid rgba(231,81,90,.3)}
 .tier-good{background:rgba(52,211,153,.15);color:#34d399;border:1px solid rgba(52,211,153,.25)}
 .tier-fair{background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.25)}
 .pivot-badge{position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;background:linear-gradient(135deg,var(--purple),#ec4899);color:#fff;font-size:.55rem;font-weight:800;border-radius:999px;display:flex;align-items:center;justify-content:center;padding:0 4px;animation:pivotPulse 2s ease-out infinite}
@@ -269,7 +269,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 .job-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 @media(max-width:700px){.job-grid{grid-template-columns:1fr}}
 </style>
-<!--NUNITO-LOGO--><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet"><style>.nav-logo,.top-logo,.ch-nav-logo,#logo-home,#h-logo,.logo-text,.fmj-wordmark,a[href="/"][style*="font-weight:900"],a[href="/"][style*="font-weight:800"]{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900;letter-spacing:-.02em}.nav-logo span,.top-logo span,.ch-nav-logo span,.fmj-wordmark span{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900}footer div[style*="#FF4F40"][style*="font-weight:900"],footer span[style*="#FF4F40"][style*="font-weight:900"]{font-family:"Nunito",system-ui,sans-serif!important;letter-spacing:-.02em}</style><link rel="stylesheet" href="/css/monzo.css">
+<!--NUNITO-LOGO--><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet"><style>.nav-logo,.top-logo,.ch-nav-logo,#logo-home,#h-logo,.logo-text,.fmj-wordmark,a[href="/"][style*="font-weight:900"],a[href="/"][style*="font-weight:800"]{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900;letter-spacing:-.02em}.nav-logo span,.top-logo span,.ch-nav-logo span,.fmj-wordmark span{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900}footer div[style*="#E7515A"][style*="font-weight:900"],footer span[style*="#E7515A"][style*="font-weight:900"]{font-family:"Nunito",system-ui,sans-serif!important;letter-spacing:-.02em}</style><link rel="stylesheet" href="/css/monzo.css">
 </head>
 <body>
 <div class="toast" id="toast"></div>
@@ -281,7 +281,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <a class="mnavitem" href="/blog">Blog</a>
     <a class="mnavitem" href="/employer-portal.html">Post a Job</a>
     <a class="mnavitem" href="/employer-portal.html">Employer Login</a>
-    <a class="mnavitem" href="/match.html" style="color:#FF4F40;font-weight:700">Find a Job</a>
+    <a class="mnavitem" href="/match.html" style="color:#E7515A;font-weight:700">Find a Job</a>
     <button class="mnavitem" id="mm-apply" type="button">Apply for a Job</button>
     <button class="mnavitem" id="mm-home" type="button" style="display:none">Home</button>
     <button class="mnavitem" id="mm-find" type="button" style="display:none">Find a Job</button>
@@ -322,12 +322,12 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 .aw-text{color:#fff}
 .aw-badge{display:inline-block;background:rgba(231,81,90,.18);border:1px solid rgba(231,81,90,.35);color:#fca5a5;padding:.3rem .85rem;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:1rem}
 .aw-text h1{font-size:2.6rem;font-weight:900;color:#fff;line-height:1.1;margin-bottom:.65rem;letter-spacing:-.5px}
-.aw-text h1 em{font-style:normal;color:#FF4F40}
+.aw-text h1 em{font-style:normal;color:#E7515A}
 .aw-text .aw-sub{font-size:1.05rem;color:rgba(255,255,255,.82);line-height:1.6;margin-bottom:1.5rem;max-width:480px}
 .aw-feats{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem}
 .aw-feat{display:inline-flex;align-items:center;gap:.45rem;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#fff;padding:.5rem .9rem;border-radius:999px;font-size:.78rem;font-weight:600;backdrop-filter:blur(8px)}
-.aw-feat svg{width:14px;height:14px;color:#FF4F40;flex-shrink:0}
-.aw-cta{display:inline-block;background:#FF4F40;color:#fff;padding:.85rem 1.75rem;border-radius:999px;font-size:.92rem;font-weight:700;text-decoration:none;box-shadow:0 8px 25px rgba(231,81,90,.35);transition:all .25s;border:none;cursor:pointer;font-family:inherit}
+.aw-feat svg{width:14px;height:14px;color:#E7515A;flex-shrink:0}
+.aw-cta{display:inline-block;background:#E7515A;color:#fff;padding:.85rem 1.75rem;border-radius:999px;font-size:.92rem;font-weight:700;text-decoration:none;box-shadow:0 8px 25px rgba(231,81,90,.35);transition:all .25s;border:none;cursor:pointer;font-family:inherit}
 .aw-cta:hover{background:#c7313a;transform:translateY(-2px);box-shadow:0 12px 35px rgba(231,81,90,.45);text-decoration:none}
 .aw-trust{display:flex;gap:1.25rem;margin-top:1rem;flex-wrap:wrap;align-items:center}
 .aw-trust-item{display:inline-flex;align-items:center;gap:.35rem;font-size:.72rem;color:rgba(255,255,255,.65);font-weight:500}
@@ -348,17 +348,17 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 .mph-eb{font-size:.54rem;font-weight:800;color:#c7313a;text-transform:uppercase;letter-spacing:1.3px;margin-bottom:.25rem}
 .mph-t{font-size:.95rem;font-weight:900;color:#1a1a2e;line-height:1.15;letter-spacing:-.3px;margin-bottom:.6rem}
 /* Upload step */
-.mph-drop{flex:1;border:2px dashed #FF4F40;border-radius:14px;background:rgba(255,79,64,.06);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.8rem .55rem;text-align:center;gap:.3rem}
-.mph-drop-icon{width:36px;height:36px;border-radius:50%;background:#FF4F40;color:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:.2rem}
+.mph-drop{flex:1;border:2px dashed #E7515A;border-radius:14px;background:rgba(231,81,90,.06);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.8rem .55rem;text-align:center;gap:.3rem}
+.mph-drop-icon{width:36px;height:36px;border-radius:50%;background:#E7515A;color:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:.2rem}
 .mph-drop-text{font-size:.72rem;font-weight:800;color:#1a1a2e}
 .mph-drop-sub{font-size:.56rem;color:#64748b;line-height:1.35}
 .mph-drop-bar{width:82%;height:5px;background:#fecaca;border-radius:999px;overflow:hidden;margin-top:.4rem}
-.mph-drop-bar-fill{height:100%;background:#FF4F40;border-radius:999px;animation:mphFill 3.5s ease-in-out infinite}
+.mph-drop-bar-fill{height:100%;background:#E7515A;border-radius:999px;animation:mphFill 3.5s ease-in-out infinite}
 @keyframes mphFill{0%{width:8%}100%{width:92%}}
 .mph-drop-pct{font-size:.58rem;color:#c7313a;font-weight:800;margin-top:.1rem}
 /* Match step */
 .mph-analysing{display:flex;align-items:center;gap:.35rem;font-size:.6rem;color:#64748b;font-weight:700;margin-bottom:.4rem}
-.mph-pulse{width:7px;height:7px;background:#FF4F40;border-radius:50%;animation:mphPulse 1s ease-in-out infinite}
+.mph-pulse{width:7px;height:7px;background:#E7515A;border-radius:50%;animation:mphPulse 1s ease-in-out infinite}
 @keyframes mphPulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
 .mph-list{display:flex;flex-direction:column;gap:.3rem;flex:1}
 .mph-card{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:.5rem .6rem;display:flex;flex-direction:column;gap:.15rem;box-shadow:0 4px 12px rgba(15,23,42,.04)}
@@ -373,7 +373,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 .mph-pivot-from{background:#1a1a2e;color:#fff;border-radius:12px;padding:.5rem .6rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:.35rem}
 .mph-pivot-from-label{font-size:.48rem;color:rgba(255,255,255,.55);font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:.1rem}
 .mph-pivot-from-role{font-size:.72rem;font-weight:900;color:#fff;line-height:1.1}
-.mph-pivot-arrow{text-align:center;color:#FF4F40;font-size:.85rem;font-weight:900;line-height:1;margin:.1rem 0}
+.mph-pivot-arrow{text-align:center;color:#E7515A;font-size:.85rem;font-weight:900;line-height:1;margin:.1rem 0}
 .mph-pivot-arrow span{display:inline-block;animation:mphArrow 1.6s ease-in-out infinite}
 @keyframes mphArrow{0%,100%{transform:translateY(-2px)}50%{transform:translateY(3px)}}
 .mph-pivot-list{display:flex;flex-direction:column;gap:.25rem}
@@ -400,7 +400,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 @keyframes skAura{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
 .sk-ring{width:100%;height:100%;transform:rotate(-90deg)}
 .sk-ring-bg{stroke:rgba(255,255,255,.1)}
-.sk-ring-fg{stroke:#FF4F40;stroke-linecap:round;transition:stroke-dashoffset .6s cubic-bezier(.4,0,.2,1)}
+.sk-ring-fg{stroke:#E7515A;stroke-linecap:round;transition:stroke-dashoffset .6s cubic-bezier(.4,0,.2,1)}
 .sk-ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:900;color:#fff;letter-spacing:-1px;font-family:'Plus Jakarta Sans',sans-serif;text-shadow:0 2px 20px rgba(231,81,90,.4)}
 .sk-status{position:relative;z-index:2;font-size:1.05rem;font-weight:800;color:#fff;margin-bottom:.35rem;letter-spacing:-.3px;transition:opacity .3s}
 .sk-detail{position:relative;z-index:2;font-size:.85rem;font-weight:500;color:rgba(255,255,255,.72);margin-bottom:1.5rem;line-height:1.5;transition:opacity .3s}
@@ -408,7 +408,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 .sk-step{display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.55);padding:.4rem .8rem;border-radius:999px;font-size:.72rem;font-weight:700;transition:all .35s}
 .sk-step-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.3);transition:all .35s}
 .sk-step-active{background:rgba(231,81,90,.2);border-color:rgba(231,81,90,.45);color:#fff}
-.sk-step-active .sk-step-dot{background:#FF4F40;box-shadow:0 0 10px rgba(231,81,90,.6);animation:skPulse 1.2s ease-in-out infinite}
+.sk-step-active .sk-step-dot{background:#E7515A;box-shadow:0 0 10px rgba(231,81,90,.6);animation:skPulse 1.2s ease-in-out infinite}
 .sk-step-done{background:rgba(16,185,129,.15);border-color:rgba(16,185,129,.4);color:#6ee7b7}
 .sk-step-done .sk-step-dot{background:#10b981}
 @keyframes skPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
@@ -700,7 +700,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <div class="results-hero">
           <div class="results-hero-glow"></div>
           <div style="display:inline-block;background:rgba(231,81,90,.18);border:1px solid rgba(231,81,90,.35);padding:.3rem .85rem;border-radius:999px;font-size:.68rem;font-weight:700;color:#fca5a5;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:.85rem">&#10003; Analysis complete</div>
-          <div style="font-size:1.6rem;font-weight:900;color:#fff;letter-spacing:-.5px;line-height:1.2">Nice work &mdash; here are <span style="color:#FF4F40">your best NZ matches</span></div>
+          <div style="font-size:1.6rem;font-weight:900;color:#fff;letter-spacing:-.5px;line-height:1.2">Nice work &mdash; here are <span style="color:#E7515A">your best NZ matches</span></div>
           <div class="results-hero-stats">
             <div class="rh-stat"><div class="rh-val" id="rh-jobs">0</div><div class="rh-lbl">Jobs Found</div></div>
             <div class="rh-divider"></div>
@@ -1161,7 +1161,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
   </div>
 </div>
 
-<section style="background:#FF4F40;padding:0;margin-top:2rem">
+<section style="background:#E7515A;padding:0;margin-top:2rem">
   <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;gap:3rem;padding:3rem 2rem">
     <div style="flex:1">
       <h2 style="font-size:1.8rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:.75rem">Explore all 12 tools</h2>
@@ -1176,7 +1176,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
   <p style="color:#6b7280;font-size:.9rem;margin-bottom:1.25rem">Real jobs from Adzuna delivered every Monday. Free.</p>
   <div style="display:flex;gap:.5rem;max-width:420px;margin:0 auto">
     <input type="email" id="alert-email" placeholder="your@email.com" style="flex:1;padding:.75rem 1rem;border:1px solid #e0e0e0;border-radius:999px;font-family:inherit;font-size:.9rem;outline:none;color:#1a1a2e">
-    <button onclick="subscribeAlerts()" style="padding:.75rem 1.5rem;background:#FF4F40;color:#fff;border:none;border-radius:999px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;white-space:nowrap">Subscribe</button>
+    <button onclick="subscribeAlerts()" style="padding:.75rem 1.5rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;white-space:nowrap">Subscribe</button>
   </div>
 </section>
 
@@ -1184,27 +1184,27 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 <section style="background:#fff;padding:2.5rem 2rem;border-top:1px solid #e2e8f0">
   <div style="max-width:900px;margin:0 auto">
     <div style="text-align:center;margin-bottom:1.5rem">
-      <div style="font-size:.68rem;font-weight:700;color:#FF4F40;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:.35rem">Try other tools</div>
+      <div style="font-size:.68rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:.35rem">Try other tools</div>
       <div style="font-size:1.15rem;font-weight:800;color:#1a1a2e">While you&rsquo;re here</div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem" class="tools-strip">
-      <a href="/interview-sim" style="display:block;padding:1rem 1.1rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;text-decoration:none;transition:all .2s" onmouseover="this.style.borderColor='#FF4F40';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#e2e8f0';this.style.transform=''">
+      <a href="/interview-sim" style="display:block;padding:1rem 1.1rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;text-decoration:none;transition:all .2s" onmouseover="this.style.borderColor='#E7515A';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#e2e8f0';this.style.transform=''">
         <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.35rem">
-          <div style="width:32px;height:32px;background:rgba(231,81,90,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF4F40" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg></div>
+          <div style="width:32px;height:32px;background:rgba(231,81,90,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E7515A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg></div>
           <div style="font-size:.92rem;font-weight:800;color:#1a1a2e">Interview practice</div>
         </div>
         <div style="font-size:.75rem;color:#64748b;line-height:1.5;font-weight:500">Voice AI mock interviews scored out of 100.</div>
       </a>
-      <a href="/match.html#apply" style="display:block;padding:1rem 1.1rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;text-decoration:none;transition:all .2s" onmouseover="this.style.borderColor='#FF4F40';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#e2e8f0';this.style.transform=''">
+      <a href="/match.html#apply" style="display:block;padding:1rem 1.1rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;text-decoration:none;transition:all .2s" onmouseover="this.style.borderColor='#E7515A';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#e2e8f0';this.style.transform=''">
         <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.35rem">
-          <div style="width:32px;height:32px;background:rgba(231,81,90,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF4F40" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/></svg></div>
+          <div style="width:32px;height:32px;background:rgba(231,81,90,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E7515A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/></svg></div>
           <div style="font-size:.92rem;font-weight:800;color:#1a1a2e">CV + cover letter</div>
         </div>
         <div style="font-size:.75rem;color:#64748b;line-height:1.5;font-weight:500">AI tailors your CV and writes a cover letter.</div>
       </a>
-      <a href="/employer-portal.html" style="display:block;padding:1rem 1.1rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;text-decoration:none;transition:all .2s" onmouseover="this.style.borderColor='#FF4F40';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#e2e8f0';this.style.transform=''">
+      <a href="/employer-portal.html" style="display:block;padding:1rem 1.1rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;text-decoration:none;transition:all .2s" onmouseover="this.style.borderColor='#E7515A';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#e2e8f0';this.style.transform=''">
         <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.35rem">
-          <div style="width:32px;height:32px;background:rgba(231,81,90,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF4F40" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div style="width:32px;height:32px;background:rgba(231,81,90,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E7515A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
           <div style="font-size:.92rem;font-weight:800;color:#1a1a2e">Post a job</div>
         </div>
         <div style="font-size:.75rem;color:#64748b;line-height:1.5;font-weight:500">Free employer portal. Paid featured listings.</div>
@@ -1221,11 +1221,11 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 .nowwhat-sub{font-size:.92rem;color:#64748b;margin-bottom:1.75rem}
 .nowwhat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
 .nowwhat-card{display:flex;flex-direction:column;background:#fff;border:1px solid #e8e8e8;border-radius:18px;padding:1.4rem;text-decoration:none;transition:all .25s;color:inherit}
-.nowwhat-card:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(231,81,90,.1);border-color:#FF4F40;text-decoration:none}
+.nowwhat-card:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(231,81,90,.1);border-color:#E7515A;text-decoration:none}
 .nowwhat-tag{display:inline-block;align-self:flex-start;background:#fef2f2;color:#c7313a;border:1px solid #fecaca;padding:.22rem .65rem;border-radius:999px;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:.7rem}
 .nowwhat-title{font-size:1rem;font-weight:800;color:#1a1a2e;line-height:1.3;letter-spacing:-.2px;margin-bottom:.4rem}
 .nowwhat-body{font-size:.82rem;color:#64748b;line-height:1.55;flex:1;margin-bottom:.85rem}
-.nowwhat-arrow{font-size:.82rem;font-weight:700;color:#FF4F40}
+.nowwhat-arrow{font-size:.82rem;font-weight:700;color:#E7515A}
 .nowwhat-card:hover .nowwhat-arrow{color:#1a1a2e}
 @media(max-width:780px){.nowwhat{margin:2rem auto 3rem;padding:0 1.25rem}.nowwhat h2{font-size:1.35rem}.nowwhat-grid{grid-template-columns:1fr;gap:.75rem}}
 </style>

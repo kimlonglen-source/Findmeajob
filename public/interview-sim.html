@@ -29,26 +29,26 @@ a{color:#E7515A;text-decoration:none}a:hover{text-decoration:underline}
 .nav-logo:hover{text-decoration:none}
 .nav-links{display:flex;align-items:center;gap:2rem}
 .nav-links a{color:#1a1a2e;font-size:.88rem;font-weight:500;text-decoration:none}
-.nav-links a:hover{color:#FF4F40;text-decoration:none}
+.nav-links a:hover{color:#E7515A;text-decoration:none}
 .nav-cta{background:#1a1a2e;color:#fff !important;padding:.65rem 1.5rem;border-radius:999px;font-size:.85rem;font-weight:700;transition:all .2s}
 .nav-cta:hover{background:#000;transform:translateY(-1px);text-decoration:none !important}
-.nav-logo em{background:linear-gradient(135deg,#FF4F40,#c7313a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
+.nav-logo em{background:linear-gradient(135deg,#E7515A,#c7313a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
 .nav-links{display:flex;align-items:center;gap:1.5rem}
 .nav-links a{color:#64748b;font-size:.82rem;font-weight:600;text-decoration:none}
 .nav-links a:hover{color:#0f172a}
-.nav-cta{background:#FF4F40 !important;color:#fff !important;padding:.45rem 1.15rem;border-radius:999px;font-size:.78rem;font-weight:700;transition:all .2s}
+.nav-cta{background:#E7515A !important;color:#fff !important;padding:.45rem 1.15rem;border-radius:999px;font-size:.78rem;font-weight:700;transition:all .2s}
 .nav-cta:hover{background:#c7313a !important;transform:translateY(-1px)}
 .container{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
 .page-badge{display:inline-block;background:#fef2f2;color:#c7313a;padding:.3rem .85rem;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:1rem;border:1px solid #fecaca}
 h1{font-size:2.2rem;font-weight:900;line-height:1.15;margin-bottom:.5rem}
-h1 em{font-style:normal;color:#FF4F40}
+h1 em{font-style:normal;color:#E7515A}
 .subtitle{color:#64748b;font-size:.95rem;margin-bottom:2rem}
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:1.75rem;margin-bottom:1rem}
 label{display:block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;margin-bottom:.4rem}
 input[type="text"],select{width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;color:#0f172a;outline:none}
-input:focus,select:focus,textarea:focus{border-color:#FF4F40;box-shadow:0 0 0 3px rgba(231,81,90,.1)}
+input:focus,select:focus,textarea:focus{border-color:#E7515A;box-shadow:0 0 0 3px rgba(231,81,90,.1)}
 .field{margin-bottom:1rem}
-.btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;background:#FF4F40;color:#fff;padding:.85rem;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer}
+.btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;background:#E7515A;color:#fff;padding:.85rem;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer}
 .btn:hover{background:#c7313a}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 /* Chat */
@@ -61,7 +61,7 @@ input:focus,select:focus,textarea:focus{border-color:#FF4F40;box-shadow:0 0 0 3p
 .interviewer-bar{position:sticky;top:58px;z-index:40;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border:1px solid #e2e8f0;border-radius:16px;padding:.75rem 1.25rem;display:none;align-items:center;gap:1rem;margin-bottom:.75rem;box-shadow:0 2px 12px rgba(0,0,0,.04)}
 .interviewer-bar.visible{display:flex}
 .orb-wrap{position:relative;width:48px;height:48px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.orb{width:48px;height:48px;border-radius:50%;background:#FF4F40;position:relative;z-index:2;transition:all .3s}
+.orb{width:48px;height:48px;border-radius:50%;background:#E7515A;position:relative;z-index:2;transition:all .3s}
 .orb::before,.orb::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px solid rgba(231,81,90,.3);opacity:0;pointer-events:none}
 .orb.speaking{animation:orbSpeak 1.2s ease-in-out infinite}
 .orb.speaking::before{animation:orbRing 1.2s ease-out infinite}
@@ -74,14 +74,14 @@ input:focus,select:focus,textarea:focus{border-color:#FF4F40;box-shadow:0 0 0 3p
 @keyframes orbThink{0%,100%{opacity:.5}50%{opacity:.85}}
 .interviewer-info{flex:1;min-width:0}
 .interviewer-name{font-size:.88rem;font-weight:700;color:#0f172a;line-height:1.2}
-.interviewer-status{font-size:.72rem;font-weight:600;color:#FF4F40;margin-top:.1rem}
+.interviewer-status{font-size:.72rem;font-weight:600;color:#E7515A;margin-top:.1rem}
 .interviewer-status.status-listening{color:#f59e0b}
 .interviewer-status.status-thinking{color:#94a3b8}
 .interview-stats{display:flex;gap:.6rem;align-items:center;flex-shrink:0;flex-wrap:wrap}
 /* Audio bars animation for recording */
 .audio-bars{display:none;gap:2px;align-items:center;height:20px;margin-left:.25rem}
 .audio-bars.active{display:flex}
-.audio-bar{width:3px;background:#FF4F40;border-radius:2px}
+.audio-bar{width:3px;background:#E7515A;border-radius:2px}
 .audio-bar:nth-child(1){height:8px;animation:aBar .6s ease-in-out infinite}
 .audio-bar:nth-child(2){height:14px;animation:aBar .6s ease-in-out infinite .1s}
 .audio-bar:nth-child(3){height:18px;animation:aBar .6s ease-in-out infinite .2s}
@@ -90,14 +90,14 @@ input:focus,select:focus,textarea:focus{border-color:#FF4F40;box-shadow:0 0 0 3p
 @keyframes aBar{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
 body.dark .interviewer-bar{background:rgba(15,23,42,.95);border-color:rgba(255,255,255,.08)}
 body.dark .interviewer-name{color:#f8fafc}
-body.dark .interviewer-status{color:#FF4F40}
+body.dark .interviewer-status{color:#E7515A}
 .chat-msgs{min-height:100px;overflow-y:visible;padding:.5rem 0;display:flex;flex-direction:column;gap:.25rem}
 .msg-wrap{display:flex;gap:.5rem;animation:msgIn .35s ease;scroll-margin-top:140px}
 .msg-typing-wrap{scroll-margin-top:140px}
 .msg-wrap-ai{align-items:flex-start;flex-direction:row}
 .msg-wrap-user{align-items:flex-start;flex-direction:row-reverse}
 .msg-avatar{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;color:#fff;margin-top:.2rem}
-.msg-avatar-ai{background:linear-gradient(135deg,#FF4F40,#c7313a)}
+.msg-avatar-ai{background:linear-gradient(135deg,#E7515A,#c7313a)}
 .msg-avatar-user{background:linear-gradient(135deg,#64748b,#475569)}
 .msg-content{display:flex;flex-direction:column;max-width:82%}
 .msg-label{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.15rem;padding:0 .2rem}
@@ -107,7 +107,7 @@ body.dark .interviewer-status{color:#FF4F40}
 .msg-ai{background:#fef2f2;border:1px solid #fecaca;color:#0f172a;border-radius:4px 16px 16px 16px}
 .msg-ai::before{content:'';position:absolute;top:8px;left:-6px;width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-right:6px solid #fecaca}
 .msg-ai::after{content:'';position:absolute;top:8px;left:-4px;width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-right:6px solid #fef2f2}
-.msg-user{background:linear-gradient(135deg,#FF4F40,#c7313a);color:#fff;border-radius:16px 4px 16px 16px;box-shadow:0 2px 8px rgba(231,81,90,.15)}
+.msg-user{background:linear-gradient(135deg,#E7515A,#c7313a);color:#fff;border-radius:16px 4px 16px 16px;box-shadow:0 2px 8px rgba(231,81,90,.15)}
 .msg-user::before{content:'';position:absolute;top:8px;right:-6px;width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:6px solid #c7313a}
 .msg-typing-wrap{display:flex;gap:.5rem;align-items:flex-start;animation:msgIn .35s ease}
 .msg-typing{background:#f8fafc;border:1px solid #e2e8f0;padding:.7rem 1.2rem;border-radius:4px 16px 16px 16px;position:relative}
@@ -127,19 +127,19 @@ body.dark .msg-typing::after{border-right-color:rgba(255,255,255,.04)}
 .chat-actions{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
 .chat-actions button:disabled{opacity:.5}
 .mic-control{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:1rem;margin-top:.5rem;transition:all .3s}
-.mic-control.is-recording{border-color:#FF4F40;background:#fef2f2}
+.mic-control.is-recording{border-color:#E7515A;background:#fef2f2}
 .mic-status-bar{display:flex;align-items:center;gap:.5rem;width:100%}
 .mic-dot{width:12px;height:12px;border-radius:50%;background:#94a3b8;flex-shrink:0;transition:all .3s}
-.mic-dot.speaking{background:#FF4F40;animation:dotPulseSpeak 1.2s infinite}
-.mic-dot.listening{background:#FF4F40;animation:dotPulseListen .8s infinite}
+.mic-dot.speaking{background:#E7515A;animation:dotPulseSpeak 1.2s infinite}
+.mic-dot.listening{background:#E7515A;animation:dotPulseListen .8s infinite}
 .mic-dot.waiting{background:#f59e0b}
 @keyframes dotPulseListen{0%,100%{box-shadow:0 0 0 0 rgba(231,81,90,.5)}50%{box-shadow:0 0 0 8px rgba(231,81,90,0)}}
 @keyframes dotPulseSpeak{0%,100%{box-shadow:0 0 0 0 rgba(231,81,90,.3)}50%{box-shadow:0 0 0 5px rgba(231,81,90,0)}}
 .mic-label{font-size:.82rem;font-weight:600;color:#64748b;flex:1}
-.mic-label.recording{color:#FF4F40;font-weight:700}
+.mic-label.recording{color:#E7515A;font-weight:700}
 .mic-transcript{display:none;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-size:.85rem;color:#0f172a;line-height:1.6;min-height:44px;max-height:200px;overflow-y:auto;text-align:left;width:100%;word-wrap:break-word;margin-top:.5rem}
 .mic-transcript.active{display:block}
-.silence-countdown{display:none;font-size:.72rem;font-weight:600;color:#FF4F40;margin-top:.35rem;text-align:center}
+.silence-countdown{display:none;font-size:.72rem;font-weight:600;color:#E7515A;margin-top:.35rem;text-align:center}
 .silence-countdown.active{display:block}
 body.dark .mic-control{background:#0f172a;border-color:rgba(255,255,255,.08)}
 body.dark .mic-control.is-recording{background:rgba(231,81,90,.08);border-color:rgba(231,81,90,.3)}
@@ -149,7 +149,7 @@ body.dark .silence-countdown{color:#fca5a5}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.3)}50%{box-shadow:0 0 0 8px rgba(239,68,68,0)}}
 @keyframes micGlow{0%,100%{box-shadow:0 0 0 0 rgba(231,81,90,.3);background:#fef2f2 !important}50%{box-shadow:0 0 0 10px rgba(231,81,90,0);background:#f8fafc !important}}
 .listening-bar{height:3px;background:#e2e8f0;border-radius:999px;margin-top:.35rem;overflow:hidden;display:none}
-.listening-fill{height:100%;background:#FF4F40;border-radius:999px;width:0;transition:width .3s}
+.listening-fill{height:100%;background:#E7515A;border-radius:999px;width:0;transition:width .3s}
 .end-btn{display:block;width:100%;padding:.7rem;background:#fff;color:#0f172a;border:1.5px solid #e2e8f0;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:all .2s}.end-btn:hover{background:#0f172a;color:#fff;border-color:#0f172a}
 .end-btn:hover{background:#1e293b}
 .end-btn:disabled{opacity:.5}
@@ -157,15 +157,15 @@ body.dark .silence-countdown{color:#fca5a5}
 @keyframes timerPulse{0%,100%{opacity:1}50%{opacity:.5}}
 .timer-warn{animation:timerPulse 1s infinite}
 .audio-toggle{display:flex;align-items:center;gap:.4rem;font-size:.78rem;color:#64748b;margin-bottom:.75rem;cursor:pointer}
-.audio-toggle input{accent-color:#FF4F40}
+.audio-toggle input{accent-color:#E7515A}
 .countdown-screen{display:none;text-align:center;padding:3rem 1.5rem}
-.countdown-num{font-size:5rem;font-weight:900;color:#FF4F40;line-height:1;margin-bottom:1rem;animation:countPop .5s ease}
+.countdown-num{font-size:5rem;font-weight:900;color:#E7515A;line-height:1;margin-bottom:1rem;animation:countPop .5s ease}
 @keyframes countPop{from{transform:scale(1.3);opacity:0}to{transform:scale(1);opacity:1}}
 .countdown-tip{font-size:1rem;font-weight:600;color:#0f172a;margin-bottom:.35rem}
 .countdown-sub{font-size:.82rem;color:#64748b;max-width:400px;margin:0 auto;line-height:1.6}
 .countdown-status{margin-top:2rem;display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap}
 .countdown-check{display:flex;align-items:center;gap:.35rem;font-size:.78rem;font-weight:600}
-.countdown-check.ok{color:#FF4F40}
+.countdown-check.ok{color:#E7515A}
 .countdown-check.wait{color:#94a3b8}
 body.dark .countdown-tip{color:#f8fafc}
 body.dark .countdown-sub{color:#94a3b8}
@@ -180,7 +180,7 @@ body.dark .countdown-sub{color:#94a3b8}
 .fb-text{font-size:.82rem;color:#0f172a;line-height:1.6}
 .cta-box{background:#fef2f2;border:1px solid #fecaca;border-radius:16px;padding:1.5rem;text-align:center;margin-top:1.5rem}
 .cta-box p{font-size:.88rem;color:#064e3b;margin-bottom:.75rem}
-.cta-box a{display:inline-block;background:#FF4F40;color:#fff;padding:.6rem 1.5rem;border-radius:999px;font-size:.82rem;font-weight:700;text-decoration:none}
+.cta-box a{display:inline-block;background:#E7515A;color:#fff;padding:.6rem 1.5rem;border-radius:999px;font-size:.82rem;font-weight:700;text-decoration:none}
 .footer{text-align:center;padding:2rem;border-top:1px solid #f1f5f9;margin-top:3rem}
 .footer p{font-size:.78rem;color:#94a3b8}
 .ai-disclaimer{font-size:.68rem;color:#cbd5e1;margin-top:.5rem;max-width:500px;margin-left:auto;margin-right:auto}
@@ -216,14 +216,14 @@ body.dark .countdown-sub{color:#94a3b8}
   body.dark .mic-control{background:rgba(15,23,42,.97)}
 }
 body.dark{background:#09090b;color:#f8fafc}
-body.dark a{color:#FF4F40}
+body.dark a{color:#E7515A}
 body.dark .nav{background:rgba(9,9,11,.95);border-color:rgba(255,255,255,.06)}
 body.dark .nav-logo span{color:#f8fafc}
 body.dark .nav-links a{color:#94a3b8}
 body.dark .card{background:#0f172a;border-color:rgba(255,255,255,.06)}
 body.dark label{color:#64748b}
 body.dark input[type="text"],body.dark select,body.dark textarea{background:#0f172a;border-color:rgba(255,255,255,.1);color:#f8fafc}
-body.dark .page-badge{background:rgba(231,81,90,.1);border-color:rgba(231,81,90,.3);color:#FF4F40}
+body.dark .page-badge{background:rgba(231,81,90,.1);border-color:rgba(231,81,90,.3);color:#E7515A}
 body.dark h1{color:#f8fafc}
 body.dark .subtitle{color:#94a3b8}
 body.dark .msg-ai{background:rgba(231,81,90,.1);border-color:rgba(231,81,90,.3);color:#f8fafc}
@@ -239,7 +239,7 @@ body.dark .stat-item strong{color:#f8fafc}
 body.dark .fb-item{background:#0f172a;border-color:rgba(255,255,255,.06)}
 body.dark .fb-text{color:#f8fafc}
 body.dark .cta-box{background:rgba(231,81,90,.1);border-color:rgba(231,81,90,.3)}
-body.dark .cta-box p{color:#FF4F40}
+body.dark .cta-box p{color:#E7515A}
 body.dark .footer{background:#09090b;border-color:rgba(255,255,255,.06)}
 body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
 /* Awesome animated hero */
@@ -250,12 +250,12 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
 .aw-text{color:#fff}
 .aw-badge{display:inline-block;background:rgba(231,81,90,.18);border:1px solid rgba(231,81,90,.35);color:#fca5a5;padding:.3rem .85rem;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:1rem}
 .aw-text h1{font-size:2.6rem;font-weight:900;color:#fff;line-height:1.1;margin-bottom:.65rem;letter-spacing:-.5px}
-.aw-text h1 em{font-style:normal;color:#FF4F40}
+.aw-text h1 em{font-style:normal;color:#E7515A}
 .aw-text .aw-sub{font-size:1.05rem;color:rgba(255,255,255,.82);line-height:1.6;margin-bottom:1.5rem;max-width:480px}
 .aw-feats{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem}
 .aw-feat{display:inline-flex;align-items:center;gap:.45rem;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#fff;padding:.5rem .9rem;border-radius:999px;font-size:.78rem;font-weight:600;backdrop-filter:blur(8px)}
-.aw-feat svg{width:14px;height:14px;color:#FF4F40;flex-shrink:0}
-.aw-cta{display:inline-block;background:#FF4F40;color:#fff;padding:.85rem 1.75rem;border-radius:999px;font-size:.92rem;font-weight:700;text-decoration:none;box-shadow:0 8px 25px rgba(231,81,90,.35);transition:all .25s}
+.aw-feat svg{width:14px;height:14px;color:#E7515A;flex-shrink:0}
+.aw-cta{display:inline-block;background:#E7515A;color:#fff;padding:.85rem 1.75rem;border-radius:999px;font-size:.92rem;font-weight:700;text-decoration:none;box-shadow:0 8px 25px rgba(231,81,90,.35);transition:all .25s}
 .aw-cta:hover{background:#c7313a;transform:translateY(-2px);box-shadow:0 12px 35px rgba(231,81,90,.45);text-decoration:none}
 .aw-viz{position:relative;display:flex;align-items:center;justify-content:center;min-height:500px}
 
@@ -283,10 +283,10 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
 .iph-setup-chip{margin-left:auto;background:#dcfce7;color:#15803d;border:1px solid #bbf7d0;padding:.1rem .4rem;border-radius:999px;font-size:.48rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px}
 /* Speak step */
 .iph-ai{display:flex;gap:.4rem;align-items:flex-start;margin-bottom:.4rem}
-.iph-ai-avatar{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#FF4F40,#c7313a);color:#fff;font-size:.5rem;font-weight:900;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;letter-spacing:.5px}
+.iph-ai-avatar{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#E7515A,#c7313a);color:#fff;font-size:.5rem;font-weight:900;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;letter-spacing:.5px}
 .iph-bubble{background:#fff;border:1px solid #e8e8e8;border-radius:10px;border-top-left-radius:3px;padding:.4rem .55rem;font-size:.6rem;line-height:1.35;color:#1a1a2e;font-weight:600;box-shadow:0 4px 12px rgba(15,23,42,.04);flex:1;min-width:0}
 .iph-mic-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem}
-.iph-mic{width:54px;height:54px;border-radius:50%;background:#FF4F40;color:#fff;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 12px 26px rgba(231,81,90,.42)}
+.iph-mic{width:54px;height:54px;border-radius:50%;background:#E7515A;color:#fff;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 12px 26px rgba(231,81,90,.42)}
 .iph-mic svg{width:22px;height:22px}
 .iph-mic::before,.iph-mic::after{content:'';position:absolute;inset:-10px;border:2px solid rgba(231,81,90,.4);border-radius:50%;animation:iphMic 1.9s ease-out infinite}
 .iph-mic::after{inset:-20px;animation-delay:.95s}
@@ -299,7 +299,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
 .iph-wave span:nth-child(4){animation-delay:-.3s}
 .iph-wave span:nth-child(5){animation-delay:-.1s}
 @keyframes iphBar{0%,100%{height:4px}50%{height:18px}}
-.iph-transcript{background:rgba(255,79,64,.06);border:1px dashed #fecaca;border-radius:10px;padding:.35rem .5rem;font-size:.56rem;color:#64748b;font-weight:600;font-style:italic;line-height:1.35;text-align:center}
+.iph-transcript{background:rgba(231,81,90,.06);border:1px dashed #fecaca;border-radius:10px;padding:.35rem .5rem;font-size:.56rem;color:#64748b;font-weight:600;font-style:italic;line-height:1.35;text-align:center}
 .iph-hint{font-size:.54rem;color:#64748b;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;text-align:center}
 /* Score step */
 .iph-score-big{background:linear-gradient(135deg,#1a1a2e 0%,#2a2a4e 100%);color:#fff;border-radius:14px;padding:.85rem .8rem;text-align:center;margin-bottom:.4rem;position:relative;overflow:hidden}
@@ -333,8 +333,23 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
   @keyframes iphFloat{0%,100%{transform:translateY(0) rotate(4deg)}50%{transform:translateY(-8px) rotate(4deg)}}
   .aw-feat{font-size:.72rem;padding:.4rem .75rem}
 }
+
+/* Homepage-aligned mobile nav */
+.hamburger{display:none;background:none;border:none;font-size:1.4rem;color:#1a1a2e;cursor:pointer}
+.mob-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;backdrop-filter:blur(6px)}
+.mob-overlay.open{display:block}
+.mob-sheet{background:#fff;padding:2rem;position:absolute;top:0;left:0;right:0;border-radius:0 0 20px 20px}
+.mob-sheet a{display:block;padding:1rem 0;font-size:1.1rem;font-weight:600;color:#1a1a2e;text-decoration:none;border-bottom:1px solid #f0f0f0}
+.mob-sheet a:last-child{border:none}
+.mob-sheet a.coral{color:#E7515A}
+@media(max-width:768px){
+  .nav-links > *:not(.nav-cta){display:none}
+  .nav-links{gap:.5rem}
+  .nav-cta{font-size:.72rem !important;padding:.5rem 1rem !important;display:inline-block !important}
+  .hamburger{display:block}
+}
 </style>
-<!--NUNITO-LOGO--><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet"><style>.nav-logo,.top-logo,.ch-nav-logo,#logo-home,#h-logo,.logo-text,.fmj-wordmark,a[href="/"][style*="font-weight:900"],a[href="/"][style*="font-weight:800"]{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900;letter-spacing:-.02em}.nav-logo span,.top-logo span,.ch-nav-logo span,.fmj-wordmark span{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900}footer div[style*="#FF4F40"][style*="font-weight:900"],footer span[style*="#FF4F40"][style*="font-weight:900"]{font-family:"Nunito",system-ui,sans-serif!important;letter-spacing:-.02em}</style><link rel="stylesheet" href="/css/monzo.css">
+<!--NUNITO-LOGO--><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet"><style>.nav-logo,.top-logo,.ch-nav-logo,#logo-home,#h-logo,.logo-text,.fmj-wordmark,a[href="/"][style*="font-weight:900"],a[href="/"][style*="font-weight:800"]{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900;letter-spacing:-.02em}.nav-logo span,.top-logo span,.ch-nav-logo span,.fmj-wordmark span{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900}footer div[style*="#E7515A"][style*="font-weight:900"],footer span[style*="#E7515A"][style*="font-weight:900"]{font-family:"Nunito",system-ui,sans-serif!important;letter-spacing:-.02em}</style><link rel="stylesheet" href="/css/monzo.css">
 </head>
 <body>
 
@@ -342,9 +357,9 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
 <style>
 .nav-group{position:relative}
 .nav-grp-btn{display:inline-flex;align-items:center;gap:.35rem;background:none;border:none;font:inherit;color:#1a1a2e;font-size:.88rem;font-weight:500;cursor:pointer;padding:0;font-family:'Plus Jakarta Sans',sans-serif}
-.nav-grp-btn:hover{color:#FF4F40}
+.nav-grp-btn:hover{color:#E7515A}
 .nav-grp-btn svg{width:10px;height:10px;transition:transform .2s}
-.nav-group.open .nav-grp-btn{color:#FF4F40}
+.nav-group.open .nav-grp-btn{color:#E7515A}
 .nav-group.open .nav-grp-btn svg{transform:rotate(180deg)}
 .nav-menu{position:absolute;top:calc(100% + .85rem);left:-.65rem;min-width:230px;background:#fff;border:1px solid #e8e8e8;border-radius:14px;box-shadow:0 20px 50px rgba(15,23,42,.1);padding:.5rem;display:none;z-index:300}
 .nav-group.open .nav-menu{display:block}
@@ -358,35 +373,32 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
 .gnav-sheet a:hover{background:#fef2f2;color:#c7313a}
 .gnav-sheet-label{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#c7313a;margin:.85rem 0 .15rem;padding:0 .25rem}
 .gnav-sheet-label:first-child{margin-top:0}
-.gnav-sheet-cta{margin-top:auto;background:#FF4F40;color:#fff!important;padding:.85rem!important;border-radius:999px!important;text-align:center;font-weight:700}
+.gnav-sheet-cta{margin-top:auto;background:#E7515A;color:#fff!important;padding:.85rem!important;border-radius:999px!important;text-align:center;font-weight:700}
 .gnav-sheet-cta:hover{background:#1a1a2e!important;color:#fff!important}
 @media(max-width:900px){.nav-links{display:none!important}.gnav-burger{display:block}}
 </style>
 <nav class="nav">
   <a class="nav-logo" href="/">FindMeAJob</a>
   <div class="nav-links">
-    <div class="nav-group"><button type="button" class="nav-grp-btn" data-nav-toggle aria-expanded="false">Apply <svg viewBox="0 0 12 8"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></button><div class="nav-menu"><a href="/match.html">Match CV &rarr; Jobs</a><a href="/match.html#apply">CV + Cover Letter</a><a href="/score">CV Score</a><a href="/decode">Decode Job Ad</a></div></div>
-    <div class="nav-group"><button type="button" class="nav-grp-btn" data-nav-toggle aria-expanded="false">Interview <svg viewBox="0 0 12 8"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></button><div class="nav-menu"><a href="/interview-sim">Interview Simulator</a><a href="/interview">Common Questions</a><a href="/practice-sim">Practice Sim</a></div></div>
-    <div class="nav-group"><button type="button" class="nav-grp-btn" data-nav-toggle aria-expanded="false">Decide <svg viewBox="0 0 12 8"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></button><div class="nav-menu"><a href="/salary">Salary Calculator</a><a href="/negotiate">Negotiate</a><a href="/compare">Compare Offers</a><a href="/decide">Stay or Go</a></div></div>
+    <a href="/#tools">Tools</a>
     <a href="/blog">Blog</a>
+    <a href="/match.html#account">Job Seekers</a>
     <a href="/employer-portal.html">Employers</a>
     <a href="/pricing">Pricing</a>
     <a href="/match.html" class="nav-cta">Find a Job</a>
   </div>
-  <button type="button" class="gnav-burger" aria-label="Menu" data-gnav-burger>&#9776;</button>
+  <button class="hamburger" onclick="document.getElementById('mob').classList.add('open')">&#9776;</button>
 </nav>
-<div class="gnav-sheet" data-gnav-sheet>
-  <div class="gnav-sheet-inner">
-    <div class="gnav-sheet-label">Apply</div><a href="/match.html">Match CV &rarr; Jobs</a><a href="/match.html#apply">CV + Cover Letter</a><a href="/score">CV Score</a><a href="/decode">Decode Job Ad</a>
-    <div class="gnav-sheet-label">Interview</div><a href="/interview-sim">Interview Simulator</a><a href="/interview">Common Questions</a><a href="/practice-sim">Practice Sim</a>
-    <div class="gnav-sheet-label">Decide</div><a href="/salary">Salary Calculator</a><a href="/negotiate">Negotiate</a><a href="/compare">Compare Offers</a><a href="/decide">Stay or Go</a>
-    <div class="gnav-sheet-label">More</div><a href="/blog">Blog</a><a href="/employer-portal.html">Employers</a><a href="/pricing">Pricing</a>
-    <a href="/match.html" class="gnav-sheet-cta">Find a Job &rarr;</a>
+<div class="mob-overlay" id="mob" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="mob-sheet">
+    <a href="/#tools" onclick="document.getElementById('mob').classList.remove('open')">Tools</a>
+    <a href="/blog">Blog</a>
+    <a href="/match.html#account">Job Seekers</a>
+    <a href="/employer-portal.html">Employers</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/match.html" class="coral">Find a Job</a>
   </div>
 </div>
-<script>
-(function(){function init(){document.querySelectorAll('[data-nav-toggle]').forEach(function(btn){btn.addEventListener('click',function(e){e.stopPropagation();var grp=btn.closest('.nav-group');document.querySelectorAll('.nav-group.open').forEach(function(o){if(o!==grp){o.classList.remove('open');var b=o.querySelector('[data-nav-toggle]');if(b)b.setAttribute('aria-expanded','false');}});var isOpen=grp.classList.toggle('open');btn.setAttribute('aria-expanded',isOpen?'true':'false');});});document.addEventListener('click',function(e){if(!e.target.closest('.nav-group')){document.querySelectorAll('.nav-group.open').forEach(function(o){o.classList.remove('open');var b=o.querySelector('[data-nav-toggle]');if(b)b.setAttribute('aria-expanded','false');});}});document.addEventListener('keydown',function(e){if(e.key==='Escape'){document.querySelectorAll('.nav-group.open').forEach(function(o){o.classList.remove('open');var b=o.querySelector('[data-nav-toggle]');if(b)b.setAttribute('aria-expanded','false');});var sh=document.querySelector('[data-gnav-sheet]');if(sh)sh.classList.remove('open');}});var burger=document.querySelector('[data-gnav-burger]');var sheet=document.querySelector('[data-gnav-sheet]');if(burger&&sheet){burger.addEventListener('click',function(){sheet.classList.toggle('open')});sheet.addEventListener('click',function(e){if(e.target===sheet)sheet.classList.remove('open')});}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();})();
-</script>
 <style>
 .spec{max-width:1100px;margin:1.5rem auto 0;padding:0 2rem}
 .spec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:#fff;border:1px solid #e8e8e8;border-radius:14px;overflow:hidden;font-family:'Plus Jakarta Sans',sans-serif}
@@ -498,10 +510,10 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
   <!-- STEP 1: What role -->
   <div id="setupForm">
     <div class="card">
-      <div style="font-size:.72rem;font-weight:700;color:#FF4F40;text-transform:uppercase;letter-spacing:1px;margin-bottom:.5rem">Step 1 of 3</div>
+      <div style="font-size:.72rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:1px;margin-bottom:.5rem">Step 1 of 3</div>
       <div style="font-size:1.1rem;font-weight:800;color:#0f172a;margin-bottom:.25rem">Tell us about your interview</div>
       <div style="font-size:.82rem;color:#64748b;margin-bottom:1.25rem;line-height:1.5">The more detail you give, the more realistic your practice will be.</div>
-      <div class="field"><label>Job title <span style="color:#FF4F40">*</span></label><input type="text" id="simRole" placeholder="e.g. Pharmacist, Software Engineer, Teacher"></div>
+      <div class="field"><label>Job title <span style="color:#E7515A">*</span></label><input type="text" id="simRole" placeholder="e.g. Pharmacist, Software Engineer, Teacher"></div>
       <div class="field"><label>Company (optional)</label><input type="text" id="simCompany" placeholder="e.g. Xero, Fisher &amp; Paykel, Countdown"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
         <div class="field"><label>Your level</label>
@@ -522,7 +534,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
         </div>
       </div>
       <div class="field" style="margin-top:.25rem">
-        <label style="display:flex;align-items:center;gap:.35rem">Paste the job ad <span style="font-size:.62rem;font-weight:600;color:#FF4F40;background:#fef2f2;padding:.15rem .45rem;border-radius:999px">recommended</span></label>
+        <label style="display:flex;align-items:center;gap:.35rem">Paste the job ad <span style="font-size:.62rem;font-weight:600;color:#E7515A;background:#fef2f2;padding:.15rem .45rem;border-radius:999px">recommended</span></label>
         <textarea id="simJobDesc" placeholder="Paste the job listing here and the interviewer will ask about the actual requirements, responsibilities, and skills they're looking for..." rows="3" style="width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem 1rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:#0f172a;outline:none;resize:vertical;line-height:1.6"></textarea>
         <div style="font-size:.68rem;color:#94a3b8;margin-top:.25rem">This makes the biggest difference &mdash; questions will match the real job</div>
       </div>
@@ -533,12 +545,12 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
   <!-- STEP 2: Audio -->
   <div id="step2" style="display:none">
     <div class="card">
-      <div style="font-size:.72rem;font-weight:700;color:#FF4F40;text-transform:uppercase;letter-spacing:1px;margin-bottom:.75rem">Step 2 of 3 — Audio</div>
+      <div style="font-size:.72rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:1px;margin-bottom:.75rem">Step 2 of 3 — Audio</div>
       <div class="field"><label>Choose your interviewer voice</label>
         <select id="voiceGender"><option value="female">Female interviewer (speaks questions aloud)</option><option value="male">Male interviewer (speaks questions aloud)</option><option value="off">No voice — text only</option></select>
       </div>
       <div style="display:flex;flex-direction:column;gap:.65rem;margin-top:.5rem">
-        <label style="display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;font-size:.85rem;color:#475569;line-height:1.5"><input type="checkbox" id="autoSendMode" style="accent-color:#FF4F40;width:18px;height:18px;margin-top:2px" checked> <span><strong style="color:#0f172a">Auto-send answers</strong><br><span style="font-size:.78rem;color:#94a3b8">When you stop talking for 4 seconds, your answer submits automatically</span></span></label>
+        <label style="display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;font-size:.85rem;color:#475569;line-height:1.5"><input type="checkbox" id="autoSendMode" style="accent-color:#E7515A;width:18px;height:18px;margin-top:2px" checked> <span><strong style="color:#0f172a">Auto-send answers</strong><br><span style="font-size:.78rem;color:#94a3b8">When you stop talking for 4 seconds, your answer submits automatically</span></span></label>
       </div>
       <div id="step2MicStatus" style="margin-top:1rem;padding:.75rem;border-radius:12px;text-align:center;font-size:.82rem;font-weight:600;display:none"></div>
     </div>
@@ -551,7 +563,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
   <!-- STEP 3: Ready screen -->
   <div id="readyScreen" style="display:none">
     <div class="card" style="padding:2rem">
-      <div style="font-size:.72rem;font-weight:700;color:#FF4F40;text-transform:uppercase;letter-spacing:1px;margin-bottom:.5rem">Step 3 of 3</div>
+      <div style="font-size:.72rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:1px;margin-bottom:.5rem">Step 3 of 3</div>
       <div style="font-size:1.15rem;font-weight:800;color:#0f172a;margin-bottom:.25rem">You're about to start</div>
       <div style="font-size:.82rem;color:#64748b;margin-bottom:1.25rem">The interviewer will ask questions one at a time. Speak naturally &mdash; your mic is on automatically. Your words appear on screen as you talk.</div>
 
@@ -614,8 +626,8 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
       <div class="silence-countdown" id="silenceCountdown"></div>
       <textarea id="userInput" style="display:none" rows="1"></textarea>
       <div class="chat-actions" style="margin-top:.6rem">
-        <button id="sendBtn" onclick="sendAnswer()" style="display:none;padding:.55rem 1.2rem;background:#FF4F40;color:#fff;border:none;border-radius:999px;font-family:Inter,sans-serif;font-size:.78rem;font-weight:700;cursor:pointer">Send Answer</button>
-        <button id="keepTalkingBtn" onclick="toggleMic()" style="display:none;padding:.55rem 1.2rem;background:#fff;color:#FF4F40;border:2px solid #FF4F40;border-radius:999px;font-family:Inter,sans-serif;font-size:.78rem;font-weight:700;cursor:pointer">&#127908; Keep Talking</button>
+        <button id="sendBtn" onclick="sendAnswer()" style="display:none;padding:.55rem 1.2rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:Inter,sans-serif;font-size:.78rem;font-weight:700;cursor:pointer">Send Answer</button>
+        <button id="keepTalkingBtn" onclick="toggleMic()" style="display:none;padding:.55rem 1.2rem;background:#fff;color:#E7515A;border:2px solid #E7515A;border-radius:999px;font-family:Inter,sans-serif;font-size:.78rem;font-weight:700;cursor:pointer">&#127908; Keep Talking</button>
         <button id="skipBtn" onclick="skipQuestion()" style="background:#f8fafc;color:#64748b;border:1px solid #e2e8f0;font-size:.72rem;border-radius:999px;padding:.5rem 1rem;font-family:Inter,sans-serif;cursor:pointer">Skip</button>
       </div>
     </div>
@@ -629,9 +641,9 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
 <section style="max-width:900px;margin:0 auto;padding:2rem 2rem 3rem">
   <h2 style="font-size:1.5rem;font-weight:900;color:#1a1a2e;margin-bottom:1.25rem">You might also like</h2>
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
-    <a href="/interview" style="position:relative;border-radius:16px;overflow:hidden;height:240px;display:block;text-decoration:none;background:url(https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?w=400&q=80) center/cover;transition:transform .3s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.8) 0%,transparent 50%)"></div><div style="position:absolute;top:1rem;right:1rem;width:28px;height:28px;background:#FF4F40;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;z-index:2">&#8594;</div><div style="position:absolute;bottom:1rem;left:1rem;right:1rem;z-index:2"><div style="font-size:.95rem;font-weight:800;color:#fff;margin-bottom:.15rem">Interview Questions</div><div style="font-size:.7rem;color:rgba(255,255,255,.75)">10 likely questions with answers</div></div></a>
-    <a href="/score" style="position:relative;border-radius:16px;overflow:hidden;height:240px;display:block;text-decoration:none;background:url(https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80) center/cover;transition:transform .3s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.8) 0%,transparent 50%)"></div><div style="position:absolute;top:1rem;right:1rem;width:28px;height:28px;background:#FF4F40;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;z-index:2">&#8594;</div><div style="position:absolute;bottom:1rem;left:1rem;right:1rem;z-index:2"><div style="font-size:.95rem;font-weight:800;color:#fff;margin-bottom:.15rem">CV Score</div><div style="font-size:.7rem;color:rgba(255,255,255,.75)">Score your CV out of 100</div></div></a>
-    <a href="/match.html#apply" style="position:relative;border-radius:16px;overflow:hidden;height:240px;display:block;text-decoration:none;background:url(https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=400&q=80) center/cover;transition:transform .3s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.8) 0%,transparent 50%)"></div><div style="position:absolute;top:1rem;right:1rem;width:28px;height:28px;background:#FF4F40;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;z-index:2">&#8594;</div><div style="position:absolute;bottom:1rem;left:1rem;right:1rem;z-index:2"><div style="font-size:.95rem;font-weight:800;color:#fff;margin-bottom:.15rem">CV + Cover Letter</div><div style="font-size:.7rem;color:rgba(255,255,255,.75)">AI writes both for you</div></div></a>
+    <a href="/interview" style="position:relative;border-radius:16px;overflow:hidden;height:240px;display:block;text-decoration:none;background:url(https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?w=400&q=80) center/cover;transition:transform .3s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.8) 0%,transparent 50%)"></div><div style="position:absolute;top:1rem;right:1rem;width:28px;height:28px;background:#E7515A;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;z-index:2">&#8594;</div><div style="position:absolute;bottom:1rem;left:1rem;right:1rem;z-index:2"><div style="font-size:.95rem;font-weight:800;color:#fff;margin-bottom:.15rem">Interview Questions</div><div style="font-size:.7rem;color:rgba(255,255,255,.75)">10 likely questions with answers</div></div></a>
+    <a href="/score" style="position:relative;border-radius:16px;overflow:hidden;height:240px;display:block;text-decoration:none;background:url(https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80) center/cover;transition:transform .3s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.8) 0%,transparent 50%)"></div><div style="position:absolute;top:1rem;right:1rem;width:28px;height:28px;background:#E7515A;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;z-index:2">&#8594;</div><div style="position:absolute;bottom:1rem;left:1rem;right:1rem;z-index:2"><div style="font-size:.95rem;font-weight:800;color:#fff;margin-bottom:.15rem">CV Score</div><div style="font-size:.7rem;color:rgba(255,255,255,.75)">Score your CV out of 100</div></div></a>
+    <a href="/match.html#apply" style="position:relative;border-radius:16px;overflow:hidden;height:240px;display:block;text-decoration:none;background:url(https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=400&q=80) center/cover;transition:transform .3s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.8) 0%,transparent 50%)"></div><div style="position:absolute;top:1rem;right:1rem;width:28px;height:28px;background:#E7515A;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;z-index:2">&#8594;</div><div style="position:absolute;bottom:1rem;left:1rem;right:1rem;z-index:2"><div style="font-size:.95rem;font-weight:800;color:#fff;margin-bottom:.15rem">CV + Cover Letter</div><div style="font-size:.7rem;color:rgba(255,255,255,.75)">AI writes both for you</div></div></a>
   </div>
 </section>
 
@@ -639,11 +651,11 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
 <div id="email-gate" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(4px)">
   <div style="background:#fff;border-radius:20px;padding:2rem;max-width:400px;width:100%;text-align:center;box-shadow:0 25px 60px rgba(0,0,0,.15);position:relative">
     <button onclick="document.getElementById('email-gate').style.display='none'" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.2rem;color:#94a3b8;cursor:pointer;padding:.25rem">&#10005;</button>
-    <div style="width:48px;height:48px;background:linear-gradient(135deg,#FF4F40,#c7313a);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+    <div style="width:48px;height:48px;background:linear-gradient(135deg,#E7515A,#c7313a);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
     <div style="font-size:1.2rem;font-weight:800;color:#0f172a;margin-bottom:.35rem">Enter your email for unlimited access</div>
     <div style="font-size:.82rem;color:#64748b;margin-bottom:1.25rem">All 12 AI tools stay free forever. We will send you weekly NZ job matches.</div>
     <input type="email" id="gate-email" placeholder="your@email.com" style="width:100%;padding:.75rem 1rem;border:1px solid #e2e8f0;border-radius:12px;font-family:Inter,sans-serif;font-size:15px;outline:none;margin-bottom:.75rem;color:#0f172a">
-    <button onclick="submitGateEmail()" id="gate-btn" style="width:100%;padding:.85rem;background:#FF4F40;color:#fff;border:none;border-radius:999px;font-family:Inter,sans-serif;font-size:.9rem;font-weight:700;cursor:pointer">Continue</button>
+    <button onclick="submitGateEmail()" id="gate-btn" style="width:100%;padding:.85rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:Inter,sans-serif;font-size:.9rem;font-weight:700;cursor:pointer">Continue</button>
     <div style="font-size:.68rem;color:#94a3b8;margin-top:.75rem">No spam. Unsubscribe anytime.</div>
   </div>
 </div>
@@ -967,7 +979,7 @@ async function endInterview(){
 }
 
 function showScore(r){
-  var c=r.score>=80?'#FF4F40':r.score>=60?'#f59e0b':'#ef4444';
+  var c=r.score>=80?'#E7515A':r.score>=60?'#f59e0b':'#ef4444';
   var cheer='';
   if(r.score>=90)cheer='Outstanding! You absolutely nailed this.';
   else if(r.score>=80)cheer='Excellent work \u2014 a hiring manager would be impressed.';
@@ -979,7 +991,7 @@ function showScore(r){
   h+='<div class="score-big" id="score-num" style="color:'+c+'">0/100</div>';
   h+='<div style="display:flex;justify-content:center;gap:.4rem;flex-wrap:wrap">';
   h+='<span style="display:inline-block;background:'+c+'14;color:'+c+';padding:.3rem .85rem;border-radius:999px;font-size:.82rem;font-weight:700;border:1px solid '+c+'33">'+esc(r.grade)+'</span>';
-  if(r.recommendation){var rc=r.recommendation==='Strong Hire'?'#059669':r.recommendation==='Hire'?'#FF4F40':r.recommendation==='Maybe'?'#f59e0b':'#ef4444';h+='<span style="display:inline-block;background:'+rc+'14;color:'+rc+';padding:.3rem .85rem;border-radius:999px;font-size:.78rem;font-weight:700;border:1px solid '+rc+'33">'+esc(r.recommendation)+'</span>';}
+  if(r.recommendation){var rc=r.recommendation==='Strong Hire'?'#059669':r.recommendation==='Hire'?'#E7515A':r.recommendation==='Maybe'?'#f59e0b':'#ef4444';h+='<span style="display:inline-block;background:'+rc+'14;color:'+rc+';padding:.3rem .85rem;border-radius:999px;font-size:.78rem;font-weight:700;border:1px solid '+rc+'33">'+esc(r.recommendation)+'</span>';}
   h+='</div>';
   var elapsed=Math.round((Date.now()-_interviewStartTime)/1000);var eMin=Math.floor(elapsed/60);var eSec=elapsed%60;
   h+='<div style="margin-top:.75rem;display:flex;justify-content:center;gap:1.5rem;font-size:.78rem;color:#64748b;font-weight:600"><span>&#9201; '+eMin+'m '+eSec+'s</span><span>&#10003; '+iData.qa.length+' questions</span></div>';
@@ -994,8 +1006,8 @@ function showScore(r){
   /* Improvements */
   if(r.improvements&&r.improvements.length){
     h+='<div class="card" style="padding:1.25rem;margin-top:.5rem;text-align:left">';
-    h+='<div style="font-size:.72rem;font-weight:700;color:#FF4F40;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.6rem">Where to grow next</div>';
-    r.improvements.forEach(function(s){h+='<div style="display:flex;gap:.4rem;align-items:flex-start;margin-bottom:.4rem;font-size:.82rem;color:#0f172a;line-height:1.5"><span style="color:#FF4F40;font-weight:700;flex-shrink:0">\u2192</span> '+esc(s)+'</div>';});
+    h+='<div style="font-size:.72rem;font-weight:700;color:#E7515A;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.6rem">Where to grow next</div>';
+    r.improvements.forEach(function(s){h+='<div style="display:flex;gap:.4rem;align-items:flex-start;margin-bottom:.4rem;font-size:.82rem;color:#0f172a;line-height:1.5"><span style="color:#E7515A;font-weight:700;flex-shrink:0">\u2192</span> '+esc(s)+'</div>';});
     h+='</div>';
   }
   /* Golden tip */
@@ -1012,7 +1024,7 @@ function showScore(r){
       h+='<div class="fb-item" style="animation-delay:'+(0.3+fi*0.15)+'s;text-align:left"><div class="fb-q">'+esc(f.question)+'</div>';
       h+='<span style="font-size:.72rem;font-weight:700;color:'+fc+';background:'+fc+'14;padding:.15rem .5rem;border-radius:999px;border:1px solid '+fc+'33;display:inline-block;margin-bottom:.4rem">'+esc(f.rating)+'</span>';
       h+='<div class="fb-text">'+esc(f.comment)+'</div>';
-      if(f.tip){h+='<div style="font-size:.78rem;color:#FF4F40;margin-top:.35rem;font-weight:600">\u2192 '+esc(f.tip)+'</div>';}
+      if(f.tip){h+='<div style="font-size:.78rem;color:#E7515A;margin-top:.35rem;font-weight:600">\u2192 '+esc(f.tip)+'</div>';}
       if(f.modelAnswer){
         h+='<details style="margin-top:.6rem;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:.5rem .75rem">';
         h+='<summary style="font-size:.72rem;font-weight:700;color:#059669;cursor:pointer;text-transform:uppercase;letter-spacing:.5px">See a strong answer</summary>';
@@ -1024,7 +1036,7 @@ function showScore(r){
   }
   /* Actions */
   h+='<div style="display:flex;gap:.5rem;margin-top:1.25rem;flex-wrap:wrap">';
-  h+='<button onclick="location.reload()" style="flex:1;min-width:140px;padding:.85rem 1rem;background:#FF4F40;color:#fff;border:none;border-radius:999px;font-family:inherit;font-size:.88rem;font-weight:700;cursor:pointer">Practice again</button>';
+  h+='<button onclick="location.reload()" style="flex:1;min-width:140px;padding:.85rem 1rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:inherit;font-size:.88rem;font-weight:700;cursor:pointer">Practice again</button>';
   h+='<button onclick="shareResults('+r.score+')" style="flex:1;min-width:140px;padding:.85rem 1rem;background:#fff;color:#0f172a;border:1px solid #e2e8f0;border-radius:999px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer">Share results</button>';
   h+='</div>';
   h+='<div class="cta-box"><p>Ready to apply for real?</p><a href="/match.html">Apply for a Job</a></div>';
@@ -1289,7 +1301,7 @@ function shareResults(score){
 function toggleTheme(){document.body.classList.toggle('dark');var d=document.body.classList.contains('dark');localStorage.setItem('theme',d?'dark':'light');document.getElementById('tbtn').innerHTML=d?'&#9790;':'&#9788;';}
 </script>
 
-<section style="background:#FF4F40;padding:0;margin-top:2rem">
+<section style="background:#E7515A;padding:0;margin-top:2rem">
   <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;gap:3rem;padding:3rem 2rem">
     <div style="flex:1">
       <h2 style="font-size:1.8rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:.75rem">Start your career toolkit</h2>
@@ -1304,7 +1316,7 @@ function toggleTheme(){document.body.classList.toggle('dark');var d=document.bod
   <p style="color:#6b7280;font-size:.9rem;margin-bottom:1.25rem">Real jobs from Adzuna delivered every Monday. Free.</p>
   <div style="display:flex;gap:.5rem;max-width:420px;margin:0 auto">
     <input type="email" id="alert-email" placeholder="your@email.com" style="flex:1;padding:.75rem 1rem;border:1px solid #e0e0e0;border-radius:999px;font-family:inherit;font-size:.9rem;outline:none;color:#1a1a2e">
-    <button onclick="subscribeAlerts()" style="padding:.75rem 1.5rem;background:#FF4F40;color:#fff;border:none;border-radius:999px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;white-space:nowrap">Subscribe</button>
+    <button onclick="subscribeAlerts()" style="padding:.75rem 1.5rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;white-space:nowrap">Subscribe</button>
   </div>
 </section>
 <style>
@@ -1314,11 +1326,11 @@ function toggleTheme(){document.body.classList.toggle('dark');var d=document.bod
 .nowwhat-sub{font-size:.92rem;color:#64748b;margin-bottom:1.75rem}
 .nowwhat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
 .nowwhat-card{display:flex;flex-direction:column;background:#fff;border:1px solid #e8e8e8;border-radius:18px;padding:1.4rem;text-decoration:none;transition:all .25s;color:inherit}
-.nowwhat-card:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(231,81,90,.1);border-color:#FF4F40;text-decoration:none}
+.nowwhat-card:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(231,81,90,.1);border-color:#E7515A;text-decoration:none}
 .nowwhat-tag{display:inline-block;align-self:flex-start;background:#fef2f2;color:#c7313a;border:1px solid #fecaca;padding:.22rem .65rem;border-radius:999px;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:.7rem}
 .nowwhat-title{font-size:1rem;font-weight:800;color:#1a1a2e;line-height:1.3;letter-spacing:-.2px;margin-bottom:.4rem}
 .nowwhat-body{font-size:.82rem;color:#64748b;line-height:1.55;flex:1;margin-bottom:.85rem}
-.nowwhat-arrow{font-size:.82rem;font-weight:700;color:#FF4F40}
+.nowwhat-arrow{font-size:.82rem;font-weight:700;color:#E7515A}
 .nowwhat-card:hover .nowwhat-arrow{color:#1a1a2e}
 @media(max-width:780px){.nowwhat{margin:2rem auto 3rem;padding:0 1.25rem}.nowwhat h2{font-size:1.35rem}.nowwhat-grid{grid-template-columns:1fr;gap:.75rem}}
 </style>
