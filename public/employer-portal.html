@@ -12,8 +12,8 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f8fafc;--bg2:#ffffff;--bg3:rgba(0,0,0,.03);--text:#0f172a;--text2:#475569;--text3:#64748b;--em:#E7515A;--em2:#c7313a;--em3:rgba(231,81,90,.08);--gold:#b45309;--red:#ef4444;--border:rgba(0,0,0,.1);--border2:rgba(0,0,0,.15);--card:rgba(255,255,255,.9);--inp:rgba(0,0,0,.04);--r:12px;--rl:20px;--glow:0 4px 25px rgba(231,81,90,.15)}
-body.dark{--bg:#09090b;--bg2:#0f172a;--bg3:rgba(255,255,255,.04);--text:#f8fafc;--text2:#94a3b8;--text3:#64748b;--em:#E7515A;--em2:#14b8a6;--em3:rgba(231,81,90,.08);--gold:#f59e0b;--red:#ef4444;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--card:rgba(255,255,255,.03);--inp:rgba(255,255,255,.05);--glow:0 4px 25px rgba(231,81,90,.15)}
+:root{--bg:#f8fafc;--bg2:#ffffff;--bg3:rgba(0,0,0,.03);--text:#0f172a;--text2:#475569;--text3:#64748b;--em:#FF4F40;--em2:#c7313a;--em3:rgba(231,81,90,.08);--gold:#b45309;--red:#ef4444;--border:rgba(0,0,0,.1);--border2:rgba(0,0,0,.15);--card:rgba(255,255,255,.9);--inp:rgba(0,0,0,.04);--r:12px;--rl:20px;--glow:0 4px 25px rgba(231,81,90,.15)}
+body.dark{--bg:#09090b;--bg2:#0f172a;--bg3:rgba(255,255,255,.04);--text:#f8fafc;--text2:#94a3b8;--text3:#64748b;--em:#FF4F40;--em2:#14b8a6;--em3:rgba(231,81,90,.08);--gold:#f59e0b;--red:#ef4444;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--card:rgba(255,255,255,.03);--inp:rgba(255,255,255,.05);--glow:0 4px 25px rgba(231,81,90,.15)}
 body.dark .logo span{color:#f8fafc}
 body.dark input,body.dark select,body.dark textarea{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1)}
 body.dark .auth-tab{color:#94a3b8}
@@ -116,27 +116,27 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
 .post-step.active span{background:var(--em) !important;color:#fff !important}
 @media(max-width:600px){.g2{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.post-step span+*{display:none}.plan-grid{grid-template-columns:1fr !important}}
 </style>
-<!--NUNITO-LOGO--><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet"><style>.nav-logo,.top-logo,.ch-nav-logo,#logo-home,#h-logo,.logo-text,.fmj-wordmark,a[href="/"][style*="font-weight:900"],a[href="/"][style*="font-weight:800"]{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900;letter-spacing:-.02em}.nav-logo span,.top-logo span,.ch-nav-logo span,.fmj-wordmark span{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900}footer div[style*="#E7515A"][style*="font-weight:900"],footer span[style*="#E7515A"][style*="font-weight:900"]{font-family:"Nunito",system-ui,sans-serif!important;letter-spacing:-.02em}</style></head>
+<!--NUNITO-LOGO--><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet"><style>.nav-logo,.top-logo,.ch-nav-logo,#logo-home,#h-logo,.logo-text,.fmj-wordmark,a[href="/"][style*="font-weight:900"],a[href="/"][style*="font-weight:800"]{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900;letter-spacing:-.02em}.nav-logo span,.top-logo span,.ch-nav-logo span,.fmj-wordmark span{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900}footer div[style*="#FF4F40"][style*="font-weight:900"],footer span[style*="#FF4F40"][style*="font-weight:900"]{font-family:"Nunito",system-ui,sans-serif!important;letter-spacing:-.02em}</style></head>
 <body>
 <div class="toast" id="toast"></div>
 
 <style>
 /* Canonical nav — mirrors /index.html for cross-page consistency */
 nav.nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 3rem;position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,.06)}
-.nav-logo{font-size:1.4rem;font-weight:900;color:#E7515A;text-decoration:none;letter-spacing:-.5px}
+.nav-logo{font-size:1.4rem;font-weight:900;color:#FF4F40;text-decoration:none;letter-spacing:-.5px}
 .nav-logo:hover{text-decoration:none}
 .nav-links{display:flex;align-items:center;gap:2rem}
 .nav-links a{color:#1a1a2e;font-size:.9rem;font-weight:600;text-decoration:none}
-.nav-links a:hover{color:#E7515A}
+.nav-links a:hover{color:#FF4F40}
 .nav-cta{background:#1a1a2e!important;color:#fff!important;padding:.65rem 1.5rem;border-radius:999px;font-size:.85rem;font-weight:700;transition:all .2s;cursor:pointer}
-.nav-cta:hover{background:#E7515A!important}
+.nav-cta:hover{background:#FF4F40!important}
 .hamburger{display:none;background:none;border:none;font-size:1.4rem;color:#1a1a2e;cursor:pointer}
 .mob-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;backdrop-filter:blur(6px)}
 .mob-overlay.open{display:block}
 .mob-sheet{background:#fff;padding:2rem;position:absolute;top:0;left:0;right:0;border-radius:0 0 20px 20px}
 .mob-sheet a{display:block;padding:1rem 0;font-size:1.1rem;font-weight:600;color:#1a1a2e;text-decoration:none;border-bottom:1px solid #f0f0f0}
 .mob-sheet a:last-child{border:none}
-.mob-sheet a.coral{color:#E7515A}
+.mob-sheet a.coral{color:#FF4F40}
 @media(max-width:900px){
   nav.nav{padding:1rem 1.25rem}
   .nav-links{display:none}
@@ -1021,7 +1021,7 @@ if(saved&&!resetTok){
 }
 </script>
 
-<section style="background:#E7515A;padding:0;margin-top:2rem">
+<section style="background:#FF4F40;padding:0;margin-top:2rem">
   <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;gap:3rem;padding:3rem 2rem">
     <div style="flex:1">
       <h2 style="font-size:1.8rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:.75rem">Start your career toolkit</h2>
@@ -1036,12 +1036,12 @@ if(saved&&!resetTok){
   <p style="color:#6b7280;font-size:.9rem;margin-bottom:1.25rem">Real jobs from Adzuna delivered every Monday. Free.</p>
   <div style="display:flex;gap:.5rem;max-width:420px;margin:0 auto">
     <input type="email" id="alert-email" placeholder="your@email.com" style="flex:1;padding:.75rem 1rem;border:1px solid #e0e0e0;border-radius:999px;font-family:inherit;font-size:.9rem;outline:none;color:#1a1a2e">
-    <button onclick="subscribeAlerts()" style="padding:.75rem 1.5rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;white-space:nowrap">Subscribe</button>
+    <button onclick="subscribeAlerts()" style="padding:.75rem 1.5rem;background:#FF4F40;color:#fff;border:none;border-radius:999px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;white-space:nowrap">Subscribe</button>
   </div>
 </section>
 <footer style="background:#1B1B3A;padding:3rem 2rem 1.5rem">
   <div style="max-width:900px;margin:0 auto">
-    <div style="font-size:2rem;font-weight:900;color:#E7515A;margin-bottom:1.5rem;letter-spacing:-.5px">FindMeAJob</div>
+    <div style="font-size:2rem;font-weight:900;color:#FF4F40;margin-bottom:1.5rem;letter-spacing:-.5px">FindMeAJob</div>
     <div style="display:flex;gap:2.5rem;flex-wrap:wrap;margin-bottom:1.5rem">
       <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.6rem">Tools</div><a href="/match.html" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Apply for a Job</a><a href="/interview-sim" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Interview Simulator</a><a href="/score" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">CV Score</a><a href="/salary" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Salary Calculator</a></div>
       <div><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.6rem">More</div><a href="/interview" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Interview Questions</a><a href="/negotiate" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Negotiate Salary</a><a href="/compare" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Compare Jobs</a><a href="/decode" style="display:block;color:rgba(255,255,255,.7);font-size:.8rem;margin-bottom:.4rem;text-decoration:none">Decode Job Ad</a></div>

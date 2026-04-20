@@ -14,7 +14,7 @@
   --text:#0f172a;
   --text2:#475569;
   --text3:#64748b;
-  --em:#E7515A;
+  --em:#FF4F40;
   --em2:#c7313a;
   --gold:#b45309;
   --purple:#7c3aed;
@@ -167,7 +167,7 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
 
 <div id="login">
   <div class="login-box">
-    <div class="login-logo" style="font-size:1.8rem;font-weight:900;color:#E7515A;letter-spacing:-.5px">FindMeAJob</div>
+    <div class="login-logo" style="font-size:1.8rem;font-weight:900;color:#FF4F40;letter-spacing:-.5px">FindMeAJob</div>
     <div class="login-sub">Admin Panel</div>
     <label>Password</label>
     <input type="password" id="pw" placeholder="Enter admin password" autocomplete="current-password">
@@ -178,7 +178,7 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
 
 <div id="app">
   <header>
-    <div class="hlogo" style="font-size:1.2rem;font-weight:900;color:#E7515A;letter-spacing:-.5px">FindMeAJob <span style="color:#94a3b8;font-weight:600">Admin</span></div>
+    <div class="hlogo" style="font-size:1.2rem;font-weight:900;color:#FF4F40;letter-spacing:-.5px">FindMeAJob <span style="color:#94a3b8;font-weight:600">Admin</span></div>
     <div class="hright">
       <span class="badge" id="pending-badge">0 pending</span>
       <button class="signout" id="btn-signout" type="button">Sign out</button>
@@ -846,7 +846,7 @@ async function generateBlog() {
     }
     if(!posts.length)throw new Error("No posts generated");
 
-    var gradients = {seeker:"linear-gradient(135deg,#c7313a,#E7515A)",employer:"linear-gradient(135deg,#d97706,#f59e0b)",market:"linear-gradient(135deg,#7c3aed,#8b5cf6)",tips:"linear-gradient(135deg,#db2777,#ec4899)"};
+    var gradients = {seeker:"linear-gradient(135deg,#c7313a,#FF4F40)",employer:"linear-gradient(135deg,#d97706,#f59e0b)",market:"linear-gradient(135deg,#7c3aed,#8b5cf6)",tips:"linear-gradient(135deg,#db2777,#ec4899)"};
     var h = '';
     posts.forEach(function(p, i) {
       var tagColors = {seeker:"var(--em)",employer:"var(--gold)",market:"var(--purple)",tips:"#ec4899"};
@@ -905,7 +905,7 @@ function removePendingPost(idx) {
   }
   // Re-render with updated indices
   var posts = window._pendingBlogPosts;
-  var gradients = {seeker:"linear-gradient(135deg,#c7313a,#E7515A)",employer:"linear-gradient(135deg,#d97706,#f59e0b)",market:"linear-gradient(135deg,#7c3aed,#8b5cf6)",tips:"linear-gradient(135deg,#db2777,#ec4899)"};
+  var gradients = {seeker:"linear-gradient(135deg,#c7313a,#FF4F40)",employer:"linear-gradient(135deg,#d97706,#f59e0b)",market:"linear-gradient(135deg,#7c3aed,#8b5cf6)",tips:"linear-gradient(135deg,#db2777,#ec4899)"};
   var h = '';
   posts.forEach(function(p, i) {
     var grad = gradients[p.category] || gradients.market;
@@ -979,7 +979,7 @@ async function loadExistingBlog() {
       return;
     }
     window._publishedBlogPosts = posts;
-    var gradients = {seeker:"linear-gradient(135deg,#c7313a,#E7515A)",employer:"linear-gradient(135deg,#d97706,#f59e0b)",market:"linear-gradient(135deg,#7c3aed,#8b5cf6)",tips:"linear-gradient(135deg,#db2777,#ec4899)"};
+    var gradients = {seeker:"linear-gradient(135deg,#c7313a,#FF4F40)",employer:"linear-gradient(135deg,#d97706,#f59e0b)",market:"linear-gradient(135deg,#7c3aed,#8b5cf6)",tips:"linear-gradient(135deg,#db2777,#ec4899)"};
     var h = '<div style="font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:.75rem">'+posts.length+' published posts</div>';
     posts.forEach(function(p, i) {
       var grad = gradients[p.category] || gradients.market;
@@ -1233,12 +1233,12 @@ function downloadPostImage(btn) {
     else { var bg=ctx.createLinearGradient(0,0,W*0.3,H); bg.addColorStop(0,"#0f172a"); bg.addColorStop(1,"#09090b"); ctx.fillStyle=bg; ctx.fillRect(0,0,W,H); }
     var g1=ctx.createRadialGradient(W*0.8,H*0.15,0,W*0.8,H*0.15,W*0.4); g1.addColorStop(0,"rgba(139,92,246,.12)"); g1.addColorStop(1,"transparent"); ctx.fillStyle=g1; ctx.fillRect(0,0,W,H);
     var g2=ctx.createRadialGradient(W*0.15,H*0.8,0,W*0.15,H*0.8,W*0.35); g2.addColorStop(0,"rgba(231,81,90,.08)"); g2.addColorStop(1,"transparent"); ctx.fillStyle=g2; ctx.fillRect(0,0,W,H);
-    var tl=ctx.createLinearGradient(0,0,W,0); tl.addColorStop(0,"transparent"); tl.addColorStop(0.2,"#E7515A"); tl.addColorStop(0.5,"#8b5cf6"); tl.addColorStop(0.8,"#ec4899"); tl.addColorStop(1,"transparent"); ctx.fillStyle=tl; ctx.fillRect(0,0,W,5);
+    var tl=ctx.createLinearGradient(0,0,W,0); tl.addColorStop(0,"transparent"); tl.addColorStop(0.2,"#FF4F40"); tl.addColorStop(0.5,"#8b5cf6"); tl.addColorStop(0.8,"#ec4899"); tl.addColorStop(1,"transparent"); ctx.fillStyle=tl; ctx.fillRect(0,0,W,5);
     var pad=Math.round(W*0.06);
     // Logo icon
     var logoS=Math.round(Math.min(W,H)*0.06);
     var lx=pad, ly=pad;
-    ctx.beginPath(); ctx.roundRect(lx,ly,logoS,logoS,Math.round(logoS*0.22)); ctx.fillStyle="#E7515A"; ctx.fill();
+    ctx.beginPath(); ctx.roundRect(lx,ly,logoS,logoS,Math.round(logoS*0.22)); ctx.fillStyle="#FF4F40"; ctx.fill();
     var mgCx=lx+logoS*0.41, mgCy=ly+logoS*0.41, mgR=logoS*0.19;
     ctx.beginPath(); ctx.arc(mgCx,mgCy,mgR,0,Math.PI*2); ctx.strokeStyle="white"; ctx.lineWidth=Math.max(2,logoS*0.08); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(mgCx+mgR*0.7,mgCy+mgR*0.7); ctx.lineTo(lx+logoS*0.72,ly+logoS*0.72); ctx.strokeStyle="white"; ctx.lineCap="round"; ctx.stroke();
@@ -1247,7 +1247,7 @@ function downloadPostImage(btn) {
     ctx.font="800 "+bs+"px Inter, sans-serif"; ctx.textAlign="left"; ctx.fillStyle="#ffffff";
     var bx=lx+logoS+Math.round(logoS*0.25), by=ly+logoS*0.68;
     ctx.fillText("FindMe",bx,by); var fw=ctx.measureText("FindMe").width;
-    ctx.fillStyle="#E7515A"; ctx.fillText("AJob",bx+fw,by);
+    ctx.fillStyle="#FF4F40"; ctx.fillText("AJob",bx+fw,by);
     // Platform top-right
     ctx.font="600 "+Math.round(bs*0.65)+"px Inter, sans-serif"; ctx.textAlign="right"; ctx.fillStyle=color; ctx.fillText(platform,W-pad,by);
     // --- SHORT PUNCHY HEADLINE ---
@@ -1291,9 +1291,9 @@ function downloadPostImage(btn) {
     var fy=H-Math.round(footerH2*0.35);
     ctx.fillStyle="rgba(255,255,255,.08)"; ctx.fillRect(pad,fy-Math.round(footerH2*0.3),W-pad*2,1);
     var footFs=Math.round(Math.min(W,H)*0.028); if(footFs<14) footFs=14; if(footFs>32) footFs=32;
-    ctx.textAlign="left"; ctx.font="700 "+footFs+"px Inter, sans-serif"; ctx.fillStyle="#E7515A"; ctx.fillText("findmeajob.co.nz",pad,fy);
+    ctx.textAlign="left"; ctx.font="700 "+footFs+"px Inter, sans-serif"; ctx.fillStyle="#FF4F40"; ctx.fillText("findmeajob.co.nz",pad,fy);
     ctx.textAlign="right"; ctx.font="500 "+Math.round(footFs*0.8)+"px Inter, sans-serif"; ctx.fillStyle="#52525b"; ctx.fillText("Free AI job matching for New Zealand",W-pad,fy);
-    var bl=ctx.createLinearGradient(0,0,W,0); bl.addColorStop(0,"transparent"); bl.addColorStop(0.3,"#E7515A"); bl.addColorStop(0.7,"#8b5cf6"); bl.addColorStop(1,"transparent"); ctx.fillStyle=bl; ctx.fillRect(0,H-5,W,5);
+    var bl=ctx.createLinearGradient(0,0,W,0); bl.addColorStop(0,"transparent"); bl.addColorStop(0.3,"#FF4F40"); bl.addColorStop(0.7,"#8b5cf6"); bl.addColorStop(1,"transparent"); ctx.fillStyle=bl; ctx.fillRect(0,H-5,W,5);
     var dl=document.createElement("a"); dl.download="findmeajob-"+platform.toLowerCase().replace(/[\s\/]/g,"-")+".png"; dl.href=cn.toDataURL("image/png"); dl.click();
     btn.textContent="Done!"; btn.style.color="var(--em)"; setTimeout(function(){ btn.textContent="Image"; btn.style.color="var(--text2)"; },2000);
   }
