@@ -269,7 +269,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 .job-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 @media(max-width:700px){.job-grid{grid-template-columns:1fr}}
 </style>
-<!--NUNITO-LOGO--><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet"><style>.nav-logo,.top-logo,.ch-nav-logo,#logo-home,#h-logo,.logo-text,.fmj-wordmark,a[href="/"][style*="font-weight:900"],a[href="/"][style*="font-weight:800"]{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900;letter-spacing:-.02em}.nav-logo span,.top-logo span,.ch-nav-logo span,.fmj-wordmark span{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900}footer div[style*="#FF4F40"][style*="font-weight:900"],footer span[style*="#FF4F40"][style*="font-weight:900"]{font-family:"Nunito",system-ui,sans-serif!important;letter-spacing:-.02em}</style></head>
+<!--NUNITO-LOGO--><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet"><style>.nav-logo,.top-logo,.ch-nav-logo,#logo-home,#h-logo,.logo-text,.fmj-wordmark,a[href="/"][style*="font-weight:900"],a[href="/"][style*="font-weight:800"]{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900;letter-spacing:-.02em}.nav-logo span,.top-logo span,.ch-nav-logo span,.fmj-wordmark span{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900}footer div[style*="#FF4F40"][style*="font-weight:900"],footer span[style*="#FF4F40"][style*="font-weight:900"]{font-family:"Nunito",system-ui,sans-serif!important;letter-spacing:-.02em}</style><link rel="stylesheet" href="/css/monzo.css">
+</head>
 <body>
 <div class="toast" id="toast"></div>
 
@@ -1201,6 +1202,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     </div>
     <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:1rem;font-size:.62rem;color:rgba(255,255,255,.3)">&copy; 2026 FindMeAJob Ltd. All rights reserved. — AI results are suggestions, not professional advice.</div>
   </div>
+  <div class="mnz-giant-mark" style="padding:2rem 1rem 1rem">findmeajob</div>
 </footer>
 
 <div id="db"><p class="btext">AI suggestions only — not career advice. <a href="/terms" style="color:var(--em);font-size:.73rem;font-weight:600">Terms</a> &amp; <a href="/privacy" style="color:var(--em);font-size:.73rem;font-weight:600">Privacy</a></p><button class="bbtn" id="btn-dismiss" type="button">Got it</button></div>
@@ -2708,7 +2710,8 @@ function rebuildTailoredHtml(text){
     +'ul{margin:0 0 8px;padding-left:18px;list-style:none}'
     +'li{margin-bottom:4px;padding-left:12px;position:relative;line-height:1.5}'
     +'li::before{content:"\\2022";position:absolute;left:0;color:#555}'
-    +'</style></head>'
+    +'</style><link rel="stylesheet" href="/css/monzo.css">
+</head>'
     +'<body>'+contactHeader+cvBody+'</body></html>';
 }
 
@@ -3623,7 +3626,8 @@ function initApp(){try{
 
   window.downloadAsWord=function(id,filename){
     var text=document.getElementById(id).innerText;
-    var html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><style>body{font-family:Calibri,sans-serif;font-size:11pt;line-height:1.6;color:#222;max-width:700px;margin:0 auto;padding:2cm 2.5cm}h1,h2,h3{margin:1em 0 .3em;font-size:13pt}</style></head><body><pre style="white-space:pre-wrap;font-family:Calibri,sans-serif;font-size:11pt;line-height:1.6">'+text.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</pre></body></html>';
+    var html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><style>body{font-family:Calibri,sans-serif;font-size:11pt;line-height:1.6;color:#222;max-width:700px;margin:0 auto;padding:2cm 2.5cm}h1,h2,h3{margin:1em 0 .3em;font-size:13pt}</style><link rel="stylesheet" href="/css/monzo.css">
+</head><body><pre style="white-space:pre-wrap;font-family:Calibri,sans-serif;font-size:11pt;line-height:1.6">'+text.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</pre></body></html>';
     var blob=new Blob([html],{type:'application/msword'});
     var a=document.createElement('a');
     a.href=URL.createObjectURL(blob);
@@ -3636,7 +3640,8 @@ function initApp(){try{
   window.printText=function(id){
     var text=document.getElementById(id).innerText;
     var w=window.open('','_blank');
-    w.document.write('<html><head><title>Print</title><style>body{font-family:Calibri,sans-serif;font-size:11pt;line-height:1.6;color:#222;max-width:700px;margin:0 auto;padding:2cm}pre{white-space:pre-wrap;font-family:Calibri,sans-serif;font-size:11pt;line-height:1.6}</style></head><body><pre>'+text.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</pre></body></html>');
+    w.document.write('<html><head><title>Print</title><style>body{font-family:Calibri,sans-serif;font-size:11pt;line-height:1.6;color:#222;max-width:700px;margin:0 auto;padding:2cm}pre{white-space:pre-wrap;font-family:Calibri,sans-serif;font-size:11pt;line-height:1.6}</style><link rel="stylesheet" href="/css/monzo.css">
+</head><body><pre>'+text.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</pre></body></html>');
     w.document.close();
     w.focus();
     setTimeout(function(){w.print();},300);

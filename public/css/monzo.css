@@ -1,0 +1,520 @@
+/* ===========================================================
+   findmeajob Monzo-family design system
+   Loaded on every page. Single source of truth for visual tokens,
+   CTA shapes, card chrome, FAQ accordion, footer wordmark, and the
+   small refinements that make the site read as Monzo-adjacent.
+   =========================================================== */
+
+:root {
+  /* Core palette */
+  --mnz-coral: #FF4F40;
+  --mnz-coral-dark: #D93729;
+  --mnz-coral-tint: #FFE8E5;
+  --mnz-coral-border: #FFB8AF;
+  --mnz-navy: #112231;
+  --mnz-navy-dark: #091723;
+  --mnz-cream: #FAF6EF;
+  --mnz-mint: #EFF3E3;
+  --mnz-mint-deep: #E3ECC9;
+  --mnz-peach: #FFE8CC;
+  --mnz-lavender: #EAE6FA;
+  --mnz-text: #112231;
+  --mnz-text-muted: #64748B;
+  --mnz-text-soft: #94A3B8;
+  --mnz-border: #E8E8E8;
+  --mnz-border-soft: #F1F1F1;
+
+  /* Radii */
+  --mnz-r-sm: 12px;
+  --mnz-r-md: 20px;
+  --mnz-r-lg: 28px;
+  --mnz-r-xl: 32px;
+  --mnz-r-pill: 999px;
+
+  /* Shadows */
+  --mnz-shadow-sm: 0 2px 8px rgba(17,34,49,.04);
+  --mnz-shadow-md: 0 12px 30px rgba(17,34,49,.08);
+  --mnz-shadow-lg: 0 30px 60px rgba(17,34,49,.14);
+
+  /* Type scale */
+  --mnz-fs-xs: .72rem;
+  --mnz-fs-sm: .85rem;
+  --mnz-fs-md: 1rem;
+  --mnz-fs-lg: 1.25rem;
+  --mnz-fs-xl: 2rem;
+  --mnz-fs-2xl: 3rem;
+  --mnz-fs-3xl: 4rem;
+}
+
+/* ---------- Global refinements (applied everywhere) ---------- */
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  color: var(--mnz-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings feel Monzo — tight, bold, navy, letter-spaced in */
+h1, h2, h3, h4 {
+  color: var(--mnz-text);
+  letter-spacing: -.02em;
+  line-height: 1.1;
+}
+h1 { font-weight: 900; }
+h2 { font-weight: 900; }
+h1 em, h2 em, h3 em, h4 em {
+  font-style: normal;
+  color: var(--mnz-coral);
+}
+
+/* ---------- Primary CTAs: coral → navy (Monzo pattern) ---------- */
+/* Every primary action flips to navy, hover shows coral. Uses high
+   specificity + !important to win against page-local styles. */
+
+.btn,
+button.btn,
+a.btn,
+.hero-btn,
+.heroM-cta,
+.stg-cta,
+.howit-cta,
+.faq-btn,
+.mnz-cta,
+.uc-link,
+.fsim-cta,
+input[type="submit"].btn,
+button[type="submit"].btn {
+  background: var(--mnz-navy) !important;
+  color: #fff !important;
+  border-radius: var(--mnz-r-pill) !important;
+  font-weight: 700 !important;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+  transition: all .22s !important;
+  box-shadow: 0 4px 14px rgba(17,34,49,.14) !important;
+  border: none !important;
+  cursor: pointer;
+}
+.btn:hover,
+button.btn:hover,
+a.btn:hover,
+.hero-btn:hover,
+.heroM-cta:hover,
+.stg-cta:hover,
+.howit-cta:hover,
+.mnz-cta:hover,
+.fsim-cta:hover {
+  background: var(--mnz-coral) !important;
+  color: #fff !important;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(255,79,64,.3) !important;
+  text-decoration: none !important;
+}
+
+/* Ghost / secondary CTA (Monzo outline-on-white look) */
+.mnz-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  background: transparent;
+  color: var(--mnz-navy);
+  border: 1.5px solid var(--mnz-navy);
+  padding: .8rem 1.4rem;
+  border-radius: var(--mnz-r-pill);
+  font-weight: 700;
+  font-size: .95rem;
+  text-decoration: none;
+  transition: all .2s;
+}
+.mnz-ghost:hover {
+  background: var(--mnz-navy);
+  color: #fff;
+  text-decoration: none;
+}
+
+/* ---------- Monzo pill eyebrow ---------- */
+.mnz-eyebrow {
+  display: inline-block;
+  background: var(--mnz-cream);
+  color: var(--mnz-navy);
+  padding: .35rem .9rem;
+  border-radius: var(--mnz-r-pill);
+  font-size: .72rem;
+  font-weight: 700;
+  border: 1px solid var(--mnz-border);
+  margin-bottom: 1rem;
+}
+.mnz-eyebrow-coral {
+  background: var(--mnz-coral-tint);
+  color: var(--mnz-coral-dark);
+  border-color: var(--mnz-coral-border);
+}
+
+/* ---------- Monzo pastel mega-containers ---------- */
+.mnz-mega {
+  padding: 3rem 1.5rem;
+  margin: 2rem 1.5rem;
+  border-radius: var(--mnz-r-xl);
+}
+.mnz-mega-mint { background: var(--mnz-mint); }
+.mnz-mega-cream { background: var(--mnz-cream); }
+.mnz-mega-peach { background: var(--mnz-peach); }
+.mnz-mega-lavender { background: var(--mnz-lavender); }
+.mnz-mega-navy { background: var(--mnz-navy); color: #fff; }
+.mnz-mega-navy h1, .mnz-mega-navy h2, .mnz-mega-navy h3 { color: #fff; }
+
+@media (max-width: 820px) {
+  .mnz-mega { padding: 2rem 1rem; margin: 1rem .75rem; border-radius: var(--mnz-r-lg); }
+}
+
+/* ---------- Monzo result card (the chrome on every tool output) ---------- */
+.mnz-card {
+  background: #fff;
+  border: 1px solid var(--mnz-border);
+  border-radius: var(--mnz-r-md);
+  padding: 1.5rem;
+  box-shadow: var(--mnz-shadow-sm);
+  transition: all .2s;
+}
+.mnz-card:hover { border-color: var(--mnz-coral-border); box-shadow: var(--mnz-shadow-md); }
+.mnz-card-chip {
+  display: inline-block;
+  background: var(--mnz-coral-tint);
+  color: var(--mnz-coral-dark);
+  border: 1px solid var(--mnz-coral-border);
+  padding: .28rem .75rem;
+  border-radius: var(--mnz-r-pill);
+  font-size: .62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: .6rem;
+}
+.mnz-card-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--mnz-navy);
+  letter-spacing: -.2px;
+  line-height: 1.2;
+  margin-bottom: .15rem;
+}
+.mnz-card-sub {
+  font-size: .8rem;
+  color: var(--mnz-text-muted);
+  margin-bottom: .7rem;
+}
+.mnz-card-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+  margin-bottom: .7rem;
+}
+.mnz-card-pill {
+  background: var(--mnz-cream);
+  border: 1px solid var(--mnz-border);
+  color: var(--mnz-navy);
+  padding: .28rem .65rem;
+  border-radius: var(--mnz-r-pill);
+  font-size: .7rem;
+  font-weight: 600;
+}
+
+/* ---------- Monzo FAQ accordion (coral chevron pill rows) ---------- */
+.mnz-faq {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+}
+.mnz-faq h2 {
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: var(--mnz-navy);
+  letter-spacing: -.6px;
+  text-align: center;
+  margin-bottom: 2rem;
+  line-height: 1.1;
+}
+.mnz-faq h2 em { color: var(--mnz-coral); font-style: normal; }
+.mnz-faq-item {
+  background: #fff;
+  border: 1px solid var(--mnz-border);
+  border-radius: var(--mnz-r-pill);
+  margin-bottom: .65rem;
+  overflow: hidden;
+  transition: all .2s;
+}
+.mnz-faq-item[open] {
+  border-radius: var(--mnz-r-md);
+  border-color: var(--mnz-coral);
+  box-shadow: 0 10px 28px rgba(255,79,64,.08);
+}
+.mnz-faq-summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 1.1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: .98rem;
+  font-weight: 700;
+  color: var(--mnz-navy);
+  line-height: 1.4;
+}
+.mnz-faq-summary::-webkit-details-marker { display: none; }
+.mnz-faq-chev {
+  flex-shrink: 0;
+  color: var(--mnz-coral);
+  transition: transform .25s;
+  font-weight: 900;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+.mnz-faq-item[open] .mnz-faq-chev { transform: rotate(180deg); }
+.mnz-faq-body {
+  padding: 0 1.5rem 1.25rem;
+  font-size: .92rem;
+  color: var(--mnz-text-muted);
+  line-height: 1.65;
+}
+@media (max-width: 780px) {
+  .mnz-faq { padding: 2.5rem 1.25rem; }
+  .mnz-faq h2 { font-size: 1.7rem; }
+  .mnz-faq-summary { padding: 1rem 1.25rem; font-size: .9rem; }
+  .mnz-faq-body { padding: 0 1.25rem 1.1rem; font-size: .88rem; }
+}
+
+/* ---------- Trust indicator strip (pill row) ---------- */
+.mnz-trust-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem;
+  margin-top: 1.25rem;
+  align-items: center;
+}
+.mnz-trust-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  background: #fff;
+  border: 1px solid var(--mnz-border);
+  padding: .5rem .85rem;
+  border-radius: var(--mnz-r-pill);
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--mnz-navy);
+  box-shadow: var(--mnz-shadow-sm);
+}
+.mnz-trust-pill-num { color: var(--mnz-coral); font-weight: 900; }
+.mnz-trust-pill svg { width: 12px; height: 12px; color: var(--mnz-coral); flex-shrink: 0; }
+
+/* ---------- Sparkle helper ---------- */
+.mnz-spk {
+  display: inline-block;
+  transform: translateY(-.1em);
+  margin-left: .2em;
+  filter: drop-shadow(0 2px 6px rgba(255,79,64,.25));
+}
+
+/* ---------- Giant footer wordmark (Monzo signature finishing move) ---------- */
+.mnz-giant-mark {
+  font-size: clamp(4.5rem, 18vw, 14rem);
+  font-weight: 900;
+  color: var(--mnz-coral);
+  letter-spacing: -.06em;
+  line-height: .9;
+  text-align: center;
+  margin: 2rem 0 1rem;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  user-select: none;
+}
+
+/* ---------- Monzo "Tell me about..." style mega vertical menu ---------- */
+.mnz-tell-menu {
+  background: var(--mnz-mint);
+  border-radius: var(--mnz-r-xl);
+  padding: 2.5rem 2rem;
+  max-width: 1080px;
+  margin: 2rem auto;
+}
+.mnz-tell-menu-label {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--mnz-navy);
+  letter-spacing: -.02em;
+  margin-bottom: 1rem;
+}
+.mnz-tell-menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.mnz-tell-menu-list li {
+  border-bottom: 1px solid rgba(17,34,49,.08);
+}
+.mnz-tell-menu-list li:last-child { border-bottom: none; }
+.mnz-tell-menu-list a {
+  display: block;
+  padding: 1rem 0;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--mnz-coral);
+  text-decoration: none;
+  letter-spacing: -.02em;
+  transition: color .15s;
+}
+.mnz-tell-menu-list a:hover { color: var(--mnz-coral-dark); text-decoration: none; }
+@media (max-width: 780px) {
+  .mnz-tell-menu { padding: 1.75rem 1.25rem; margin: 1rem .75rem; }
+  .mnz-tell-menu-label { font-size: 1.4rem; }
+  .mnz-tell-menu-list a { font-size: 1.35rem; padding: .85rem 0; }
+}
+
+/* ---------- Monzo tall colourful portrait feature card ---------- */
+.mnz-feat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  max-width: 1180px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+.mnz-feat-card {
+  position: relative;
+  aspect-ratio: 3/4;
+  border-radius: var(--mnz-r-lg);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: #fff;
+  text-decoration: none;
+  overflow: hidden;
+  transition: transform .25s;
+}
+.mnz-feat-card:hover { transform: translateY(-4px); text-decoration: none; color: #fff; }
+.mnz-feat-card-coral { background: linear-gradient(160deg, var(--mnz-coral) 0%, var(--mnz-coral-dark) 100%); }
+.mnz-feat-card-navy { background: linear-gradient(160deg, #1B1B3A 0%, var(--mnz-navy) 100%); }
+.mnz-feat-card-peach { background: linear-gradient(160deg, #FFB796 0%, #FF8E6E 100%); }
+.mnz-feat-card-mint { background: linear-gradient(160deg, #A8D5A8 0%, #6FB36F 100%); color: var(--mnz-navy); }
+.mnz-feat-card-mint:hover, .mnz-feat-card-mint:hover * { color: var(--mnz-navy); }
+.mnz-feat-arrow {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.1rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+.mnz-feat-title {
+  font-size: 1.45rem;
+  font-weight: 900;
+  letter-spacing: -.02em;
+  line-height: 1.1;
+  margin-bottom: .5rem;
+  position: relative;
+  z-index: 2;
+}
+.mnz-feat-desc {
+  font-size: .88rem;
+  line-height: 1.45;
+  opacity: .85;
+  position: relative;
+  z-index: 2;
+}
+@media (max-width: 780px) {
+  .mnz-feat-grid { grid-template-columns: 1fr; gap: .85rem; padding: 0 .75rem; }
+  .mnz-feat-card { aspect-ratio: 4/3; padding: 1.35rem; }
+  .mnz-feat-title { font-size: 1.2rem; }
+}
+
+/* ---------- Utility refinements for existing tool pages ---------- */
+
+/* Soften body background on tool pages to Monzo cream */
+body.mnz-bg-cream { background: var(--mnz-cream); }
+body.mnz-bg-mint { background: var(--mnz-mint); }
+body.mnz-bg-white { background: #fff; }
+
+/* Tool-page result cards get Monzo chrome */
+.card, .section-card, .result-card {
+  border-radius: var(--mnz-r-md) !important;
+  border: 1px solid var(--mnz-border) !important;
+  box-shadow: var(--mnz-shadow-sm);
+}
+
+/* Tool-page H1s tighten up */
+.container > h1, main > h1, .wrap > h1 {
+  letter-spacing: -.02em;
+}
+
+/* Make every form input consistent with Monzo */
+input[type="text"], input[type="email"], input[type="number"], textarea, select {
+  border-radius: 14px !important;
+  border: 1px solid var(--mnz-border) !important;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+}
+input[type="text"]:focus, input[type="email"]:focus, textarea:focus, select:focus {
+  border-color: var(--mnz-coral) !important;
+  box-shadow: 0 0 0 3px rgba(255,79,64,.12) !important;
+  outline: none !important;
+}
+
+/* ---------- Page section rhythm: alternating cream/white ---------- */
+section.mnz-sec-cream { background: var(--mnz-cream); }
+section.mnz-sec-mint { background: var(--mnz-mint); }
+section.mnz-sec-peach { background: var(--mnz-peach); }
+section.mnz-sec-navy { background: var(--mnz-navy); color: #fff; }
+section.mnz-sec-navy h2, section.mnz-sec-navy h3, section.mnz-sec-navy h4 { color: #fff; }
+
+/* ---------- Fine-tune the shared nav to feel Monzo ---------- */
+nav.nav {
+  border-bottom: 1px solid var(--mnz-border-soft) !important;
+  background: rgba(255,255,255,.97) !important;
+}
+.nav-cta {
+  background: var(--mnz-navy) !important;
+  color: #fff !important;
+}
+.nav-cta:hover { background: var(--mnz-coral) !important; }
+
+/* ---------- Shared Monzo footer block (used via .mnz-footer) ---------- */
+.mnz-footer {
+  background: var(--mnz-navy);
+  color: rgba(255,255,255,.72);
+  padding: 3rem 1.5rem 0;
+  margin-top: 3rem;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+.mnz-footer-inner { max-width: 1180px; margin: 0 auto; }
+.mnz-footer a { color: rgba(255,255,255,.72); text-decoration: none; font-size: .88rem; }
+.mnz-footer a:hover { color: #fff; text-decoration: underline; }
+.mnz-footer-cols {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+.mnz-footer-col h4 {
+  color: rgba(255,255,255,.5);
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: .75rem;
+}
+.mnz-footer-col a { display: block; padding: .3rem 0; }
+.mnz-footer-fine {
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding: 1.5rem 0;
+  font-size: .72rem;
+  color: rgba(255,255,255,.4);
+  line-height: 1.7;
+}
+@media (max-width: 780px) {
+  .mnz-footer-cols { grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+}

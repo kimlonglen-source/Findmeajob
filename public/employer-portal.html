@@ -116,7 +116,8 @@ label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6
 .post-step.active span{background:var(--em) !important;color:#fff !important}
 @media(max-width:600px){.g2{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.post-step span+*{display:none}.plan-grid{grid-template-columns:1fr !important}}
 </style>
-<!--NUNITO-LOGO--><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet"><style>.nav-logo,.top-logo,.ch-nav-logo,#logo-home,#h-logo,.logo-text,.fmj-wordmark,a[href="/"][style*="font-weight:900"],a[href="/"][style*="font-weight:800"]{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900;letter-spacing:-.02em}.nav-logo span,.top-logo span,.ch-nav-logo span,.fmj-wordmark span{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900}footer div[style*="#FF4F40"][style*="font-weight:900"],footer span[style*="#FF4F40"][style*="font-weight:900"]{font-family:"Nunito",system-ui,sans-serif!important;letter-spacing:-.02em}</style></head>
+<!--NUNITO-LOGO--><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet"><style>.nav-logo,.top-logo,.ch-nav-logo,#logo-home,#h-logo,.logo-text,.fmj-wordmark,a[href="/"][style*="font-weight:900"],a[href="/"][style*="font-weight:800"]{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900;letter-spacing:-.02em}.nav-logo span,.top-logo span,.ch-nav-logo span,.fmj-wordmark span{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900}footer div[style*="#FF4F40"][style*="font-weight:900"],footer span[style*="#FF4F40"][style*="font-weight:900"]{font-family:"Nunito",system-ui,sans-serif!important;letter-spacing:-.02em}</style><link rel="stylesheet" href="/css/monzo.css">
+</head>
 <body>
 <div class="toast" id="toast"></div>
 
@@ -1049,6 +1050,7 @@ if(saved&&!resetTok){
     </div>
     <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:1rem;font-size:.62rem;color:rgba(255,255,255,.3)">&copy; 2026 FindMeAJob Ltd. All rights reserved.</div>
   </div>
+  <div class="mnz-giant-mark" style="padding:2rem 1rem 1rem">findmeajob</div>
 </footer>
 <script>
 function subscribeAlerts(){var e=document.getElementById('alert-email');if(!e||!e.value.trim()||e.value.indexOf('@')===-1)return;fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',email:e.value.trim(),password:'__alerts_only__',name:e.value.split('@')[0],emailAlerts:true})}).then(function(){e.value='';e.placeholder='Subscribed!';}).catch(function(){});}
