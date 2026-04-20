@@ -416,6 +416,47 @@ function toggleTheme(){document.body.classList.toggle('dark');var d=document.bod
     <button onclick="subscribeAlerts()" style="padding:.75rem 1.5rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;white-space:nowrap">Subscribe</button>
   </div>
 </section>
+<style>
+.nowwhat{max-width:1100px;margin:3rem auto 4rem;padding:0 2rem}
+.nowwhat-eyebrow{display:inline-block;background:#fef2f2;color:#c7313a;padding:.3rem .85rem;border-radius:999px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;border:1px solid #fecaca;margin-bottom:.85rem;font-family:'Plus Jakarta Sans',sans-serif}
+.nowwhat h2{font-size:1.65rem;font-weight:900;color:#1a1a2e;letter-spacing:-.4px;margin-bottom:.4rem;font-family:'Plus Jakarta Sans',sans-serif}
+.nowwhat-sub{font-size:.92rem;color:#64748b;margin-bottom:1.75rem}
+.nowwhat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.nowwhat-card{display:flex;flex-direction:column;background:#fff;border:1px solid #e8e8e8;border-radius:18px;padding:1.4rem;text-decoration:none;transition:all .25s;color:inherit}
+.nowwhat-card:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(231,81,90,.1);border-color:#E7515A;text-decoration:none}
+.nowwhat-tag{display:inline-block;align-self:flex-start;background:#fef2f2;color:#c7313a;border:1px solid #fecaca;padding:.22rem .65rem;border-radius:999px;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:.7rem}
+.nowwhat-title{font-size:1rem;font-weight:800;color:#1a1a2e;line-height:1.3;letter-spacing:-.2px;margin-bottom:.4rem}
+.nowwhat-body{font-size:.82rem;color:#64748b;line-height:1.55;flex:1;margin-bottom:.85rem}
+.nowwhat-arrow{font-size:.82rem;font-weight:700;color:#E7515A}
+.nowwhat-card:hover .nowwhat-arrow{color:#1a1a2e}
+@media(max-width:780px){.nowwhat{margin:2rem auto 3rem;padding:0 1.25rem}.nowwhat h2{font-size:1.35rem}.nowwhat-grid{grid-template-columns:1fr;gap:.75rem}}
+</style>
+<section class="nowwhat">
+  <div class="nowwhat-eyebrow">Now what?</div>
+  <h2>Ad decoded. Here&rsquo;s how to win the role.</h2>
+  <p class="nowwhat-sub">Three steps from job ad to interview offer.</p>
+  <div class="nowwhat-grid">
+    <a href="/match.html" class="nowwhat-card">
+      <span class="nowwhat-tag">Next</span>
+      <div class="nowwhat-title">Match your CV to this role</div>
+      <div class="nowwhat-body">See where your CV lines up with what they want &mdash; and where the gaps are.</div>
+      <div class="nowwhat-arrow">Match it &rarr;</div>
+    </a>
+    <a href="/match.html#apply" class="nowwhat-card">
+      <span class="nowwhat-tag">Tailor</span>
+      <div class="nowwhat-title">Write a cover letter for this ad</div>
+      <div class="nowwhat-body">Generate a cover letter that mirrors the ad&rsquo;s tone and hits its must-haves.</div>
+      <div class="nowwhat-arrow">Open the writer &rarr;</div>
+    </a>
+    <a href="/interview-sim" class="nowwhat-card">
+      <span class="nowwhat-tag">Then</span>
+      <div class="nowwhat-title">Practice the interview</div>
+      <div class="nowwhat-body">Rehearse the questions a hiring manager would ask for this kind of role.</div>
+      <div class="nowwhat-arrow">Start practising &rarr;</div>
+    </a>
+  </div>
+</section>
+
 <footer style="background:#1B1B3A;padding:3rem 2rem 1.5rem">
   <div style="max-width:900px;margin:0 auto">
     <div style="font-size:2rem;font-weight:900;color:#E7515A;margin-bottom:1.5rem;letter-spacing:-.5px">FindMeAJob</div>

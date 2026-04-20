@@ -185,6 +185,29 @@ img{max-width:100%;display:block}
   .uc h2{font-size:1.5rem}
   .uc-grid{grid-template-columns:1fr;gap:1rem}
 }
+/* "How it works" 3-step strip */
+.howit{max-width:1180px;margin:0 auto;padding:4rem 2rem 3rem;text-align:center}
+.howit h2{font-size:1.85rem;font-weight:900;color:#1a1a2e;letter-spacing:-.5px;margin:.5rem 0 .35rem}
+.howit h2 em{font-style:normal;color:#E7515A}
+.howit-sub{color:#64748b;font-size:.9rem;margin-bottom:2.25rem}
+.howit-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.25rem;text-align:left;margin-bottom:2rem;position:relative}
+.howit-grid::before{content:'';position:absolute;top:34px;left:16%;right:16%;height:2px;background:repeating-linear-gradient(90deg,#fecaca 0 8px,transparent 8px 16px);z-index:0}
+.howit-card{position:relative;background:#fff;border:1px solid #e8e8e8;border-radius:20px;padding:1.5rem 1.5rem 1.4rem;z-index:1;transition:all .25s}
+.howit-card:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(15,23,42,.08);border-color:rgba(231,81,90,.35)}
+.howit-num{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:14px;background:#E7515A;color:#fff;font-weight:900;font-size:1.05rem;margin-bottom:.85rem;letter-spacing:-.5px}
+.howit-title{font-size:1.05rem;font-weight:800;color:#1a1a2e;letter-spacing:-.2px;margin-bottom:.35rem}
+.howit-body{font-size:.86rem;color:#64748b;line-height:1.55}
+.howit-cta-row{display:flex;justify-content:center;align-items:center;gap:.75rem;flex-wrap:wrap}
+.howit-cta{background:#E7515A;color:#fff;padding:.85rem 1.6rem;border-radius:999px;font-weight:700;font-size:.9rem;transition:all .2s}
+.howit-cta:hover{background:#1a1a2e;text-decoration:none}
+.howit-time{font-size:.82rem;color:#64748b;font-weight:600}
+@media(max-width:820px){
+  .howit{padding:3rem 1.25rem 2rem}
+  .howit h2{font-size:1.45rem}
+  .howit-grid{grid-template-columns:1fr;gap:.85rem;margin-bottom:1.5rem}
+  .howit-grid::before{display:none}
+  .howit-card{padding:1.25rem}
+}
 @media(max-width:480px){
   .tool-grid{grid-template-columns:1fr 1fr}
   .tphoto{height:180px}
@@ -312,6 +335,34 @@ img{max-width:100%;display:block}
         <a href="/match.html#match-flow-top" class="heroM-card-apply">Apply in 1 click &rarr;</a>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- How it works -- 3-step strip -->
+<section class="howit">
+  <div class="fsims-eyebrow">How it works</div>
+  <h2>From CV to <em>interview</em> in three steps.</h2>
+  <p class="howit-sub">No sign-up. No email. Free forever.</p>
+  <div class="howit-grid">
+    <div class="howit-card">
+      <div class="howit-num">01</div>
+      <div class="howit-title">Upload your CV</div>
+      <div class="howit-body">Drop in your CV (or paste your LinkedIn). We never store it without your say-so.</div>
+    </div>
+    <div class="howit-card">
+      <div class="howit-num">02</div>
+      <div class="howit-title">See your matches</div>
+      <div class="howit-body">Get scored against live NZ jobs from SEEK, Trademe and Indeed in under a minute.</div>
+    </div>
+    <div class="howit-card">
+      <div class="howit-num">03</div>
+      <div class="howit-title">Apply with confidence</div>
+      <div class="howit-body">Generate a tailored cover letter, rehearse the interview, then hit send.</div>
+    </div>
+  </div>
+  <div class="howit-cta-row">
+    <a href="/match.html#match-flow-top" class="howit-cta">Upload your CV &rarr;</a>
+    <span class="howit-time">About 60 seconds</span>
   </div>
 </section>
 
