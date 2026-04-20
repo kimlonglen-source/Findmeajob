@@ -66,27 +66,67 @@ input:focus,select:focus,textarea:focus{border-color:#FF4F40;box-shadow:0 0 0 3p
 .aw-feat svg{width:14px;height:14px;color:#FF4F40;flex-shrink:0}
 .aw-cta{display:inline-block;background:#FF4F40;color:#fff;padding:.85rem 1.75rem;border-radius:999px;font-size:.92rem;font-weight:700;text-decoration:none;box-shadow:0 8px 25px rgba(231,81,90,.35);transition:all .25s;border:none;cursor:pointer;font-family:inherit}
 .aw-cta:hover{background:#c7313a;transform:translateY(-2px);box-shadow:0 12px 35px rgba(231,81,90,.45);text-decoration:none}
-.aw-viz{position:relative;height:300px;display:flex;align-items:center;justify-content:center}
-.aw-orb-wrap{position:relative;width:140px;height:140px}
-.aw-orb{position:absolute;inset:0;border-radius:50%;background:linear-gradient(135deg,#FF4F40,#c7313a);display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 0 60px rgba(231,81,90,.5);animation:awBeat 2.5s ease-in-out infinite;z-index:3}
-.aw-orb svg{width:54px;height:54px}
-.aw-pulse{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(231,81,90,.55);animation:awRing 2.4s ease-out infinite;pointer-events:none}
-@keyframes awBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
-@keyframes awRing{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.6);opacity:0}}
-.aw-wave{position:absolute;bottom:-32px;left:50%;transform:translateX(-50%);display:flex;gap:4px;align-items:flex-end;height:32px}
-.aw-wave span{display:block;width:3px;background:linear-gradient(0deg,#FF4F40,#fca5a5);border-radius:2px;animation:awBar 1s ease-in-out infinite;transform-origin:bottom}
-.aw-wave span:nth-child(1){height:10px;animation-delay:0s}
-.aw-wave span:nth-child(2){height:22px;animation-delay:.1s}
-.aw-wave span:nth-child(3){height:30px;animation-delay:.2s}
-.aw-wave span:nth-child(4){height:18px;animation-delay:.15s}
-.aw-wave span:nth-child(5){height:26px;animation-delay:.25s}
-.aw-wave span:nth-child(6){height:14px;animation-delay:.3s}
-.aw-wave span:nth-child(7){height:20px;animation-delay:.18s}
-@keyframes awBar{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
-.aw-bubble{position:absolute;background:rgba(255,255,255,.97);color:#0f172a;padding:.65rem .95rem;border-radius:14px;font-size:.78rem;font-weight:600;box-shadow:0 10px 35px rgba(0,0,0,.35);max-width:190px;opacity:0;animation:awBubble 7s ease-in-out infinite;line-height:1.4;z-index:4}
-.aw-bubble-ai{top:-8px;left:-18px;animation-delay:.5s;border-bottom-left-radius:4px}
-.aw-bubble-ai::before{content:'AI';position:absolute;top:-9px;left:10px;background:#FF4F40;color:#fff;font-size:.55rem;font-weight:800;padding:.15rem .45rem;border-radius:999px;letter-spacing:.5px}
-.aw-bubble-user{bottom:-8px;right:-18px;background:#FF4F40;color:#fff;animation-delay:3.5s;border-bottom-right-radius:4px}
+.aw-viz{position:relative;display:flex;align-items:center;justify-content:center;min-height:500px}
+
+/* Practice-sim floating phone: Scenario -> Negotiate -> Outcome */
+.pph-phone{position:relative;width:230px;max-width:100%;filter:drop-shadow(0 30px 60px rgba(0,0,0,.4));animation:pphFloat 6s ease-in-out infinite}
+.pph-frame{position:relative;width:100%;aspect-ratio:9/19;background:#0d0d15;border-radius:40px;padding:10px;border:1px solid rgba(255,255,255,.08)}
+.pph-frame::before{content:'';position:absolute;top:10px;left:50%;transform:translateX(-50%);width:92px;height:22px;background:#0d0d15;border-radius:0 0 16px 16px;z-index:3}
+.pph-screen{position:relative;width:100%;height:100%;background:#faf7f2;border-radius:30px;overflow:hidden}
+.pph-step{position:absolute;inset:0;padding:2rem .95rem .9rem;display:flex;flex-direction:column;background:#faf7f2;opacity:0;animation:pphCycle 15s linear infinite}
+.pph-s-scenario{animation-delay:0s}
+.pph-s-live{animation-delay:-10s}
+.pph-s-outcome{animation-delay:-5s}
+@keyframes pphCycle{0%,1%{opacity:1}30%{opacity:1}33%,100%{opacity:0}}
+@keyframes pphFloat{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-10px) rotate(-6deg)}}
+.pph-eb{font-size:.54rem;font-weight:800;color:#c7313a;text-transform:uppercase;letter-spacing:1.3px;margin-bottom:.25rem}
+.pph-t{font-size:.95rem;font-weight:900;color:#1a1a2e;line-height:1.15;letter-spacing:-.3px;margin-bottom:.6rem}
+/* Scenario step */
+.pph-scen-list{display:flex;flex-direction:column;gap:.3rem;flex:1}
+.pph-scen{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:.5rem .6rem;display:flex;align-items:center;gap:.5rem;box-shadow:0 4px 12px rgba(15,23,42,.04)}
+.pph-scen-icon{width:26px;height:26px;border-radius:7px;background:#fef2f2;color:#c7313a;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.pph-scen-icon svg{width:13px;height:13px}
+.pph-scen-title{font-size:.66rem;font-weight:900;color:#1a1a2e;line-height:1.15}
+.pph-scen-sub{font-size:.5rem;color:#64748b;font-weight:600}
+.pph-scen-pick{background:#FF4F40!important;border-color:#FF4F40!important}
+.pph-scen-pick .pph-scen-icon{background:rgba(255,255,255,.2);color:#fff}
+.pph-scen-pick .pph-scen-title,.pph-scen-pick .pph-scen-sub{color:#fff}
+.pph-scen-tag{margin-left:auto;background:#fff;color:#c7313a;padding:.1rem .4rem;border-radius:999px;font-size:.46rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px}
+/* Live negotiation step */
+.pph-chat{flex:1;display:flex;flex-direction:column;gap:.3rem;min-height:0}
+.pph-msg-ai{background:#fff;border:1px solid #e8e8e8;border-radius:10px;border-top-left-radius:3px;padding:.4rem .55rem;font-size:.6rem;line-height:1.35;color:#1a1a2e;font-weight:600;max-width:85%;align-self:flex-start}
+.pph-msg-ai::before{content:'BOSS';display:block;font-size:.44rem;color:#c7313a;font-weight:800;letter-spacing:1px;margin-bottom:.15rem}
+.pph-msg-you{background:#FF4F40;color:#fff;border-radius:10px;border-top-right-radius:3px;padding:.4rem .55rem;font-size:.6rem;line-height:1.35;font-weight:600;max-width:85%;align-self:flex-end}
+.pph-mic-row{display:flex;align-items:center;gap:.5rem;background:rgba(255,79,64,.08);border:1px dashed #fecaca;border-radius:10px;padding:.4rem .55rem;margin-top:auto}
+.pph-mic-sm{width:26px;height:26px;border-radius:50%;background:#FF4F40;color:#fff;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 5px 12px rgba(231,81,90,.4)}
+.pph-mic-sm svg{width:12px;height:12px}
+.pph-mic-sm::before{content:'';position:absolute;inset:-5px;border:2px solid rgba(231,81,90,.4);border-radius:50%;animation:pphMic 1.6s ease-out infinite}
+.pph-mic-sm{position:relative}
+@keyframes pphMic{0%{opacity:.75;transform:scale(.6)}100%{opacity:0;transform:scale(1.15)}}
+.pph-wave{display:inline-flex;gap:2px;align-items:center;height:18px}
+.pph-wave span{display:block;width:3px;background:#E7515A;border-radius:2px;animation:pphBar .95s ease-in-out infinite}
+.pph-wave span:nth-child(1){animation-delay:-.9s}
+.pph-wave span:nth-child(2){animation-delay:-.7s}
+.pph-wave span:nth-child(3){animation-delay:-.5s}
+.pph-wave span:nth-child(4){animation-delay:-.3s}
+.pph-wave span:nth-child(5){animation-delay:-.1s}
+@keyframes pphBar{0%,100%{height:4px}50%{height:16px}}
+.pph-mic-hint{font-size:.52rem;color:#64748b;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-left:auto}
+/* Outcome step */
+.pph-outcome{background:linear-gradient(135deg,#10b981 0%,#047857 100%);color:#fff;border-radius:14px;padding:.8rem .8rem;text-align:center;margin-bottom:.4rem;position:relative;overflow:hidden}
+.pph-outcome::before{content:'';position:absolute;inset:-20%;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.18) 0%,transparent 60%);pointer-events:none}
+.pph-outcome-label{position:relative;font-size:.5rem;color:rgba(255,255,255,.8);font-weight:800;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:.1rem}
+.pph-outcome-num{position:relative;font-size:1.55rem;font-weight:900;line-height:1;letter-spacing:-.5px}
+.pph-outcome-num small{font-size:.7rem;font-weight:800;opacity:.85;margin-left:.15rem}
+.pph-outcome-tag{position:relative;display:inline-block;margin-top:.25rem;background:rgba(255,255,255,.2);padding:.1rem .45rem;border-radius:999px;font-size:.46rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px}
+.pph-summary{flex:1;display:flex;flex-direction:column;gap:.2rem}
+.pph-sum{display:flex;align-items:center;gap:.35rem;background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:.35rem .5rem;font-size:.56rem;color:#1a1a2e;font-weight:600}
+.pph-sum-icon{width:14px;height:14px;border-radius:50%;background:#dcfce7;color:#15803d;display:inline-flex;align-items:center;justify-content:center;font-size:.5rem;font-weight:900;flex-shrink:0}
+.pph-cta-s{background:#1a1a2e;color:#fff;padding:.5rem;border-radius:999px;font-size:.64rem;font-weight:800;text-align:center;margin-top:.45rem;display:block;letter-spacing:.2px}
+@media(prefers-reduced-motion:reduce){
+  .pph-phone,.pph-step,.pph-mic-sm::before,.pph-wave span{animation:none!important}
+  .pph-s-scenario{opacity:1}
+}
 .aw-bubble-user::before{content:'YOU';position:absolute;top:-9px;right:10px;background:#0f172a;color:#fff;font-size:.55rem;font-weight:800;padding:.15rem .45rem;border-radius:999px;letter-spacing:.5px}
 @keyframes awBubble{0%,5%{opacity:0;transform:translateY(8px)}10%,45%{opacity:1;transform:translateY(0)}50%,100%{opacity:0;transform:translateY(-6px)}}
 .aw-trust{display:flex;gap:1.25rem;margin-top:1rem;flex-wrap:wrap;align-items:center}
@@ -97,10 +137,11 @@ input:focus,select:focus,textarea:focus{border-color:#FF4F40;box-shadow:0 0 0 3p
   .aw-inner{grid-template-columns:1fr;gap:1.25rem}
   .aw-text h1{font-size:1.85rem}
   .aw-text .aw-sub{font-size:.92rem}
-  .aw-viz{height:200px;order:-1}
-  .aw-orb-wrap{width:110px;height:110px}
-  .aw-orb svg{width:42px;height:42px}
-  .aw-bubble{display:none}
+  .aw-viz{min-height:auto;order:-1}
+  .pph-phone{width:200px}
+  .pph-step{padding:1.9rem .8rem .8rem}
+  .pph-t{font-size:.85rem}
+  @keyframes pphFloat{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-8px) rotate(-4deg)}}
   .aw-feat{font-size:.72rem;padding:.4rem .75rem}
 }
 </style>
@@ -195,17 +236,85 @@ input:focus,select:focus,textarea:focus{border-color:#FF4F40;box-shadow:0 0 0 3p
       </div>
     </div>
     <div class="aw-viz">
-      <div class="aw-bubble aw-bubble-ai">We can offer $85,000 &mdash; that&rsquo;s our budget for this role.</div>
-      <div class="aw-orb-wrap">
-        <div class="aw-pulse"></div>
-        <div class="aw-pulse" style="animation-delay:.8s"></div>
-        <div class="aw-pulse" style="animation-delay:1.6s"></div>
-        <div class="aw-orb">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      <div class="pph-phone" aria-hidden="true">
+        <div class="pph-frame">
+          <div class="pph-screen">
+
+            <!-- Step 1: Pick scenario -->
+            <div class="pph-step pph-s-scenario">
+              <div class="pph-eb">Step 1 &middot; Pick</div>
+              <div class="pph-t">Tough conversations</div>
+              <div class="pph-scen-list">
+                <div class="pph-scen pph-scen-pick">
+                  <div class="pph-scen-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+                  <div>
+                    <div class="pph-scen-title">Salary negotiation</div>
+                    <div class="pph-scen-sub">Recruiter pushes back hard</div>
+                  </div>
+                  <span class="pph-scen-tag">Pick</span>
+                </div>
+                <div class="pph-scen">
+                  <div class="pph-scen-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+                  <div>
+                    <div class="pph-scen-title">Pay rise ask</div>
+                    <div class="pph-scen-sub">With your current manager</div>
+                  </div>
+                </div>
+                <div class="pph-scen">
+                  <div class="pph-scen-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></div>
+                  <div>
+                    <div class="pph-scen-title">Resigning well</div>
+                    <div class="pph-scen-sub">Leave on great terms</div>
+                  </div>
+                </div>
+                <div class="pph-scen">
+                  <div class="pph-scen-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+                  <div>
+                    <div class="pph-scen-title">Flexible work</div>
+                    <div class="pph-scen-sub">Ask for hybrid or WFH</div>
+                  </div>
+                </div>
+              </div>
+              <span class="pph-cta-s">Start scenario &rarr;</span>
+            </div>
+
+            <!-- Step 2: Live negotiation -->
+            <div class="pph-step pph-s-live">
+              <div class="pph-eb">Step 2 &middot; Live</div>
+              <div class="pph-t">AI pushes back, real-time</div>
+              <div class="pph-chat">
+                <div class="pph-msg-ai">We can offer $85,000 &mdash; that&rsquo;s our budget for this role.</div>
+                <div class="pph-msg-you">Based on market data I was looking at $95k.</div>
+                <div class="pph-msg-ai">That&rsquo;s outside the band. What makes you worth 12% more?</div>
+              </div>
+              <div class="pph-mic-row">
+                <div class="pph-mic-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="19" x2="12" y2="22"/></svg></div>
+                <div class="pph-wave"><span></span><span></span><span></span><span></span><span></span></div>
+                <span class="pph-mic-hint">Your turn</span>
+              </div>
+              <span class="pph-cta-s">Keep negotiating &rarr;</span>
+            </div>
+
+            <!-- Step 3: Outcome -->
+            <div class="pph-step pph-s-outcome">
+              <div class="pph-eb">Step 3 &middot; Outcome</div>
+              <div class="pph-t">You landed&hellip;</div>
+              <div class="pph-outcome">
+                <div class="pph-outcome-label">Final offer</div>
+                <div class="pph-outcome-num">$92k<small>+ 4 wks leave</small></div>
+                <span class="pph-outcome-tag">+8.2% vs. first offer</span>
+              </div>
+              <div class="pph-summary">
+                <div class="pph-sum"><span class="pph-sum-icon">&#10003;</span>Held your number under pressure</div>
+                <div class="pph-sum"><span class="pph-sum-icon">&#10003;</span>Anchored on market data</div>
+                <div class="pph-sum"><span class="pph-sum-icon">&#10003;</span>Traded salary for leave smartly</div>
+              </div>
+              <span class="pph-cta-s">Rehearse again &rarr;</span>
+            </div>
+
+          </div>
         </div>
-        <div class="aw-wave"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
       </div>
-      <div class="aw-bubble aw-bubble-user">Based on the market data and the value I&rsquo;d bring, I was looking at $95k&hellip;</div>
     </div>
   </div>
 </section>
