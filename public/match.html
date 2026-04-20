@@ -268,6 +268,86 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 .job-card-animated{animation:cardReveal .4s ease-out both}
 .job-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 @media(max-width:700px){.job-grid{grid-template-columns:1fr}}
+
+/* SEEK-style job card (overrides .job-card grid) */
+.job-card{display:block;padding:1rem 1.25rem;margin-bottom:.75rem;grid-template-columns:none!important;gap:0}
+.job-card::before{display:none}
+.job-card.featured{background:linear-gradient(135deg,rgba(245,158,11,.04),var(--card) 45%)}
+.jc-row{display:flex;gap:1rem;align-items:flex-start}
+.jc-logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.35rem;flex-shrink:0;overflow:hidden;text-transform:uppercase}
+.jc-logo img{width:100%;height:100%;object-fit:contain;background:#fff;padding:4px;display:block}
+.jc-logo.gold{background:linear-gradient(135deg,#f59e0b,#b45309)}
+.jc-logo.live{background:linear-gradient(135deg,#475569,#1e293b)}
+.jc-body{flex:1;min-width:0}
+.jc-head{display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem}
+.jc-title{font-size:1.05rem;font-weight:800;color:var(--text);line-height:1.3;margin-bottom:.1rem}
+.jc-co{font-size:.8rem;font-weight:700;color:var(--em);margin-bottom:.4rem}
+.jc-meta{font-size:.74rem;color:var(--text3);font-weight:500;display:flex;flex-wrap:wrap;gap:.55rem;align-items:center;margin-bottom:.6rem}
+.jc-meta > span{display:inline-flex;align-items:center}
+.jc-meta > span:not(:last-child)::after{content:'';display:inline-block;width:3px;height:3px;border-radius:50%;background:var(--border2);margin-left:.55rem}
+.jc-desc-clamp{font-size:.82rem;color:var(--text2);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:.6rem}
+.jc-reason{font-size:.74rem;color:var(--em);font-weight:600;background:var(--em3);border:1px solid rgba(231,81,90,.15);border-radius:8px;padding:.4rem .65rem;margin-bottom:.6rem;line-height:1.45}
+.jc-chips{display:flex;gap:.35rem;flex-wrap:wrap;align-items:center}
+.jc-chip{background:var(--bg3);border:1px solid var(--border);color:var(--text3);padding:.18rem .6rem;border-radius:999px;font-size:.67rem;font-weight:600;white-space:nowrap}
+.jc-chip.cat{background:rgba(231,81,90,.08);border-color:rgba(231,81,90,.18);color:var(--em)}
+.jc-chip.live{background:rgba(231,81,90,.1);border-color:rgba(231,81,90,.2);color:var(--em);text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+.jc-chip.featured{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.28);color:var(--gold);font-weight:700}
+.jc-match{flex-shrink:0;text-align:right}
+.jc-match-pct{font-size:1.35rem;font-weight:800;color:var(--em);line-height:1}
+.jc-match-lbl{font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-top:.15rem}
+.jc-cta-row{display:flex;justify-content:flex-end;margin-top:.65rem;gap:.5rem;flex-wrap:wrap}
+.jc-apply{display:inline-flex;align-items:center;background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;padding:.45rem 1rem;border-radius:999px;font-size:.76rem;font-weight:700;border:none;cursor:pointer;font-family:inherit;text-decoration:none;transition:all .2s}
+.jc-apply:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(231,81,90,.3)}
+.jc-external{display:inline-flex;align-items:center;background:var(--bg3);border:1px solid var(--border);color:var(--text3);padding:.45rem 1rem;border-radius:999px;font-size:.76rem;font-weight:600;text-decoration:none;transition:all .2s}
+.jc-external:hover{border-color:var(--em);color:var(--em)}
+@media(max-width:560px){
+  .jc-logo{width:44px;height:44px;border-radius:10px;font-size:1rem}
+  .jc-title{font-size:.95rem}
+  .jc-match-pct{font-size:1.1rem}
+  .job-card{padding:.9rem 1rem}
+}
+
+/* SEEK-style job-detail modal (uses existing #job-detail-modal shell) */
+.jd-outer{background:var(--bg2);border:1px solid var(--border);border-radius:20px;width:100%;max-width:960px;margin:2rem auto;position:relative}
+.jd-topbar{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--border)}
+.jd-ref{font-size:.72rem;color:var(--text3);font-weight:600}
+.jd-grid{display:grid;grid-template-columns:1fr 300px;gap:2rem;padding:1.5rem 2rem}
+.jd-main{min-width:0}
+.jd-sidebar{position:sticky;top:1rem;height:fit-content;align-self:start}
+.jd-header{display:flex;gap:1.1rem;align-items:flex-start;margin-bottom:1.5rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border)}
+.jd-logo{width:72px;height:72px;border-radius:14px;background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.6rem;flex-shrink:0;overflow:hidden;text-transform:uppercase}
+.jd-logo img{width:100%;height:100%;object-fit:contain;background:#fff;padding:6px;display:block}
+.jd-header-body{flex:1;min-width:0}
+.jd-badge-featured{display:inline-block;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.28);color:var(--gold);font-size:.6rem;font-weight:800;padding:.2rem .6rem;border-radius:999px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:.4rem}
+.jd-title{font-size:1.5rem;font-weight:800;color:var(--text);line-height:1.2;margin-bottom:.3rem}
+.jd-company{font-size:.95rem;font-weight:700;color:var(--em);margin-bottom:.45rem}
+.jd-meta-chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.45rem}
+.jd-meta-chips span{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:.24rem .7rem;border-radius:999px;font-size:.72rem;font-weight:600}
+.jd-meta-chips span.salary{background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.22);color:#059669}
+.jd-posted{font-size:.72rem;color:var(--text3);font-weight:500}
+.jd-section{margin-bottom:1.4rem}
+.jd-section-h{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-bottom:.65rem}
+.jd-body-text{font-size:.88rem;color:var(--text2);line-height:1.8;white-space:pre-wrap}
+.jd-profile-text{font-size:.85rem;color:var(--text3);line-height:1.7;font-style:italic;white-space:pre-wrap}
+.jd-highlights{list-style:none;padding:0;margin:0;display:grid;gap:.5rem}
+.jd-highlights li{position:relative;padding-left:1.85rem;font-size:.86rem;color:var(--text2);line-height:1.5;font-weight:500}
+.jd-highlights li::before{content:'✓';position:absolute;left:0;top:1px;width:20px;height:20px;background:rgba(231,81,90,.1);color:var(--em);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800}
+.jd-apply-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem;box-shadow:0 4px 14px rgba(0,0,0,.04)}
+.jd-apply-title{font-size:.85rem;font-weight:800;color:var(--text);margin-bottom:.15rem}
+.jd-apply-sub{font-size:.72rem;color:var(--text3);margin-bottom:.9rem;line-height:1.45}
+.jd-cta-primary{width:100%;background:linear-gradient(135deg,var(--em),var(--em2));color:#fff;border:none;padding:.8rem 1rem;border-radius:12px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:inherit;transition:transform .2s,box-shadow .2s;margin-bottom:.45rem}
+.jd-cta-primary:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(231,81,90,.3)}
+.jd-cta-sec{display:block;width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:.7rem 1rem;border-radius:12px;font-size:.8rem;font-weight:600;text-align:center;text-decoration:none;transition:all .2s;box-sizing:border-box}
+.jd-cta-sec:hover{border-color:var(--em);color:var(--em)}
+.jd-similar{border-top:1px solid var(--border);padding:1.25rem 2rem 1.5rem}
+.jd-similar-list{display:grid;gap:.5rem;margin-top:.5rem}
+@media(max-width:820px){
+  .jd-grid{grid-template-columns:1fr;padding:1.25rem 1.5rem;gap:1.25rem}
+  .jd-sidebar{position:static;margin-top:0}
+  .jd-title{font-size:1.25rem}
+  .jd-logo{width:56px;height:56px;font-size:1.3rem}
+  .jd-similar{padding:1.25rem 1.5rem}
+}
 </style>
 <!--NUNITO-LOGO--><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet"><style>.nav-logo,.top-logo,.ch-nav-logo,#logo-home,#h-logo,.logo-text,.fmj-wordmark,a[href="/"][style*="font-weight:900"],a[href="/"][style*="font-weight:800"]{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900;letter-spacing:-.02em}.nav-logo span,.top-logo span,.ch-nav-logo span,.fmj-wordmark span{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900}footer div[style*="#E7515A"][style*="font-weight:900"],footer span[style*="#E7515A"][style*="font-weight:900"]{font-family:"Nunito",system-ui,sans-serif!important;letter-spacing:-.02em}</style><link rel="stylesheet" href="/css/monzo.css">
 </head>
@@ -1305,50 +1385,58 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 <div id="lm"><div class="mbox"><button class="mbox-close" id="modal-close" type="button">&#215;</button><div id="modal-body"></div></div></div>
 
 <!-- AI Apply Modal -->
-<!-- JOB DETAIL MODAL -->
+<!-- JOB DETAIL MODAL (SEEK-style) -->
 <div id="job-detail-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99998;padding:1rem;backdrop-filter:blur(8px);overflow-y:auto">
-  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;width:100%;max-width:700px;margin:2rem auto;position:relative">
-    <!-- Header bar -->
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--border)">
+  <div class="jd-outer">
+    <div class="jd-topbar">
       <button onclick="document.getElementById('job-detail-modal').style.display='none'" class="btn-sm" type="button">&#8592; Back to jobs</button>
-      <div id="jd-ref" style="font-size:.72rem;color:var(--text3);font-weight:600"></div>
+      <div id="jd-ref" class="jd-ref"></div>
     </div>
-    <!-- Job content -->
-    <div style="padding:1.5rem 2rem">
-      <div style="display:flex;align-items:flex-start;gap:1rem;margin-bottom:1rem">
-        <div style="flex:1">
-          <div id="jd-featured" style="display:none;margin-bottom:.5rem"><span class="tag" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold);font-size:.65rem;font-weight:700;text-transform:uppercase">&#11088; Featured</span></div>
-          <div id="jd-title" style="font-size:1.4rem;font-weight:800;color:var(--text);line-height:1.2;margin-bottom:.35rem"></div>
-          <div id="jd-company" style="font-size:.9rem;font-weight:600;color:var(--em);margin-bottom:.25rem"></div>
-          <div id="jd-meta" style="font-size:.8rem;color:var(--text3)"></div>
+    <div class="jd-grid">
+      <div class="jd-main">
+        <div class="jd-header">
+          <div id="jd-logo" class="jd-logo"></div>
+          <div class="jd-header-body">
+            <div id="jd-featured" class="jd-badge-featured" style="display:none">&#11088; Featured</div>
+            <div id="jd-title" class="jd-title"></div>
+            <div id="jd-company" class="jd-company"></div>
+            <div id="jd-meta-chips" class="jd-meta-chips"></div>
+            <div id="jd-posted" class="jd-posted"></div>
+          </div>
         </div>
-        <div id="jd-logo" style="display:none;flex-shrink:0"></div>
+        <div id="jd-highlights-section" class="jd-section" style="display:none">
+          <div class="jd-section-h">Key highlights</div>
+          <ul id="jd-highlights" class="jd-highlights"></ul>
+        </div>
+        <div class="jd-section">
+          <div class="jd-section-h">About the role</div>
+          <div id="jd-description" class="jd-body-text"></div>
+        </div>
+        <div id="jd-requirements-section" class="jd-section" style="display:none">
+          <div class="jd-section-h">Requirements</div>
+          <div id="jd-requirements" class="jd-body-text"></div>
+        </div>
+        <div id="jd-why-section" class="jd-section" style="display:none">
+          <div class="jd-section-h">Why work here</div>
+          <div id="jd-why" class="jd-body-text"></div>
+        </div>
+        <div id="jd-profile-section" class="jd-section" style="display:none">
+          <div class="jd-section-h">About the company</div>
+          <div id="jd-profile" class="jd-profile-text"></div>
+        </div>
       </div>
-      <div style="display:flex;gap:.5rem;margin-bottom:1.5rem">
-        <button class="btn" id="jd-apply-btn" type="button" style="flex:1;max-width:250px">Apply Now &#8594;</button>
-        <a class="btn btn-sec" id="jd-external-link" href="#" target="_blank" rel="noopener" style="flex:1;max-width:250px;text-decoration:none;display:none;text-align:center">View Original &#8594;</a>
-      </div>
-      <div style="border-top:1px solid var(--border);padding-top:1.25rem;margin-bottom:1.25rem">
-        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.65rem">Job Description</div>
-        <div id="jd-description" style="font-size:.88rem;color:var(--text2);line-height:1.8;white-space:pre-wrap"></div>
-      </div>
-      <div id="jd-requirements-section" style="display:none;margin-bottom:1.25rem">
-        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.65rem">Requirements</div>
-        <div id="jd-requirements" style="font-size:.88rem;color:var(--text2);line-height:1.8;white-space:pre-wrap"></div>
-      </div>
-      <div id="jd-why-section" style="display:none;margin-bottom:1.25rem">
-        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.65rem">Why Work Here</div>
-        <div id="jd-why" style="font-size:.88rem;color:var(--text2);line-height:1.8;white-space:pre-wrap"></div>
-      </div>
-      <div id="jd-profile-section" style="display:none;margin-bottom:1.25rem">
-        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.65rem">About the Company</div>
-        <div id="jd-profile" style="font-size:.85rem;color:var(--text3);line-height:1.7;font-style:italic"></div>
-      </div>
+      <aside class="jd-sidebar">
+        <div class="jd-apply-card">
+          <div class="jd-apply-title">Ready to apply?</div>
+          <div class="jd-apply-sub" id="jd-apply-sub">Quick apply with your CV &mdash; AI tailors your cover letter.</div>
+          <button class="jd-cta-primary" id="jd-apply-btn" type="button">Apply Now &rarr;</button>
+          <a class="jd-cta-sec" id="jd-external-link" href="#" target="_blank" rel="noopener" style="display:none">View original &rarr;</a>
+        </div>
+      </aside>
     </div>
-    <!-- Similar jobs -->
-    <div id="jd-similar" style="display:none;border-top:1px solid var(--border);padding:1.25rem 2rem">
-      <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:.75rem">You might also like</div>
-      <div id="jd-similar-list" style="display:grid;gap:.5rem"></div>
+    <div id="jd-similar" class="jd-similar" style="display:none">
+      <div class="jd-section-h">Similar jobs</div>
+      <div id="jd-similar-list" class="jd-similar-list"></div>
     </div>
   </div>
 </div>
@@ -1904,19 +1992,24 @@ async function fetchLiveJobs(matches){
       var c=document.createElement('div');
       c.className='job-card job-card-animated';
       c.style.animationDelay=(idx*0.06)+'s';
-      c.innerHTML='<div>'+
-        '<div style="margin-bottom:.4rem"><span class="tag tag-live">Live</span></div>'+
-        '<div class="job-title">'+esc(job.title)+'</div>'+
-        '<div class="job-co">'+esc(job.company)+'</div>'+
-        '<div class="job-loc">'+esc(job.location)+'</div>'+
-        (reason?'<div style="font-size:.75rem;color:var(--em);font-weight:600;margin:.35rem 0;padding:.4rem .65rem;background:var(--em3);border:1px solid rgba(231,81,90,.15);border-radius:6px;line-height:1.5">'+esc(reason)+'</div>':'')+
-        '<div class="job-desc">'+esc(job.description)+'</div>'+
-        (job.salary?'<div class="job-tags"><span class="tag tag-other">'+esc(job.salary)+'</span></div>':'')+
-        '<div class="job-links"><a href="'+esc(job.url)+'" target="_blank" rel="noopener" class="job-link apply">Apply Externally &#8594;</a></div>'+
+      c.style.cursor='pointer';
+      c.addEventListener('click',function(e){if(e.target.closest('a,button'))return;window.open(job.url,'_blank','noopener');});
+      c.innerHTML='<div class="jc-row">'+
+        jcLogo(job)+
+        '<div class="jc-body">'+
+          '<div class="jc-head"><div style="flex:1;min-width:0">'+
+            '<div class="jc-title">'+esc(job.title)+'</div>'+
+            '<div class="jc-co">'+esc(job.company)+'</div>'+
+          '</div>'+
+          (pct?'<div class="jc-match"><div class="jc-match-pct" style="color:'+pctColor+'">'+pct+'%</div><div class="jc-match-lbl">AI match</div></div>':'')+
+          '</div>'+
+          jcMeta(job)+
+          '<div class="jc-desc-clamp">'+esc(job.description||'')+'</div>'+
+          (reason?'<div class="jc-reason">&#10022; '+esc(reason)+'</div>':'')+
+          '<div class="jc-chips"><span class="jc-chip live">Live</span></div>'+
+          '<div class="jc-cta-row"><a href="'+esc(job.url)+'" target="_blank" rel="noopener" class="jc-apply" onclick="event.stopPropagation()">Apply externally &rarr;</a></div>'+
         '</div>'+
-        '<div class="match-col">'+
-        (pct?'<div class="match-pct" style="color:'+pctColor+'">'+pct+'%</div><div class="match-lbl">AI match</div>':'<div style="color:var(--em);font-size:.65rem;font-weight:800;text-transform:uppercase">Live</div>')+
-        '</div>';
+      '</div>';
       grid.appendChild(c);
     });
     // Update scorecard
@@ -1952,21 +2045,26 @@ async function fetchLiveJobs(matches){
           var matchResult=calcLiveMatch({title:j.title,description:j.description},matches);var pct=matchResult.pct;
           var c=document.createElement('div');
           c.className='job-card featured';
-          c.style.position='relative';c.style.gridTemplateColumns='1fr auto';c.style.gap='1rem';c.style.cursor='pointer';
-          c.addEventListener('click',function(e){if(e.target.closest('.job-link'))return;viewJob(j);});
-          var logoAbs2=j.logoUrl?'<img src="'+j.logoUrl+'" alt="'+j.company+'" style="position:absolute;top:1rem;right:1rem;width:120px;height:120px;object-fit:contain;border-radius:12px" onerror="this.style.display=\'none\'">':'';
-          c.innerHTML=logoAbs2+
-            '<div style="padding-right:'+(j.logoUrl?'135px':'0')+'"><div style="margin-bottom:.35rem"><span class="tag" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold);font-size:.6rem;font-weight:800;text-transform:uppercase">\u2b50 Featured</span></div>'+
-            '<div class="job-title">'+j.title+'</div>'+
-            '<div class="job-co">'+j.company+'</div>'+
-            '<div class="job-loc">'+j.location+'</div></div>'+
-            '<div class="job-desc">'+(j.description||'').substring(0,180)+'...</div>'+
-            (j.companyProfile?'<div class="job-desc" style="margin-top:.25rem;opacity:.8;font-style:italic">'+j.companyProfile.substring(0,100)+'</div>':'')+
-            '<div class="job-tags"><span class="tag tag-cat">'+j.category+'</span><span class="tag tag-other">'+j.type+'</span><span class="tag tag-other">'+j.salary+'</span></div>'+
-            '<div class="job-links"><button onclick="applyJob(this)" data-jobidx="'+storeJob(j)+'" class="job-link apply">Apply Now &#8594;</button></div>'+
-            '<div class="match-col">'+
-            (pct?'<div class="match-pct" style="color:var(--gold)">'+pct+'%</div><div class="match-lbl">match</div>':'<div style="color:var(--gold);font-size:.65rem;font-weight:800;text-transform:uppercase">\u2b50 Featured</div>')+
-            '</div>';
+          c.style.cursor='pointer';
+          c.addEventListener('click',function(e){if(e.target.closest('a,button'))return;viewJob(j);});
+          c.innerHTML='<div class="jc-row">'+
+            jcLogo(j)+
+            '<div class="jc-body">'+
+              '<div class="jc-head"><div style="flex:1;min-width:0">'+
+                '<div class="jc-title">'+esc(j.title)+'</div>'+
+                '<div class="jc-co">'+esc(j.company)+'</div>'+
+              '</div>'+
+              (pct?'<div class="jc-match"><div class="jc-match-pct" style="color:var(--gold)">'+pct+'%</div><div class="jc-match-lbl">Match</div></div>':'')+
+              '</div>'+
+              jcMeta(j)+
+              '<div class="jc-desc-clamp">'+esc((j.description||'').substring(0,220))+'</div>'+
+              '<div class="jc-chips">'+
+                '<span class="jc-chip featured">\u2b50 Featured</span>'+
+                (j.category?'<span class="jc-chip cat">'+esc(j.category)+'</span>':'')+
+              '</div>'+
+              '<div class="jc-cta-row"><button onclick="event.stopPropagation();applyJob(this)" data-jobidx="'+storeJob(j)+'" class="jc-apply">Apply Now &rarr;</button></div>'+
+            '</div>'+
+          '</div>';
           list.appendChild(c);
         });
       }
@@ -2109,10 +2207,28 @@ async function loadBrowse(){
   window._employerJobs = approved;
   if(approved.length){
     var h='<div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--gold);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)">Employer Listings</div>';empEl.innerHTML=h;
-    approved.forEach(function(j,ji){var c=document.createElement('div');c.className='job-card'+(j.featured?' featured':'');c.style.cursor='pointer';c.addEventListener('click',function(e){if(e.target.closest('.job-link'))return;viewJob(j);});
-    c.style.position='relative';c.style.gridTemplateColumns='1fr';
-    var logoAbsolute=j.logoUrl?'<img src="'+j.logoUrl+'" alt="'+j.company+'" style="position:absolute;top:1rem;right:1rem;width:120px;height:120px;object-fit:contain;border-radius:12px" onerror="this.style.display=\'none\'">':'';
-    c.innerHTML=logoAbsolute+'<div style="padding-right:'+(j.logoUrl?'135px':'0')+'">'+(j.featured?'<div style="margin-bottom:.35rem"><span class="tag" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold)">\u2b50 Featured</span></div>':'')+'<div class="job-title">'+j.title+'</div><div class="job-co">'+j.company+'</div><div class="job-loc">'+j.location+'</div></div><div class="job-desc">'+(j.description||'').substring(0,160)+'...</div>'+(j.companyProfile?'<div class="job-desc" style="margin-top:.25rem;opacity:.75;font-style:italic">'+j.companyProfile.substring(0,100)+'...</div>':'')+'<div class="job-tags"><span class="tag tag-cat">'+j.category+'</span><span class="tag tag-other">'+j.type+'</span><span class="tag tag-other">'+j.salary+'</span>'+(j.priority&&!j.featured?'<span class="tag" style="background:rgba(231,81,90,.06);border:1px solid rgba(231,81,90,.15);color:var(--em)">\u2191 Priority</span>':'')+'</div><div class="job-links"><button onclick="applyJob(this)" data-jobidx="'+storeJob(j)+'" class="job-link apply">Apply Now &#8594;</button></div>';empEl.appendChild(c);});
+    approved.forEach(function(j,ji){
+      var c=document.createElement('div');
+      c.className='job-card'+(j.featured?' featured':'');
+      c.style.cursor='pointer';
+      c.addEventListener('click',function(e){if(e.target.closest('a,button'))return;viewJob(j);});
+      c.innerHTML='<div class="jc-row">'+
+        jcLogo(j)+
+        '<div class="jc-body">'+
+          '<div class="jc-title">'+esc(j.title)+'</div>'+
+          '<div class="jc-co">'+esc(j.company)+'</div>'+
+          jcMeta(j)+
+          '<div class="jc-desc-clamp">'+esc((j.description||'').substring(0,200))+'</div>'+
+          '<div class="jc-chips">'+
+            (j.featured?'<span class="jc-chip featured">\u2b50 Featured</span>':'')+
+            (j.category?'<span class="jc-chip cat">'+esc(j.category)+'</span>':'')+
+            (j.priority&&!j.featured?'<span class="jc-chip">\u2191 Priority</span>':'')+
+          '</div>'+
+          '<div class="jc-cta-row"><button onclick="event.stopPropagation();applyJob(this)" data-jobidx="'+storeJob(j)+'" class="jc-apply">Apply Now &rarr;</button></div>'+
+        '</div>'+
+      '</div>';
+      empEl.appendChild(c);
+    });
     // Inject JobPosting structured data
     var oldLd=document.querySelectorAll('script[data-job-ld]');oldLd.forEach(function(el){el.remove();});
     var typeMap={"Full-time":"FULL_TIME","Part-time":"PART_TIME","Contract":"CONTRACTOR","Casual":"TEMPORARY","Internship":"INTERN"};
@@ -2195,8 +2311,18 @@ async function loadBrowse(){
   adzuna.forEach(function(job){
     var c=document.createElement('div');c.className='job-card';c.style.cursor='pointer';
     var adzJob = {title:job.title, company:job.company, location:job.location, description:job.description, salary:job.salary, url:job.url, type:'Live'};
-    c.addEventListener('click',function(){viewJob(adzJob);});
-    c.innerHTML='<div><div class="job-title">'+esc(job.title)+'</div><div class="job-co">'+esc(job.company)+'</div><div class="job-loc">'+esc(job.location)+'</div><div class="job-desc">'+esc((job.description||'').substring(0,140))+'...</div>'+(job.salary?'<div class="job-tags"><span class="tag tag-other">'+esc(job.salary)+'</span></div>':'')+'<div class="job-links"><a href="'+esc(job.url)+'" target="_blank" rel="noopener" class="job-link" onclick="event.stopPropagation()">View listing &#8594;</a></div></div>';
+    c.addEventListener('click',function(e){if(e.target.closest('a,button'))return;viewJob(adzJob);});
+    c.innerHTML='<div class="jc-row">'+
+      jcLogo(adzJob)+
+      '<div class="jc-body">'+
+        '<div class="jc-title">'+esc(job.title)+'</div>'+
+        '<div class="jc-co">'+esc(job.company)+'</div>'+
+        jcMeta(adzJob)+
+        '<div class="jc-desc-clamp">'+esc((job.description||'').substring(0,200))+'</div>'+
+        '<div class="jc-chips"><span class="jc-chip live">Live</span></div>'+
+        '<div class="jc-cta-row"><a href="'+esc(job.url)+'" target="_blank" rel="noopener" class="jc-external" onclick="event.stopPropagation()">View listing &rarr;</a></div>'+
+      '</div>'+
+    '</div>';
     liveEl.appendChild(c);
   });
 }
@@ -2391,13 +2517,49 @@ var _currentJobData = null;
 window._allJobsStore = [];
 function storeJob(j){var idx=window._allJobsStore.length;window._allJobsStore.push(j);return idx;}
 
+// SEEK-style card helpers
+function jcLogo(j){
+  var cls = '';
+  if (j.featured) cls = ' gold';
+  else if (!j.email && j.url) cls = ' live';
+  var initial = ((j.company||'?').charAt(0)||'?');
+  if (j.logoUrl) return '<div class="jc-logo'+cls+'"><img src="'+esc(j.logoUrl)+'" alt="'+esc(j.company||'')+'" onerror="this.parentNode.textContent=&quot;'+initial+'&quot;"></div>';
+  return '<div class="jc-logo'+cls+'">'+esc(initial)+'</div>';
+}
+function jcMeta(j){
+  var parts = [];
+  if (j.location) parts.push('<span>'+esc(j.location)+'</span>');
+  if (j.type) parts.push('<span>'+esc(j.type)+'</span>');
+  if (j.category && j.category !== j.type) parts.push('<span>'+esc(j.category)+'</span>');
+  if (j.salary && j.salary !== 'Negotiable') parts.push('<span>'+esc(j.salary)+'</span>');
+  return parts.length ? '<div class="jc-meta">'+parts.join('')+'</div>' : '';
+}
+
 function viewJob(jobData) {
   _currentJobData = jobData;
   document.getElementById('jd-title').textContent = jobData.title || '';
   document.getElementById('jd-company').textContent = jobData.company || '';
-  var meta = [jobData.location, jobData.category || jobData.type, jobData.salary].filter(function(x){return x;}).join(' · ');
-  if (jobData.ref) meta += ' · Ref: ' + jobData.ref;
-  document.getElementById('jd-meta').textContent = meta;
+  // Meta chips (location / type / salary)
+  var chipsEl = document.getElementById('jd-meta-chips');
+  var chips = '';
+  if (jobData.location) chips += '<span>&#128205; '+esc(jobData.location)+'</span>';
+  if (jobData.type) chips += '<span>'+esc(jobData.type)+'</span>';
+  if (jobData.category && jobData.category !== jobData.type) chips += '<span>'+esc(jobData.category)+'</span>';
+  if (jobData.salary && jobData.salary !== 'Negotiable') chips += '<span class="salary">'+esc(jobData.salary)+'</span>';
+  chipsEl.innerHTML = chips;
+  // Posted-ago label
+  var postedEl = document.getElementById('jd-posted');
+  var ts = jobData.approvedAt || jobData.submitted || jobData.created;
+  if (ts) {
+    var d = new Date(ts);
+    if (!isNaN(d)) {
+      var days = Math.floor((Date.now() - d.getTime()) / 86400000);
+      var label = days <= 0 ? 'Posted today' : days === 1 ? 'Posted yesterday' : days < 7 ? 'Posted '+days+' days ago' : days < 30 ? 'Posted '+Math.floor(days/7)+' week'+(days<14?'':'s')+' ago' : 'Posted '+Math.floor(days/30)+' month'+(days<60?'':'s')+' ago';
+      postedEl.textContent = label;
+      postedEl.style.display = 'block';
+    } else { postedEl.style.display = 'none'; }
+  } else { postedEl.style.display = 'none'; }
+  // Description + sections
   document.getElementById('jd-description').textContent = jobData.description || '';
   var reqSec = document.getElementById('jd-requirements-section');
   if (jobData.requirements) { document.getElementById('jd-requirements').textContent = jobData.requirements; reqSec.style.display = 'block'; } else { reqSec.style.display = 'none'; }
@@ -2405,16 +2567,42 @@ function viewJob(jobData) {
   if (jobData.why) { document.getElementById('jd-why').textContent = jobData.why; whySec.style.display = 'block'; } else { whySec.style.display = 'none'; }
   var profSec = document.getElementById('jd-profile-section');
   if (jobData.companyProfile) { document.getElementById('jd-profile').textContent = jobData.companyProfile; profSec.style.display = 'block'; } else { profSec.style.display = 'none'; }
+  // Key highlights — extract short bullet-able lines from requirements or description
+  var hiSec = document.getElementById('jd-highlights-section');
+  var hiEl = document.getElementById('jd-highlights');
+  var hiSource = (jobData.requirements || jobData.description || '').split(/\n+/);
+  var bullets = hiSource.map(function(s){return s.replace(/^[\s\-•\*✓•#\d\.]+/,'').trim();}).filter(function(s){return s.length>8 && s.length<140;}).slice(0,4);
+  if (bullets.length >= 2) {
+    hiEl.innerHTML = bullets.map(function(b){return '<li>'+esc(b)+'</li>';}).join('');
+    hiSec.style.display = 'block';
+  } else { hiSec.style.display = 'none'; }
+  // Logo / initials tile
   var logoEl = document.getElementById('jd-logo');
-  if (jobData.logoUrl) { logoEl.innerHTML = '<img src="'+jobData.logoUrl+'" style="max-width:100px;max-height:60px;object-fit:contain" onerror="this.style.display=\'none\'">'; logoEl.style.display = 'block'; } else { logoEl.style.display = 'none'; }
-  document.getElementById('jd-featured').style.display = jobData.featured ? 'block' : 'none';
+  logoEl.classList.remove('gold','live');
+  if (jobData.featured) logoEl.classList.add('gold');
+  else if (!jobData.email && jobData.url) logoEl.classList.add('live');
+  if (jobData.logoUrl) {
+    logoEl.innerHTML = '<img src="'+esc(jobData.logoUrl)+'" alt="'+esc(jobData.company||'')+'" onerror="this.parentNode.textContent=\''+((jobData.company||'?').charAt(0))+'\'">';
+  } else {
+    logoEl.textContent = (jobData.company || '?').charAt(0);
+  }
+  document.getElementById('jd-featured').style.display = jobData.featured ? 'inline-block' : 'none';
   document.getElementById('jd-ref').textContent = jobData.ref ? 'Ref: ' + jobData.ref : '';
   // External link for Adzuna jobs
   var extLink = document.getElementById('jd-external-link');
-  if (jobData.url && jobData.url !== '#') { extLink.href = jobData.url; extLink.style.display = 'flex'; } else { extLink.style.display = 'none'; }
+  if (jobData.url && jobData.url !== '#') { extLink.href = jobData.url; extLink.style.display = 'block'; } else { extLink.style.display = 'none'; }
   // Apply button — only show for employer listings (have email)
   var applyBtn = document.getElementById('jd-apply-btn');
-  if (jobData.email) { applyBtn.style.display = 'flex'; } else if (!jobData.url) { applyBtn.style.display = 'none'; }
+  var applySub = document.getElementById('jd-apply-sub');
+  if (jobData.email) {
+    applyBtn.style.display = 'block';
+    if (applySub) applySub.textContent = 'Quick apply with your CV — AI tailors your cover letter.';
+  } else if (jobData.url) {
+    applyBtn.style.display = 'none';
+    if (applySub) applySub.textContent = 'This listing is hosted on another site. Tap below to view and apply there.';
+  } else {
+    applyBtn.style.display = 'none';
+  }
   // Similar jobs
   var similarEl = document.getElementById('jd-similar');
   var similarList = document.getElementById('jd-similar-list');
