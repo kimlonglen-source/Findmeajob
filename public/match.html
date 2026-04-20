@@ -303,7 +303,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <button id="h-account" type="button" style="display:none">My Account</button>
     <button id="h-signin" type="button" style="display:none">My Jobs</button>
     <button id="h-find" type="button" style="display:none">Find a Job</button>
-    <button id="h-apply" class="nav-cta" type="button">Find a Job</button>
+    <button id="h-apply" class="nav-cta" type="button" onclick="if(typeof showPage==='function'){showPage('home');}var t=document.getElementById('match-flow-top');if(t){t.scrollIntoView({behavior:'smooth',block:'start'});}">Find a Job</button>
   </div>
   <button class="hamburger-btn" id="hamburger" type="button" aria-label="Menu">&#9776;</button>
   <button id="tbtn" type="button" style="display:none"></button>
@@ -335,8 +335,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 .aw-viz{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;min-height:500px}
 
 /* Match-page phone mockup: Upload -> Match -> Career pivot */
-.mph-phone{position:relative;width:230px;max-width:100%;filter:drop-shadow(0 30px 60px rgba(0,0,0,.35));animation:mphFloat 6s ease-in-out infinite}
-.mph-frame{position:relative;width:100%;aspect-ratio:9/19;background:#0d0d15;border-radius:40px;padding:10px;border:1px solid rgba(255,255,255,.08)}
+.mph-phone{position:relative;width:230px;max-width:100%;filter:drop-shadow(0 30px 60px rgba(0,0,0,.35));animation:mphFloat 6s ease-in-out infinite;transform:translateZ(0);backface-visibility:hidden;-webkit-font-smoothing:antialiased}
+.mph-frame{position:relative;width:100%;aspect-ratio:9/19;background:#0d0d15;border-radius:40px;padding:10px;overflow:hidden}
 .mph-frame::before{content:'';position:absolute;top:10px;left:50%;transform:translateX(-50%);width:92px;height:22px;background:#0d0d15;border-radius:0 0 16px 16px;z-index:3}
 .mph-screen{position:relative;width:100%;height:100%;background:#faf7f2;border-radius:30px;overflow:hidden}
 .mph-step{position:absolute;inset:0;padding:2rem .95rem .9rem;display:flex;flex-direction:column;background:#faf7f2;opacity:0;animation:mphCycle 15s linear infinite}

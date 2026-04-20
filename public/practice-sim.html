@@ -69,8 +69,8 @@ input:focus,select:focus,textarea:focus{border-color:#E7515A;box-shadow:0 0 0 3p
 .aw-viz{position:relative;display:flex;align-items:center;justify-content:center;min-height:500px}
 
 /* Practice-sim floating phone: Scenario -> Negotiate -> Outcome */
-.pph-phone{position:relative;width:230px;max-width:100%;filter:drop-shadow(0 30px 60px rgba(0,0,0,.4));animation:pphFloat 6s ease-in-out infinite}
-.pph-frame{position:relative;width:100%;aspect-ratio:9/19;background:#0d0d15;border-radius:40px;padding:10px;border:1px solid rgba(255,255,255,.08)}
+.pph-phone{position:relative;width:230px;max-width:100%;filter:drop-shadow(0 30px 60px rgba(0,0,0,.4));animation:pphFloat 6s ease-in-out infinite;transform:translateZ(0);backface-visibility:hidden;-webkit-font-smoothing:antialiased}
+.pph-frame{position:relative;width:100%;aspect-ratio:9/19;background:#0d0d15;border-radius:40px;padding:10px;overflow:hidden}
 .pph-frame::before{content:'';position:absolute;top:10px;left:50%;transform:translateX(-50%);width:92px;height:22px;background:#0d0d15;border-radius:0 0 16px 16px;z-index:3}
 .pph-screen{position:relative;width:100%;height:100%;background:#faf7f2;border-radius:30px;overflow:hidden}
 .pph-step{position:absolute;inset:0;padding:2rem .95rem .9rem;display:flex;flex-direction:column;background:#faf7f2;opacity:0;animation:pphCycle 15s linear infinite}
