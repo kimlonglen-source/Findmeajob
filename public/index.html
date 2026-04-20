@@ -177,7 +177,8 @@ img{max-width:100%;display:block}
 .pflow-s-sim{animation-delay:-10s}
 .pflow-s-nego{animation-delay:-5s}
 @keyframes pflowCycle{0%{opacity:0}1%{opacity:1}12%{opacity:1}14%,100%{opacity:0}}
-@keyframes pflowFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pflowFloat{0%,100%{transform:rotate(-6deg) translateY(0)}50%{transform:rotate(-6deg) translateY(-10px)}}
+@keyframes pflowFloatStraight{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 .pflow-eb{font-size:.54rem;font-weight:800;color:#c7313a;text-transform:uppercase;letter-spacing:1.4px;margin-bottom:.25rem}
 .pflow-t{font-size:1rem;font-weight:900;color:#1a1a2e;line-height:1.15;letter-spacing:-.3px;margin-bottom:.7rem}
 .pflow-body{flex:1;display:flex;flex-direction:column;gap:.5rem;min-height:0}
@@ -237,7 +238,7 @@ img{max-width:100%;display:block}
   .pflow-inner{grid-template-columns:1fr;gap:2.25rem}
   .pflow-visual{order:-1}
   .pflow-h2{font-size:1.7rem}
-  .pflow-phone{width:240px}
+  .pflow-phone{width:240px;animation:pflowFloatStraight 6s ease-in-out infinite}
   .pflow-steps{max-width:100%}
 }
 @media(prefers-reduced-motion:reduce){
