@@ -26,10 +26,10 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{overflow-x:hidden}
 body{background:#fff;color:#1a1a2e;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:16px;line-height:1.6}
-a{color:#FF4F40;text-decoration:none}a:hover{text-decoration:underline}
+a{color:#E7515A;text-decoration:none}a:hover{text-decoration:underline}
 img{max-width:100%;display:block}
 .nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 3rem;position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,.06)}
-.nav-logo{font-size:1.4rem;font-weight:900;color:#FF4F40;text-decoration:none;letter-spacing:-.02em;font-family:"Nunito",system-ui,sans-serif}
+.nav-logo{font-size:1.4rem;font-weight:900;color:#E7515A;text-decoration:none;letter-spacing:-.02em;font-family:"Nunito",system-ui,sans-serif}
 .nav-links{display:flex;align-items:center;gap:2rem}
 .nav-links a{color:#1a1a2e;font-size:.88rem;font-weight:500;text-decoration:none}
 .nav-links a:hover{color:#FF4F40}
@@ -106,7 +106,7 @@ footer{background:#1B1B3A;padding:3.5rem 3rem}
 .role-photo-desc{font-size:.72rem;color:rgba(255,255,255,.82);line-height:1.4}
 </style>
 <link rel="stylesheet" href="/css/monzo.css">
-</head>
+<!--NUNITO-LOGO--><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet"><style>.nav-logo,.top-logo,.ch-nav-logo,#logo-home,#h-logo,.logo-text,.fmj-wordmark,a[href="/"][style*="font-weight:900"],a[href="/"][style*="font-weight:800"]{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900;letter-spacing:-.02em}.nav-logo span,.top-logo span,.ch-nav-logo span,.fmj-wordmark span{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900}footer div[style*="#E7515A"][style*="font-weight:900"],footer span[style*="#E7515A"][style*="font-weight:900"]{font-family:"Nunito",system-ui,sans-serif!important;letter-spacing:-.02em}</style></head>
 <body>
 
 <!-- Grouped nav: Apply / Interview / Decide -->
@@ -246,39 +246,48 @@ footer{background:#1B1B3A;padding:3.5rem 3rem}
   </div>
 </section>
 
-<footer>
-  <div class="foot-inner">
-    <div class="foot-logo">FindMeAJob</div>
-    <div class="foot-cols">
-      <div class="foot-col">
-        <div class="foot-col-hd">Tools</div>
-        <a href="/match.html">Apply for a Job</a>
-        <a href="/interview-sim">Interview Simulator</a>
-        <a href="/match.html#apply">CV + Cover Letter</a>
-        <a href="/score">CV Score</a>
-        <a href="/salary">Salary Calculator</a>
+<!-- Footer - Monzo style dark -->
+<footer style="background:#1B1B3A;padding:3.5rem 1.5rem 2rem">
+  <div style="max-width:900px;margin:0 auto">
+    <div class="fmj-wordmark" style="font-size:2.5rem;font-weight:900;color:#E7515A;margin-bottom:2rem;letter-spacing:-1px">FindMeAJob</div>
+    <div style="display:flex;gap:3rem;flex-wrap:wrap;margin-bottom:2rem">
+      <div style="min-width:140px">
+        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.75rem">Tools</div>
+        <a href="/match.html" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Apply for a Job</a>
+        <a href="/interview-sim" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Interview Simulator</a>
+        <a href="/match.html#apply" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">CV + Cover Letter</a>
+        <a href="/score" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">CV Score</a>
+        <a href="/salary" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Salary Calculator</a>
       </div>
-      <div class="foot-col">
-        <div class="foot-col-hd">For</div>
-        <a href="/trades">Tradies</a>
-        <a href="/healthcare">Healthcare</a>
-        <a href="/newcomers">Newcomers to NZ</a>
-        <a href="/graduates">Graduates</a>
+      <div style="min-width:140px">
+        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.75rem">More Tools</div>
+        <a href="/interview" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Interview Questions</a>
+        <a href="/negotiate" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Negotiate Salary</a>
+        <a href="/compare" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Compare Jobs</a>
+        <a href="/decode" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Decode Job Ad</a>
+        <a href="/email" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Write This Email</a>
       </div>
-      <div class="foot-col">
-        <div class="foot-col-hd">Company</div>
-        <a href="/blog">Blog</a>
-        <a href="/employer-portal.html">Post a Job</a>
-        <a href="/terms">Terms</a>
-        <a href="/privacy">Privacy</a>
+      <div style="min-width:140px">
+        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.75rem">For</div>
+        <a href="/trades" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Tradies</a>
+        <a href="/healthcare" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Healthcare</a>
+        <a href="/newcomers" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Newcomers to NZ</a>
+        <a href="/graduates" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Graduates</a>
+      </div>
+      <div style="min-width:140px">
+        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:.75rem">Company</div>
+        <a href="/blog" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Blog</a>
+        <a href="/employer-portal.html" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Post a Job</a>
+        <a href="/terms" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Terms</a>
+        <a href="/privacy" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Privacy</a>
+        <a href="/employer-portal.html" style="display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none">Employer Login</a>
       </div>
     </div>
-    <div class="foot-legal">
+    <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:1.5rem;font-size:.68rem;color:rgba(255,255,255,.3);line-height:1.7">
       <p>&copy; 2026 FindMeAJob Ltd. All rights reserved.</p>
       <p style="margin-top:.5rem">AI Disclaimer: This platform uses artificial intelligence to analyse CVs, match jobs, estimate salaries, and generate content. Results are suggestions, not professional advice. Always verify independently.</p>
     </div>
   </div>
-  <div class="mnz-giant-mark" style="padding:2rem 1rem 1rem">findmeajob</div>
 </footer>
 
 <div id="toast"></div>
