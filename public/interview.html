@@ -175,17 +175,55 @@ body.dark .grade-badge span{color:#f8fafc !important}
 <!--NUNITO-LOGO--><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet"><style>.nav-logo,.top-logo,.ch-nav-logo,#logo-home,#h-logo,.logo-text,.fmj-wordmark,a[href="/"][style*="font-weight:900"],a[href="/"][style*="font-weight:800"]{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900;letter-spacing:-.02em}.nav-logo span,.top-logo span,.ch-nav-logo span,.fmj-wordmark span{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900}footer div[style*="#E7515A"][style*="font-weight:900"],footer span[style*="#E7515A"][style*="font-weight:900"]{font-family:"Nunito",system-ui,sans-serif!important;letter-spacing:-.02em}</style></head>
 <body>
 
+<!-- Grouped nav: Apply / Interview / Decide -->
+<style>
+.nav-group{position:relative}
+.nav-grp-btn{display:inline-flex;align-items:center;gap:.35rem;background:none;border:none;font:inherit;color:#1a1a2e;font-size:.88rem;font-weight:500;cursor:pointer;padding:0;font-family:'Plus Jakarta Sans',sans-serif}
+.nav-grp-btn:hover{color:#E7515A}
+.nav-grp-btn svg{width:10px;height:10px;transition:transform .2s}
+.nav-group.open .nav-grp-btn{color:#E7515A}
+.nav-group.open .nav-grp-btn svg{transform:rotate(180deg)}
+.nav-menu{position:absolute;top:calc(100% + .85rem);left:-.65rem;min-width:230px;background:#fff;border:1px solid #e8e8e8;border-radius:14px;box-shadow:0 20px 50px rgba(15,23,42,.1);padding:.5rem;display:none;z-index:300}
+.nav-group.open .nav-menu{display:block}
+.nav-menu a{display:block;padding:.6rem .85rem;border-radius:10px;font-size:.85rem;font-weight:600;color:#1a1a2e;text-decoration:none;border:none}
+.nav-menu a:hover{background:#fef2f2;color:#c7313a}
+.gnav-burger{display:none;background:none;border:none;font-size:1.4rem;color:#1a1a2e;cursor:pointer;font-family:inherit}
+.gnav-sheet{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;backdrop-filter:blur(8px)}
+.gnav-sheet.open{display:flex;align-items:flex-start;justify-content:flex-end}
+.gnav-sheet-inner{background:#fff;width:88%;max-width:340px;height:100vh;padding:1.5rem;overflow-y:auto;display:flex;flex-direction:column;gap:.15rem;font-family:'Plus Jakarta Sans',sans-serif}
+.gnav-sheet a{display:block;padding:.65rem .75rem;border-radius:10px;font-size:.95rem;font-weight:600;color:#1a1a2e;text-decoration:none}
+.gnav-sheet a:hover{background:#fef2f2;color:#c7313a}
+.gnav-sheet-label{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#c7313a;margin:.85rem 0 .15rem;padding:0 .25rem}
+.gnav-sheet-label:first-child{margin-top:0}
+.gnav-sheet-cta{margin-top:auto;background:#E7515A;color:#fff!important;padding:.85rem!important;border-radius:999px!important;text-align:center;font-weight:700}
+.gnav-sheet-cta:hover{background:#1a1a2e!important;color:#fff!important}
+@media(max-width:900px){.nav-links{display:none!important}.gnav-burger{display:block}}
+</style>
 <nav class="nav">
   <a class="nav-logo" href="/">FindMeAJob</a>
   <div class="nav-links">
-    <a href="/#tools">Tools</a>
+    <div class="nav-group"><button type="button" class="nav-grp-btn" data-nav-toggle aria-expanded="false">Apply <svg viewBox="0 0 12 8"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></button><div class="nav-menu"><a href="/match.html">Match CV &rarr; Jobs</a><a href="/match.html#apply">CV + Cover Letter</a><a href="/score">CV Score</a><a href="/decode">Decode Job Ad</a></div></div>
+    <div class="nav-group"><button type="button" class="nav-grp-btn" data-nav-toggle aria-expanded="false">Interview <svg viewBox="0 0 12 8"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></button><div class="nav-menu"><a href="/interview-sim">Interview Simulator</a><a href="/interview">Common Questions</a><a href="/practice-sim">Practice Sim</a></div></div>
+    <div class="nav-group"><button type="button" class="nav-grp-btn" data-nav-toggle aria-expanded="false">Decide <svg viewBox="0 0 12 8"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></button><div class="nav-menu"><a href="/salary">Salary Calculator</a><a href="/negotiate">Negotiate</a><a href="/compare">Compare Offers</a><a href="/decide">Stay or Go</a></div></div>
     <a href="/blog">Blog</a>
-    <a href="/match.html#account">Job Seekers</a>
     <a href="/employer-portal.html">Employers</a>
     <a href="/pricing">Pricing</a>
     <a href="/match.html" class="nav-cta">Find a Job</a>
   </div>
+  <button type="button" class="gnav-burger" aria-label="Menu" data-gnav-burger>&#9776;</button>
 </nav>
+<div class="gnav-sheet" data-gnav-sheet>
+  <div class="gnav-sheet-inner">
+    <div class="gnav-sheet-label">Apply</div><a href="/match.html">Match CV &rarr; Jobs</a><a href="/match.html#apply">CV + Cover Letter</a><a href="/score">CV Score</a><a href="/decode">Decode Job Ad</a>
+    <div class="gnav-sheet-label">Interview</div><a href="/interview-sim">Interview Simulator</a><a href="/interview">Common Questions</a><a href="/practice-sim">Practice Sim</a>
+    <div class="gnav-sheet-label">Decide</div><a href="/salary">Salary Calculator</a><a href="/negotiate">Negotiate</a><a href="/compare">Compare Offers</a><a href="/decide">Stay or Go</a>
+    <div class="gnav-sheet-label">More</div><a href="/blog">Blog</a><a href="/employer-portal.html">Employers</a><a href="/pricing">Pricing</a>
+    <a href="/match.html" class="gnav-sheet-cta">Find a Job &rarr;</a>
+  </div>
+</div>
+<script>
+(function(){function init(){document.querySelectorAll('[data-nav-toggle]').forEach(function(btn){btn.addEventListener('click',function(e){e.stopPropagation();var grp=btn.closest('.nav-group');document.querySelectorAll('.nav-group.open').forEach(function(o){if(o!==grp){o.classList.remove('open');var b=o.querySelector('[data-nav-toggle]');if(b)b.setAttribute('aria-expanded','false');}});var isOpen=grp.classList.toggle('open');btn.setAttribute('aria-expanded',isOpen?'true':'false');});});document.addEventListener('click',function(e){if(!e.target.closest('.nav-group')){document.querySelectorAll('.nav-group.open').forEach(function(o){o.classList.remove('open');var b=o.querySelector('[data-nav-toggle]');if(b)b.setAttribute('aria-expanded','false');});}});document.addEventListener('keydown',function(e){if(e.key==='Escape'){document.querySelectorAll('.nav-group.open').forEach(function(o){o.classList.remove('open');var b=o.querySelector('[data-nav-toggle]');if(b)b.setAttribute('aria-expanded','false');});var sh=document.querySelector('[data-gnav-sheet]');if(sh)sh.classList.remove('open');}});var burger=document.querySelector('[data-gnav-burger]');var sheet=document.querySelector('[data-gnav-sheet]');if(burger&&sheet){burger.addEventListener('click',function(){sheet.classList.toggle('open')});sheet.addEventListener('click',function(e){if(e.target===sheet)sheet.classList.remove('open')});}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();})();
+</script>
 <style>
 .spec{max-width:1100px;margin:1.5rem auto 0;padding:0 2rem}
 .spec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:#fff;border:1px solid #e8e8e8;border-radius:14px;overflow:hidden;font-family:'Plus Jakarta Sans',sans-serif}
