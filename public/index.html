@@ -125,41 +125,192 @@ img{max-width:100%;display:block}
   .want-link{font-size:1rem;padding:.75rem 0}
 }
 
-/* Homepage CV-match promo band — scaled-down /match.html hero */
-.hm-band{position:relative;background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 55%,#1a1a2e 100%);overflow:hidden;padding:3.5rem 2rem}
-.hm-band::before{content:'';position:absolute;top:-30%;right:-15%;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.22) 0%,transparent 65%);pointer-events:none}
-.hm-band::after{content:'';position:absolute;bottom:-40%;left:-10%;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.15) 0%,transparent 65%);pointer-events:none}
-.hm-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.15fr .85fr;gap:2.5rem;align-items:center;position:relative;z-index:2}
-.hm-text{color:#fff}
-.hm-badge{display:inline-block;background:rgba(231,81,90,.18);border:1px solid rgba(231,81,90,.35);color:#fca5a5;padding:.3rem .85rem;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:1rem}
-.hm-text h2{font-size:2.2rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:.65rem;letter-spacing:-.5px}
-.hm-text h2 em{font-style:normal;color:#E7515A}
-.hm-text p{font-size:1rem;color:rgba(255,255,255,.82);line-height:1.6;margin-bottom:1.25rem;max-width:460px}
-.hm-feats{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem}
-.hm-feat{display:inline-flex;align-items:center;gap:.45rem;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#fff;padding:.45rem .85rem;border-radius:999px;font-size:.76rem;font-weight:600}
-.hm-feat svg{width:13px;height:13px;color:#E7515A}
-.hm-cta{display:inline-block;background:#E7515A;color:#fff;padding:.85rem 1.75rem;border-radius:999px;font-size:.92rem;font-weight:700;text-decoration:none;box-shadow:0 8px 25px rgba(231,81,90,.35);transition:all .25s}
-.hm-cta:hover{background:#c7313a;transform:translateY(-2px);box-shadow:0 12px 35px rgba(231,81,90,.45);text-decoration:none}
-.hm-viz{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
-.hm-ring-wrap{position:relative;width:170px;height:170px}
-.hm-ring{width:100%;height:100%;transform:rotate(-90deg)}
-.hm-ring-bg{stroke:rgba(255,255,255,.1)}
-.hm-ring-fg{stroke:#E7515A;stroke-linecap:round;transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1),stroke 1.4s}
-.hm-ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2.4rem;font-weight:900;color:#fff;letter-spacing:-1px;text-shadow:0 2px 20px rgba(231,81,90,.4)}
-.hm-ring-glow{position:absolute;inset:-20px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.25) 0%,transparent 60%);animation:hmGlow 3s ease-in-out infinite;pointer-events:none}
-@keyframes hmGlow{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
-.hm-role{text-align:center;min-height:46px;transition:opacity .4s}
-.hm-role-title{font-size:.95rem;font-weight:800;color:#fff;margin-bottom:.1rem}
-.hm-role-loc{font-size:.74rem;color:rgba(255,255,255,.6);font-weight:500}
-@media(max-width:780px){
-  .hm-band{padding:2.5rem 1.25rem}
-  .hm-inner{grid-template-columns:1fr;gap:1.5rem}
-  .hm-text h2{font-size:1.55rem}
-  .hm-text p{font-size:.9rem}
-  .hm-viz{order:-1}
-  .hm-ring-wrap{width:130px;height:130px}
-  .hm-ring-pct{font-size:1.85rem}
-  .hm-feat{font-size:.7rem;padding:.4rem .7rem}
+/* Phone-flow section — single phone cycling through all 7 features */
+.pflow{background:#faf7f2;position:relative;overflow:hidden;padding:5rem 2rem 4.5rem}
+.pflow::before{content:'';position:absolute;top:-20%;right:-15%;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.1) 0%,transparent 65%);pointer-events:none}
+.pflow-inner{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:1.05fr .95fr;gap:3.5rem;align-items:center;position:relative;z-index:2}
+.pflow-text{position:relative}
+.pflow-eyebrow{display:inline-block;background:#fef2f2;color:#c7313a;padding:.28rem .75rem;border-radius:999px;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:1.3px;margin-bottom:.8rem;border:1px solid #fecaca}
+.pflow-h2{font-size:2.6rem;font-weight:900;color:#1a1a2e;line-height:1.05;letter-spacing:-.8px;margin-bottom:.8rem}
+.pflow-h2 em{font-style:normal;color:#E7515A}
+.pflow-p{font-size:1rem;color:#64748b;line-height:1.55;max-width:440px;margin-bottom:1.5rem}
+.pflow-steps{display:flex;flex-direction:column;gap:.35rem;margin-bottom:1.5rem;max-width:440px}
+.pflow-step{position:relative;display:flex;align-items:center;gap:.65rem;padding:.55rem .7rem;border-radius:12px;font-size:.86rem;font-weight:700;color:#64748b;transition:color .3s;overflow:hidden;border:1px solid transparent}
+.pflow-step::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(231,81,90,.12) 0%,rgba(231,81,90,.04) 100%);opacity:0;transition:opacity .3s;z-index:0}
+.pflow-step-num{position:relative;z-index:1;width:22px;height:22px;border-radius:50%;background:#fff;border:1.5px solid #e8e8e8;display:inline-flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:800;color:#94a3b8;transition:all .3s;flex-shrink:0}
+.pflow-step-label{position:relative;z-index:1}
+.pflow-step.is-active{color:#1a1a2e;border-color:rgba(231,81,90,.2)}
+.pflow-step.is-active::before{opacity:1}
+.pflow-step.is-active .pflow-step-num{background:#E7515A;border-color:#E7515A;color:#fff}
+.pflow-s1{animation:pflowStep 35s linear infinite;animation-delay:0s}
+.pflow-s2{animation:pflowStep 35s linear infinite;animation-delay:-30s}
+.pflow-s3{animation:pflowStep 35s linear infinite;animation-delay:-25s}
+.pflow-s4{animation:pflowStep 35s linear infinite;animation-delay:-20s}
+.pflow-s5{animation:pflowStep 35s linear infinite;animation-delay:-15s}
+.pflow-s6{animation:pflowStep 35s linear infinite;animation-delay:-10s}
+.pflow-s7{animation:pflowStep 35s linear infinite;animation-delay:-5s}
+@keyframes pflowStep{
+  0%,12%{color:#1a1a2e;border-color:rgba(231,81,90,.2)}
+  14%,100%{color:#64748b;border-color:transparent}
+}
+@keyframes pflowStepBg{0%,12%{opacity:1}14%,100%{opacity:0}}
+@keyframes pflowStepNum{0%,12%{background:#E7515A;border-color:#E7515A;color:#fff}14%,100%{background:#fff;border-color:#e8e8e8;color:#94a3b8}}
+.pflow-s1::before,.pflow-s2::before,.pflow-s3::before,.pflow-s4::before,.pflow-s5::before,.pflow-s6::before,.pflow-s7::before{animation-name:pflowStepBg;animation-duration:35s;animation-timing-function:linear;animation-iteration-count:infinite}
+.pflow-s1::before{animation-delay:0s}.pflow-s2::before{animation-delay:-30s}.pflow-s3::before{animation-delay:-25s}.pflow-s4::before{animation-delay:-20s}.pflow-s5::before{animation-delay:-15s}.pflow-s6::before{animation-delay:-10s}.pflow-s7::before{animation-delay:-5s}
+.pflow-s1 .pflow-step-num,.pflow-s2 .pflow-step-num,.pflow-s3 .pflow-step-num,.pflow-s4 .pflow-step-num,.pflow-s5 .pflow-step-num,.pflow-s6 .pflow-step-num,.pflow-s7 .pflow-step-num{animation-name:pflowStepNum;animation-duration:35s;animation-timing-function:linear;animation-iteration-count:infinite}
+.pflow-s1 .pflow-step-num{animation-delay:0s}.pflow-s2 .pflow-step-num{animation-delay:-30s}.pflow-s3 .pflow-step-num{animation-delay:-25s}.pflow-s4 .pflow-step-num{animation-delay:-20s}.pflow-s5 .pflow-step-num{animation-delay:-15s}.pflow-s6 .pflow-step-num{animation-delay:-10s}.pflow-s7 .pflow-step-num{animation-delay:-5s}
+.pflow-cta{display:inline-flex;align-items:center;gap:.35rem;background:#1a1a2e;color:#fff;padding:.85rem 1.6rem;border-radius:999px;font-size:.92rem;font-weight:700;text-decoration:none;transition:all .2s}
+.pflow-cta:hover{background:#E7515A;text-decoration:none;color:#fff;transform:translateY(-2px)}
+/* Phone frame */
+.pflow-visual{display:flex;justify-content:center;align-items:center;position:relative}
+.pflow-phone{position:relative;width:280px;max-width:100%;filter:drop-shadow(0 30px 60px rgba(15,23,42,.25));animation:pflowFloat 6s ease-in-out infinite}
+.pflow-phone-frame{position:relative;width:100%;aspect-ratio:9/19;background:#0d0d15;border-radius:42px;padding:10px;border:1px solid rgba(255,255,255,.08)}
+.pflow-phone-frame::before{content:'';position:absolute;top:10px;left:50%;transform:translateX(-50%);width:96px;height:22px;background:#0d0d15;border-radius:0 0 16px 16px;z-index:3}
+.pflow-phone-screen{position:relative;width:100%;height:100%;background:#faf7f2;border-radius:32px;overflow:hidden}
+.pflow-screen{position:absolute;inset:0;padding:2.2rem 1rem 1rem;display:flex;flex-direction:column;background:#faf7f2;opacity:0;animation:pflowCycle 35s linear infinite}
+.pflow-s-match{animation-delay:0s}
+.pflow-s-decode{animation-delay:-30s}
+.pflow-s-salary{animation-delay:-25s}
+.pflow-s-cv{animation-delay:-20s}
+.pflow-s-prep{animation-delay:-15s}
+.pflow-s-sim{animation-delay:-10s}
+.pflow-s-nego{animation-delay:-5s}
+@keyframes pflowCycle{0%{opacity:0}1%{opacity:1}12%{opacity:1}14%,100%{opacity:0}}
+@keyframes pflowFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.pflow-eb{font-size:.54rem;font-weight:800;color:#c7313a;text-transform:uppercase;letter-spacing:1.4px;margin-bottom:.25rem}
+.pflow-t{font-size:1rem;font-weight:900;color:#1a1a2e;line-height:1.15;letter-spacing:-.3px;margin-bottom:.7rem}
+.pflow-body{flex:1;display:flex;flex-direction:column;gap:.5rem;min-height:0}
+.pflow-cta-s{background:#1a1a2e;color:#fff;padding:.5rem;border-radius:999px;font-size:.66rem;font-weight:800;text-align:center;margin-top:.55rem;display:block;letter-spacing:.2px}
+/* Match screen */
+.pflow-match-bar{height:6px;background:#fecaca;border-radius:999px;overflow:hidden}
+.pflow-match-bar-fill{height:100%;background:#E7515A;border-radius:999px;width:92%}
+.pflow-match-card{background:#fff;border:1px solid #e8e8e8;border-radius:14px;padding:.6rem .7rem;box-shadow:0 6px 18px rgba(15,23,42,.04);flex:1;display:flex;flex-direction:column;gap:.3rem}
+.pflow-chip{display:inline-block;align-self:flex-start;background:#fef2f2;color:#c7313a;border:1px solid #fecaca;padding:.15rem .55rem;border-radius:999px;font-size:.55rem;font-weight:800;text-transform:uppercase;letter-spacing:1px}
+.pflow-rtitle{font-size:.88rem;font-weight:900;color:#1a1a2e;line-height:1.15}
+.pflow-rsub{font-size:.64rem;color:#64748b}
+.pflow-skills{display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.2rem}
+.pflow-skill{background:#f7f7f7;border:1px solid #eee;padding:.18rem .45rem;border-radius:999px;font-size:.56rem;font-weight:700;color:#1a1a2e}
+/* Decode screen */
+.pflow-jobad{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:.55rem .7rem;font-size:.64rem;color:#64748b;line-height:1.55;flex:1}
+.pflow-kw{display:inline-block;background:#fef2f2;color:#c7313a;padding:0 .3rem;border-radius:4px;font-weight:800;border:1px solid #fecaca;margin:0 1px}
+.pflow-meter{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:.4rem .6rem;font-size:.62rem;color:#1a1a2e;font-weight:700}
+.pflow-meter-pct{color:#E7515A;font-weight:900;font-size:.82rem}
+/* Salary screen */
+.pflow-sal-role{font-size:.66rem;color:#64748b;font-weight:600}
+.pflow-sal-you{font-size:1.25rem;font-weight:900;color:#E7515A;letter-spacing:-.5px;margin:.1rem 0 .4rem}
+.pflow-sal-bar{position:relative;height:8px;background:linear-gradient(90deg,#fecaca 0%,#E7515A 40%,#c7313a 100%);border-radius:999px;margin:.9rem 0 .4rem}
+.pflow-sal-dot{position:absolute;top:50%;left:40%;transform:translate(-50%,-50%);width:16px;height:16px;background:#fff;border:3px solid #E7515A;border-radius:50%;box-shadow:0 4px 10px rgba(231,81,90,.3)}
+.pflow-sal-ticks{display:flex;justify-content:space-between;font-size:.55rem;color:#64748b;font-weight:700}
+.pflow-sal-pill{align-self:flex-start;background:#fef2f2;color:#c7313a;border:1px solid #fecaca;padding:.2rem .55rem;border-radius:999px;font-size:.58rem;font-weight:800;margin-top:.4rem}
+/* CV screen */
+.pflow-cv-doc{flex:1;background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:.7rem .65rem;position:relative;display:flex;flex-direction:column;gap:.28rem;box-shadow:0 6px 18px rgba(15,23,42,.04)}
+.pflow-cv-pill{position:absolute;top:.4rem;right:.4rem;background:#E7515A;color:#fff;font-size:.52rem;font-weight:800;padding:.18rem .45rem;border-radius:999px;letter-spacing:.5px;text-transform:uppercase}
+.pflow-cv-name{font-size:.72rem;font-weight:900;color:#1a1a2e}
+.pflow-cv-role{font-size:.56rem;color:#64748b;margin-bottom:.2rem;font-weight:600}
+.pflow-cv-line{height:4px;background:#f0f0f0;border-radius:999px}
+.pflow-cv-line:nth-child(4){width:82%}
+.pflow-cv-line:nth-child(5){width:94%}
+.pflow-cv-line:nth-child(6){width:68%}
+.pflow-cv-tab{margin-top:auto;font-size:.6rem;color:#E7515A;font-weight:800;border-top:1px dashed #f0dbdc;padding-top:.3rem;display:flex;justify-content:space-between;align-items:center}
+/* Prep screen */
+.pflow-qlist{display:flex;flex-direction:column;gap:.35rem;flex:1}
+.pflow-q{background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:.4rem .55rem;display:flex;align-items:center;gap:.45rem;font-size:.64rem;color:#1a1a2e;font-weight:600}
+.pflow-q-check{width:14px;height:14px;border-radius:50%;background:#E7515A;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:.58rem;font-weight:900;flex-shrink:0}
+.pflow-prog{display:flex;align-items:center;gap:.35rem;font-size:.58rem;color:#64748b;font-weight:700;margin-top:auto}
+.pflow-prog-dot{width:7px;height:7px;background:#E7515A;border-radius:50%}
+/* Sim screen */
+.pflow-sim-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.7rem;padding:.2rem 0}
+.pflow-sim-q{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:.5rem .7rem;font-size:.66rem;color:#1a1a2e;font-weight:600;line-height:1.4;align-self:stretch;text-align:left}
+.pflow-mic{width:58px;height:58px;border-radius:50%;background:#E7515A;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 12px 26px rgba(231,81,90,.4);position:relative}
+.pflow-mic::before,.pflow-mic::after{content:'';position:absolute;inset:-12px;border:2px solid rgba(231,81,90,.35);border-radius:50%;animation:pflowMic 2s ease-out infinite}
+.pflow-mic::after{inset:-22px;animation-delay:.9s}
+@keyframes pflowMic{0%{opacity:.8;transform:scale(.55)}100%{opacity:0;transform:scale(1.08)}}
+.pflow-sim-hint{font-size:.58rem;color:#64748b;font-weight:800;text-transform:uppercase;letter-spacing:1.2px}
+/* Nego screen */
+.pflow-chat{flex:1;display:flex;flex-direction:column;gap:.35rem;justify-content:center}
+.pflow-chat-ai{background:#fff;border:1px solid #e8e8e8;border-radius:10px;border-bottom-left-radius:3px;padding:.45rem .6rem;font-size:.62rem;color:#1a1a2e;max-width:88%;align-self:flex-start;line-height:1.35;font-weight:600}
+.pflow-chat-you{background:#E7515A;color:#fff;border-radius:10px;border-bottom-right-radius:3px;padding:.45rem .6rem;font-size:.62rem;max-width:88%;align-self:flex-end;line-height:1.35;font-weight:600}
+.pflow-round{align-self:center;background:#fef2f2;color:#c7313a;border:1px solid #fecaca;padding:.15rem .5rem;border-radius:999px;font-size:.52rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-top:.2rem}
+@media(max-width:820px){
+  .pflow{padding:3rem 1.25rem 2.5rem}
+  .pflow-inner{grid-template-columns:1fr;gap:2.25rem}
+  .pflow-visual{order:-1}
+  .pflow-h2{font-size:1.7rem}
+  .pflow-phone{width:240px}
+  .pflow-steps{max-width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+  .pflow-phone,.pflow-screen,.pflow-step,.pflow-step::before,.pflow-step-num,.pflow-mic::before,.pflow-mic::after{animation:none!important}
+  .pflow-s-match{opacity:1}
+}
+
+/* Half-phone interview showcase */
+.hphn-band{position:relative;background:#1B1B3A;overflow:hidden;padding:5rem 2rem 0}
+.hphn-band::before{content:'';position:absolute;top:-15%;right:-10%;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.22) 0%,transparent 65%);pointer-events:none}
+.hphn-band::after{content:'';position:absolute;bottom:-10%;left:-8%;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.14) 0%,transparent 70%);pointer-events:none}
+.hphn-inner{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:end;position:relative;z-index:2}
+.hphn-text{color:#fff;padding-bottom:5rem}
+.hphn-eyebrow{display:inline-block;background:rgba(231,81,90,.18);color:#fca5a5;border:1px solid rgba(231,81,90,.4);padding:.3rem .8rem;border-radius:999px;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:1.3px;margin-bottom:1rem}
+.hphn-h2{font-size:2.6rem;font-weight:900;line-height:1.05;letter-spacing:-.8px;margin-bottom:.9rem;color:#fff}
+.hphn-h2 em{font-style:normal;color:#E7515A}
+.hphn-p{font-size:1rem;color:rgba(255,255,255,.78);line-height:1.6;max-width:480px;margin-bottom:1.25rem}
+.hphn-feats{display:flex;flex-direction:column;gap:.55rem;margin-bottom:1.75rem;max-width:480px}
+.hphn-feat{display:flex;align-items:center;gap:.65rem;color:rgba(255,255,255,.88);font-size:.88rem;font-weight:600}
+.hphn-feat-icon{width:22px;height:22px;border-radius:50%;background:rgba(231,81,90,.18);color:#E7515A;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.hphn-feat-icon svg{width:11px;height:11px}
+.hphn-ctas{display:flex;gap:.75rem;align-items:center;flex-wrap:wrap}
+.hphn-cta{display:inline-flex;align-items:center;gap:.4rem;background:#E7515A;color:#fff;padding:.85rem 1.6rem;border-radius:999px;font-size:.92rem;font-weight:700;text-decoration:none;box-shadow:0 10px 26px rgba(231,81,90,.4);transition:all .2s}
+.hphn-cta:hover{background:#c7313a;transform:translateY(-2px);text-decoration:none;color:#fff}
+.hphn-ghost{color:rgba(255,255,255,.82);font-weight:700;font-size:.88rem;text-decoration:none;border-bottom:1px dashed rgba(255,255,255,.35);padding-bottom:.1rem}
+.hphn-ghost:hover{color:#fff;text-decoration:none;border-bottom-color:#E7515A}
+.hphn-viewport{position:relative;height:520px;overflow:hidden}
+.hphn-viewport::after{content:'';position:absolute;left:0;right:0;bottom:0;height:110px;background:linear-gradient(180deg,rgba(27,27,58,0) 0%,rgba(27,27,58,.85) 60%,#1B1B3A 100%);pointer-events:none;z-index:5}
+.hphn-phone{position:absolute;left:50%;bottom:-28%;transform:translateX(-50%) rotate(-3deg);width:320px;filter:drop-shadow(0 25px 50px rgba(0,0,0,.35))}
+.hphn-phone-frame{position:relative;width:100%;aspect-ratio:9/19;background:#0d0d15;border-radius:46px;padding:11px;border:1px solid rgba(255,255,255,.08)}
+.hphn-phone-frame::before{content:'';position:absolute;top:11px;left:50%;transform:translateX(-50%);width:108px;height:24px;background:#0d0d15;border-radius:0 0 18px 18px;z-index:3}
+.hphn-phone-screen{position:relative;width:100%;height:100%;background:#faf7f2;border-radius:35px;overflow:hidden;padding:2.4rem 1.05rem 1rem;display:flex;flex-direction:column;gap:.6rem}
+.hphn-statusbar{display:flex;align-items:center;justify-content:space-between;font-size:.58rem;color:#64748b;font-weight:700}
+.hphn-rec{display:inline-flex;align-items:center;gap:.3rem;color:#E7515A;font-weight:800;text-transform:uppercase;letter-spacing:1px;font-size:.55rem}
+.hphn-rec-dot{width:7px;height:7px;background:#E7515A;border-radius:50%;animation:hphnBlink 1.2s ease-in-out infinite}
+@keyframes hphnBlink{0%,100%{opacity:1}50%{opacity:.3}}
+.hphn-ai{display:flex;gap:.45rem;align-items:flex-start}
+.hphn-ai-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#E7515A,#c7313a);color:#fff;font-size:.58rem;font-weight:900;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;letter-spacing:.5px}
+.hphn-ai-meta{font-size:.54rem;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:.15rem}
+.hphn-bubble{background:#fff;border:1px solid #e8e8e8;border-radius:12px;border-top-left-radius:3px;padding:.5rem .65rem;font-size:.64rem;line-height:1.4;color:#1a1a2e;font-weight:600;box-shadow:0 4px 14px rgba(15,23,42,.04)}
+.hphn-bubble--follow{opacity:.6;margin-top:.3rem}
+.hphn-turn{background:#fef2f2;border:1px solid #fecaca;border-radius:12px;padding:.5rem .6rem;display:flex;align-items:center;gap:.5rem}
+.hphn-mic{width:32px;height:32px;border-radius:50%;background:#E7515A;color:#fff;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;box-shadow:0 6px 14px rgba(231,81,90,.35)}
+.hphn-mic svg{width:14px;height:14px}
+.hphn-mic::before{content:'';position:absolute;inset:-6px;border:2px solid rgba(231,81,90,.45);border-radius:50%;animation:hphnPulse 1.6s ease-out infinite}
+@keyframes hphnPulse{0%{opacity:.8;transform:scale(.6)}100%{opacity:0;transform:scale(1.1)}}
+.hphn-wave{display:inline-flex;align-items:center;gap:2px;height:22px;flex-shrink:0}
+.hphn-wave span{display:block;width:3px;background:#E7515A;border-radius:2px;animation:hphnWave 1s ease-in-out infinite}
+.hphn-wave span:nth-child(1){animation-delay:-.9s}
+.hphn-wave span:nth-child(2){animation-delay:-.7s}
+.hphn-wave span:nth-child(3){animation-delay:-.5s}
+.hphn-wave span:nth-child(4){animation-delay:-.3s}
+.hphn-wave span:nth-child(5){animation-delay:-.1s}
+@keyframes hphnWave{0%,100%{height:5px}50%{height:18px}}
+.hphn-transcript{font-size:.58rem;color:#64748b;font-weight:600;line-height:1.35;flex:1;min-width:0}
+.hphn-score{background:#1a1a2e;color:#fff;border-radius:12px;padding:.55rem .7rem;display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-top:auto}
+.hphn-score-label{font-size:.52rem;color:rgba(255,255,255,.6);font-weight:800;text-transform:uppercase;letter-spacing:1px}
+.hphn-score-num{font-size:1.1rem;font-weight:900;color:#E7515A;line-height:1}
+.hphn-score-num small{font-size:.62rem;color:rgba(255,255,255,.5);font-weight:700;margin-left:.1rem}
+.hphn-score-note{font-size:.52rem;color:rgba(255,255,255,.75);font-weight:600;text-align:right;max-width:90px;line-height:1.3}
+@media(max-width:860px){
+  .hphn-band{padding:3rem 1.25rem 0}
+  .hphn-inner{grid-template-columns:1fr;gap:2rem;align-items:center}
+  .hphn-text{padding-bottom:2rem;text-align:center}
+  .hphn-h2{font-size:1.75rem}
+  .hphn-p,.hphn-feats{margin-left:auto;margin-right:auto}
+  .hphn-feats{max-width:340px}
+  .hphn-feat{text-align:left}
+  .hphn-ctas{justify-content:center}
+  .hphn-viewport{height:400px}
+  .hphn-phone{width:260px;transform:translateX(-50%) rotate(0deg);bottom:-24%}
+}
+@media(prefers-reduced-motion:reduce){
+  .hphn-mic::before,.hphn-wave span,.hphn-rec-dot{animation:none!important}
 }
 @media(max-width:480px){
   .tool-grid{grid-template-columns:1fr 1fr}
@@ -168,68 +319,6 @@ img{max-width:100%;display:block}
   .tphoto-arrow{width:24px;height:24px;font-size:.7rem;top:.75rem;right:.75rem}
 }
 
-/* Featured Voice Simulators - Monzo light */
-.fsims-wrap{background:#1B1B3A;position:relative;overflow:hidden}
-.fsims-wrap::before{content:'';position:absolute;top:-15%;left:-10%;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.22) 0%,transparent 65%);pointer-events:none;z-index:1}
-.fsims-wrap::after{content:'';position:absolute;bottom:-20%;right:-8%;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.15) 0%,transparent 70%);pointer-events:none;z-index:1}
-.fsims{max-width:1100px;margin:0 auto;padding:4.5rem 2rem 4rem;position:relative;z-index:2}
-.fsims-wrap .fsims-head h2{color:#fff}
-.fsims-wrap .fsims-head p{color:rgba(255,255,255,.72)}
-.fsims-wrap .fsims-eyebrow{background:rgba(231,81,90,.18);border:1px solid rgba(231,81,90,.45);color:#fff}
-.fsim-chat-embed{position:relative;z-index:2;background:#fafafa;border:1px solid #eee;border-radius:14px;padding:1rem 1.1rem;margin-bottom:1.25rem;min-height:220px;display:flex;flex-direction:column}
-.fsim-chat-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
-.fsim-chat-dot{width:8px;height:8px;background:#E7515A;border-radius:50%;box-shadow:0 0 0 0 rgba(231,81,90,.6);animation:fsimChatPulse 1.8s ease-out infinite}
-@keyframes fsimChatPulse{0%{box-shadow:0 0 0 0 rgba(231,81,90,.5)}70%{box-shadow:0 0 0 8px rgba(231,81,90,0)}100%{box-shadow:0 0 0 0 rgba(231,81,90,0)}}
-.fsim-chat-status{font-size:.72rem;color:#64748b;font-weight:600}
-.fsim-chat-label{font-size:.58rem;color:#c7313a;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;background:#fef2f2;border:1px solid #fecaca;padding:.18rem .5rem;border-radius:999px}
-.fsim-chat-msgs{display:flex;flex-direction:column;gap:.5rem;flex:1;min-height:140px}
-.fsim-chat-score{text-align:center;padding:.75rem 0;display:none;flex:1;justify-content:center;flex-direction:column}
-.fsim-score-label{font-size:.55rem;color:#94a3b8;text-transform:uppercase;font-weight:700;letter-spacing:.5px;margin-bottom:.25rem}
-.fsim-score-num{font-size:2.4rem;font-weight:900;color:#E7515A;line-height:1}
-.fsim-score-denom{font-size:.85rem;color:#94a3b8;font-weight:600}
-.fsim-score-note{font-size:.62rem;color:#10b981;font-weight:600;margin-top:.25rem}
-.fsims-head{text-align:center;margin-bottom:2rem}
-.fsims-eyebrow{display:inline-block;background:#fef2f2;color:#c7313a;padding:.3rem .85rem;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:.85rem;border:1px solid #fecaca}
-.fsims-head h2{font-size:2.2rem;font-weight:900;color:#1a1a2e;line-height:1.15;margin-bottom:.5rem;letter-spacing:-.5px}
-.fsims-head h2 em{font-style:normal;color:#E7515A}
-.fsims-head p{font-size:.95rem;color:#64748b;max-width:560px;margin:0 auto}
-.fsim-demo-wrap{margin:0 auto 2.5rem;max-width:560px}
-.fsims-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
-.fsim-card{position:relative;overflow:hidden;background:#fff;border:1px solid #e8e8e8;border-radius:24px;padding:2rem;display:flex;flex-direction:column;color:#1a1a2e;text-decoration:none;min-height:360px;transition:all .3s}
-.fsim-card:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(231,81,90,.15);border-color:#E7515A;text-decoration:none}
-.fsim-card::before{content:'';position:absolute;top:-30%;right:-20%;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.09) 0%,transparent 70%);pointer-events:none}
-.fsim-card::after{content:'';position:absolute;bottom:-35%;left:-15%;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.05) 0%,transparent 70%);pointer-events:none}
-.fsim-tag{position:relative;z-index:2;display:inline-block;background:#fef2f2;border:1px solid #fecaca;color:#c7313a;padding:.28rem .75rem;border-radius:999px;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:.85rem;align-self:flex-start}
-.fsim-title{position:relative;z-index:2;font-size:1.55rem;font-weight:900;color:#1a1a2e;line-height:1.15;margin-bottom:.5rem;letter-spacing:-.3px;padding-right:96px}
-.fsim-desc{position:relative;z-index:2;font-size:.88rem;color:#64748b;line-height:1.55;margin-bottom:1.25rem;max-width:320px;padding-right:20px}
-.fsim-feats{position:relative;z-index:2;display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.25rem}
-.fsim-feat{display:inline-flex;align-items:center;gap:.3rem;background:#f7f7f7;border:1px solid #eee;color:#1a1a2e;padding:.35rem .7rem;border-radius:999px;font-size:.7rem;font-weight:600}
-.fsim-feat svg{width:11px;height:11px;color:#E7515A}
-.fsim-cta{position:relative;z-index:2;display:inline-flex;align-items:center;gap:.4rem;background:#E7515A;color:#fff;padding:.7rem 1.3rem;border-radius:999px;font-size:.82rem;font-weight:700;align-self:flex-start;margin-top:auto;transition:all .2s}
-.fsim-card:hover .fsim-cta{background:#1a1a2e;color:#fff}
-.fsim-cta .arr{transition:transform .2s}
-.fsim-card:hover .fsim-cta .arr{transform:translateX(3px)}
-.fsim-orb-wrap{position:absolute;right:1.5rem;top:1.5rem;width:72px;height:72px;z-index:1}
-.fsim-orb{position:absolute;inset:0;border-radius:50%;background:linear-gradient(135deg,#E7515A,#c7313a);display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 10px 26px rgba(231,81,90,.35);animation:fsimBeat 2.5s ease-in-out infinite;z-index:3}
-.fsim-orb svg{width:28px;height:28px}
-.fsim-pulse{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(231,81,90,.4);animation:fsimRing 2.4s ease-out infinite;pointer-events:none}
-@keyframes fsimBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
-@keyframes fsimRing{0%{transform:scale(1);opacity:.6}100%{transform:scale(2.2);opacity:0}}
-.fsim-bubble{position:absolute;bottom:1.5rem;right:1.5rem;background:#1a1a2e;color:#fff;padding:.6rem .85rem;border-radius:12px;font-size:.72rem;font-weight:600;line-height:1.4;max-width:170px;box-shadow:0 10px 24px rgba(0,0,0,.12);z-index:3;border-bottom-right-radius:4px}
-.fsim-bubble::before{content:'AI';position:absolute;top:-8px;left:10px;background:#E7515A;color:#fff;font-size:.52rem;font-weight:800;padding:.12rem .4rem;border-radius:999px;letter-spacing:.5px}
-@media(max-width:860px){
-  .fsims{padding:3rem 1.25rem 2rem;max-width:100%}
-  .fsims-wrap::before{width:280px;height:280px;left:-15%;top:-8%}
-  .fsims-wrap::after{width:240px;height:240px;right:-15%;bottom:-10%}
-  .fsims-head h2{font-size:1.75rem}
-  .fsims-grid{grid-template-columns:1fr}
-  .fsim-card{min-height:300px;padding:1.5rem}
-  .fsim-title{font-size:1.3rem;padding-right:78px}
-  .fsim-desc{padding-right:0}
-  .fsim-orb-wrap{width:56px;height:56px;top:1.25rem;right:1.25rem}
-  .fsim-orb svg{width:22px;height:22px}
-  .fsim-bubble{max-width:140px;font-size:.68rem;right:1.25rem;bottom:1.25rem}
-}
 </style>
 <!--NUNITO-LOGO--><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet"><style>.nav-logo,.top-logo,.ch-nav-logo,#logo-home,#h-logo,.logo-text,.fmj-wordmark,a[href="/"][style*="font-weight:900"],a[href="/"][style*="font-weight:800"]{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900;letter-spacing:-.02em}.nav-logo span,.top-logo span,.ch-nav-logo span,.fmj-wordmark span{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900}footer div[style*="#E7515A"][style*="font-weight:900"],footer span[style*="#E7515A"][style*="font-weight:900"]{font-family:"Nunito",system-ui,sans-serif!important;letter-spacing:-.02em}</style></head>
 <body>
@@ -291,72 +380,147 @@ img{max-width:100%;display:block}
   <div class="hero-dots" id="heroDots"></div>
 </section>
 
-<!-- Persistent CV-upload promo band — mirrors /match.html hero -->
-<section class="hm-band">
-  <div class="hm-inner">
-    <div class="hm-text">
-      <div class="hm-badge">Free &bull; NZ &bull; No sign-up</div>
-      <h2>AI matches your CV to <em>real NZ jobs</em> in 60 seconds</h2>
-      <p>Upload your CV and AI reads every skill, then finds the live NZ roles you&rsquo;ll actually land. Tailored cover letters, free forever.</p>
-      <div class="hm-feats">
-        <div class="hm-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> PDF or Word</div>
-        <div class="hm-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 60-second match</div>
-        <div class="hm-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> CV never stored</div>
+<!-- Phone-flow: single phone cycling through all 7 features -->
+<section class="pflow">
+  <div class="pflow-inner">
+    <div class="pflow-text">
+      <div class="pflow-eyebrow">7 tools &middot; One phone</div>
+      <h2 class="pflow-h2">Your whole career toolkit &mdash; <em>in your pocket</em></h2>
+      <p class="pflow-p">From uploading your CV to practising the salary conversation. Free. NZ. No sign-up.</p>
+      <div class="pflow-steps">
+        <div class="pflow-step pflow-s1"><span class="pflow-step-num">1</span><span class="pflow-step-label">Find NZ jobs matched to me</span></div>
+        <div class="pflow-step pflow-s2"><span class="pflow-step-num">2</span><span class="pflow-step-label">Decode a job listing</span></div>
+        <div class="pflow-step pflow-s3"><span class="pflow-step-num">3</span><span class="pflow-step-label">Check what I should earn</span></div>
+        <div class="pflow-step pflow-s4"><span class="pflow-step-num">4</span><span class="pflow-step-label">Write my CV and cover letter</span></div>
+        <div class="pflow-step pflow-s5"><span class="pflow-step-num">5</span><span class="pflow-step-label">Prepare for interview questions</span></div>
+        <div class="pflow-step pflow-s6"><span class="pflow-step-num">6</span><span class="pflow-step-label">Practise a job interview</span></div>
+        <div class="pflow-step pflow-s7"><span class="pflow-step-num">7</span><span class="pflow-step-label">Rehearse a salary negotiation</span></div>
       </div>
-      <a href="/match.html" class="hm-cta">Upload your CV &rarr;</a>
+      <a class="pflow-cta" href="/match.html#match-flow-top">Start free &rarr;</a>
     </div>
-    <div class="hm-viz">
-      <div class="hm-ring-wrap">
-        <div class="hm-ring-glow"></div>
-        <svg class="hm-ring" viewBox="0 0 180 180" aria-hidden="true">
-          <circle class="hm-ring-bg" cx="90" cy="90" r="76" fill="none" stroke-width="10"/>
-          <circle id="hm-ring-fg" class="hm-ring-fg" cx="90" cy="90" r="76" fill="none" stroke-width="10" stroke-dasharray="477.5" stroke-dashoffset="477.5"/>
-        </svg>
-        <div class="hm-ring-pct" id="hm-pct">0%</div>
-      </div>
-      <div class="hm-role" id="hm-role">
-        <div class="hm-role-title" id="hm-role-title">Scanning your CV&hellip;</div>
-        <div class="hm-role-loc" id="hm-role-loc">Matching to NZ jobs</div>
+    <div class="pflow-visual">
+      <div class="pflow-phone" aria-hidden="true">
+        <div class="pflow-phone-frame">
+          <div class="pflow-phone-screen">
+
+            <!-- 1. Match -->
+            <div class="pflow-screen pflow-s-match">
+              <div class="pflow-eb">Step 1 &middot; Match</div>
+              <div class="pflow-t">Matching your CV&hellip;</div>
+              <div class="pflow-body">
+                <div class="pflow-match-bar"><div class="pflow-match-bar-fill"></div></div>
+                <div class="pflow-match-card">
+                  <span class="pflow-chip">92% match</span>
+                  <div class="pflow-rtitle">Registered Nurse</div>
+                  <div class="pflow-rsub">Auckland DHB &middot; Full-time</div>
+                  <div class="pflow-skills">
+                    <span class="pflow-skill">Patient care</span>
+                    <span class="pflow-skill">Aged care</span>
+                    <span class="pflow-skill">NZRN</span>
+                  </div>
+                </div>
+              </div>
+              <span class="pflow-cta-s">Apply in 1 click &rarr;</span>
+            </div>
+
+            <!-- 2. Decode -->
+            <div class="pflow-screen pflow-s-decode">
+              <div class="pflow-eb">Step 2 &middot; Decode</div>
+              <div class="pflow-t">What the listing really wants</div>
+              <div class="pflow-body">
+                <div class="pflow-jobad">Seeking a Senior Engineer with strong <span class="pflow-kw">leadership</span>, 5+ yrs <span class="pflow-kw">Python</span>, and <span class="pflow-kw">Agile</span> delivery experience. Must own projects end-to-end.</div>
+                <div class="pflow-meter"><span>Fit vs. your CV</span><span class="pflow-meter-pct">88%</span></div>
+                <div class="pflow-meter"><span>Missing skills</span><span class="pflow-meter-pct" style="color:#64748b;font-size:.7rem">2 gaps</span></div>
+              </div>
+              <span class="pflow-cta-s">Decode listing &rarr;</span>
+            </div>
+
+            <!-- 3. Salary -->
+            <div class="pflow-screen pflow-s-salary">
+              <div class="pflow-eb">Step 3 &middot; Salary</div>
+              <div class="pflow-t">What you should earn</div>
+              <div class="pflow-body">
+                <div class="pflow-sal-role">Software Engineer &middot; Wellington</div>
+                <div class="pflow-sal-you">$85,000 <small style="font-size:.58rem;color:#64748b;font-weight:700"> / yr you</small></div>
+                <div class="pflow-sal-bar"><div class="pflow-sal-dot"></div></div>
+                <div class="pflow-sal-ticks"><span>$60k</span><span>$85k</span><span>$120k</span></div>
+                <span class="pflow-sal-pill">+12% vs market</span>
+              </div>
+              <span class="pflow-cta-s">See salary report &rarr;</span>
+            </div>
+
+            <!-- 4. CV writer -->
+            <div class="pflow-screen pflow-s-cv">
+              <div class="pflow-eb">Step 4 &middot; CV</div>
+              <div class="pflow-t">Polish your CV &amp; cover letter</div>
+              <div class="pflow-body">
+                <div class="pflow-cv-doc">
+                  <span class="pflow-cv-pill">AI polish</span>
+                  <div class="pflow-cv-name">Aroha Ngata</div>
+                  <div class="pflow-cv-role">Senior Software Engineer</div>
+                  <div class="pflow-cv-line"></div>
+                  <div class="pflow-cv-line"></div>
+                  <div class="pflow-cv-line"></div>
+                  <div class="pflow-cv-line"></div>
+                  <div class="pflow-cv-tab"><span>Cover letter</span><span>&rarr;</span></div>
+                </div>
+              </div>
+              <span class="pflow-cta-s">Polish my CV &rarr;</span>
+            </div>
+
+            <!-- 5. Prep -->
+            <div class="pflow-screen pflow-s-prep">
+              <div class="pflow-eb">Step 5 &middot; Prep</div>
+              <div class="pflow-t">Interview questions, ready</div>
+              <div class="pflow-body">
+                <div class="pflow-qlist">
+                  <div class="pflow-q"><span class="pflow-q-check">&#10003;</span>Tell me about yourself</div>
+                  <div class="pflow-q"><span class="pflow-q-check">&#10003;</span>Why this role?</div>
+                  <div class="pflow-q"><span class="pflow-q-check">&#10003;</span>Your biggest weakness</div>
+                  <div class="pflow-q" style="opacity:.55"><span class="pflow-q-check" style="background:#f0f0f0;color:#94a3b8">4</span>Handling conflict</div>
+                </div>
+                <div class="pflow-prog"><span class="pflow-prog-dot"></span>3 of 12 ready</div>
+              </div>
+              <span class="pflow-cta-s">Keep prepping &rarr;</span>
+            </div>
+
+            <!-- 6. Sim -->
+            <div class="pflow-screen pflow-s-sim">
+              <div class="pflow-eb">Step 6 &middot; Simulate</div>
+              <div class="pflow-t">Practise out loud</div>
+              <div class="pflow-body">
+                <div class="pflow-sim-body">
+                  <div class="pflow-sim-q">&ldquo;Describe a leadership challenge you&rsquo;ve faced.&rdquo;</div>
+                  <div class="pflow-mic">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+                  </div>
+                  <div class="pflow-sim-hint">Your turn &mdash; listening&hellip;</div>
+                </div>
+              </div>
+              <span class="pflow-cta-s">Start practice &rarr;</span>
+            </div>
+
+            <!-- 7. Negotiate -->
+            <div class="pflow-screen pflow-s-nego">
+              <div class="pflow-eb">Step 7 &middot; Negotiate</div>
+              <div class="pflow-t">Rehearse the pay conversation</div>
+              <div class="pflow-body">
+                <div class="pflow-chat">
+                  <div class="pflow-chat-ai">We can offer $85,000 &mdash; that&rsquo;s our budget for this role.</div>
+                  <div class="pflow-chat-you">I&rsquo;d like to discuss ranges up to $95k given my experience.</div>
+                  <div class="pflow-chat-ai">Let&rsquo;s talk &mdash; what does the market look like for your role?</div>
+                  <div class="pflow-round">Round 2 of 3</div>
+                </div>
+              </div>
+              <span class="pflow-cta-s">Pick a scenario &rarr;</span>
+            </div>
+
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
-<script>
-(function(){
-  var jobs=[
-    {pct:92,title:'Registered Nurse',loc:'Auckland \u2022 NZ',color:'#10b981'},
-    {pct:85,title:'Software Engineer',loc:'Wellington \u2022 NZ',color:'#E7515A'},
-    {pct:78,title:'Electrician',loc:'Hamilton \u2022 NZ',color:'#f59e0b'},
-    {pct:88,title:'Primary Teacher',loc:'Christchurch \u2022 NZ',color:'#3b82f6'},
-    {pct:81,title:'Allied Health',loc:'Dunedin \u2022 NZ',color:'#8b5cf6'}
-  ];
-  var CIRC=477.5,ring=document.getElementById('hm-ring-fg'),pctEl=document.getElementById('hm-pct'),titleEl=document.getElementById('hm-role-title'),locEl=document.getElementById('hm-role-loc'),roleEl=document.getElementById('hm-role');
-  if(!ring||!pctEl)return;
-  var i=0;
-  function cycle(){
-    var j=jobs[i%jobs.length];
-    roleEl.style.opacity='0';
-    setTimeout(function(){
-      ring.style.stroke=j.color;
-      ring.style.strokeDashoffset=CIRC-(j.pct/100)*CIRC;
-      titleEl.textContent=j.title;
-      locEl.textContent=j.loc;
-      var t0=performance.now(),dur=1200;
-      function step(t){
-        var p=Math.min(1,(t-t0)/dur);
-        var eased=1-Math.pow(1-p,3);
-        pctEl.textContent=Math.round(j.pct*eased)+'%';
-        if(p<1)requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-      roleEl.style.opacity='1';
-    },400);
-    i++;
-  }
-  cycle();
-  setInterval(cycle,3200);
-})();
-</script>
 
 <!-- "I want to..." section - Monzo style -->
 <section class="sec-pad sec-narrow">
@@ -384,68 +548,62 @@ img{max-width:100%;display:block}
   </div>
 </section>
 
-<!-- FEATURED: Voice Simulators (live demo embedded in card 1) -->
-<section class="fsims-wrap">
-<section class="fsims">
-  <div class="fsims-head">
-    <div class="fsims-eyebrow">For job seekers &bull; Voice AI &bull; Free</div>
-    <h2>For when it&rsquo;s your turn to <em>speak</em></h2>
-    <p>You&rsquo;ve got the CV. Now rehearse the conversations that actually land the job &mdash; and the pay rise. Speak out loud. AI pushes back. You walk in ready.</p>
+<!-- Half-phone interview showcase -->
+<section class="hphn-band">
+  <div class="hphn-inner">
+    <div class="hphn-text">
+      <div class="hphn-eyebrow">Voice AI &middot; Free &middot; No sign-up</div>
+      <h2 class="hphn-h2">See what a real AI interview <em>actually feels like</em>.</h2>
+      <p class="hphn-p">AI asks live, role-specific questions. You answer out loud. It pushes back on weak answers and gives you a recruiter-style score out of 100 &mdash; with a model answer beside yours. Free forever, NZ-tuned.</p>
+      <div class="hphn-feats">
+        <div class="hphn-feat"><span class="hphn-feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/></svg></span>Speak out loud, not type</div>
+        <div class="hphn-feat"><span class="hphn-feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>AI pushes back like a real panel</div>
+        <div class="hphn-feat"><span class="hphn-feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Score out of 100 + model answers</div>
+        <div class="hphn-feat"><span class="hphn-feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a8 8 0 0 0-8 8c0 6 8 12 8 12s8-6 8-12a8 8 0 0 0-8-8z"/><circle cx="12" cy="10" r="3"/></svg></span>Built for NZ roles</div>
+      </div>
+      <div class="hphn-ctas">
+        <a class="hphn-cta" href="/interview-sim">Try the interview sim &rarr;</a>
+        <a class="hphn-ghost" href="/practice-sim">Or practise salary &amp; pay rise &rarr;</a>
+      </div>
+    </div>
+    <div class="hphn-viewport">
+      <div class="hphn-phone" aria-hidden="true">
+        <div class="hphn-phone-frame">
+          <div class="hphn-phone-screen">
+            <div class="hphn-statusbar">
+              <span>Round 2 of 3 &middot; 04:12</span>
+              <span class="hphn-rec"><span class="hphn-rec-dot"></span>REC</span>
+            </div>
+            <div class="hphn-ai">
+              <div class="hphn-ai-avatar">AI</div>
+              <div style="flex:1;min-width:0">
+                <div class="hphn-ai-meta">Hiring panel &middot; Senior Engineer</div>
+                <div class="hphn-bubble">Tell me about a time you disagreed with a senior leader and what happened.</div>
+              </div>
+            </div>
+            <div class="hphn-turn">
+              <div class="hphn-mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="19" x2="12" y2="22"/></svg></div>
+              <div class="hphn-wave"><span></span><span></span><span></span><span></span><span></span></div>
+              <div class="hphn-transcript">&hellip;I pushed back on the rollout timeline because&hellip;</div>
+            </div>
+            <div class="hphn-ai">
+              <div class="hphn-ai-avatar">AI</div>
+              <div style="flex:1;min-width:0">
+                <div class="hphn-bubble hphn-bubble--follow">What did they say when you pushed back?</div>
+              </div>
+            </div>
+            <div class="hphn-score">
+              <div>
+                <div class="hphn-score-label">Interview score</div>
+                <div class="hphn-score-num">72<small>/100</small></div>
+              </div>
+              <div class="hphn-score-note">Strong on examples, watch your pace</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div class="fsims-grid">
-
-    <a href="/interview-sim" class="fsim-card">
-      <div class="fsim-orb-wrap">
-        <div class="fsim-pulse"></div>
-        <div class="fsim-pulse" style="animation-delay:.8s"></div>
-        <div class="fsim-orb">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
-        </div>
-      </div>
-      <div class="fsim-tag">Interview Simulator</div>
-      <div class="fsim-title">Rehearse the interview. Out loud.</div>
-      <div class="fsim-desc">AI asks real questions for your role. You speak your answers. Recruiter-style score out of 100 with model answers.</div>
-
-      <div id="demoChat" class="fsim-chat-embed">
-        <div class="fsim-chat-head">
-          <div style="display:flex;align-items:center;gap:.5rem"><div id="demoDot" class="fsim-chat-dot"></div><span id="demoStatus" class="fsim-chat-status">Starting interview&hellip;</span></div>
-          <div class="fsim-chat-label">Live demo</div>
-        </div>
-        <div id="demoMsgs" class="fsim-chat-msgs"></div>
-        <div id="demoScore" class="fsim-chat-score">
-          <div class="fsim-score-label">Interview Score</div>
-          <div><span id="demoScoreNum" class="fsim-score-num">0</span><span class="fsim-score-denom">/100</span></div>
-          <div class="fsim-score-note">Great performance!</div>
-        </div>
-      </div>
-
-      <span class="fsim-cta">Start practising <span class="arr">&rarr;</span></span>
-    </a>
-
-    <a href="/practice-sim" class="fsim-card">
-      <div class="fsim-orb-wrap">
-        <div class="fsim-pulse"></div>
-        <div class="fsim-pulse" style="animation-delay:.8s"></div>
-        <div class="fsim-orb">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        </div>
-      </div>
-      <div class="fsim-tag">Practice simulator</div>
-      <div class="fsim-title">Rehearse the conversations that change your career</div>
-      <div class="fsim-desc">Salary, resigning, pay rise, flexible work, raising concerns. AI pushes back like a real boss. Lands on a real outcome.</div>
-      <div class="fsim-feats">
-        <div class="fsim-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Salary</div>
-        <div class="fsim-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Resigning</div>
-        <div class="fsim-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Pay rise</div>
-        <div class="fsim-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Flexible work</div>
-      </div>
-      <div class="fsim-bubble">We can offer $85,000 &mdash; that&rsquo;s our budget for this role.</div>
-      <span class="fsim-cta">Pick a scenario <span class="arr">&rarr;</span></span>
-    </a>
-
-  </div>
-</section>
 </section>
 
 <!-- All 12 Tools - Monzo photo card style -->
@@ -581,48 +739,6 @@ function goSlide(n){
   dotsBox.children[currentSlide].classList.add('active');
 }
 setInterval(function(){goSlide((currentSlide+1)%slides.length);},5000);
-
-/* Interview demo animation */
-function runDemo(){
-  var msgs=document.getElementById('demoMsgs');
-  var dot=document.getElementById('demoDot');
-  var status=document.getElementById('demoStatus');
-  var scoreBox=document.getElementById('demoScore');
-  var scoreNum=document.getElementById('demoScoreNum');
-  if(!msgs)return;
-  msgs.innerHTML='';scoreBox.style.display='none';
-  var steps=[
-    {delay:500,type:'status',text:'Sarah is speaking...',dotColor:'#10b981'},
-    {delay:800,type:'typing'},
-    {delay:2000,type:'ai',text:'Tell me about a time you showed leadership in a team.'},
-    {delay:500,type:'status',text:'Your turn — listening...',dotColor:'#E7515A'},
-    {delay:1500,type:'typing-user'},
-    {delay:2500,type:'user',text:'In my last role I led a team of four during a product launch and we delivered two weeks early.'},
-    {delay:500,type:'status',text:'Sarah is thinking...',dotColor:'#f59e0b'},
-    {delay:1000,type:'typing'},
-    {delay:2000,type:'ai',text:'Impressive! How did you handle any disagreements within the team?'},
-    {delay:1000,type:'status',text:'Scoring your interview...',dotColor:'#E7515A'},
-    {delay:1500,type:'score'}
-  ];
-  var i=0;var totalDelay=0;
-  steps.forEach(function(s){
-    totalDelay+=s.delay;
-    setTimeout(function(){
-      if(s.type==='status'){status.textContent=s.text;dot.style.background=s.dotColor;}
-      else if(s.type==='typing'){var d=document.createElement('div');d.style.cssText='background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:.5rem .75rem;font-size:.7rem;color:#94a3b8;border-bottom-left-radius:3px;max-width:85%';d.innerHTML='<span style="display:inline-flex;gap:3px"><i style="width:5px;height:5px;background:#c7313a;border-radius:50%;animation:dot .8s infinite"></i><i style="width:5px;height:5px;background:#c7313a;border-radius:50%;animation:dot .8s .15s infinite"></i><i style="width:5px;height:5px;background:#c7313a;border-radius:50%;animation:dot .8s .3s infinite"></i></span>';d.id='demoTyping';msgs.appendChild(d);}
-      else if(s.type==='typing-user'){var d=document.createElement('div');d.style.cssText='background:rgba(231,81,90,.3);border-radius:10px;padding:.5rem .75rem;font-size:.7rem;color:#fca5a5;max-width:80%;margin-left:auto;border-bottom-right-radius:3px';d.innerHTML='<span style="display:inline-flex;gap:3px"><i style="width:5px;height:5px;background:#fca5a5;border-radius:50%;animation:dot .8s infinite"></i><i style="width:5px;height:5px;background:#fca5a5;border-radius:50%;animation:dot .8s .15s infinite"></i><i style="width:5px;height:5px;background:#fca5a5;border-radius:50%;animation:dot .8s .3s infinite"></i></span>';d.id='demoTyping';msgs.appendChild(d);}
-      else if(s.type==='ai'){var t=document.getElementById('demoTyping');if(t)t.remove();var d=document.createElement('div');d.style.cssText='background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:.6rem .85rem;font-size:.72rem;color:#1a1a2e;border-bottom-left-radius:3px;max-width:90%;opacity:0;transform:translateY(5px);transition:all .3s';d.textContent=s.text;msgs.appendChild(d);requestAnimationFrame(function(){d.style.opacity='1';d.style.transform='translateY(0)';});}
-      else if(s.type==='user'){var t=document.getElementById('demoTyping');if(t)t.remove();var d=document.createElement('div');d.style.cssText='background:#E7515A;border-radius:10px;padding:.6rem .85rem;font-size:.72rem;color:#fff;margin-left:auto;max-width:85%;border-bottom-right-radius:3px;opacity:0;transform:translateY(5px);transition:all .3s';d.textContent=s.text;msgs.appendChild(d);requestAnimationFrame(function(){d.style.opacity='1';d.style.transform='translateY(0)';});}
-      else if(s.type==='score'){msgs.style.display='none';scoreBox.style.display='block';var target=85;var cur=0;var si=setInterval(function(){cur+=3;if(cur>=target){cur=target;clearInterval(si);}scoreNum.textContent=cur;},20);}
-    },totalDelay);
-  });
-  setTimeout(function(){msgs.style.display='flex';runDemo();},totalDelay+3000);
-}
-runDemo();
-
-var demoStyle=document.createElement('style');
-demoStyle.textContent='@keyframes dot{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-4px)}}';
-document.head.appendChild(demoStyle);
 
 </script>
 
