@@ -90,6 +90,12 @@ footer{background:#1B1B3A;padding:3.5rem 3rem}
 .foot-col a{display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none}
 .foot-legal{border-top:1px solid rgba(255,255,255,.1);padding-top:1.5rem;font-size:.68rem;color:rgba(255,255,255,.3);line-height:1.7}
 #toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:.65rem 1.25rem;border-radius:999px;font-size:.8rem;font-weight:600;display:none;z-index:999}
+.mob-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;backdrop-filter:blur(6px)}
+.mob-overlay.open{display:block}
+.mob-sheet{background:#fff;padding:2rem;position:absolute;top:0;left:0;right:0;border-radius:0 0 20px 20px}
+.mob-sheet a{display:block;padding:1rem 0;font-size:1.1rem;font-weight:600;color:#1a1a2e;text-decoration:none;border-bottom:1px solid #f0f0f0}
+.mob-sheet a:last-child{border:none}
+.mob-sheet a.coral{color:#E7515A}
 @media(max-width:768px){
   .nav{padding:1rem 1.25rem}.nav-links a:not(.nav-cta){display:none}
   .hero{padding:3rem 1.5rem;min-height:420px}.hero h1{font-size:2rem}.hero p{font-size:.95rem}
@@ -158,7 +164,7 @@ footer{background:#1B1B3A;padding:3.5rem 3rem}
   </div>
 </div>
 
-<section class="hero" style="background-image:url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=80')">
+<section class="hero" style="background-image:url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1600&q=80')">
   <div class="hero-inner">
     <div class="hero-eyebrow">For NZ Tradies</div>
     <h1>Land your next trades job. Free AI toolkit for Kiwi tradies.</h1>
