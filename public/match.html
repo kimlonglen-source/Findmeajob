@@ -4,6 +4,12 @@
 <script>/* Run before body renders so the correct page shows without flicker when the URL has a hash like #apply */(function(){var h=(location.hash||'').replace('#','');if(['apply','browse','pricing','about','account','employer'].indexOf(h)>-1)document.documentElement.dataset.startPage=h;})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/svg+xml" href="/logo-icon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <title>FindMeAJob.co.nz — AI Job Matching for New Zealand</title>
 <meta name="description" content="Upload your CV or enter your skills. Our AI matches you to the best NZ jobs in seconds. Free forever for job seekers.">
 <meta name="robots" content="index, follow">
@@ -21,12 +27,6 @@
 <meta name="twitter:description" content="AI matches your skills to real NZ jobs in seconds. Free forever for job seekers.">
 <meta name="twitter:image" content="https://www.findmeajob.co.nz/favicon-512.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"FindMeAJob.co.nz","url":"https://www.findmeajob.co.nz","description":"AI-powered job matching for New Zealand","potentialAction":{"@type":"SearchAction","target":"https://www.findmeajob.co.nz/?q={search_term_string}","query-input":"required name=search_term_string"}}</script>
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
-<link rel="icon" type="image/svg+xml" href="/logo-icon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="manifest" href="/site.webmanifest">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f8fafc;--bg2:#f1f5f9;--bg3:rgba(0,0,0,.03);--bg4:rgba(0,0,0,.04);--text:#0f172a;--text2:#475569;--text3:#94a3b8;--em:#E7515A;--em2:#c7313a;--em3:rgba(231,81,90,.08);--gold:#b45309;--purple:#8b5cf6;--border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.12);--card:rgba(255,255,255,.8);--inp:rgba(0,0,0,.04);--hdr:rgba(255,255,255,.95);--r:12px;--rl:20px;--glow:0 4px 25px rgba(231,81,90,.15)}
@@ -2805,8 +2805,7 @@ function rebuildTailoredHtml(text){
     +'ul{margin:0 0 8px;padding-left:18px;list-style:none}'
     +'li{margin-bottom:4px;padding-left:12px;position:relative;line-height:1.5}'
     +'li::before{content:"\\2022";position:absolute;left:0;color:#555}'
-    +'</style><link rel="stylesheet" href="/css/monzo.css">
-</head>'
+    +'</style><link rel="stylesheet" href="/css/monzo.css"></head>'
     +'<body>'+contactHeader+cvBody+'</body></html>';
 }
 
@@ -3721,8 +3720,7 @@ function initApp(){try{
 
   window.downloadAsWord=function(id,filename){
     var text=document.getElementById(id).innerText;
-    var html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><style>body{font-family:Calibri,sans-serif;font-size:11pt;line-height:1.6;color:#222;max-width:700px;margin:0 auto;padding:2cm 2.5cm}h1,h2,h3{margin:1em 0 .3em;font-size:13pt}</style><link rel="stylesheet" href="/css/monzo.css">
-</head><body><pre style="white-space:pre-wrap;font-family:Calibri,sans-serif;font-size:11pt;line-height:1.6">'+text.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</pre></body></html>';
+    var html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><style>body{font-family:Calibri,sans-serif;font-size:11pt;line-height:1.6;color:#222;max-width:700px;margin:0 auto;padding:2cm 2.5cm}h1,h2,h3{margin:1em 0 .3em;font-size:13pt}</style><link rel="stylesheet" href="/css/monzo.css"></head><body><pre style="white-space:pre-wrap;font-family:Calibri,sans-serif;font-size:11pt;line-height:1.6">'+text.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</pre></body></html>';
     var blob=new Blob([html],{type:'application/msword'});
     var a=document.createElement('a');
     a.href=URL.createObjectURL(blob);
@@ -3735,8 +3733,7 @@ function initApp(){try{
   window.printText=function(id){
     var text=document.getElementById(id).innerText;
     var w=window.open('','_blank');
-    w.document.write('<html><head><title>Print</title><style>body{font-family:Calibri,sans-serif;font-size:11pt;line-height:1.6;color:#222;max-width:700px;margin:0 auto;padding:2cm}pre{white-space:pre-wrap;font-family:Calibri,sans-serif;font-size:11pt;line-height:1.6}</style><link rel="stylesheet" href="/css/monzo.css">
-</head><body><pre>'+text.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</pre></body></html>');
+    w.document.write('<html><head><title>Print</title><style>body{font-family:Calibri,sans-serif;font-size:11pt;line-height:1.6;color:#222;max-width:700px;margin:0 auto;padding:2cm}pre{white-space:pre-wrap;font-family:Calibri,sans-serif;font-size:11pt;line-height:1.6}</style><link rel="stylesheet" href="/css/monzo.css"></head><body><pre>'+text.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</pre></body></html>');
     w.document.close();
     w.focus();
     setTimeout(function(){w.print();},300);

@@ -3,6 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/svg+xml" href="/logo-icon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <title>Trades Jobs NZ — Free AI CV + Interview Tools for Kiwi Tradies | FindMeAJob</title>
 <meta name="description" content="Free AI career toolkit for NZ tradies. Build a CV that shows your tickets, practise interviews, and check pay rates for builders, sparkies, plumbers, mechanics and more.">
 <meta name="keywords" content="trades jobs NZ, tradie CV, builder jobs New Zealand, electrician CV, plumber salary NZ, apprenticeship NZ">
@@ -14,10 +20,6 @@
 <meta property="og:description" content="CV, interview prep and pay rates for builders, sparkies, plumbers, mechanics and more. Free forever.">
 <meta property="og:image" content="https://www.findmeajob.co.nz/favicon-512.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
-<link rel="icon" type="image/svg+xml" href="/logo-icon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
@@ -30,6 +32,7 @@ a{color:#E7515A;text-decoration:none}a:hover{text-decoration:underline}
 img{max-width:100%;display:block}
 .nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 3rem;position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,.06)}
 .nav-logo{font-size:1.4rem;font-weight:900;color:#E7515A;text-decoration:none;letter-spacing:-.02em;font-family:"Nunito",system-ui,sans-serif}
+.nav-logo:hover{text-decoration:none}
 .nav-links{display:flex;align-items:center;gap:2rem}
 .nav-links a{color:#1a1a2e;font-size:.88rem;font-weight:500;text-decoration:none}
 .nav-links a:hover{color:#E7515A}
@@ -88,6 +91,12 @@ footer{background:#1B1B3A;padding:3.5rem 3rem}
 .foot-col a{display:block;color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem;text-decoration:none}
 .foot-legal{border-top:1px solid rgba(255,255,255,.1);padding-top:1.5rem;font-size:.68rem;color:rgba(255,255,255,.3);line-height:1.7}
 #toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:.65rem 1.25rem;border-radius:999px;font-size:.8rem;font-weight:600;display:none;z-index:999}
+.mob-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;backdrop-filter:blur(6px)}
+.mob-overlay.open{display:block}
+.mob-sheet{background:#fff;padding:2rem;position:absolute;top:0;left:0;right:0;border-radius:0 0 20px 20px}
+.mob-sheet a{display:block;padding:1rem 0;font-size:1.1rem;font-weight:600;color:#1a1a2e;text-decoration:none;border-bottom:1px solid #f0f0f0}
+.mob-sheet a:last-child{border:none}
+.mob-sheet a.coral{color:#E7515A}
 @media(max-width:768px){
   .nav{padding:1rem 1.25rem}.nav-links a:not(.nav-cta){display:none}
   .hero{padding:3rem 1.5rem;min-height:420px}.hero h1{font-size:2rem}.hero p{font-size:.95rem}
@@ -156,7 +165,7 @@ footer{background:#1B1B3A;padding:3.5rem 3rem}
   </div>
 </div>
 
-<section class="hero" style="background-image:url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=80')">
+<section class="hero" style="background-image:url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1600&q=80')">
   <div class="hero-inner">
     <div class="hero-eyebrow">For NZ Tradies</div>
     <h1>Land your next trades job. Free AI toolkit for Kiwi tradies.</h1>
