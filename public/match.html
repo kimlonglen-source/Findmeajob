@@ -277,8 +277,9 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 <div class="moverlay" id="moverlay">
   <div class="msheet">
     <div class="mhandle"></div>
-    <a class="mnavitem" href="/">Tools</a>
+    <a class="mnavitem" href="/#tools">Tools</a>
     <a class="mnavitem" href="/blog">Blog</a>
+    <a class="mnavitem" href="/pricing">Pricing</a>
     <a class="mnavitem" href="/employer-portal.html">Post a Job</a>
     <a class="mnavitem" href="/employer-portal.html">Employer Login</a>
     <a class="mnavitem" href="/match.html" style="color:#E7515A;font-weight:700">Find a Job</a>
@@ -305,7 +306,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
     <button id="h-find" type="button" style="display:none">Find a Job</button>
     <button id="h-apply" class="nav-cta" type="button" onclick="if(typeof showPage==='function'){showPage('home');}var t=document.getElementById('match-flow-top');if(t){t.scrollIntoView({behavior:'smooth',block:'start'});}">Find a Job</button>
   </div>
-  <button class="hamburger-btn" id="hamburger" type="button" aria-label="Menu">&#9776;</button>
+  <button class="hamburger-btn" id="hamburger" type="button" aria-label="Menu" onclick="document.getElementById('moverlay').classList.add('open')">&#9776;</button>
   <button id="tbtn" type="button" style="display:none"></button>
 </nav>
 
