@@ -318,15 +318,23 @@ a.btn:hover,
 
 /* ---------- Giant footer wordmark (Monzo signature finishing move) ---------- */
 .mnz-giant-mark {
-  font-size: clamp(4.5rem, 18vw, 14rem);
+  font-size: clamp(2.75rem, 14vw, 12rem);
   font-weight: 900;
   color: var(--mnz-coral);
-  letter-spacing: -.06em;
-  line-height: .9;
+  letter-spacing: -.055em;
+  line-height: .92;
   text-align: center;
-  margin: 2rem 0 1rem;
+  margin: 1.75rem 0 0;
+  padding: 0 .75rem;
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   user-select: none;
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
+  max-width: 100%;
+}
+@media (max-width: 500px) {
+  .mnz-giant-mark { font-size: 13.5vw; letter-spacing: -.05em; margin-top: 1rem; }
 }
 
 /* ---------- Monzo "Tell me about..." style mega vertical menu ---------- */
