@@ -221,6 +221,73 @@ img{max-width:100%;display:block}
   .howit-grid::before{display:none}
   .howit-card{padding:1.25rem}
 }
+.howit-card{text-decoration:none;color:inherit;display:block}
+.howit-card:hover{text-decoration:none}
+
+/* Outcome stages: Get seen / Get invited / Get the offer (Monzo-style) */
+.stg{position:relative;overflow:hidden}
+.stg[data-bg="cream"]{background:#faf7f2}
+.stg[data-bg="white"]{background:#fff}
+.stg[data-bg="amber"]{background:#faf5ee}
+.stg-inner{max-width:1180px;margin:0 auto;padding:6rem 2rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;position:relative}
+.stg-text{position:relative;z-index:2}
+.stg-num{position:absolute;top:-2.5rem;left:-.5rem;font-size:8rem;font-weight:900;color:rgba(231,81,90,.14);line-height:1;z-index:0;pointer-events:none;letter-spacing:-.06em;font-family:'Plus Jakarta Sans',sans-serif}
+.stg[data-bg="white"] .stg-num{color:rgba(231,81,90,.18)}
+.stg[data-bg="amber"] .stg-num{color:rgba(231,81,90,.12)}
+.stg-eyebrow{position:relative;display:inline-block;background:#fef2f2;color:#c7313a;padding:.3rem .85rem;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;border:1px solid #fecaca;margin-bottom:1rem;z-index:2}
+.stg h2{position:relative;z-index:2;font-size:3rem;font-weight:900;color:#1a1a2e;line-height:1.05;letter-spacing:-.7px;margin-bottom:1rem}
+.stg h2 em{font-style:normal;color:#E7515A}
+.stg-body{position:relative;z-index:2;font-size:1.05rem;color:#64748b;line-height:1.6;max-width:440px;margin-bottom:1.5rem}
+.stg-points{position:relative;z-index:2;list-style:none;padding:0;margin:0 0 1.75rem;display:flex;flex-direction:column;gap:.55rem}
+.stg-points li{position:relative;padding-left:1.5rem;font-size:.92rem;color:#1a1a2e;font-weight:500;line-height:1.5}
+.stg-points li::before{content:'';position:absolute;left:0;top:.55rem;width:10px;height:10px;border-radius:50%;background:#fef2f2;border:2px solid #E7515A}
+.stg-ctas{position:relative;z-index:2;display:flex;gap:.75rem;align-items:center;flex-wrap:wrap}
+.stg-cta{background:#E7515A;color:#fff;padding:.85rem 1.5rem;border-radius:999px;font-weight:700;font-size:.95rem;transition:all .2s;text-decoration:none}
+.stg-cta:hover{background:#1a1a2e;text-decoration:none;color:#fff}
+.stg-ghost{color:#1a1a2e;font-weight:700;font-size:.9rem;padding:.85rem .5rem;text-decoration:none}
+.stg-ghost:hover{text-decoration:underline;color:#1a1a2e}
+/* Visual column */
+.stg-visual{position:relative;display:flex;align-items:center;justify-content:center;min-height:420px}
+.stg-visual::before{content:'';position:absolute;inset:-5%;background:radial-gradient(circle,rgba(231,81,90,.1) 0%,transparent 70%);z-index:0;pointer-events:none}
+.stg-photo{position:relative;width:100%;max-width:480px;aspect-ratio:4/3;border-radius:28px;background-size:cover;background-position:center;box-shadow:0 30px 60px rgba(15,23,42,.12);z-index:1}
+.stg-card{position:absolute;width:260px;background:#fff;border:1px solid #e8e8e8;border-radius:20px;padding:1.1rem 1.25rem;box-shadow:0 20px 50px rgba(15,23,42,.14);z-index:3}
+.stg[data-layout="text-first"] .stg-card{right:-24px;bottom:24px}
+.stg[data-layout="photo-first"] .stg-card{left:-24px;bottom:24px}
+.stg[data-layout="photo-first"] .stg-inner{direction:rtl}
+.stg[data-layout="photo-first"] .stg-inner > *{direction:ltr}
+/* Card interior bits */
+.stg-card-chip{display:inline-block;background:#fef2f2;color:#c7313a;border:1px solid #fecaca;padding:.28rem .75rem;border-radius:999px;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:.55rem}
+.stg-card-title{font-size:1.05rem;font-weight:800;color:#1a1a2e;line-height:1.2;letter-spacing:-.2px;margin-bottom:.15rem}
+.stg-card-sub{font-size:.78rem;color:#64748b;margin-bottom:.7rem}
+.stg-card-pills{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.7rem}
+.stg-card-pill{background:#f7f7f7;border:1px solid #eee;color:#1a1a2e;padding:.28rem .65rem;border-radius:999px;font-size:.7rem;font-weight:600}
+.stg-card-btn{display:block;text-align:center;background:#E7515A;color:#fff;padding:.65rem;border-radius:999px;font-weight:700;font-size:.82rem;text-decoration:none;transition:all .2s}
+.stg-card-btn:hover{background:#1a1a2e;color:#fff;text-decoration:none}
+/* Interview-in-progress card bits */
+.stg-card-live{display:flex;align-items:center;gap:.5rem;margin-bottom:.65rem}
+.stg-card-dot{width:7px;height:7px;background:#E7515A;border-radius:50%;animation:stgPulse 1.8s ease-in-out infinite}
+@keyframes stgPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.35);opacity:.6}}
+.stg-card-live-label{font-size:.7rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px}
+.stg-card-q{font-size:.88rem;font-weight:700;color:#1a1a2e;line-height:1.35;margin-bottom:.65rem}
+.stg-card-bubble{background:#f7f7f7;border-radius:10px;padding:.5rem .7rem;font-size:.75rem;color:#64748b;margin-bottom:.35rem;line-height:1.4}
+/* Salary-band card bits */
+.stg-card-bar{display:flex;height:10px;border-radius:6px;overflow:hidden;margin:.5rem 0 .65rem;background:#f1f1f1}
+.stg-card-bar-seg{flex:1}
+.stg-card-bar-lo{background:linear-gradient(90deg,#fecaca,#fda4af)}
+.stg-card-bar-md{background:linear-gradient(90deg,#fda4af,#E7515A)}
+.stg-card-bar-hi{background:linear-gradient(90deg,#E7515A,#c7313a)}
+.stg-card-numbers{display:flex;justify-content:space-between;font-size:.72rem;color:#64748b;font-weight:700;margin-bottom:.5rem}
+.stg-card-numbers strong{color:#1a1a2e;font-weight:800;font-size:.8rem}
+@media(max-width:820px){
+  .stg-inner{grid-template-columns:1fr;gap:2rem;padding:3.5rem 1.25rem}
+  .stg[data-layout="photo-first"] .stg-inner{direction:ltr}
+  .stg h2{font-size:1.9rem}
+  .stg-num{font-size:5rem;top:-1.75rem;left:-.25rem}
+  .stg-visual{min-height:auto;order:-1}
+  .stg-photo{max-width:100%;aspect-ratio:4/3}
+  .stg-card{position:relative!important;left:auto!important;right:auto!important;bottom:auto!important;width:100%;margin-top:-32px}
+  .stg-body{font-size:.98rem}
+}
 @media(max-width:480px){
   .tool-grid{grid-template-columns:1fr 1fr}
   .tphoto{height:180px}
@@ -386,11 +453,11 @@ img{max-width:100%;display:block}
   <div class="heroM-inner">
     <div class="heroM-text">
       <div class="fsims-eyebrow">Free &bull; NZ &bull; No sign-up</div>
-      <h1>Your free AI <em>career toolkit</em> for New Zealand.</h1>
-      <p class="heroM-sub">Match your CV to live NZ jobs in 60 seconds. Practice interviews with an AI coach. Write tailored CVs and cover letters. Twelve free tools, built for Kiwis.</p>
+      <h1>We help Kiwis <em>land</em> their next job.</h1>
+      <p class="heroM-sub">Free AI coaching from CV to offer &mdash; built for New Zealand.</p>
       <div class="heroM-ctas">
-        <a href="/match.html#match-flow-top" class="heroM-cta">Upload your CV &rarr;</a>
-        <a href="#tools" class="heroM-ghost">See all 12 tools</a>
+        <a href="/match.html#match-flow-top" class="heroM-cta">Start your hunt &rarr;</a>
+        <a href="#howit" class="heroM-ghost">See how it works &darr;</a>
       </div>
       <div class="heroM-trust">Loved by 4,200+ Kiwis this month &middot; No sign-up required</div>
     </div>
@@ -414,174 +481,147 @@ img{max-width:100%;display:block}
   </div>
 </section>
 
-<!-- How it works -- 3-step strip -->
-<section class="howit">
+<!-- How it works -- outcome-led 3-stage strip -->
+<section class="howit" id="howit">
   <div class="fsims-eyebrow">How it works</div>
-  <h2>From CV to <em>interview</em> in three steps.</h2>
-  <p class="howit-sub">No sign-up. No email. Free forever.</p>
+  <h2>From CV to <em>offer</em>, in three stages.</h2>
+  <p class="howit-sub">Three outcomes, free forever.</p>
   <div class="howit-grid">
-    <div class="howit-card">
+    <a href="#get-seen" class="howit-card">
       <div class="howit-num">01</div>
-      <div class="howit-title">Upload your CV</div>
-      <div class="howit-body">Drop in your CV (or paste your LinkedIn). We never store it without your say-so.</div>
-    </div>
-    <div class="howit-card">
+      <div class="howit-title">Get seen</div>
+      <div class="howit-body">Match your CV to live NZ roles, score it before sending, decode what each ad actually wants.</div>
+    </a>
+    <a href="#get-invited" class="howit-card">
       <div class="howit-num">02</div>
-      <div class="howit-title">See your matches</div>
-      <div class="howit-body">Get scored against live NZ jobs from SEEK, Trademe and Indeed in under a minute.</div>
-    </div>
-    <div class="howit-card">
+      <div class="howit-title">Get invited</div>
+      <div class="howit-body">Practice the interview with an AI coach that asks the real questions and pushes back on weak answers.</div>
+    </a>
+    <a href="#get-offer" class="howit-card">
       <div class="howit-num">03</div>
-      <div class="howit-title">Apply with confidence</div>
-      <div class="howit-body">Generate a tailored cover letter, rehearse the interview, then hit send.</div>
-    </div>
+      <div class="howit-title">Get the offer</div>
+      <div class="howit-body">Check your market rate, compare offers side-by-side, negotiate without burning the bridge.</div>
+    </a>
   </div>
   <div class="howit-cta-row">
-    <a href="/match.html#match-flow-top" class="howit-cta">Upload your CV &rarr;</a>
-    <span class="howit-time">About 60 seconds</span>
+    <a href="/match.html#match-flow-top" class="howit-cta">Start your hunt &rarr;</a>
+    <span class="howit-time">About 60 seconds to begin</span>
+  </div>
+</section>
+
+<!-- Legacy #tools anchor kept alive for off-site links -->
+<a id="tools" aria-hidden="true"></a>
+
+<!-- Stage 01: Get seen (CV match + score + decode) -->
+<section class="stg" id="get-seen" data-bg="cream">
+  <div class="stg-inner" data-layout="text-first">
+    <div class="stg-text">
+      <div class="stg-num">01</div>
+      <div class="stg-eyebrow">Stage 01 &middot; Get seen</div>
+      <h2>Land in the <em>shortlist</em>, not the reject pile.</h2>
+      <p class="stg-body">Match your CV to live NZ roles in 60 seconds. Score it before you send. Decode exactly what each ad actually wants, so you only apply where you've got a shot.</p>
+      <ul class="stg-points">
+        <li>Scored against SEEK, Trademe and Indeed listings</li>
+        <li>See the gap between your CV and the role &mdash; and how to close it</li>
+        <li>No sign-up. Nothing stored unless you ask.</li>
+      </ul>
+      <div class="stg-ctas">
+        <a href="/match.html#match-flow-top" class="stg-cta">Match your CV &rarr;</a>
+        <a href="/decode" class="stg-ghost">or decode a job ad</a>
+      </div>
+    </div>
+    <div class="stg-visual">
+      <div class="stg-photo" style="background-image:url(https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=900&q=80)"></div>
+      <div class="stg-card">
+        <div class="stg-card-chip">92% match</div>
+        <div class="stg-card-title">Registered Nurse</div>
+        <div class="stg-card-sub">Auckland DHB &middot; Full-time</div>
+        <div class="stg-card-pills">
+          <span class="stg-card-pill">Patient care</span>
+          <span class="stg-card-pill">Aged care</span>
+          <span class="stg-card-pill">NZRN</span>
+        </div>
+        <a href="/match.html#match-flow-top" class="stg-card-btn">Apply in 1 click &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stage 02: Get invited (interview sim + common questions + practice) -->
+<section class="stg" id="get-invited" data-bg="white">
+  <div class="stg-inner" data-layout="photo-first">
+    <div class="stg-text">
+      <div class="stg-num">02</div>
+      <div class="stg-eyebrow">Stage 02 &middot; Get invited</div>
+      <h2>Walk in <em>rehearsed</em>, not panicked.</h2>
+      <p class="stg-body">Practice the real questions with an AI coach that pushes back on weak answers. Rehearse the tough conversations. Know what's coming before it comes.</p>
+      <ul class="stg-points">
+        <li>First impressions form in the first ten minutes &mdash; use them</li>
+        <li>Saying answers out loud beats reading them silently</li>
+        <li>Scored out of 100, with model answers and where you lost points</li>
+      </ul>
+      <div class="stg-ctas">
+        <a href="/interview-sim" class="stg-cta">Start practising &rarr;</a>
+        <a href="/interview" class="stg-ghost">or browse common questions</a>
+      </div>
+    </div>
+    <div class="stg-visual">
+      <div class="stg-photo" style="background-image:url(https://images.unsplash.com/photo-1573497491208-6b1acb260507?w=900&q=80)"></div>
+      <div class="stg-card">
+        <div class="stg-card-live"><span class="stg-card-dot"></span><span class="stg-card-live-label">Live &middot; Question 3 of 10</span></div>
+        <div class="stg-card-q">&ldquo;Tell me about a time you handled a difficult patient or family member.&rdquo;</div>
+        <div class="stg-card-bubble">Recording your answer&hellip;</div>
+        <a href="/interview-sim" class="stg-card-btn">Start a mock interview &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stage 03: Get the offer (salary + negotiate + compare + decide) -->
+<section class="stg" id="get-offer" data-bg="amber">
+  <div class="stg-inner" data-layout="text-first">
+    <div class="stg-text">
+      <div class="stg-num">03</div>
+      <div class="stg-eyebrow">Stage 03 &middot; Get the offer</div>
+      <h2>Sign <em>on your terms</em>.</h2>
+      <p class="stg-body">Check your market rate before you talk money. Compare two offers side-by-side. Know what to push back on, and how, without burning the bridge.</p>
+      <ul class="stg-points">
+        <li>Live NZ salary data, broken down by role, region and experience</li>
+        <li>Compare total comp &mdash; KiwiSaver, leave, growth path &mdash; on one page</li>
+        <li>Scripts, anchors, and the words to use for the harder conversations</li>
+      </ul>
+      <div class="stg-ctas">
+        <a href="/salary" class="stg-cta">Check your salary &rarr;</a>
+        <a href="/compare" class="stg-ghost">or compare two offers</a>
+      </div>
+    </div>
+    <div class="stg-visual">
+      <div class="stg-photo" style="background-image:url(https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=900&q=80)"></div>
+      <div class="stg-card">
+        <div class="stg-card-chip">NZ market rate</div>
+        <div class="stg-card-title">Registered Nurse</div>
+        <div class="stg-card-sub">Auckland &middot; Full-time &middot; 5+ yrs</div>
+        <div class="stg-card-bar">
+          <div class="stg-card-bar-seg stg-card-bar-lo"></div>
+          <div class="stg-card-bar-seg stg-card-bar-md"></div>
+          <div class="stg-card-bar-seg stg-card-bar-hi"></div>
+        </div>
+        <div class="stg-card-numbers"><span>$85k</span><strong>Median $92k</strong><span>Top $118k</span></div>
+        <a href="/negotiate" class="stg-card-btn">Plan your negotiation &rarr;</a>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- Built for (niche landing pages) -->
 <section class="sec-pad sec-wide">
   <h2 style="font-size:2rem;font-weight:900;color:#1a1a2e;margin-bottom:.5rem">Built for</h2>
-  <p style="color:#6b7280;font-size:1rem;margin-bottom:2rem">The Kiwis we tailor the toolkit for.</p>
+  <p style="color:#6b7280;font-size:1rem;margin-bottom:2rem">The Kiwis we&rsquo;ve tailored this for.</p>
   <div class="tool-grid">
     <a href="/trades" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Tradies</div><div class="tphoto-desc">Builders, sparkies, plumbers, mechanics, apprentices</div></div></a>
     <a href="/healthcare" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Healthcare</div><div class="tphoto-desc">Nurses, carers, midwives, allied health</div></div></a>
     <a href="/newcomers" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Newcomers to NZ</div><div class="tphoto-desc">Migrants and returning Kiwis finding their first role</div></div></a>
     <a href="/graduates" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Graduates</div><div class="tphoto-desc">Your first job out of uni or a grad programme</div></div></a>
-  </div>
-</section>
-
-<!-- Use-case cards: "If this sounds like you..." -->
-<section class="uc">
-  <div class="fsims-eyebrow">If this sounds like you</div>
-  <h2>Built around the <em>actual</em> moments you need help.</h2>
-  <p class="uc-sub">Not a generic job board. A toolkit sized to what Kiwis are actually up against.</p>
-  <div class="uc-grid">
-    <a href="/trades" class="uc-card">
-      <div class="uc-photo-wrap"><div class="uc-photo" style="background-image:url(https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=80)"></div><span class="uc-chip">For tradies</span></div>
-      <div class="uc-title">You&rsquo;re a sparky between sites.</div>
-      <div class="uc-body">Match your ticket to live NZ trades roles in 60 seconds. Get a cover letter that sounds like you. Practice the interview before it happens.</div>
-      <div class="uc-link">Start here &rarr;</div>
-    </a>
-    <a href="/healthcare" class="uc-card">
-      <div class="uc-photo-wrap"><div class="uc-photo" style="background-image:url(https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=600&q=80)"></div><span class="uc-chip">For healthcare</span></div>
-      <div class="uc-title">You&rsquo;re a nurse ready for a DHB move.</div>
-      <div class="uc-body">Match your scope and NZRN to live healthcare roles. Tighten your CV in the language hiring managers use. Rehearse the interview questions before you hand in notice.</div>
-      <div class="uc-link">Start here &rarr;</div>
-    </a>
-    <a href="/newcomers" class="uc-card">
-      <div class="uc-photo-wrap"><div class="uc-photo" style="background-image:url(https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&q=80)"></div><span class="uc-chip">New to NZ</span></div>
-      <div class="uc-title">You&rsquo;re new to NZ and the CV feels foreign.</div>
-      <div class="uc-body">Learn what Kiwi employers actually look for. Rewrite your CV in the NZ format and tone. Practice your first NZ interview with an AI coach.</div>
-      <div class="uc-link">Start here &rarr;</div>
-    </a>
-  </div>
-</section>
-
-<!-- FEATURED: Voice Simulators -->
-<section class="fsims-wrap">
-<section class="fsims">
-  <div class="fsims-head">
-    <div class="fsims-eyebrow">Interview prep &bull; Voice AI</div>
-    <h2>The interview is where the <em>offer</em> is won or lost.</h2>
-    <p>Most hiring decisions are shaped in the first interview. Preparation is the one variable you fully control &mdash; so rehearse with an AI that asks real questions and pushes back on your answers. Free and unlimited.</p>
-  </div>
-
-  <div style="position:relative;height:160px;overflow:hidden;border-radius:14px;margin:2rem 0 0">
-    <img src="https://images.unsplash.com/photo-1573497491208-6b1acb260507?w=1400&q=80" alt="" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55">
-    <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(27,27,58,.7) 0%,rgba(27,27,58,.3) 50%,rgba(27,27,58,.7) 100%)"></div>
-  </div>
-
-  <div class="fsim-stakes">
-    <div class="fsim-stake">
-      <div class="fsim-stake-title">First impressions stick</div>
-      <div class="fsim-stake-sub">Hiring decisions often form inside the first ten minutes of the interview.</div>
-    </div>
-    <div class="fsim-stake">
-      <div class="fsim-stake-title">Practice moves the needle</div>
-      <div class="fsim-stake-sub">Saying answers out loud &mdash; and hearing them &mdash; beats reading them silently.</div>
-    </div>
-    <div class="fsim-stake">
-      <div class="fsim-stake-title">You control the prep</div>
-      <div class="fsim-stake-sub">The interview is the one part of the hunt that&rsquo;s entirely up to you.</div>
-    </div>
-  </div>
-
-  <div class="fsims-grid">
-
-    <a href="/interview-sim" class="fsim-card fsim-card-primary">
-      <div class="fsim-orb-wrap">
-        <div class="fsim-pulse"></div>
-        <div class="fsim-pulse" style="animation-delay:.8s"></div>
-        <div class="fsim-orb">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
-        </div>
-      </div>
-      <div class="fsim-tag">Mock interview</div>
-      <div class="fsim-title">Rehearse the interview that decides your offer</div>
-      <div class="fsim-desc">AI asks real recruiter-style questions for your role. You speak answers out loud. Scored out of 100, with model answers and exactly where you lost points.</div>
-
-      <div class="fsim-feats">
-        <div class="fsim-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>60-second setup</div>
-        <div class="fsim-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>Speak out loud</div>
-        <div class="fsim-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Scored /100</div>
-        <div class="fsim-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>Model answers</div>
-      </div>
-
-      <span class="fsim-cta">Start a mock interview <span class="arr">&rarr;</span></span>
-    </a>
-
-    <a href="/practice-sim" class="fsim-card">
-      <div class="fsim-orb-wrap">
-        <div class="fsim-pulse"></div>
-        <div class="fsim-pulse" style="animation-delay:.8s"></div>
-        <div class="fsim-orb">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        </div>
-      </div>
-      <div class="fsim-tag">Career conversations</div>
-      <div class="fsim-followup">And once you&rsquo;re in the job &mdash;</div>
-      <div class="fsim-title">Rehearse the conversations that shape your career</div>
-      <div class="fsim-desc">Salary, resigning, pay rises, flexible work, raising concerns. AI pushes back on your arguments so the real conversation lands the outcome you want.</div>
-      <div class="fsim-feats">
-        <div class="fsim-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Salary</div>
-        <div class="fsim-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Resigning</div>
-        <div class="fsim-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Pay rise</div>
-        <div class="fsim-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Flexible work</div>
-      </div>
-      <div class="fsim-bubble">We can offer $85,000 &mdash; that&rsquo;s our budget for this role.</div>
-      <span class="fsim-cta">Pick a scenario <span class="arr">&rarr;</span></span>
-    </a>
-
-  </div>
-</section>
-</section>
-
-<!-- All 12 Tools - Monzo photo card style -->
-<section id="tools" class="sec-pad sec-wide">
-  <h2 style="font-size:2rem;font-weight:900;color:#1a1a2e;margin-bottom:.5rem">Your toolkit</h2>
-  <p style="color:#6b7280;font-size:1rem;margin-bottom:2rem">Four core tools. Eight more for when you need them.</p>
-  <div class="tool-grid">
-    <a href="/match.html" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Apply for a Job</div><div class="tphoto-desc">AI matches your CV to NZ jobs in 60 seconds</div></div></a>
-    <a href="/match.html#apply" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">CV + Cover Letter</div><div class="tphoto-desc">AI tailors both to any job ad</div></div></a>
-    <a href="/interview-sim" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1553877522-43269d4ea984?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Interview Simulator</div><div class="tphoto-desc">Practice with AI. Get scored out of 100</div></div></a>
-    <a href="/salary" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Salary Calculator</div><div class="tphoto-desc">Know what you should earn in NZ</div></div></a>
-  </div>
-  <div style="margin-top:2rem;padding:1.5rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;text-align:center">
-    <div style="font-size:.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:.75rem">Also available</div>
-    <div style="display:flex;flex-wrap:wrap;gap:.5rem 1.25rem;justify-content:center;font-size:.88rem;font-weight:600">
-      <a href="/score" style="color:#1a1a2e;text-decoration:none">CV Score</a>
-      <a href="/interview" style="color:#1a1a2e;text-decoration:none">Interview Questions</a>
-      <a href="/decode" style="color:#1a1a2e;text-decoration:none">Decode Job Ad</a>
-      <a href="/negotiate" style="color:#1a1a2e;text-decoration:none">Negotiate Salary</a>
-      <a href="/compare" style="color:#1a1a2e;text-decoration:none">Compare Jobs</a>
-      <a href="/decide" style="color:#1a1a2e;text-decoration:none">Should I Stay or Go?</a>
-      <a href="/email" style="color:#1a1a2e;text-decoration:none">Write This Email</a>
-      <a href="/practice-sim" style="color:#1a1a2e;text-decoration:none">Practice Simulator</a>
-    </div>
   </div>
 </section>
 
