@@ -248,8 +248,8 @@ img{max-width:100%;display:block}
 .hphn-band{position:relative;background:#1B1B3A;overflow:hidden;padding:5rem 2rem 0}
 .hphn-band::before{content:'';position:absolute;top:-15%;right:-10%;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.22) 0%,transparent 65%);pointer-events:none}
 .hphn-band::after{content:'';position:absolute;bottom:-10%;left:-8%;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.14) 0%,transparent 70%);pointer-events:none}
-.hphn-inner{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:end;position:relative;z-index:2}
-.hphn-text{color:#fff;padding-bottom:5rem}
+.hphn-inner{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;position:relative;z-index:2}
+.hphn-text{color:#fff;padding-bottom:3rem}
 .hphn-eyebrow{display:inline-block;background:rgba(231,81,90,.18);color:#fca5a5;border:1px solid rgba(231,81,90,.4);padding:.3rem .8rem;border-radius:999px;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:1.3px;margin-bottom:1rem}
 .hphn-h2{font-size:2.6rem;font-weight:900;line-height:1.05;letter-spacing:-.8px;margin-bottom:.9rem;color:#fff}
 .hphn-h2 em{font-style:normal;color:#E7515A}
@@ -263,10 +263,10 @@ img{max-width:100%;display:block}
 .hphn-cta:hover{background:#c7313a;transform:translateY(-2px);text-decoration:none;color:#fff}
 .hphn-ghost{color:rgba(255,255,255,.82);font-weight:700;font-size:.88rem;text-decoration:none;border-bottom:1px dashed rgba(255,255,255,.35);padding-bottom:.1rem}
 .hphn-ghost:hover{color:#fff;text-decoration:none;border-bottom-color:#E7515A}
-.hphn-stage{position:relative;width:100%;height:560px;isolation:isolate}
+.hphn-stage{position:relative;width:100%;height:620px;isolation:isolate}
 .hphn-viewport{position:absolute;inset:0;overflow:hidden;z-index:1}
 .hphn-viewport::after{content:'';position:absolute;left:0;right:0;bottom:0;height:220px;background:linear-gradient(180deg,rgba(27,27,58,0) 0%,rgba(27,27,58,.35) 35%,rgba(27,27,58,.85) 75%,#1B1B3A 100%);pointer-events:none;z-index:5}
-.hphn-phone{position:absolute;left:50%;bottom:-22%;transform:translateX(-50%) rotate(-3deg);width:320px;filter:drop-shadow(0 25px 50px rgba(0,0,0,.35))}
+.hphn-phone{position:absolute;left:50%;bottom:-18%;transform:translateX(-50%);width:300px;filter:drop-shadow(0 25px 50px rgba(0,0,0,.35))}
 .hphn-popup{position:absolute;bottom:24%;left:6%;width:220px;background:#fff;border-radius:18px;padding:.9rem 1.05rem;box-shadow:0 22px 44px rgba(0,0,0,.35);z-index:10;animation:hphnPopFloat 3.5s ease-in-out infinite}
 .hphn-popup::before{content:'';position:absolute;top:.85rem;left:.95rem;width:6px;height:6px;border-radius:50%;background:#E7515A;box-shadow:0 0 0 4px rgba(231,81,90,.18)}
 .hphn-popup-label{font-size:.55rem;color:#64748b;font-weight:800;text-transform:uppercase;letter-spacing:1.3px;margin:0 0 .3rem 1rem}
@@ -302,8 +302,8 @@ img{max-width:100%;display:block}
 .hphn-transcript{font-size:.58rem;color:#64748b;font-weight:600;line-height:1.35;flex:1;min-width:0}
 @media(max-width:860px){
   .hphn-band{padding:2.5rem 1.25rem 0}
-  .hphn-inner{grid-template-columns:1fr;gap:.5rem;align-items:center}
-  .hphn-text{padding-bottom:0;text-align:center}
+  .hphn-inner{grid-template-columns:1fr;gap:1.1rem;align-items:center}
+  .hphn-text{padding-bottom:.25rem;text-align:center}
   .hphn-eyebrow{margin-bottom:.65rem}
   .hphn-h2{font-size:1.55rem;margin-bottom:.65rem}
   .hphn-p{font-size:.92rem;margin-bottom:1rem}
@@ -313,9 +313,9 @@ img{max-width:100%;display:block}
   .hphn-ctas{justify-content:center;gap:.5rem .9rem;row-gap:.6rem}
   .hphn-cta{padding:.75rem 1.3rem;font-size:.85rem}
   .hphn-ghost{font-size:.82rem}
-  .hphn-stage{height:410px}
+  .hphn-stage{height:440px}
   .hphn-viewport{height:100%}
-  .hphn-phone{width:220px;transform:translateX(-50%) rotate(0deg);bottom:-12%}
+  .hphn-phone{width:210px;transform:translateX(-50%);bottom:-10%}
   .hphn-popup{left:50%;right:auto;bottom:3%;max-width:280px;width:86%;padding:.8rem 1rem;animation:hphnPopFloatM 3.5s ease-in-out infinite}
   .hphn-popup-num{font-size:1.55rem}
   @keyframes hphnPopFloatM{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-5px)}}
@@ -404,7 +404,7 @@ img{max-width:100%;display:block}
     <div class="pflow-text">
       <div class="pflow-eyebrow">Every tool &middot; One phone</div>
       <h2 class="pflow-h2">Your whole career toolkit &mdash; <em>in your pocket</em></h2>
-      <p class="pflow-p">From uploading your CV to practising the salary conversation. Free. NZ. No sign-up.</p>
+      <p class="pflow-p">From uploading your CV to practising the salary conversation. Free for job seekers. Built for New Zealand.</p>
       <div class="pflow-steps">
         <div class="pflow-step pflow-s1"><span class="pflow-step-num">1</span><span class="pflow-step-label">Find NZ jobs matched to me</span></div>
         <div class="pflow-step pflow-s2"><span class="pflow-step-num">2</span><span class="pflow-step-label">Decode a job listing</span></div>
@@ -570,7 +570,7 @@ img{max-width:100%;display:block}
 <section class="hphn-band">
   <div class="hphn-inner">
     <div class="hphn-text">
-      <div class="hphn-eyebrow">Voice AI &middot; Free &middot; No sign-up</div>
+      <div class="hphn-eyebrow">Voice AI &middot; Free &middot; Built for NZ</div>
       <h2 class="hphn-h2">See what a real AI interview <em>actually feels like</em>.</h2>
       <p class="hphn-p">AI asks live, role-specific questions. You answer out loud. It pushes back on weak answers and gives you a recruiter-style score out of 100 &mdash; with a model answer beside yours. Free forever, NZ-tuned.</p>
       <div class="hphn-feats">
