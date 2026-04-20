@@ -344,7 +344,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 .mph-s-match{animation-delay:-10s}
 .mph-s-pivot{animation-delay:-5s}
 @keyframes mphCycle{0%,1%{opacity:1}30%{opacity:1}33%,100%{opacity:0}}
-@keyframes mphFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes mphFloat{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-10px) rotate(-6deg)}}
 .mph-eb{font-size:.54rem;font-weight:800;color:#c7313a;text-transform:uppercase;letter-spacing:1.3px;margin-bottom:.25rem}
 .mph-t{font-size:.95rem;font-weight:900;color:#1a1a2e;line-height:1.15;letter-spacing:-.3px;margin-bottom:.6rem}
 /* Upload step */
@@ -433,6 +433,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
   .mph-phone{width:200px}
   .mph-step{padding:1.9rem .8rem .8rem}
   .mph-t{font-size:.85rem}
+  @keyframes mphFloat{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-8px) rotate(-4deg)}}
   .mm-ring-wrap{width:140px;height:140px}
   .mm-ring-pct{font-size:2rem}
   .aw-feat{font-size:.72rem;padding:.4rem .75rem}
