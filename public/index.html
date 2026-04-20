@@ -263,9 +263,16 @@ img{max-width:100%;display:block}
 .hphn-cta:hover{background:#c7313a;transform:translateY(-2px);text-decoration:none;color:#fff}
 .hphn-ghost{color:rgba(255,255,255,.82);font-weight:700;font-size:.88rem;text-decoration:none;border-bottom:1px dashed rgba(255,255,255,.35);padding-bottom:.1rem}
 .hphn-ghost:hover{color:#fff;text-decoration:none;border-bottom-color:#E7515A}
-.hphn-viewport{position:relative;height:520px;overflow:hidden}
-.hphn-viewport::after{content:'';position:absolute;left:0;right:0;bottom:0;height:110px;background:linear-gradient(180deg,rgba(27,27,58,0) 0%,rgba(27,27,58,.85) 60%,#1B1B3A 100%);pointer-events:none;z-index:5}
-.hphn-phone{position:absolute;left:50%;bottom:-28%;transform:translateX(-50%) rotate(-3deg);width:320px;filter:drop-shadow(0 25px 50px rgba(0,0,0,.35))}
+.hphn-viewport{position:relative;height:580px;overflow:hidden}
+.hphn-viewport::after{content:'';position:absolute;left:0;right:0;bottom:0;height:220px;background:linear-gradient(180deg,rgba(27,27,58,0) 0%,rgba(27,27,58,.35) 35%,rgba(27,27,58,.85) 75%,#1B1B3A 100%);pointer-events:none;z-index:5}
+.hphn-phone{position:absolute;left:50%;bottom:-22%;transform:translateX(-50%) rotate(-3deg);width:320px;filter:drop-shadow(0 25px 50px rgba(0,0,0,.35))}
+.hphn-popup{position:absolute;bottom:22%;left:-4%;width:230px;background:#fff;border-radius:18px;padding:.9rem 1.05rem;box-shadow:0 22px 44px rgba(0,0,0,.35);z-index:10;animation:hphnPopFloat 3.5s ease-in-out infinite}
+.hphn-popup::before{content:'';position:absolute;top:.85rem;left:.95rem;width:6px;height:6px;border-radius:50%;background:#E7515A;box-shadow:0 0 0 4px rgba(231,81,90,.18)}
+.hphn-popup-label{font-size:.55rem;color:#64748b;font-weight:800;text-transform:uppercase;letter-spacing:1.3px;margin:0 0 .3rem 1rem}
+.hphn-popup-num{font-size:1.75rem;font-weight:900;color:#E7515A;line-height:1;letter-spacing:-.6px;margin-bottom:.3rem}
+.hphn-popup-num small{font-size:.8rem;color:#94a3b8;font-weight:700;margin-left:.1rem}
+.hphn-popup-note{font-size:.7rem;color:#1a1a2e;font-weight:600;line-height:1.35}
+@keyframes hphnPopFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 .hphn-phone-frame{position:relative;width:100%;aspect-ratio:9/19;background:#0d0d15;border-radius:46px;padding:11px;border:1px solid rgba(255,255,255,.08)}
 .hphn-phone-frame::before{content:'';position:absolute;top:11px;left:50%;transform:translateX(-50%);width:108px;height:24px;background:#0d0d15;border-radius:0 0 18px 18px;z-index:3}
 .hphn-phone-screen{position:relative;width:100%;height:100%;background:#faf7f2;border-radius:35px;overflow:hidden;padding:2.4rem 1.05rem 1rem;display:flex;flex-direction:column;gap:.6rem}
@@ -292,11 +299,6 @@ img{max-width:100%;display:block}
 .hphn-wave span:nth-child(5){animation-delay:-.1s}
 @keyframes hphnWave{0%,100%{height:5px}50%{height:18px}}
 .hphn-transcript{font-size:.58rem;color:#64748b;font-weight:600;line-height:1.35;flex:1;min-width:0}
-.hphn-score{background:#1a1a2e;color:#fff;border-radius:12px;padding:.55rem .7rem;display:flex;align-items:center;justify-content:space-between;gap:.5rem}
-.hphn-score-label{font-size:.52rem;color:rgba(255,255,255,.6);font-weight:800;text-transform:uppercase;letter-spacing:1px}
-.hphn-score-num{font-size:1.1rem;font-weight:900;color:#E7515A;line-height:1}
-.hphn-score-num small{font-size:.62rem;color:rgba(255,255,255,.5);font-weight:700;margin-left:.1rem}
-.hphn-score-note{font-size:.52rem;color:rgba(255,255,255,.75);font-weight:600;text-align:right;max-width:90px;line-height:1.3}
 @media(max-width:860px){
   .hphn-band{padding:2.5rem 1.25rem 0}
   .hphn-inner{grid-template-columns:1fr;gap:1.5rem;align-items:center}
@@ -310,8 +312,13 @@ img{max-width:100%;display:block}
   .hphn-ctas{justify-content:center;gap:.5rem .9rem;row-gap:.6rem}
   .hphn-cta{padding:.75rem 1.3rem;font-size:.85rem}
   .hphn-ghost{font-size:.82rem}
-  .hphn-viewport{height:320px}
-  .hphn-phone{width:230px;transform:translateX(-50%) rotate(0deg);bottom:-26%}
+  .hphn-viewport{height:420px}
+  .hphn-phone{width:230px;transform:translateX(-50%) rotate(0deg);bottom:-20%}
+  .hphn-popup{left:50%;right:auto;width:86%;max-width:280px;bottom:4%;padding:.75rem .95rem;animation:hphnPopFloatM 3.5s ease-in-out infinite}
+  .hphn-popup::before{top:.75rem;left:.85rem}
+  .hphn-popup-label{font-size:.52rem}
+  .hphn-popup-num{font-size:1.5rem}
+  @keyframes hphnPopFloatM{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-5px)}}
   .hphn-phone-screen{padding:2rem .85rem .75rem;gap:.45rem}
   .hphn-bubble{font-size:.6rem;padding:.4rem .55rem}
   .hphn-ai-avatar{width:24px;height:24px;font-size:.52rem}
@@ -319,10 +326,9 @@ img{max-width:100%;display:block}
   .hphn-transcript{font-size:.54rem}
   .hphn-mic{width:28px;height:28px}
   .hphn-mic svg{width:12px;height:12px}
-  .hphn-score-num{font-size:1rem}
 }
 @media(prefers-reduced-motion:reduce){
-  .hphn-mic::before,.hphn-wave span,.hphn-rec-dot{animation:none!important}
+  .hphn-mic::before,.hphn-wave span,.hphn-rec-dot,.hphn-popup{animation:none!important}
 }
 @media(max-width:480px){
   .tool-grid{grid-template-columns:1fr 1fr}
@@ -396,7 +402,7 @@ img{max-width:100%;display:block}
 <section class="pflow">
   <div class="pflow-inner">
     <div class="pflow-text">
-      <div class="pflow-eyebrow">7 tools &middot; One phone</div>
+      <div class="pflow-eyebrow">Every tool &middot; One phone</div>
       <h2 class="pflow-h2">Your whole career toolkit &mdash; <em>in your pocket</em></h2>
       <p class="pflow-p">From uploading your CV to practising the salary conversation. Free. NZ. No sign-up.</p>
       <div class="pflow-steps">
@@ -598,13 +604,6 @@ img{max-width:100%;display:block}
               <div class="hphn-wave"><span></span><span></span><span></span><span></span><span></span></div>
               <div class="hphn-transcript">&hellip;I pushed back on the rollout timeline because&hellip;</div>
             </div>
-            <div class="hphn-score">
-              <div>
-                <div class="hphn-score-label">Interview score</div>
-                <div class="hphn-score-num">72<small>/100</small></div>
-              </div>
-              <div class="hphn-score-note">Strong on examples, watch your pace</div>
-            </div>
             <div class="hphn-ai">
               <div class="hphn-ai-avatar">AI</div>
               <div style="flex:1;min-width:0">
@@ -613,6 +612,11 @@ img{max-width:100%;display:block}
             </div>
           </div>
         </div>
+      </div>
+      <div class="hphn-popup" aria-hidden="true">
+        <div class="hphn-popup-label">Interview score</div>
+        <div class="hphn-popup-num">72<small>/100</small></div>
+        <div class="hphn-popup-note">Strong on examples &middot; watch your pace</div>
       </div>
     </div>
   </div>
