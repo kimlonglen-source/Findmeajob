@@ -332,20 +332,58 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 .aw-trust{display:flex;gap:1.25rem;margin-top:1rem;flex-wrap:wrap;align-items:center}
 .aw-trust-item{display:inline-flex;align-items:center;gap:.35rem;font-size:.72rem;color:rgba(255,255,255,.65);font-weight:500}
 .aw-trust-item svg{width:12px;height:12px;color:#10b981}
-.aw-viz{position:relative;height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
+.aw-viz{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;min-height:500px}
 
-/* Percent-ring match animation */
-.mm-ring-wrap{position:relative;width:180px;height:180px}
-.mm-ring{width:100%;height:100%;transform:rotate(-90deg)}
-.mm-ring-bg{stroke:rgba(255,255,255,.1)}
-.mm-ring-fg{stroke:#FF4F40;stroke-linecap:round;transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1),stroke 1.4s}
-.mm-ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2.6rem;font-weight:900;color:#fff;letter-spacing:-1px;text-shadow:0 2px 20px rgba(231,81,90,.4)}
-.mm-ring-glow{position:absolute;inset:-20px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.25) 0%,transparent 60%);animation:mmGlow 3s ease-in-out infinite;pointer-events:none}
-@keyframes mmGlow{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
-.mm-role{text-align:center;min-height:56px;transition:opacity .4s}
-.mm-role-title{font-size:1rem;font-weight:800;color:#fff;margin-bottom:.15rem}
-.mm-role-loc{font-size:.78rem;color:rgba(255,255,255,.6);font-weight:500}
-.mm-match-pill{display:inline-block;background:rgba(16,185,129,.18);border:1px solid rgba(16,185,129,.35);color:#6ee7b7;padding:.2rem .7rem;border-radius:999px;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:.4rem}
+/* Match-page phone mockup: Upload -> Match -> Career pivot */
+.mph-phone{position:relative;width:230px;max-width:100%;filter:drop-shadow(0 30px 60px rgba(0,0,0,.35));animation:mphFloat 6s ease-in-out infinite}
+.mph-frame{position:relative;width:100%;aspect-ratio:9/19;background:#0d0d15;border-radius:40px;padding:10px;border:1px solid rgba(255,255,255,.08)}
+.mph-frame::before{content:'';position:absolute;top:10px;left:50%;transform:translateX(-50%);width:92px;height:22px;background:#0d0d15;border-radius:0 0 16px 16px;z-index:3}
+.mph-screen{position:relative;width:100%;height:100%;background:#faf7f2;border-radius:30px;overflow:hidden}
+.mph-step{position:absolute;inset:0;padding:2rem .95rem .9rem;display:flex;flex-direction:column;background:#faf7f2;opacity:0;animation:mphCycle 15s linear infinite}
+.mph-s-upload{animation-delay:0s}
+.mph-s-match{animation-delay:-10s}
+.mph-s-pivot{animation-delay:-5s}
+@keyframes mphCycle{0%,1%{opacity:1}30%{opacity:1}33%,100%{opacity:0}}
+@keyframes mphFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.mph-eb{font-size:.54rem;font-weight:800;color:#c7313a;text-transform:uppercase;letter-spacing:1.3px;margin-bottom:.25rem}
+.mph-t{font-size:.95rem;font-weight:900;color:#1a1a2e;line-height:1.15;letter-spacing:-.3px;margin-bottom:.6rem}
+/* Upload step */
+.mph-drop{flex:1;border:2px dashed #FF4F40;border-radius:14px;background:rgba(255,79,64,.06);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.8rem .55rem;text-align:center;gap:.3rem}
+.mph-drop-icon{width:36px;height:36px;border-radius:50%;background:#FF4F40;color:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:.2rem}
+.mph-drop-text{font-size:.72rem;font-weight:800;color:#1a1a2e}
+.mph-drop-sub{font-size:.56rem;color:#64748b;line-height:1.35}
+.mph-drop-bar{width:82%;height:5px;background:#fecaca;border-radius:999px;overflow:hidden;margin-top:.4rem}
+.mph-drop-bar-fill{height:100%;background:#FF4F40;border-radius:999px;animation:mphFill 3.5s ease-in-out infinite}
+@keyframes mphFill{0%{width:8%}100%{width:92%}}
+.mph-drop-pct{font-size:.58rem;color:#c7313a;font-weight:800;margin-top:.1rem}
+/* Match step */
+.mph-analysing{display:flex;align-items:center;gap:.35rem;font-size:.6rem;color:#64748b;font-weight:700;margin-bottom:.4rem}
+.mph-pulse{width:7px;height:7px;background:#FF4F40;border-radius:50%;animation:mphPulse 1s ease-in-out infinite}
+@keyframes mphPulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
+.mph-list{display:flex;flex-direction:column;gap:.3rem;flex:1}
+.mph-card{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:.5rem .6rem;display:flex;flex-direction:column;gap:.15rem;box-shadow:0 4px 12px rgba(15,23,42,.04)}
+.mph-card-top{display:flex;align-items:center;justify-content:space-between}
+.mph-pct{background:#dcfce7;color:#15803d;border:1px solid #bbf7d0;padding:.1rem .45rem;border-radius:999px;font-size:.5rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px}
+.mph-pct-warm{background:#fef2f2;color:#c7313a;border-color:#fecaca}
+.mph-card-title{font-size:.7rem;font-weight:900;color:#1a1a2e;line-height:1.2}
+.mph-card-sub{font-size:.52rem;color:#64748b}
+.mph-skills{display:flex;gap:.2rem;flex-wrap:wrap;margin-top:.1rem}
+.mph-skill{background:#f7f7f7;border:1px solid #eee;padding:.1rem .35rem;border-radius:999px;font-size:.48rem;font-weight:700;color:#1a1a2e}
+/* Pivot step */
+.mph-pivot-from{background:#1a1a2e;color:#fff;border-radius:12px;padding:.5rem .6rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:.35rem}
+.mph-pivot-from-label{font-size:.48rem;color:rgba(255,255,255,.55);font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:.1rem}
+.mph-pivot-from-role{font-size:.72rem;font-weight:900;color:#fff;line-height:1.1}
+.mph-pivot-arrow{text-align:center;color:#FF4F40;font-size:.85rem;font-weight:900;line-height:1;margin:.1rem 0}
+.mph-pivot-arrow span{display:inline-block;animation:mphArrow 1.6s ease-in-out infinite}
+@keyframes mphArrow{0%,100%{transform:translateY(-2px)}50%{transform:translateY(3px)}}
+.mph-pivot-list{display:flex;flex-direction:column;gap:.25rem}
+/* Shared bottom CTA */
+.mph-cta-s{background:#1a1a2e;color:#fff;padding:.5rem;border-radius:999px;font-size:.64rem;font-weight:800;text-align:center;margin-top:.45rem;display:block;letter-spacing:.2px}
+
+@media(prefers-reduced-motion:reduce){
+  .mph-phone,.mph-step,.mph-drop-bar-fill,.mph-pulse,.mph-pivot-arrow span{animation:none!important}
+  .mph-s-upload{opacity:1}
+}
 
 /* Editable CV and cover-letter output — focus/hover cues */
 #apply-cv-text:hover,#apply-cl-text:hover{border-color:rgba(231,81,90,.3)!important}
@@ -391,7 +429,10 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
   .aw-inner{grid-template-columns:1fr;gap:1.5rem}
   .aw-text h1{font-size:1.85rem}
   .aw-text .aw-sub{font-size:.92rem}
-  .aw-viz{height:240px;order:-1}
+  .aw-viz{min-height:auto;order:-1}
+  .mph-phone{width:200px}
+  .mph-step{padding:1.9rem .8rem .8rem}
+  .mph-t{font-size:.85rem}
   .mm-ring-wrap{width:140px;height:140px}
   .mm-ring-pct{font-size:2rem}
   .aw-feat{font-size:.72rem;padding:.4rem .75rem}
@@ -403,7 +444,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
   <section class="aw-hero">
     <div class="aw-inner">
       <div class="aw-text">
-        <div class="aw-badge">Free &bull; NZ &bull; No sign-up</div>
+        <div class="aw-badge">Free &bull; NZ &bull; Built for Kiwis</div>
         <h1>Your CV matched to <em>real NZ jobs</em> in 60 seconds</h1>
         <p class="aw-sub">Upload your CV &mdash; AI reads every skill and finds the NZ jobs you&rsquo;ll actually land. Live listings, tailored cover letters, no payment.</p>
         <div class="aw-feats">
@@ -421,65 +462,86 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         </div>
       </div>
       <div class="aw-viz">
-        <div class="mm-ring-wrap">
-          <div class="mm-ring-glow"></div>
-          <svg class="mm-ring" viewBox="0 0 180 180" aria-hidden="true">
-            <circle class="mm-ring-bg" cx="90" cy="90" r="76" fill="none" stroke-width="10"/>
-            <circle id="mm-ring-fg" class="mm-ring-fg" cx="90" cy="90" r="76" fill="none" stroke-width="10" stroke-dasharray="477.5" stroke-dashoffset="477.5"/>
-          </svg>
-          <div class="mm-ring-pct" id="mm-pct">0%</div>
-        </div>
-        <div class="mm-role" id="mm-role">
-          <div class="mm-role-title" id="mm-role-title">Scanning your CV&hellip;</div>
-          <div class="mm-role-loc" id="mm-role-loc">Matching to NZ jobs</div>
-          <div class="mm-match-pill">Strong match</div>
+        <div class="mph-phone" aria-hidden="true">
+          <div class="mph-frame">
+            <div class="mph-screen">
+
+              <!-- Step 1: Upload CV -->
+              <div class="mph-step mph-s-upload">
+                <div class="mph-eb">Step 1 &middot; Upload</div>
+                <div class="mph-t">Drop your CV</div>
+                <div class="mph-drop">
+                  <div class="mph-drop-icon">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+                  </div>
+                  <div class="mph-drop-text">Drop your CV here</div>
+                  <div class="mph-drop-sub">PDF or Word &mdash; free &amp; private</div>
+                  <div class="mph-drop-bar"><div class="mph-drop-bar-fill"></div></div>
+                  <div class="mph-drop-pct">Uploading&hellip;</div>
+                </div>
+                <span class="mph-cta-s">Start matching &rarr;</span>
+              </div>
+
+              <!-- Step 2: Match result -->
+              <div class="mph-step mph-s-match">
+                <div class="mph-eb">Step 2 &middot; Match</div>
+                <div class="mph-t">Your top NZ matches</div>
+                <div class="mph-analysing"><span class="mph-pulse"></span>AI read 14 skills</div>
+                <div class="mph-list">
+                  <div class="mph-card">
+                    <div class="mph-card-top"><span class="mph-pct">92% match</span></div>
+                    <div class="mph-card-title">Registered Nurse</div>
+                    <div class="mph-card-sub">Auckland DHB &middot; Full-time</div>
+                    <div class="mph-skills">
+                      <span class="mph-skill">Patient care</span>
+                      <span class="mph-skill">Aged care</span>
+                      <span class="mph-skill">NZRN</span>
+                    </div>
+                  </div>
+                  <div class="mph-card">
+                    <div class="mph-card-top"><span class="mph-pct">88% match</span></div>
+                    <div class="mph-card-title">Community Nurse</div>
+                    <div class="mph-card-sub">Wellington &middot; Part-time</div>
+                  </div>
+                </div>
+                <span class="mph-cta-s">Apply in 1 click &rarr;</span>
+              </div>
+
+              <!-- Step 3: Career pivot -->
+              <div class="mph-step mph-s-pivot">
+                <div class="mph-eb">Bonus &middot; Career pivot</div>
+                <div class="mph-t">Careers you could pivot to</div>
+                <div class="mph-pivot-from">
+                  <div>
+                    <div class="mph-pivot-from-label">Currently</div>
+                    <div class="mph-pivot-from-role">Registered Nurse</div>
+                  </div>
+                  <span class="mph-pct" style="background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.15)">You</span>
+                </div>
+                <div class="mph-pivot-arrow"><span>&darr;</span></div>
+                <div class="mph-pivot-list">
+                  <div class="mph-card">
+                    <div class="mph-card-top"><div class="mph-card-title">Nurse Educator</div><span class="mph-pct">84%</span></div>
+                    <div class="mph-card-sub">Teach, mentor new nurses</div>
+                  </div>
+                  <div class="mph-card">
+                    <div class="mph-card-top"><div class="mph-card-title">Clinical Research</div><span class="mph-pct">76%</span></div>
+                    <div class="mph-card-sub">NZ trials &middot; no shifts</div>
+                  </div>
+                  <div class="mph-card">
+                    <div class="mph-card-top"><div class="mph-card-title">Health Tech</div><span class="mph-pct mph-pct-warm">71%</span></div>
+                    <div class="mph-card-sub">Product, UX, data roles</div>
+                  </div>
+                </div>
+                <span class="mph-cta-s">Explore pivots &rarr;</span>
+              </div>
+
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
-  <script>
-  /* Hero percent-ring match cycle */
-  (function(){
-    var jobs=[
-      {pct:92,title:'Registered Nurse',loc:'Auckland Hospital \u2022 NZ',color:'#10b981'},
-      {pct:85,title:'Software Engineer',loc:'Wellington \u2022 NZ',color:'#FF4F40'},
-      {pct:78,title:'Electrician',loc:'Hamilton \u2022 NZ',color:'#f59e0b'},
-      {pct:88,title:'Primary Teacher',loc:'Christchurch \u2022 NZ',color:'#3b82f6'},
-      {pct:81,title:'Allied Health',loc:'Dunedin \u2022 NZ',color:'#8b5cf6'}
-    ];
-    var CIRC=477.5;
-    var ring=document.getElementById('mm-ring-fg');
-    var pctEl=document.getElementById('mm-pct');
-    var titleEl=document.getElementById('mm-role-title');
-    var locEl=document.getElementById('mm-role-loc');
-    var roleEl=document.getElementById('mm-role');
-    if(!ring||!pctEl)return;
-    var i=0;
-    function cycle(){
-      var j=jobs[i%jobs.length];
-      roleEl.style.opacity='0';
-      setTimeout(function(){
-        ring.style.stroke=j.color;
-        ring.style.strokeDashoffset=CIRC-(j.pct/100)*CIRC;
-        titleEl.textContent=j.title;
-        locEl.textContent=j.loc;
-        /* Count-up animation on the percent */
-        var start=0,target=j.pct,t0=performance.now(),dur=1200;
-        function step(t){
-          var p=Math.min(1,(t-t0)/dur);
-          var eased=1-Math.pow(1-p,3);
-          pctEl.textContent=Math.round(start+(target-start)*eased)+'%';
-          if(p<1)requestAnimationFrame(step);
-        }
-        requestAnimationFrame(step);
-        roleEl.style.opacity='1';
-      },400);
-      i++;
-    }
-    cycle();
-    setInterval(cycle,3200);
-  })();
-  </script>
 
   <!-- UPLOAD + MATCH FLOW — moved inline from former #page-find for single-scroll UX -->
   <div class="wrap" style="padding-top:2.5rem">
@@ -1403,7 +1465,7 @@ function loadMammoth(cb){
 
 // Typewriter effect
 (function(){
-  var phrases=['matched to NZ jobs','scored by AI','free forever','no sign-up needed','results in 60 seconds'];
+  var phrases=['matched to NZ jobs','scored by AI','free forever','built for Kiwis','results in 60 seconds'];
   var el=document.getElementById('hero-typed');
   if(!el)return;
   var phraseIdx=0,charIdx=0,isDeleting=false;
