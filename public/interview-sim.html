@@ -257,29 +257,67 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
 .aw-feat svg{width:14px;height:14px;color:#FF4F40;flex-shrink:0}
 .aw-cta{display:inline-block;background:#FF4F40;color:#fff;padding:.85rem 1.75rem;border-radius:999px;font-size:.92rem;font-weight:700;text-decoration:none;box-shadow:0 8px 25px rgba(231,81,90,.35);transition:all .25s}
 .aw-cta:hover{background:#c7313a;transform:translateY(-2px);box-shadow:0 12px 35px rgba(231,81,90,.45);text-decoration:none}
-.aw-viz{position:relative;height:300px;display:flex;align-items:center;justify-content:center}
-.aw-orb-wrap{position:relative;width:140px;height:140px}
-.aw-orb{position:absolute;inset:0;border-radius:50%;background:linear-gradient(135deg,#FF4F40,#c7313a);display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 0 60px rgba(231,81,90,.5);animation:awBeat 2.5s ease-in-out infinite;z-index:3}
-.aw-orb svg{width:54px;height:54px}
-.aw-pulse{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(231,81,90,.55);animation:awRing 2.4s ease-out infinite;pointer-events:none}
-@keyframes awBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
-@keyframes awRing{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.6);opacity:0}}
-.aw-wave{position:absolute;bottom:-32px;left:50%;transform:translateX(-50%);display:flex;gap:4px;align-items:flex-end;height:32px}
-.aw-wave span{display:block;width:3px;background:linear-gradient(0deg,#FF4F40,#fca5a5);border-radius:2px;animation:awBar 1s ease-in-out infinite;transform-origin:bottom}
-.aw-wave span:nth-child(1){height:10px;animation-delay:0s}
-.aw-wave span:nth-child(2){height:22px;animation-delay:.1s}
-.aw-wave span:nth-child(3){height:30px;animation-delay:.2s}
-.aw-wave span:nth-child(4){height:18px;animation-delay:.15s}
-.aw-wave span:nth-child(5){height:26px;animation-delay:.25s}
-.aw-wave span:nth-child(6){height:14px;animation-delay:.3s}
-.aw-wave span:nth-child(7){height:20px;animation-delay:.18s}
-@keyframes awBar{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
-.aw-bubble{position:absolute;background:rgba(255,255,255,.97);color:#0f172a;padding:.65rem .95rem;border-radius:14px;font-size:.78rem;font-weight:600;box-shadow:0 10px 35px rgba(0,0,0,.35);max-width:190px;opacity:0;animation:awBubble 7s ease-in-out infinite;line-height:1.4;z-index:4}
-.aw-bubble-ai{top:-8px;left:-18px;animation-delay:.5s;border-bottom-left-radius:4px}
-.aw-bubble-ai::before{content:'AI';position:absolute;top:-9px;left:10px;background:#FF4F40;color:#fff;font-size:.55rem;font-weight:800;padding:.15rem .45rem;border-radius:999px;letter-spacing:.5px}
-.aw-bubble-user{bottom:-8px;right:-18px;background:#FF4F40;color:#fff;animation-delay:3.5s;border-bottom-right-radius:4px}
-.aw-bubble-user::before{content:'YOU';position:absolute;top:-9px;right:10px;background:#0f172a;color:#fff;font-size:.55rem;font-weight:800;padding:.15rem .45rem;border-radius:999px;letter-spacing:.5px}
-@keyframes awBubble{0%,5%{opacity:0;transform:translateY(8px)}10%,45%{opacity:1;transform:translateY(0)}50%,100%{opacity:0;transform:translateY(-6px)}}
+.aw-viz{position:relative;display:flex;align-items:center;justify-content:center;min-height:500px}
+
+/* Interview-sim floating phone: Setup -> Speak -> Score */
+.iph-phone{position:relative;width:230px;max-width:100%;filter:drop-shadow(0 30px 60px rgba(0,0,0,.4));animation:iphFloat 6s ease-in-out infinite}
+.iph-frame{position:relative;width:100%;aspect-ratio:9/19;background:#0d0d15;border-radius:40px;padding:10px;border:1px solid rgba(255,255,255,.08)}
+.iph-frame::before{content:'';position:absolute;top:10px;left:50%;transform:translateX(-50%);width:92px;height:22px;background:#0d0d15;border-radius:0 0 16px 16px;z-index:3}
+.iph-screen{position:relative;width:100%;height:100%;background:#faf7f2;border-radius:30px;overflow:hidden}
+.iph-step{position:absolute;inset:0;padding:2rem .95rem .9rem;display:flex;flex-direction:column;background:#faf7f2;opacity:0;animation:iphCycle 15s linear infinite}
+.iph-s-setup{animation-delay:0s}
+.iph-s-speak{animation-delay:-10s}
+.iph-s-score{animation-delay:-5s}
+@keyframes iphCycle{0%,1%{opacity:1}30%{opacity:1}33%,100%{opacity:0}}
+@keyframes iphFloat{0%,100%{transform:translateY(0) rotate(6deg)}50%{transform:translateY(-10px) rotate(6deg)}}
+.iph-eb{font-size:.54rem;font-weight:800;color:#c7313a;text-transform:uppercase;letter-spacing:1.3px;margin-bottom:.25rem}
+.iph-t{font-size:.95rem;font-weight:900;color:#1a1a2e;line-height:1.15;letter-spacing:-.3px;margin-bottom:.6rem}
+/* Setup step */
+.iph-role{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:.55rem .7rem;display:flex;align-items:center;gap:.45rem;margin-bottom:.35rem;box-shadow:0 4px 12px rgba(15,23,42,.04)}
+.iph-role-icon{width:28px;height:28px;border-radius:8px;background:#fef2f2;color:#c7313a;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.iph-role-icon svg{width:14px;height:14px}
+.iph-role-title{font-size:.7rem;font-weight:900;color:#1a1a2e;line-height:1.1}
+.iph-role-sub{font-size:.52rem;color:#64748b;font-weight:600}
+.iph-setup-list{flex:1;display:flex;flex-direction:column;gap:.25rem;margin-top:.2rem}
+.iph-setup-row{display:flex;align-items:center;gap:.45rem;background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:.4rem .55rem;font-size:.6rem;color:#1a1a2e;font-weight:600}
+.iph-setup-chip{margin-left:auto;background:#dcfce7;color:#15803d;border:1px solid #bbf7d0;padding:.1rem .4rem;border-radius:999px;font-size:.48rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px}
+/* Speak step */
+.iph-ai{display:flex;gap:.4rem;align-items:flex-start;margin-bottom:.4rem}
+.iph-ai-avatar{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#FF4F40,#c7313a);color:#fff;font-size:.5rem;font-weight:900;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;letter-spacing:.5px}
+.iph-bubble{background:#fff;border:1px solid #e8e8e8;border-radius:10px;border-top-left-radius:3px;padding:.4rem .55rem;font-size:.6rem;line-height:1.35;color:#1a1a2e;font-weight:600;box-shadow:0 4px 12px rgba(15,23,42,.04);flex:1;min-width:0}
+.iph-mic-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem}
+.iph-mic{width:54px;height:54px;border-radius:50%;background:#FF4F40;color:#fff;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 12px 26px rgba(231,81,90,.42)}
+.iph-mic svg{width:22px;height:22px}
+.iph-mic::before,.iph-mic::after{content:'';position:absolute;inset:-10px;border:2px solid rgba(231,81,90,.4);border-radius:50%;animation:iphMic 1.9s ease-out infinite}
+.iph-mic::after{inset:-20px;animation-delay:.95s}
+@keyframes iphMic{0%{opacity:.75;transform:scale(.55)}100%{opacity:0;transform:scale(1.1)}}
+.iph-wave{display:inline-flex;gap:2px;align-items:center;height:20px}
+.iph-wave span{display:block;width:3px;background:#E7515A;border-radius:2px;animation:iphBar 1s ease-in-out infinite}
+.iph-wave span:nth-child(1){animation-delay:-.9s}
+.iph-wave span:nth-child(2){animation-delay:-.7s}
+.iph-wave span:nth-child(3){animation-delay:-.5s}
+.iph-wave span:nth-child(4){animation-delay:-.3s}
+.iph-wave span:nth-child(5){animation-delay:-.1s}
+@keyframes iphBar{0%,100%{height:4px}50%{height:18px}}
+.iph-transcript{background:rgba(255,79,64,.06);border:1px dashed #fecaca;border-radius:10px;padding:.35rem .5rem;font-size:.56rem;color:#64748b;font-weight:600;font-style:italic;line-height:1.35;text-align:center}
+.iph-hint{font-size:.54rem;color:#64748b;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;text-align:center}
+/* Score step */
+.iph-score-big{background:linear-gradient(135deg,#1a1a2e 0%,#2a2a4e 100%);color:#fff;border-radius:14px;padding:.85rem .8rem;text-align:center;margin-bottom:.4rem;position:relative;overflow:hidden}
+.iph-score-big::before{content:'';position:absolute;inset:-20%;background:radial-gradient(circle at 30% 30%,rgba(231,81,90,.25) 0%,transparent 60%);pointer-events:none}
+.iph-score-label{position:relative;font-size:.5rem;color:rgba(255,255,255,.55);font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:.15rem}
+.iph-score-num{position:relative;font-size:2rem;font-weight:900;color:#E7515A;line-height:1;letter-spacing:-1px}
+.iph-score-num small{font-size:.7rem;color:rgba(255,255,255,.45);font-weight:700;margin-left:.15rem}
+.iph-score-tier{position:relative;display:inline-block;background:rgba(16,185,129,.18);color:#6ee7b7;border:1px solid rgba(16,185,129,.35);padding:.12rem .5rem;border-radius:999px;font-size:.48rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;margin-top:.25rem}
+.iph-feedback{flex:1;display:flex;flex-direction:column;gap:.2rem}
+.iph-fb{display:flex;align-items:flex-start;gap:.35rem;background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:.35rem .5rem;font-size:.56rem;color:#1a1a2e;font-weight:600;line-height:1.35}
+.iph-fb-icon{width:14px;height:14px;border-radius:50%;background:#dcfce7;color:#15803d;display:inline-flex;align-items:center;justify-content:center;font-size:.5rem;font-weight:900;flex-shrink:0;margin-top:.05rem}
+.iph-fb-warn{background:#fef9c3;color:#a16207}
+/* Shared bottom CTA */
+.iph-cta-s{background:#1a1a2e;color:#fff;padding:.5rem;border-radius:999px;font-size:.64rem;font-weight:800;text-align:center;margin-top:.45rem;display:block;letter-spacing:.2px}
+@media(prefers-reduced-motion:reduce){
+  .iph-phone,.iph-step,.iph-mic::before,.iph-mic::after,.iph-wave span{animation:none!important}
+  .iph-s-setup{opacity:1}
+}
 .aw-trust{display:flex;gap:1.25rem;margin-top:1rem;flex-wrap:wrap;align-items:center}
 .aw-trust-item{display:inline-flex;align-items:center;gap:.35rem;font-size:.72rem;color:rgba(255,255,255,.65);font-weight:500}
 .aw-trust-item svg{width:12px;height:12px;color:#10b981}
@@ -288,10 +326,11 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
   .aw-inner{grid-template-columns:1fr;gap:1.25rem}
   .aw-text h1{font-size:1.85rem}
   .aw-text .aw-sub{font-size:.92rem}
-  .aw-viz{height:200px;order:-1}
-  .aw-orb-wrap{width:110px;height:110px}
-  .aw-orb svg{width:42px;height:42px}
-  .aw-bubble{display:none}
+  .aw-viz{min-height:auto;order:-1}
+  .iph-phone{width:200px}
+  .iph-step{padding:1.9rem .8rem .8rem}
+  .iph-t{font-size:.85rem}
+  @keyframes iphFloat{0%,100%{transform:translateY(0) rotate(4deg)}50%{transform:translateY(-8px) rotate(4deg)}}
   .aw-feat{font-size:.72rem;padding:.4rem .75rem}
 }
 </style>
@@ -385,17 +424,70 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
       </div>
     </div>
     <div class="aw-viz">
-      <div class="aw-bubble aw-bubble-ai">Tell me about a time you led a difficult project.</div>
-      <div class="aw-orb-wrap">
-        <div class="aw-pulse"></div>
-        <div class="aw-pulse" style="animation-delay:.8s"></div>
-        <div class="aw-pulse" style="animation-delay:1.6s"></div>
-        <div class="aw-orb">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      <div class="iph-phone" aria-hidden="true">
+        <div class="iph-frame">
+          <div class="iph-screen">
+
+            <!-- Step 1: Setup -->
+            <div class="iph-step iph-s-setup">
+              <div class="iph-eb">Step 1 &middot; Set up</div>
+              <div class="iph-t">Pick a role &amp; style</div>
+              <div class="iph-role">
+                <div class="iph-role-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg>
+                </div>
+                <div>
+                  <div class="iph-role-title">Senior Engineer</div>
+                  <div class="iph-role-sub">Tech &middot; Wellington</div>
+                </div>
+              </div>
+              <div class="iph-setup-list">
+                <div class="iph-setup-row">Behavioural questions<span class="iph-setup-chip">On</span></div>
+                <div class="iph-setup-row">NZ accent voice<span class="iph-setup-chip">On</span></div>
+                <div class="iph-setup-row">5&ndash;10 min session<span class="iph-setup-chip">6 min</span></div>
+              </div>
+              <span class="iph-cta-s">Start practising &rarr;</span>
+            </div>
+
+            <!-- Step 2: Speak -->
+            <div class="iph-step iph-s-speak">
+              <div class="iph-eb">Step 2 &middot; Speak</div>
+              <div class="iph-t">Answer out loud</div>
+              <div class="iph-ai">
+                <div class="iph-ai-avatar">AI</div>
+                <div class="iph-bubble">Tell me about a time you led a difficult project.</div>
+              </div>
+              <div class="iph-mic-wrap">
+                <div class="iph-mic">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+                </div>
+                <div class="iph-wave"><span></span><span></span><span></span><span></span><span></span></div>
+                <div class="iph-hint">Listening&hellip;</div>
+              </div>
+              <div class="iph-transcript">&ldquo;Our team lead resigned suddenly, so I stepped in&hellip;&rdquo;</div>
+              <span class="iph-cta-s">Finish &amp; score &rarr;</span>
+            </div>
+
+            <!-- Step 3: Score -->
+            <div class="iph-step iph-s-score">
+              <div class="iph-eb">Step 3 &middot; Score</div>
+              <div class="iph-t">Recruiter-style score</div>
+              <div class="iph-score-big">
+                <div class="iph-score-label">Your score</div>
+                <div class="iph-score-num">82<small>/100</small></div>
+                <span class="iph-score-tier">Strong</span>
+              </div>
+              <div class="iph-feedback">
+                <div class="iph-fb"><span class="iph-fb-icon">&#10003;</span>Clear STAR structure</div>
+                <div class="iph-fb"><span class="iph-fb-icon">&#10003;</span>Strong leadership example</div>
+                <div class="iph-fb"><span class="iph-fb-icon iph-fb-warn">!</span>Watch your pace &mdash; slow down</div>
+              </div>
+              <span class="iph-cta-s">See model answer &rarr;</span>
+            </div>
+
+          </div>
         </div>
-        <div class="aw-wave"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
       </div>
-      <div class="aw-bubble aw-bubble-user">Last quarter our team lead resigned suddenly, so I stepped in&hellip;</div>
     </div>
   </div>
 </section>
