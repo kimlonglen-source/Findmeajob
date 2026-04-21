@@ -299,6 +299,45 @@ body.dark .grade-badge span{color:#f8fafc !important}
   </div>
 </section>
 
+<div class="container">
+
+  <div id="formSection">
+    <div class="card">
+      <div class="field">
+        <label>What Do You Need to Write?</label>
+        <select id="scenario">
+          <option value="">Choose a scenario...</option>
+          <option value="Follow up after interview">Follow up after interview</option>
+          <option value="Ask for a raise">Ask for a raise</option>
+          <option value="Push back on boss">Push back on boss</option>
+          <option value="Call in sick">Call in sick</option>
+          <option value="Resign professionally">Resign professionally</option>
+          <option value="Thank you after interview">Thank you after interview</option>
+          <option value="Request flexible working">Request flexible working</option>
+          <option value="Decline a job offer">Decline a job offer</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Context (Optional)</label>
+        <textarea id="context" placeholder="Add any details... e.g. company name, your role, situation details"></textarea>
+      </div>
+    </div>
+    <button class="btn" id="writeBtn" onclick="writeEmail()">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Write My Email
+    </button>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>Writing your email...</p>
+  </div>
+
+  <div id="result"></div>
+</div>
+
+
+
 <script>
 /* Email gate */
 var _gateCallback = null;

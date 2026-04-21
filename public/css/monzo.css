@@ -698,3 +698,18 @@ nav.nav {
   .aw-feat { font-size: .72rem; padding: .4rem .75rem; }
 }
 
+
+/* Scroll offset so hero CTAs that jump to #formSection / #apply-form-section
+   don't hide the form's top under the sticky nav. */
+#formSection,
+#apply-form-section,
+[id="formSection"] {
+  scroll-margin-top: 96px;
+}
+@media (max-width: 820px) {
+  #formSection,
+  #apply-form-section,
+  [id="formSection"] {
+    scroll-margin-top: 72px;
+  }
+}

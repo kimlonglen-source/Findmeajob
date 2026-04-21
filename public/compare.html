@@ -312,6 +312,37 @@ body.dark .grade-badge span{color:#f8fafc !important}
   </div>
 </section>
 
+<div class="container">
+
+  <div id="formSection">
+    <div class="jobs-grid">
+      <div class="job-input">
+        <div class="job-label"><span style="width:10px;height:10px;border-radius:50%;background:#3b82f6;display:inline-block"></span> <span class="job-a-color">Job A</span></div>
+        <label>Paste Job Description</label>
+        <textarea id="jobA" placeholder="Paste the first job listing here..."></textarea>
+      </div>
+      <div class="job-input">
+        <div class="job-label"><span style="width:10px;height:10px;border-radius:50%;background:#8b5cf6;display:inline-block"></span> <span class="job-b-color">Job B</span></div>
+        <label>Paste Job Description</label>
+        <textarea id="jobB" placeholder="Paste the second job listing here..."></textarea>
+      </div>
+    </div>
+    <button class="btn" id="compareBtn" onclick="compare()">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+      Compare These Jobs
+    </button>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>Analysing both job listings...</p>
+  </div>
+
+  <div id="result"></div>
+</div>
+
+
+
 <script>
 /* Email gate */
 var _gateCallback = null;
