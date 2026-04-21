@@ -533,58 +533,46 @@ nav.nav {
    ============================================================================ */
 
 /* Hero-tint modifiers that flatten .aw-hero onto a Monzo soft-tint background
-   and flip the text colour from white (over navy gradient) to navy. Text
-   inside aw-hero-* overrides the dark-hero defaults already in each page. */
-.aw-hero.aw-hero-cream,
-.aw-hero.aw-hero-mint,
-.aw-hero.aw-hero-peach,
-.aw-hero.aw-hero-lavender { background: var(--mnz-cream); }
-.aw-hero.aw-hero-mint    { background: var(--mnz-mint); }
-.aw-hero.aw-hero-peach   { background: var(--mnz-peach); }
-.aw-hero.aw-hero-lavender{ background: var(--mnz-lavender); }
+   and flip the text colour from white (over navy gradient) to navy. Selectors
+   use compound .aw-hero.aw-hero-TINT specificity AND !important on colour
+   because match / interview-sim / practice-sim ship their own inline
+   .aw-text.aw-sub{color:white} rules that load AFTER monzo.css. */
+.aw-hero.aw-hero-cream    { background: var(--mnz-cream) !important; }
+.aw-hero.aw-hero-mint     { background: var(--mnz-mint) !important; }
+.aw-hero.aw-hero-peach    { background: var(--mnz-peach) !important; }
+.aw-hero.aw-hero-lavender { background: var(--mnz-lavender) !important; }
 .aw-hero-cream::before, .aw-hero-cream::after,
 .aw-hero-mint::before, .aw-hero-mint::after,
 .aw-hero-peach::before, .aw-hero-peach::after,
 .aw-hero-lavender::before, .aw-hero-lavender::after { display: none !important; }
-.aw-hero-cream .aw-text h1,
-.aw-hero-mint .aw-text h1,
-.aw-hero-peach .aw-text h1,
-.aw-hero-lavender .aw-text h1 { color: var(--mnz-navy); }
-.aw-hero-cream .aw-text h1 em,
-.aw-hero-mint .aw-text h1 em,
-.aw-hero-peach .aw-text h1 em,
-.aw-hero-lavender .aw-text h1 em { color: var(--mnz-coral); font-style: normal; }
-.aw-hero-cream .aw-sub,
-.aw-hero-mint .aw-sub,
-.aw-hero-peach .aw-sub,
-.aw-hero-lavender .aw-sub { color: var(--mnz-text-muted); }
-.aw-hero-cream .aw-badge,
-.aw-hero-mint .aw-badge,
-.aw-hero-peach .aw-badge,
-.aw-hero-lavender .aw-badge {
-  background: rgba(17,34,49,.06);
-  border: 1px solid rgba(17,34,49,.1);
-  color: var(--mnz-navy);
+.aw-hero-cream .aw-text, .aw-hero-mint .aw-text,
+.aw-hero-peach .aw-text, .aw-hero-lavender .aw-text { color: var(--mnz-navy) !important; }
+.aw-hero-cream .aw-text h1, .aw-hero-mint .aw-text h1,
+.aw-hero-peach .aw-text h1, .aw-hero-lavender .aw-text h1 { color: var(--mnz-navy) !important; }
+.aw-hero-cream .aw-text h1 em, .aw-hero-mint .aw-text h1 em,
+.aw-hero-peach .aw-text h1 em, .aw-hero-lavender .aw-text h1 em { color: var(--mnz-coral) !important; font-style: normal; }
+.aw-hero-cream .aw-text .aw-sub, .aw-hero-mint .aw-text .aw-sub,
+.aw-hero-peach .aw-text .aw-sub, .aw-hero-lavender .aw-text .aw-sub { color: var(--mnz-text-muted) !important; }
+.aw-hero-cream .aw-badge, .aw-hero-mint .aw-badge,
+.aw-hero-peach .aw-badge, .aw-hero-lavender .aw-badge {
+  background: rgba(17,34,49,.06) !important;
+  border: 1px solid rgba(17,34,49,.1) !important;
+  color: var(--mnz-navy) !important;
 }
-.aw-hero-cream .aw-feat,
-.aw-hero-mint .aw-feat,
-.aw-hero-peach .aw-feat,
-.aw-hero-lavender .aw-feat {
-  background: rgba(255,255,255,.6);
-  border: 1px solid rgba(17,34,49,.08);
-  color: var(--mnz-navy);
+.aw-hero-cream .aw-feat, .aw-hero-mint .aw-feat,
+.aw-hero-peach .aw-feat, .aw-hero-lavender .aw-feat {
+  background: rgba(255,255,255,.6) !important;
+  border: 1px solid rgba(17,34,49,.08) !important;
+  color: var(--mnz-navy) !important;
+  backdrop-filter: none !important;
 }
-.aw-hero-cream .aw-trust-item,
-.aw-hero-mint .aw-trust-item,
-.aw-hero-peach .aw-trust-item,
-.aw-hero-lavender .aw-trust-item { color: var(--mnz-text-muted); }
-.aw-hero-cream .aw-cta,
-.aw-hero-mint .aw-cta,
-.aw-hero-peach .aw-cta,
-.aw-hero-lavender .aw-cta {
-  background: linear-gradient(135deg, var(--mnz-coral), var(--mnz-coral-dark));
-  color: #fff;
-  box-shadow: 0 4px 20px rgba(255,79,64,.25);
+.aw-hero-cream .aw-trust-item, .aw-hero-mint .aw-trust-item,
+.aw-hero-peach .aw-trust-item, .aw-hero-lavender .aw-trust-item { color: var(--mnz-text-muted) !important; }
+.aw-hero-cream .aw-cta, .aw-hero-mint .aw-cta,
+.aw-hero-peach .aw-cta, .aw-hero-lavender .aw-cta {
+  background: linear-gradient(135deg, var(--mnz-coral), var(--mnz-coral-dark)) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 20px rgba(255,79,64,.28) !important;
 }
 
 /* Shared tool-page phone (.tph-*) — tilted, floating, 3-step opacity cycle.
