@@ -312,12 +312,12 @@ body.dark .grade-badge span{color:#f8fafc !important}
       </div>
       <div class="g2">
         <div class="field">
-          <label>Current Salary (NZD)</label>
-          <input type="number" id="currentSalary" placeholder="e.g. 95000">
+          <label>Offered Salary (NZD)</label>
+          <input type="number" id="offeredSalary" placeholder="e.g. 95000">
         </div>
         <div class="field">
-          <label>Offered Salary (NZD)</label>
-          <input type="number" id="offeredSalary" placeholder="e.g. 105000">
+          <label>Target Salary (NZD)</label>
+          <input type="number" id="targetSalary" placeholder="e.g. 115000">
         </div>
       </div>
     </div>
@@ -382,23 +382,24 @@ function submitGateEmail() {
 
 async function negotiate() {
   var title = document.getElementById("jobTitle").value.trim();
-  var current = document.getElementById("currentSalary").value.trim();
   var offered = document.getElementById("offeredSalary").value.trim();
+  var target = document.getElementById("targetSalary").value.trim();
 
   if (!title) { alert("Please enter a job title."); return; }
-  if (!current) { alert("Please enter your current salary."); return; }
   if (!offered) { alert("Please enter the offered salary."); return; }
+  if (!target) { alert("Please enter your target salary."); return; }
+  if (Number(target) <= Number(offered)) { alert("Your target should be higher than the offered salary."); return; }
 
-  checkGate(function(){ _doNegotiate(title, current, offered); });
+  checkGate(function(){ _doNegotiate(title, offered, target); });
 }
-async function _doNegotiate(title, current, offered) {
+async function _doNegotiate(title, offered, target) {
   var btn = document.getElementById("negotiateBtn");
   btn.disabled = true;
   document.getElementById("formSection").style.display = "none";
   document.getElementById("loading").style.display = "block";
   document.getElementById("result").style.display = "none";
 
-  var prompt = "You are a New Zealand salary negotiation expert. You ONLY know the NZ job market. All salary data, negotiation tactics, and workplace norms must be NZ-specific. NEVER reference US, UK, or Australian salary data.\n\nWrite a salary negotiation script for a " + title + " currently earning $" + Number(current).toLocaleString() + " NZD and offered $" + Number(offered).toLocaleString() + " NZD in New Zealand.\n\nCRITICAL RULES:\n1) marketRange MUST reflect the real NZ salary range for " + title + " specifically. Reference NZ salary data sources (Hays NZ Salary Guide, Seek NZ, Trade Me Jobs, Robert Half NZ). Do not guess — give a realistic NZ band for this exact role.\n2) The negotiation tone must suit NZ workplace culture — direct but not aggressive. Kiwis negotiate differently from Americans. No hardball tactics. Be confident but collegial.\n3) Pushback responses should reference NZ-specific leverage points: Kiwisaver employer contributions (minimum 3%), NZ market demand for " + title + " roles, NZ cost of living, and any relevant NZ industry context.\n4) Use NZ/British spelling: organise, recognise, analyse, behaviour, colour, favour.\n5) Include NZ-specific benefits to negotiate beyond salary: Kiwisaver above minimum, extra annual leave beyond 4 weeks, professional development budget, flexible/hybrid working.\n\nReturn ONLY valid JSON with no markdown: {\"opening\":\"string\",\"pushbacks\":[{\"objection\":\"string\",\"response\":\"string\"}],\"closing\":\"string\",\"marketRange\":\"string with NZ-specific salary range for " + title + "\",\"tip\":\"string with NZ-specific advice\"}";
+  var prompt = "You are a New Zealand salary negotiation expert. You ONLY know the NZ job market. All salary data, negotiation tactics, and workplace norms must be NZ-specific. NEVER reference US, UK, or Australian salary data.\n\nWrite a salary negotiation script for a " + title + " in New Zealand who has been offered $" + Number(offered).toLocaleString() + " NZD and is aiming to negotiate up to $" + Number(target).toLocaleString() + " NZD.\n\nCRITICAL RULES:\n1) marketRange MUST reflect the real NZ salary range for " + title + " specifically. Reference NZ salary data sources (Hays NZ Salary Guide, Seek NZ, Trade Me Jobs, Robert Half NZ). Do not guess — give a realistic NZ band for this exact role. State whether the target of $" + Number(target).toLocaleString() + " is realistic given the NZ market band for " + title + ".\n2) The opening script should anchor on $" + Number(target).toLocaleString() + " (the target), not the offered number. Justify the target with specific NZ market evidence.\n3) The negotiation tone must suit NZ workplace culture — direct but not aggressive. Kiwis negotiate differently from Americans. No hardball tactics. Be confident but collegial.\n4) Pushback responses should reference NZ-specific leverage points: Kiwisaver employer contributions (minimum 3%), NZ market demand for " + title + " roles, NZ cost of living, and any relevant NZ industry context.\n5) Use NZ/British spelling: organise, recognise, analyse, behaviour, colour, favour.\n6) Include NZ-specific benefits to negotiate beyond salary: Kiwisaver above minimum, extra annual leave beyond 4 weeks, professional development budget, flexible/hybrid working.\n\nReturn ONLY valid JSON with no markdown: {\"opening\":\"string\",\"pushbacks\":[{\"objection\":\"string\",\"response\":\"string\"}],\"closing\":\"string\",\"marketRange\":\"string with NZ-specific salary range for " + title + " plus a one-line verdict on whether $" + Number(target).toLocaleString() + " is realistic\",\"tip\":\"string with NZ-specific advice\"}";
 
   try {
     var res = await fetch("/api/chat", {
