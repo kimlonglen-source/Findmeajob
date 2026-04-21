@@ -248,63 +248,59 @@ body.dark .grade-badge span{color:#f8fafc !important}
 .spec-val{font-size:.85rem;font-weight:700;color:#1a1a2e;line-height:1.3}
 @media(max-width:780px){.spec{padding:0 1.25rem;margin-top:1rem}.spec-grid{grid-template-columns:1fr}.spec-cell{border-right:none;border-bottom:1px solid #f1f1f1}.spec-cell:last-child{border-bottom:none}}
 </style>
-<div style="position:relative;height:240px;overflow:hidden;background:#1a1a2e">
-  <img src="https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?w=1400&q=80" alt="Interview Questions" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5">
-  <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,.2) 100%)"></div>
-  <div style="position:relative;z-index:2;max-width:700px;margin:0 auto;padding:3.5rem 2rem 2rem">
-    <h1 style="font-size:2.2rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:.5rem">Interview Questions</h1>
-    <p style="color:rgba(255,255,255,.8);font-size:.95rem">Get 10 likely questions with strong example answers for any role.</p>
-  </div>
-</div>
-
-<div class="container">
-
-  <div id="formSection">
-    <div class="card">
-      <div class="field">
-        <label>Job Title</label>
-        <input type="text" id="jobTitle" placeholder="e.g. Software Engineer">
-      </div>
-      <div class="field">
-        <label>Company Name (optional)</label>
-        <input type="text" id="company" placeholder="e.g. Xero">
+<section class="aw-hero aw-hero-lavender">
+  <div class="aw-inner">
+    <div class="aw-text">
+      <div class="aw-badge">Free &bull; NZ &bull; Cheat sheet</div>
+      <h1>The <em>10 questions</em> they&rsquo;ll ask</h1>
+      <p class="aw-sub">Tell AI the role + company and get 10 likely NZ interview questions with strong STAR-format answers you can actually use.</p>
+      <a href="#formSection" class="aw-cta" onclick="document.getElementById('formSection').scrollIntoView({behavior:'smooth',block:'start'});return false;">Generate questions &rarr;</a>
+      <div class="aw-trust">
+        <div class="aw-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> NZ-tuned</div>
+        <div class="aw-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> STAR answers</div>
+        <div class="aw-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copy-ready</div>
       </div>
     </div>
-    <button class="btn" id="generateBtn" onclick="generate()">
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-      Generate Questions
-    </button>
-  </div>
-
-  <div class="loading" id="loading">
-    <div class="spinner"></div>
-    <p>Generating interview questions...</p>
-  </div>
-
-  <div id="result"></div>
-</div>
-
-
-<section style="max-width:900px;margin:0 auto;padding:2rem 2rem 3rem">
-  <h2 style="font-size:1.5rem;font-weight:900;color:#1a1a2e;margin-bottom:1.25rem">You might also like</h2>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
-    <a href="/interview-sim" style="position:relative;border-radius:16px;overflow:hidden;height:240px;display:block;text-decoration:none;background:url(https://images.unsplash.com/photo-1553877522-43269d4ea984?w=400&q=80) center/cover;transition:transform .3s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.8) 0%,transparent 50%)"></div><div style="position:absolute;top:1rem;right:1rem;width:28px;height:28px;background:#E7515A;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;z-index:2">&#8594;</div><div style="position:absolute;bottom:1rem;left:1rem;right:1rem;z-index:2"><div style="font-size:.95rem;font-weight:800;color:#fff;margin-bottom:.15rem">Interview Simulator</div><div style="font-size:.7rem;color:rgba(255,255,255,.75)">Practice with AI voice</div></div></a>
-    <a href="/decode" style="position:relative;border-radius:16px;overflow:hidden;height:240px;display:block;text-decoration:none;background:url(https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?w=400&q=80) center/cover;transition:transform .3s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.8) 0%,transparent 50%)"></div><div style="position:absolute;top:1rem;right:1rem;width:28px;height:28px;background:#E7515A;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;z-index:2">&#8594;</div><div style="position:absolute;bottom:1rem;left:1rem;right:1rem;z-index:2"><div style="font-size:.95rem;font-weight:800;color:#fff;margin-bottom:.15rem">Decode Job Ad</div><div style="font-size:.7rem;color:rgba(255,255,255,.75)">Spot red flags</div></div></a>
-    <a href="/salary" style="position:relative;border-radius:16px;overflow:hidden;height:240px;display:block;text-decoration:none;background:url(https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&q=80) center/cover;transition:transform .3s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.8) 0%,transparent 50%)"></div><div style="position:absolute;top:1rem;right:1rem;width:28px;height:28px;background:#E7515A;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;z-index:2">&#8594;</div><div style="position:absolute;bottom:1rem;left:1rem;right:1rem;z-index:2"><div style="font-size:.95rem;font-weight:800;color:#fff;margin-bottom:.15rem">Salary Calculator</div><div style="font-size:.7rem;color:rgba(255,255,255,.75)">Know your worth</div></div></a>
+    <div class="aw-viz">
+      <div class="tph-phone" aria-hidden="true">
+        <div class="tph-frame">
+          <div class="tph-screen">
+            <div class="tph-step tph-s-1">
+              <div class="tph-eb">Step 1 &middot; Pick the role</div>
+              <div class="tph-t">Tell AI what you&rsquo;re prepping</div>
+              <div class="tph-body">
+                <div class="tph-card"><div style="font-size:.5rem;font-weight:700;color:var(--mnz-text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.1rem">Role</div><div style="font-size:.65rem;font-weight:700;color:var(--mnz-navy)">Operations Manager</div></div>
+                <div class="tph-card"><div style="font-size:.5rem;font-weight:700;color:var(--mnz-text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.1rem">Seniority</div><div style="font-size:.65rem;font-weight:700;color:var(--mnz-navy)">Mid-Senior</div></div>
+                <div class="tph-card"><div style="font-size:.5rem;font-weight:700;color:var(--mnz-text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.1rem">Company</div><div style="font-size:.65rem;font-weight:700;color:var(--mnz-navy)">Kiwibank &middot; Wellington</div></div>
+                <div class="tph-cta">Generate questions</div>
+              </div>
+            </div>
+            <div class="tph-step tph-s-2">
+              <div class="tph-eb">Step 2 &middot; Generating</div>
+              <div class="tph-t">Top 10 likely questions&hellip;</div>
+              <div class="tph-body">
+                <div class="tph-card"><div class="tph-row">Behavioural</div><div class="tph-bar"><div class="tph-bar-fill" style="width:100%"></div></div></div>
+                <div class="tph-card"><div class="tph-row">Role-specific</div><div class="tph-bar"><div class="tph-bar-fill" style="width:72%"></div></div></div>
+                <div class="tph-card"><div class="tph-row">Company-specific</div><div class="tph-bar"><div class="tph-bar-fill" style="width:48%"></div></div></div>
+                <div class="tph-card"><div class="tph-row">Curveballs</div><div class="tph-bar"><div class="tph-bar-fill" style="width:22%"></div></div></div>
+              </div>
+            </div>
+            <div class="tph-step tph-s-3">
+              <div class="tph-eb">Step 3 &middot; Your cheat sheet</div>
+              <div class="tph-t">10 questions + good answers</div>
+              <div class="tph-body">
+                <div class="tph-card" style="display:flex;align-items:center;gap:.4rem"><span class="tph-chip">Q1</span><div style="font-size:.56rem;color:var(--mnz-navy);font-weight:600">Tell me about a time you led through change</div></div>
+                <div class="tph-card" style="display:flex;align-items:center;gap:.4rem"><span class="tph-chip">Q2</span><div style="font-size:.56rem;color:var(--mnz-navy);font-weight:600">How do you prioritise conflicting OKRs?</div></div>
+                <div class="tph-card" style="display:flex;align-items:center;gap:.4rem"><span class="tph-chip">Q3</span><div style="font-size:.56rem;color:var(--mnz-navy);font-weight:600">Walk me through a process you broke</div></div>
+                <div class="tph-card" style="display:flex;align-items:center;gap:.4rem"><span class="tph-chip">+7</span><div style="font-size:.56rem;color:var(--mnz-text-muted);font-weight:600">more, each with a STAR answer</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
-
-
-<div id="email-gate" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(4px)">
-  <div style="background:#fff;border-radius:20px;padding:2rem;max-width:400px;width:100%;text-align:center;box-shadow:0 25px 60px rgba(0,0,0,.15);position:relative">
-    <div style="width:48px;height:48px;background:linear-gradient(135deg,#E7515A,#c7313a);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-    <button onclick="document.getElementById(\"email-gate\").style.display=\"none\"" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.2rem;color:#94a3b8;cursor:pointer;padding:.25rem">&#10005;</button><div style="font-size:1.2rem;font-weight:800;color:#0f172a;margin-bottom:.35rem">Enter your email for unlimited access</div>
-    <div style="font-size:.82rem;color:#64748b;margin-bottom:1.25rem;line-height:1.5">All 12 AI tools stay free forever. We will also send you weekly NZ job matches.</div>
-    <input type="email" id="gate-email" placeholder="your@email.com" style="width:100%;padding:.75rem 1rem;border:1px solid #e2e8f0;border-radius:12px;font-family:Inter,sans-serif;font-size:15px;outline:none;margin-bottom:.75rem;color:#0f172a">
-    <button onclick="submitGateEmail()" id="gate-btn" style="width:100%;padding:.85rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:Inter,sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s">Continue</button>
-    <div style="font-size:.68rem;color:#94a3b8;margin-top:.75rem">No spam. Unsubscribe anytime. No password needed.</div>
-  </div>
-</div>
 
 <script>
 /* Email gate */
