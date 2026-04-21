@@ -126,23 +126,6 @@ img{max-width:100%;display:block}
   .want-link{font-size:1rem;padding:.75rem 0}
 }
 
-/* Compact "Or search jobs directly" strip under the hero. */
-.homesrch{background:#faf7f2;padding:2rem 2rem 2.25rem;border-top:1px solid rgba(0,0,0,.04);border-bottom:1px solid rgba(0,0,0,.04)}
-.homesrch-inner{max-width:900px;margin:0 auto}
-.homesrch-eb{font-size:.68rem;font-weight:800;color:#c7313a;text-transform:uppercase;letter-spacing:1.4px;margin-bottom:.75rem;text-align:center}
-.homesrch-form{display:flex;gap:.5rem;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:999px;padding:.4rem;box-shadow:0 6px 24px rgba(17,34,49,.06)}
-.homesrch-form input,.homesrch-form select{flex:1;border:none;background:none;outline:none;padding:.7rem 1rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:.92rem;color:#1a1a2e;min-width:0}
-.homesrch-form input::placeholder{color:#94a3b8}
-.homesrch-form select{max-width:180px;cursor:pointer;color:#475569}
-.homesrch-btn{background:linear-gradient(135deg,#E7515A,#c7313a);color:#fff;border:none;padding:.7rem 1.5rem;border-radius:999px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}
-.homesrch-btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(231,81,90,.3)}
-@media(max-width:700px){
-  .homesrch{padding:1.5rem 1rem 1.75rem}
-  .homesrch-form{flex-direction:column;border-radius:20px;padding:.5rem}
-  .homesrch-form select{max-width:none}
-  .homesrch-btn{width:100%}
-}
-
 /* Phone-flow section — single phone cycling through all 7 features */
 .pflow{background:#faf7f2;position:relative;overflow:hidden;padding:5rem 2rem 4.5rem}
 .pflow::before{content:'';position:absolute;top:-20%;right:-15%;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.1) 0%,transparent 65%);pointer-events:none}
@@ -418,44 +401,6 @@ img{max-width:100%;display:block}
   </div>
   <div class="hero-dots" id="heroDots"></div>
 </section>
-
-<!-- Compact "or just browse" search strip -->
-<section class="homesrch" aria-label="Search NZ jobs directly">
-  <div class="homesrch-inner">
-    <div class="homesrch-eb">Or search NZ jobs directly</div>
-    <form class="homesrch-form" onsubmit="return homeGoSearch(event)">
-      <input type="text" id="home-q" placeholder="Keyword, job title or profession" autocomplete="off">
-      <select id="home-reg" aria-label="Region">
-        <option value="">All of NZ</option>
-        <option>Auckland</option>
-        <option>Wellington</option>
-        <option>Christchurch</option>
-        <option>Hamilton</option>
-        <option>Tauranga</option>
-        <option>Dunedin</option>
-        <option>Napier</option>
-        <option>Nelson</option>
-        <option>New Plymouth</option>
-        <option>Palmerston North</option>
-        <option>Queenstown</option>
-        <option>Rotorua</option>
-      </select>
-      <button type="submit" class="homesrch-btn">Search &rarr;</button>
-    </form>
-  </div>
-</section>
-<script>
-function homeGoSearch(e){
-  e.preventDefault();
-  var q=document.getElementById('home-q').value.trim();
-  var r=document.getElementById('home-reg').value;
-  sessionStorage.setItem('goBrowse','1');
-  if(q)sessionStorage.setItem('goBrowseQ',q);else sessionStorage.removeItem('goBrowseQ');
-  if(r)sessionStorage.setItem('goBrowseR',r);else sessionStorage.removeItem('goBrowseR');
-  window.location.href='/match.html#browse';
-  return false;
-}
-</script>
 
 <!-- Phone-flow: single phone cycling through all 7 features -->
 <section class="pflow">
