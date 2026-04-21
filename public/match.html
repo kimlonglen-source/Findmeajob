@@ -3184,6 +3184,11 @@ function initApp(){try{
     window.location.href='/employer-portal.html';
   } else if(sessionStorage.getItem('goBrowse')){
     sessionStorage.removeItem('goBrowse');
+    var _pfq=sessionStorage.getItem('goBrowseQ');
+    var _pfr=sessionStorage.getItem('goBrowseR');
+    sessionStorage.removeItem('goBrowseQ');sessionStorage.removeItem('goBrowseR');
+    if(_pfq){var _k=document.getElementById('f-keyword');if(_k)_k.value=_pfq;}
+    if(_pfr){var _r=document.getElementById('f-reg');if(_r)_r.value=_pfr;}
     showPage('browse');loadBrowse();
   } else if(sessionStorage.getItem('goFind')){
     sessionStorage.removeItem('goFind');
