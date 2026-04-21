@@ -363,7 +363,7 @@ var _gateCallback = null;
 function setCookie(n,v,d){var e=new Date();e.setTime(e.getTime()+(d*24*60*60*1000));document.cookie=n+"="+v+";expires="+e.toUTCString()+";path=/;SameSite=Lax";}function getCookie(n){var c=document.cookie.split(";");for(var i=0;i<c.length;i++){var p=c[i].trim();if(p.indexOf(n+"=")==0)return p.substring(n.length+1);}return"";}function checkGate(callback) {
   if (localStorage.getItem('fmaj_email') || getCookie('fmaj_email')) { callback(); return; }
   var uses = parseInt(localStorage.getItem('fmaj_uses') || getCookie('fmaj_uses') || '0');
-  if (uses < 1) { localStorage.setItem('fmaj_uses', String(uses + 1));setCookie('fmaj_uses',String(uses+1),365); callback(); return; }
+  if (uses < 3) { localStorage.setItem('fmaj_uses', String(uses + 1));setCookie('fmaj_uses',String(uses+1),365); callback(); return; }
   _gateCallback = callback;
   document.getElementById('email-gate').style.display = 'flex';
   setTimeout(function(){ document.getElementById('gate-email').focus(); }, 100);
