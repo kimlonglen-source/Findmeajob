@@ -316,6 +316,100 @@ body.dark .grade-badge span{color:#f8fafc !important}
   </div>
 </section>
 
+<div class="container">
+
+  <div id="formSection">
+    <div class="card">
+      <div class="card-title">Your Current Role</div>
+      <div style="margin-bottom:1rem">
+        <label>Job Title</label>
+        <input type="text" id="jobTitle" placeholder="e.g. Marketing Manager">
+      </div>
+      <div>
+        <label>Current Salary (NZD)</label>
+        <div class="salary-display" id="salaryDisplay">$80,000</div>
+        <input type="range" id="salarySlider" min="30000" max="200000" step="5000" value="80000">
+        <div style="display:flex;justify-content:space-between;font-size:.68rem;color:#94a3b8;margin-top:.25rem">
+          <span>$30k</span><span>$200k</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">The 6 Questions</div>
+
+      <div class="question" data-q="sunday">
+        <p>How do you feel on Sunday evening about Monday?</p>
+        <div class="options">
+          <div class="opt" data-v="Excited">Excited</div>
+          <div class="opt" data-v="Fine">Fine</div>
+          <div class="opt" data-v="Dread">Dread</div>
+        </div>
+      </div>
+
+      <div class="question" data-q="growing">
+        <p>Are you still growing in this role?</p>
+        <div class="options">
+          <div class="opt" data-v="Yes">Yes</div>
+          <div class="opt" data-v="Plateaued">Plateaued</div>
+          <div class="opt" data-v="Going backwards">Going backwards</div>
+        </div>
+      </div>
+
+      <div class="question" data-q="manager">
+        <p>How is your manager?</p>
+        <div class="options">
+          <div class="opt" data-v="Great">Great</div>
+          <div class="opt" data-v="OK">OK</div>
+          <div class="opt" data-v="Terrible">Terrible</div>
+        </div>
+      </div>
+
+      <div class="question" data-q="frustration">
+        <p>What is your biggest frustration?</p>
+        <div class="options">
+          <div class="opt" data-v="Not challenged">Not challenged</div>
+          <div class="opt" data-v="Not valued">Not valued</div>
+          <div class="opt" data-v="Not paid enough">Not paid enough</div>
+          <div class="opt" data-v="Nothing">Nothing</div>
+        </div>
+      </div>
+
+      <div class="question" data-q="quit">
+        <p>If you quit tomorrow, you would feel...</p>
+        <div class="options">
+          <div class="opt" data-v="Scared">Scared</div>
+          <div class="opt" data-v="Relieved">Relieved</div>
+          <div class="opt" data-v="Both">Both</div>
+        </div>
+      </div>
+
+      <div class="question" data-q="duration">
+        <p>How long have you felt this way?</p>
+        <div class="options">
+          <div class="opt" data-v="Recently">Recently</div>
+          <div class="opt" data-v="Months">Months</div>
+          <div class="opt" data-v="Years">Years</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn" id="analyseBtn" onclick="analyse()">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="8"/><path d="M9 5v4l2.5 1.5"/></svg>
+      Analyse My Situation
+    </button>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>Analysing your career situation...</p>
+  </div>
+
+  <div id="result"></div>
+</div>
+
+
+
     <div class="card">
       <div class="card-title">The 6 Questions</div>
 
