@@ -526,3 +526,186 @@ nav.nav {
 @media (max-width: 780px) {
   .mnz-footer-cols { grid-template-columns: 1fr 1fr; gap: 1.25rem; }
 }
+
+/* ============================================================================
+   SHARED TOOL-PAGE FLOATING PHONE + HERO TINTS
+   Used across match / interview-sim / practice-sim and every /tool page.
+   ============================================================================ */
+
+/* Hero-tint modifiers that flatten .aw-hero onto a Monzo soft-tint background
+   and flip the text colour from white (over navy gradient) to navy. Text
+   inside aw-hero-* overrides the dark-hero defaults already in each page. */
+.aw-hero.aw-hero-cream,
+.aw-hero.aw-hero-mint,
+.aw-hero.aw-hero-peach,
+.aw-hero.aw-hero-lavender { background: var(--mnz-cream); }
+.aw-hero.aw-hero-mint    { background: var(--mnz-mint); }
+.aw-hero.aw-hero-peach   { background: var(--mnz-peach); }
+.aw-hero.aw-hero-lavender{ background: var(--mnz-lavender); }
+.aw-hero-cream::before, .aw-hero-cream::after,
+.aw-hero-mint::before, .aw-hero-mint::after,
+.aw-hero-peach::before, .aw-hero-peach::after,
+.aw-hero-lavender::before, .aw-hero-lavender::after { display: none !important; }
+.aw-hero-cream .aw-text h1,
+.aw-hero-mint .aw-text h1,
+.aw-hero-peach .aw-text h1,
+.aw-hero-lavender .aw-text h1 { color: var(--mnz-navy); }
+.aw-hero-cream .aw-text h1 em,
+.aw-hero-mint .aw-text h1 em,
+.aw-hero-peach .aw-text h1 em,
+.aw-hero-lavender .aw-text h1 em { color: var(--mnz-coral); font-style: normal; }
+.aw-hero-cream .aw-sub,
+.aw-hero-mint .aw-sub,
+.aw-hero-peach .aw-sub,
+.aw-hero-lavender .aw-sub { color: var(--mnz-text-muted); }
+.aw-hero-cream .aw-badge,
+.aw-hero-mint .aw-badge,
+.aw-hero-peach .aw-badge,
+.aw-hero-lavender .aw-badge {
+  background: rgba(17,34,49,.06);
+  border: 1px solid rgba(17,34,49,.1);
+  color: var(--mnz-navy);
+}
+.aw-hero-cream .aw-feat,
+.aw-hero-mint .aw-feat,
+.aw-hero-peach .aw-feat,
+.aw-hero-lavender .aw-feat {
+  background: rgba(255,255,255,.6);
+  border: 1px solid rgba(17,34,49,.08);
+  color: var(--mnz-navy);
+}
+.aw-hero-cream .aw-trust-item,
+.aw-hero-mint .aw-trust-item,
+.aw-hero-peach .aw-trust-item,
+.aw-hero-lavender .aw-trust-item { color: var(--mnz-text-muted); }
+.aw-hero-cream .aw-cta,
+.aw-hero-mint .aw-cta,
+.aw-hero-peach .aw-cta,
+.aw-hero-lavender .aw-cta {
+  background: linear-gradient(135deg, var(--mnz-coral), var(--mnz-coral-dark));
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(255,79,64,.25);
+}
+
+/* Shared tool-page phone (.tph-*) — tilted, floating, 3-step opacity cycle.
+   Use this instead of copy-pasting per-page .mph-/.iph-/.pph-. */
+.tph-phone {
+  position: relative;
+  width: 280px;
+  max-width: 100%;
+  filter: drop-shadow(0 30px 60px rgba(17,34,49,.22));
+  animation: tphFloat 6s ease-in-out infinite;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  margin: 0 auto;
+}
+.tph-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 19;
+  background: #0d0d15;
+  border-radius: 42px;
+  padding: 10px;
+  overflow: hidden;
+}
+.tph-frame::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 96px;
+  height: 22px;
+  background: #0d0d15;
+  border-radius: 0 0 16px 16px;
+  z-index: 3;
+}
+.tph-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--mnz-cream);
+  border-radius: 32px;
+  overflow: hidden;
+}
+.tph-step {
+  position: absolute;
+  inset: 0;
+  padding: 2.2rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  background: var(--mnz-cream);
+  opacity: 0;
+  animation: tphCycle 15s linear infinite;
+}
+.tph-s-1 { animation-delay: 0s; }
+.tph-s-2 { animation-delay: -10s; }
+.tph-s-3 { animation-delay: -5s; }
+@keyframes tphCycle {
+  0%   { opacity: 0; }
+  2%   { opacity: 1; }
+  30%  { opacity: 1; }
+  33%,100% { opacity: 0; }
+}
+@keyframes tphFloat {
+  0%,100% { transform: rotate(-6deg) translateY(0); }
+  50%     { transform: rotate(-6deg) translateY(-10px); }
+}
+@keyframes tphFloatStraight {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-10px); }
+}
+
+/* Shared screen-content primitives so per-page content stays compact. */
+.tph-eb { font-size: .55rem; font-weight: 800; color: var(--mnz-coral-dark); text-transform: uppercase; letter-spacing: 1.4px; margin-bottom: .25rem; }
+.tph-t  { font-size: 1rem; font-weight: 900; color: var(--mnz-navy); line-height: 1.15; letter-spacing: -.3px; margin-bottom: .7rem; }
+.tph-body { flex: 1; display: flex; flex-direction: column; gap: .5rem; min-height: 0; }
+.tph-card { background: #fff; border: 1px solid var(--mnz-border); border-radius: 12px; padding: .55rem .6rem; }
+.tph-row { display: flex; align-items: center; gap: .45rem; font-size: .68rem; color: var(--mnz-navy); font-weight: 600; }
+.tph-row-sub { font-size: .58rem; color: var(--mnz-text-muted); font-weight: 500; margin-top: .1rem; }
+.tph-chip { display: inline-flex; align-items: center; background: var(--mnz-coral-tint); color: var(--mnz-coral-dark); border: 1px solid var(--mnz-coral-border); padding: .12rem .4rem; border-radius: 999px; font-size: .54rem; font-weight: 700; }
+.tph-bar { height: 4px; border-radius: 999px; background: var(--mnz-border-soft); overflow: hidden; margin-top: .2rem; }
+.tph-bar-fill { height: 100%; background: linear-gradient(90deg, var(--mnz-coral), var(--mnz-coral-dark)); }
+.tph-cta { background: var(--mnz-navy); color: #fff; padding: .45rem .65rem; border-radius: 999px; text-align: center; font-size: .62rem; font-weight: 700; margin-top: auto; }
+.tph-score-ring { width: 68px; height: 68px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #fff; font-size: 1.1rem; margin: .5rem auto; background: conic-gradient(var(--mnz-coral) 0deg 295deg, var(--mnz-border-soft) 295deg 360deg); position: relative; }
+.tph-score-ring::after { content: ''; position: absolute; inset: 6px; border-radius: 50%; background: var(--mnz-cream); }
+.tph-score-ring span { position: relative; z-index: 1; color: var(--mnz-navy); }
+
+/* Mobile: straight (no tilt) + slightly smaller width. */
+@media (max-width: 820px) {
+  .tph-phone { width: 240px; animation: tphFloatStraight 6s ease-in-out infinite; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tph-phone, .tph-step { animation: none !important; }
+  .tph-s-1 { opacity: 1; }
+}
+
+/* Shared .aw-hero base (for the 8 tool pages that don't already define it).
+   Match / interview-sim / practice-sim have their own inline versions that
+   load after this and continue to win for specificity-equal rules — the tint
+   modifier classes use compound specificity so they override regardless. */
+.aw-hero { position: relative; padding: 3rem 2rem 3.5rem; border-radius: 20px; margin: .5rem 3rem 0; overflow: hidden; background: var(--mnz-cream); }
+.aw-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.05fr .95fr; gap: 3rem; align-items: center; position: relative; z-index: 1; }
+.aw-text { position: relative; z-index: 1; }
+.aw-text h1 { font-size: 2.6rem; font-weight: 900; color: var(--mnz-navy); line-height: 1.1; margin-bottom: .65rem; letter-spacing: -.5px; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+.aw-text h1 em { font-style: normal; color: var(--mnz-coral); }
+.aw-text .aw-sub { font-size: 1.05rem; color: var(--mnz-text-muted); line-height: 1.6; margin-bottom: 1.5rem; max-width: 480px; }
+.aw-badge { display: inline-block; background: rgba(17,34,49,.06); border: 1px solid rgba(17,34,49,.1); color: var(--mnz-navy); padding: .3rem .85rem; border-radius: 999px; font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 1rem; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+.aw-feats { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.25rem; }
+.aw-feat { display: inline-flex; align-items: center; gap: .45rem; background: rgba(255,255,255,.6); border: 1px solid rgba(17,34,49,.08); color: var(--mnz-navy); padding: .5rem .9rem; border-radius: 999px; font-size: .78rem; font-weight: 600; }
+.aw-feat svg { width: 14px; height: 14px; color: var(--mnz-coral); flex-shrink: 0; }
+.aw-cta { display: inline-block; background: linear-gradient(135deg, var(--mnz-coral), var(--mnz-coral-dark)); color: #fff; padding: .85rem 1.75rem; border-radius: 999px; font-size: .92rem; font-weight: 700; text-decoration: none; box-shadow: 0 4px 20px rgba(255,79,64,.28); transition: all .25s; border: none; cursor: pointer; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+.aw-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,79,64,.4); text-decoration: none; color: #fff; }
+.aw-trust { display: flex; gap: 1.25rem; margin-top: 1rem; flex-wrap: wrap; align-items: center; }
+.aw-trust-item { display: inline-flex; align-items: center; gap: .35rem; font-size: .72rem; color: var(--mnz-text-muted); font-weight: 500; }
+.aw-trust-item svg { width: 12px; height: 12px; color: #10b981; }
+.aw-viz { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; min-height: 500px; }
+@media (max-width: 820px) {
+  .aw-hero { padding: 2rem 1rem 2.5rem; margin: .5rem 1rem 0; border-radius: 16px; }
+  .aw-inner { grid-template-columns: 1fr; gap: 2rem; }
+  .aw-text h1 { font-size: 1.85rem; }
+  .aw-text .aw-sub { font-size: .92rem; }
+  .aw-viz { min-height: auto; order: -1; }
+  .aw-feats { gap: .35rem; }
+  .aw-feat { font-size: .72rem; padding: .4rem .75rem; }
+}
