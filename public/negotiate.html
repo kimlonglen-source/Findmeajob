@@ -250,34 +250,57 @@ body.dark .grade-badge span{color:#f8fafc !important}
 .spec-val{font-size:.85rem;font-weight:700;color:#1a1a2e;line-height:1.3}
 @media(max-width:780px){.spec{padding:0 1.25rem;margin-top:1rem}.spec-grid{grid-template-columns:1fr}.spec-cell{border-right:none;border-bottom:1px solid #f1f1f1}.spec-cell:last-child{border-bottom:none}}
 </style>
-<div style="position:relative;height:240px;overflow:hidden;background:#1a1a2e">
-  <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1400&q=80" alt="Negotiate My Salary" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5">
-  <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,.2) 100%)"></div>
-  <div style="position:relative;z-index:2;max-width:700px;margin:0 auto;padding:3.5rem 2rem 2rem">
-    <h1 style="font-size:2.2rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:.5rem">Negotiate My Salary</h1>
-    <p style="color:rgba(255,255,255,.8);font-size:.95rem">Get a word-for-word script to negotiate your offer with confidence.</p>
-  </div>
-</div>
-
-<div class="container">
-
-  <div id="formSection">
-    <div class="card">
-      <div class="field">
-        <label>Job Title</label>
-        <input type="text" id="jobTitle" placeholder="e.g. Product Manager">
+<section class="aw-hero aw-hero-peach">
+  <div class="aw-inner">
+    <div class="aw-text">
+      <div class="aw-badge">Free &bull; NZ &bull; Talk track</div>
+      <h1>Negotiate your salary &mdash; <em>word for word</em></h1>
+      <p class="aw-sub">Tell AI your offer and target, it writes the exact script for the call &mdash; built on what actually works in NZ negotiations.</p>
+      <a href="#formSection" class="aw-cta" onclick="document.getElementById('formSection').scrollIntoView({behavior:'smooth',block:'start'});return false;">Write my script &rarr;</a>
+      <div class="aw-trust">
+        <div class="aw-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> NZ-tested</div>
+        <div class="aw-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Word-for-word</div>
+        <div class="aw-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Free forever</div>
       </div>
-      <div class="g2">
-        <div class="field">
-          <label>Current Salary (NZD)</label>
-          <input type="number" id="currentSalary" placeholder="e.g. 95000">
-        </div>
-        <div class="field">
-          <label>Offered Salary (NZD)</label>
-          <input type="number" id="offeredSalary" placeholder="e.g. 105000">
+    </div>
+    <div class="aw-viz">
+      <div class="tph-phone" aria-hidden="true">
+        <div class="tph-frame">
+          <div class="tph-screen">
+            <div class="tph-step tph-s-1">
+              <div class="tph-eb">Step 1 &middot; Your offer</div>
+              <div class="tph-t">Tell AI the numbers</div>
+              <div class="tph-body">
+                <div class="tph-card"><div style="font-size:.5rem;font-weight:700;color:var(--mnz-text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.1rem">They offered</div><div style="font-size:.85rem;font-weight:900;color:var(--mnz-navy)">$95,000</div></div>
+                <div class="tph-card"><div style="font-size:.5rem;font-weight:700;color:var(--mnz-text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.1rem">You want</div><div style="font-size:.85rem;font-weight:900;color:var(--mnz-coral-dark)">$108,000</div></div>
+                <div class="tph-card"><div style="font-size:.5rem;font-weight:700;color:var(--mnz-text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.1rem">Role</div><div style="font-size:.6rem;font-weight:700;color:var(--mnz-navy)">Senior Product Manager</div></div>
+                <div class="tph-cta">Write my script</div>
+              </div>
+            </div>
+            <div class="tph-step tph-s-2">
+              <div class="tph-eb">Step 2 &middot; AI script</div>
+              <div class="tph-t">Your talk track</div>
+              <div class="tph-body">
+                <div class="tph-card"><div style="font-size:.54rem;color:var(--mnz-text-muted);line-height:1.55">&ldquo;Thanks for the offer. I&rsquo;m genuinely excited about the role. Based on <span style="background:var(--mnz-coral-tint);color:var(--mnz-coral-dark);padding:0 2px;font-weight:700">NZ market data</span> for senior PMs with my experience&hellip;&rdquo;</div></div>
+                <div class="tph-card" style="display:flex;align-items:center;gap:.4rem"><span class="tph-chip">TIP</span><div style="font-size:.56rem;color:var(--mnz-navy);font-weight:600">Lead with enthusiasm, not numbers</div></div>
+                <div class="tph-card" style="display:flex;align-items:center;gap:.4rem"><span class="tph-chip">TIP</span><div style="font-size:.56rem;color:var(--mnz-navy);font-weight:600">Cite data, not feelings</div></div>
+              </div>
+            </div>
+            <div class="tph-step tph-s-3">
+              <div class="tph-eb">Step 3 &middot; Outcome</div>
+              <div class="tph-t">Result after the call</div>
+              <div class="tph-body">
+                <div class="tph-card" style="text-align:center;padding:.75rem"><div style="font-size:.52rem;font-weight:700;color:var(--mnz-text-muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:.15rem">You got</div><div style="font-size:1.25rem;font-weight:900;color:var(--mnz-coral-dark);line-height:1">+$10,500</div><div style="font-size:.54rem;color:var(--mnz-text-muted);margin-top:.2rem">Final: $105,500 &middot; 4 weeks leave</div></div>
+                <div class="tph-card" style="display:flex;align-items:center;gap:.4rem"><span class="tph-chip">BONUS</span><div style="font-size:.56rem;color:var(--mnz-navy);font-weight:600">Signing bonus: $4k</div></div>
+                <div class="tph-card" style="display:flex;align-items:center;gap:.4rem"><span class="tph-chip">WIN</span><div style="font-size:.56rem;color:var(--mnz-navy);font-weight:600">Extra week annual leave</div></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+  </div>
+</section>
     <button class="btn" id="negotiateBtn" onclick="negotiate()">
       <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
       Write My Script

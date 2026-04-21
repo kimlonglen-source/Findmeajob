@@ -264,33 +264,57 @@ body.dark .grade-badge span{color:#f8fafc !important}
 .spec-val{font-size:.85rem;font-weight:700;color:#1a1a2e;line-height:1.3}
 @media(max-width:780px){.spec{padding:0 1.25rem;margin-top:1rem}.spec-grid{grid-template-columns:1fr}.spec-cell{border-right:none;border-bottom:1px solid #f1f1f1}.spec-cell:last-child{border-bottom:none}}
 </style>
-<div style="position:relative;height:240px;overflow:hidden;background:#1a1a2e">
-  <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1400&q=80" alt="Should I Stay or Go?" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5">
-  <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,.2) 100%)"></div>
-  <div style="position:relative;z-index:2;max-width:700px;margin:0 auto;padding:3.5rem 2rem 2rem">
-    <h1 style="font-size:2.2rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:.5rem">Should I Stay or Go?</h1>
-    <p style="color:rgba(255,255,255,.8);font-size:.95rem">AI career health check. Find out if it is time to move on.</p>
-  </div>
-</div>
-
-<div class="container">
-
-  <div id="formSection">
-    <div class="card">
-      <div class="card-title">Your Current Role</div>
-      <div style="margin-bottom:1rem">
-        <label>Job Title</label>
-        <input type="text" id="jobTitle" placeholder="e.g. Marketing Manager">
+<section class="aw-hero aw-hero-mint">
+  <div class="aw-inner">
+    <div class="aw-text">
+      <div class="aw-badge">Free &bull; NZ &bull; Career check</div>
+      <h1>Should I <em>stay or go?</em></h1>
+      <p class="aw-sub">An honest AI career health check &mdash; weighs money, growth, lifestyle and your manager against the new offer, then tells you what to do.</p>
+      <a href="#formSection" class="aw-cta" onclick="document.getElementById('formSection').scrollIntoView({behavior:'smooth',block:'start'});return false;">Help me decide &rarr;</a>
+      <div class="aw-trust">
+        <div class="aw-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Weighted by you</div>
+        <div class="aw-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Honest verdict</div>
+        <div class="aw-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Free forever</div>
       </div>
-      <div>
-        <label>Current Salary (NZD)</label>
-        <div class="salary-display" id="salaryDisplay">$80,000</div>
-        <input type="range" id="salarySlider" min="30000" max="200000" step="5000" value="80000">
-        <div style="display:flex;justify-content:space-between;font-size:.68rem;color:#94a3b8;margin-top:.25rem">
-          <span>$30k</span><span>$200k</span>
+    </div>
+    <div class="aw-viz">
+      <div class="tph-phone" aria-hidden="true">
+        <div class="tph-frame">
+          <div class="tph-screen">
+            <div class="tph-step tph-s-1">
+              <div class="tph-eb">Step 1 &middot; Where you are</div>
+              <div class="tph-t">Current vs new</div>
+              <div class="tph-body">
+                <div class="tph-card"><div style="font-size:.5rem;font-weight:700;color:var(--mnz-text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.1rem">Current</div><div style="font-size:.62rem;font-weight:700;color:var(--mnz-navy)">Marketing Mgr &middot; 3yrs</div><div style="font-size:.52rem;color:var(--mnz-text-muted);margin-top:.1rem">$95k &middot; 2 day WFH</div></div>
+                <div class="tph-card"><div style="font-size:.5rem;font-weight:700;color:var(--mnz-coral-dark);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.1rem">New offer</div><div style="font-size:.62rem;font-weight:700;color:var(--mnz-navy)">Sr Marketing Lead</div><div style="font-size:.52rem;color:var(--mnz-text-muted);margin-top:.1rem">$115k &middot; fully onsite</div></div>
+                <div class="tph-cta">Help me decide</div>
+              </div>
+            </div>
+            <div class="tph-step tph-s-2">
+              <div class="tph-eb">Step 2 &middot; Weighing it up</div>
+              <div class="tph-t">What actually matters</div>
+              <div class="tph-body">
+                <div class="tph-card"><div class="tph-row">Money &amp; package</div><div class="tph-bar"><div class="tph-bar-fill" style="width:92%"></div></div></div>
+                <div class="tph-card"><div class="tph-row">Growth &amp; title</div><div class="tph-bar"><div class="tph-bar-fill" style="width:84%"></div></div></div>
+                <div class="tph-card"><div class="tph-row">Lifestyle &amp; flex</div><div class="tph-bar"><div class="tph-bar-fill" style="width:34%"></div></div></div>
+                <div class="tph-card"><div class="tph-row">Manager quality</div><div class="tph-bar"><div class="tph-bar-fill" style="width:62%"></div></div></div>
+              </div>
+            </div>
+            <div class="tph-step tph-s-3">
+              <div class="tph-eb">Step 3 &middot; Verdict</div>
+              <div class="tph-t">Based on your weights&hellip;</div>
+              <div class="tph-body">
+                <div class="tph-card" style="text-align:center;padding:.65rem"><div style="font-size:.52rem;font-weight:700;color:var(--mnz-text-muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:.2rem">AI says</div><div style="font-size:1rem;font-weight:900;color:var(--mnz-coral-dark)">Negotiate, then stay</div></div>
+                <div class="tph-card" style="display:flex;align-items:center;gap:.4rem"><span class="tph-chip">WHY</span><div style="font-size:.56rem;color:var(--mnz-navy);font-weight:600">WFH is worth ~$12k to you</div></div>
+                <div class="tph-card" style="display:flex;align-items:center;gap:.4rem"><span class="tph-chip">NEXT</span><div style="font-size:.56rem;color:var(--mnz-navy);font-weight:600">Ask current boss for $108k</div></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+  </div>
+</section>
 
     <div class="card">
       <div class="card-title">The 6 Questions</div>

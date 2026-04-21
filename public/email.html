@@ -247,73 +247,57 @@ body.dark .grade-badge span{color:#f8fafc !important}
 .spec-val{font-size:.85rem;font-weight:700;color:#1a1a2e;line-height:1.3}
 @media(max-width:780px){.spec{padding:0 1.25rem;margin-top:1rem}.spec-grid{grid-template-columns:1fr}.spec-cell{border-right:none;border-bottom:1px solid #f1f1f1}.spec-cell:last-child{border-bottom:none}}
 </style>
-<div style="position:relative;height:240px;overflow:hidden;background:#1a1a2e">
-  <img src="https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=1400&q=80" alt="Write This Email" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5">
-  <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,.2) 100%)"></div>
-  <div style="position:relative;z-index:2;max-width:700px;margin:0 auto;padding:3.5rem 2rem 2rem">
-    <h1 style="font-size:2.2rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:.5rem">Write This Email</h1>
-    <p style="color:rgba(255,255,255,.8);font-size:.95rem">Professional emails for tricky work situations. Ready to copy and paste.</p>
-  </div>
-</div>
-
-<div class="container">
-
-  <div id="formSection">
-    <div class="card">
-      <div class="field">
-        <label>What Do You Need to Write?</label>
-        <select id="scenario">
-          <option value="">Choose a scenario...</option>
-          <option value="Follow up after interview">Follow up after interview</option>
-          <option value="Ask for a raise">Ask for a raise</option>
-          <option value="Push back on boss">Push back on boss</option>
-          <option value="Call in sick">Call in sick</option>
-          <option value="Resign professionally">Resign professionally</option>
-          <option value="Thank you after interview">Thank you after interview</option>
-          <option value="Request flexible working">Request flexible working</option>
-          <option value="Decline a job offer">Decline a job offer</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Context (Optional)</label>
-        <textarea id="context" placeholder="Add any details... e.g. company name, your role, situation details"></textarea>
+<section class="aw-hero aw-hero-lavender">
+  <div class="aw-inner">
+    <div class="aw-text">
+      <div class="aw-badge">Free &bull; NZ &bull; Drafter</div>
+      <h1>Write <em>this email</em> in seconds</h1>
+      <p class="aw-sub">Thank-you notes, follow-ups, decline letters, feedback asks &mdash; AI drafts it in your voice with a warm NZ tone.</p>
+      <a href="#formSection" class="aw-cta" onclick="document.getElementById('formSection').scrollIntoView({behavior:'smooth',block:'start'});return false;">Write my email &rarr;</a>
+      <div class="aw-trust">
+        <div class="aw-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Tone-matched</div>
+        <div class="aw-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Edit inline</div>
+        <div class="aw-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copy or send</div>
       </div>
     </div>
-    <button class="btn" id="writeBtn" onclick="writeEmail()">
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-      Write My Email
-    </button>
-  </div>
-
-  <div class="loading" id="loading">
-    <div class="spinner"></div>
-    <p>Writing your email...</p>
-  </div>
-
-  <div id="result"></div>
-</div>
-
-
-<section style="max-width:900px;margin:0 auto;padding:2rem 2rem 3rem">
-  <h2 style="font-size:1.5rem;font-weight:900;color:#1a1a2e;margin-bottom:1.25rem">You might also like</h2>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
-    <a href="/negotiate" style="position:relative;border-radius:16px;overflow:hidden;height:240px;display:block;text-decoration:none;background:url(https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400&q=80) center/cover;transition:transform .3s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.8) 0%,transparent 50%)"></div><div style="position:absolute;top:1rem;right:1rem;width:28px;height:28px;background:#E7515A;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;z-index:2">&#8594;</div><div style="position:absolute;bottom:1rem;left:1rem;right:1rem;z-index:2"><div style="font-size:.95rem;font-weight:800;color:#fff;margin-bottom:.15rem">Negotiate Salary</div><div style="font-size:.7rem;color:rgba(255,255,255,.75)">Scripts for negotiation</div></div></a>
-    <a href="/interview-sim" style="position:relative;border-radius:16px;overflow:hidden;height:240px;display:block;text-decoration:none;background:url(https://images.unsplash.com/photo-1553877522-43269d4ea984?w=400&q=80) center/cover;transition:transform .3s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.8) 0%,transparent 50%)"></div><div style="position:absolute;top:1rem;right:1rem;width:28px;height:28px;background:#E7515A;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;z-index:2">&#8594;</div><div style="position:absolute;bottom:1rem;left:1rem;right:1rem;z-index:2"><div style="font-size:.95rem;font-weight:800;color:#fff;margin-bottom:.15rem">Interview Simulator</div><div style="font-size:.7rem;color:rgba(255,255,255,.75)">Practice interviews</div></div></a>
-    <a href="/decide" style="position:relative;border-radius:16px;overflow:hidden;height:240px;display:block;text-decoration:none;background:url(https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400&q=80) center/cover;transition:transform .3s" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''"><div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.8) 0%,transparent 50%)"></div><div style="position:absolute;top:1rem;right:1rem;width:28px;height:28px;background:#E7515A;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;z-index:2">&#8594;</div><div style="position:absolute;bottom:1rem;left:1rem;right:1rem;z-index:2"><div style="font-size:.95rem;font-weight:800;color:#fff;margin-bottom:.15rem">Should I Stay or Go?</div><div style="font-size:.7rem;color:rgba(255,255,255,.75)">Career health check</div></div></a>
+    <div class="aw-viz">
+      <div class="tph-phone" aria-hidden="true">
+        <div class="tph-frame">
+          <div class="tph-screen">
+            <div class="tph-step tph-s-1">
+              <div class="tph-eb">Step 1 &middot; What&rsquo;s the email?</div>
+              <div class="tph-t">Pick a scenario</div>
+              <div class="tph-body">
+                <div class="tph-card" style="display:flex;align-items:center;gap:.4rem"><div style="width:22px;height:22px;background:var(--mnz-coral-tint);border-radius:5px;flex-shrink:0"></div><div style="flex:1"><div style="font-size:.6rem;font-weight:700;color:var(--mnz-navy)">Follow-up after interview</div></div><span class="tph-chip">Pick</span></div>
+                <div class="tph-card" style="display:flex;align-items:center;gap:.4rem"><div style="width:22px;height:22px;background:var(--mnz-border-soft);border-radius:5px;flex-shrink:0"></div><div style="flex:1"><div style="font-size:.6rem;font-weight:700;color:var(--mnz-navy)">Decline an offer politely</div></div></div>
+                <div class="tph-card" style="display:flex;align-items:center;gap:.4rem"><div style="width:22px;height:22px;background:var(--mnz-border-soft);border-radius:5px;flex-shrink:0"></div><div style="flex:1"><div style="font-size:.6rem;font-weight:700;color:var(--mnz-navy)">Ask for feedback</div></div></div>
+                <div class="tph-cta">Write this email</div>
+              </div>
+            </div>
+            <div class="tph-step tph-s-2">
+              <div class="tph-eb">Step 2 &middot; AI drafting</div>
+              <div class="tph-t">Typing it out&hellip;</div>
+              <div class="tph-body">
+                <div class="tph-card"><div style="font-size:.54rem;color:var(--mnz-text-muted);line-height:1.55">Hi Sarah,<br><br>Thanks for taking the time yesterday &mdash; I really enjoyed hearing about the&nbsp;<span style="background:var(--mnz-coral-tint);color:var(--mnz-coral-dark);padding:0 2px">team&rsquo;s road&shy;map</span>&hellip; <span style="display:inline-block;width:4px;height:.7rem;background:var(--mnz-navy);vertical-align:text-bottom;animation:tphBlink 1s step-end infinite"></span></div></div>
+                <div class="tph-card"><div class="tph-row">Tone: warm, professional</div></div>
+                <div class="tph-card"><div class="tph-row">Length: 80 words</div></div>
+              </div>
+            </div>
+            <div class="tph-step tph-s-3">
+              <div class="tph-eb">Step 3 &middot; Ready to send</div>
+              <div class="tph-t">Polished draft</div>
+              <div class="tph-body">
+                <div class="tph-card"><div style="font-size:.5rem;font-weight:700;color:var(--mnz-text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.15rem">Subject</div><div style="font-size:.6rem;font-weight:700;color:var(--mnz-navy)">Great to meet &mdash; quick follow-up</div></div>
+                <div class="tph-card"><div style="font-size:.54rem;color:var(--mnz-text-muted);line-height:1.55">Hi Sarah, thanks so much for yesterday. Your point about scaling the platform really stuck with me. I&rsquo;d love to&hellip;</div></div>
+                <div class="tph-card" style="display:flex;gap:.35rem"><span class="tph-chip">Copy</span><span class="tph-chip">Send</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
-
-
-<div id="email-gate" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(4px)">
-  <div style="background:#fff;border-radius:20px;padding:2rem;max-width:400px;width:100%;text-align:center;box-shadow:0 25px 60px rgba(0,0,0,.15);position:relative">
-    <div style="width:48px;height:48px;background:linear-gradient(135deg,#E7515A,#c7313a);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-    <button onclick="document.getElementById(\"email-gate\").style.display=\"none\"" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.2rem;color:#94a3b8;cursor:pointer;padding:.25rem">&#10005;</button><div style="font-size:1.2rem;font-weight:800;color:#0f172a;margin-bottom:.35rem">Enter your email for unlimited access</div>
-    <div style="font-size:.82rem;color:#64748b;margin-bottom:1.25rem;line-height:1.5">All 12 AI tools stay free forever. We will also send you weekly NZ job matches.</div>
-    <input type="email" id="gate-email" placeholder="your@email.com" style="width:100%;padding:.75rem 1rem;border:1px solid #e2e8f0;border-radius:12px;font-family:Inter,sans-serif;font-size:15px;outline:none;margin-bottom:.75rem;color:#0f172a">
-    <button onclick="submitGateEmail()" id="gate-btn" style="width:100%;padding:.85rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:Inter,sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s">Continue</button>
-    <div style="font-size:.68rem;color:#94a3b8;margin-top:.75rem">No spam. Unsubscribe anytime. No password needed.</div>
-  </div>
-</div>
 
 <script>
 /* Email gate */
