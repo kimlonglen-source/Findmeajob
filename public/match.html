@@ -1137,11 +1137,25 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 
 <!-- JOB SEEKER ACCOUNT -->
 <div id="page-account" class="page">
-  <div class="wrap">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:.75rem">
-      <div><div class="page-eyebrow">Job Seekers</div><div class="page-title" id="acct-welcome">Sign In</div></div>
-      <button class="btn-sm" id="acct-signout" type="button" style="display:none">Sign out</button>
+  <section class="aw-hero aw-hero-lavender" style="margin-bottom:0">
+    <div style="max-width:760px;margin:0 auto;position:relative;z-index:1">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+        <div class="aw-text" style="flex:1;min-width:260px">
+          <div class="aw-badge">Job Seekers</div>
+          <h1 id="acct-welcome">Sign In</h1>
+          <p class="aw-sub">Save your CV, track applications, and get new matches each week. Free forever.</p>
+          <div class="aw-feats">
+            <div class="aw-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Save your CV</div>
+            <div class="aw-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> Track applications</div>
+            <div class="aw-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><path d="M4 9h16"/><path d="M9 4v16"/></svg> Weekly matches</div>
+            <div class="aw-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Free forever</div>
+          </div>
+        </div>
+        <button class="btn-sm" id="acct-signout" type="button" style="display:none;flex-shrink:0">Sign out</button>
+      </div>
     </div>
+  </section>
+  <div class="wrap">
 
     <!-- Not logged in: show login/register -->
     <div id="acct-auth">
