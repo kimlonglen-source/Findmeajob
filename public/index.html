@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <title>Free AI Career Tools NZ | CV Writer, Interview Prep, Job Matching — FindMeAJob.co.nz</title>
-<meta name="description" content="Free AI career tools for New Zealand job seekers. Match your CV to NZ jobs in 60 seconds, practise interviews with AI, write tailored CVs and cover letters. No payment required.">
+<meta name="description" content="Free AI career tools for New Zealand job seekers. Match your CV to NZ jobs in 60 seconds, practice interviews with AI, write tailored CVs and cover letters. No payment required.">
 <meta name="keywords" content="NZ jobs, career tools, CV writer NZ, interview practice, salary calculator NZ, job matching, cover letter generator, free career advice New Zealand">
 <meta name="robots" content="index, follow">
 <meta name="google-site-verification" content="LpOzsXtBeVo5v2HBTUhvIVRjwnXGxnBPfv5t4DovNuc">
@@ -18,7 +18,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.findmeajob.co.nz/">
 <meta property="og:title" content="FindMeAJob.co.nz — Free AI Career Tools for NZ">
-<meta property="og:description" content="Practise interviews with AI. Write CVs. Find NZ jobs. 12 free tools.">
+<meta property="og:description" content="Practice interviews with AI. Write CVs. Find NZ jobs. 12 free tools.">
 <meta property="og:image" content="https://www.findmeajob.co.nz/favicon-512.png">
 <meta property="og:site_name" content="FindMeAJob.co.nz">
 <meta property="og:locale" content="en_NZ">
@@ -52,21 +52,15 @@ img{max-width:100%;display:block}
 .mob-sheet a.coral{color:#E7515A}
 
 /* Hero Slideshow */
-.hero{position:relative;height:85vh;overflow:hidden;background:#FAF6EF}
-.hero-slide{position:absolute;inset:0;display:flex;align-items:center;padding:4rem 3rem 4rem;opacity:0;transition:opacity 1s ease}
-.hero-slide.hs-1{background:#FAF6EF}
-.hero-slide.hs-2{background:#FFE8CC}
-.hero-slide.hs-3{background:#EAE6FA}
-.hero-slide.hs-4{background:#EFF3E3}
-.hero-slide::before{content:'';position:absolute;top:-20%;right:-8%;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.12) 0%,transparent 65%);pointer-events:none}
-.hero-slide::after{content:'';position:absolute;bottom:-30%;left:-8%;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(17,34,49,.06) 0%,transparent 65%);pointer-events:none}
+.hero{position:relative;height:85vh;overflow:hidden;background:#000}
+.hero-slide{position:absolute;inset:0;display:flex;align-items:flex-end;padding:4rem 3rem 4rem;opacity:0;transition:opacity 1s ease;background-size:cover;background-position:center}
+.hero-slide::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,.25) 40%,rgba(0,0,0,.1) 100%)}
 .hero-slide.active{opacity:1}
-.hero-content{position:relative;z-index:2;max-width:640px}
-.hero h1{font-size:3.2rem;font-weight:900;color:#112231;line-height:1.1;margin-bottom:1rem;letter-spacing:-1px}
-.hero h1 em{font-style:normal;color:#E7515A}
-.hero p{font-size:1.15rem;color:#64748B;line-height:1.6;margin-bottom:2rem;max-width:520px}
-.hero-btn{display:inline-block;padding:.85rem 2rem;background:linear-gradient(135deg,#E7515A,#c7313a);border:none;color:#fff;border-radius:999px;font-size:.95rem;font-weight:700;text-decoration:none;box-shadow:0 4px 20px rgba(255,79,64,.28);transition:all .25s}
-.hero-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,79,64,.4);color:#fff;text-decoration:none}
+.hero-content{position:relative;z-index:2;max-width:600px}
+.hero h1{font-size:3.2rem;font-weight:900;color:#fff;line-height:1.1;margin-bottom:1rem;letter-spacing:-1px}
+.hero p{font-size:1.15rem;color:rgba(255,255,255,.85);line-height:1.6;margin-bottom:2rem;max-width:480px}
+.hero-btn{display:inline-block;padding:.85rem 2rem;border:2px solid #fff;color:#fff;border-radius:999px;font-size:.95rem;font-weight:700;text-decoration:none;transition:all .2s}
+.hero-btn:hover{background:#fff;color:#1a1a2e;text-decoration:none}
 
 /* "I want to" links */
 /* Layout helpers */
@@ -94,8 +88,8 @@ img{max-width:100%;display:block}
 .tphoto-title{font-size:1rem;font-weight:800;color:#fff;margin-bottom:.2rem}
 .tphoto-desc{font-size:.72rem;color:rgba(255,255,255,.75);line-height:1.4}
 .hero-dots{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:10;display:flex;gap:.5rem}
-.hero-dot{width:10px;height:10px;border-radius:50%;background:rgba(17,34,49,.22);cursor:pointer;transition:all .3s}
-.hero-dot.active{background:#E7515A;transform:scale(1.2)}
+.hero-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:all .3s}
+.hero-dot.active{background:#fff;transform:scale(1.2)}
 
 /* Responsive */
 @media(max-width:768px){
@@ -377,31 +371,31 @@ img{max-width:100%;display:block}
 
 <!-- Hero Slideshow -->
 <section class="hero">
-  <div class="hero-slide hs-1 active">
+  <div class="hero-slide active" data-bg="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1400&q=80">
     <div class="hero-content">
-      <h1>Upload your CV.<br>Get matched in <em>60 seconds</em>.</h1>
+      <h1>Upload your CV.<br>Get matched in 60 seconds.</h1>
       <p>AI reads your CV and finds the best NZ jobs for you. No searching, no scrolling. Just results.</p>
-      <a href="/match.html" class="hero-btn">Upload CV &mdash; free</a>
+      <a href="/match.html" class="hero-btn">Upload CV — free</a>
     </div>
   </div>
-  <div class="hero-slide hs-2">
+  <div class="hero-slide" data-bg="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1400&q=80">
     <div class="hero-content">
-      <h1>Free CV and<br><em>cover letter</em> writer.</h1>
+      <h1>Free CV and<br>cover letter writer.</h1>
       <p>Paste the job ad and AI tailors your CV, then writes a cover letter that sounds like you. Takes 60 seconds.</p>
-      <a href="/match.html#apply" class="hero-btn">Write mine &mdash; free</a>
+      <a href="/match.html#apply" class="hero-btn">Write mine — free</a>
     </div>
   </div>
-  <div class="hero-slide hs-3">
+  <div class="hero-slide" data-bg="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1400&q=80">
     <div class="hero-content">
-      <h1>Practise interviews<br>with <em>AI</em>. Get scored.</h1>
+      <h1>Practice interviews<br>with AI. Get scored.</h1>
       <p>A voice-powered AI interviewer asks real questions, listens to your answers, and scores you out of 100.</p>
-      <a href="/interview-sim" class="hero-btn">Try the simulator &mdash; free</a>
+      <a href="/interview-sim" class="hero-btn">Try the simulator — free</a>
     </div>
   </div>
-  <div class="hero-slide hs-4">
+  <div class="hero-slide" data-bg="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1400&q=80">
     <div class="hero-content">
-      <h1><em>Free</em> for job seekers.<br>Simple pricing for employers.</h1>
-      <p>12 AI career tools for job seekers. Employers post from $0 &mdash; Pro and Unlimited plans available.</p>
+      <h1>Free for job seekers.<br>Simple pricing for employers.</h1>
+      <p>12 AI career tools for job seekers. Employers post from $0 — Pro and Unlimited plans available.</p>
       <a href="/pricing" class="hero-btn">View pricing</a>
     </div>
   </div>
@@ -550,6 +544,20 @@ img{max-width:100%;display:block}
   </div>
 </section>
 
+<!-- "I want to..." section - Monzo style -->
+<section class="sec-pad sec-narrow">
+  <h2 style="font-size:2rem;font-weight:900;color:#1a1a2e;margin-bottom:2rem">I want to...</h2>
+  <div style="display:flex;flex-direction:column">
+    <a href="/match.html" class="want-link">Find NZ jobs matched to me <span>&#8594;</span></a>
+    <a href="/decode" class="want-link">Decode a job listing <span>&#8594;</span></a>
+    <a href="/salary" class="want-link">Check what I should earn <span>&#8594;</span></a>
+    <a href="/match.html#apply" class="want-link">Write my CV and cover letter <span>&#8594;</span></a>
+    <a href="/interview" class="want-link">Prepare for interview questions <span>&#8594;</span></a>
+    <a href="/interview-sim" class="want-link">Practice a job interview <span>&#8594;</span></a>
+    <a href="/practice-sim" class="want-link" style="border-bottom:none">Rehearse a salary negotiation, pay rise or resignation <span>&#8594;</span></a>
+  </div>
+</section>
+
 <!-- Built for (niche landing pages) -->
 <section class="sec-pad sec-wide" style="padding-top:0">
   <h2 style="font-size:2rem;font-weight:900;color:#1a1a2e;margin-bottom:.5rem">Built for</h2>
@@ -628,7 +636,7 @@ img{max-width:100%;display:block}
     <a href="/match.html" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Apply for a Job</div><div class="tphoto-desc">AI matches your CV to NZ jobs in 60 seconds</div></div></a>
     <a href="/match.html#apply" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">CV + Cover Letter</div><div class="tphoto-desc">AI tailors both to any job ad</div></div></a>
     <a href="/score" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">CV Score</div><div class="tphoto-desc">Score out of 100 with specific fixes</div></div></a>
-    <a href="/interview-sim" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1553877522-43269d4ea984?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Interview Simulator</div><div class="tphoto-desc">Practise with AI. Get scored out of 100</div></div></a>
+    <a href="/interview-sim" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1553877522-43269d4ea984?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Interview Simulator</div><div class="tphoto-desc">Practice with AI. Get scored out of 100</div></div></a>
     <a href="/interview" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Interview Questions</div><div class="tphoto-desc">10 likely questions with strong answers</div></div></a>
     <a href="/decode" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Decode Job Ad</div><div class="tphoto-desc">Translate corporate buzzwords to plain English</div></div></a>
     <a href="/salary" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Salary Calculator</div><div class="tphoto-desc">Know what you should earn in NZ</div></div></a>
@@ -738,6 +746,8 @@ var slides=document.querySelectorAll('.hero-slide');
 var dotsBox=document.getElementById('heroDots');
 var currentSlide=0;
 slides.forEach(function(s,i){
+  var bg=s.getAttribute('data-bg');
+  if(bg)s.style.backgroundImage='url('+bg+')';
   var dot=document.createElement('div');
   dot.className='hero-dot'+(i===0?' active':'');
   dot.onclick=function(){goSlide(i);};
