@@ -323,7 +323,9 @@ img{max-width:100%;display:block}
 @keyframes hphnWave{0%,100%{height:5px}50%{height:18px}}
 .hphn-transcript{font-size:.58rem;color:#64748b;font-weight:600;line-height:1.35;flex:1;min-width:0}
 @media(max-width:860px){
-  .hphn-band{padding:2.5rem 1.25rem 0}
+  .hphn-band{padding:2.5rem 1.25rem 0;background:#fff}
+  .hphn-band::before,.hphn-band::after{display:none}
+  .hphn-viewport::after{background:linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.4) 35%,rgba(255,255,255,.85) 75%,#fff 100%)}
   .hphn-inner{grid-template-columns:1fr;gap:1.1rem;align-items:center}
   .hphn-text{padding-bottom:.25rem;text-align:center}
   .hphn-eyebrow{margin-bottom:.65rem}
