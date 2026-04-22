@@ -1136,10 +1136,48 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
 <!-- ABOUT -->
 
 <!-- JOB SEEKER ACCOUNT -->
+<style>
+.js-acct-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:.75rem}
+.js-acct-title{display:flex;align-items:center;gap:1rem}
+.js-float-phone{width:72px;height:auto;flex-shrink:0;animation:jsPhoneFloat 4.5s ease-in-out infinite;filter:drop-shadow(0 14px 24px rgba(15,23,42,.22))}
+@keyframes jsPhoneFloat{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-8px) rotate(-8deg)}}
+@media(max-width:560px){.js-float-phone{width:58px}}
+</style>
 <div id="page-account" class="page">
   <div class="wrap">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:.75rem">
-      <div><div class="page-eyebrow">Job Seekers</div><div class="page-title" id="acct-welcome">Sign In</div></div>
+    <div class="js-acct-head">
+      <div class="js-acct-title">
+        <svg class="js-float-phone" viewBox="0 0 96 160" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="jsPhoneBody" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1e293b"/>
+              <stop offset="100%" stop-color="#0f172a"/>
+            </linearGradient>
+          </defs>
+          <rect x="4" y="4" width="88" height="152" rx="14" fill="url(#jsPhoneBody)" stroke="#334155" stroke-width="1"/>
+          <rect x="9" y="16" width="78" height="128" rx="5" fill="#f8fafc"/>
+          <rect x="38" y="8" width="20" height="3" rx="1.5" fill="#0f172a"/>
+          <circle cx="21" cy="36" r="6" fill="#fef2f2"/>
+          <path d="M 17.5 36 L 20 38.5 L 24.5 33.5" stroke="#e7515a" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="30" y="32" width="38" height="3" rx="1.5" fill="#0f172a"/>
+          <rect x="30" y="37" width="24" height="2" rx="1" fill="#64748b"/>
+          <rect x="14" y="50" width="68" height="26" rx="4" fill="#fff" stroke="#e2e8f0" stroke-width="0.8"/>
+          <rect x="18" y="55" width="32" height="3" rx="1.5" fill="#0f172a"/>
+          <rect x="18" y="61" width="22" height="2" rx="1" fill="#64748b"/>
+          <rect x="18" y="67" width="28" height="4" rx="2" fill="#fef2f2"/>
+          <rect x="20" y="68.3" width="24" height="1.6" rx="0.8" fill="#e7515a"/>
+          <rect x="14" y="80" width="68" height="26" rx="4" fill="#fff" stroke="#e2e8f0" stroke-width="0.8"/>
+          <rect x="18" y="85" width="32" height="3" rx="1.5" fill="#0f172a"/>
+          <rect x="18" y="91" width="22" height="2" rx="1" fill="#64748b"/>
+          <rect x="18" y="97" width="28" height="4" rx="2" fill="#fef2f2"/>
+          <rect x="20" y="98.3" width="24" height="1.6" rx="0.8" fill="#e7515a"/>
+          <rect x="14" y="110" width="68" height="26" rx="4" fill="#fff" stroke="#e2e8f0" stroke-width="0.8"/>
+          <rect x="18" y="115" width="32" height="3" rx="1.5" fill="#0f172a"/>
+          <rect x="18" y="121" width="22" height="2" rx="1" fill="#64748b"/>
+          <rect x="34" y="148" width="28" height="2" rx="1" fill="#334155"/>
+        </svg>
+        <div><div class="page-eyebrow">Job Seekers</div><div class="page-title" id="acct-welcome">Sign In</div></div>
+      </div>
       <button class="btn-sm" id="acct-signout" type="button" style="display:none">Sign out</button>
     </div>
 
