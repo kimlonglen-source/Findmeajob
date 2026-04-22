@@ -369,192 +369,168 @@ img{max-width:100%;display:block}
   </div>
 </div>
 
-<!-- Hero Slideshow -->
-<section class="hero">
-  <div class="hero-slide active" data-bg="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1400&q=80">
-    <div class="hero-content">
-      <h1>Upload your CV.<br>Get matched in 60 seconds.</h1>
-      <p>AI reads your CV and finds the best NZ jobs for you. No searching, no scrolling. Just results.</p>
-      <a href="/match.html" class="hero-btn">Upload CV — free</a>
-    </div>
-  </div>
-  <div class="hero-slide" data-bg="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1400&q=80">
-    <div class="hero-content">
-      <h1>Free CV and<br>cover letter writer.</h1>
-      <p>Paste the job ad and AI tailors your CV, then writes a cover letter that sounds like you. Takes 60 seconds.</p>
-      <a href="/match.html#apply" class="hero-btn">Write mine — free</a>
-    </div>
-  </div>
-  <div class="hero-slide" data-bg="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1400&q=80">
-    <div class="hero-content">
-      <h1>Practice interviews<br>with AI. Get scored.</h1>
-      <p>A voice-powered AI interviewer asks real questions, listens to your answers, and scores you out of 100.</p>
-      <a href="/interview-sim" class="hero-btn">Try the simulator — free</a>
-    </div>
-  </div>
-  <div class="hero-slide" data-bg="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1400&q=80">
-    <div class="hero-content">
-      <h1>Free for job seekers.<br>Simple pricing for employers.</h1>
-      <p>12 AI career tools for job seekers. Employers post from $0 — Pro and Unlimited plans available.</p>
-      <a href="/pricing" class="hero-btn">View pricing</a>
-    </div>
-  </div>
-  <div class="hero-dots" id="heroDots"></div>
-</section>
+<!-- Stage chooser hero + grid (new concept spike) -->
+<style>
+.stage-hero{padding:4rem 3rem 2rem;text-align:center;background:#fff}
+.stage-hero-inner{max-width:720px;margin:0 auto}
+.stage-hero-badge{display:inline-block;background:#FFE8E5;color:#c7313a;padding:.35rem .9rem;border-radius:999px;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:1rem;border:1px solid #FFB8AF}
+.stage-hero-h1{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:2.8rem;font-weight:900;color:#112231;line-height:1.08;letter-spacing:-1px;margin-bottom:1rem}
+.stage-hero-h1 em{font-style:normal;color:#E7515A}
+.stage-hero-sub{color:#64748B;font-size:1.08rem;line-height:1.55;max-width:580px;margin:0 auto}
+.stage-section{padding-top:1rem}
+.stage-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:1.5rem}
+.stage-card{position:relative;border-radius:24px;padding:2rem 1.75rem 1.5rem;display:flex;flex-direction:column;gap:.6rem;overflow:hidden;transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s;opacity:0;transform:translateY(24px)}
+.stage-section.is-visible .stage-card{opacity:1;transform:translateY(0)}
+.stage-section.is-visible .stage-card:nth-child(1){transition:opacity .6s ease .1s,transform .6s cubic-bezier(.22,1,.36,1) .1s,box-shadow .35s}
+.stage-section.is-visible .stage-card:nth-child(2){transition:opacity .6s ease .2s,transform .6s cubic-bezier(.22,1,.36,1) .2s,box-shadow .35s}
+.stage-section.is-visible .stage-card:nth-child(3){transition:opacity .6s ease .3s,transform .6s cubic-bezier(.22,1,.36,1) .3s,box-shadow .35s}
+.stage-section.is-visible .stage-card:nth-child(4){transition:opacity .6s ease .4s,transform .6s cubic-bezier(.22,1,.36,1) .4s,box-shadow .35s}
+.stage-card:hover{transform:translateY(-5px);box-shadow:0 18px 42px rgba(17,34,49,.09)}
+.stage-card-cream{background:#FAF6EF}
+.stage-card-peach{background:#FFE8CC}
+.stage-card-lavender{background:#EAE6FA}
+.stage-card-mint{background:#EFF3E3}
+.stage-num{position:absolute;top:1.25rem;right:1.5rem;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.75rem;font-weight:800;color:rgba(17,34,49,.32);letter-spacing:1.2px}
+.stage-icon{width:72px;height:72px;display:flex;align-items:center;justify-content:center;margin-bottom:.2rem;transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+.stage-icon svg{width:100%;height:100%}
+.stage-card:hover .stage-icon{transform:scale(1.08) rotate(-4deg)}
+.stage-title{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:1.75rem;font-weight:900;color:#112231;letter-spacing:-.4px;line-height:1.1}
+.stage-pitch{font-size:.96rem;color:#64748B;line-height:1.5;margin-bottom:.4rem}
+.stage-tools{display:flex;flex-direction:column;gap:.05rem;margin-top:auto;border-top:1px solid rgba(17,34,49,.08);padding-top:.55rem}
+.stage-tools a{display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;color:#112231;font-size:.92rem;font-weight:600;text-decoration:none;transition:color .2s,padding-left .2s;gap:.5rem}
+.stage-tools a span{color:#E7515A;font-weight:700;transition:transform .25s;flex-shrink:0}
+.stage-tools a:hover{color:#E7515A;text-decoration:none;padding-left:.3rem}
+.stage-tools a:hover span{transform:translateX(4px)}
+.stage-stat{display:inline-flex;align-items:center;gap:.4rem;background:rgba(17,34,49,.06);border-radius:999px;padding:.3rem .7rem;font-size:.72rem;font-weight:700;color:#112231;align-self:flex-start;margin-top:.35rem;margin-bottom:.2rem}
+.stage-stat-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 0 rgba(34,197,94,.5);animation:stagePulse 2.4s ease-out infinite}
+@keyframes stagePulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}70%{box-shadow:0 0 0 6px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+.stage-all-tools{text-align:center;margin-top:1rem;padding-bottom:2rem}
+.stage-all-tools a{color:#64748B;font-size:.9rem;font-weight:600;text-decoration:none;border-bottom:1px dashed rgba(17,34,49,.2);padding-bottom:2px}
+.stage-all-tools a:hover{color:#E7515A;border-color:#E7515A;text-decoration:none}
+@media (max-width:820px){
+  .stage-hero{padding:2.5rem 1.5rem 1.5rem}
+  .stage-hero-h1{font-size:1.9rem}
+  .stage-hero-sub{font-size:.95rem}
+  .stage-grid{grid-template-columns:1fr;gap:.75rem}
+  .stage-card{padding:1.75rem 1.5rem 1.25rem}
+  .stage-title{font-size:1.5rem}
+}
+@media (prefers-reduced-motion: reduce){
+  .stage-card,.stage-card:hover,.stage-icon,.stage-stat-dot{animation:none!important;transition:none!important;transform:none!important}
+  .stage-section .stage-card{opacity:1;transform:none}
+}
+</style>
 
-<!-- Phone-flow: single phone cycling through all 7 features -->
-<section class="pflow">
-  <div class="pflow-inner">
-    <div class="pflow-text">
-      <div class="pflow-eyebrow">Every tool &middot; One phone</div>
-      <h2 class="pflow-h2">Your whole career toolkit &mdash; <em>in your pocket</em></h2>
-      <p class="pflow-p">From uploading your CV to practising the salary conversation. Free for job seekers. Built for New Zealand.</p>
-      <div class="pflow-steps">
-        <div class="pflow-step pflow-s1"><span class="pflow-step-num">1</span><span class="pflow-step-label">Find NZ jobs matched to me</span></div>
-        <div class="pflow-step pflow-s2"><span class="pflow-step-num">2</span><span class="pflow-step-label">Decode a job listing</span></div>
-        <div class="pflow-step pflow-s3"><span class="pflow-step-num">3</span><span class="pflow-step-label">Check what I should earn</span></div>
-        <div class="pflow-step pflow-s4"><span class="pflow-step-num">4</span><span class="pflow-step-label">Write my CV and cover letter</span></div>
-        <div class="pflow-step pflow-s5"><span class="pflow-step-num">5</span><span class="pflow-step-label">Prepare for interview questions</span></div>
-        <div class="pflow-step pflow-s6"><span class="pflow-step-num">6</span><span class="pflow-step-label">Practise a job interview</span></div>
-        <div class="pflow-step pflow-s7"><span class="pflow-step-num">7</span><span class="pflow-step-label">Rehearse a salary negotiation</span></div>
-      </div>
-      <a class="pflow-cta" href="/match.html#match-flow-top">Start free &rarr;</a>
-    </div>
-    <div class="pflow-visual">
-      <div class="pflow-phone" aria-hidden="true">
-        <div class="pflow-phone-frame">
-          <div class="pflow-phone-screen">
-
-            <!-- 1. Match -->
-            <div class="pflow-screen pflow-s-match">
-              <div class="pflow-eb">Step 1 &middot; Match</div>
-              <div class="pflow-t">Matching your CV&hellip;</div>
-              <div class="pflow-body">
-                <div class="pflow-match-bar"><div class="pflow-match-bar-fill"></div></div>
-                <div class="pflow-match-card">
-                  <span class="pflow-chip">92% match</span>
-                  <div class="pflow-rtitle">Registered Nurse</div>
-                  <div class="pflow-rsub">Auckland DHB &middot; Full-time</div>
-                  <div class="pflow-skills">
-                    <span class="pflow-skill">Patient care</span>
-                    <span class="pflow-skill">Aged care</span>
-                    <span class="pflow-skill">NZRN</span>
-                  </div>
-                </div>
-              </div>
-              <span class="pflow-cta-s">Apply in 1 click &rarr;</span>
-            </div>
-
-            <!-- 2. Decode -->
-            <div class="pflow-screen pflow-s-decode">
-              <div class="pflow-eb">Step 2 &middot; Decode</div>
-              <div class="pflow-t">What the listing really wants</div>
-              <div class="pflow-body">
-                <div class="pflow-jobad">Seeking a Senior Engineer with strong <span class="pflow-kw">leadership</span>, 5+ yrs <span class="pflow-kw">Python</span>, and <span class="pflow-kw">Agile</span> delivery experience. Must own projects end-to-end.</div>
-                <div class="pflow-meter"><span>Fit vs. your CV</span><span class="pflow-meter-pct">88%</span></div>
-                <div class="pflow-meter"><span>Missing skills</span><span class="pflow-meter-pct" style="color:#64748b;font-size:.7rem">2 gaps</span></div>
-              </div>
-              <span class="pflow-cta-s">Decode listing &rarr;</span>
-            </div>
-
-            <!-- 3. Salary -->
-            <div class="pflow-screen pflow-s-salary">
-              <div class="pflow-eb">Step 3 &middot; Salary</div>
-              <div class="pflow-t">What you should earn</div>
-              <div class="pflow-body">
-                <div class="pflow-sal-role">Software Engineer &middot; Wellington</div>
-                <div class="pflow-sal-you">$85,000 <small style="font-size:.58rem;color:#64748b;font-weight:700"> / yr you</small></div>
-                <div class="pflow-sal-bar"><div class="pflow-sal-dot"></div></div>
-                <div class="pflow-sal-ticks"><span>$60k</span><span>$85k</span><span>$120k</span></div>
-                <span class="pflow-sal-pill">+12% vs market</span>
-              </div>
-              <span class="pflow-cta-s">See salary report &rarr;</span>
-            </div>
-
-            <!-- 4. CV writer -->
-            <div class="pflow-screen pflow-s-cv">
-              <div class="pflow-eb">Step 4 &middot; CV</div>
-              <div class="pflow-t">Polish your CV &amp; cover letter</div>
-              <div class="pflow-body">
-                <div class="pflow-cv-doc">
-                  <span class="pflow-cv-pill">AI polish</span>
-                  <div class="pflow-cv-name">Aroha Ngata</div>
-                  <div class="pflow-cv-role">Senior Software Engineer</div>
-                  <div class="pflow-cv-line"></div>
-                  <div class="pflow-cv-line"></div>
-                  <div class="pflow-cv-line"></div>
-                  <div class="pflow-cv-line"></div>
-                  <div class="pflow-cv-tab"><span>Cover letter</span><span>&rarr;</span></div>
-                </div>
-              </div>
-              <span class="pflow-cta-s">Polish my CV &rarr;</span>
-            </div>
-
-            <!-- 5. Prep -->
-            <div class="pflow-screen pflow-s-prep">
-              <div class="pflow-eb">Step 5 &middot; Prep</div>
-              <div class="pflow-t">Interview questions, ready</div>
-              <div class="pflow-body">
-                <div class="pflow-qlist">
-                  <div class="pflow-q"><span class="pflow-q-check">&#10003;</span>Tell me about yourself</div>
-                  <div class="pflow-q"><span class="pflow-q-check">&#10003;</span>Why this role?</div>
-                  <div class="pflow-q"><span class="pflow-q-check">&#10003;</span>Your biggest weakness</div>
-                  <div class="pflow-q" style="opacity:.55"><span class="pflow-q-check" style="background:#f0f0f0;color:#94a3b8">4</span>Handling conflict</div>
-                </div>
-                <div class="pflow-prog"><span class="pflow-prog-dot"></span>3 of 12 ready</div>
-              </div>
-              <span class="pflow-cta-s">Keep prepping &rarr;</span>
-            </div>
-
-            <!-- 6. Sim -->
-            <div class="pflow-screen pflow-s-sim">
-              <div class="pflow-eb">Step 6 &middot; Simulate</div>
-              <div class="pflow-t">Practise out loud</div>
-              <div class="pflow-body">
-                <div class="pflow-sim-body">
-                  <div class="pflow-sim-q">&ldquo;Describe a leadership challenge you&rsquo;ve faced.&rdquo;</div>
-                  <div class="pflow-mic">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
-                  </div>
-                  <div class="pflow-sim-hint">Your turn &mdash; listening&hellip;</div>
-                </div>
-              </div>
-              <span class="pflow-cta-s">Start practice &rarr;</span>
-            </div>
-
-            <!-- 7. Negotiate -->
-            <div class="pflow-screen pflow-s-nego">
-              <div class="pflow-eb">Step 7 &middot; Negotiate</div>
-              <div class="pflow-t">Rehearse the pay conversation</div>
-              <div class="pflow-body">
-                <div class="pflow-chat">
-                  <div class="pflow-chat-ai">We can offer $85,000 &mdash; that&rsquo;s our budget for this role.</div>
-                  <div class="pflow-chat-you">I&rsquo;d like to discuss ranges up to $95k given my experience.</div>
-                  <div class="pflow-chat-ai">Let&rsquo;s talk &mdash; what does the market look like for your role?</div>
-                  <div class="pflow-round">Round 2 of 3</div>
-                </div>
-              </div>
-              <span class="pflow-cta-s">Pick a scenario &rarr;</span>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </div>
+<section class="stage-hero">
+  <div class="stage-hero-inner">
+    <div class="stage-hero-badge">Free &middot; NZ &middot; AI-powered</div>
+    <h1 class="stage-hero-h1">Where are you at in your <em>job hunt</em>?</h1>
+    <p class="stage-hero-sub">Twelve free AI tools, grouped by where you are. Pick a stage to start &mdash; each card links straight to the tools you need.</p>
   </div>
 </section>
 
-<!-- "I want to..." section - Monzo style -->
-<section class="sec-pad sec-narrow">
-  <h2 style="font-size:2rem;font-weight:900;color:#1a1a2e;margin-bottom:2rem">I want to...</h2>
-  <div style="display:flex;flex-direction:column">
-    <a href="/match.html" class="want-link">Find NZ jobs matched to me <span>&#8594;</span></a>
-    <a href="/decode" class="want-link">Decode a job listing <span>&#8594;</span></a>
-    <a href="/salary" class="want-link">Check what I should earn <span>&#8594;</span></a>
-    <a href="/match.html#apply" class="want-link">Write my CV and cover letter <span>&#8594;</span></a>
-    <a href="/interview" class="want-link">Prepare for interview questions <span>&#8594;</span></a>
-    <a href="/interview-sim" class="want-link">Practice a job interview <span>&#8594;</span></a>
-    <a href="/practice-sim" class="want-link" style="border-bottom:none">Rehearse a salary negotiation, pay rise or resignation <span>&#8594;</span></a>
+<section class="sec-pad sec-wide stage-section" id="stage-section">
+  <div class="stage-grid">
+
+    <!-- 01 Searching -->
+    <div class="stage-card stage-card-cream">
+      <div class="stage-num">01</div>
+      <div class="stage-icon" aria-hidden="true">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="26" cy="26" r="18" fill="#E7515A"/>
+          <circle cx="26" cy="26" r="13" fill="#FAF6EF"/>
+          <rect x="20" y="22" width="12" height="8" rx="1.5" fill="#E7515A"/>
+          <rect x="23" y="20" width="6" height="2" rx="1" fill="#c7313a"/>
+          <rect x="22" y="25" width="4" height="2" rx="1" fill="#FAF6EF" opacity=".5"/>
+          <rect x="36" y="38" width="18" height="8" rx="4" transform="rotate(45 45 42)" fill="#112231"/>
+        </svg>
+      </div>
+      <div class="stage-title">Searching</div>
+      <div class="stage-pitch">You don't know what's out there yet.</div>
+      <div class="stage-stat"><span class="stage-stat-dot"></span><span id="stage-stat-jobs-text">Live NZ jobs</span></div>
+      <div class="stage-tools">
+        <a href="/match.html">Match my CV to NZ jobs <span>&rarr;</span></a>
+        <a href="/decode">Decode a job listing <span>&rarr;</span></a>
+        <a href="/match.html#browse">Browse live NZ jobs <span>&rarr;</span></a>
+        <a href="/salary">Check salary ranges <span>&rarr;</span></a>
+      </div>
+    </div>
+
+    <!-- 02 Applying -->
+    <div class="stage-card stage-card-peach">
+      <div class="stage-num">02</div>
+      <div class="stage-icon" aria-hidden="true">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <rect x="12" y="8" width="34" height="44" rx="4" fill="#E7515A"/>
+          <path d="M46 8 L46 20 L58 20 Z" fill="#c7313a"/>
+          <rect x="18" y="22" width="22" height="3" rx="1.5" fill="#FAF6EF"/>
+          <rect x="18" y="30" width="18" height="2" rx="1" fill="#FAF6EF" opacity=".65"/>
+          <rect x="18" y="36" width="22" height="2" rx="1" fill="#FAF6EF" opacity=".65"/>
+          <rect x="18" y="42" width="14" height="2" rx="1" fill="#FAF6EF" opacity=".65"/>
+          <circle cx="48" cy="48" r="11" fill="#FFE8CC" stroke="#112231" stroke-width="2.5"/>
+          <path d="M43 48 L47 52 L54 44" stroke="#E7515A" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="stage-title">Applying</div>
+      <div class="stage-pitch">You have jobs in your sights.</div>
+      <div class="stage-tools">
+        <a href="/match.html#apply">Write my CV + cover letter <span>&rarr;</span></a>
+        <a href="/score">Score my CV <span>&rarr;</span></a>
+        <a href="/compare">Compare two offers <span>&rarr;</span></a>
+        <a href="/email">Write this email <span>&rarr;</span></a>
+      </div>
+    </div>
+
+    <!-- 03 Interviewing -->
+    <div class="stage-card stage-card-lavender">
+      <div class="stage-num">03</div>
+      <div class="stage-icon" aria-hidden="true">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 26 Q6 32, 10 38" stroke="#E7515A" stroke-width="2.5" stroke-linecap="round" fill="none" opacity=".55"/>
+          <path d="M54 26 Q58 32, 54 38" stroke="#E7515A" stroke-width="2.5" stroke-linecap="round" fill="none" opacity=".55"/>
+          <path d="M4 30 Q-1 32, 4 34" stroke="#E7515A" stroke-width="2.5" stroke-linecap="round" fill="none" opacity=".3"/>
+          <path d="M60 30 Q65 32, 60 34" stroke="#E7515A" stroke-width="2.5" stroke-linecap="round" fill="none" opacity=".3"/>
+          <rect x="24" y="8" width="16" height="30" rx="8" fill="#E7515A"/>
+          <rect x="24" y="8" width="16" height="6" rx="8" fill="#c7313a"/>
+          <path d="M18 32 Q18 44, 32 44 Q46 44, 46 32" stroke="#112231" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <line x1="32" y1="44" x2="32" y2="52" stroke="#112231" stroke-width="3" stroke-linecap="round"/>
+          <line x1="24" y1="52" x2="40" y2="52" stroke="#112231" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="stage-title">Interviewing</div>
+      <div class="stage-pitch">You have an interview coming up.</div>
+      <div class="stage-tools">
+        <a href="/interview">Prep the likely questions <span>&rarr;</span></a>
+        <a href="/interview-sim">Practise aloud with AI <span>&rarr;</span></a>
+      </div>
+    </div>
+
+    <!-- 04 Deciding -->
+    <div class="stage-card stage-card-mint">
+      <div class="stage-num">04</div>
+      <div class="stage-icon" aria-hidden="true">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <line x1="32" y1="12" x2="32" y2="52" stroke="#112231" stroke-width="4" stroke-linecap="round"/>
+          <rect x="20" y="50" width="24" height="4" rx="2" fill="#112231"/>
+          <line x1="10" y1="20" x2="54" y2="20" stroke="#112231" stroke-width="3.5" stroke-linecap="round"/>
+          <path d="M10 20 L4 30 C4 34, 7 36, 10 36 C13 36, 16 34, 16 30 Z" fill="#E7515A"/>
+          <path d="M54 20 L48 30 C48 34, 51 36, 54 36 C57 36, 60 34, 60 30 Z" fill="#FFE8CC" stroke="#112231" stroke-width="2"/>
+          <circle cx="32" cy="20" r="3.5" fill="#E7515A"/>
+        </svg>
+      </div>
+      <div class="stage-title">Deciding</div>
+      <div class="stage-pitch">Offer on the table, or weighing your next move.</div>
+      <div class="stage-tools">
+        <a href="/negotiate">Negotiate salary (scripts) <span>&rarr;</span></a>
+        <a href="/practice-sim">Rehearse pay-rise or resignation <span>&rarr;</span></a>
+        <a href="/decide">Should I stay or go? <span>&rarr;</span></a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="stage-all-tools">
+    <a href="#tools-all">Or see all 12 tools &rarr;</a>
   </div>
 </section>
 
@@ -567,84 +543,6 @@ img{max-width:100%;display:block}
     <a href="/healthcare" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Healthcare</div><div class="tphoto-desc">Nurses, carers, midwives, allied health</div></div></a>
     <a href="/newcomers" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Newcomers to NZ</div><div class="tphoto-desc">Migrants and returning Kiwis finding their first role</div></div></a>
     <a href="/graduates" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Graduates</div><div class="tphoto-desc">Your first job out of uni or a grad programme</div></div></a>
-  </div>
-</section>
-
-<!-- Half-phone interview showcase -->
-<section class="hphn-band">
-  <div class="hphn-inner">
-    <div class="hphn-text">
-      <div class="hphn-eyebrow">Voice AI &middot; Free &middot; Built for NZ</div>
-      <h2 class="hphn-h2">See what a real AI interview <em>actually feels like</em>.</h2>
-      <p class="hphn-p">AI asks live, role-specific questions. You answer out loud. It pushes back on weak answers and gives you a recruiter-style score out of 100 &mdash; with a model answer beside yours. Free forever, NZ-tuned.</p>
-      <div class="hphn-feats">
-        <div class="hphn-feat"><span class="hphn-feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/></svg></span>Speak out loud, not type</div>
-        <div class="hphn-feat"><span class="hphn-feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>AI pushes back like a real panel</div>
-        <div class="hphn-feat"><span class="hphn-feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Score out of 100 + model answers</div>
-        <div class="hphn-feat"><span class="hphn-feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a8 8 0 0 0-8 8c0 6 8 12 8 12s8-6 8-12a8 8 0 0 0-8-8z"/><circle cx="12" cy="10" r="3"/></svg></span>Built for NZ roles</div>
-      </div>
-      <div class="hphn-ctas">
-        <a class="hphn-cta" href="/interview-sim">Try the interview sim &rarr;</a>
-        <a class="hphn-ghost" href="/practice-sim">Or practise salary &amp; pay rise &rarr;</a>
-      </div>
-    </div>
-    <div class="hphn-stage">
-    <div class="hphn-viewport">
-      <div class="hphn-phone" aria-hidden="true">
-        <div class="hphn-phone-frame">
-          <div class="hphn-phone-screen">
-            <div class="hphn-statusbar">
-              <span>Round 2 of 3 &middot; 04:12</span>
-              <span class="hphn-rec"><span class="hphn-rec-dot"></span>REC</span>
-            </div>
-            <div class="hphn-ai">
-              <div class="hphn-ai-avatar">AI</div>
-              <div style="flex:1;min-width:0">
-                <div class="hphn-ai-meta">Hiring panel &middot; Senior Engineer</div>
-                <div class="hphn-bubble">Tell me about a time you disagreed with a senior leader and what happened.</div>
-              </div>
-            </div>
-            <div class="hphn-turn">
-              <div class="hphn-mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="19" x2="12" y2="22"/></svg></div>
-              <div class="hphn-wave"><span></span><span></span><span></span><span></span><span></span></div>
-              <div class="hphn-transcript">&hellip;I pushed back on the rollout timeline because&hellip;</div>
-            </div>
-            <div class="hphn-ai">
-              <div class="hphn-ai-avatar">AI</div>
-              <div style="flex:1;min-width:0">
-                <div class="hphn-bubble hphn-bubble--follow">What did they say when you pushed back?</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="hphn-popup" aria-hidden="true">
-      <div class="hphn-popup-label">Interview score</div>
-      <div class="hphn-popup-num">72<small>/100</small></div>
-      <div class="hphn-popup-note">Strong on examples &middot; watch your pace</div>
-    </div>
-    </div>
-  </div>
-</section>
-
-<!-- All 12 Tools - Monzo photo card style -->
-<section id="tools" class="sec-pad sec-wide">
-  <h2 style="font-size:2rem;font-weight:900;color:#1a1a2e;margin-bottom:.5rem">12 tools. One career toolkit.</h2>
-  <p style="color:#6b7280;font-size:1rem;margin-bottom:2rem">Everything you need to find, apply for, and land your next NZ job.</p>
-  <div class="tool-grid">
-    <a href="/match.html" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Apply for a Job</div><div class="tphoto-desc">AI matches your CV to NZ jobs in 60 seconds</div></div></a>
-    <a href="/match.html#apply" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">CV + Cover Letter</div><div class="tphoto-desc">AI tailors both to any job ad</div></div></a>
-    <a href="/score" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">CV Score</div><div class="tphoto-desc">Score out of 100 with specific fixes</div></div></a>
-    <a href="/interview-sim" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1553877522-43269d4ea984?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Interview Simulator</div><div class="tphoto-desc">Practice with AI. Get scored out of 100</div></div></a>
-    <a href="/interview" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Interview Questions</div><div class="tphoto-desc">10 likely questions with strong answers</div></div></a>
-    <a href="/decode" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Decode Job Ad</div><div class="tphoto-desc">Translate corporate buzzwords to plain English</div></div></a>
-    <a href="/salary" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Salary Calculator</div><div class="tphoto-desc">Know what you should earn in NZ</div></div></a>
-    <a href="/negotiate" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Negotiate Salary</div><div class="tphoto-desc">Word-for-word negotiation scripts</div></div></a>
-    <a href="/compare" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Compare Jobs</div><div class="tphoto-desc">Side-by-side job comparison</div></div></a>
-    <a href="/decide" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Should I Stay or Go?</div><div class="tphoto-desc">AI career health check with salary insight</div></div></a>
-    <a href="/email" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Write This Email</div><div class="tphoto-desc">Professional emails written in seconds</div></div></a>
-    <a href="/practice-sim" class="tphoto" style="background-image:url(https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&q=80)"><div class="tphoto-arrow">&#8594;</div><div class="tphoto-text"><div class="tphoto-title">Practice Simulator</div><div class="tphoto-desc">Rehearse resigning, pay rises, negotiations</div></div></a>
   </div>
 </section>
 
@@ -741,26 +639,23 @@ function subscribeAlerts(){
 }
 function showToast(msg){var t=document.getElementById("toast");t.textContent=msg;t.style.display="block";setTimeout(function(){t.style.display="none";},3000);}
 
-/* Hero slideshow */
-var slides=document.querySelectorAll('.hero-slide');
-var dotsBox=document.getElementById('heroDots');
-var currentSlide=0;
-slides.forEach(function(s,i){
-  var bg=s.getAttribute('data-bg');
-  if(bg)s.style.backgroundImage='url('+bg+')';
-  var dot=document.createElement('div');
-  dot.className='hero-dot'+(i===0?' active':'');
-  dot.onclick=function(){goSlide(i);};
-  dotsBox.appendChild(dot);
-});
-function goSlide(n){
-  slides[currentSlide].classList.remove('active');
-  dotsBox.children[currentSlide].classList.remove('active');
-  currentSlide=n;
-  slides[currentSlide].classList.add('active');
-  dotsBox.children[currentSlide].classList.add('active');
-}
-setInterval(function(){goSlide((currentSlide+1)%slides.length);},5000);
+/* Stage chooser: scroll-reveal + live jobs count */
+(function(){
+  var section=document.getElementById('stage-section');
+  if(!section)return;
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){if(e.isIntersecting){section.classList.add('is-visible');io.disconnect();}});
+    },{threshold:.15});
+    io.observe(section);
+  } else { section.classList.add('is-visible'); }
+  fetch('/api/approved-jobs?stats=1').then(function(r){return r.json();}).then(function(d){
+    var txt=document.getElementById('stage-stat-jobs-text');
+    if(!txt)return;
+    var n=(d&&d.totalJobs)||0;
+    if(n>0)txt.textContent=n.toLocaleString()+' live NZ jobs';
+  }).catch(function(){});
+})();
 
 </script>
 
