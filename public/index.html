@@ -77,6 +77,26 @@ img{max-width:100%;display:block}
 .want-link:hover span{transform:translateX(6px);opacity:1}
 .want-link:active{transform:scale(.98)}
 
+/* Intent cards (3-card grouping for the "I want to" section) */
+.intent-h{font-size:2rem;font-weight:900;color:#112231;margin-bottom:.4rem;letter-spacing:-.3px}
+.intent-lead{color:#64748B;font-size:1rem;line-height:1.55;margin-bottom:2rem;max-width:560px}
+.intent-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.intent-card{border-radius:20px;padding:1.75rem 1.5rem 1.25rem;display:flex;flex-direction:column;gap:.6rem;position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s}
+.intent-card:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(17,34,49,.08)}
+.intent-card-cream{background:#FAF6EF}
+.intent-card-lavender{background:#EAE6FA}
+.intent-card-peach{background:#FFE8CC}
+.intent-icon{width:44px;height:44px;border-radius:12px;background:rgba(231,81,90,.14);display:flex;align-items:center;justify-content:center;color:#E7515A;margin-bottom:.2rem}
+.intent-icon svg{width:22px;height:22px}
+.intent-title{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:1.25rem;font-weight:900;color:#112231;letter-spacing:-.2px}
+.intent-sub{font-size:.88rem;color:#64748B;line-height:1.5;margin-bottom:.4rem}
+.intent-links{display:flex;flex-direction:column;gap:.05rem;margin-top:auto;border-top:1px solid rgba(17,34,49,.08);padding-top:.6rem}
+.intent-links a{display:flex;align-items:center;justify-content:space-between;padding:.55rem 0;color:#112231;font-size:.9rem;font-weight:600;text-decoration:none;transition:color .2s,padding-left .2s;gap:.5rem}
+.intent-links a span{color:#E7515A;font-weight:700;transition:transform .2s;flex-shrink:0}
+.intent-links a:hover{color:#E7515A;text-decoration:none;padding-left:.25rem}
+.intent-links a:hover span{transform:translateX(3px)}
+@media (max-width:900px){.intent-grid{grid-template-columns:1fr;gap:.75rem}.intent-card{padding:1.5rem 1.25rem 1rem}}
+
 /* Tool photo cards - Monzo style */
 .tool-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
 .tphoto{position:relative;border-radius:16px;overflow:hidden;height:280px;display:block;text-decoration:none;background-size:cover;background-position:center;transition:transform .3s,box-shadow .3s}
@@ -544,17 +564,43 @@ img{max-width:100%;display:block}
   </div>
 </section>
 
-<!-- "I want to..." section - Monzo style -->
-<section class="sec-pad sec-narrow">
-  <h2 style="font-size:2rem;font-weight:900;color:#1a1a2e;margin-bottom:2rem">I want to...</h2>
-  <div style="display:flex;flex-direction:column">
-    <a href="/match.html" class="want-link">Find NZ jobs matched to me <span>&#8594;</span></a>
-    <a href="/decode" class="want-link">Decode a job listing <span>&#8594;</span></a>
-    <a href="/salary" class="want-link">Check what I should earn <span>&#8594;</span></a>
-    <a href="/match.html#apply" class="want-link">Write my CV and cover letter <span>&#8594;</span></a>
-    <a href="/interview" class="want-link">Prepare for interview questions <span>&#8594;</span></a>
-    <a href="/interview-sim" class="want-link">Practice a job interview <span>&#8594;</span></a>
-    <a href="/practice-sim" class="want-link" style="border-bottom:none">Rehearse a salary negotiation, pay rise or resignation <span>&#8594;</span></a>
+<!-- "I want to..." section - 3-card intent grouping -->
+<section class="sec-pad sec-wide">
+  <h2 class="intent-h">Where do you want to start?</h2>
+  <p class="intent-lead">Three places to begin. Seven tools, grouped by where you are in your job hunt.</p>
+  <div class="intent-grid">
+
+    <div class="intent-card intent-card-cream">
+      <div class="intent-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      <div class="intent-title">Land a job</div>
+      <div class="intent-sub">Match, decode, and write tailored applications.</div>
+      <div class="intent-links">
+        <a href="/match.html">Find NZ jobs matched to me <span>&rarr;</span></a>
+        <a href="/decode">Decode a job listing <span>&rarr;</span></a>
+        <a href="/match.html#apply">Write my CV + cover letter <span>&rarr;</span></a>
+      </div>
+    </div>
+
+    <div class="intent-card intent-card-lavender">
+      <div class="intent-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
+      <div class="intent-title">Win the interview</div>
+      <div class="intent-sub">Prep the likely questions, then practise aloud with AI.</div>
+      <div class="intent-links">
+        <a href="/interview">Prepare for interview questions <span>&rarr;</span></a>
+        <a href="/interview-sim">Practise a job interview <span>&rarr;</span></a>
+      </div>
+    </div>
+
+    <div class="intent-card intent-card-peach">
+      <div class="intent-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+      <div class="intent-title">Get paid fairly</div>
+      <div class="intent-sub">Know your market value, then rehearse the money chat.</div>
+      <div class="intent-links">
+        <a href="/salary">Check what I should earn <span>&rarr;</span></a>
+        <a href="/practice-sim">Rehearse a pay-rise or negotiation <span>&rarr;</span></a>
+      </div>
+    </div>
+
   </div>
 </section>
 
