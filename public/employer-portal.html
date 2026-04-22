@@ -170,53 +170,12 @@ nav.nav{display:flex;align-items:center;justify-content:space-between;padding:1.
   </div>
 </div>
 
-<style>
-.ep-hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 55%,#1a1a2e 100%);min-height:220px}
-.ep-hero::before{content:'';position:absolute;top:-30%;right:-8%;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.18) 0%,transparent 65%);pointer-events:none}
-.ep-hero::after{content:'';position:absolute;bottom:-40%;left:-10%;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(99,102,241,.15) 0%,transparent 65%);pointer-events:none}
-.ep-hero-inner{position:relative;z-index:2;max-width:1100px;margin:0 auto;padding:2.5rem 2rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem}
-.ep-hero-text{max-width:540px}
-.ep-hero-laptop{width:240px;height:auto;flex-shrink:0;animation:epLaptopFloat 5s ease-in-out infinite;filter:drop-shadow(0 18px 32px rgba(0,0,0,.5))}
-@keyframes epLaptopFloat{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-12px) rotate(-4deg)}}
-@media(max-width:720px){.ep-hero{min-height:200px}.ep-hero-inner{padding:2rem 1rem 1.5rem;gap:1rem}.ep-hero-laptop{width:140px}}
-@media(max-width:420px){.ep-hero-laptop{width:110px}.ep-hero-text h1{font-size:1.55rem!important}.ep-hero-text p{font-size:.8rem!important}}
-</style>
-<div class="ep-hero">
-  <div class="ep-hero-inner">
-    <div class="ep-hero-text">
-      <h1 style="font-size:2rem;font-weight:900;color:#fff;margin-bottom:.35rem">Employer Portal</h1>
-      <p style="color:rgba(255,255,255,.8);font-size:.9rem;margin:0">Post jobs and manage your listings. Free plan available.</p>
-    </div>
-    <svg class="ep-hero-laptop" viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <defs>
-        <linearGradient id="epLapLid" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#1e293b"/>
-          <stop offset="100%" stop-color="#0f172a"/>
-        </linearGradient>
-      </defs>
-      <rect x="30" y="12" width="180" height="112" rx="6" fill="url(#epLapLid)" stroke="#475569" stroke-width="1.2"/>
-      <rect x="36" y="18" width="168" height="100" rx="3" fill="#0b1220"/>
-      <circle cx="42" cy="24" r="1.4" fill="#ef4444"/>
-      <circle cx="47" cy="24" r="1.4" fill="#f59e0b"/>
-      <circle cx="52" cy="24" r="1.4" fill="#22c55e"/>
-      <rect x="42" y="32" width="58" height="5" rx="2" fill="#e7515a"/>
-      <rect x="42" y="42" width="38" height="3" rx="1.5" fill="#475569"/>
-      <rect x="42" y="54" width="156" height="14" rx="3" fill="#1e293b"/>
-      <rect x="46" y="58" width="36" height="3" rx="1.5" fill="#f1f5f9"/>
-      <rect x="46" y="63" width="24" height="2" rx="1" fill="#64748b"/>
-      <rect x="180" y="58" width="14" height="6" rx="3" fill="none" stroke="#22c55e" stroke-width="0.9"/>
-      <rect x="42" y="72" width="156" height="14" rx="3" fill="#1e293b"/>
-      <rect x="46" y="76" width="36" height="3" rx="1.5" fill="#f1f5f9"/>
-      <rect x="46" y="81" width="24" height="2" rx="1" fill="#64748b"/>
-      <rect x="180" y="76" width="14" height="6" rx="3" fill="none" stroke="#f59e0b" stroke-width="0.9"/>
-      <rect x="42" y="90" width="156" height="14" rx="3" fill="#1e293b"/>
-      <rect x="46" y="94" width="36" height="3" rx="1.5" fill="#f1f5f9"/>
-      <rect x="46" y="99" width="24" height="2" rx="1" fill="#64748b"/>
-      <rect x="180" y="94" width="14" height="6" rx="3" fill="none" stroke="#e7515a" stroke-width="0.9"/>
-      <path d="M 14 124 L 226 124 L 220 138 L 20 138 Z" fill="#334155"/>
-      <rect x="104" y="128" width="32" height="2" rx="1" fill="#1e293b"/>
-      <ellipse cx="120" cy="144" rx="108" ry="2.5" fill="#000" opacity=".35"/>
-    </svg>
+<div style="position:relative;overflow:hidden;background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 55%,#1a1a2e 100%);min-height:200px">
+  <div style="position:absolute;top:-30%;right:-8%;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(231,81,90,.18) 0%,transparent 65%);pointer-events:none"></div>
+  <div style="position:absolute;bottom:-40%;left:-10%;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(99,102,241,.15) 0%,transparent 65%);pointer-events:none"></div>
+  <div style="position:relative;z-index:2;max-width:700px;margin:0 auto;padding:3rem 2rem 2rem">
+    <h1 style="font-size:2rem;font-weight:900;color:#fff;margin-bottom:.35rem">Employer Portal</h1>
+    <p style="color:rgba(255,255,255,.8);font-size:.9rem;margin:0">Post jobs and manage your listings. Free plan available.</p>
   </div>
 </div>
 
