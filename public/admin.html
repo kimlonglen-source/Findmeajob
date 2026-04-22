@@ -298,18 +298,17 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
       </div>
     </div>
 
-    <!-- KEYWORDS — seed topic -> Claude ideation -> Google CSE competition scoring -->
+    <!-- KEYWORDS — seed topic -> Claude ideation -> live Google SERP (via SerpAPI) competition scoring -->
     <div id="keywords-list" style="display:none">
       <div style="padding:1.5rem 0">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:.75rem">
           <div>
             <div style="font-size:1.1rem;font-weight:800;color:var(--text)">Keyword Research</div>
-            <div style="font-size:.78rem;color:var(--text3);margin-top:.2rem">Claude ideates + Google CSE scores competition. Export to Keyword Planner or hand off to Blog / Social.</div>
+            <div style="font-size:.78rem;color:var(--text3);margin-top:.2rem">Claude ideates + live Google NZ SERP scores competition. Export to Keyword Planner or hand off to Blog / Social.</div>
           </div>
           <div style="display:flex;gap:.5rem;flex-wrap:wrap">
             <button onclick="kwGenerate()" id="btn-gen-kw" style="background:linear-gradient(135deg,#2563eb,#3b82f6);color:#fff;border:none;padding:.55rem 1.25rem;border-radius:999px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Generate keywords</button>
             <button onclick="kwExportCSV()" id="btn-kw-csv" style="background:#fff;border:1px solid var(--border2);color:var(--text2);padding:.55rem 1rem;border-radius:999px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;display:none">Copy CSV</button>
-            <button onclick="kwShowSetup()" style="background:#fff;border:1px solid var(--border2);color:var(--text3);padding:.55rem 1rem;border-radius:999px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">Setup</button>
           </div>
         </div>
         <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem">
@@ -325,7 +324,7 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
             <option value="20" selected>20 keywords</option>
             <option value="30">30 keywords</option>
           </select>
-          <label style="display:flex;align-items:center;gap:.35rem;font-size:.78rem;color:var(--text2);font-weight:600"><input type="checkbox" id="kw-score-cse" checked style="width:14px;height:14px;accent-color:#2563eb"> Score with Google CSE</label>
+          <label style="display:flex;align-items:center;gap:.35rem;font-size:.78rem;color:var(--text2);font-weight:600"><input type="checkbox" id="kw-score-serp" checked style="width:14px;height:14px;accent-color:#2563eb"> Score with live Google SERP</label>
         </div>
         <div id="kw-status" style="font-size:.78rem;color:var(--text3);margin-bottom:.75rem;min-height:1rem"></div>
         <div id="kw-output"></div>
@@ -1429,24 +1428,6 @@ document.getElementById("plan-save-btn").addEventListener("click", async functio
 /* -------------------- KEYWORDS TAB -------------------- */
 var kwLastRows = [];
 
-function kwShowSetup(){
-  alert(
-    "Google setup (free tier, ~15 min, no bank account required):\n\n" +
-    "1. Go to https://console.cloud.google.com and create (or pick) a project.\n" +
-    "2. APIs & Services > Library > search 'Custom Search API' > Enable.\n" +
-    "3. APIs & Services > Credentials > Create Credentials > API key. Copy it.\n" +
-    "4. Go to https://programmablesearchengine.google.com/ and create a search engine.\n" +
-    "   - 'Search the entire web' on.\n" +
-    "   - Region: New Zealand.\n" +
-    "   - Copy the Search engine ID (cx).\n" +
-    "5. In Vercel > your project > Settings > Environment Variables, add:\n" +
-    "   GOOGLE_CSE_API_KEY = <api key from step 3>\n" +
-    "   GOOGLE_CSE_ID = <cx from step 4>\n" +
-    "6. Redeploy. You get 100 free queries per day.\n\n" +
-    "Search Console integration is a future add-on (needs service-account OAuth) and will ship in a follow-up."
-  );
-}
-
 function kwTypeDesc(t){
   if(t==='blog') return 'Long-tail informational questions (blog target, 4-8 words, question form).';
   if(t==='social') return 'Short punchy hooks (social target, 2-5 words, shareable).';
@@ -1481,7 +1462,7 @@ async function kwGenerate(){
   var seed = (document.getElementById('kw-seed').value || '').trim();
   var type = document.getElementById('kw-type').value;
   var count = parseInt(document.getElementById('kw-count').value, 10) || 20;
-  var scoreCSE = document.getElementById('kw-score-cse').checked;
+  var scoreSERP = document.getElementById('kw-score-serp').checked;
   if(!seed){ alert('Enter a seed topic first (e.g. "nz nursing cv").'); return; }
 
   btn.disabled = true; btn.textContent = 'Researching...';
@@ -1519,43 +1500,43 @@ async function kwGenerate(){
     rows.forEach(function(row){
       var t = kwToolFor(row.keyword);
       row.toolLabel = t.label; row.toolUrl = t.url;
-      row.cseTotal = null; row.cseTop = null;
+      row.serpTotal = null; row.serpTop = null;
     });
     kwLastRows = rows;
     kwRender(rows);
     document.getElementById('btn-kw-csv').style.display='inline-block';
 
-    if(scoreCSE){
-      st.textContent = 'Claude done. Scoring with Google CSE — 0 of '+rows.length+'...';
+    if(scoreSERP){
+      st.textContent = 'Claude done. Scoring with live Google SERP — 0 of '+rows.length+'...';
       var i = 0;
       for(var idx=0; idx<rows.length; idx++){
         try {
           var cr = await fetch('/api/admin', {
             method:'POST',
             headers:{'Content-Type':'application/json'},
-            body: JSON.stringify({ password: pw, action:'keyword-cse', q: rows[idx].keyword })
+            body: JSON.stringify({ password: pw, action:'keyword-serp', q: rows[idx].keyword })
           });
           var cd = await cr.json();
           if(cr.status === 503 && cd.error === 'not_configured'){
-            st.innerHTML = '<span style="color:#c7313a;font-weight:700">Google CSE not configured.</span> Click "Setup" to see the steps. Keywords below are Claude-only estimates.';
+            st.innerHTML = '<span style="color:#c7313a;font-weight:700">SerpAPI not configured.</span> Add SERPAPI_KEY in Vercel env vars and redeploy. Keywords below are Claude-only estimates.';
             break;
           }
           if(cr.ok){
-            rows[idx].cseTotal = cd.total || 0;
-            rows[idx].cseTop = (cd.items && cd.items[0]) ? cd.items[0].displayLink : null;
-            rows[idx].cseTop3 = (cd.items || []).slice(0,3).map(function(x){return x.displayLink;});
+            rows[idx].serpTotal = cd.total || 0;
+            rows[idx].serpTop = (cd.items && cd.items[0]) ? cd.items[0].displayLink : null;
+            rows[idx].serpTop3 = (cd.items || []).slice(0,3).map(function(x){return x.displayLink;});
           }
         } catch(e){ /* silent per-row */ }
         i++;
-        st.textContent = 'Claude done. Scoring with Google CSE — '+i+' of '+rows.length+'...';
+        st.textContent = 'Claude done. Scoring with live Google SERP — '+i+' of '+rows.length+'...';
         kwRender(rows);
-        await new Promise(function(res){ setTimeout(res, 150); }); // pace CSE calls
+        await new Promise(function(res){ setTimeout(res, 150); }); // pace SerpAPI calls
       }
       if(!st.innerHTML || st.innerHTML.indexOf('not configured') === -1){
-        st.textContent = 'Done. '+rows.length+' keywords ranked by Claude + Google CSE.';
+        st.textContent = 'Done. '+rows.length+' keywords ranked by Claude + live Google SERP.';
       }
     } else {
-      st.textContent = 'Done. '+rows.length+' keywords (Claude estimates only — tick "Score with Google CSE" for real SERP data).';
+      st.textContent = 'Done. '+rows.length+' keywords (Claude estimates only — tick "Score with live Google SERP" for real SERP data).';
     }
   } catch(e){
     out.innerHTML = '<div style="padding:1rem;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;color:#c7313a;font-size:.85rem">Error: '+(e.message||e)+'</div>';
@@ -1579,7 +1560,7 @@ function kwRender(rows){
   html += '<th style="padding:.55rem .5rem">Intent</th>';
   html += '<th style="padding:.55rem .5rem" title="Claude estimate">Vol</th>';
   html += '<th style="padding:.55rem .5rem" title="Claude estimate">Diff</th>';
-  html += '<th style="padding:.55rem .5rem" title="Google CSE total results for this exact query">G Results</th>';
+  html += '<th style="padding:.55rem .5rem" title="Live Google NZ SERP total results for this exact query (via SerpAPI)">G Results</th>';
   html += '<th style="padding:.55rem .5rem">Top competitor</th>';
   html += '<th style="padding:.55rem .5rem">Tool match</th>';
   html += '<th style="padding:.55rem .5rem">Actions</th>';
@@ -1591,8 +1572,8 @@ function kwRender(rows){
     html += '<td style="padding:.55rem .5rem;color:var(--text2);font-size:.75rem">'+(r.intent||'')+'</td>';
     html += '<td style="padding:.55rem .5rem"><span style="background:'+kwBucketColor(r.volume)+';color:#fff;padding:.15rem .5rem;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase">'+(r.volume||'?')+'</span></td>';
     html += '<td style="padding:.55rem .5rem"><span style="background:'+kwBucketColor(r.difficulty==='low'?'high':r.difficulty==='high'?'low':'med')+';color:#fff;padding:.15rem .5rem;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase">'+(r.difficulty||'?')+'</span></td>';
-    html += '<td style="padding:.55rem .5rem;color:var(--text2);font-size:.75rem">'+(r.cseTotal===null?'—':r.cseTotal.toLocaleString())+'</td>';
-    html += '<td style="padding:.55rem .5rem;color:var(--text2);font-size:.75rem">'+(r.cseTop||'—')+'</td>';
+    html += '<td style="padding:.55rem .5rem;color:var(--text2);font-size:.75rem">'+(r.serpTotal===null?'—':r.serpTotal.toLocaleString())+'</td>';
+    html += '<td style="padding:.55rem .5rem;color:var(--text2);font-size:.75rem">'+(r.serpTop||'—')+'</td>';
     html += '<td style="padding:.55rem .5rem"><a href="'+r.toolUrl+'" target="_blank" style="color:var(--em);font-size:.75rem;font-weight:700;text-decoration:none">'+r.toolLabel+' &rarr;</a></td>';
     html += '<td style="padding:.55rem .5rem;white-space:nowrap">';
     html += '<button onclick="kwToBlog('+idx+')" style="background:rgba(231,81,90,.12);color:var(--em);border:none;padding:.3rem .6rem;border-radius:999px;font-size:.7rem;font-weight:700;cursor:pointer;font-family:inherit;margin-right:.25rem">Blog</button>';
@@ -1632,7 +1613,7 @@ function kwExportCSV(){
   if(!kwLastRows.length){ alert('Generate keywords first.'); return; }
   var header = ['keyword','intent','volume_est','difficulty_est','content_type','tool','tool_url','google_total','top_competitor','why'].join(',');
   var body = kwLastRows.map(function(r){
-    return [r.keyword, r.intent, r.volume, r.difficulty, r.content, r.toolLabel, r.toolUrl, (r.cseTotal===null?'':r.cseTotal), (r.cseTop||''), r.why]
+    return [r.keyword, r.intent, r.volume, r.difficulty, r.content, r.toolLabel, r.toolUrl, (r.serpTotal===null?'':r.serpTotal), (r.serpTop||''), r.why]
       .map(function(x){ x = (x==null?'':String(x)); return '"'+x.replace(/"/g,'""')+'"'; })
       .join(',');
   }).join('\n');
