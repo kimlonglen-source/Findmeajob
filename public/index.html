@@ -78,24 +78,64 @@ img{max-width:100%;display:block}
 .want-link:active{transform:scale(.98)}
 
 /* Intent cards (3-card grouping for the "I want to" section) */
-.intent-h{font-size:2rem;font-weight:900;color:#112231;margin-bottom:.4rem;letter-spacing:-.3px}
-.intent-lead{color:#64748B;font-size:1rem;line-height:1.55;margin-bottom:2rem;max-width:560px}
-.intent-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
-.intent-card{border-radius:20px;padding:1.75rem 1.5rem 1.25rem;display:flex;flex-direction:column;gap:.6rem;position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s}
-.intent-card:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(17,34,49,.08)}
+.intent-section-head{position:relative;margin-bottom:2rem}
+.intent-h{font-size:2rem;font-weight:900;color:#112231;margin-bottom:.4rem;letter-spacing:-.3px;position:relative;display:inline-block}
+.intent-h::after{content:'';position:absolute;left:0;bottom:-.35rem;width:100%;height:3px;background:#E7515A;border-radius:2px;transform:scaleX(0);transform-origin:left center;transition:transform .7s cubic-bezier(.22,1,.36,1) .15s}
+.intent-section.is-visible .intent-h::after{transform:scaleX(1)}
+.intent-lead{color:#64748B;font-size:1rem;line-height:1.55;margin-top:.8rem;max-width:560px}
+.intent-grid{display:grid;grid-template-columns:1.35fr 1fr;grid-template-rows:1fr 1fr;gap:1rem}
+.intent-card{border-radius:22px;padding:1.75rem 1.75rem 1.4rem;display:flex;flex-direction:column;gap:.6rem;position:relative;overflow:hidden;transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s;cursor:pointer;opacity:0;transform:translateY(24px)}
+.intent-section.is-visible .intent-card{opacity:1;transform:translateY(0)}
+.intent-section.is-visible .intent-card:nth-child(1){transition:opacity .6s ease .15s,transform .6s cubic-bezier(.22,1,.36,1) .15s,box-shadow .35s}
+.intent-section.is-visible .intent-card:nth-child(2){transition:opacity .6s ease .3s,transform .6s cubic-bezier(.22,1,.36,1) .3s,box-shadow .35s}
+.intent-section.is-visible .intent-card:nth-child(3){transition:opacity .6s ease .45s,transform .6s cubic-bezier(.22,1,.36,1) .45s,box-shadow .35s}
+.intent-card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(17,34,49,.1)}
+.intent-card-hero{grid-row:1 / 3;padding:2.25rem 2rem 1.75rem}
 .intent-card-cream{background:#FAF6EF}
 .intent-card-lavender{background:#EAE6FA}
 .intent-card-peach{background:#FFE8CC}
-.intent-icon{width:44px;height:44px;border-radius:12px;background:rgba(231,81,90,.14);display:flex;align-items:center;justify-content:center;color:#E7515A;margin-bottom:.2rem}
-.intent-icon svg{width:22px;height:22px}
-.intent-title{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:1.25rem;font-weight:900;color:#112231;letter-spacing:-.2px}
-.intent-sub{font-size:.88rem;color:#64748B;line-height:1.5;margin-bottom:.4rem}
-.intent-links{display:flex;flex-direction:column;gap:.05rem;margin-top:auto;border-top:1px solid rgba(17,34,49,.08);padding-top:.6rem}
-.intent-links a{display:flex;align-items:center;justify-content:space-between;padding:.55rem 0;color:#112231;font-size:.9rem;font-weight:600;text-decoration:none;transition:color .2s,padding-left .2s;gap:.5rem}
-.intent-links a span{color:#E7515A;font-weight:700;transition:transform .2s;flex-shrink:0}
-.intent-links a:hover{color:#E7515A;text-decoration:none;padding-left:.25rem}
-.intent-links a:hover span{transform:translateX(3px)}
-@media (max-width:900px){.intent-grid{grid-template-columns:1fr;gap:.75rem}.intent-card{padding:1.5rem 1.25rem 1rem}}
+.intent-badge-num{position:absolute;top:1rem;right:1.25rem;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.72rem;font-weight:800;color:rgba(17,34,49,.35);letter-spacing:1px}
+.intent-stat{display:inline-flex;align-items:center;gap:.4rem;background:rgba(17,34,49,.06);border-radius:999px;padding:.3rem .7rem;font-size:.72rem;font-weight:700;color:#112231;align-self:flex-start;margin-bottom:.15rem}
+.intent-stat-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 0 rgba(34,197,94,.5);animation:intentPulse 2.4s ease-out infinite}
+@keyframes intentPulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}70%{box-shadow:0 0 0 6px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+.intent-icon{width:64px;height:64px;display:flex;align-items:center;justify-content:center;margin-bottom:.25rem;transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+.intent-card-hero .intent-icon{width:72px;height:72px}
+.intent-card:hover .intent-icon{transform:scale(1.08) rotate(-4deg)}
+.intent-icon svg{width:100%;height:100%}
+.intent-title{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:1.3rem;font-weight:900;color:#112231;letter-spacing:-.3px;line-height:1.15}
+.intent-card-hero .intent-title{font-size:1.7rem}
+.intent-sub{font-size:.9rem;color:#64748B;line-height:1.5;margin-bottom:.4rem}
+.intent-card-hero .intent-sub{font-size:.98rem}
+.intent-links{display:flex;flex-direction:column;gap:.05rem;margin-top:auto;border-top:1px solid rgba(17,34,49,.08);padding-top:.55rem}
+.intent-links a{display:flex;align-items:center;justify-content:space-between;padding:.55rem 0;color:#112231;font-size:.92rem;font-weight:600;text-decoration:none;transition:color .2s,padding-left .2s;gap:.5rem}
+.intent-links a span{color:#E7515A;font-weight:700;transition:transform .25s;flex-shrink:0}
+.intent-links a:hover{color:#E7515A;text-decoration:none;padding-left:.3rem}
+.intent-links a:hover span{transform:translateX(4px)}
+/* Phone-mock hover-preview: pause cycling animation, pin one screen */
+.pflow-phone[data-pin] .pflow-screen{animation-play-state:paused;opacity:0;transition:opacity .35s ease}
+.pflow-phone[data-pin="match"] .pflow-s-match,
+.pflow-phone[data-pin="decode"] .pflow-s-decode,
+.pflow-phone[data-pin="cv"] .pflow-s-cv,
+.pflow-phone[data-pin="prep"] .pflow-s-prep,
+.pflow-phone[data-pin="sim"] .pflow-s-sim,
+.pflow-phone[data-pin="salary"] .pflow-s-salary,
+.pflow-phone[data-pin="nego"] .pflow-s-nego{opacity:1;animation-play-state:paused}
+.pflow-phone[data-pin] .pflow-step{animation-play-state:paused}
+.pflow-phone[data-pin] .pflow-step::before{animation-play-state:paused}
+.pflow-phone[data-pin] .pflow-step-num{animation-play-state:paused}
+@media (max-width:900px){
+  .intent-grid{grid-template-columns:1fr;grid-template-rows:auto;gap:.75rem}
+  .intent-card{padding:1.5rem 1.5rem 1.1rem}
+  .intent-card-hero{grid-row:auto;padding:1.75rem 1.5rem 1.25rem}
+  .intent-card-hero .intent-title{font-size:1.4rem}
+  .intent-h{font-size:1.6rem}
+  .intent-lead{font-size:.92rem}
+}
+@media (prefers-reduced-motion: reduce){
+  .intent-card,.intent-card:hover,.intent-icon,.intent-stat-dot{animation:none!important;transition:none!important;transform:none!important}
+  .intent-h::after{transition:none!important;transform:scaleX(1)!important}
+  .intent-section .intent-card{opacity:1;transform:none}
+}
 
 /* Tool photo cards - Monzo style */
 .tool-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
@@ -441,7 +481,7 @@ img{max-width:100%;display:block}
       <a class="pflow-cta" href="/match.html#match-flow-top">Start free &rarr;</a>
     </div>
     <div class="pflow-visual">
-      <div class="pflow-phone" aria-hidden="true">
+      <div class="pflow-phone" id="pflow-phone" aria-hidden="true">
         <div class="pflow-phone-frame">
           <div class="pflow-phone-screen">
 
@@ -564,16 +604,30 @@ img{max-width:100%;display:block}
   </div>
 </section>
 
-<!-- "I want to..." section - 3-card intent grouping -->
-<section class="sec-pad sec-wide">
-  <h2 class="intent-h">Where do you want to start?</h2>
-  <p class="intent-lead">Three places to begin. Seven tools, grouped by where you are in your job hunt.</p>
+<!-- "I want to..." section - 3-card intent grouping, asymmetric -->
+<section class="sec-pad sec-wide intent-section" id="intent-section">
+  <div class="intent-section-head">
+    <h2 class="intent-h">Where do you want to start?</h2>
+    <p class="intent-lead">Three places to begin. Seven tools, grouped by where you are in your job hunt.</p>
+  </div>
   <div class="intent-grid">
 
-    <div class="intent-card intent-card-cream">
-      <div class="intent-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+    <div class="intent-card intent-card-hero intent-card-cream" data-pin="match">
+      <div class="intent-badge-num">01</div>
+      <div class="intent-icon" aria-hidden="true">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22 14 C22 11.2, 24.2 9, 27 9 L37 9 C39.8 9, 42 11.2, 42 14 L42 18 L22 18 Z" fill="#112231"/>
+          <rect x="6" y="18" width="52" height="36" rx="6" fill="#E7515A"/>
+          <rect x="6" y="18" width="52" height="6" fill="#c7313a"/>
+          <rect x="28" y="32" width="8" height="10" rx="3" fill="#FFE8E5"/>
+          <rect x="6" y="24" width="52" height="2" fill="rgba(255,255,255,.18)"/>
+          <circle cx="51" cy="46" r="7" fill="#FAF6EF" stroke="#112231" stroke-width="2.5"/>
+          <path d="M48 46 L50 48 L54 44" stroke="#E7515A" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="intent-stat" id="intent-stat-jobs"><span class="intent-stat-dot"></span><span id="intent-stat-jobs-text">Live NZ jobs</span></div>
       <div class="intent-title">Land a job</div>
-      <div class="intent-sub">Match, decode, and write tailored applications.</div>
+      <div class="intent-sub">Match your CV to real NZ roles, decode the ad, and write a cover letter that sounds like you.</div>
       <div class="intent-links">
         <a href="/match.html">Find NZ jobs matched to me <span>&rarr;</span></a>
         <a href="/decode">Decode a job listing <span>&rarr;</span></a>
@@ -581,8 +635,21 @@ img{max-width:100%;display:block}
       </div>
     </div>
 
-    <div class="intent-card intent-card-lavender">
-      <div class="intent-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
+    <div class="intent-card intent-card-lavender" data-pin="sim">
+      <div class="intent-badge-num">02</div>
+      <div class="intent-icon" aria-hidden="true">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 26 Q6 32, 10 38" stroke="#E7515A" stroke-width="2.5" stroke-linecap="round" fill="none" opacity=".55"/>
+          <path d="M54 26 Q58 32, 54 38" stroke="#E7515A" stroke-width="2.5" stroke-linecap="round" fill="none" opacity=".55"/>
+          <path d="M4 30 Q-1 32, 4 34" stroke="#E7515A" stroke-width="2.5" stroke-linecap="round" fill="none" opacity=".3"/>
+          <path d="M60 30 Q65 32, 60 34" stroke="#E7515A" stroke-width="2.5" stroke-linecap="round" fill="none" opacity=".3"/>
+          <rect x="24" y="8" width="16" height="30" rx="8" fill="#E7515A"/>
+          <rect x="24" y="8" width="16" height="6" rx="8" fill="#c7313a"/>
+          <path d="M18 32 Q18 44, 32 44 Q46 44, 46 32" stroke="#112231" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <line x1="32" y1="44" x2="32" y2="52" stroke="#112231" stroke-width="3" stroke-linecap="round"/>
+          <line x1="24" y1="52" x2="40" y2="52" stroke="#112231" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
       <div class="intent-title">Win the interview</div>
       <div class="intent-sub">Prep the likely questions, then practise aloud with AI.</div>
       <div class="intent-links">
@@ -591,8 +658,19 @@ img{max-width:100%;display:block}
       </div>
     </div>
 
-    <div class="intent-card intent-card-peach">
-      <div class="intent-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+    <div class="intent-card intent-card-peach" data-pin="salary">
+      <div class="intent-badge-num">03</div>
+      <div class="intent-icon" aria-hidden="true">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 54 L6 30 L22 32 L34 20 L52 10 L52 54 Z" fill="#FFE8E5"/>
+          <path d="M6 30 L22 32 L34 20 L52 10" stroke="#E7515A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path d="M44 10 L52 10 L52 18" stroke="#E7515A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <line x1="4" y1="56" x2="60" y2="56" stroke="#112231" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="22" cy="32" r="3.5" fill="#112231"/>
+          <circle cx="34" cy="20" r="3.5" fill="#112231"/>
+          <circle cx="52" cy="10" r="3.5" fill="#112231"/>
+        </svg>
+      </div>
       <div class="intent-title">Get paid fairly</div>
       <div class="intent-sub">Know your market value, then rehearse the money chat.</div>
       <div class="intent-links">
@@ -807,6 +885,39 @@ function goSlide(n){
   dotsBox.children[currentSlide].classList.add('active');
 }
 setInterval(function(){goSlide((currentSlide+1)%slides.length);},5000);
+
+/* Intent cards: scroll-reveal + phone-mock hover-pin + live jobs count */
+(function(){
+  var section=document.getElementById('intent-section');
+  if(!section)return;
+  var phone=document.getElementById('pflow-phone');
+  var cards=section.querySelectorAll('.intent-card');
+
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){if(e.isIntersecting){section.classList.add('is-visible');io.disconnect();}});
+    },{threshold:.2});
+    io.observe(section);
+  } else { section.classList.add('is-visible'); }
+
+  if(phone){
+    cards.forEach(function(card){
+      var pin=card.getAttribute('data-pin');
+      if(!pin)return;
+      card.addEventListener('mouseenter',function(){phone.setAttribute('data-pin',pin);});
+      card.addEventListener('mouseleave',function(){phone.removeAttribute('data-pin');});
+      card.addEventListener('focusin',function(){phone.setAttribute('data-pin',pin);});
+      card.addEventListener('focusout',function(){phone.removeAttribute('data-pin');});
+    });
+  }
+
+  fetch('/api/approved-jobs?stats=1').then(function(r){return r.json();}).then(function(d){
+    var txt=document.getElementById('intent-stat-jobs-text');
+    if(!txt)return;
+    var n=(d&&d.totalJobs)||0;
+    if(n>0)txt.textContent=n.toLocaleString()+' live NZ jobs';
+  }).catch(function(){});
+})();
 
 </script>
 
