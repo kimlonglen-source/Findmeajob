@@ -22,6 +22,10 @@
       "dest": "/api/chat.js"
     },
     {
+      "src": "/api/keywords",
+      "dest": "/api/keywords.js"
+    },
+    {
       "src": "/api/jobs",
       "dest": "/api/jobs.js"
     },

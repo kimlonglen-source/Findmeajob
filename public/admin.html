@@ -225,6 +225,7 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
         <button class="tab" data-tab="employers" type="button" style="border-color:rgba(245,158,11,.2);color:var(--gold)">Employers</button>
         <button class="tab" data-tab="social" type="button" style="margin-left:.5rem;border-color:rgba(236,72,153,.2);color:#ec4899">Social Media</button>
         <button class="tab" data-tab="blog" type="button" style="border-color:rgba(231,81,90,.2);color:var(--em)">Blog</button>
+        <button class="tab" data-tab="keywords" type="button" style="border-color:rgba(59,130,246,.25);color:#2563eb">Keywords</button>
         <button class="tab" data-tab="outreach" type="button" style="border-color:rgba(16,185,129,.2);color:#10b981">Outreach</button>
       </div>
       <div style="display:flex;align-items:center;gap:.65rem">
@@ -294,6 +295,40 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
           </select>
         </div>
         <div id="social-output"></div>
+      </div>
+    </div>
+
+    <!-- KEYWORDS — seed topic -> Claude ideation -> Google CSE competition scoring -->
+    <div id="keywords-list" style="display:none">
+      <div style="padding:1.5rem 0">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:.75rem">
+          <div>
+            <div style="font-size:1.1rem;font-weight:800;color:var(--text)">Keyword Research</div>
+            <div style="font-size:.78rem;color:var(--text3);margin-top:.2rem">Claude ideates + Google CSE scores competition. Export to Keyword Planner or hand off to Blog / Social.</div>
+          </div>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+            <button onclick="kwGenerate()" id="btn-gen-kw" style="background:linear-gradient(135deg,#2563eb,#3b82f6);color:#fff;border:none;padding:.55rem 1.25rem;border-radius:999px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Generate keywords</button>
+            <button onclick="kwExportCSV()" id="btn-kw-csv" style="background:#fff;border:1px solid var(--border2);color:var(--text2);padding:.55rem 1rem;border-radius:999px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;display:none">Copy CSV</button>
+            <button onclick="kwShowSetup()" style="background:#fff;border:1px solid var(--border2);color:var(--text3);padding:.55rem 1rem;border-radius:999px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">Setup</button>
+          </div>
+        </div>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem">
+          <input id="kw-seed" type="text" placeholder="Seed topic e.g. nz nursing cv, interview questions graduate" style="flex:1;min-width:240px;background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.88rem;padding:.55rem .85rem;outline:none">
+          <select id="kw-type" style="background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.45rem .75rem;outline:none">
+            <option value="blog">Blog post intent</option>
+            <option value="social">Social post intent</option>
+            <option value="tool">Tool-landing intent</option>
+            <option value="any">Any</option>
+          </select>
+          <select id="kw-count" style="background:#fff;border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.82rem;padding:.45rem .75rem;outline:none">
+            <option value="12">12 keywords</option>
+            <option value="20" selected>20 keywords</option>
+            <option value="30">30 keywords</option>
+          </select>
+          <label style="display:flex;align-items:center;gap:.35rem;font-size:.78rem;color:var(--text2);font-weight:600"><input type="checkbox" id="kw-score-cse" checked style="width:14px;height:14px;accent-color:#2563eb"> Score with Google CSE</label>
+        </div>
+        <div id="kw-status" style="font-size:.78rem;color:var(--text3);margin-bottom:.75rem;min-height:1rem"></div>
+        <div id="kw-output"></div>
       </div>
     </div>
 
@@ -482,7 +517,7 @@ document.getElementById("pw").addEventListener("keydown",function(e){if(e.key===
 document.getElementById("btn-login").addEventListener("click",doLogin);
 document.getElementById("btn-signout").addEventListener("click",function(){pw="";document.getElementById("login").style.display="flex";document.getElementById("app").style.display="none";clearInterval(refreshTimer);});
 document.getElementById("btn-refresh").addEventListener("click",loadJobs);
-document.querySelectorAll(".tab").forEach(function(t){t.addEventListener("click",function(){document.querySelectorAll(".tab").forEach(function(x){x.classList.remove("active");});this.classList.add("active");currentTab=this.dataset.tab;document.getElementById("job-list").style.display="none";document.getElementById("people-list").style.display="none";document.getElementById("social-list").style.display="none";document.getElementById("blog-list").style.display="none";document.getElementById("outreach-list").style.display="none";if(currentTab==="outreach"){document.getElementById("outreach-list").style.display="block";}else if(currentTab==="social"){document.getElementById("social-list").style.display="block";}else if(currentTab==="blog"){document.getElementById("blog-list").style.display="block";}else if(currentTab==="seekers"){loadPeople("seekers");}else if(currentTab==="employers"){loadPeople("employers");}else{document.getElementById("job-list").style.display="grid";renderJobs();}});});
+document.querySelectorAll(".tab").forEach(function(t){t.addEventListener("click",function(){document.querySelectorAll(".tab").forEach(function(x){x.classList.remove("active");});this.classList.add("active");currentTab=this.dataset.tab;document.getElementById("job-list").style.display="none";document.getElementById("people-list").style.display="none";document.getElementById("social-list").style.display="none";document.getElementById("blog-list").style.display="none";document.getElementById("outreach-list").style.display="none";var kwEl=document.getElementById("keywords-list");if(kwEl)kwEl.style.display="none";if(currentTab==="outreach"){document.getElementById("outreach-list").style.display="block";}else if(currentTab==="social"){document.getElementById("social-list").style.display="block";}else if(currentTab==="blog"){document.getElementById("blog-list").style.display="block";}else if(currentTab==="keywords"){if(kwEl)kwEl.style.display="block";}else if(currentTab==="seekers"){loadPeople("seekers");}else if(currentTab==="employers"){loadPeople("employers");}else{document.getElementById("job-list").style.display="grid";renderJobs();}});});
 document.getElementById("confirm-cancel").addEventListener("click",function(){document.getElementById("confirm-modal").classList.remove("show");pendingAction=null;pendingActionId=null;});
 document.getElementById("confirm-ok").addEventListener("click",function(){document.getElementById("confirm-modal").classList.remove("show");if(pendingAction&&pendingActionId){if(pendingAction==="delete-seeker"||pendingAction==="delete-employer"){execUserAction(pendingAction,pendingActionId);}else{execAction(pendingAction,pendingActionId);}pendingAction=null;pendingActionId=null;}});
 
@@ -1390,6 +1425,225 @@ document.getElementById("plan-save-btn").addEventListener("click", async functio
   }
   this.textContent = "Save Plan"; this.disabled = false;
 });
+
+/* -------------------- KEYWORDS TAB -------------------- */
+var kwLastRows = [];
+
+function kwShowSetup(){
+  alert(
+    "Google setup (free tier, ~15 min, no bank account required):\n\n" +
+    "1. Go to https://console.cloud.google.com and create (or pick) a project.\n" +
+    "2. APIs & Services > Library > search 'Custom Search API' > Enable.\n" +
+    "3. APIs & Services > Credentials > Create Credentials > API key. Copy it.\n" +
+    "4. Go to https://programmablesearchengine.google.com/ and create a search engine.\n" +
+    "   - 'Search the entire web' on.\n" +
+    "   - Region: New Zealand.\n" +
+    "   - Copy the Search engine ID (cx).\n" +
+    "5. In Vercel > your project > Settings > Environment Variables, add:\n" +
+    "   GOOGLE_CSE_API_KEY = <api key from step 3>\n" +
+    "   GOOGLE_CSE_ID = <cx from step 4>\n" +
+    "6. Redeploy. You get 100 free queries per day.\n\n" +
+    "Search Console integration is a future add-on (needs service-account OAuth) and will ship in a follow-up."
+  );
+}
+
+function kwTypeDesc(t){
+  if(t==='blog') return 'Long-tail informational questions (blog target, 4-8 words, question form).';
+  if(t==='social') return 'Short punchy hooks (social target, 2-5 words, shareable).';
+  if(t==='tool') return 'High-intent transactional phrases (tool-landing target, e.g. "free cv score nz").';
+  return 'Mixed: some informational (blog), some transactional (tool), some hook-style (social).';
+}
+
+function kwToolFor(kw){
+  var k = (kw||'').toLowerCase();
+  if(/(cv|resume|cover letter|tailor)/.test(k)) return {label:'CV + Cover Letter',url:'/match.html#apply'};
+  if(/(score|rate my cv|cv check)/.test(k)) return {label:'CV Score',url:'/score'};
+  if(/(interview question|prep|what.*ask)/.test(k)) return {label:'Interview Questions',url:'/interview'};
+  if(/(interview|mock|practise|practice.*interview)/.test(k)) return {label:'Interview Simulator',url:'/interview-sim'};
+  if(/(salary|pay|wage|earn|worth)/.test(k)) return {label:'Salary Calculator',url:'/salary'};
+  if(/(negotiate|pay rise|asking for more|ask for a raise)/.test(k)) return {label:'Negotiate Salary',url:'/negotiate'};
+  if(/(rehears|practise.*(resign|pay rise|negotiat|difficult)|tough conversation)/.test(k)) return {label:'Practice Simulator',url:'/practice-sim'};
+  if(/(decode|job ad|what does .* mean|listing)/.test(k)) return {label:'Decode Job Ad',url:'/decode'};
+  if(/(compare|two offers|which job)/.test(k)) return {label:'Compare Jobs',url:'/compare'};
+  if(/(stay or go|quit|resign|leave my job|should i)/.test(k)) return {label:'Should I Stay or Go',url:'/decide'};
+  if(/(email|write this|workplace email)/.test(k)) return {label:'Write This Email',url:'/email'};
+  if(/(nurse|nursing|healthcare|midwife|hca|allied health|te whatu ora)/.test(k)) return {label:'Healthcare Toolkit',url:'/healthcare'};
+  if(/(builder|sparkie|electrician|plumber|mechanic|apprentice|trades|tradie)/.test(k)) return {label:'Tradies Toolkit',url:'/trades'};
+  if(/(migrant|visa|newcomer|kiwi experience|working holiday)/.test(k)) return {label:'Newcomers Toolkit',url:'/newcomers'};
+  if(/(graduate|grad programme|first job|uni)/.test(k)) return {label:'Graduates Toolkit',url:'/graduates'};
+  return {label:'Find NZ Jobs',url:'/match.html'};
+}
+
+async function kwGenerate(){
+  var btn = document.getElementById('btn-gen-kw');
+  var out = document.getElementById('kw-output');
+  var st = document.getElementById('kw-status');
+  var seed = (document.getElementById('kw-seed').value || '').trim();
+  var type = document.getElementById('kw-type').value;
+  var count = parseInt(document.getElementById('kw-count').value, 10) || 20;
+  var scoreCSE = document.getElementById('kw-score-cse').checked;
+  if(!seed){ alert('Enter a seed topic first (e.g. "nz nursing cv").'); return; }
+
+  btn.disabled = true; btn.textContent = 'Researching...';
+  st.textContent = 'Claude is ideating '+count+' keywords for "'+seed+'"...';
+  out.innerHTML = '';
+  document.getElementById('btn-kw-csv').style.display = 'none';
+
+  var yr = new Date().getFullYear();
+  var month = new Date().toLocaleDateString('en-NZ',{month:'long'});
+  var system = 'You are an SEO keyword strategist for FindMeAJob.co.nz, a free AI career toolkit for NZ job seekers. You ideate NZ-specific keywords that real people type into Google. You label each with a volume bucket (low/med/high) and difficulty bucket (low/med/high) based on your training data - always clearly estimates, never measurements.';
+  var user = 'Seed topic: "'+seed+'"\nContent type: '+type+' — '+kwTypeDesc(type)+'\nCurrent month: '+month+' '+yr+'\n\n' +
+    'Generate '+count+' NZ-specific keywords around this seed. Rules:\n' +
+    '- Every keyword MUST read like a phrase a real Kiwi would type into Google. No glued-together modifiers.\n' +
+    '- Long-tail preferred (4-8 words). Avoid impossibly broad terms like "nz jobs".\n' +
+    '- Use NZ / British spelling (practise, organise, analyse, behaviour, colour).\n' +
+    '- Include year '+yr+' or month '+month+' in ~2 keywords if relevant (seasonal).\n' +
+    '- Mix intents: informational (how/what/why), transactional (free/template/calculator), comparative (vs/or).\n' +
+    '- Prefer easy/medium difficulty over high — small NZ site.\n\n' +
+    'Return ONLY a JSON array, no markdown, no prose:\n' +
+    '[{"keyword":"...","intent":"informational|transactional|comparative|navigational","volume":"low|med|high","difficulty":"low|med|high","content":"blog|social|landing","why":"one short sentence"}]';
+
+  try {
+    var r = await fetch('/api/chat', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ system: system, messages: [{role:'user', content: user}] })
+    });
+    if(!r.ok) throw new Error('Claude ideation failed ('+r.status+')');
+    var data = await r.json();
+    var txt = (data.content && data.content[0] && data.content[0].text) || '';
+    var jsonStart = txt.indexOf('['); var jsonEnd = txt.lastIndexOf(']');
+    if(jsonStart<0 || jsonEnd<0) throw new Error('No JSON array in response');
+    var rows = JSON.parse(txt.slice(jsonStart, jsonEnd+1));
+    if(!Array.isArray(rows) || !rows.length) throw new Error('Empty keyword list');
+    rows.forEach(function(row){
+      var t = kwToolFor(row.keyword);
+      row.toolLabel = t.label; row.toolUrl = t.url;
+      row.cseTotal = null; row.cseTop = null;
+    });
+    kwLastRows = rows;
+    kwRender(rows);
+    document.getElementById('btn-kw-csv').style.display='inline-block';
+
+    if(scoreCSE){
+      st.textContent = 'Claude done. Scoring with Google CSE — 0 of '+rows.length+'...';
+      var i = 0;
+      for(var idx=0; idx<rows.length; idx++){
+        try {
+          var cr = await fetch('/api/keywords', {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({ password: pw, action:'cse', q: rows[idx].keyword })
+          });
+          var cd = await cr.json();
+          if(cr.status === 503 && cd.error === 'not_configured'){
+            st.innerHTML = '<span style="color:#c7313a;font-weight:700">Google CSE not configured.</span> Click "Setup" to see the steps. Keywords below are Claude-only estimates.';
+            break;
+          }
+          if(cr.ok){
+            rows[idx].cseTotal = cd.total || 0;
+            rows[idx].cseTop = (cd.items && cd.items[0]) ? cd.items[0].displayLink : null;
+            rows[idx].cseTop3 = (cd.items || []).slice(0,3).map(function(x){return x.displayLink;});
+          }
+        } catch(e){ /* silent per-row */ }
+        i++;
+        st.textContent = 'Claude done. Scoring with Google CSE — '+i+' of '+rows.length+'...';
+        kwRender(rows);
+        await new Promise(function(res){ setTimeout(res, 150); }); // pace CSE calls
+      }
+      if(!st.innerHTML || st.innerHTML.indexOf('not configured') === -1){
+        st.textContent = 'Done. '+rows.length+' keywords ranked by Claude + Google CSE.';
+      }
+    } else {
+      st.textContent = 'Done. '+rows.length+' keywords (Claude estimates only — tick "Score with Google CSE" for real SERP data).';
+    }
+  } catch(e){
+    out.innerHTML = '<div style="padding:1rem;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;color:#c7313a;font-size:.85rem">Error: '+(e.message||e)+'</div>';
+    st.textContent = '';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Generate keywords';
+  }
+}
+
+function kwBucketColor(v){
+  if(v==='high') return '#10b981';
+  if(v==='med') return '#f59e0b';
+  return '#94a3b8';
+}
+
+function kwRender(rows){
+  var out = document.getElementById('kw-output');
+  var html = '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.82rem">';
+  html += '<thead><tr style="text-align:left;border-bottom:1px solid var(--border2);color:var(--text3);font-size:.72rem;text-transform:uppercase;letter-spacing:.6px">';
+  html += '<th style="padding:.55rem .5rem">Keyword</th>';
+  html += '<th style="padding:.55rem .5rem">Intent</th>';
+  html += '<th style="padding:.55rem .5rem" title="Claude estimate">Vol</th>';
+  html += '<th style="padding:.55rem .5rem" title="Claude estimate">Diff</th>';
+  html += '<th style="padding:.55rem .5rem" title="Google CSE total results for this exact query">G Results</th>';
+  html += '<th style="padding:.55rem .5rem">Top competitor</th>';
+  html += '<th style="padding:.55rem .5rem">Tool match</th>';
+  html += '<th style="padding:.55rem .5rem">Actions</th>';
+  html += '</tr></thead><tbody>';
+  rows.forEach(function(r, i){
+    var idx = i;
+    html += '<tr style="border-bottom:1px solid var(--border-soft)">';
+    html += '<td style="padding:.55rem .5rem;color:var(--text);font-weight:600">'+(r.keyword||'')+'<div style="font-size:.7rem;color:var(--text3);font-weight:500;margin-top:.15rem">'+(r.why||'')+'</div></td>';
+    html += '<td style="padding:.55rem .5rem;color:var(--text2);font-size:.75rem">'+(r.intent||'')+'</td>';
+    html += '<td style="padding:.55rem .5rem"><span style="background:'+kwBucketColor(r.volume)+';color:#fff;padding:.15rem .5rem;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase">'+(r.volume||'?')+'</span></td>';
+    html += '<td style="padding:.55rem .5rem"><span style="background:'+kwBucketColor(r.difficulty==='low'?'high':r.difficulty==='high'?'low':'med')+';color:#fff;padding:.15rem .5rem;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase">'+(r.difficulty||'?')+'</span></td>';
+    html += '<td style="padding:.55rem .5rem;color:var(--text2);font-size:.75rem">'+(r.cseTotal===null?'—':r.cseTotal.toLocaleString())+'</td>';
+    html += '<td style="padding:.55rem .5rem;color:var(--text2);font-size:.75rem">'+(r.cseTop||'—')+'</td>';
+    html += '<td style="padding:.55rem .5rem"><a href="'+r.toolUrl+'" target="_blank" style="color:var(--em);font-size:.75rem;font-weight:700;text-decoration:none">'+r.toolLabel+' &rarr;</a></td>';
+    html += '<td style="padding:.55rem .5rem;white-space:nowrap">';
+    html += '<button onclick="kwToBlog('+idx+')" style="background:rgba(231,81,90,.12);color:var(--em);border:none;padding:.3rem .6rem;border-radius:999px;font-size:.7rem;font-weight:700;cursor:pointer;font-family:inherit;margin-right:.25rem">Blog</button>';
+    html += '<button onclick="kwToSocial('+idx+')" style="background:rgba(236,72,153,.12);color:#be185d;border:none;padding:.3rem .6rem;border-radius:999px;font-size:.7rem;font-weight:700;cursor:pointer;font-family:inherit">Social</button>';
+    html += '</td></tr>';
+  });
+  html += '</tbody></table></div>';
+  out.innerHTML = html;
+}
+
+function kwToBlog(idx){
+  var r = kwLastRows[idx]; if(!r) return;
+  document.querySelector('.tab[data-tab="blog"]').click();
+  var out = document.getElementById('keyword-output');
+  if(out){
+    out.style.display='block';
+    out.innerHTML = '<div style="padding:.75rem 1rem;background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.25);border-radius:12px;color:var(--text);font-size:.85rem"><strong>From Keywords tab:</strong> '+r.keyword+' &rarr; <a href="'+r.toolUrl+'" target="_blank" style="color:var(--em);font-weight:700">'+r.toolLabel+'</a>.<div style="font-size:.75rem;color:var(--text3);margin-top:.35rem">Click "2. Generate Posts" to draft a blog post using this keyword as the seed.</div></div>';
+  }
+  window._kwSeed = r;
+}
+
+function kwToSocial(idx){
+  var r = kwLastRows[idx]; if(!r) return;
+  document.querySelector('.tab[data-tab="social"]').click();
+  var focusSel = document.getElementById('social-focus');
+  if(focusSel){
+    for(var i=0;i<focusSel.options.length;i++){ if(focusSel.options[i].value.toLowerCase().indexOf(r.toolLabel.toLowerCase().split(' ')[0]) > -1){ focusSel.selectedIndex = i; break; } }
+  }
+  var socOut = document.getElementById('social-output');
+  if(socOut){
+    socOut.innerHTML = '<div style="padding:.75rem 1rem;background:rgba(236,72,153,.08);border:1px solid rgba(236,72,153,.25);border-radius:12px;color:var(--text);font-size:.85rem"><strong>From Keywords tab:</strong> "'+r.keyword+'" &rarr; '+r.toolLabel+'.<div style="font-size:.75rem;color:var(--text3);margin-top:.35rem">Click "Generate Posts" to draft platform-native posts using this keyword as the hook.</div></div>';
+  }
+  window._kwSeed = r;
+}
+
+function kwExportCSV(){
+  if(!kwLastRows.length){ alert('Generate keywords first.'); return; }
+  var header = ['keyword','intent','volume_est','difficulty_est','content_type','tool','tool_url','google_total','top_competitor','why'].join(',');
+  var body = kwLastRows.map(function(r){
+    return [r.keyword, r.intent, r.volume, r.difficulty, r.content, r.toolLabel, r.toolUrl, (r.cseTotal===null?'':r.cseTotal), (r.cseTop||''), r.why]
+      .map(function(x){ x = (x==null?'':String(x)); return '"'+x.replace(/"/g,'""')+'"'; })
+      .join(',');
+  }).join('\n');
+  var csv = header+'\n'+body;
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(csv).then(function(){ alert('CSV copied to clipboard ('+kwLastRows.length+' rows). Paste into Google Keyword Planner.'); });
+  } else {
+    var ta=document.createElement('textarea'); ta.value=csv; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+    alert('CSV copied to clipboard ('+kwLastRows.length+' rows).');
+  }
+}
 </script>
 </body>
 </html>
