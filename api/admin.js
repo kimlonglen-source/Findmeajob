@@ -243,6 +243,43 @@ module.exports = async function handler(req, res) {
         return res.status(200).json({ success: true });
       } catch (e) { return res.status(500).json({ error: "Send failed: " + e.message }); }
     }
+
+    // Google Custom Search proxy (for /admin Keywords tab).
+    // Gated by the same admin password check above. Requires
+    // GOOGLE_CSE_API_KEY + GOOGLE_CSE_ID env vars. Free tier is 100/day.
+    if (action === "keyword-cse") {
+      var cseKey = process.env.GOOGLE_CSE_API_KEY;
+      var cseId = process.env.GOOGLE_CSE_ID;
+      if (!cseKey || !cseId) {
+        return res.status(503).json({
+          error: "not_configured",
+          message: "Set GOOGLE_CSE_API_KEY and GOOGLE_CSE_ID env vars."
+        });
+      }
+      var q = (params.q || "").toString().trim();
+      if (!q) return res.status(400).json({ error: "Missing q" });
+      if (q.length > 200) return res.status(400).json({ error: "q too long" });
+      try {
+        var cseUrl = "https://www.googleapis.com/customsearch/v1?key=" + encodeURIComponent(cseKey)
+          + "&cx=" + encodeURIComponent(cseId)
+          + "&q=" + encodeURIComponent(q)
+          + "&num=10&gl=nz&cr=countryNZ&safe=active";
+        var cseRes = await fetch(cseUrl);
+        if (!cseRes.ok) {
+          var errText = await cseRes.text();
+          return res.status(502).json({ error: "cse_failed", status: cseRes.status, detail: errText.slice(0, 400) });
+        }
+        var cseData = await cseRes.json();
+        var cseItems = (cseData.items || []).map(function(it) {
+          return { title: it.title, link: it.link, snippet: it.snippet, displayLink: it.displayLink };
+        });
+        var cseTotal = (cseData.searchInformation && parseInt(cseData.searchInformation.totalResults, 10)) || 0;
+        return res.status(200).json({ q: q, total: cseTotal, items: cseItems });
+      } catch (e) {
+        return res.status(500).json({ error: "cse_error", detail: String(e).slice(0, 300) });
+      }
+    }
+
     return res.status(400).json({ error: "Unknown action" });
   } catch (err) {
     return res.status(500).json({ error: err.message });
