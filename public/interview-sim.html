@@ -10,12 +10,12 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <title>Free AI Interview Practice NZ — Speak, Get Scored /100 | FindMeAJob</title>
-<meta name="description" content="Practice job interviews with AI. Speak your answers aloud, get real-time coaching, and receive a recruiter-style score out of 100 with feedback. Free for NZ job seekers.">
+<meta name="description" content="Practise job interviews with AI. Speak your answers aloud, get real-time coaching, and receive a recruiter-style score out of 100 with feedback. Free for NZ job seekers.">
 <link rel="canonical" href="https://www.findmeajob.co.nz/interview-sim">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.findmeajob.co.nz/interview-sim">
 <meta property="og:title" content="Interview Simulator — Free AI Interview Practice NZ">
-<meta property="og:description" content="Practice job interviews with AI. Speak your answers. Get scored out of 100.">
+<meta property="og:description" content="Practise job interviews with AI. Speak your answers. Get scored out of 100.">
 <meta property="og:image" content="https://www.findmeajob.co.nz/favicon-512.png">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is the interview simulator free?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely free. No payment, no credit card, no sign-up required. All 12 AI career tools on FindMeAJob.co.nz are free forever for NZ job seekers."}},{"@type":"Question","name":"How does the AI interview practice work?","acceptedAnswer":{"@type":"Answer","text":"Choose your role, style, and experience level. The AI interviewer asks questions one at a time using voice. You speak your answer naturally and your words appear on screen. After the interview, you get a score out of 100 with detailed feedback and model answers."}},{"@type":"Question","name":"What interview styles are available?","acceptedAnswer":{"@type":"Answer","text":"Standard, Behavioural (STAR method), Values-based (NZ public sector), Panel (multiple interviewers), Technical, Competency-based, and Casual coffee chat. You can also paste the actual job ad for tailored questions."}},{"@type":"Question","name":"Does it work on mobile?","acceptedAnswer":{"@type":"Answer","text":"Yes. The interview simulator works on Chrome for desktop and mobile. Just allow microphone access when prompted."}}]}</script>
@@ -423,7 +423,7 @@ body.dark #tbtn{border-color:rgba(255,255,255,.1);color:#94a3b8}
         <div class="aw-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Realistic 5-10 min sessions</div>
         <div class="aw-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15.09 8.26 22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg> Scored out of 100</div>
         <div class="aw-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg> Model answers + tips</div>
-        <div class="aw-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Practice unlimited times</div>
+        <div class="aw-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Practise unlimited times</div>
       </div>
       <a href="#setupForm" class="aw-cta" onclick="document.getElementById('setupForm').scrollIntoView({behavior:'smooth',block:'start'});return false;">Start practicing &rarr;</a>
       <div class="aw-trust">
@@ -1024,7 +1024,7 @@ function showScore(r){
   }
   /* Actions */
   h+='<div style="display:flex;gap:.5rem;margin-top:1.25rem;flex-wrap:wrap">';
-  h+='<button onclick="location.reload()" style="flex:1;min-width:140px;padding:.85rem 1rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:inherit;font-size:.88rem;font-weight:700;cursor:pointer">Practice again</button>';
+  h+='<button onclick="location.reload()" style="flex:1;min-width:140px;padding:.85rem 1rem;background:#E7515A;color:#fff;border:none;border-radius:999px;font-family:inherit;font-size:.88rem;font-weight:700;cursor:pointer">Practise again</button>';
   h+='<button onclick="shareResults('+r.score+')" style="flex:1;min-width:140px;padding:.85rem 1rem;background:#fff;color:#0f172a;border:1px solid #e2e8f0;border-radius:999px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer">Share results</button>';
   h+='</div>';
   h+='<div class="cta-box"><p>Ready to apply for real?</p><a href="/match.html">Apply for a Job</a></div>';
@@ -1281,7 +1281,7 @@ document.getElementById('userInput').addEventListener('input',function(){this.st
 document.getElementById('userInput').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAnswer();}});
 
 function shareResults(score){
-  var txt='I just practiced a '+iData.role+' interview on FindMeAJob and scored '+score+'/100. Try it free: https://www.findmeajob.co.nz/interview-sim';
+  var txt='I just practised a '+iData.role+' interview on FindMeAJob and scored '+score+'/100. Try it free: https://www.findmeajob.co.nz/interview-sim';
   if(navigator.share){navigator.share({title:'My interview score',text:txt}).catch(function(){});}
   else if(navigator.clipboard){navigator.clipboard.writeText(txt).then(function(){alert('Copied to clipboard!');}).catch(function(){prompt('Copy this:',txt);});}
   else{prompt('Copy this:',txt);}
