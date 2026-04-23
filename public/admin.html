@@ -1443,6 +1443,7 @@ document.getElementById("plan-save-btn").addEventListener("click", async functio
 
 /* -------------------- KEYWORDS TAB -------------------- */
 var kwLastRows = [];
+var kwSelected = {}; /* idx -> true for checked rows */
 
 function kwTypeDesc(t){
   if(t==='blog') return 'Long-tail informational questions (blog target, 4-8 words, question form).';
@@ -1572,8 +1573,16 @@ function kwBucketColor(v){
 
 function kwRender(rows){
   var out = document.getElementById('kw-output');
-  var html = '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.82rem">';
+  var html = '';
+  /* Batch-action bar (hidden until ≥1 row is ticked, updated by kwToggleSelect) */
+  html += '<div id="kw-batch-bar" style="display:none;align-items:center;gap:.75rem;padding:.6rem .85rem;margin-bottom:.6rem;background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.25);border-radius:12px">';
+  html += '<span id="kw-batch-count" style="font-size:.82rem;color:var(--text);font-weight:600">0 selected</span>';
+  html += '<button onclick="kwBlogFromSelected()" style="background:linear-gradient(135deg,var(--em),#14b8a6);color:#fff;border:none;padding:.4rem .9rem;border-radius:999px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit">Draft blogs from selected &rarr;</button>';
+  html += '<button onclick="kwClearSelection()" style="background:transparent;color:var(--text3);border:none;padding:.4rem .6rem;font-size:.75rem;font-weight:600;cursor:pointer;font-family:inherit">Clear</button>';
+  html += '</div>';
+  html += '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.82rem">';
   html += '<thead><tr style="text-align:left;border-bottom:1px solid var(--border2);color:var(--text3);font-size:.72rem;text-transform:uppercase;letter-spacing:.6px">';
+  html += '<th style="padding:.55rem .5rem;width:28px"><input type="checkbox" id="kw-select-all" onchange="kwToggleAll(this.checked)" style="width:14px;height:14px;accent-color:#2563eb;cursor:pointer" title="Select all"></th>';
   html += '<th style="padding:.55rem .5rem">Keyword</th>';
   html += '<th style="padding:.55rem .5rem">Intent</th>';
   html += '<th style="padding:.55rem .5rem" title="Claude estimate">Vol</th>';
@@ -1585,7 +1594,9 @@ function kwRender(rows){
   html += '</tr></thead><tbody>';
   rows.forEach(function(r, i){
     var idx = i;
+    var checked = kwSelected[idx] ? ' checked' : '';
     html += '<tr style="border-bottom:1px solid var(--border-soft)">';
+    html += '<td style="padding:.55rem .5rem"><input type="checkbox" class="kw-row-check" data-idx="'+idx+'" onchange="kwToggleSelect('+idx+', this.checked)"'+checked+' style="width:14px;height:14px;accent-color:#2563eb;cursor:pointer"></td>';
     html += '<td style="padding:.55rem .5rem;color:var(--text);font-weight:600">'+(r.keyword||'')+'<div style="font-size:.7rem;color:var(--text3);font-weight:500;margin-top:.15rem">'+(r.why||'')+'</div></td>';
     html += '<td style="padding:.55rem .5rem;color:var(--text2);font-size:.75rem">'+(r.intent||'')+'</td>';
     html += '<td style="padding:.55rem .5rem"><span style="background:'+kwBucketColor(r.volume)+';color:#fff;padding:.15rem .5rem;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase">'+(r.volume||'?')+'</span></td>';
@@ -1600,6 +1611,74 @@ function kwRender(rows){
   });
   html += '</tbody></table></div>';
   out.innerHTML = html;
+  kwUpdateBatchBar();
+}
+
+function kwToggleSelect(idx, checked){
+  if(checked) kwSelected[idx] = true;
+  else delete kwSelected[idx];
+  kwUpdateBatchBar();
+}
+
+function kwToggleAll(checked){
+  kwSelected = {};
+  if(checked){ kwLastRows.forEach(function(_, i){ kwSelected[i] = true; }); }
+  document.querySelectorAll('.kw-row-check').forEach(function(cb){ cb.checked = checked; });
+  kwUpdateBatchBar();
+}
+
+function kwClearSelection(){
+  kwSelected = {};
+  var sa = document.getElementById('kw-select-all'); if(sa) sa.checked = false;
+  document.querySelectorAll('.kw-row-check').forEach(function(cb){ cb.checked = false; });
+  kwUpdateBatchBar();
+}
+
+function kwUpdateBatchBar(){
+  var bar = document.getElementById('kw-batch-bar');
+  var count = Object.keys(kwSelected).length;
+  if(!bar) return;
+  if(count > 0){
+    bar.style.display = 'flex';
+    var lbl = document.getElementById('kw-batch-count');
+    if(lbl) lbl.textContent = count + ' selected — one post per keyword';
+  } else {
+    bar.style.display = 'none';
+  }
+}
+
+function kwBlogFromSelected(){
+  var idxs = Object.keys(kwSelected).map(function(k){ return parseInt(k, 10); }).filter(function(n){ return !isNaN(n); });
+  if(!idxs.length) return;
+  /* Populate the shape generateBlog() already consumes: _keywordData[i] = {keyword, angle, tool} */
+  var data = kwLastRows.map(function(r){
+    return { keyword: r.keyword, angle: r.why || '', tool: (r.toolLabel || '') + (r.toolUrl ? ' ('+r.toolUrl+')' : '') };
+  });
+  window._keywordData = data;
+  /* _selectedKeywords is the global array read by generateBlog (declared at top of script) */
+  _selectedKeywords = idxs.slice();
+  /* Clear any single-keyword seed so the multi-path wins */
+  window._kwSeed = null;
+  /* Bump the blog count dropdown so generateBlog doesn't cap below what we've picked */
+  var blogCount = document.getElementById('blog-count');
+  if(blogCount){
+    var want = String(idxs.length);
+    var hasOpt = false;
+    for(var i=0; i<blogCount.options.length; i++){ if(blogCount.options[i].value === want){ blogCount.value = want; hasOpt = true; break; } }
+    if(!hasOpt){
+      var opt = document.createElement('option'); opt.value = want; opt.textContent = want + ' posts'; blogCount.appendChild(opt); blogCount.value = want;
+    }
+  }
+  /* Switch to Blog tab and kick generation */
+  var blogTab = document.querySelector('.tab[data-tab="blog"]');
+  if(blogTab) blogTab.click();
+  var kOut = document.getElementById('keyword-output');
+  if(kOut){
+    kOut.style.display = 'block';
+    var list = idxs.map(function(i){ return '<li style="margin:.1rem 0">'+(kwLastRows[i] ? kwLastRows[i].keyword : '') +'</li>'; }).join('');
+    kOut.innerHTML = '<div style="padding:.75rem 1rem;background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.25);border-radius:12px;color:var(--text);font-size:.85rem"><strong>From Keywords tab:</strong> drafting '+idxs.length+' posts — one per keyword.<ul style="margin:.35rem 0 0 1rem;padding:0;font-size:.78rem;color:var(--text2)">'+list+'</ul></div>';
+  }
+  generateBlog();
 }
 
 function kwToBlog(idx){
