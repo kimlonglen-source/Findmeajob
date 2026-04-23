@@ -162,6 +162,54 @@ module.exports = async function handler(req, res) {
       var cvUploads = await hget("stats", "cv-uploads");
       return res.status(200).json({ seekers: seekerCount, employers: employerCount, jobs: jobCount, applications: appCount, cvUploads: parseInt(cvUploads) || 0 });
     }
+    if (action === "tool-stats") {
+      // Aggregates per-day counters populated by POST /api/track-tool.
+      // Response shape: { days, tools[], byDay[{date, total}], generatedAt }
+      // tools[]    = [{ tool, views, actions, daily:[...N days, newest last] }]
+      // byDay[]    = total views per day (newest last) for a site-wide sparkline
+      var days = parseInt(params.days, 10);
+      if (!days || days < 1 || days > 90) days = 7;
+
+      // Build NZ-date strings for the last `days` days (newest last).
+      var dateStrs = [];
+      for (var d = days - 1; d >= 0; d--) {
+        var ms = Date.now() - d * 24 * 60 * 60 * 1000;
+        var parts = new Date(ms).toLocaleString("en-GB", {
+          timeZone: "Pacific/Auckland",
+          year: "numeric", month: "2-digit", day: "2-digit"
+        }).split("/");
+        dateStrs.push(parts[2] + "-" + parts[1] + "-" + parts[0]);
+      }
+
+      var TOOLS = ["match","apply","score","decide","decode","interview","interview-sim","practice-sim","negotiate","compare","salary","email"];
+      // Seed every tool with zeros so the UI can render a full table even on day 1
+      var agg = {};
+      TOOLS.forEach(function(t){ agg[t] = { tool: t, views: 0, actions: 0, daily: dateStrs.map(function(){ return 0; }) }; });
+      var byDay = dateStrs.map(function(date){ return { date: date, total: 0 }; });
+
+      for (var i = 0; i < dateStrs.length; i++) {
+        var hash = {};
+        try { hash = await hgetall("tool-stats:" + dateStrs[i]); } catch(_e) { hash = {}; }
+        if (!hash) continue;
+        for (var field in hash) {
+          var parts2 = field.split(":");
+          if (parts2.length !== 2) continue;
+          var toolName = parts2[0], event = parts2[1];
+          var n = parseInt(hash[field], 10) || 0;
+          if (!agg[toolName]) agg[toolName] = { tool: toolName, views: 0, actions: 0, daily: dateStrs.map(function(){ return 0; }) };
+          if (event === "view") {
+            agg[toolName].views += n;
+            agg[toolName].daily[i] += n;
+            byDay[i].total += n;
+          } else if (event === "action") {
+            agg[toolName].actions += n;
+          }
+        }
+      }
+
+      var tools = Object.values(agg).sort(function(a,b){ return b.views - a.views; });
+      return res.status(200).json({ days: days, tools: tools, byDay: byDay, generatedAt: new Date().toISOString() });
+    }
     if (action === "delete-seeker") {
       var email = params.email;
       if (!email) return res.status(400).json({ error: "Email required" });
