@@ -20,16 +20,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#fff;color:#0f172a;font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
+body{background:#fff;color:#0f172a;font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh;font-size:16px;line-height:1.6}
 a{color:#E7515A;text-decoration:none}a:hover{text-decoration:underline}
 .nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 3rem;border-bottom:1px solid rgba(0,0,0,.06);position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);backdrop-filter:blur(12px)}
 .nav-logo{font-size:1.4rem;font-weight:900;color:#E7515A;text-decoration:none;letter-spacing:-.5px}.nav-logo:hover{text-decoration:none}
-.nav-links{display:flex;align-items:center;gap:1.5rem}
-.nav-links a{color:#1a1a2e;font-size:.82rem;font-weight:500;text-decoration:none}.nav-links a:hover{color:#E7515A}
-.nav-cta{background:#E7515A !important;color:#fff !important;padding:.45rem 1.15rem;border-radius:999px;font-size:.78rem;font-weight:700}
-.hero{text-align:center;padding:4rem 2rem 4.5rem;background:linear-gradient(135deg,#0f172a,#1a1a2e);border-radius:0 0 32px 32px}
-.hero h1{font-size:2.4rem;font-weight:900;color:#fff;margin-bottom:.5rem;letter-spacing:-1px}
-.hero p{color:rgba(255,255,255,.6);font-size:1rem;max-width:500px;margin:0 auto}
+.nav-links{display:flex;align-items:center;gap:2rem}
+.nav-links a{color:#1a1a2e;font-size:.9rem;font-weight:600;text-decoration:none}.nav-links a:hover{color:#E7515A}
+.nav-cta{background:#1a1a2e!important;color:#fff!important;padding:.65rem 1.5rem;border-radius:999px;font-size:.85rem;font-weight:700;transition:all .2s}
+.nav-cta:hover{background:#E7515A!important}
+/* Monzo-style pastel hero — aligns with blog + homepage language */
+.hero{text-align:center;padding:4.5rem 2rem 3rem;background:#FAF6EF;border-radius:0 0 32px 32px}
+.hero h1{font-size:2.4rem;font-weight:900;color:#1a1a2e;margin-bottom:.5rem;letter-spacing:-1px}
+.hero p{color:#64748b;font-size:1rem;max-width:520px;margin:0 auto}
 .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;max-width:900px;margin:2rem auto 0;padding:0 2rem;position:relative;z-index:2}
 .plan{background:#fff;border:1px solid #e2e8f0;border-radius:20px;padding:2rem 1.75rem;text-align:left;position:relative;transition:all .3s;box-shadow:0 4px 20px rgba(0,0,0,.04)}
 .plan:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.08)}

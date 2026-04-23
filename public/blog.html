@@ -23,9 +23,9 @@
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#09090b;--bg2:rgba(255,255,255,.03);--text:#f8fafc;--text2:#a1a1aa;--text3:#71717a;--em:#E7515A;--purple:#8b5cf6;--pink:#ec4899;--gold:#f59e0b;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--r:12px;--rl:20px}
+:root{--bg:#fff;--bg2:#fafafa;--text:#0f172a;--text2:#64748b;--text3:#94a3b8;--em:#E7515A;--purple:#8b5cf6;--pink:#ec4899;--gold:#f59e0b;--border:#e2e8f0;--border2:#cbd5e1;--r:12px;--rl:20px}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh;font-size:16px;line-height:1.6}
 a{color:var(--em);text-decoration:none}
 a:hover{text-decoration:underline}
 
@@ -51,39 +51,42 @@ nav.nav{display:flex;align-items:center;justify-content:space-between;padding:1.
   .hamburger{display:block}
 }
 
-.blog-header{text-align:center;padding:3rem 2rem 2rem}
-.blog-header h1{font-size:1.8rem;font-weight:900;margin-bottom:.35rem}
-.blog-header p{color:var(--text2);font-size:.9rem;max-width:500px;margin:0 auto}
-.blog-tabs{display:flex;justify-content:center;gap:.5rem;margin-top:1.25rem;flex-wrap:wrap}
-.blog-tab{padding:.4rem 1rem;border-radius:999px;font-size:.78rem;font-weight:600;border:1px solid var(--border2);background:none;color:var(--text2);cursor:pointer;font-family:inherit;transition:all .2s}
-.blog-tab:hover,.blog-tab.active{background:rgba(231,81,90,.08);border-color:rgba(231,81,90,.3);color:var(--em)}
+/* Monzo-style pastel hero — mirrors the homepage language */
+.blog-header{background:#FAF6EF;padding:4rem 2rem 2.5rem;text-align:center;border-radius:0 0 32px 32px;margin-bottom:.5rem}
+.blog-header h1{font-size:2.2rem;font-weight:900;color:#1a1a2e;margin-bottom:.5rem;letter-spacing:-.8px}
+.blog-header p{color:#64748b;font-size:.95rem;max-width:520px;margin:0 auto}
+.blog-tabs{display:flex;justify-content:center;gap:.45rem;margin-top:1.5rem;flex-wrap:wrap}
+.blog-tab{padding:.45rem 1.05rem;border-radius:999px;font-size:.8rem;font-weight:700;border:1px solid #e2e8f0;background:#fff;color:#475569;cursor:pointer;font-family:inherit;transition:all .2s}
+.blog-tab:hover{border-color:#1a1a2e;color:#1a1a2e}
+.blog-tab.active{background:#1a1a2e;border-color:#1a1a2e;color:#fff}
 
-.posts{max-width:720px;margin:0 auto;padding:0 1.5rem 3rem}
-.post-card{border:1px solid var(--border);border-radius:var(--rl);padding:1.5rem;margin-top:1.25rem;background:var(--bg2);transition:all .3s;cursor:pointer}
-.post-card:hover{border-color:var(--border2);transform:translateY(-2px)}
-.post-tag{display:inline-block;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:.2rem .6rem;border-radius:999px;margin-bottom:.6rem}
-.post-tag.seeker{background:rgba(231,81,90,.08);border:1px solid rgba(231,81,90,.2);color:var(--em)}
-.post-tag.employer{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);color:var(--gold)}
-.post-tag.market{background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);color:var(--purple)}
-.post-tag.tips{background:rgba(236,72,153,.08);border:1px solid rgba(236,72,153,.2);color:var(--pink)}
-.post-title{font-size:1.15rem;font-weight:800;color:var(--text);margin-bottom:.35rem;line-height:1.3}
-.post-date{font-size:.72rem;color:var(--text3);font-weight:500;margin-bottom:.65rem}
-.post-excerpt{font-size:.88rem;color:var(--text2);line-height:1.7}
-.post-full{display:none;font-size:.88rem;color:var(--text2);line-height:1.8;margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border)}
+.posts{max-width:720px;margin:0 auto;padding:2rem 1.5rem 3rem}
+.post-card{background:#fff;border:1px solid #e2e8f0;border-radius:var(--rl);padding:1.65rem 1.75rem;margin-top:1rem;box-shadow:0 2px 12px rgba(15,23,42,.04);transition:all .25s;cursor:pointer}
+.post-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(15,23,42,.08);border-color:#cbd5e1}
+.post-tag{display:inline-block;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;padding:.22rem .65rem;border-radius:999px;margin-bottom:.7rem}
+.post-tag.seeker{background:rgba(231,81,90,.1);color:#c7313a}
+.post-tag.employer{background:rgba(245,158,11,.12);color:#b45309}
+.post-tag.market{background:rgba(139,92,246,.12);color:#6d28d9}
+.post-tag.tips{background:rgba(236,72,153,.12);color:#be185d}
+.post-title{font-size:1.22rem;font-weight:800;color:#0f172a;margin-bottom:.4rem;line-height:1.3}
+.post-date{font-size:.72rem;color:#94a3b8;font-weight:600;margin-bottom:.7rem}
+.post-excerpt{font-size:.92rem;color:#475569;line-height:1.7}
+.post-full{display:none;font-size:.92rem;color:#334155;line-height:1.8;margin-top:1rem;padding-top:1rem;border-top:1px solid #e2e8f0}
 .post-card.expanded .post-full{display:block}
 .post-card.expanded .post-excerpt{display:none}
 
-.empty-state{text-align:center;padding:4rem 2rem;color:var(--text3);font-size:.9rem}
+.empty-state{text-align:center;padding:4rem 2rem;color:#94a3b8;font-size:.9rem}
 
 .blog-cta{text-align:center;padding:2rem;margin-top:1rem}
 .blog-cta a{display:inline-block;padding:.6rem 1.5rem;background:linear-gradient(135deg,var(--em),#14b8a6);color:#fff;border-radius:999px;font-size:.85rem;font-weight:700;text-decoration:none}
 .blog-cta a:hover{text-decoration:none;transform:translateY(-2px)}
 
 @media(max-width:600px){
-  .blog-header{padding:2rem 1rem 1.5rem}
-  .blog-header h1{font-size:1.4rem}
-  .posts{padding:0 1rem 2rem}
-  .post-card{padding:1.15rem}
+  .blog-header{padding:2.5rem 1.25rem 1.75rem;border-radius:0 0 24px 24px}
+  .blog-header h1{font-size:1.6rem}
+  .posts{padding:1rem 1rem 2rem}
+  .post-card{padding:1.2rem}
+  .post-title{font-size:1.08rem}
 }
 </style>
 <!--NUNITO-LOGO--><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet"><style>.nav-logo,.top-logo,.ch-nav-logo,#logo-home,#h-logo,.logo-text,.fmj-wordmark,a[href="/"][style*="font-weight:900"],a[href="/"][style*="font-weight:800"]{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900;letter-spacing:-.02em}.nav-logo span,.top-logo span,.ch-nav-logo span,.fmj-wordmark span{font-family:"Nunito",system-ui,sans-serif!important;font-weight:900}footer div[style*="#E7515A"][style*="font-weight:900"],footer span[style*="#E7515A"][style*="font-weight:900"]{font-family:"Nunito",system-ui,sans-serif!important;letter-spacing:-.02em}</style><link rel="stylesheet" href="/css/monzo.css">
