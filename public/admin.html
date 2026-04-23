@@ -1475,12 +1475,14 @@ async function kwGenerate(){
   var system = 'You are an SEO keyword strategist for FindMeAJob.co.nz, a free AI career toolkit for NZ job seekers. You ideate NZ-specific keywords that real people type into Google. You label each with a volume bucket (low/med/high) and difficulty bucket (low/med/high) based on your training data - always clearly estimates, never measurements.';
   var user = 'Seed topic: "'+seed+'"\nContent type: '+type+' — '+kwTypeDesc(type)+'\nCurrent month: '+month+' '+yr+'\n\n' +
     'Generate '+count+' NZ-specific keywords around this seed. Rules:\n' +
+    '- EVERY keyword MUST contain an NZ locator so global US/UK pages do not compete. Use one of: "nz", "new zealand", "kiwi", an NZ city (auckland, wellington, christchurch, hamilton, tauranga, dunedin), or an unambiguously NZ term (IRD, KiwiSaver, Te Whatu Ora, Working Holiday Visa, WINZ, MBIE, NCEA, Kiwibank, Countdown, Fonterra, polytech, iwi).\n' +
     '- Every keyword MUST read like a phrase a real Kiwi would type into Google. No glued-together modifiers.\n' +
-    '- Long-tail preferred (4-8 words). Avoid impossibly broad terms like "nz jobs".\n' +
+    '- Long-tail preferred (5-9 words). Avoid impossibly broad terms like "nz jobs".\n' +
     '- Use NZ / British spelling (practise, organise, analyse, behaviour, colour).\n' +
     '- Include year '+yr+' or month '+month+' in ~2 keywords if relevant (seasonal).\n' +
     '- Mix intents: informational (how/what/why), transactional (free/template/calculator), comparative (vs/or).\n' +
-    '- Prefer easy/medium difficulty over high — small NZ site.\n\n' +
+    '- Prefer easy/medium difficulty over high — small NZ site.\n' +
+    '- Vary the NZ locator — do not use just "nz" every time. Mix city names, "new zealand", "kiwi", and NZ-specific terms.\n\n' +
     'Return ONLY a JSON array, no markdown, no prose:\n' +
     '[{"keyword":"...","intent":"informational|transactional|comparative|navigational","volume":"low|med|high","difficulty":"low|med|high","content":"blog|social|landing","why":"one short sentence"}]';
 
