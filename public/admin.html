@@ -96,6 +96,44 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
 .rbtn{background:var(--bg2);border:1px solid var(--border2);color:var(--text2);padding:.45rem 1rem;border-radius:999px;cursor:pointer;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.78rem;font-weight:600;transition:all .2s}
 .rbtn:hover{border-color:var(--em);color:var(--em)}
 
+/* Admin shell (sidebar + main) */
+.adm-shell{display:flex;gap:1.5rem;margin-top:.5rem;align-items:flex-start}
+.adm-sidebar{flex:0 0 220px;position:sticky;top:1rem;background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1rem .75rem;box-shadow:var(--shadow)}
+.adm-navgroup{margin-top:1.1rem}
+.adm-navgroup:first-child{margin-top:0}
+.adm-navgroup-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:1.1px;color:var(--text3);padding:0 .65rem;margin-bottom:.4rem}
+.adm-navitem{display:flex;align-items:center;gap:.55rem;width:100%;background:none;border:none;border-radius:10px;padding:.5rem .75rem;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:.85rem;font-weight:600;color:var(--text2);cursor:pointer;text-align:left;transition:all .15s;margin-bottom:.1rem}
+.adm-navitem:hover{background:var(--bg3);color:var(--text)}
+.adm-navitem.active{background:#1a1a2e;color:#fff}
+.adm-navitem .adm-dot{width:8px;height:8px;border-radius:999px;background:var(--border2);flex-shrink:0}
+.adm-navitem.active .adm-dot{background:#E7515A}
+.adm-main{flex:1;min-width:0}
+.adm-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem 1.5rem;box-shadow:var(--shadow);margin-bottom:1.25rem}
+.adm-panel-hd{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:1rem;gap:.75rem;flex-wrap:wrap}
+.adm-panel-title{font-size:1rem;font-weight:800;color:var(--text)}
+.adm-panel-sub{font-size:.74rem;color:var(--text3);margin-top:.25rem}
+.adm-range-pill{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:.3rem .85rem;border-radius:999px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',system-ui,sans-serif;transition:all .15s}
+.adm-range-pill.active{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.adm-range-pill:hover:not(.active){border-color:var(--text3);color:var(--text)}
+
+/* Tool-usage table */
+.tu-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 3fr;gap:1rem;padding:.65rem 0;border-bottom:1px solid var(--border-soft);align-items:center;font-size:.85rem}
+.tu-row.tu-hd{font-size:.64rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);border-bottom:1px solid var(--border);padding:.55rem 0}
+.tu-tool{font-weight:700;color:var(--text)}
+.tu-count{font-variant-numeric:tabular-nums;font-weight:700;color:var(--text)}
+.tu-count.muted{color:var(--text3);font-weight:600}
+.tu-spark{display:flex;align-items:flex-end;gap:2px;height:30px}
+.tu-spark i{flex:1;background:linear-gradient(180deg,rgba(231,81,90,.55),rgba(231,81,90,.9));border-radius:2px 2px 0 0;min-height:2px}
+.tu-empty{text-align:center;padding:2.5rem 1rem;color:var(--text3);font-size:.85rem}
+
+@media(max-width:960px){
+  .adm-shell{flex-direction:column}
+  .adm-sidebar{flex:initial;width:100%;position:static;padding:.75rem .65rem}
+  .adm-navgroup{margin-top:.65rem;display:inline-block;vertical-align:top;margin-right:1rem}
+  .tu-row{grid-template-columns:2fr 1fr 1fr;font-size:.78rem}
+  .tu-row .tu-hide-sm{display:none}
+}
+
 /* Job list */
 #job-list{display:grid;gap:.75rem}
 .job-row{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.5rem;display:grid;grid-template-columns:1fr auto;gap:1.25rem;align-items:start;transition:all .25s}
@@ -211,29 +249,83 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
       <div class="stat" style="border-left:3px solid var(--em)"><div class="stat-n" id="st-apps" style="color:var(--em)">0</div><div class="stat-l">Applications</div></div>
       <div class="stat" style="border-left:3px solid #06b6d4"><div class="stat-n" id="st-cvs" style="color:#06b6d4">0</div><div class="stat-l">CV Uploads</div></div>
     </div>
-    <div class="section-hd">
-      <div><div class="section-hd-title">Workspace</div><div class="section-hd-sub">Review jobs, review people, and generate content</div></div>
-    </div>
-    <div class="refresh-bar">
-      <div class="tabs">
-        <button class="tab active" data-tab="pending" type="button">Pending</button>
-        <button class="tab" data-tab="approved" type="button">Live</button>
-        <button class="tab" data-tab="rejected" type="button">Rejected</button>
-        <button class="tab" data-tab="expired" type="button">Expired</button>
-        <button class="tab" data-tab="all" type="button">All</button>
-        <button class="tab" data-tab="seekers" type="button" style="margin-left:.5rem;border-color:rgba(139,92,246,.2);color:var(--purple)">Job Seekers</button>
-        <button class="tab" data-tab="employers" type="button" style="border-color:rgba(245,158,11,.2);color:var(--gold)">Employers</button>
-        <button class="tab" data-tab="social" type="button" style="margin-left:.5rem;border-color:rgba(236,72,153,.2);color:#ec4899">Social Media</button>
-        <button class="tab" data-tab="blog" type="button" style="border-color:rgba(231,81,90,.2);color:var(--em)">Blog</button>
-        <button class="tab" data-tab="keywords" type="button" style="border-color:rgba(59,130,246,.25);color:#2563eb">Keywords</button>
-        <button class="tab" data-tab="outreach" type="button" style="border-color:rgba(16,185,129,.2);color:#10b981">Outreach</button>
-      </div>
-      <div style="display:flex;align-items:center;gap:.65rem">
-        <span class="refresh-txt" id="last-refresh">Never refreshed</span>
-        <button class="rbtn" id="btn-refresh" type="button">&#8635; Refresh</button>
-      </div>
-    </div>
-    <div id="job-list"></div>
+    <div class="adm-shell">
+      <aside class="adm-sidebar" aria-label="Admin sections">
+        <div class="adm-navgroup">
+          <button class="adm-navitem active" data-view="dashboard" type="button"><span class="adm-dot"></span>Dashboard</button>
+        </div>
+        <div class="adm-navgroup">
+          <div class="adm-navgroup-lbl">Jobs</div>
+          <button class="adm-navitem" data-view="section" data-tab="pending" type="button"><span class="adm-dot"></span>Pending</button>
+          <button class="adm-navitem" data-view="section" data-tab="approved" type="button"><span class="adm-dot"></span>Live</button>
+          <button class="adm-navitem" data-view="section" data-tab="rejected" type="button"><span class="adm-dot"></span>Rejected</button>
+          <button class="adm-navitem" data-view="section" data-tab="expired" type="button"><span class="adm-dot"></span>Expired</button>
+          <button class="adm-navitem" data-view="section" data-tab="all" type="button"><span class="adm-dot"></span>All</button>
+        </div>
+        <div class="adm-navgroup">
+          <div class="adm-navgroup-lbl">People</div>
+          <button class="adm-navitem" data-view="section" data-tab="seekers" type="button"><span class="adm-dot"></span>Job Seekers</button>
+          <button class="adm-navitem" data-view="section" data-tab="employers" type="button"><span class="adm-dot"></span>Employers</button>
+        </div>
+        <div class="adm-navgroup">
+          <div class="adm-navgroup-lbl">Content</div>
+          <button class="adm-navitem" data-view="section" data-tab="blog" type="button"><span class="adm-dot"></span>Blog</button>
+          <button class="adm-navitem" data-view="section" data-tab="keywords" type="button"><span class="adm-dot"></span>Keywords</button>
+          <button class="adm-navitem" data-view="section" data-tab="social" type="button"><span class="adm-dot"></span>Social Media</button>
+        </div>
+        <div class="adm-navgroup">
+          <div class="adm-navgroup-lbl">Growth</div>
+          <button class="adm-navitem" data-view="section" data-tab="outreach" type="button"><span class="adm-dot"></span>Outreach</button>
+        </div>
+      </aside>
+      <div class="adm-main">
+        <!-- Dashboard view (default) — stats summary + Tool Usage panel -->
+        <div id="view-dashboard">
+          <div class="section-hd">
+            <div><div class="section-hd-title">Dashboard</div><div class="section-hd-sub">Overview and tool analytics</div></div>
+            <div style="display:flex;align-items:center;gap:.65rem">
+              <span class="refresh-txt" id="last-refresh-dash">Never refreshed</span>
+              <button class="rbtn" id="btn-refresh-dash" type="button">&#8635; Refresh</button>
+            </div>
+          </div>
+          <div class="adm-panel">
+            <div class="adm-panel-hd">
+              <div>
+                <div class="adm-panel-title">Tool usage</div>
+                <div class="adm-panel-sub">Views per tool from the live tracker. Sorted by most-used.</div>
+              </div>
+              <div style="display:flex;gap:.35rem">
+                <button class="adm-range-pill active" data-range="7" type="button">7 days</button>
+                <button class="adm-range-pill" data-range="30" type="button">30 days</button>
+              </div>
+            </div>
+            <div id="tool-usage-body"><div class="tu-empty">Loading&hellip;</div></div>
+          </div>
+        </div>
+        <!-- Section view — existing workspace (jobs/people/content/growth content panels) -->
+        <div id="view-section" style="display:none">
+          <div class="section-hd">
+            <div><div class="section-hd-title" id="section-title">Workspace</div><div class="section-hd-sub" id="section-sub">Review jobs, review people, and generate content</div></div>
+            <div style="display:flex;align-items:center;gap:.65rem">
+              <span class="refresh-txt" id="last-refresh">Never refreshed</span>
+              <button class="rbtn" id="btn-refresh" type="button">&#8635; Refresh</button>
+            </div>
+          </div>
+          <!-- Legacy horizontal .tabs kept for JS delegation; hidden visually. -->
+          <div class="tabs" style="display:none">
+            <button class="tab active" data-tab="pending" type="button">Pending</button>
+            <button class="tab" data-tab="approved" type="button">Live</button>
+            <button class="tab" data-tab="rejected" type="button">Rejected</button>
+            <button class="tab" data-tab="expired" type="button">Expired</button>
+            <button class="tab" data-tab="all" type="button">All</button>
+            <button class="tab" data-tab="seekers" type="button">Job Seekers</button>
+            <button class="tab" data-tab="employers" type="button">Employers</button>
+            <button class="tab" data-tab="social" type="button">Social Media</button>
+            <button class="tab" data-tab="blog" type="button">Blog</button>
+            <button class="tab" data-tab="keywords" type="button">Keywords</button>
+            <button class="tab" data-tab="outreach" type="button">Outreach</button>
+          </div>
+          <div id="job-list"></div>
     <div id="people-list" style="display:none"></div>
     <div id="blog-list" style="display:none">
       <div style="padding:1.5rem 0">
@@ -388,6 +480,9 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
         <div id="outreach-status" style="display:none;padding:.75rem 1rem;border-radius:var(--r);font-size:.82rem;font-weight:600;margin-top:.75rem"></div>
       </div>
     </div>
+        </div><!-- /#view-section -->
+      </div><!-- /.adm-main -->
+    </div><!-- /.adm-shell -->
 
   </main>
 </div>
@@ -517,6 +612,135 @@ document.getElementById("btn-login").addEventListener("click",doLogin);
 document.getElementById("btn-signout").addEventListener("click",function(){pw="";document.getElementById("login").style.display="flex";document.getElementById("app").style.display="none";clearInterval(refreshTimer);});
 document.getElementById("btn-refresh").addEventListener("click",loadJobs);
 document.querySelectorAll(".tab").forEach(function(t){t.addEventListener("click",function(){document.querySelectorAll(".tab").forEach(function(x){x.classList.remove("active");});this.classList.add("active");currentTab=this.dataset.tab;document.getElementById("job-list").style.display="none";document.getElementById("people-list").style.display="none";document.getElementById("social-list").style.display="none";document.getElementById("blog-list").style.display="none";document.getElementById("outreach-list").style.display="none";var kwEl=document.getElementById("keywords-list");if(kwEl)kwEl.style.display="none";if(currentTab==="outreach"){document.getElementById("outreach-list").style.display="block";}else if(currentTab==="social"){document.getElementById("social-list").style.display="block";}else if(currentTab==="blog"){document.getElementById("blog-list").style.display="block";}else if(currentTab==="keywords"){if(kwEl)kwEl.style.display="block";}else if(currentTab==="seekers"){loadPeople("seekers");}else if(currentTab==="employers"){loadPeople("employers");}else{document.getElementById("job-list").style.display="grid";renderJobs();}});});
+/* -------------------- SIDEBAR + DASHBOARD -------------------- */
+var SECTION_LABELS = {
+  pending:   {t:"Pending jobs",  s:"Jobs awaiting review"},
+  approved:  {t:"Live jobs",     s:"Currently published on the site"},
+  rejected:  {t:"Rejected jobs", s:"Jobs that did not make it live"},
+  expired:   {t:"Expired jobs",  s:"Past their 30-day window"},
+  all:       {t:"All jobs",      s:"Every listing on the board"},
+  seekers:   {t:"Job Seekers",   s:"Registered candidates"},
+  employers: {t:"Employers",     s:"Businesses with accounts"},
+  blog:      {t:"Blog",          s:"AI content generator + published posts"},
+  keywords:  {t:"Keywords",      s:"Claude ideation + live SERP scoring"},
+  social:    {t:"Social Media",  s:"Draft and post social copy"},
+  outreach:  {t:"Outreach",      s:"Email prospective employers"}
+};
+
+function showDashboard(){
+  document.getElementById("view-dashboard").style.display="";
+  document.getElementById("view-section").style.display="none";
+  document.querySelectorAll(".adm-navitem").forEach(function(x){x.classList.remove("active");});
+  var db = document.querySelector('.adm-navitem[data-view="dashboard"]');
+  if(db) db.classList.add("active");
+  if(typeof pw !== "undefined" && pw) loadToolStats(currentToolStatsRange);
+}
+
+function showSectionFor(tab){
+  document.getElementById("view-dashboard").style.display="none";
+  document.getElementById("view-section").style.display="";
+  var lbl = SECTION_LABELS[tab] || {t:"Workspace", s:""};
+  var st = document.getElementById("section-title");
+  var ss = document.getElementById("section-sub");
+  if(st) st.textContent = lbl.t;
+  if(ss) ss.textContent = lbl.s;
+}
+
+document.querySelectorAll(".adm-navitem").forEach(function(n){
+  n.addEventListener("click", function(){
+    document.querySelectorAll(".adm-navitem").forEach(function(x){x.classList.remove("active");});
+    this.classList.add("active");
+    if(this.dataset.view === "dashboard"){
+      showDashboard();
+    } else {
+      var tab = this.dataset.tab;
+      showSectionFor(tab);
+      var orig = document.querySelector('.tab[data-tab="'+tab+'"]');
+      if(orig) orig.click();
+    }
+  });
+});
+
+/* Dashboard refresh button mirrors the section-view refresh button. */
+(function(){
+  var dbtn = document.getElementById("btn-refresh-dash");
+  if(dbtn) dbtn.addEventListener("click", function(){
+    var orig = document.getElementById("btn-refresh");
+    if(orig) orig.click();
+    if(typeof pw !== "undefined" && pw) loadToolStats(currentToolStatsRange);
+    var lr = document.getElementById("last-refresh-dash");
+    if(lr) lr.textContent = "Refreshed just now";
+  });
+})();
+
+/* -------------------- TOOL USAGE PANEL -------------------- */
+var currentToolStatsRange = 7;
+var TOOL_LABELS = {
+  match:"AI Job Matching", apply:"CV + Cover Letter", score:"CV Score",
+  decide:"Should I Stay or Go", decode:"Decode Job Ad",
+  interview:"Interview Questions", "interview-sim":"Interview Simulator",
+  "practice-sim":"Practice Simulator", negotiate:"Negotiate Salary",
+  compare:"Compare Jobs", salary:"Salary Calculator", email:"Write This Email"
+};
+
+function loadToolStats(days){
+  currentToolStatsRange = days || 7;
+  document.querySelectorAll(".adm-range-pill").forEach(function(p){
+    p.classList.toggle("active", String(p.dataset.range) === String(currentToolStatsRange));
+  });
+  var body = document.getElementById("tool-usage-body");
+  if(!body) return;
+  if(typeof pw === "undefined" || !pw){ body.innerHTML = '<div class="tu-empty">Sign in to view analytics.</div>'; return; }
+  body.innerHTML = '<div class="tu-empty">Loading&hellip;</div>';
+  fetch("/api/admin", {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({ password: pw, action:"tool-stats", days: currentToolStatsRange })
+  }).then(function(r){return r.json();}).then(function(d){
+    if(d.error){ body.innerHTML = '<div class="tu-empty">'+String(d.error).replace(/</g,"&lt;")+'</div>'; return; }
+    renderToolStats(d);
+  }).catch(function(){
+    body.innerHTML = '<div class="tu-empty">Could not load tool usage.</div>';
+  });
+}
+
+function renderToolStats(d){
+  var body = document.getElementById("tool-usage-body");
+  if(!body) return;
+  var totalViews = 0;
+  (d.tools || []).forEach(function(t){ totalViews += (t.views || 0); });
+  if(!d.tools || !d.tools.length || totalViews === 0){
+    body.innerHTML = '<div class="tu-empty">No tool views recorded yet.<br><span style="font-size:.72rem;color:var(--text3)">Data appears here as visitors use the tools.</span></div>';
+    return;
+  }
+  var max = 0;
+  d.tools.forEach(function(t){ (t.daily||[]).forEach(function(n){ if(n>max) max=n; }); });
+  var h = '';
+  h += '<div class="tu-row tu-hd"><div>Tool</div><div>Views</div><div class="tu-hide-sm">Actions</div><div class="tu-hide-sm">Convert</div><div class="tu-hide-sm">Trend ('+d.days+'d)</div></div>';
+  d.tools.forEach(function(t){
+    var label = TOOL_LABELS[t.tool] || t.tool;
+    var conv = t.views > 0 && t.actions > 0 ? Math.round((t.actions/t.views)*100) + '%' : '—';
+    var bars = (t.daily || []).map(function(n){
+      var bh = max > 0 ? Math.max(2, Math.round((n/max)*30)) : 2;
+      return '<i style="height:'+bh+'px" title="'+n+'"></i>';
+    }).join('');
+    h += '<div class="tu-row">';
+    h += '<div class="tu-tool">'+esc(label)+'<div style="font-size:.68rem;color:var(--text3);font-weight:500;margin-top:.1rem">'+esc(t.tool)+'</div></div>';
+    h += '<div class="tu-count">'+(t.views||0).toLocaleString()+'</div>';
+    h += '<div class="tu-count muted tu-hide-sm">'+(t.actions?t.actions.toLocaleString():"—")+'</div>';
+    h += '<div class="tu-count muted tu-hide-sm">'+conv+'</div>';
+    h += '<div class="tu-spark tu-hide-sm">'+bars+'</div>';
+    h += '</div>';
+  });
+  body.innerHTML = h;
+}
+
+document.querySelectorAll(".adm-range-pill").forEach(function(p){
+  p.addEventListener("click", function(){
+    loadToolStats(parseInt(this.dataset.range, 10) || 7);
+  });
+});
+
 document.getElementById("confirm-cancel").addEventListener("click",function(){document.getElementById("confirm-modal").classList.remove("show");pendingAction=null;pendingActionId=null;});
 document.getElementById("confirm-ok").addEventListener("click",function(){document.getElementById("confirm-modal").classList.remove("show");if(pendingAction&&pendingActionId){if(pendingAction==="delete-seeker"||pendingAction==="delete-employer"){execUserAction(pendingAction,pendingActionId);}else{execAction(pendingAction,pendingActionId);}pendingAction=null;pendingActionId=null;}});
 
@@ -564,7 +788,7 @@ async function doLogin(){
     var r=await fetch("/api/admin",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"list",password:p})});
     if(r.status===401){document.getElementById("login-err").style.display="block";return;}
     var d=await r.json();
-    if(d.jobs!==undefined){pw=p;document.getElementById("login").style.display="none";document.getElementById("app").style.display="block";document.getElementById("login-err").style.display="none";allJobs=d.jobs;updateStats();renderJobs();loadStats();refreshTimer=setInterval(function(){loadJobs();loadStats();},30000);document.getElementById("last-refresh").textContent="Refreshed just now";}
+    if(d.jobs!==undefined){pw=p;document.getElementById("login").style.display="none";document.getElementById("app").style.display="block";document.getElementById("login-err").style.display="none";allJobs=d.jobs;updateStats();renderJobs();loadStats();refreshTimer=setInterval(function(){loadJobs();loadStats();},30000);document.getElementById("last-refresh").textContent="Refreshed just now";var _lrd=document.getElementById("last-refresh-dash");if(_lrd)_lrd.textContent="Refreshed just now";if(typeof showDashboard==="function")showDashboard();}
     else{document.getElementById("login-err").style.display="block";}
   } catch(e) {
     showToast("Connection error. Please try again.", "error");
