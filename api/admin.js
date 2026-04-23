@@ -264,10 +264,13 @@ module.exports = async function handler(req, res) {
       var hasNZ = /\b(nz|new zealand|kiwi|auckland|wellington|christchurch|hamilton|tauranga|dunedin|ird|kiwisaver|te whatu ora|winz|mbie|ncea|kiwibank|polytech)\b/.test(qLower);
       var qScoped = hasNZ ? q : q + " nz";
       try {
+        // cr=countryNZ is Google's country-restrict filter: total_results
+        // becomes the NZ-hosted/.nz match count rather than the global index
+        // count, which is the realistic competition we can rank against.
         var serpUrl = "https://serpapi.com/search.json?engine=google"
           + "&api_key=" + encodeURIComponent(serpKey)
           + "&q=" + encodeURIComponent(qScoped)
-          + "&gl=nz&hl=en&num=10&google_domain=google.co.nz&location=New+Zealand";
+          + "&gl=nz&hl=en&num=10&google_domain=google.co.nz&location=New+Zealand&cr=countryNZ";
         var serpRes = await fetch(serpUrl);
         if (!serpRes.ok) {
           var errText = await serpRes.text();
