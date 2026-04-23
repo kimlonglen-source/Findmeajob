@@ -1443,7 +1443,9 @@ document.getElementById("plan-save-btn").addEventListener("click", async functio
 
 /* -------------------- KEYWORDS TAB -------------------- */
 var kwLastRows = [];
-var kwSelected = {}; /* idx -> true for checked rows */
+/* Attached to window so it survives any top-level var shadowing / scoping
+   edge cases we saw in the wild (error: "reading '0'" at kwSelected[idx]). */
+window.kwSelected = window.kwSelected || {};
 
 function kwTypeDesc(t){
   if(t==='blog') return 'Long-tail informational questions (blog target, 4-8 words, question form).';
@@ -1606,9 +1608,10 @@ function kwRender(rows){
   html += '<th style="padding:.55rem .5rem">Tool match</th>';
   html += '<th style="padding:.55rem .5rem">Actions</th>';
   html += '</tr></thead><tbody>';
+  var sel = window.kwSelected || (window.kwSelected = {});
   rows.forEach(function(r, i){
     var idx = i;
-    var checked = kwSelected[idx] ? ' checked' : '';
+    var checked = sel[idx] ? ' checked' : '';
     html += '<tr style="border-bottom:1px solid var(--border-soft)">';
     html += '<td style="padding:.55rem .5rem"><input type="checkbox" class="kw-row-check" data-idx="'+idx+'" onchange="kwToggleSelect('+idx+', this.checked)"'+checked+' style="width:14px;height:14px;accent-color:#2563eb;cursor:pointer"></td>';
     html += '<td style="padding:.55rem .5rem;color:var(--text);font-weight:600">'+(r.keyword||'')+'<div style="font-size:.7rem;color:var(--text3);font-weight:500;margin-top:.15rem">'+(r.why||'')+'</div></td>';
@@ -1629,20 +1632,21 @@ function kwRender(rows){
 }
 
 function kwToggleSelect(idx, checked){
-  if(checked) kwSelected[idx] = true;
-  else delete kwSelected[idx];
+  var sel = window.kwSelected || (window.kwSelected = {});
+  if(checked) sel[idx] = true;
+  else delete sel[idx];
   kwUpdateBatchBar();
 }
 
 function kwToggleAll(checked){
-  kwSelected = {};
-  if(checked){ kwLastRows.forEach(function(_, i){ kwSelected[i] = true; }); }
+  window.kwSelected = {};
+  if(checked){ kwLastRows.forEach(function(_, i){ window.kwSelected[i] = true; }); }
   document.querySelectorAll('.kw-row-check').forEach(function(cb){ cb.checked = checked; });
   kwUpdateBatchBar();
 }
 
 function kwClearSelection(){
-  kwSelected = {};
+  window.kwSelected = {};
   var sa = document.getElementById('kw-select-all'); if(sa) sa.checked = false;
   document.querySelectorAll('.kw-row-check').forEach(function(cb){ cb.checked = false; });
   kwUpdateBatchBar();
@@ -1650,7 +1654,7 @@ function kwClearSelection(){
 
 function kwUpdateBatchBar(){
   var bar = document.getElementById('kw-batch-bar');
-  var count = Object.keys(kwSelected).length;
+  var count = Object.keys(window.kwSelected || {}).length;
   if(!bar) return;
   if(count > 0){
     bar.style.display = 'flex';
@@ -1662,7 +1666,8 @@ function kwUpdateBatchBar(){
 }
 
 function kwBlogFromSelected(){
-  var idxs = Object.keys(kwSelected).map(function(k){ return parseInt(k, 10); }).filter(function(n){ return !isNaN(n); });
+  var sel = window.kwSelected || {};
+  var idxs = Object.keys(sel).map(function(k){ return parseInt(k, 10); }).filter(function(n){ return !isNaN(n); });
   if(!idxs.length) return;
   /* Populate the shape generateBlog() already consumes: _keywordData[i] = {keyword, angle, tool} */
   var data = kwLastRows.map(function(r){
