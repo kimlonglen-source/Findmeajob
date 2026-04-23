@@ -258,11 +258,16 @@ module.exports = async function handler(req, res) {
       var q = (params.q || "").toString().trim();
       if (!q) return res.status(400).json({ error: "Missing q" });
       if (q.length > 200) return res.status(400).json({ error: "q too long" });
+      // Safety net: if Claude forgot an NZ locator, append " nz" so the
+      // SERP stays NZ-scoped rather than competing with global results.
+      var qLower = q.toLowerCase();
+      var hasNZ = /\b(nz|new zealand|kiwi|auckland|wellington|christchurch|hamilton|tauranga|dunedin|ird|kiwisaver|te whatu ora|winz|mbie|ncea|kiwibank|polytech)\b/.test(qLower);
+      var qScoped = hasNZ ? q : q + " nz";
       try {
         var serpUrl = "https://serpapi.com/search.json?engine=google"
           + "&api_key=" + encodeURIComponent(serpKey)
-          + "&q=" + encodeURIComponent(q)
-          + "&gl=nz&hl=en&num=10&google_domain=google.co.nz";
+          + "&q=" + encodeURIComponent(qScoped)
+          + "&gl=nz&hl=en&num=10&google_domain=google.co.nz&location=New+Zealand";
         var serpRes = await fetch(serpUrl);
         if (!serpRes.ok) {
           var errText = await serpRes.text();
