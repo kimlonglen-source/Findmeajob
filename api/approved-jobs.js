@@ -3,6 +3,31 @@ var getKV = _kv.getKV;
 var hget = _kv.hget;
 var hset = _kv.hset;
 var hgetall = _kv.hgetall;
+var hincrby = _kv.hincrby;
+var expire = _kv.expire;
+
+// Tool-usage tracker — shares this endpoint instead of its own file to stay
+// under the Vercel Hobby 12-function cap. Keys are per-NZ-day hashes so the
+// admin analytics panel can sum the last N days for 7d / 30d windows.
+var TRACK_VALID_TOOLS = ["match","apply","score","decide","decode","interview","interview-sim","practice-sim","negotiate","compare","salary","email"];
+var TRACK_VALID_EVENTS = ["view","action"];
+var trackRate = {};
+function trackCheckRate(ip) {
+  var now = Date.now();
+  if (!trackRate[ip] || trackRate[ip].resetAt < now) {
+    trackRate[ip] = { count: 1, resetAt: now + 60000 };
+    return true;
+  }
+  trackRate[ip].count++;
+  return trackRate[ip].count <= 300;
+}
+function trackNzDate() {
+  var parts = new Date().toLocaleString("en-GB", {
+    timeZone: "Pacific/Auckland",
+    year: "numeric", month: "2-digit", day: "2-digit"
+  }).split("/");
+  return parts[2] + "-" + parts[1] + "-" + parts[0];
+}
 
 var PLAN_DAYS = { free: 30, basic: 60, pro: 90 };
 
@@ -141,6 +166,31 @@ async function getBlogPosts() {
 }
 
 module.exports = async function handler(req, res) {
+  // Tool-usage tracker (POST /api/track-tool — rewritten here via ?trackTool=1).
+  // Folded into this file to stay under the Vercel Hobby 12-function cap.
+  if (req.query && req.query.trackTool === "1") {
+    if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
+    if (!getKV()) return res.status(200).json({ ok: true });
+    var trackIp = req.headers["x-forwarded-for"] || req.headers["x-real-ip"] ||
+                  (req.socket && req.socket.remoteAddress) || "unknown";
+    if (!trackCheckRate(trackIp)) return res.status(200).json({ ok: true, rateLimited: true });
+    try {
+      var tBody = req.body || {};
+      var tTool = String(tBody.tool || "").toLowerCase().trim();
+      var tEvent = String(tBody.event || "").toLowerCase().trim();
+      if (TRACK_VALID_TOOLS.indexOf(tTool) === -1) return res.status(200).json({ ok: true, ignored: "tool" });
+      if (TRACK_VALID_EVENTS.indexOf(tEvent) === -1) return res.status(200).json({ ok: true, ignored: "event" });
+      var tHash = "tool-stats:" + trackNzDate();
+      var tField = tTool + ":" + tEvent;
+      await hincrby(tHash, tField, 1);
+      // Keep ~400 days of daily buckets so 30-day windows always resolve.
+      try { await expire(tHash, 60 * 60 * 24 * 400); } catch (_) {}
+      return res.status(200).json({ ok: true });
+    } catch (_e) {
+      return res.status(200).json({ ok: true, error: "handled" });
+    }
+  }
+
   // POST = track event
   if (req.method === "POST") {
     if (!getKV()) return res.status(200).json({ ok: true });

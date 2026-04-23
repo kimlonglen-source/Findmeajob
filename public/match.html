@@ -4087,5 +4087,16 @@ setTimeout(function() { clearInterval(_gsiCheck); }, 5000);
 <script>
 function subscribeAlerts(){var e=document.getElementById('alert-email');if(!e||!e.value.trim()||e.value.indexOf('@')===-1)return;fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',email:e.value.trim(),password:'__alerts_only__',name:e.value.split('@')[0],emailAlerts:true})}).then(function(){e.value='';e.placeholder='Subscribed!';}).catch(function(){});}
 </script>
+<script>/* fmj tool-usage view tracking (fire-and-forget). Tracks `match` on load,
+and `apply` when the user navigates to the #apply sub-section (CV + cover letter). */
+(function(){
+  function t(tool,ev){try{fetch('/api/track-tool',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:tool,event:ev}),keepalive:true}).catch(function(){});}catch(e){}}
+  window.fmjTrack=function(ev){t('match',ev);};
+  t('match','view');
+  var _applySeen=false;
+  function chk(){if(!_applySeen&&(location.hash||'').indexOf('apply')>-1){_applySeen=true;t('apply','view');}}
+  chk();window.addEventListener('hashchange',chk);
+})();
+</script>
 </body>
 </html>

@@ -62,6 +62,10 @@
       "dest": "/api/admin.js"
     },
     {
+      "src": "/api/track-tool",
+      "dest": "/api/approved-jobs.js?trackTool=1"
+    },
+    {
       "src": "/api/approved-jobs",
       "dest": "/api/approved-jobs.js"
     },

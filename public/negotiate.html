@@ -568,5 +568,8 @@ function toggleTheme(){document.body.classList.toggle('dark');var d=document.bod
 <script>
 function subscribeAlerts(){var e=document.getElementById('alert-email');if(!e||!e.value.trim()||e.value.indexOf('@')===-1)return;fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',email:e.value.trim(),password:'__alerts_only__',name:e.value.split('@')[0],emailAlerts:true})}).then(function(){e.value='';e.placeholder='Subscribed!';}).catch(function(){});}
 </script>
+<script>/* fmj tool-usage view tracking (fire-and-forget) */
+(function(){function t(ev){try{fetch('/api/track-tool',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'negotiate',event:ev}),keepalive:true}).catch(function(){});}catch(e){}}window.fmjTrack=t;t('view');})();
+</script>
 </body>
 </html>

@@ -51,6 +51,14 @@ async function hdel(hash, key) {
   await command(['HDEL', hash, key]);
 }
 
+async function hincrby(hash, key, by) {
+  return await command(['HINCRBY', hash, key, String(by || 1)]);
+}
+
+async function expire(hash, seconds) {
+  await command(['EXPIRE', hash, String(seconds)]);
+}
+
 // Password hashing using Node.js built-in crypto
 const crypto = require('crypto');
 
@@ -86,4 +94,4 @@ function validatePassword(password) {
   return null;
 }
 
-module.exports = { getKV, hget, hgetall, hset, hdel, hashPassword, verifyPassword, isHashed, validatePassword };
+module.exports = { getKV, hget, hgetall, hset, hdel, hincrby, expire, hashPassword, verifyPassword, isHashed, validatePassword };
