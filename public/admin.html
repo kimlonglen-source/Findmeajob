@@ -1504,17 +1504,27 @@ async function kwGenerate(){
     '[{"keyword":"...","intent":"informational|transactional|comparative|navigational","volume":"low|med|high","difficulty":"low|med|high","content":"blog|social|landing","why":"one short sentence"}]';
 
   try {
+    /* maxTokens: 8000 — 20 keywords × ~300 tokens each blew past the 2500 default and truncated the JSON. */
     var r = await fetch('/api/chat', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ system: system, messages: [{role:'user', content: user}] })
+      body: JSON.stringify({ system: system, messages: [{role:'user', content: user}], maxTokens: 8000 })
     });
-    if(!r.ok) throw new Error('Claude ideation failed ('+r.status+')');
+    if(!r.ok){
+      var errTxt = ''; try { errTxt = await r.text(); } catch(_){}
+      throw new Error('Claude ideation failed ('+r.status+') '+errTxt.slice(0,160));
+    }
     var data = await r.json();
-    var txt = (data.content && data.content[0] && data.content[0].text) || '';
+    if(data && data.error){
+      throw new Error('Claude API error: '+(typeof data.error==='string'?data.error:JSON.stringify(data.error).slice(0,200)));
+    }
+    var txt = (data && data.content && data.content[0] && data.content[0].text) || '';
+    if(!txt){ throw new Error('Empty Claude response. Raw: '+JSON.stringify(data).slice(0,200)); }
     var jsonStart = txt.indexOf('['); var jsonEnd = txt.lastIndexOf(']');
-    if(jsonStart<0 || jsonEnd<0) throw new Error('No JSON array in response');
-    var rows = JSON.parse(txt.slice(jsonStart, jsonEnd+1));
+    if(jsonStart<0 || jsonEnd<0) throw new Error('No JSON array in response. Got: '+txt.slice(0,160));
+    var rows;
+    try { rows = JSON.parse(txt.slice(jsonStart, jsonEnd+1)); }
+    catch(pe){ throw new Error('JSON parse failed ('+pe.message+'). Claude may have hit max_tokens — reduce keyword count. First 160 chars: '+txt.slice(0,160)); }
     if(!Array.isArray(rows) || !rows.length) throw new Error('Empty keyword list');
     rows.forEach(function(row){
       var t = kwToolFor(row.keyword);
