@@ -863,6 +863,22 @@ async function generateBlog() {
       kwList.forEach(function(k,i){kwInstruction+=(i+1)+'. "'+k.keyword+'" — '+k.angle+' (map to: '+k.tool+')\n';});
       kwInstruction+='Each post title MUST contain or closely match the target keyword. This is critical for SEO.\n';
     }
+  } else if (window._kwSeed) {
+    /* Keywords tab → Blog button: write exactly ONE post locked to this keyword */
+    var s = window._kwSeed;
+    count = 1;
+    kwInstruction = '\n\nTARGET THIS SPECIFIC KEYWORD (write ONE post locked to it — this is the ONLY topic):\n' +
+      '- Keyword: "' + s.keyword + '"\n' +
+      '- Search intent: ' + (s.intent || 'informational') + '\n' +
+      '- Why this keyword: ' + (s.why || '') + '\n' +
+      '- Map to tool: ' + (s.toolLabel || '') + ' — ' + (s.toolUrl || '') + '\n\n' +
+      'HARD RULES:\n' +
+      '1. The post title MUST contain or closely paraphrase the exact keyword phrase.\n' +
+      '2. The first sentence of the body MUST directly answer the question the keyword implies.\n' +
+      '3. The keyword (or close variant) MUST appear in the excerpt and in at least one ## heading.\n' +
+      '4. The CTA paragraph MUST link to the mapped tool URL above (inline markdown link).\n' +
+      '5. Do NOT drift to a generic interview/CV/salary topic from the category list — that list is only a style guide. This keyword IS the topic.\n';
+    window._kwSeed = null; /* consume so the next manual Generate Posts run is free-form again */
   }
 
   var rndSeed = Math.floor(Math.random()*9999);
