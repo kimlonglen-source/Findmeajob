@@ -18,6 +18,26 @@
   ],
   "routes": [
     {
+      "src": "/(blog|pricing|decide|decode|interview|negotiate|compare|score|email|terms|privacy|salary|interview-sim|practice-sim|trades|healthcare|newcomers|graduates)",
+      "headers": { "Cache-Control": "public, s-maxage=300, stale-while-revalidate=86400" },
+      "continue": true
+    },
+    {
+      "src": "/([^/]+\\.html)",
+      "headers": { "Cache-Control": "public, s-maxage=300, stale-while-revalidate=86400" },
+      "continue": true
+    },
+    {
+      "src": "/",
+      "headers": { "Cache-Control": "public, s-maxage=300, stale-while-revalidate=86400" },
+      "continue": true
+    },
+    {
+      "src": "/(css/.*|.*\\.(js|svg|png|jpg|jpeg|webp|woff|woff2|ico))",
+      "headers": { "Cache-Control": "public, max-age=31536000, immutable" },
+      "continue": true
+    },
+    {
       "src": "/api/chat",
       "dest": "/api/chat.js"
     },

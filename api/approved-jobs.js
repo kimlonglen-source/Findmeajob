@@ -288,7 +288,7 @@ module.exports = async function handler(req, res) {
     singlePage += '<meta name="twitter:image" content="'+imgUrl+'">';
     singlePage += '<link rel="icon" type="image/x-icon" href="/favicon.ico"><link rel="icon" type="image/svg+xml" href="/logo-icon.svg"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"><link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">';
     singlePage += '<link rel="alternate" type="application/rss+xml" title="FindMeAJob.co.nz Blog" href="/blog/rss">';
-    singlePage += '<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">';
+    singlePage += '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">';
     singlePage += '<script type="application/ld+json">'+schemaPost+'<\/script>';
     singlePage += '<script type="application/ld+json">'+bcSchema+'<\/script>';
     singlePage += '<style>'+BLOG_CSS+'</style></head><body>';
@@ -465,7 +465,7 @@ module.exports = async function handler(req, res) {
     page += '<meta name="twitter:card" content="summary_large_image">';
     page += '<link rel="alternate" type="application/rss+xml" title="FindMeAJob.co.nz Blog" href="/blog/rss">';
     page += '<link rel="icon" type="image/x-icon" href="/favicon.ico"><link rel="icon" type="image/svg+xml" href="/logo-icon.svg"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"><link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">';
-    page += '<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">';
+    page += '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">';
     page += '<script type="application/ld+json">'+schemaJson+'<\/script>';
     page += '<style>'+BLOG_CSS+'</style></head><body>';
     page += BLOG_NAV;
