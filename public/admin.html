@@ -1568,7 +1568,11 @@ async function kwGenerate(){
       st.textContent = 'Done. '+rows.length+' keywords (Claude estimates only — tick "Score with live Google SERP" for real SERP data).';
     }
   } catch(e){
-    out.innerHTML = '<div style="padding:1rem;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;color:#c7313a;font-size:.85rem">Error: '+(e.message||e)+'</div>';
+    /* Surface full stack so we can see where in the pipeline this actually throws */
+    try { console.error('[kwGenerate]', e); } catch(_) {}
+    var stack = (e && e.stack) ? String(e.stack).split('\n').slice(0,6).join('\n') : '';
+    var msg = (e && e.message) ? e.message : String(e);
+    out.innerHTML = '<div style="padding:1rem;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;color:#c7313a;font-size:.85rem"><strong>Error:</strong> '+msg+'<details style="margin-top:.5rem"><summary style="cursor:pointer;font-size:.75rem;color:var(--text3)">Stack trace</summary><pre style="margin:.35rem 0 0;font-size:.7rem;white-space:pre-wrap;color:var(--text3)">'+stack.replace(/</g,'&lt;')+'</pre></details></div>';
     st.textContent = '';
   } finally {
     btn.disabled = false; btn.textContent = 'Generate keywords';
