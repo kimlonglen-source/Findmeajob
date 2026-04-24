@@ -1615,6 +1615,21 @@ function downloadPostImage(btn) {
   ctx.fillText(tagText, tagX + tagW / 2, tagY + tagH / 2 + 1);
   ctx.textBaseline = "alphabetic";
 
+  // Detect which tool the post is about so the phone can mock it
+  var toolMocks = [
+    {rx:/\/score/, badge:"STEP 2 · SCANNING", title:"Reading your CV…", rows:[["Structure & layout","22/25"],["Keywords & skills","19/25"],["Impact & numbers","21/25"],["NZ-friendly tone","25/25"]], big:"87/100", bigLabel:"YOUR SCORE", pill:"PLUS SPECIFIC FIXES."},
+    {rx:/\/match/, badge:"60 SECONDS · NZ", title:"Matching you to…", rows:[["Registered Nurse · Auckland","92%"],["Clinical Lead RN · Welly","88%"],["Community RN · ChCh","84%"],["ED Nurse · Hamilton","81%"]], big:"92% match", bigLabel:"TOP RESULT", pill:"FOUND IN NZ."},
+    {rx:/\/salary/, badge:"LIVE NZ DATA", title:"What this role pays…", rows:[["Auckland","$92–$118k"],["Wellington","$88–$112k"],["Christchurch","$82–$104k"],["Remote · NZ","$85–$110k"]], big:"$85–$110k", bigLabel:"NZ MEDIAN · 2026", pill:"ACTUAL NZ NUMBERS."},
+    {rx:/\/interview-sim/, badge:"LIVE · INTERVIEW", title:"Practice run", rows:[["Tell me about a tough deadline…",""],["Last quarter I shipped a release…",""],["Nice STAR structure. Add a number.",""],["Score so far",""]], big:"82/100", bigLabel:"LIVE SCORE", pill:"GET SCORED OUT OF 100."},
+    {rx:/\/apply/, badge:"STEP 2 · AI TAILORING", title:"Rewriting for this role…", rows:[["Matching your skills",""],["Reordering experience",""],["Writing cover letter",""],["NZ tone & spelling",""]], big:"Tailored in 30s", bigLabel:"", pill:"AI WRITES YOUR COVER LETTER."},
+    {rx:/\/decode/, badge:"JARGON · DECODED", title:"What the ad really means…", rows:[["“Fast-paced”","Understaffed"],["“Wear many hats”","Doing 3 jobs"],["“Rockstar”","Underpaid"],["“Dynamic”","Chaotic"]], big:"", bigLabel:"", pill:"TRANSLATES THE B.S."},
+    {rx:/\/negotiate/, badge:"PAY-RISE SCRIPT", title:"Your opener…", rows:[["“I'd like to talk pay.”",""],["Anchor","$95k"],["Fallback","$92k"],["Walkaway","$88k"]], big:"", bigLabel:"", pill:"WORD-FOR-WORD SCRIPT."},
+    {rx:/\/practice-sim/, badge:"LIVE · PRACTICE", title:"Tough conversation…", rows:[["Asking for flexible hours",""],["Setting boundaries",""],["Pushback on scope",""],["Score so far",""]], big:"78/100", bigLabel:"LIVE SCORE", pill:"REHEARSE. SCORED."}
+  ];
+  var mock = null;
+  for (var mi = 0; mi < toolMocks.length; mi++) { if (toolMocks[mi].rx.test(text)) { mock = toolMocks[mi]; break; } }
+  if (!mock) mock = {badge:"FREE · NZ · FOREVER", title:"Your free Kiwi toolkit", rows:[["CV score & fixes",""],["NZ salary checker",""],["Interview practice",""],["Cover letter writer",""]], big:"12 tools", bigLabel:"ALL FREE", pill:"BUILT FOR KIWIS."};
+
   // Extract headline
   var headline = text.split(/\n/)[0].replace(/#\w+/g, "").replace(/https?:\/\/\S+/g, "").replace(/[^\w\s'!?.,\-&]/g, "").replace(/\s+/g, " ").trim();
   if (headline.length < 15) {
@@ -1629,12 +1644,39 @@ function downloadPostImage(btn) {
   var coralCount = Math.min(4, Math.max(2, Math.round(words.length * 0.35)));
   var coralStartIdx = words.length - coralCount;
 
-  // Fit headline
-  var textTop = brandY + Math.round(H * 0.06);
-  var footerH = Math.round(H * 0.26);
-  var textAreaH = H - textTop - footerH;
-  var maxFontSize = Math.round(Math.min(W, H) * 0.13);
-  if (maxFontSize < 40) maxFontSize = 40;
+  // CTA button sizing (precompute to reserve space)
+  var ctaFS = Math.round(Math.min(W, H) * 0.03);
+  if (ctaFS < 16) ctaFS = 16;
+  if (ctaFS > 28) ctaFS = 28;
+  var ctaText = "Try it free  →";
+  ctx.font = "800 " + ctaFS + "px Inter, sans-serif";
+  var ctaTW = ctx.measureText(ctaText).width;
+  var ctaPadX = Math.round(ctaFS * 1.6);
+  var ctaW = ctaTW + ctaPadX * 2;
+  var ctaH = Math.round(ctaFS * 2.6);
+  var urlFS = Math.round(ctaFS * 0.85);
+  var ctaY = H - pad - ctaH - Math.round(urlFS * 1.6);
+
+  // Phone dimensions (centered in the middle zone)
+  var isPortrait = H > W * 1.1;
+  var phoneH = isPortrait ? Math.round(H * 0.44) : Math.round(H * 0.52);
+  var phoneW = Math.round(phoneH * 0.48);
+  // Shrink if too wide for the canvas
+  if (phoneW > W * 0.4) { phoneW = Math.round(W * 0.4); phoneH = Math.round(phoneW / 0.48); }
+  var phoneTop = brandY + Math.round(H * 0.05);
+  var zoneBottom = ctaY - Math.round(H * 0.02);
+  // Headline zone sits above phone
+  var textTop = brandY + Math.round(H * 0.04);
+  var headlineMaxBottom = phoneTop;  // placeholder, will recompute
+  // Position phone vertically within the available space
+  var phoneX = Math.round((W - phoneW) / 2);
+  var phoneY = Math.round(zoneBottom - phoneH);
+  if (phoneY < textTop + Math.round(H * 0.16)) phoneY = textTop + Math.round(H * 0.16);
+
+  // Headline fits between textTop and phoneY
+  var textAreaH = phoneY - textTop - Math.round(H * 0.02);
+  var maxFontSize = Math.round(Math.min(W, H) * 0.1);
+  if (maxFontSize < 36) maxFontSize = 36;
   var maxTextW = W - pad * 2;
 
   function wrapWords(fs) {
@@ -1652,15 +1694,15 @@ function downloadPostImage(btn) {
   }
 
   var fontSize = maxFontSize, wrapped;
-  while (fontSize >= 20) {
+  while (fontSize >= 18) {
     wrapped = wrapWords(fontSize);
     var lineH2 = Math.round(fontSize * 1.12);
-    if (wrapped.length <= 5 && wrapped.length * lineH2 < textAreaH * 0.9) break;
+    if (wrapped.length <= 4 && wrapped.length * lineH2 < textAreaH * 0.95) break;
     fontSize -= 2;
   }
   var lineH = Math.round(fontSize * 1.12);
   var totalKH = wrapped.length * lineH;
-  var startY = textTop + Math.round((textAreaH - totalKH) / 2) + fontSize;
+  var startY = textTop + fontSize;
   ctx.font = "900 " + fontSize + "px Inter, sans-serif";
   ctx.textAlign = "left";
 
@@ -1677,18 +1719,139 @@ function downloadPostImage(btn) {
     });
   });
 
-  // Bottom row: Try it free button + checkmarks
-  var ctaFS = Math.round(Math.min(W, H) * 0.03);
-  if (ctaFS < 16) ctaFS = 16;
-  if (ctaFS > 28) ctaFS = 28;
-  var ctaText = "Try it free  →";
-  ctx.font = "800 " + ctaFS + "px Inter, sans-serif";
-  var ctaTW = ctx.measureText(ctaText).width;
-  var ctaPadX = Math.round(ctaFS * 1.6);
-  var ctaW = ctaTW + ctaPadX * 2;
-  var ctaH = Math.round(ctaFS * 2.6);
-  var urlFS = Math.round(ctaFS * 0.85);
-  var ctaY = H - pad - ctaH - Math.round(urlFS * 1.6);
+  // Phone mockup
+  var phoneR = Math.round(phoneW * 0.1);
+  // Soft shadow
+  ctx.save();
+  ctx.shadowColor = "rgba(15,23,42,0.18)";
+  ctx.shadowBlur = Math.round(phoneW * 0.08);
+  ctx.shadowOffsetY = Math.round(phoneW * 0.03);
+  ctx.beginPath(); ctx.roundRect(phoneX, phoneY, phoneW, phoneH, phoneR);
+  ctx.fillStyle = "#0f172a";
+  ctx.fill();
+  ctx.restore();
+  // Screen bezel inset
+  var bezel = Math.round(phoneW * 0.028);
+  var scX = phoneX + bezel, scY = phoneY + bezel, scW = phoneW - bezel * 2, scH = phoneH - bezel * 2;
+  var scR = Math.round(phoneR * 0.85);
+  ctx.beginPath(); ctx.roundRect(scX, scY, scW, scH, scR);
+  ctx.fillStyle = "#FFF8EE";
+  ctx.fill();
+  // Notch
+  var notchW = Math.round(phoneW * 0.32), notchH = Math.round(phoneW * 0.055);
+  var notchX = phoneX + Math.round((phoneW - notchW) / 2), notchY = phoneY + Math.round(bezel * 1.3);
+  ctx.beginPath(); ctx.roundRect(notchX, notchY, notchW, notchH, Math.round(notchH / 2));
+  ctx.fillStyle = "#0f172a"; ctx.fill();
+
+  // Inside screen: badge + title + rows + big value
+  var sPad = Math.round(scW * 0.08);
+  var contentTop = scY + Math.round(scH * 0.12);
+  // Badge pill (coral outline)
+  var badgeFS = Math.round(scW * 0.055);
+  if (badgeFS < 10) badgeFS = 10;
+  ctx.font = "800 " + badgeFS + "px Inter, sans-serif";
+  var badgeTW = ctx.measureText(mock.badge).width;
+  var badgePX = Math.round(badgeFS * 0.9);
+  var badgeW = badgeTW + badgePX * 2, badgeH = Math.round(badgeFS * 2.1);
+  var badgeX = scX + sPad, badgeY = contentTop;
+  ctx.beginPath(); ctx.roundRect(badgeX, badgeY, badgeW, badgeH, Math.round(badgeH / 2));
+  ctx.fillStyle = coral; ctx.fill();
+  ctx.fillStyle = "#ffffff";
+  ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  ctx.fillText(mock.badge, badgeX + badgeW / 2, badgeY + badgeH / 2 + 1);
+  ctx.textBaseline = "alphabetic"; ctx.textAlign = "left";
+
+  // Title
+  var titleFS = Math.round(scW * 0.075);
+  ctx.font = "900 " + titleFS + "px Inter, sans-serif";
+  ctx.fillStyle = dark;
+  var titleY = badgeY + badgeH + Math.round(titleFS * 1.2);
+  ctx.fillText(mock.title, scX + sPad, titleY);
+
+  // Divider
+  ctx.fillStyle = coral;
+  ctx.fillRect(scX + sPad, titleY + Math.round(titleFS * 0.4), scW - sPad * 2, Math.max(2, Math.round(titleFS * 0.04)));
+
+  // Rows
+  var rowFS = Math.round(scW * 0.052);
+  ctx.font = "600 " + rowFS + "px Inter, sans-serif";
+  var rowTop = titleY + Math.round(titleFS * 1.2);
+  var rowLineH = Math.round(rowFS * 2.3);
+  mock.rows.forEach(function(r, ri) {
+    var ry = rowTop + ri * rowLineH;
+    ctx.fillStyle = dark;
+    ctx.textAlign = "left";
+    ctx.font = "600 " + rowFS + "px Inter, sans-serif";
+    // Truncate row text if too long
+    var rowTxt = r[0];
+    var rightTxt = r[1] || "";
+    var maxRowW = scW - sPad * 2 - (rightTxt ? ctx.measureText(rightTxt).width + sPad * 0.5 : 0);
+    while (ctx.measureText(rowTxt).width > maxRowW && rowTxt.length > 4) rowTxt = rowTxt.slice(0, -2);
+    if (rowTxt !== r[0]) rowTxt = rowTxt.slice(0, -1) + "…";
+    ctx.fillText(rowTxt, scX + sPad, ry);
+    if (rightTxt) {
+      ctx.font = "800 " + rowFS + "px Inter, sans-serif";
+      ctx.fillStyle = coral;
+      ctx.textAlign = "right";
+      ctx.fillText(rightTxt, scX + scW - sPad, ry);
+    }
+    // Thin separator
+    ctx.fillStyle = "rgba(15,23,42,0.08)";
+    ctx.fillRect(scX + sPad, ry + Math.round(rowFS * 0.55), scW - sPad * 2, 1);
+  });
+
+  // Big number (if defined)
+  var rowsBottom = rowTop + mock.rows.length * rowLineH;
+  if (mock.big) {
+    var bigFS = Math.round(scW * 0.13);
+    ctx.font = "900 " + bigFS + "px Inter, sans-serif";
+    ctx.fillStyle = dark;
+    ctx.textAlign = "left";
+    var bigY = rowsBottom + Math.round(bigFS * 0.9);
+    // Clamp to stay above the pill
+    var pillH = Math.round(scW * 0.11);
+    var pillBottom = scY + scH - Math.round(scH * 0.05);
+    var maxBigY = pillBottom - pillH - Math.round(bigFS * 0.3);
+    if (bigY > maxBigY) bigY = maxBigY;
+    ctx.fillText(mock.big, scX + sPad, bigY);
+    if (mock.bigLabel) {
+      var bigLabelFS = Math.round(bigFS * 0.28);
+      ctx.font = "800 " + bigLabelFS + "px Inter, sans-serif";
+      ctx.fillStyle = "rgba(15,23,42,0.5)";
+      ctx.fillText(mock.bigLabel, scX + sPad, bigY - bigFS - Math.round(bigLabelFS * 0.3));
+    }
+  }
+
+  // Bottom pill on screen
+  var pillFS = Math.round(scW * 0.055);
+  ctx.font = "900 " + pillFS + "px Inter, sans-serif";
+  var pillTW = ctx.measureText(mock.pill).width;
+  var pillPX = Math.round(pillFS * 0.9);
+  var pillH2 = Math.round(pillFS * 2.3);
+  // Split pill text: last word coral, rest white
+  var pillWords = mock.pill.split(" ");
+  var pillCoralCount = Math.min(3, Math.max(1, Math.round(pillWords.length * 0.45)));
+  var pillCoralStart = pillWords.length - pillCoralCount;
+  var pillW = pillTW + pillPX * 2;
+  if (pillW > scW - sPad * 2) pillW = scW - sPad * 2;
+  var pillX = scX + Math.round((scW - pillW) / 2);
+  var pillY = scY + scH - pillH2 - Math.round(scH * 0.05);
+  ctx.beginPath(); ctx.roundRect(pillX, pillY, pillW, pillH2, Math.round(pillH2 / 2));
+  ctx.fillStyle = dark; ctx.fill();
+  // Render pill words, last N coral
+  var pillTotalW = 0;
+  var spaceWpill = ctx.measureText(" ").width;
+  pillWords.forEach(function(w, i) { pillTotalW += ctx.measureText(w).width + (i < pillWords.length - 1 ? spaceWpill : 0); });
+  var pillTextX = pillX + Math.round((pillW - pillTotalW) / 2);
+  var pillTextY = pillY + pillH2 / 2;
+  ctx.textBaseline = "middle"; ctx.textAlign = "left";
+  var px = pillTextX;
+  pillWords.forEach(function(w, i) {
+    ctx.fillStyle = (i >= pillCoralStart) ? coral : "#ffffff";
+    ctx.fillText(w, px, pillTextY + 1);
+    px += ctx.measureText(w).width + spaceWpill;
+  });
+  ctx.textBaseline = "alphabetic";
   ctx.beginPath(); ctx.roundRect(pad, ctaY, ctaW, ctaH, Math.round(ctaH / 2));
   ctx.fillStyle = coral; ctx.fill();
   ctx.fillStyle = "#ffffff";
