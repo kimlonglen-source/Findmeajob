@@ -1714,9 +1714,9 @@ async function downloadPostImage(btn) {
   // Phone dimensions (centered in the middle zone)
   var isPortrait = H > W * 1.1;
   // Layout variations — pop variants are intentionally over-represented so most
-  // posts get the dramatic angled treatment from the design system; center
-  // shows up roughly 1 in 8 to keep some calm beats in the rotation.
-  var layoutPool = ["pop-bottom", "pop-bottom", "pop-bottom-right", "pop-bottom-right", "tilt-left", "tilt-right", "center", "right-stage"];
+  // posts get the dramatic angled treatment; centre upright shows up roughly
+  // 1 in 8 to keep some calm beats in the rotation.
+  var layoutPool = ["pop-bottom", "pop-bottom", "pop-bottom-right", "pop-bottom-right", "tilt-left", "tilt-right", "center", "tilt-left"];
   var layout = layoutPool[Math.abs(hash + 13) % layoutPool.length];
 
   // Phone size depends on layout. Pop variants are a little taller (they're
@@ -1724,14 +1724,11 @@ async function downloadPostImage(btn) {
   var phoneH;
   if (layout.indexOf("pop") === 0) {
     phoneH = isPortrait ? Math.round(H * 0.56) : Math.round(H * 0.66);
-  } else if (layout === "right-stage") {
-    phoneH = isPortrait ? Math.round(H * 0.5) : Math.round(H * 0.64);
   } else {
     phoneH = isPortrait ? Math.round(H * 0.48) : Math.round(H * 0.56);
   }
   var phoneW = Math.round(phoneH * 0.48);
-  // Cap width so phone never blows past the canvas; recompute height to match.
-  var maxPhoneW = (layout === "right-stage") ? Math.round(W * 0.42) : Math.round(W * 0.46);
+  var maxPhoneW = Math.round(W * 0.46);
   if (phoneW > maxPhoneW) { phoneW = maxPhoneW; phoneH = Math.round(phoneW / 0.48); }
 
   var phoneRot = 0;
@@ -1743,31 +1740,23 @@ async function downloadPostImage(btn) {
 
   if (layout === "tilt-left")  {
     phoneRot = -0.10;
-    // Slide the tilted phone a touch right so the left lean doesn't crowd the CTA
     phoneX = Math.round(W * 0.58) - Math.round(phoneW / 2);
   } else if (layout === "tilt-right") {
     phoneRot = 0.10;
     phoneX = Math.round(W * 0.58) - Math.round(phoneW / 2);
   } else if (layout === "pop-bottom") {
     phoneRot = -0.13;
-    // Anchor the pop phone to the right half so the bottom-left CTA stays clear
     phoneX = Math.round(W * 0.62) - Math.round(phoneW / 2);
     phoneY = Math.round(H - phoneH * 0.72);
   } else if (layout === "pop-bottom-right") {
     phoneRot = 0.12;
     phoneX = Math.round(W * 0.68) - Math.round(phoneW / 2);
     phoneY = Math.round(H - phoneH * 0.7);
-  } else if (layout === "right-stage") {
-    phoneX = W - pad - phoneW;
-    phoneY = Math.round((H - phoneH) / 2);
   }
 
-  // Compute the tightest vertical top the phone (including rotation) reaches,
-  // so the headline is wrapped to stop above it. Worst-case overshoot from
-  // rotation is |sin(θ)| * (phoneW/2).
+  // Compute the tightest vertical top the phone (including rotation) reaches.
   var rotOvershoot = Math.round(Math.abs(Math.sin(phoneRot)) * (phoneW / 2));
   var phoneTopForText = phoneY - rotOvershoot - Math.round(H * 0.02);
-  // Don't let the text zone crash into the CTA either — leave a small gap
   phoneTopForText = Math.min(phoneTopForText, ctaY - Math.round(H * 0.02));
   var textAreaH = phoneTopForText - textTop;
 
@@ -1775,13 +1764,7 @@ async function downloadPostImage(btn) {
   // phone's left edge (minus overshoot) so text wraps before the phone eats it.
   var phoneLeftEdge = phoneX - rotOvershoot;
   var headlineMaxW;
-  if (layout === "right-stage") {
-    headlineMaxW = phoneLeftEdge - pad - Math.round(W * 0.02);
-  } else if (layout.indexOf("pop") === 0 || layout.indexOf("tilt") === 0) {
-    // Pop/tilt phones are off-centre-right; give the headline the left ~80%
-    // of the canvas and let it wrap naturally. Lower lines are allowed to
-    // run narrower than upper ones since we can't do per-line wrapping cheaply
-    // — just clamp the whole block.
+  if (layout.indexOf("pop") === 0 || layout.indexOf("tilt") === 0) {
     headlineMaxW = Math.max(Math.round(W * 0.56), phoneLeftEdge - pad);
   } else {
     headlineMaxW = W - pad * 2;
