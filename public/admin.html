@@ -1576,7 +1576,7 @@ async function downloadPostImage(btn) {
     {bg:"#FAF6EF", tag:"FREE · NZ · INSTANT"},
     {bg:"#EAE6FA", tag:"BUILT FOR KIWIS"},
     {bg:"#E3ECC9", tag:"LIVE · AI-POWERED"},
-    {bg:"#FFE8CC", tag:"NO SIGNUP · FREE FOREVER"}
+    {bg:"#FFE8CC", tag:"NO PASSWORD · NO PAYWALL"}
   ];
   var hash = 0;
   var seedStr = platform + text;
@@ -1635,18 +1635,42 @@ async function downloadPostImage(btn) {
   if (!mock) mock = {badge:"FREE · NZ · FOREVER", title:"Your free Kiwi toolkit", rows:[["CV score & fixes",""],["NZ salary checker",""],["Interview practice",""],["Cover letter writer",""]], big:"12 tools", bigLabel:"ALL FREE", pill:"BUILT FOR KIWIS."};
 
   // Extract headline
-  var headline = text.split(/\n/)[0].replace(/#\w+/g, "").replace(/https?:\/\/\S+/g, "").replace(/[^\w\s'!?.,\-&]/g, "").replace(/\s+/g, " ").trim();
-  if (headline.length < 15) {
-    var lines2 = text.split(/\n/).filter(function(l){return l.trim().length>0;});
-    headline = lines2.slice(0, 2).join(" ").replace(/#\w+/g, "").replace(/https?:\/\/\S+/g, "").replace(/[^\w\s'!?.,\-&]/g, "").replace(/\s+/g, " ").trim();
+  function _cleanLine(s) {
+    return s.replace(/#\w+/g, "").replace(/https?:\/\/\S+/g, "").replace(/[^\w\s'!?.,\-&$%]/g, "").replace(/\s+/g, " ").trim();
   }
-  if (headline.length > 70) headline = headline.substring(0, 67).replace(/\s\S*$/, "") + "...";
+  // Take the first usable sentence; never truncate mid-word
+  var rawLines = text.split(/\n/).filter(function(l){return l.trim().length>0;});
+  var headline = "";
+  for (var rli = 0; rli < rawLines.length && headline.length < 30; rli++) {
+    var clean = _cleanLine(rawLines[rli]);
+    if (clean.length < 5) continue;
+    var sentMatch = clean.match(/^.+?[.!?](?=\s|$)/);
+    var chunk = sentMatch ? sentMatch[0] : clean;
+    if (chunk.length > 90) {
+      // No sentence break in a long line: cut at last word boundary before 80
+      var cut = chunk.substring(0, 80);
+      var lastSpace = cut.lastIndexOf(" ");
+      chunk = (lastSpace > 30 ? cut.substring(0, lastSpace) : cut).replace(/[,;:\-]+$/, "");
+    }
+    headline = headline ? (headline + " " + chunk) : chunk;
+  }
+  if (!headline) headline = "Free NZ job-hunt toolkit.";
   if (!/[.!?]$/.test(headline)) headline += ".";
 
-  // Coral = last N words (roughly last third, min 2 max 4)
+  // Coral = last clause if there's a natural comma/dash break in the last ~40%,
+  // otherwise the last 2-3 words. Prefer clause boundaries over mechanical word counts.
   var words = headline.split(" ");
-  var coralCount = Math.min(4, Math.max(2, Math.round(words.length * 0.35)));
-  var coralStartIdx = words.length - coralCount;
+  var coralStartIdx;
+  var commaIdx = -1;
+  for (var ci = words.length - 1; ci >= Math.max(0, Math.floor(words.length * 0.55)); ci--) {
+    if (/[,;\-]$/.test(words[ci - 1] || "")) { commaIdx = ci; break; }
+  }
+  if (commaIdx > 0 && words.length - commaIdx >= 2 && words.length - commaIdx <= 5) {
+    coralStartIdx = commaIdx;
+  } else {
+    var coralCount = Math.min(3, Math.max(2, Math.round(words.length * 0.3)));
+    coralStartIdx = words.length - coralCount;
+  }
 
   // CTA button sizing (precompute to reserve space)
   var ctaFS = Math.round(Math.min(W, H) * 0.03);
@@ -1663,17 +1687,26 @@ async function downloadPostImage(btn) {
 
   // Phone dimensions (centered in the middle zone)
   var isPortrait = H > W * 1.1;
-  var phoneH = isPortrait ? Math.round(H * 0.44) : Math.round(H * 0.52);
-  var phoneW = Math.round(phoneH * 0.48);
-  if (phoneW > W * 0.4) { phoneW = Math.round(W * 0.4); phoneH = Math.round(phoneW / 0.48); }
+  // Layout variations — pop variants are intentionally over-represented so most
+  // posts get the dramatic angled treatment from the design system; center
+  // shows up roughly 1 in 8 to keep some calm beats in the rotation.
+  var layoutPool = ["pop-bottom", "pop-bottom", "pop-bottom-right", "pop-bottom-right", "tilt-left", "tilt-right", "center", "right-stage"];
+  var layout = layoutPool[Math.abs(hash + 13) % layoutPool.length];
 
-  // Layout variations — picked deterministically from hash so the same post
-  // always renders identically, but different posts get different energy.
-  // center: upright, vertically centred below headline
-  // tilt-left / tilt-right: slight rotation, fully visible
-  // pop-bottom: angled phone emerging from the bottom edge (~25% cut off)
-  var layouts = ["center", "tilt-left", "tilt-right", "pop-bottom", "pop-bottom-right"];
-  var layout = layouts[Math.abs(hash + 13) % layouts.length];
+  // Phone size depends on layout. Pop layouts are taller because they're cut off.
+  var phoneH;
+  if (layout.indexOf("pop") === 0) {
+    phoneH = isPortrait ? Math.round(H * 0.62) : Math.round(H * 0.86);
+  } else if (layout === "right-stage") {
+    phoneH = isPortrait ? Math.round(H * 0.5) : Math.round(H * 0.68);
+  } else {
+    phoneH = isPortrait ? Math.round(H * 0.5) : Math.round(H * 0.6);
+  }
+  var phoneW = Math.round(phoneH * 0.48);
+  // Cap width so phone never blows past the canvas; recompute height to match.
+  var maxPhoneW = (layout === "right-stage") ? Math.round(W * 0.42) : Math.round(W * 0.5);
+  if (phoneW > maxPhoneW) { phoneW = maxPhoneW; phoneH = Math.round(phoneW / 0.48); }
+
   var phoneRot = 0;
   var textTop = brandY + Math.round(H * 0.04);
   var phoneX = Math.round((W - phoneW) / 2);
@@ -1685,22 +1718,26 @@ async function downloadPostImage(btn) {
   else if (layout === "tilt-right") { phoneRot = 0.10; }
   else if (layout === "pop-bottom") {
     phoneRot = -0.15;
-    phoneY = Math.round(H - phoneH * 0.74);
+    phoneY = Math.round(H - phoneH * 0.72);
     phoneX = Math.round((W - phoneW) / 2) - Math.round(phoneW * 0.08);
   } else if (layout === "pop-bottom-right") {
     phoneRot = 0.14;
-    phoneY = Math.round(H - phoneH * 0.72);
+    phoneY = Math.round(H - phoneH * 0.7);
     phoneX = Math.round((W - phoneW) / 2) + Math.round(phoneW * 0.1);
+  } else if (layout === "right-stage") {
+    // Phone sits on the right; headline gets the left half of the canvas
+    phoneX = W - pad - phoneW;
+    phoneY = Math.round((H - phoneH) / 2);
   }
 
-  // Headline fits between textTop and the top of the phone (unrotated bbox is fine —
-  // when the phone is tilted/popping from below, it extends beyond its bbox, which
-  // is the intended dramatic overlap with the CTA area.)
-  var phoneTopForText = (layout.indexOf("pop") === 0) ? (H - Math.round(H * 0.3)) : phoneY;
+  // Headline space: full width for everything except right-stage (which shares
+  // the canvas horizontally with the phone). For pop layouts, treat the
+  // unrotated phone bounds as ~30% from the bottom so headline has room above.
+  var phoneTopForText = (layout.indexOf("pop") === 0) ? (H - Math.round(H * 0.32)) : phoneY;
   var textAreaH = phoneTopForText - textTop - Math.round(H * 0.02);
+  var headlineMaxW = (layout === "right-stage") ? (phoneX - pad - Math.round(W * 0.02)) : (W - pad * 2);
   var maxFontSize = Math.round(Math.min(W, H) * 0.1);
   if (maxFontSize < 36) maxFontSize = 36;
-  var maxTextW = W - pad * 2;
 
   function wrapWords(fs) {
     ctx.font = "900 " + fs + "px Inter, sans-serif";
@@ -1709,7 +1746,7 @@ async function downloadPostImage(btn) {
     words.forEach(function(w) {
       var wW = ctx.measureText(w).width;
       var add = cur.length ? spaceW + wW : wW;
-      if (curW + add > maxTextW && cur.length) { lines.push(cur); cur = [w]; curW = wW; }
+      if (curW + add > headlineMaxW && cur.length) { lines.push(cur); cur = [w]; curW = wW; }
       else { cur.push(w); curW += add; }
     });
     if (cur.length) lines.push(cur);
