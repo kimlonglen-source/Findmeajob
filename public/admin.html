@@ -1568,10 +1568,20 @@ async function downloadPostImage(btn) {
   cn.width = W; cn.height = H;
   var ctx = cn.getContext("2d");
   btn.textContent = "Loading...";
-  // Ensure Nunito (used for the wordmark) is ready before we draw
+  // Ensure every font we render with is fully loaded before we measure & draw,
+  // otherwise ctx.measureText and ctx.fillText can disagree on character widths
+  // and pills get sized to the wrong font.
   if (document.fonts && document.fonts.load) {
-    try { await document.fonts.load('900 64px Nunito'); } catch(e) {}
+    try {
+      await Promise.all([
+        document.fonts.load('900 64px Nunito'),
+        document.fonts.load('800 32px "Plus Jakarta Sans"'),
+        document.fonts.load('700 24px "Plus Jakarta Sans"'),
+        document.fonts.load('600 20px "Plus Jakarta Sans"')
+      ]);
+    } catch(e) {}
   }
+  var uiFont = '"Plus Jakarta Sans", system-ui, sans-serif';
   var palettes = [
     {bg:"#FAF6EF", tag:"FREE · NZ · INSTANT"},
     {bg:"#EAE6FA", tag:"BUILT FOR KIWIS"},
@@ -1601,7 +1611,7 @@ async function downloadPostImage(btn) {
 
   // Tag pill top-right (bordered)
   var tagFS = Math.round(brandFS * 0.54);
-  ctx.font = "800 " + tagFS + "px Inter, sans-serif";
+  ctx.font = "800 " + tagFS + "px " + uiFont;
   var tagText = pal.tag;
   var tagTW = ctx.measureText(tagText).width;
   var tagPadX = Math.round(tagFS * 1.1);
@@ -1677,10 +1687,12 @@ async function downloadPostImage(btn) {
   if (ctaFS < 16) ctaFS = 16;
   if (ctaFS > 28) ctaFS = 28;
   var ctaText = "Try it free  →";
-  ctx.font = "800 " + ctaFS + "px Inter, sans-serif";
+  ctx.font = "800 " + ctaFS + "px " + uiFont;
   var ctaTW = ctx.measureText(ctaText).width;
   var ctaPadX = Math.round(ctaFS * 1.6);
-  var ctaW = ctaTW + ctaPadX * 2;
+  // Small measurement-safety buffer so the pill is always a touch wider than
+  // the text (prevents any font-metrics-drift overflow).
+  var ctaW = ctaTW + ctaPadX * 2 + Math.round(ctaFS * 0.4);
   var ctaH = Math.round(ctaFS * 2.6);
   var urlFS = Math.round(ctaFS * 0.85);
   var ctaY = H - pad - ctaH - Math.round(urlFS * 1.6);
@@ -1764,7 +1776,7 @@ async function downloadPostImage(btn) {
   if (maxFontSize < 36) maxFontSize = 36;
 
   function wrapWords(fs) {
-    ctx.font = "900 " + fs + "px Inter, sans-serif";
+    ctx.font = "800 " + fs + "px " + uiFont;
     var lines = [], cur = [], curW = 0;
     var spaceW = ctx.measureText(" ").width;
     words.forEach(function(w) {
@@ -1787,7 +1799,7 @@ async function downloadPostImage(btn) {
   var lineH = Math.round(fontSize * 1.12);
   var totalKH = wrapped.length * lineH;
   var startY = textTop + fontSize;
-  ctx.font = "900 " + fontSize + "px Inter, sans-serif";
+  ctx.font = "800 " + fontSize + "px " + uiFont;
   ctx.textAlign = "left";
 
   // Render word-by-word so last N words render in coral
@@ -1841,7 +1853,7 @@ async function downloadPostImage(btn) {
   // Badge pill (coral outline)
   var badgeFS = Math.round(scW * 0.055);
   if (badgeFS < 10) badgeFS = 10;
-  ctx.font = "800 " + badgeFS + "px Inter, sans-serif";
+  ctx.font = "800 " + badgeFS + "px " + uiFont;
   var badgeTW = ctx.measureText(mock.badge).width;
   var badgePX = Math.round(badgeFS * 0.9);
   var badgeW = badgeTW + badgePX * 2, badgeH = Math.round(badgeFS * 2.1);
@@ -1855,7 +1867,7 @@ async function downloadPostImage(btn) {
 
   // Title
   var titleFS = Math.round(scW * 0.075);
-  ctx.font = "900 " + titleFS + "px Inter, sans-serif";
+  ctx.font = "800 " + titleFS + "px " + uiFont;
   ctx.fillStyle = dark;
   var titleY = badgeY + badgeH + Math.round(titleFS * 1.2);
   ctx.fillText(mock.title, scX + sPad, titleY);
@@ -1866,14 +1878,14 @@ async function downloadPostImage(btn) {
 
   // Rows
   var rowFS = Math.round(scW * 0.052);
-  ctx.font = "600 " + rowFS + "px Inter, sans-serif";
+  ctx.font = "600 " + rowFS + "px " + uiFont;
   var rowTop = titleY + Math.round(titleFS * 1.2);
   var rowLineH = Math.round(rowFS * 2.3);
   mock.rows.forEach(function(r, ri) {
     var ry = rowTop + ri * rowLineH;
     ctx.fillStyle = dark;
     ctx.textAlign = "left";
-    ctx.font = "600 " + rowFS + "px Inter, sans-serif";
+    ctx.font = "600 " + rowFS + "px " + uiFont;
     // Truncate row text if too long
     var rowTxt = r[0];
     var rightTxt = r[1] || "";
@@ -1882,7 +1894,7 @@ async function downloadPostImage(btn) {
     if (rowTxt !== r[0]) rowTxt = rowTxt.slice(0, -1) + "…";
     ctx.fillText(rowTxt, scX + sPad, ry);
     if (rightTxt) {
-      ctx.font = "800 " + rowFS + "px Inter, sans-serif";
+      ctx.font = "800 " + rowFS + "px " + uiFont;
       ctx.fillStyle = coral;
       ctx.textAlign = "right";
       ctx.fillText(rightTxt, scX + scW - sPad, ry);
@@ -1896,7 +1908,7 @@ async function downloadPostImage(btn) {
   var rowsBottom = rowTop + mock.rows.length * rowLineH;
   if (mock.big) {
     var bigFS = Math.round(scW * 0.13);
-    ctx.font = "900 " + bigFS + "px Inter, sans-serif";
+    ctx.font = "800 " + bigFS + "px " + uiFont;
     ctx.fillStyle = dark;
     ctx.textAlign = "left";
     var bigY = rowsBottom + Math.round(bigFS * 0.9);
@@ -1908,7 +1920,7 @@ async function downloadPostImage(btn) {
     ctx.fillText(mock.big, scX + sPad, bigY);
     if (mock.bigLabel) {
       var bigLabelFS = Math.round(bigFS * 0.28);
-      ctx.font = "800 " + bigLabelFS + "px Inter, sans-serif";
+      ctx.font = "800 " + bigLabelFS + "px " + uiFont;
       ctx.fillStyle = "rgba(15,23,42,0.5)";
       ctx.fillText(mock.bigLabel, scX + sPad, bigY - bigFS - Math.round(bigLabelFS * 0.3));
     }
@@ -1916,7 +1928,7 @@ async function downloadPostImage(btn) {
 
   // Bottom pill on screen
   var pillFS = Math.round(scW * 0.055);
-  ctx.font = "900 " + pillFS + "px Inter, sans-serif";
+  ctx.font = "800 " + pillFS + "px " + uiFont;
   var pillTW = ctx.measureText(mock.pill).width;
   var pillPX = Math.round(pillFS * 0.9);
   var pillH2 = Math.round(pillFS * 2.3);
@@ -1956,7 +1968,7 @@ async function downloadPostImage(btn) {
   ctx.textBaseline = "alphabetic";
 
   // URL under button
-  ctx.font = "700 " + urlFS + "px Inter, sans-serif";
+  ctx.font = "700 " + urlFS + "px " + uiFont;
   ctx.fillStyle = dark;
   ctx.textAlign = "left";
   ctx.fillText("findmeajob.co.nz", pad, ctaY + ctaH + urlFS + Math.round(urlFS * 0.3));
@@ -1964,23 +1976,23 @@ async function downloadPostImage(btn) {
   // Checkmarks bottom-right
   var bullets = ["Free forever", "No signup", "NZ-tuned"];
   var bFS = Math.round(ctaFS * 0.82);
-  ctx.font = "700 " + bFS + "px Inter, sans-serif";
+  ctx.font = "700 " + bFS + "px " + uiFont;
   var bLineH = Math.round(bFS * 1.9);
   var bTotalH = bullets.length * bLineH;
   var bY0 = ctaY + Math.round((ctaH - bTotalH) / 2) + bFS;
   bullets.forEach(function(b, bi) {
     var y = bY0 + bi * bLineH;
-    ctx.font = "900 " + bFS + "px Inter, sans-serif";
+    ctx.font = "800 " + bFS + "px " + uiFont;
     var chk = "✓";
     var chkW = ctx.measureText(chk).width;
-    ctx.font = "700 " + bFS + "px Inter, sans-serif";
+    ctx.font = "700 " + bFS + "px " + uiFont;
     var tW = ctx.measureText(b).width;
     var gap = Math.round(bFS * 0.45);
     var bx = W - pad - (chkW + gap + tW);
-    ctx.font = "900 " + bFS + "px Inter, sans-serif";
+    ctx.font = "800 " + bFS + "px " + uiFont;
     ctx.fillStyle = "#16a34a";
     ctx.fillText(chk, bx, y);
-    ctx.font = "700 " + bFS + "px Inter, sans-serif";
+    ctx.font = "700 " + bFS + "px " + uiFont;
     ctx.fillStyle = dark;
     ctx.fillText(b, bx + chkW + gap, y);
   });
