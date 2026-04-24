@@ -1646,7 +1646,21 @@ async function downloadPostImage(btn) {
 
   // Extract headline
   function _cleanLine(s) {
-    return s.replace(/#\w+/g, "").replace(/https?:\/\/\S+/g, "").replace(/[^\w\s'!?.,\-&$%]/g, "").replace(/\s+/g, " ").trim();
+    return s
+      // Strip URLs
+      .replace(/https?:\/\/\S+/g, "")
+      // Strip hashtags (#word) and mentions (@handle)
+      .replace(/[#@]\w+/g, "")
+      // Strip emoji (BMP symbols + supplementary plane emoji blocks)
+      .replace(/[☀-➿\u{1F300}-\u{1FAFF}\u{1F1E6}-\u{1F1FF}]/gu, "")
+      // Drop zero-width joiners / variation selectors left behind by emoji
+      .replace(/[‍️]/g, "")
+      // Keep letters, numbers, whitespace and standard punctuation; strip any
+      // stray symbols like + · / | that would otherwise fuse neighbouring
+      // words when collapsed. Replace with a space so names don't merge.
+      .replace(/[^\w\s'"!?.,\-&()$%:;—–]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
   }
   // Take the first usable sentence; never truncate mid-word
   var rawLines = text.split(/\n/).filter(function(l){return l.trim().length>0;});
