@@ -1713,22 +1713,22 @@ async function downloadPostImage(btn) {
 
   // Phone dimensions (centered in the middle zone)
   var isPortrait = H > W * 1.1;
-  // Layout variations — pop variants are intentionally over-represented so most
-  // posts get the dramatic angled treatment; centre upright shows up roughly
-  // 1 in 8 to keep some calm beats in the rotation.
+  var isSquare = !isPortrait && Math.abs(W - H) / Math.min(W, H) < 0.15;
+  // Layout variations — pop variants are over-represented for the angled energy.
   var layoutPool = ["pop-bottom", "pop-bottom", "pop-bottom-right", "pop-bottom-right", "tilt-left", "tilt-right", "center", "tilt-left"];
   var layout = layoutPool[Math.abs(hash + 13) % layoutPool.length];
 
-  // Phone size depends on layout. Pop variants are a little taller (they're
-  // cut off at the bottom anyway) but never so tall they crash into the CTA.
+  // Phone size depends on layout AND aspect ratio. Square (Instagram 1:1)
+  // formats need a smaller phone than landscape so it doesn't crash into
+  // the bottom-right bullets.
   var phoneH;
   if (layout.indexOf("pop") === 0) {
-    phoneH = isPortrait ? Math.round(H * 0.56) : Math.round(H * 0.66);
+    phoneH = isPortrait ? Math.round(H * 0.56) : (isSquare ? Math.round(H * 0.54) : Math.round(H * 0.66));
   } else {
-    phoneH = isPortrait ? Math.round(H * 0.48) : Math.round(H * 0.56);
+    phoneH = isPortrait ? Math.round(H * 0.48) : (isSquare ? Math.round(H * 0.48) : Math.round(H * 0.56));
   }
   var phoneW = Math.round(phoneH * 0.48);
-  var maxPhoneW = Math.round(W * 0.46);
+  var maxPhoneW = isSquare ? Math.round(W * 0.32) : Math.round(W * 0.46);
   if (phoneW > maxPhoneW) { phoneW = maxPhoneW; phoneH = Math.round(phoneW / 0.48); }
 
   var phoneRot = 0;
@@ -1738,20 +1738,30 @@ async function downloadPostImage(btn) {
   var phoneY = Math.round(zoneBottom - phoneH);
   if (phoneY < textTop + Math.round(H * 0.16)) phoneY = textTop + Math.round(H * 0.16);
 
+  // Anchors. Square formats nudge the phone slightly more central so it stays
+  // clear of the right-anchored checkmark bullets at the bottom.
   if (layout === "tilt-left")  {
     phoneRot = -0.10;
-    phoneX = Math.round(W * 0.58) - Math.round(phoneW / 2);
+    phoneX = Math.round(W * (isSquare ? 0.54 : 0.58)) - Math.round(phoneW / 2);
   } else if (layout === "tilt-right") {
     phoneRot = 0.10;
-    phoneX = Math.round(W * 0.58) - Math.round(phoneW / 2);
+    phoneX = Math.round(W * (isSquare ? 0.54 : 0.58)) - Math.round(phoneW / 2);
   } else if (layout === "pop-bottom") {
     phoneRot = -0.13;
-    phoneX = Math.round(W * 0.62) - Math.round(phoneW / 2);
+    phoneX = Math.round(W * (isSquare ? 0.55 : 0.62)) - Math.round(phoneW / 2);
     phoneY = Math.round(H - phoneH * 0.72);
   } else if (layout === "pop-bottom-right") {
     phoneRot = 0.12;
-    phoneX = Math.round(W * 0.68) - Math.round(phoneW / 2);
+    phoneX = Math.round(W * (isSquare ? 0.6 : 0.68)) - Math.round(phoneW / 2);
     phoneY = Math.round(H - phoneH * 0.7);
+  }
+
+  // Reserve a clear right-edge zone for the bottom-right bullets and clamp
+  // the phone if rotation would push it into that zone.
+  var bulletZoneLeft = W - Math.round(W * 0.28);
+  var phoneRotPad = Math.round(Math.abs(Math.sin(phoneRot)) * (phoneH / 2));
+  if (phoneX + phoneW + phoneRotPad > bulletZoneLeft) {
+    phoneX = Math.max(pad + Math.round(W * 0.02), bulletZoneLeft - phoneW - phoneRotPad);
   }
 
   // Compute the tightest vertical top the phone (including rotation) reaches.
