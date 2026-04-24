@@ -390,7 +390,7 @@ input:focus,select:focus,textarea:focus{border-color:#E7515A;box-shadow:0 0 0 3p
       <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1.25rem;flex-wrap:wrap">
         <div id="micStatus" style="font-size:.78rem;font-weight:600;color:#94a3b8;display:flex;align-items:center;gap:.4rem;justify-content:center"><span class="icn-sm" id="micStatusIcon"></span><span id="micStatusText">Microphone</span></div>
       </div>
-      <button class="btn" id="beginBtn" onclick="beginCountdown()" disabled style="max-width:320px;margin:0 auto">Setting up...</button>
+      <button class="btn" id="beginBtn" onclick="beginCountdown()" data-fmj-action disabled style="max-width:320px;margin:0 auto">Setting up...</button>
       <div style="text-align:center;margin-top:.5rem"><button onclick="document.getElementById('readyScreen').style.display='none';document.getElementById('step2').style.display='block';setTimeout(function(){document.getElementById('step2').scrollIntoView({behavior:'smooth',block:'start'});},50)" style="background:none;border:none;color:#64748b;font-size:.78rem;cursor:pointer;font-family:inherit">Back to settings</button></div>
     </div>
   </div>
@@ -1214,7 +1214,7 @@ function showScore(r){
 </footer>
 
 <script>/* fmj tool-usage view tracking (fire-and-forget) */
-(function(){function t(ev){try{fetch('/api/track-tool',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'practice-sim',event:ev}),keepalive:true}).catch(function(){});}catch(e){}}window.fmjTrack=t;t('view');})();
+(function(){function t(ev){try{fetch('/api/track-tool',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'practice-sim',event:ev}),keepalive:true}).catch(function(){});}catch(e){}}window.fmjTrack=t;t('view');document.addEventListener('click',function(e){var el=e.target&&e.target.closest&&e.target.closest('[data-fmj-action]');if(el)t('action');},true);})();
 </script>
 </body>
 </html>

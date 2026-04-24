@@ -162,6 +162,32 @@ module.exports = async function handler(req, res) {
       var cvUploads = await hget("stats", "cv-uploads");
       return res.status(200).json({ seekers: seekerCount, employers: employerCount, jobs: jobCount, applications: appCount, cvUploads: parseInt(cvUploads) || 0 });
     }
+    if (action === "signup-breakdown") {
+      // Splits the seekers hash by the `source` field added on register.
+      // Legacy records (no `source`) are inferred from the stored password:
+      //   plaintext "__tool_gate__"   → tool-gate
+      //   plaintext "__alerts_only__" → newsletter
+      //   anything else               → signup (real registration)
+      var sbRaw = await hgetall("seekers");
+      var counts = { signup: 0, "tool-gate": 0, newsletter: 0, other: 0 };
+      var total = 0;
+      Object.values(sbRaw).forEach(function(v){
+        try {
+          var s = typeof v === "string" ? JSON.parse(v) : v;
+          total++;
+          var src = s.source;
+          if (!src) {
+            var pw2 = s.password || "";
+            if (pw2 === "__tool_gate__") src = "tool-gate";
+            else if (pw2 === "__alerts_only__") src = "newsletter";
+            else src = "signup";
+          }
+          if (counts[src] === undefined) counts.other++;
+          else counts[src]++;
+        } catch(e) {}
+      });
+      return res.status(200).json({ total: total, counts: counts });
+    }
     if (action === "tool-stats") {
       // Aggregates per-day counters populated by POST /api/track-tool.
       // Response shape: { days, tools[], byDay[{date, total}], generatedAt }
