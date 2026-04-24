@@ -1958,20 +1958,30 @@ async function downloadPostImage(btn) {
   ctx.textBaseline = "alphabetic";
   ctx.restore();  // end phone rotation transform
 
+  // Defensive reset: force identity transform + clear any lingering drawing
+  // state before the CTA so nothing from the phone block can leak through.
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.textAlign = "left";
+  ctx.textBaseline = "alphabetic";
+
   // CTA button (drawn on top of the phone so pop-bottom layouts still show the CTA)
-  ctx.beginPath(); ctx.roundRect(pad, ctaY, ctaW, ctaH, Math.round(ctaH / 2));
+  var ctaPillX = pad;
+  ctx.beginPath(); ctx.roundRect(ctaPillX, ctaY, ctaW, ctaH, Math.round(ctaH / 2));
   ctx.fillStyle = coral; ctx.fill();
+  // Explicit font / alignment reassertion immediately before each fillText so no
+  // stale ctx state can shift the glyph origin.
+  ctx.font = "800 " + ctaFS + "px " + uiFont;
   ctx.fillStyle = "#ffffff";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(ctaText, pad + ctaW / 2, ctaY + ctaH / 2 + 1);
+  ctx.fillText(ctaText, ctaPillX + ctaW / 2, ctaY + ctaH / 2 + 1);
   ctx.textBaseline = "alphabetic";
+  ctx.textAlign = "left";
 
   // URL under button
   ctx.font = "700 " + urlFS + "px " + uiFont;
   ctx.fillStyle = dark;
-  ctx.textAlign = "left";
-  ctx.fillText("findmeajob.co.nz", pad, ctaY + ctaH + urlFS + Math.round(urlFS * 0.3));
+  ctx.fillText("findmeajob.co.nz", ctaPillX, ctaY + ctaH + urlFS + Math.round(urlFS * 0.3));
 
   // Checkmarks bottom-right
   var bullets = ["Free forever", "No signup", "NZ-tuned"];
