@@ -11,7 +11,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <title>Admin — FindMeAJob.co.nz</title>
 <meta name="robots" content="noindex,nofollow">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#f6f7fb;
@@ -1557,7 +1557,7 @@ function copyPost(btn) {
   });
 }
 
-function downloadPostImage(btn) {
+async function downloadPostImage(btn) {
   var text = btn.dataset.text.replace(/&#10;/g, "\n");
   var platform = btn.dataset.platform;
   var color = btn.dataset.color;
@@ -1568,6 +1568,10 @@ function downloadPostImage(btn) {
   cn.width = W; cn.height = H;
   var ctx = cn.getContext("2d");
   btn.textContent = "Loading...";
+  // Ensure Nunito (used for the wordmark) is ready before we draw
+  if (document.fonts && document.fonts.load) {
+    try { await document.fonts.load('900 64px Nunito'); } catch(e) {}
+  }
   var palettes = [
     {bg:"#FAF6EF", tag:"FREE · NZ · INSTANT"},
     {bg:"#EAE6FA", tag:"BUILT FOR KIWIS"},
@@ -1586,10 +1590,10 @@ function downloadPostImage(btn) {
   ctx.fillStyle = pal.bg;
   ctx.fillRect(0, 0, W, H);
 
-  // Brand wordmark top-left
-  var brandFS = Math.round(Math.min(W, H) * 0.045);
-  if (brandFS < 22) brandFS = 22;
-  ctx.font = "900 " + brandFS + "px Inter, sans-serif";
+  // Brand wordmark top-left (Nunito Black, matches /public/logo-icon.svg styling)
+  var brandFS = Math.round(Math.min(W, H) * 0.055);
+  if (brandFS < 24) brandFS = 24;
+  ctx.font = '900 ' + brandFS + 'px Nunito, "Plus Jakarta Sans", system-ui, sans-serif';
   ctx.textAlign = "left";
   ctx.fillStyle = coral;
   var brandY = pad + brandFS;
@@ -1661,20 +1665,39 @@ function downloadPostImage(btn) {
   var isPortrait = H > W * 1.1;
   var phoneH = isPortrait ? Math.round(H * 0.44) : Math.round(H * 0.52);
   var phoneW = Math.round(phoneH * 0.48);
-  // Shrink if too wide for the canvas
   if (phoneW > W * 0.4) { phoneW = Math.round(W * 0.4); phoneH = Math.round(phoneW / 0.48); }
-  var phoneTop = brandY + Math.round(H * 0.05);
-  var zoneBottom = ctaY - Math.round(H * 0.02);
-  // Headline zone sits above phone
+
+  // Layout variations — picked deterministically from hash so the same post
+  // always renders identically, but different posts get different energy.
+  // center: upright, vertically centred below headline
+  // tilt-left / tilt-right: slight rotation, fully visible
+  // pop-bottom: angled phone emerging from the bottom edge (~25% cut off)
+  var layouts = ["center", "tilt-left", "tilt-right", "pop-bottom", "pop-bottom-right"];
+  var layout = layouts[Math.abs(hash + 13) % layouts.length];
+  var phoneRot = 0;
   var textTop = brandY + Math.round(H * 0.04);
-  var headlineMaxBottom = phoneTop;  // placeholder, will recompute
-  // Position phone vertically within the available space
   var phoneX = Math.round((W - phoneW) / 2);
+  var zoneBottom = ctaY - Math.round(H * 0.02);
   var phoneY = Math.round(zoneBottom - phoneH);
   if (phoneY < textTop + Math.round(H * 0.16)) phoneY = textTop + Math.round(H * 0.16);
 
-  // Headline fits between textTop and phoneY
-  var textAreaH = phoneY - textTop - Math.round(H * 0.02);
+  if (layout === "tilt-left")  { phoneRot = -0.10; }
+  else if (layout === "tilt-right") { phoneRot = 0.10; }
+  else if (layout === "pop-bottom") {
+    phoneRot = -0.15;
+    phoneY = Math.round(H - phoneH * 0.74);
+    phoneX = Math.round((W - phoneW) / 2) - Math.round(phoneW * 0.08);
+  } else if (layout === "pop-bottom-right") {
+    phoneRot = 0.14;
+    phoneY = Math.round(H - phoneH * 0.72);
+    phoneX = Math.round((W - phoneW) / 2) + Math.round(phoneW * 0.1);
+  }
+
+  // Headline fits between textTop and the top of the phone (unrotated bbox is fine —
+  // when the phone is tilted/popping from below, it extends beyond its bbox, which
+  // is the intended dramatic overlap with the CTA area.)
+  var phoneTopForText = (layout.indexOf("pop") === 0) ? (H - Math.round(H * 0.3)) : phoneY;
+  var textAreaH = phoneTopForText - textTop - Math.round(H * 0.02);
   var maxFontSize = Math.round(Math.min(W, H) * 0.1);
   if (maxFontSize < 36) maxFontSize = 36;
   var maxTextW = W - pad * 2;
@@ -1719,13 +1742,21 @@ function downloadPostImage(btn) {
     });
   });
 
-  // Phone mockup
+  // Phone mockup — wrap in save/rotate so the whole phone (bezel + screen + content)
+  // rotates as a single unit for the tilt and pop-bottom layouts.
+  ctx.save();
+  if (phoneRot !== 0) {
+    var _cx = phoneX + phoneW / 2, _cy = phoneY + phoneH / 2;
+    ctx.translate(_cx, _cy);
+    ctx.rotate(phoneRot);
+    ctx.translate(-_cx, -_cy);
+  }
   var phoneR = Math.round(phoneW * 0.1);
   // Soft shadow
   ctx.save();
-  ctx.shadowColor = "rgba(15,23,42,0.18)";
-  ctx.shadowBlur = Math.round(phoneW * 0.08);
-  ctx.shadowOffsetY = Math.round(phoneW * 0.03);
+  ctx.shadowColor = "rgba(15,23,42,0.22)";
+  ctx.shadowBlur = Math.round(phoneW * 0.1);
+  ctx.shadowOffsetY = Math.round(phoneW * 0.04);
   ctx.beginPath(); ctx.roundRect(phoneX, phoneY, phoneW, phoneH, phoneR);
   ctx.fillStyle = "#0f172a";
   ctx.fill();
@@ -1852,6 +1883,9 @@ function downloadPostImage(btn) {
     px += ctx.measureText(w).width + spaceWpill;
   });
   ctx.textBaseline = "alphabetic";
+  ctx.restore();  // end phone rotation transform
+
+  // CTA button (drawn on top of the phone so pop-bottom layouts still show the CTA)
   ctx.beginPath(); ctx.roundRect(pad, ctaY, ctaW, ctaH, Math.round(ctaH / 2));
   ctx.fillStyle = coral; ctx.fill();
   ctx.fillStyle = "#ffffff";
