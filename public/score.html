@@ -257,7 +257,7 @@ input[type="file"]{display:none}
     </div>
     <input type="file" id="fileInput" accept=".pdf,.docx,.doc,.txt">
     <div class="file-name" id="fileName"></div>
-    <button class="btn" id="scoreBtn" onclick="scoreCV()" disabled>
+    <button class="btn" id="scoreBtn" onclick="scoreCV()" data-fmj-action disabled>
       <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
       Score My CV
     </button>
@@ -611,7 +611,7 @@ function escHtml(s) {
 function subscribeAlerts(){var e=document.getElementById('alert-email');if(!e||!e.value.trim()||e.value.indexOf('@')===-1)return;fetch('/api/seeker',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',email:e.value.trim(),password:'__alerts_only__',name:e.value.split('@')[0],emailAlerts:true})}).then(function(){e.value='';e.placeholder='Subscribed!';}).catch(function(){});}
 </script>
 <script>/* fmj tool-usage view tracking (fire-and-forget) */
-(function(){function t(ev){try{fetch('/api/track-tool',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'score',event:ev}),keepalive:true}).catch(function(){});}catch(e){}}window.fmjTrack=t;t('view');})();
+(function(){function t(ev){try{fetch('/api/track-tool',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'score',event:ev}),keepalive:true}).catch(function(){});}catch(e){}}window.fmjTrack=t;t('view');document.addEventListener('click',function(e){var el=e.target&&e.target.closest&&e.target.closest('[data-fmj-action]');if(el)t('action');},true);})();
 </script>
 </body>
 </html>

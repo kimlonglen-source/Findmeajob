@@ -126,6 +126,17 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
 .tu-spark i{flex:1;background:linear-gradient(180deg,rgba(231,81,90,.55),rgba(231,81,90,.9));border-radius:2px 2px 0 0;min-height:2px}
 .tu-empty{text-align:center;padding:2.5rem 1rem;color:var(--text3);font-size:.85rem}
 
+/* Signup breakdown */
+.sb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.85rem}
+.sb-card{border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.15rem;background:var(--bg3)}
+.sb-card .sb-n{font-size:1.6rem;font-weight:900;color:var(--text);line-height:1;font-variant-numeric:tabular-nums}
+.sb-card .sb-l{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);margin-top:.4rem}
+.sb-card .sb-d{font-size:.72rem;color:var(--text3);margin-top:.25rem;line-height:1.4}
+.sb-card.sb-signup{border-left:3px solid var(--em)}
+.sb-card.sb-gate{border-left:3px solid #2563eb}
+.sb-card.sb-news{border-left:3px solid var(--purple)}
+@media(max-width:640px){.sb-grid{grid-template-columns:1fr}}
+
 @media(max-width:960px){
   .adm-shell{flex-direction:column}
   .adm-sidebar{flex:initial;width:100%;position:static;padding:.75rem .65rem}
@@ -300,6 +311,15 @@ main{padding:2rem;max-width:1200px;margin:0 auto}
               </div>
             </div>
             <div id="tool-usage-body"><div class="tu-empty">Loading&hellip;</div></div>
+          </div>
+          <div class="adm-panel">
+            <div class="adm-panel-hd">
+              <div>
+                <div class="adm-panel-title">Signup breakdown</div>
+                <div class="adm-panel-sub">Where your job-seeker list actually comes from.</div>
+              </div>
+            </div>
+            <div id="signup-breakdown-body"><div class="tu-empty">Loading&hellip;</div></div>
           </div>
         </div>
         <!-- Section view — existing workspace (jobs/people/content/growth content panels) -->
@@ -633,7 +653,10 @@ function showDashboard(){
   document.querySelectorAll(".adm-navitem").forEach(function(x){x.classList.remove("active");});
   var db = document.querySelector('.adm-navitem[data-view="dashboard"]');
   if(db) db.classList.add("active");
-  if(typeof pw !== "undefined" && pw) loadToolStats(currentToolStatsRange);
+  if(typeof pw !== "undefined" && pw){
+    loadToolStats(currentToolStatsRange);
+    loadSignupBreakdown();
+  }
 }
 
 function showSectionFor(tab){
@@ -667,7 +690,10 @@ document.querySelectorAll(".adm-navitem").forEach(function(n){
   if(dbtn) dbtn.addEventListener("click", function(){
     var orig = document.getElementById("btn-refresh");
     if(orig) orig.click();
-    if(typeof pw !== "undefined" && pw) loadToolStats(currentToolStatsRange);
+    if(typeof pw !== "undefined" && pw){
+      loadToolStats(currentToolStatsRange);
+      loadSignupBreakdown();
+    }
     var lr = document.getElementById("last-refresh-dash");
     if(lr) lr.textContent = "Refreshed just now";
   });
@@ -740,6 +766,45 @@ document.querySelectorAll(".adm-range-pill").forEach(function(p){
     loadToolStats(parseInt(this.dataset.range, 10) || 7);
   });
 });
+
+/* -------------------- SIGNUP BREAKDOWN -------------------- */
+function loadSignupBreakdown(){
+  var body = document.getElementById("signup-breakdown-body");
+  if(!body) return;
+  if(typeof pw === "undefined" || !pw){ body.innerHTML = '<div class="tu-empty">Sign in to view breakdown.</div>'; return; }
+  fetch("/api/admin", {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({ password: pw, action:"signup-breakdown" })
+  }).then(function(r){return r.json();}).then(function(d){
+    if(d.error){ body.innerHTML = '<div class="tu-empty">'+String(d.error).replace(/</g,"&lt;")+'</div>'; return; }
+    renderSignupBreakdown(d);
+  }).catch(function(){
+    body.innerHTML = '<div class="tu-empty">Could not load signup breakdown.</div>';
+  });
+}
+
+function renderSignupBreakdown(d){
+  var body = document.getElementById("signup-breakdown-body");
+  if(!body) return;
+  var c = d.counts || {};
+  var total = d.total || 0;
+  var signup = c.signup || 0;
+  var gate = c["tool-gate"] || 0;
+  var news = c.newsletter || 0;
+  if(total === 0){
+    body.innerHTML = '<div class="tu-empty">No job seekers registered yet.</div>';
+    return;
+  }
+  var pct = function(n){ return total > 0 ? Math.round((n/total)*100) + '%' : '—'; };
+  var h = '<div class="sb-grid">';
+  h += '<div class="sb-card sb-signup"><div class="sb-n">'+signup.toLocaleString()+'</div><div class="sb-l">Real signups</div><div class="sb-d">'+pct(signup)+' of total. Full accounts via /match.html#account.</div></div>';
+  h += '<div class="sb-card sb-gate"><div class="sb-n">'+gate.toLocaleString()+'</div><div class="sb-l">Email-gate</div><div class="sb-d">'+pct(gate)+' of total. Lead-captured via the tool-page modal.</div></div>';
+  h += '<div class="sb-card sb-news"><div class="sb-n">'+news.toLocaleString()+'</div><div class="sb-l">Newsletter only</div><div class="sb-d">'+pct(news)+' of total. Subscribed via the footer form.</div></div>';
+  h += '</div>';
+  h += '<div style="margin-top:.85rem;font-size:.75rem;color:var(--text3)"><strong style="color:var(--text2)">'+total.toLocaleString()+'</strong> total people in your list.</div>';
+  body.innerHTML = h;
+}
 
 document.getElementById("confirm-cancel").addEventListener("click",function(){document.getElementById("confirm-modal").classList.remove("show");pendingAction=null;pendingActionId=null;});
 document.getElementById("confirm-ok").addEventListener("click",function(){document.getElementById("confirm-modal").classList.remove("show");if(pendingAction&&pendingActionId){if(pendingAction==="delete-seeker"||pendingAction==="delete-employer"){execUserAction(pendingAction,pendingActionId);}else{execAction(pendingAction,pendingActionId);}pendingAction=null;pendingActionId=null;}});

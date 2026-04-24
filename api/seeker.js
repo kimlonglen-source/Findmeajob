@@ -123,14 +123,26 @@ module.exports = async function handler(req, res) {
       var email = (req.body.email || "").toLowerCase().trim();
       var password = req.body.password;
       if (!name || !email || !password) return res.status(400).json({ error: "Name, email and password are required." });
-      var pwErr = validatePassword(password);
-      if (pwErr) return res.status(400).json({ error: pwErr });
+      // Marker passwords bypass the full strength check: __tool_gate__ comes from
+      // the email-gate modal on tool pages, __alerts_only__ from the weekly-alerts
+      // footer form. Both are lightweight lead captures, not real accounts — the
+      // marker doubles as a "source" tag for the admin signup breakdown.
+      var isMarker = (password === "__tool_gate__" || password === "__alerts_only__");
+      if (!isMarker) {
+        var pwErr = validatePassword(password);
+        if (pwErr) return res.status(400).json({ error: pwErr });
+      }
       var existing = await hget("seekers", email);
       if (existing) return res.status(400).json({ error: "An account with this email already exists. Please sign in." });
       var id = "sk_" + Date.now() + "_" + Math.random().toString(36).substring(2, 8);
+      // Marker accounts store the plaintext marker so the admin can identify
+      // them later without a reverse lookup. verifyPassword already handles the
+      // plaintext-vs-hash cascade via its existing migration path.
+      var storedPw = isMarker ? password : hashPassword(password);
+      var source = password === "__tool_gate__" ? "tool-gate" : (password === "__alerts_only__" ? "newsletter" : "signup");
       var seeker = {
         id: id, name: name, firstName: req.body.firstName || "", middleName: req.body.middleName || "", lastName: req.body.lastName || "",
-        email: email, password: hashPassword(password),
+        email: email, password: storedPw, source: source,
         phone: req.body.phone || "", location: req.body.location || "", rtw: req.body.rtw || "", notice: req.body.notice || "",
         emailAlerts: !!req.body.emailAlerts, emailUpdates: !!req.body.emailUpdates,
         cvText: null, cvFileName: null,
@@ -142,6 +154,7 @@ module.exports = async function handler(req, res) {
         "A new job seeker just created an account:<br><br>"
         + "Name: " + (name || "") + "<br>"
         + "Email: " + (email || "") + "<br>"
+        + "Source: " + source + "<br>"
         + "Right to work: " + (seeker.rtw || "—") + "<br>"
         + "Email alerts: " + (seeker.emailAlerts ? "Yes" : "No") + "<br><br>"
         + '<a href="https://www.findmeajob.co.nz/admin.html" style="color:#c7313a;font-weight:700">Open admin panel</a>'

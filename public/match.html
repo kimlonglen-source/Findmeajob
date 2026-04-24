@@ -692,7 +692,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         </select>
       </div>
       <div class="alert alert-err" id="cv-err">Please upload your CV first (PDF, Word, or text file).</div>
-      <button class="btn" id="btn-analyze" type="button" style="margin-top:1rem">Analyse CV &amp; Find Matches</button>
+      <button class="btn" id="btn-analyze" type="button" data-fmj-action data-fmj-tool="match" style="margin-top:1rem">Analyse CV &amp; Find Matches</button>
       <div style="text-align:center;margin-top:.75rem;display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap">
         <button style="background:none;border:none;color:var(--text3);font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif" id="btn-go-manual" type="button">No CV? Enter skills manually &#8594;</button>
         <button style="background:none;border:none;color:var(--em);font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif" onclick="showPage('apply')" type="button">Build a CV from scratch &#8594;</button>
@@ -964,7 +964,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem}
         <div style="font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.75rem">3. Your Details</div>
         <div class="field"><label class="form-label">Your Name</label><input type="text" id="apply-user-name" placeholder="e.g. Sarah Johnson"></div>
       </div>
-      <button class="btn" id="apply-gen-btn" type="button" disabled style="margin-top:.5rem">Generate CV + Cover Letter</button>
+      <button class="btn" id="apply-gen-btn" type="button" data-fmj-action data-fmj-tool="apply" disabled style="margin-top:.5rem">Generate CV + Cover Letter</button>
     </div>
     <div id="apply-loading" style="display:none;text-align:center;padding:3rem 1rem">
       <div style="width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--em);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem"></div>
@@ -4096,6 +4096,13 @@ and `apply` when the user navigates to the #apply sub-section (CV + cover letter
   var _applySeen=false;
   function chk(){if(!_applySeen&&(location.hash||'').indexOf('apply')>-1){_applySeen=true;t('apply','view');}}
   chk();window.addEventListener('hashchange',chk);
+  // Action tracking: tool derived from current hash (match vs apply), overridable per element with data-fmj-tool.
+  document.addEventListener('click',function(e){
+    var el=e.target&&e.target.closest&&e.target.closest('[data-fmj-action]');
+    if(!el) return;
+    var tool = el.dataset && el.dataset.fmjTool ? el.dataset.fmjTool : ((location.hash||'').indexOf('apply')>-1 ? 'apply' : 'match');
+    t(tool,'action');
+  },true);
 })();
 </script>
 </body>
