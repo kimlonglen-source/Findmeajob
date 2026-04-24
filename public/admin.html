@@ -1568,81 +1568,172 @@ function downloadPostImage(btn) {
   cn.width = W; cn.height = H;
   var ctx = cn.getContext("2d");
   btn.textContent = "Loading...";
-  var imgSeed = Math.floor(Math.random()*500)+1;
-  var bgImg = new Image();
-  bgImg.crossOrigin = "anonymous";
-  bgImg.onload = function(){ drawCard(bgImg); };
-  bgImg.onerror = function(){ drawCard(null); };
-  bgImg.src = "https://picsum.photos/seed/"+imgSeed+"/"+W+"/"+H;
-  function drawCard(photo) {
-    if (photo) { ctx.drawImage(photo,0,0,W,H); ctx.fillStyle="rgba(9,9,11,.88)"; ctx.fillRect(0,0,W,H); }
-    else { var bg=ctx.createLinearGradient(0,0,W*0.3,H); bg.addColorStop(0,"#0f172a"); bg.addColorStop(1,"#09090b"); ctx.fillStyle=bg; ctx.fillRect(0,0,W,H); }
-    var g1=ctx.createRadialGradient(W*0.8,H*0.15,0,W*0.8,H*0.15,W*0.4); g1.addColorStop(0,"rgba(139,92,246,.12)"); g1.addColorStop(1,"transparent"); ctx.fillStyle=g1; ctx.fillRect(0,0,W,H);
-    var g2=ctx.createRadialGradient(W*0.15,H*0.8,0,W*0.15,H*0.8,W*0.35); g2.addColorStop(0,"rgba(231,81,90,.08)"); g2.addColorStop(1,"transparent"); ctx.fillStyle=g2; ctx.fillRect(0,0,W,H);
-    var tl=ctx.createLinearGradient(0,0,W,0); tl.addColorStop(0,"transparent"); tl.addColorStop(0.2,"#FF4F40"); tl.addColorStop(0.5,"#8b5cf6"); tl.addColorStop(0.8,"#ec4899"); tl.addColorStop(1,"transparent"); ctx.fillStyle=tl; ctx.fillRect(0,0,W,5);
-    var pad=Math.round(W*0.06);
-    // Logo icon
-    var logoS=Math.round(Math.min(W,H)*0.06);
-    var lx=pad, ly=pad;
-    ctx.beginPath(); ctx.roundRect(lx,ly,logoS,logoS,Math.round(logoS*0.22)); ctx.fillStyle="#FF4F40"; ctx.fill();
-    var mgCx=lx+logoS*0.41, mgCy=ly+logoS*0.41, mgR=logoS*0.19;
-    ctx.beginPath(); ctx.arc(mgCx,mgCy,mgR,0,Math.PI*2); ctx.strokeStyle="white"; ctx.lineWidth=Math.max(2,logoS*0.08); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(mgCx+mgR*0.7,mgCy+mgR*0.7); ctx.lineTo(lx+logoS*0.72,ly+logoS*0.72); ctx.strokeStyle="white"; ctx.lineCap="round"; ctx.stroke();
-    // Brand text
-    var bs=Math.round(logoS*0.55);
-    ctx.font="800 "+bs+"px Inter, sans-serif"; ctx.textAlign="left"; ctx.fillStyle="#ffffff";
-    var bx=lx+logoS+Math.round(logoS*0.25), by=ly+logoS*0.68;
-    ctx.fillText("FindMe",bx,by); var fw=ctx.measureText("FindMe").width;
-    ctx.fillStyle="#FF4F40"; ctx.fillText("AJob",bx+fw,by);
-    // Platform top-right
-    ctx.font="600 "+Math.round(bs*0.65)+"px Inter, sans-serif"; ctx.textAlign="right"; ctx.fillStyle=color; ctx.fillText(platform,W-pad,by);
-    // --- SHORT PUNCHY HEADLINE ---
-    var textTop=ly+logoS+Math.round(H*0.03);
-    var footerH2=Math.round(H*0.08);
-    var textAreaH=H-textTop-footerH2;
-    // Extract the first sentence as headline, strip hashtags/emojis/URLs
-    var headline=text.split(/\n/)[0].replace(/#\w+/g,"").replace(/https?:\/\/\S+/g,"").replace(/[^\w\s'!?.,\-]/g,"").replace(/\s+/g," ").trim().toUpperCase();
-    // If first line is too short, grab next line too
-    if(headline.length<15){ var lines2=text.split(/\n/).filter(function(l){return l.trim().length>0;}); headline=lines2.slice(0,2).join(" ").replace(/#\w+/g,"").replace(/https?:\/\/\S+/g,"").replace(/[^\w\s'!?.,\-]/g,"").replace(/\s+/g," ").trim().toUpperCase(); }
-    // Truncate to ~60 chars max for readability
-    if(headline.length>65){ headline=headline.substring(0,62).replace(/\s\S*$/,"")+"..."; }
-    // Word-wrap headline into lines that fit the canvas
-    var maxFontSize=Math.round(Math.min(W,H)*0.18);
-    if(maxFontSize<50) maxFontSize=50;
-    var maxTextW=W-pad*2;
-    function wrapText(str,fs){
-      ctx.font="900 "+fs+"px Inter, sans-serif";
-      var words=str.split(" "), lines=[], cur="";
-      words.forEach(function(w){ var test=cur?cur+" "+w:w; if(ctx.measureText(test).width>maxTextW&&cur){ lines.push(cur); cur=w; } else { cur=test; } });
-      if(cur) lines.push(cur);
-      return lines;
-    }
-    // Find largest font size where every line fits within maxTextW and total height fits
-    var fontSize=maxFontSize, wrappedLines;
-    while(fontSize>=20){
-      wrappedLines=wrapText(headline,fontSize);
-      var lineH2=Math.round(fontSize*1.2);
-      var allFit=true;
-      ctx.font="900 "+fontSize+"px Inter, sans-serif";
-      for(var li=0;li<wrappedLines.length;li++){ if(ctx.measureText(wrappedLines[li]).width>maxTextW){ allFit=false; break; } }
-      if(allFit&&wrappedLines.length<=5&&wrappedLines.length*lineH2<textAreaH*0.85) break;
-      fontSize-=2;
-    }
-    var lineH=Math.round(fontSize*1.2);
-    var totalKH=wrappedLines.length*lineH;
-    var startY=textTop+Math.round((textAreaH-totalKH)/2)+fontSize;
-    ctx.textAlign="left";
-    wrappedLines.forEach(function(line,i){ ctx.font="900 "+fontSize+"px Inter, sans-serif"; ctx.fillStyle="#ffffff"; ctx.fillText(line,pad,startY+i*lineH); });
-    // Footer
-    var fy=H-Math.round(footerH2*0.35);
-    ctx.fillStyle="rgba(255,255,255,.08)"; ctx.fillRect(pad,fy-Math.round(footerH2*0.3),W-pad*2,1);
-    var footFs=Math.round(Math.min(W,H)*0.028); if(footFs<14) footFs=14; if(footFs>32) footFs=32;
-    ctx.textAlign="left"; ctx.font="700 "+footFs+"px Inter, sans-serif"; ctx.fillStyle="#FF4F40"; ctx.fillText("findmeajob.co.nz",pad,fy);
-    ctx.textAlign="right"; ctx.font="500 "+Math.round(footFs*0.8)+"px Inter, sans-serif"; ctx.fillStyle="#52525b"; ctx.fillText("Free AI job matching for New Zealand",W-pad,fy);
-    var bl=ctx.createLinearGradient(0,0,W,0); bl.addColorStop(0,"transparent"); bl.addColorStop(0.3,"#FF4F40"); bl.addColorStop(0.7,"#8b5cf6"); bl.addColorStop(1,"transparent"); ctx.fillStyle=bl; ctx.fillRect(0,H-5,W,5);
-    var dl=document.createElement("a"); dl.download="findmeajob-"+platform.toLowerCase().replace(/[\s\/]/g,"-")+".png"; dl.href=cn.toDataURL("image/png"); dl.click();
-    btn.textContent="Done!"; btn.style.color="var(--em)"; setTimeout(function(){ btn.textContent="Image"; btn.style.color="var(--text2)"; },2000);
+  var palettes = [
+    {bg:"#FAF6EF", tag:"FREE · NZ · INSTANT"},
+    {bg:"#EAE6FA", tag:"BUILT FOR KIWIS"},
+    {bg:"#E3ECC9", tag:"LIVE · AI-POWERED"},
+    {bg:"#FFE8CC", tag:"NO SIGNUP · FREE FOREVER"}
+  ];
+  var hash = 0;
+  var seedStr = platform + text;
+  for (var hi = 0; hi < seedStr.length; hi++) { hash = ((hash << 5) - hash) + seedStr.charCodeAt(hi); hash |= 0; }
+  var pal = palettes[Math.abs(hash) % palettes.length];
+  var coral = "#E7515A";
+  var dark = "#0f172a";
+  var pad = Math.round(W * 0.06);
+
+  // Background
+  ctx.fillStyle = pal.bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // Brand wordmark top-left
+  var brandFS = Math.round(Math.min(W, H) * 0.045);
+  if (brandFS < 22) brandFS = 22;
+  ctx.font = "900 " + brandFS + "px Inter, sans-serif";
+  ctx.textAlign = "left";
+  ctx.fillStyle = coral;
+  var brandY = pad + brandFS;
+  ctx.fillText("FindMeAJob", pad, brandY);
+
+  // Tag pill top-right (bordered)
+  var tagFS = Math.round(brandFS * 0.54);
+  ctx.font = "800 " + tagFS + "px Inter, sans-serif";
+  var tagText = pal.tag;
+  var tagTW = ctx.measureText(tagText).width;
+  var tagPadX = Math.round(tagFS * 1.1);
+  var tagW = tagTW + tagPadX * 2;
+  var tagH = Math.round(tagFS * 2.3);
+  var tagX = W - pad - tagW;
+  var tagY = pad + Math.round((brandFS - tagH) / 2) + Math.round(tagFS * 0.3);
+  ctx.beginPath(); ctx.roundRect(tagX, tagY, tagW, tagH, Math.round(tagH / 2));
+  ctx.lineWidth = Math.max(2, Math.round(tagFS * 0.1));
+  ctx.strokeStyle = dark;
+  ctx.stroke();
+  ctx.fillStyle = dark;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(tagText, tagX + tagW / 2, tagY + tagH / 2 + 1);
+  ctx.textBaseline = "alphabetic";
+
+  // Extract headline
+  var headline = text.split(/\n/)[0].replace(/#\w+/g, "").replace(/https?:\/\/\S+/g, "").replace(/[^\w\s'!?.,\-&]/g, "").replace(/\s+/g, " ").trim();
+  if (headline.length < 15) {
+    var lines2 = text.split(/\n/).filter(function(l){return l.trim().length>0;});
+    headline = lines2.slice(0, 2).join(" ").replace(/#\w+/g, "").replace(/https?:\/\/\S+/g, "").replace(/[^\w\s'!?.,\-&]/g, "").replace(/\s+/g, " ").trim();
   }
+  if (headline.length > 70) headline = headline.substring(0, 67).replace(/\s\S*$/, "") + "...";
+  if (!/[.!?]$/.test(headline)) headline += ".";
+
+  // Coral = last N words (roughly last third, min 2 max 4)
+  var words = headline.split(" ");
+  var coralCount = Math.min(4, Math.max(2, Math.round(words.length * 0.35)));
+  var coralStartIdx = words.length - coralCount;
+
+  // Fit headline
+  var textTop = brandY + Math.round(H * 0.06);
+  var footerH = Math.round(H * 0.26);
+  var textAreaH = H - textTop - footerH;
+  var maxFontSize = Math.round(Math.min(W, H) * 0.13);
+  if (maxFontSize < 40) maxFontSize = 40;
+  var maxTextW = W - pad * 2;
+
+  function wrapWords(fs) {
+    ctx.font = "900 " + fs + "px Inter, sans-serif";
+    var lines = [], cur = [], curW = 0;
+    var spaceW = ctx.measureText(" ").width;
+    words.forEach(function(w) {
+      var wW = ctx.measureText(w).width;
+      var add = cur.length ? spaceW + wW : wW;
+      if (curW + add > maxTextW && cur.length) { lines.push(cur); cur = [w]; curW = wW; }
+      else { cur.push(w); curW += add; }
+    });
+    if (cur.length) lines.push(cur);
+    return lines;
+  }
+
+  var fontSize = maxFontSize, wrapped;
+  while (fontSize >= 20) {
+    wrapped = wrapWords(fontSize);
+    var lineH2 = Math.round(fontSize * 1.12);
+    if (wrapped.length <= 5 && wrapped.length * lineH2 < textAreaH * 0.9) break;
+    fontSize -= 2;
+  }
+  var lineH = Math.round(fontSize * 1.12);
+  var totalKH = wrapped.length * lineH;
+  var startY = textTop + Math.round((textAreaH - totalKH) / 2) + fontSize;
+  ctx.font = "900 " + fontSize + "px Inter, sans-serif";
+  ctx.textAlign = "left";
+
+  // Render word-by-word so last N words render in coral
+  var wordIdx = 0;
+  wrapped.forEach(function(line, i) {
+    var x = pad;
+    var y = startY + i * lineH;
+    line.forEach(function(w, wi) {
+      ctx.fillStyle = (wordIdx >= coralStartIdx) ? coral : dark;
+      ctx.fillText(w, x, y);
+      x += ctx.measureText(w + " ").width;
+      wordIdx++;
+    });
+  });
+
+  // Bottom row: Try it free button + checkmarks
+  var ctaFS = Math.round(Math.min(W, H) * 0.03);
+  if (ctaFS < 16) ctaFS = 16;
+  if (ctaFS > 28) ctaFS = 28;
+  var ctaText = "Try it free  →";
+  ctx.font = "800 " + ctaFS + "px Inter, sans-serif";
+  var ctaTW = ctx.measureText(ctaText).width;
+  var ctaPadX = Math.round(ctaFS * 1.6);
+  var ctaW = ctaTW + ctaPadX * 2;
+  var ctaH = Math.round(ctaFS * 2.6);
+  var urlFS = Math.round(ctaFS * 0.85);
+  var ctaY = H - pad - ctaH - Math.round(urlFS * 1.6);
+  ctx.beginPath(); ctx.roundRect(pad, ctaY, ctaW, ctaH, Math.round(ctaH / 2));
+  ctx.fillStyle = coral; ctx.fill();
+  ctx.fillStyle = "#ffffff";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(ctaText, pad + ctaW / 2, ctaY + ctaH / 2 + 1);
+  ctx.textBaseline = "alphabetic";
+
+  // URL under button
+  ctx.font = "700 " + urlFS + "px Inter, sans-serif";
+  ctx.fillStyle = dark;
+  ctx.textAlign = "left";
+  ctx.fillText("findmeajob.co.nz", pad, ctaY + ctaH + urlFS + Math.round(urlFS * 0.3));
+
+  // Checkmarks bottom-right
+  var bullets = ["Free forever", "No signup", "NZ-tuned"];
+  var bFS = Math.round(ctaFS * 0.82);
+  ctx.font = "700 " + bFS + "px Inter, sans-serif";
+  var bLineH = Math.round(bFS * 1.9);
+  var bTotalH = bullets.length * bLineH;
+  var bY0 = ctaY + Math.round((ctaH - bTotalH) / 2) + bFS;
+  bullets.forEach(function(b, bi) {
+    var y = bY0 + bi * bLineH;
+    ctx.font = "900 " + bFS + "px Inter, sans-serif";
+    var chk = "✓";
+    var chkW = ctx.measureText(chk).width;
+    ctx.font = "700 " + bFS + "px Inter, sans-serif";
+    var tW = ctx.measureText(b).width;
+    var gap = Math.round(bFS * 0.45);
+    var bx = W - pad - (chkW + gap + tW);
+    ctx.font = "900 " + bFS + "px Inter, sans-serif";
+    ctx.fillStyle = "#16a34a";
+    ctx.fillText(chk, bx, y);
+    ctx.font = "700 " + bFS + "px Inter, sans-serif";
+    ctx.fillStyle = dark;
+    ctx.fillText(b, bx + chkW + gap, y);
+  });
+
+  var dl = document.createElement("a");
+  dl.download = "findmeajob-" + platform.toLowerCase().replace(/[\s\/]/g, "-") + ".png";
+  dl.href = cn.toDataURL("image/png");
+  dl.click();
+  btn.textContent = "Done!";
+  btn.style.color = "var(--em)";
+  setTimeout(function(){ btn.textContent = "Image"; btn.style.color = "var(--text2)"; }, 2000);
 }
 
 async function execUserAction(action, email) {
